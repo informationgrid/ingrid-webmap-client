@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>InGrid Map Client Administration</title>
+
+	<!-- Production -->
+	<!-- -->
+	<script type="text/javascript" src="../lib/extjs/adapter/ext/ext-base.js"></script>
+	<script type="text/javascript" src="../lib/extjs/ext-all.js"></script>
+	<script type="text/javascript" src="../lib/openlayers/OpenLayers.js"></script>
+	<script type="text/javascript" src="../lib/geoext/GeoExt.js"></script>
+	<!-- -->
+
+	<!-- Development -->
+	<!--
+	<script type="text/javascript" src="../lib/extjs/adapter/ext/ext-base-debug.js"></script>
+	<script type="text/javascript" src="../lib/extjs/ext-all-debug.js"></script>
+	<script type="text/javascript" src="../lib/openlayers/lib/OpenLayers.js"></script>
+	<script type="text/javascript" src="../lib/geoext/lib/GeoExt.js"></script>
+	-->
+
+	<link rel="stylesheet" type="text/css" href="../lib/extjs/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+	<script type="text/javascript" src="../shared/js/config.js"></script>
+	<script type="text/javascript" src="../shared/js/overrides.js"></script>
+	<script type="text/javascript" src="../shared/js/Message.js"></script>
+	<script type="text/javascript" src="../shared/js/Configuration.js"></script>
+	<script type="text/javascript" src="../shared/js/model/WmsProxy.js"></script>
+	<script type="text/javascript" src="../shared/js/data/StoreHelper.js"></script>
+
+	<script type="text/javascript" src="js/AdminWorkspace.js"></script>
+	<script type="text/javascript" src="js/DefaultSaveHandler.js"></script>
+	<script type="text/javascript" src="js/modules/ModuleContainer.js"></script>
+	<script type="text/javascript" src="js/modules/ModuleBase.js"></script>
+	<script type="text/javascript" src="js/modules/data/CategoryStoreManager.js"></script>
+
+	<script type="text/javascript" src="js/controls/MapExtendPanel.js"></script>
+	<script type="text/javascript" src="js/controls/GridPanel.js"></script>
+	<script type="text/javascript" src="js/controls/RowExpander.js"></script>
+	<script type="text/javascript" src="js/controls/CategoryPanel.js"></script>
+	<script type="text/javascript" src="js/controls/ScaleField.js"></script>
+	<script type="text/javascript" src="js/controls/CoordinateField.js"></script>
+
+	<!-- base module -->
+	<script type="text/javascript" src="js/modules/basic/DefaultServicePanel.js"></script>
+	<script type="text/javascript" src="js/modules/basic/DefaultExtendPanel.js"></script>
+	<script type="text/javascript" src="js/modules/basic/ProjectionsPanel.js"></script>
+	<script type="text/javascript" src="js/modules/basic/ScalesPanel.js"></script>
+	<script type="text/javascript" src="js/modules/basic/ProxyPanel.js"></script>
+	<script type="text/javascript" src="js/modules/basic/BaseModule.js"></script>
+
+	<!-- services module -->
+	<script type="text/javascript" src="js/modules/services/ServiceCategoryPanel.js"></script>
+	<script type="text/javascript" src="js/modules/services/ServicesModule.js"></script>
+
+	<!-- areas module -->
+	<script type="text/javascript" src="js/modules/areas/AreaPanel.js"></script>
+	<script type="text/javascript" src="js/modules/areas/AreaCategoryPanel.js"></script>
+	<script type="text/javascript" src="js/modules/areas/AreasModule.js"></script>
+
+	<script type="text/javascript">
+	Ext.onReady(function() {
+		// load the configuration
+		de.ingrid.mapclient.Configuration.load({
+			success: function() {
+				// build the gui after the configuration is loaded
+				new de.ingrid.mapclient.admin.AdminWorkspace();
+			},
+			failure: function() {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+			}
+		});
+	});
+	</script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,63 @@
+body {
+	font-family:helvetica,tahoma,verdana,sans-serif;
+	font-size:13px;
+}
+
+.iconInfo {
+	background-image: url(../../shared/images/icon_info.png);
+}
+
+.iconZoomPrev {
+	background-image: url(../../shared/images/icon_zoom_prev.png);
+	width: 18px !important;
+}
+
+.iconZoomNext {
+	background-image: url(../../shared/images/icon_zoom_next.png);
+	width: 18px !important;
+}
+
+.iconMeassure {
+	background-image: url(../../shared/images/icon_meassure.png);
+}
+
+.iconPrint {
+	background-image: url(../../shared/images/icon_print.png);
+}
+
+.iconSave {
+	background-image: url(../../shared/images/icon_save.png);
+}
+
+.iconHelp {
+	background-image: url(../../shared/images/icon_help.png);
+}
+
+.iconAdd {
+	background-image: url(../../shared/images/icon_add.png);
+}
+
+.iconRemove {
+	background-image: url(../../shared/images/icon_delete.png);
+}
+
+.iconTransparency {
+	background-image: url(../../shared/images/icon_transparency.png);
+}
+
+.iconMetadata {
+	background-image: url(../../shared/images/icon_metadata.png);
+}
+
+.gx-tree-layer-icon { display:none; }
+
+.x-window-header-text {
+	display: block;
+	height: 13px;
+	overflow: hidden;
+}
+
+.metaDataTable td:first-child { 
+	font-weight: bold !important;
+	width: 155px;
+}
