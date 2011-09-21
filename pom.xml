@@ -8,12 +8,12 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-webmap-client</artifactId>
-  <version>3.2.0-SNAPSHOT</version>
+  <version>3.2.0</version>
   <packaging>war</packaging>
   <name>InGrid Web Map Client</name>
   <scm>
-    <connection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/trunk</connection>
-    <developerConnection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/trunk</developerConnection>
+    <connection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/tags/ingrid-webmap-client-3.2.0</connection>
+    <developerConnection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/tags/ingrid-webmap-client-3.2.0</developerConnection>
   </scm>
   <build>
     <finalName>${project.artifactId}</finalName>
