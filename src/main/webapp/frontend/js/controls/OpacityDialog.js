@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class OpacityDialog is the dialog for setting a layers opacity.
  */
 de.ingrid.mapclient.frontend.controls.OpacityDialog = Ext.extend(Ext.Window, {
-	title: "Layer-Tranparenz",
+	title: "Layer-Transparenz",
 	closable: true,
 	draggable: true,
 	width: 300,
