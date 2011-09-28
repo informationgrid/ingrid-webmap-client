@@ -27,7 +27,17 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	 */
 	map: null,
 
-	/**
+    /**
+     * The view configuration. The default configuration lists all known
+     * properties:
+     */
+    viewConfig: {
+    	hasProjectionsList: true,
+    	hasScaleList: true,
+    	hasAreasList: true
+    },
+
+    /**
 	 * @cfg projectionsCombo The projections combobox
 	 */
 	projectionsCombo: null,
@@ -92,6 +102,15 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		editable: false
 	});
 
+	// add items according to view configuration
+	var items = [];
+	if (this.viewConfig.hasProjectionsList) {
+		items.push(this.projectionsCombo);
+	}
+	if (this.viewConfig.hasScaleList) {
+		items.push(this.scalesCombo);
+	}
+
 	this.windowContent = new Ext.FormPanel({
 		border: false,
 		bodyStyle: 'padding: 10px',
@@ -100,7 +119,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		defaults: {
 			xtype: 'combo'
 		},
-		items: [ this.projectionsCombo, this.scalesCombo ]
+		items: items
 	});
 
 	Ext.apply(this, {
@@ -168,51 +187,53 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	}, this);
 
 	// add areas
-	var areaCategories = de.ingrid.mapclient.Configuration.getValue('areaCategories');
-	if (areaCategories) {
-		for (var i=0, count=areaCategories.length; i<count; i++) {
-			var category = areaCategories[i];
+	if (this.viewConfig.hasAreasList) {
+		var areaCategories = de.ingrid.mapclient.Configuration.getValue('areaCategories');
+		if (areaCategories) {
+			for (var i=0, count=areaCategories.length; i<count; i++) {
+				var category = areaCategories[i];
 
-			var combo = new Ext.form.ComboBox({
-				fieldLabel: category.name,
-				triggerAction: 'all',
-				mode: 'local',
-				store: new Ext.data.ArrayStore({
-					autoDestroy: true,
-					fields: [{
-						name: 'name',
-						type: 'string'
-					}, {
-						name: 'area',
-						type: 'string'
-					}]
-				}),
-				valueField: 'area',
-				displayField: 'name',
-				editable: false
-			});
-			var areas = category.areas;
-			// convert item objects into record arrays
-			var records = [];
-			for (var j=0, count2=areas.length; j<count2; j++) {
-				var area = areas[j];
-				var record = [area.name, Ext.encode({'north': areas[j].north, 'east': areas[j].east, 'south': areas[j].south, 'west': areas[j].west})];
-				records.push(record);
-			};
-			combo.store.loadData(records);
+				var combo = new Ext.form.ComboBox({
+					fieldLabel: category.name,
+					triggerAction: 'all',
+					mode: 'local',
+					store: new Ext.data.ArrayStore({
+						autoDestroy: true,
+						fields: [{
+							name: 'name',
+							type: 'string'
+						}, {
+							name: 'area',
+							type: 'string'
+						}]
+					}),
+					valueField: 'area',
+					displayField: 'name',
+					editable: false
+				});
+				var areas = category.areas;
+				// convert item objects into record arrays
+				var records = [];
+				for (var j=0, count2=areas.length; j<count2; j++) {
+					var area = areas[j];
+					var record = [area.name, Ext.encode({'north': areas[j].north, 'east': areas[j].east, 'south': areas[j].south, 'west': areas[j].west})];
+					records.push(record);
+				};
+				combo.store.loadData(records);
 
-			// define select callback
-			combo.on('select', function(comboBox, record, index) {
-				// change map extend
-				var area = Ext.decode(record.get('area'));
-				var bounds = new OpenLayers.Bounds.fromArray([area.west, area.south, area.east, area.north]);
-				bounds.transform(new OpenLayers.Projection("EPSG:4326"), this.getMapProjection());
-				this.map.zoomToExtent(bounds, true);
-				this.resetAreaComboBoxes(comboBox);
-			}, this);
+				// define select callback
+				combo.on('select', function(comboBox, record, index) {
+					// change map extend
+					var area = Ext.decode(record.get('area'));
+					var bounds = new OpenLayers.Bounds.fromArray([area.west, area.south, area.east, area.north]);
+					bounds.transform(new OpenLayers.Projection("EPSG:4326"), this.getMapProjection());
+					this.map.zoomToExtent(bounds, true);
+					this.resetAreaComboBoxes(comboBox);
+				}, this);
 
-			this.windowContent.add(combo);
-			this.areaComboBoxes.add(category.name, combo);
+				this.windowContent.add(combo);
+				this.areaComboBoxes.add(category.name, combo);
+			}
 		}
 	}
 };

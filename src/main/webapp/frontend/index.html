@@ -51,8 +51,22 @@
 		// load the configuration
 		de.ingrid.mapclient.Configuration.load({
 			success: function() {
+				// determine the view configuration 
+				var viewConfig = 'default';
+
+				// get the viewConfig parameter if given
+				var getParams = document.URL.split("?");
+				if (getParams.length > 1) {
+					var params = Ext.urlDecode(getParams[getParams.length-1]);
+					if (params['viewConfig']) {
+						viewConfig = params['viewConfig']
+					}
+				}
+				
 				// build the gui after the configuration is loaded
-				new de.ingrid.mapclient.frontend.Workspace();
+				new de.ingrid.mapclient.frontend.Workspace({
+					viewConfig: de.ingrid.mapclient.VIEW_CONFIG[viewConfig]
+				});
 			},
 			failure: function() {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);

@@ -12,25 +12,33 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
     monitorResize: true,
 
     /**
+     * The view configuration. The default configuration lists all known
+     * properties:
+     */
+    viewConfig: {
+    	hasServicesPanel: true,
+    	hasInfoTool: true,
+    	hasHistoryTool: true,
+    	hasMeasureTool: true,
+    	hasPrintTool: true,
+    	hasSaveTool: true,
+    	hasHelpTool: true,
+    	hasProjectionsList: true,
+    	hasScaleList: true,
+    	hasAreasList: true,
+    	hasPermaLink: true
+    },
+
+    /**
 	 * The OpenLayers.Map instance
 	 */
     map: null,
-    /**
-	 * The map panel
-	 */
-    mapPanel: null,
-    /**
-	 * The settings dialog inside the map panel
-	 */
-    settingsDialog: null,
+
     /**
 	 * The main layer tree
 	 */
     activeServicesPanel: null,
-    /**
-	 * The legend panel
-	 */
-    legendPanel: null,
+
     /**
      * Indicates if workspace state changes should be handled or not
      * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
@@ -43,6 +51,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
+	var self = this;
+
 	// create the map (default projection is WGS 84)
 	this.map = new OpenLayers.Map({
 		projection: new OpenLayers.Projection("EPSG:4326"),
@@ -53,12 +63,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		units: "degrees"
 	});
 
-	// create the layout
+	// create the accordion for the west panel
+	var accordionItems = [];
+
+	// a) layer tree
 	this.activeServicesPanel = new de.ingrid.mapclient.frontend.controls.ActiveServicesPanel({
 		map: this.map
 	});
-	var accordionItems = [this.activeServicesPanel];
+	accordionItems.push(this.activeServicesPanel);
 
+	// b) available service categories
 	var serviceCategories = de.ingrid.mapclient.Configuration.getValue("serviceCategories");
 	if (serviceCategories) {
 		for (var i=0, count=serviceCategories.length; i<count; i++) {
@@ -69,29 +83,44 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			accordionItems.push(panel);
 		}
 	}
+
+	// c) search panel
 	accordionItems.push({
         id: 'searchPanel',
         title: 'Suche',
         autoScroll: true
     });
 
-	this.settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
-		map: this.map
-	});
-	this.on('afterrender', function(el) {
-    	if (this.settingsDialog) {
-			this.settingsDialog.anchorTo(this.mapPanel.el, 'tr-tr', [-10, 10]);
-    	}
+	// create the legend panel
+	var legendPanel = new GeoExt.LegendPanel({
+		layerStore: this.activeServicesPanel.getLayerStore(),
+        autoScroll: true,
+        border: false
     });
 
-	// create the map container
-	this.mapPanel = new GeoExt.MapPanel({
-	    border: false,
-	    map: this.map,
-	    items: this.settingsDialog
+	// create the panel for the west region
+	var westPanel = new Ext.TabPanel({
+        region: 'west',
+        activeTab: 0,
+        width: 200,
+        split: true,
+        collapsible: true,
+        items: [{
+            title: 'Dienste',
+            closable: false,
+            layout: 'accordion',
+            layoutConfig: {
+                animate: true
+            },
+            border: false,
+            items: accordionItems
+        }, {
+            title: 'Legende',
+            items: legendPanel
+        }]
 	});
 
-	// create toolbar controls
+	// create the toolbar controls
 	var historyCtrl = new OpenLayers.Control.NavigationHistory();
 	this.map.addControl(historyCtrl);
 	var measurePathCtrl = new OpenLayers.Control.Measure(
@@ -111,52 +140,30 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     });
     this.map.addControl(measurePolygonCtrl);
 
-	// create the legend panel
-	this.legendPanel = new GeoExt.LegendPanel({
-		layerStore: this.activeServicesPanel.getLayerStore(),
-        autoScroll: true,
-        border: false
-    });
-
-	var self = this;
-	var items = [{
-        region: 'west',
-        xtype: 'tabpanel',
-        activeTab: 0,
-        width: 200,
-        split: true,
-        collapsible: true,
-        items: [{
-            title: 'Dienste',
-            closable: false,
-            layout: 'accordion',
-            layoutConfig: {
-                animate: true
-            },
-            border: false,
-            items: accordionItems
-        }, {
-            title: 'Legende',
-            items: this.legendPanel
-        }]
-	}, {
-        region: 'center',
-        layout: 'fit',
-        items: [
-            this.mapPanel
-        ],
-        tbar: items = [{
+    // create the toolbar items
+    var toolbarItems = [];
+    // a) info tool
+    if (this.viewConfig.hasInfoTool) {
+    	toolbarItems.push(new Ext.Button({
             iconCls: 'iconInfo'
-        }, new GeoExt.Action({
+    	}));
+    }
+    // b) history tool
+    if (this.viewConfig.hasHistoryTool) {
+    	toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.previous,
 			disabled: true,
             iconCls: 'iconZoomPrev'
-        }), new GeoExt.Action({
+        }));
+    	toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
 			disabled: true,
             iconCls: 'iconZoomNext'
-        }), {
-            xtype: 'splitbutton',
+        }));
+    }
+    // c) measure tool
+    if (this.viewConfig.hasMeasureTool) {
+    	toolbarItems.push(new Ext.SplitButton({
             iconCls: 'iconMeassure',
             menu: [new Ext.menu.CheckItem({
             	id: 'measurePath',
@@ -189,17 +196,68 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
                 	}
                 }
             })
-        ]}, '->', {
+        ]}));
+    }
+    toolbarItems.push(new Ext.Toolbar.Fill());
+    // d) print tool
+    if (this.viewConfig.hasInfoTool) {
+    	toolbarItems.push(new Ext.Button({
             iconCls: 'iconPrint'
-        }, {
+    	}));
+    }
+    // e) save tool
+    if (this.viewConfig.hasInfoTool) {
+    	toolbarItems.push(new Ext.Button({
             iconCls: 'iconSave',
             handler: function(btn) {
             	self.save(false);
             }
-        }, {
+    	}));
+    }
+    // f) help tool
+    if (this.viewConfig.hasInfoTool) {
+    	toolbarItems.push(new Ext.Button({
             iconCls: 'iconHelp'
-        }]
-    }];
+    	}));
+    }
+
+    // create the toolbar
+    var toolbar = new Ext.Toolbar({
+    	items: toolbarItems
+    });
+
+	// create the map container
+	var mapPanel = new GeoExt.MapPanel({
+	    border: false,
+	    map: this.map
+	});
+
+	// create the settings dialog
+	var settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
+		map: this.map,
+		viewConfig: this.viewConfig
+	});
+	this.on('afterrender', function(el) {
+    	if (settingsDialog) {
+    		mapPanel.items.add(settingsDialog); // constrain to mapPanel
+			settingsDialog.anchorTo(mapPanel.el, 'tr-tr', [-10, 10]);
+    	}
+    });
+
+	// create the panel for the center region
+	var centerPanel = new Ext.Panel({
+        region: 'center',
+        layout: 'fit',
+        items: mapPanel,
+        tbar: toolbar
+	});
+
+	// add the items according to the selected configuration
+	// (center panel is mandatory)
+	var items = [centerPanel];
+	if (this.viewConfig.hasServicesPanel) {
+		items.push(westPanel);
+	}
 
 	Ext.apply(this, {
 		items: items
@@ -286,14 +344,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	// add controls to map
 	var controls = [
 	        new OpenLayers.Control.Navigation(),
-	        new OpenLayers.Control.Permalink(),
 	        new OpenLayers.Control.PanZoomBar(),
 	        new OpenLayers.Control.ScaleLine(),
-	        new OpenLayers.Control.Permalink('permalink'),
 	        new OpenLayers.Control.MousePosition(),
 	        new OpenLayers.Control.OverviewMap({layers: [overviewLayer]}),
 	        new OpenLayers.Control.KeyboardDefaults()
 	];
+	if (this.viewConfig.hasPermaLink) {
+		controls.push(new OpenLayers.Control.Permalink());
+		controls.push(new OpenLayers.Control.Permalink('permalink'));
+	}
 	this.map.addControls(controls);
 
 	// listen to session changing events (addLayer and removeLayer are

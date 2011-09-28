@@ -34,3 +34,37 @@ de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/capabiliti
  * Url for retrieving and saving session data
  */
 de.ingrid.mapclient.SESSION_DATA_URL = de.ingrid.mapclient.BASE_URL+'session';
+
+/**
+ * View configurations for the map client frontend.
+ * @see de.ingrid.mapclient.frontend.Workspace
+ * TODO: This may be moved to the server
+ */
+de.ingrid.mapclient.VIEW_CONFIG = {
+		"default": {
+	    	hasServicesPanel: true,
+	    	hasInfoTool: true,
+	    	hasHistoryTool: true,
+	    	hasMeasureTool: true,
+	    	hasPrintTool: true,
+	    	hasSaveTool: true,
+	    	hasHelpTool: true,
+	    	hasProjectionsList: true,
+	    	hasScaleList: true,
+	    	hasAreasList: true,
+	    	hasPermaLink: false
+		},
+		"minimal": {
+	    	hasServicesPanel: false,
+	    	hasInfoTool: false,
+	    	hasHistoryTool: true,
+	    	hasMeasureTool: false,
+	    	hasPrintTool: false,
+	    	hasSaveTool: false,
+	    	hasHelpTool: true,
+	    	hasProjectionsList: false,
+	    	hasScaleList: true,
+	    	hasAreasList: true,
+	    	hasPermaLink: false
+		}
+};
