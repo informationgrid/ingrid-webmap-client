@@ -145,7 +145,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     // a) info tool
     if (this.viewConfig.hasInfoTool) {
     	toolbarItems.push(new Ext.Button({
-            iconCls: 'iconInfo'
+            iconCls: 'iconInfo',
+            tooltip: 'Info'
     	}));
     }
     // b) history tool
@@ -153,18 +154,21 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     	toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.previous,
 			disabled: true,
-            iconCls: 'iconZoomPrev'
+            iconCls: 'iconZoomPrev',
+            tooltip: 'Zurück'
         }));
     	toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
 			disabled: true,
-            iconCls: 'iconZoomNext'
+            iconCls: 'iconZoomNext',
+            tooltip: 'Vor'
         }));
     }
     // c) measure tool
     if (this.viewConfig.hasMeasureTool) {
     	toolbarItems.push(new Ext.SplitButton({
             iconCls: 'iconMeassure',
+            tooltip: 'Messen',
             menu: [new Ext.menu.CheckItem({
             	id: 'measurePath',
                 text: 'Strecke',
@@ -202,13 +206,15 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     // d) print tool
     if (this.viewConfig.hasInfoTool) {
     	toolbarItems.push(new Ext.Button({
-            iconCls: 'iconPrint'
+            iconCls: 'iconPrint',
+            tooltip: 'Drucken'
     	}));
     }
     // e) save tool
     if (this.viewConfig.hasInfoTool) {
     	toolbarItems.push(new Ext.Button({
             iconCls: 'iconSave',
+            tooltip: 'Speichern',
             handler: function(btn) {
             	self.save(false);
             }
@@ -217,7 +223,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     // f) help tool
     if (this.viewConfig.hasInfoTool) {
     	toolbarItems.push(new Ext.Button({
-            iconCls: 'iconHelp'
+            iconCls: 'iconHelp',
+            tooltip: 'Hilfe'
     	}));
     }
 

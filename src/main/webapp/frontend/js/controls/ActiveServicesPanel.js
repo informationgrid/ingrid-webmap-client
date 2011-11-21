@@ -66,6 +66,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
+        tooltip: 'Dienst hinzufügen',
         disabled: false,
         handler: function(btn) {
         	new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
@@ -75,6 +76,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.removeBtn = new Ext.Button({
         iconCls: 'iconRemove',
+        tooltip: 'Dienst entfernen',
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
@@ -84,6 +86,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.transparencyBtn = new Ext.Button({
         iconCls: 'iconTransparency',
+        tooltip: 'Layer-Transparenz',
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
@@ -93,6 +96,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
+        tooltip: 'Metadaten',
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {

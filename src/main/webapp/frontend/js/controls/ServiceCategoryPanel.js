@@ -41,6 +41,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
+        tooltip: 'Dienst hinzufügen',
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
@@ -54,6 +55,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
+        tooltip: 'Metadaten',
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
