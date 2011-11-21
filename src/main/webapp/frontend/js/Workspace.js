@@ -348,7 +348,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	        new OpenLayers.Control.ScaleLine(),
 	        new OpenLayers.Control.MousePosition(),
 	        new OpenLayers.Control.OverviewMap({layers: [overviewLayer]}),
-	        new OpenLayers.Control.KeyboardDefaults()
+	        new OpenLayers.Control.KeyboardDefaults(),
+	        new OpenLayers.Control.LoadingPanel()
 	];
 	if (this.viewConfig.hasPermaLink) {
 		controls.push(new OpenLayers.Control.Permalink());
