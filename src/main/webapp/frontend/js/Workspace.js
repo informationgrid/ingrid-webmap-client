@@ -224,7 +224,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
     if (this.viewConfig.hasInfoTool) {
     	toolbarItems.push(new Ext.Button({
             iconCls: 'iconHelp',
-            tooltip: 'Hilfe'
+            tooltip: 'Hilfe',
+            handler: function(btn) {
+            	window.open(de.ingrid.mapclient.HELP_URL);
+            }
     	}));
     }
 

@@ -36,6 +36,11 @@ de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/capabiliti
 de.ingrid.mapclient.SESSION_DATA_URL = de.ingrid.mapclient.BASE_URL+'session';
 
 /**
+ * Url for help content
+ */
+de.ingrid.mapclient.HELP_URL = 'http://www.portalu.de/hilfe?hkey=maps-1';
+
+/**
  * View configurations for the map client frontend.
  * @see de.ingrid.mapclient.frontend.Workspace
  * TODO: This may be moved to the server
