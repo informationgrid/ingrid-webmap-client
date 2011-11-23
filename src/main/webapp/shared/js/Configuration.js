@@ -97,7 +97,6 @@ de.ingrid.mapclient.Configuration.getValue = function(key) {
  */
 de.ingrid.mapclient.Configuration.setValue = function(key, value, responseHandler) {
 	this.checkLoaded();
-	de.ingrid.mapclient.Configuration.instance.dynamicConfig[key] = value;
 	Ext.Ajax.request({
 		url: de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL+'/'+key,
 		method: 'POST',
@@ -106,6 +105,8 @@ de.ingrid.mapclient.Configuration.setValue = function(key, value, responseHandle
 			if (responseHandler.success instanceof Function) {
 				responseHandler.success(response.responseText);
 			}
+			// only change local value on success
+			de.ingrid.mapclient.Configuration.instance.dynamicConfig[key] = value;
 		},
 		failure: function(response, request) {
 			if (responseHandler.failure instanceof Function) {
@@ -124,6 +125,22 @@ de.ingrid.mapclient.Configuration.setValue = function(key, value, responseHandle
 de.ingrid.mapclient.Configuration.getProperty = function(key) {
 	this.checkLoaded();
 	return de.ingrid.mapclient.Configuration.instance.staticConfig[key];
+};
+
+/**
+ * Get a parameter from the application url
+ * @param key The name of the parameter
+ * @return String
+ */
+de.ingrid.mapclient.Configuration.getUrlParameter = function(key) {
+	var getParams = document.URL.split("?");
+	if (getParams.length > 1) {
+		var params = Ext.urlDecode(getParams[getParams.length-1]);
+		if (params[key]) {
+			return params[key];
+		}
+	}
+	return undefined;
 };
 
 /**

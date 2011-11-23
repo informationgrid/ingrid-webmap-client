@@ -67,5 +67,7 @@ de.ingrid.mapclient.Message.SAVE_FAILURE = "Beim Speichern der Daten ist ein Feh
 de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = "Das Laden der Konfiguration ist fehlgeschlagen.";
 de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilities Dokuments ist fehlgeschlagen.";
 
+de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
+
 de.ingrid.mapclient.Message.SESSION_SAVE_SUCCESS = "Die Session wurden gespeichert.";
 de.ingrid.mapclient.Message.SESSION_SAVE_FAILURE = "Beim Speichern der Session ist ein Fehler aufgetreten.";
