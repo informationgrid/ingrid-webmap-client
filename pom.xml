@@ -74,7 +74,7 @@
               <output>${project.build.directory}/${project.build.finalName}/frontend/js/frontend-all-min.js</output>
               <inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
               <includes>
-                <include>lib/openlayers/addins/loadingpanel-min.js</include>
+                <include>lib/openlayers/addins/LoadingPanel-min.js</include>
                 <include>shared/**/*-min.js</include>
                 <include>frontend/**/*-min.js</include>
               </includes>
