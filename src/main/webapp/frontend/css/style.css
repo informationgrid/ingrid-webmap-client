@@ -25,6 +25,10 @@ body {
 	background-image: url(../../shared/images/icon_print.png);
 }
 
+.iconLoad {
+	background-image: url(../../shared/images/icon_load.png);
+}
+
 .iconSave {
 	background-image: url(../../shared/images/icon_save.png);
 }

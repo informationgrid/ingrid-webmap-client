@@ -69,5 +69,5 @@ de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilit
 
 de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
 
-de.ingrid.mapclient.Message.SESSION_SAVE_SUCCESS = "Die Session wurden gespeichert.";
-de.ingrid.mapclient.Message.SESSION_SAVE_FAILURE = "Beim Speichern der Session ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";
+de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = "Beim Speichern der Karte ist ein Fehler aufgetreten.";

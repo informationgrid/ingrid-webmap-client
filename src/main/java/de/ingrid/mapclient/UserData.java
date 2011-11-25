@@ -19,17 +19,35 @@ import de.ingrid.mapclient.model.LocationKey;
  */
 public class UserData {
 
+	private String id;
+	private String title;
+	private String description;
 	private String wmcDocument;
 	private LocationKey locationKey;
-	private List<String> activeServices;
+	private List<String> activeServices = new ArrayList<String>();
 
-	/**
-	 * Constructor
-	 */
-	public UserData() {
-		this.wmcDocument = null;
-		this.locationKey = null;
-		this.activeServices = new ArrayList<String>();
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return this.description;
 	}
 
 	public void setWmcDocument(String wmcDocument) {

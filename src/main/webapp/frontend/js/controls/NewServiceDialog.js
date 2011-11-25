@@ -4,7 +4,7 @@
 Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
 /**
- * @class NewServiceDialog is the dialog for adding a new service to the list
+ * @class NewServiceDialog is the dialog used for adding a new service to the list
  * of active services.
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, {
@@ -16,6 +16,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, 
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
+	modal: true,
 
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -56,7 +57,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 		bodyStyle: 'padding: 10px',
 		labelAlign: 'top',
 		defaults: {
-			anchor:'100%'
+			anchor: '100%'
 		},
 		items: [{
 				html: 'Bitte geben Sie eine GetCapabilities-URL eines externen web map service (WMS) an:',

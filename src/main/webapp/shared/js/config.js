@@ -33,7 +33,12 @@ de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/capabiliti
 /**
  * Url for retrieving and saving session data
  */
-de.ingrid.mapclient.SESSION_DATA_URL = de.ingrid.mapclient.BASE_URL+'session';
+de.ingrid.mapclient.SESSION_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/session';
+
+/**
+ * Url for retrieving and saving user data
+ */
+de.ingrid.mapclient.USER_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/user';
 
 /**
  * Url for help content
@@ -52,6 +57,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasHistoryTool: true,
 	    	hasMeasureTool: true,
 	    	hasPrintTool: true,
+	    	hasLoadTool: true,
 	    	hasSaveTool: true,
 	    	hasHelpTool: true,
 	    	hasProjectionsList: true,
@@ -65,6 +71,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasHistoryTool: true,
 	    	hasMeasureTool: false,
 	    	hasPrintTool: false,
+	    	hasLoadTool: false,
 	    	hasSaveTool: false,
 	    	hasHelpTool: true,
 	    	hasProjectionsList: false,

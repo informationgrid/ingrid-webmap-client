@@ -7,13 +7,20 @@ Ext.onReady(function() {
 	de.ingrid.mapclient.Configuration.load({
 		success: function() {
 
+			// create the session and personalize it, if an user id is given in the userId GET parameter
+			var userId = de.ingrid.mapclient.Configuration.getUrlParameter('userId') || null;
+			var session = new de.ingrid.mapclient.frontend.data.Session({
+				userId: userId
+			});
+
 			// determine the view configuration from the viewConfig GET parameter
 			var viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
 
+			// build the gui with the given configuration
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
 			if (configPrams != undefined) {
-				// build the gui with the given configuration
 				new de.ingrid.mapclient.frontend.Workspace({
+					session: session,
 					viewConfig: configPrams
 				});
 			}

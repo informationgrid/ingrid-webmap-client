@@ -10,6 +10,16 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
 de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 
     /**
+     * @cfg The title (optional)
+     */
+    this.title = "";
+
+    /**
+     * @cfg The description (optional)
+     */
+    this.description = "";
+
+    /**
      * @cfg OpenLayers.Map instance
      */
     this.map = "";
@@ -50,6 +60,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 
 	// encode to JSON
 	var serializedState = Ext.encode({
+		title: this.title,
+		description: this.description,
 		wmcDocument: wmcDocument,
 		activeServices: capabilityUrls
 	});
@@ -66,6 +78,10 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(data, callback) {
 	// decode from JSON
 	var data = Ext.decode(data);
+
+	// unserialize simple properties
+	this.title = data.title;
+	this.description = data.description;
 
 	// unserialize map state (must be applied)
 	this.wmcDocument = data.wmcDocument;
