@@ -10,7 +10,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
 de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 
     /**
-     * @cfg The id (optional)
+     * @cfg The data id (optional)
      */
     this.id = "";
 

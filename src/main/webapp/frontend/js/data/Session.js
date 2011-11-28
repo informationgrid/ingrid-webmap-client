@@ -10,9 +10,9 @@ de.ingrid.mapclient.frontend.data.Session = function(config) {
     /**
      * @cfg The user id, with which the current session should be associated
      */
-    this.userId = null;
+	this.userId = null;
 
-    // apply values from the provided config object
+	// apply values from the provided config object
 	Ext.apply(this, config);
 };
 
@@ -35,19 +35,18 @@ de.ingrid.mapclient.frontend.data.Session.prototype.getUserId = function() {
 /**
  * Save the given session state
  * @param state de.ingrid.mapclient.frontend.data.SessionState instance
- * @param userId Id of the user to save the data for. If null, the data will be saved
- * 		temporarily for the current session (optional)
+ * @param isTemporary Boolean indicating, if the data should be saved in the current session
+ * 		only or permanently
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
-de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, userId, responseHandler) {
+de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, isTemporary, responseHandler) {
 	var serializedState = state.serialize();
 
-	// determine the request from the userId parameter,
-	// defaults to session url
+	// determine the request from the isTemporary flag, defaults to session url
 	var url = de.ingrid.mapclient.SESSION_DATA_URL;
-	if (userId) {
-		url = de.ingrid.mapclient.USER_DATA_URL+"/"+userId;
+	if (!isTemporary) {
+		url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId();
 	}
 	Ext.Ajax.request({
 		url: url,
@@ -68,19 +67,18 @@ de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, userI
 };
 
 /**
- * Load the existing session data and apply them to the given state instance
- * @param state de.ingrid.mapclient.frontend.data.SessionState instance to that the retrieved data will be applied
- * @param userId Id of the user to load the data for. If null, the temporary data for the
- * 		current session are loaded(optional)
+ * Load the existing data and apply them to the given state instance
+ * @param state de.ingrid.mapclient.frontend.data.SessionState instance to that the retrieved data will be applied,
+ * 		if the state contains an id, the appropriate user data will be loaded, if not, only the current
+ * 		session data will be loaded
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
-de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, userId, responseHandler) {
-	// determine the request from the userId parameter,
-	// defaults to session url
+de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, responseHandler) {
+	// determine the request from the state id, defaults to session url, if no id is given
 	var url = de.ingrid.mapclient.SESSION_DATA_URL;
-	if (userId) {
-		url = de.ingrid.mapclient.USER_DATA_URL+"/"+userId+"/"+state.id;
+	if (state.id) {
+		url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId()+"/"+state.id;
 	}
 
 	Ext.Ajax.request({
@@ -98,6 +96,59 @@ de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, userI
 				if (responseHandler && responseHandler.failure instanceof Function) {
 					responseHandler.failure(response.responseText);
 				}
+			}
+		},
+		failure: function(response, request) {
+			if (responseHandler && responseHandler.failure instanceof Function) {
+				responseHandler.failure(response.responseText);
+			}
+		}
+	});
+};
+
+/**
+ * List stored data for the current user id.
+ * @param responseHandler Object with properties success and failure, which are both functions
+ * 		to be called with the response text as parameter in the appropriate case (optional)
+ */
+de.ingrid.mapclient.frontend.data.Session.prototype.list = function(responseHandler) {
+	// determine the request from the userId
+	var url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId();
+
+	Ext.Ajax.request({
+		url: url,
+		method: 'GET',
+		headers: { 'Content-Type': 'text/plain' },
+		success: function(response, request) {
+			if (responseHandler && responseHandler.success instanceof Function) {
+				responseHandler.success(response.responseText);
+			}
+		},
+		failure: function(response, request) {
+			if (responseHandler && responseHandler.failure instanceof Function) {
+				responseHandler.failure(response.responseText);
+			}
+		}
+	});
+};
+
+/**
+ * Delete the given session state determined by its id.
+ * @param state de.ingrid.mapclient.frontend.data.SessionState instance
+ * @param responseHandler Object with properties success and failure, which are both functions
+ * 		to be called with the response text as parameter in the appropriate case (optional)
+ */
+de.ingrid.mapclient.frontend.data.Session.prototype.remove = function(state, responseHandler) {
+	// determine the request from the userId and state id
+	var url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId()+"/"+state.id;
+
+	Ext.Ajax.request({
+		url: url,
+		method: 'DELETE',
+		headers: { 'Content-Type': 'text/plain' },
+		success: function(response, request) {
+			if (responseHandler && responseHandler.success instanceof Function) {
+				responseHandler.success(response.responseText);
 			}
 		},
 		failure: function(response, request) {

@@ -223,7 +223,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			disabled: !this.session.hasUserId(),
 			handler: function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog({
-					userId: self.session.getUserId()
+					session: self.session
 				});
 				dlg.on('close', function(p) {
 					if (dlg.isLoad()) {
@@ -312,7 +312,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.Workspace.superclass.onRender.apply(this, arguments);
 
 	// try to load existing session data
-	this.load(null);
+	this.load();
 };
 
 /**
@@ -472,19 +472,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, title, description) {
 	// set parameters according to save type
-	var userId = undefined;
-	var responseHandler = undefined;
-	if (!isTemporary) {
-		userId = this.session.getUserId();
-		responseHandler = {
-			success: function(responseText) {
-				de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
-			},
-			failure: function(responseText) {
-				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
-			}
-		};
-	}
+	var responseHandler = (isTemporary == true) ? undefined : {
+		success: function(responseText) {
+			de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
+		},
+		failure: function(responseText) {
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
+		}
+	};
 
 	// create the session state instance
 	var data = new de.ingrid.mapclient.frontend.data.SessionState({
@@ -493,22 +488,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, ti
 		map: this.map,
 		activeServices: this.activeServicesPanel.getServiceList()
 	});
-	this.session.save(data, userId, responseHandler);
+	this.session.save(data, isTemporary, responseHandler);
 };
 
 /**
- * Load the user data with the given id from the server. Id no id is given, the
+ * Load the user data with the given id from the server. If no id is given, the
  * last configuration for the current session will be loaded
  *
  * @param id The id of the data (optional)
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
 	// set parameters according to load type
-	var userId = this.session.getUserId();
-	if (!id) {
-		id = undefined;
-		userId = undefined;
-	}
+	var safeStateAfterLoad = id != undefined ? true : false;
 
 	// prevent recording state changes
 	this.listenToStateChanges = false;
@@ -521,9 +512,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
 	});
 
 	var self = this;
-	this.session.load(state, userId, {
+	this.session.load(state, {
 		success: function(responseText) {
-			de.ingrid.mapclient.Message.showInfo("Die existierenden Session-Daten wurden wiederhergestellt.");
 			// restore map state
 			state.restoreMapState();
 			// restore active services
@@ -531,6 +521,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
 				self.activeServicesPanel.addService(state.activeServices[i]);
 			}
 			self.finishInitMap();
+			if (safeStateAfterLoad) {
+				self.save(true);
+			}
 		},
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);

@@ -13,6 +13,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -230,6 +231,24 @@ public class UserDataResource {
 			store.putRecord(userId, recordId, userData.serialize());
 		}
 		catch (Exception ex) {
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+
+	/**
+	 * Delete the data for the given user id and data id
+	 * @param userId The user id
+	 * @param id The data id
+	 */
+	@DELETE
+	@Path(USER_PATH+"/{userId}/{id}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void removeUserData(String data, @PathParam("userId") String userId, @PathParam("id") String id) {
+		try {
+			UserStore store = StoreManager.INSTANCE.getUserStore();
+			store.removeRecord(userId, id);
+		}
+		catch (IOException ex) {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}

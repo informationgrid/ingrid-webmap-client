@@ -19,9 +19,9 @@ de.ingrid.mapclient.frontend.controls.LoadDialog = Ext.extend(Ext.Window, {
 	modal: true,
 
 	/**
-	 * @cfg The id of the user, whose data should be retrieved
+	 * @cfg de.ingrid.mapclient.frontend.data.Session instance
 	 */
-	userId: null,
+	session: null,
 
 	/**
 	 * Signals if the load button was pressed
@@ -62,6 +62,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.getFileId = function(
  */
 de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = function() {
 
+	var self = this;
+
 	var store = new Ext.data.JsonStore({
 		autoLoad: false,
 		autoDestroy: true,
@@ -78,13 +80,11 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	});
 
 	// load the data for the store
-	Ext.Ajax.request({
-		url: de.ingrid.mapclient.USER_DATA_URL + "/" + this.userId,
-		method: 'GET',
-		success: function(response, request) {
-			if (response.responseText.length > 0) {
+	this.session.list({
+		success: function(responseText) {
+			if (responseText.length > 0) {
 				// decode from JSON
-				var list = Ext.decode(response.responseText);
+				var list = Ext.decode(responseText);
 				var data = {
 					files: list,
 					totalCount: list.length
@@ -92,7 +92,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 				store.loadData(data);
 			}
 		},
-		failure: function(response, request) {
+		failure: function(responseText) {
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_LIST_FAILURE);
 		}
 	});
 
@@ -105,33 +106,56 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			emptyText: 'Keine Karten vorhanden'
 		},
 		columns: [{
+			id: 'title',
 			header: 'Titel',
 			width: 25,
 			sortable: true,
 			dataIndex: 'title'
 		}, {
+			id: 'description',
 			header: 'Beschreibung',
 			width: 50,
 			sortable: true,
-			dataIndex: 'description',
 			renderer: function (val) {
 			    return '<div style="white-space:normal !important;">'+val+'</div>';
-			}
+			},
+			dataIndex: 'description'
 		}, {
+			id: 'date',
 			header: 'Datum',
 			width: 20,
 			sortable: true,
 			renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
 			dataIndex: 'date'
 		}, {
+			id: 'delete',
 			header: '',
 			width: 5,
 			sortable: false,
 			renderer: function(val) {
 				return '<div class="icon iconRemove" style="cursor:pointer;" title="löschen"></div>';
 			},
-			dataIndex: '*'
+			dataIndex: 'delete'
 		}]
+	});
+	// button handler
+	this.fileList.on('cellclick', function(grid, rowIndex, columnIndex, e) {
+		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
+			if (confirm("Soll die Karte wirklich gelöscht werden?")) {
+				var record = grid.getStore().getAt(rowIndex);
+				var state = new de.ingrid.mapclient.frontend.data.SessionState({
+					id: record.id
+				});
+				self.session.remove(state, {
+					success: function(response, request) {
+						self.fileList.getStore().remove(record);
+					},
+					failure: function(response, request) {
+						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_DELETE_FAILURE);
+					}
+				});
+			}
+		}
 	});
 
 	var self = this;
