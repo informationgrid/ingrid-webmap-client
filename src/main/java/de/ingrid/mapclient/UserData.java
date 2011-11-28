@@ -3,7 +3,10 @@
  */
 package de.ingrid.mapclient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.thoughtworks.xstream.XStream;
@@ -19,9 +22,12 @@ import de.ingrid.mapclient.model.LocationKey;
  */
 public class UserData {
 
+	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 	private String id;
 	private String title;
 	private String description;
+	private String date; // we use a string value to better control un-/serialization format
 	private String wmcDocument;
 	private LocationKey locationKey;
 	private List<String> activeServices = new ArrayList<String>();
@@ -48,6 +54,14 @@ public class UserData {
 
 	public String getDescription() {
 		return this.description;
+	}
+
+	public void setDate(Date date) {
+		this.date = df.format(date);
+	}
+
+	public Date getDate() throws ParseException {
+		return df.parse(this.date);
 	}
 
 	public void setWmcDocument(String wmcDocument) {

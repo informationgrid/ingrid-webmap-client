@@ -12,7 +12,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog = Ext.extend(Ext.Window, {
 	closable: true,
 	draggable: true,
 	resizable: true,
-	width: 300,
+	width: 600,
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
@@ -48,8 +48,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.isLoad = function() {
  *
  * @returns String
  */
-de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.getId = function() {
-	// return this.selectedFileId.getValue();
+de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.getFileId = function() {
+	var selModel = this.fileList.getSelectionModel();
+	if (selModel && selModel.hasSelection) {
+		var selected = selModel.getSelected();
+		return selected.id;
+	}
+	return "";
 };
 
 /**
@@ -63,7 +68,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	    // reader configs
 	    root: 'files',
 	    idProperty: 'id',
-	    fields: ['id', 'title', 'description']
+	    fields: ['id', 'title', 'description',
+	             {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
+	    ],
+	    sortInfo: {
+			field: 'date',
+			direction: 'DESC'
+	    }
 	});
 
 	// load the data for the store
@@ -94,13 +105,32 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			emptyText: 'Keine Karten vorhanden'
 		},
 		columns: [{
-			text: 'Titel',
-			flex: 50,
+			header: 'Titel',
+			width: 25,
+			sortable: true,
 			dataIndex: 'title'
 		}, {
-			text: 'Beschreibung',
-			flex: 50,
-			dataIndex: 'description'
+			header: 'Beschreibung',
+			width: 50,
+			sortable: true,
+			dataIndex: 'description',
+			renderer: function (val) {
+			    return '<div style="white-space:normal !important;">'+val+'</div>';
+			}
+		}, {
+			header: 'Datum',
+			width: 20,
+			sortable: true,
+			renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
+			dataIndex: 'date'
+		}, {
+			header: '',
+			width: 5,
+			sortable: false,
+			renderer: function(val) {
+				return '<div class="icon iconRemove" style="cursor:pointer;" title="löschen"></div>';
+			},
+			dataIndex: '*'
 		}]
 	});
 
@@ -116,7 +146,6 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		buttons: [{
 			text: 'Laden',
 			handler: function(btn) {
-				// TODO set id property
 				self.loadPressed = true;
 				self.close();
 			}

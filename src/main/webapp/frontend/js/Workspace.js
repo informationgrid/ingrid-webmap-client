@@ -227,7 +227,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				});
 				dlg.on('close', function(p) {
 					if (dlg.isLoad()) {
-						self.loadUserData(dlg.getId());
+						self.load(dlg.getFileId());
 					}
 				});
 			}
@@ -243,7 +243,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog();
 				dlg.on('close', function(p) {
 					if (dlg.isSave()) {
-						self.saveUserData(dlg.getTitle(), dlg.getDescription());
+						self.save(false, dlg.getTitle(), dlg.getDescription());
 					}
 				});
 			}
@@ -312,7 +312,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.Workspace.superclass.onRender.apply(this, arguments);
 
 	// try to load existing session data
-	this.load();
+	this.load(null);
 };
 
 /**
@@ -326,57 +326,56 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
 	// initialize the map with the default service
 	var self = this;
 	var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
-	de.ingrid.mapclient.frontend.data.Service
-			.load(
-					capUrl,
-					function(service) {
-						// get the selected layer names and base layer name from
-						// the configuration
-						var selectedLayers = de.ingrid.mapclient.Configuration.getValue("layers");
-						var selectedLayerNames = [];
-						var baseLayerName = '';
-						for ( var i = 0, count = selectedLayers.length; i < count; i++) {
-							var layer = selectedLayers[i];
-							selectedLayerNames.push(layer.name);
-							if (layer.isBaseLayer == true) {
-								baseLayerName = layer.name;
-							}
-						}
+	de.ingrid.mapclient.frontend.data.Service.load(
+		capUrl,
+		function(service) {
+			// get the selected layer names and base layer name from
+			// the configuration
+			var selectedLayers = de.ingrid.mapclient.Configuration.getValue("layers");
+			var selectedLayerNames = [];
+			var baseLayerName = '';
+			for ( var i = 0, count = selectedLayers.length; i < count; i++) {
+				var layer = selectedLayers[i];
+				selectedLayerNames.push(layer.name);
+				if (layer.isBaseLayer == true) {
+					baseLayerName = layer.name;
+				}
+			}
 
-						// process the layers
-						var layers = service.getLayers();
-						for ( var i = 0, count = layers.length; i < count; i++) {
-							var layer = layers[i];
+			// process the layers
+			var layers = service.getLayers();
+			for ( var i = 0, count = layers.length; i < count; i++) {
+				var layer = layers[i];
 
-							// set the layer visibility according to the default
-							// layer selection
-							var isDefaultLayer = selectedLayerNames.indexOf(layer.name) != -1 ? true: false;
-							// set the baselayer attribute
-							var isBaseLayer = (layer.name == baseLayerName) ? true : false;
-							layer.visibility = isDefaultLayer;
-							layer.isBaseLayer = isBaseLayer;
+				// set the layer visibility according to the default
+				// layer selection
+				var isDefaultLayer = selectedLayerNames.indexOf(layer.name) != -1 ? true: false;
+				// set the baselayer attribute
+				var isBaseLayer = (layer.name == baseLayerName) ? true : false;
+				layer.visibility = isDefaultLayer;
+				layer.isBaseLayer = isBaseLayer;
 
-							// bind the layer to the map
-							self.map.addLayer(layer);
-						}
+				// bind the layer to the map
+				self.map.addLayer(layer);
+			}
 
-						// set initial bounding box for the map
-						// note: this must be done after layouting the map!
-						var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
-						var bounds = new OpenLayers.Bounds.fromArray([
-								bbox.west, bbox.south, bbox.east, bbox.north ]);
-						// bounds.transform(new
-						// OpenLayers.Projection("EPSG:4326"),
-						// self.map.getProjectionObject());
-						self.map.zoomToExtent(bounds);
+			// set initial bounding box for the map
+			// note: this must be done after layouting the map!
+			var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
+			var bounds = new OpenLayers.Bounds.fromArray([
+					bbox.west, bbox.south, bbox.east, bbox.north ]);
+			// bounds.transform(new
+			// OpenLayers.Projection("EPSG:4326"),
+			// self.map.getProjectionObject());
+			self.map.zoomToExtent(bounds);
 
-						// add default service to active services
-						self.activeServicesPanel.addService(service);
+			// add default service to active services
+			self.activeServicesPanel.addService(service);
 
-						if (callback instanceof Function) {
-							callback();
-						}
-					});
+			if (callback instanceof Function) {
+				callback();
+			}
+		});
 };
 
 /**
@@ -459,30 +458,76 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
 	if (this.listenToStateChanges) {
-		this.saveSessionState();
+		this.save(true);
 	}
 };
 
 /**
- * Load the last configuration from the server
+ * Store the current map state along with the given title and description on the server.
+ *
+ * @param isTemporary Boolean indicating, if the data should be saved in the current session
+ * 		only or permanently
+ * @param title The map state title (optional)
+ * @param description The map state description (optional)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.load = function() {
+de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, title, description) {
+	// set parameters according to save type
+	var userId = undefined;
+	var responseHandler = undefined;
+	if (!isTemporary) {
+		userId = this.session.getUserId();
+		responseHandler = {
+			success: function(responseText) {
+				de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
+			},
+			failure: function(responseText) {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
+			}
+		};
+	}
+
+	// create the session state instance
+	var data = new de.ingrid.mapclient.frontend.data.SessionState({
+		title: title,
+		description: description,
+		map: this.map,
+		activeServices: this.activeServicesPanel.getServiceList()
+	});
+	this.session.save(data, userId, responseHandler);
+};
+
+/**
+ * Load the user data with the given id from the server. Id no id is given, the
+ * last configuration for the current session will be loaded
+ *
+ * @param id The id of the data (optional)
+ */
+de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
+	// set parameters according to load type
+	var userId = this.session.getUserId();
+	if (!id) {
+		id = undefined;
+		userId = undefined;
+	}
+
 	// prevent recording state changes
 	this.listenToStateChanges = false;
 
 	this.activeServicesPanel.removeAll();
 	var state = new de.ingrid.mapclient.frontend.data.SessionState({
+		id: id,
 		map: this.map,
 		activeServices: []
 	});
+
 	var self = this;
-	this.session.load(state, {
+	this.session.load(state, userId, {
 		success: function(responseText) {
 			de.ingrid.mapclient.Message.showInfo("Die existierenden Session-Daten wurden wiederhergestellt.");
 			// restore map state
 			state.restoreMapState();
 			// restore active services
-			for ( var i = 0, count = state.activeServices.length; i < count; i++) {
+			for (var i = 0, count = state.activeServices.length; i < count; i++) {
 				self.activeServicesPanel.addService(state.activeServices[i]);
 			}
 			self.finishInitMap();
@@ -490,43 +535,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function() {
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);
 			self.initDefaultMap(callback);
-		}
-	});
-};
-
-/**
- * Store the current map state on the server. The content is stored for the
- * current session only.
- */
-de.ingrid.mapclient.frontend.Workspace.prototype.saveSessionState = function() {
-	var data = new de.ingrid.mapclient.frontend.data.SessionState({
-		map: this.map,
-		activeServices: this.activeServicesPanel.getServiceList()
-	});
-	this.session.save(data);
-};
-
-/**
- * Store the current map state along with the given title and description on the
- * server. The content is stored permanently.
- *
- * @param title The map state title
- * @param description The map state description
- */
-de.ingrid.mapclient.frontend.Workspace.prototype.saveUserData = function(title,
-		description) {
-	var data = new de.ingrid.mapclient.frontend.data.SessionState({
-		title: title,
-		description: description,
-		map: this.map,
-		activeServices: this.activeServicesPanel.getServiceList()
-	});
-	this.session.save(data, this.session.getUserId(), {
-		success: function(responseText) {
-			de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
-		},
-		failure: function(responseText) {
-			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
 		}
 	});
 };

@@ -70,12 +70,21 @@ de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, userI
 /**
  * Load the existing session data and apply them to the given state instance
  * @param state de.ingrid.mapclient.frontend.data.SessionState instance to that the retrieved data will be applied
+ * @param userId Id of the user to load the data for. If null, the temporary data for the
+ * 		current session are loaded(optional)
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
-de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, responseHandler) {
+de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, userId, responseHandler) {
+	// determine the request from the userId parameter,
+	// defaults to session url
+	var url = de.ingrid.mapclient.SESSION_DATA_URL;
+	if (userId) {
+		url = de.ingrid.mapclient.USER_DATA_URL+"/"+userId+"/"+state.id;
+	}
+
 	Ext.Ajax.request({
-		url: de.ingrid.mapclient.SESSION_DATA_URL,
+		url: url,
 		method: 'GET',
 		success: function(response, request) {
 			if (response.responseText.length > 0) {
