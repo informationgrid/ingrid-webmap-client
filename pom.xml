@@ -64,7 +64,17 @@
               <inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
               <includes>
                 <include>shared/**/*-min.js</include>
-                <include>admin/**/*-min.js</include>
+                <include>admin/js/*-min.js</include>
+                <include>admin/js/modules/*-min.js</include>
+                <include>admin/js/modules/data/*-min.js</include>
+                <include>admin/js/controls/**/*-min.js</include>
+                <include>admin/js/modules/basic/controls/*-min.js</include>
+                <include>admin/js/modules/basic/*-min.js</include>
+                <include>admin/js/modules/services/controls/*-min.js</include>
+                <include>admin/js/modules/services/*-min.js</include>
+                <include>admin/js/modules/areas/controls/*-min.js</include>
+                <include>admin/js/modules/areas/*-min.js</include>
+                <include>admin/js/**/*-min.js</include>
               </includes>
             </aggregation>
             <aggregation>
