@@ -26,10 +26,12 @@ public abstract class AbstractFileMappingStrategy implements FileMappingStrategy
 
 	@Override
 	public List<String> getMappedIds(File basePath) {
-		File[] files = basePath.listFiles(this.getFileFilter());
 		List<String> ids = new ArrayList<String>();
-		for (File file : files) {
-			ids.add(this.getId(file));
+		File[] files = basePath.listFiles(this.getFileFilter());
+		if (files != null) {
+			for (File file : files) {
+				ids.add(this.getId(file));
+			}
 		}
 		return ids;
 	}

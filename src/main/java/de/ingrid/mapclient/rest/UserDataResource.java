@@ -174,7 +174,7 @@ public class UserDataResource {
 	@GET
 	@Path(USER_PATH+"/{userId}/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response loadUserData(String data, @PathParam("userId") String userId, @PathParam("id") String id) {
+	public Response loadUserData(@PathParam("userId") String userId, @PathParam("id") String id) {
 		try {
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			String xmlData = store.getRecord(userId, id);
