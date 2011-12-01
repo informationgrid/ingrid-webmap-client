@@ -7,6 +7,9 @@ Ext.onReady(function() {
 	de.ingrid.mapclient.Configuration.load({
 		success: function() {
 
+			// check if there is an mapUrl GET parameter
+			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
+
 			// create the session and personalize it, if an user id is given in the userId GET parameter
 			var userId = de.ingrid.mapclient.Configuration.getUrlParameter('userId') || null;
 			var session = new de.ingrid.mapclient.frontend.data.Session({
@@ -20,6 +23,7 @@ Ext.onReady(function() {
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
 			if (configPrams != undefined) {
 				new de.ingrid.mapclient.frontend.Workspace({
+					mapUrl: mapUrl,
 					session: session,
 					viewConfig: configPrams
 				});

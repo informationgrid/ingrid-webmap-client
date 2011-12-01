@@ -3,7 +3,6 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +23,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -36,6 +36,8 @@ import de.ingrid.mapclient.UserData;
 import de.ingrid.mapclient.store.Store;
 import de.ingrid.mapclient.store.StoreManager;
 import de.ingrid.mapclient.store.UserStore;
+import de.ingrid.mapclient.url.UrlManager;
+import de.ingrid.mapclient.url.UrlMapper;
 
 /**
  * UserDataResource defines the interface for retrieving and storing user
@@ -46,15 +48,49 @@ import de.ingrid.mapclient.store.UserStore;
 @Path("/data")
 public class UserDataResource {
 
+	private static final Logger log = Logger.getLogger(UserDataResource.class);
+
 	/**
-	 * Path to session data functionality
+	 * Path to map data retrievable by short urls
+	 */
+	private static final String MAPS_PATH = "maps";
+
+	/**
+	 * Path to session data functions
 	 */
 	private static final String SESSION_PATH = "session";
 
 	/**
-	 * Path to user data functionality
+	 * Path to user data functions
 	 */
 	private static final String USER_PATH = "user";
+
+	/**
+	 * Load the data for the given short url
+	 * @param shortUrl The short url
+	 * @return String representing a serialized UserData instance
+	 */
+	@GET
+	@Path(MAPS_PATH+"/{shortUrl}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response loadData(@PathParam("shortUrl") String shortUrl) {
+		try {
+			// translate the short url
+			String longUrl = UrlManager.INSTANCE.getUrlMapper().getLongUrl(shortUrl);
+			// split the long url into user id and id
+			String[] urlParts = longUrl.split("/");
+			if (urlParts.length != 2) {
+				throw new IllegalArgumentException("The long url expected to have the format userId/id");
+			}
+			String userId = urlParts[0];
+			String id = urlParts[1];
+			return this.loadUserData(userId, id);
+		}
+		catch (Exception ex) {
+			log.error("Error retrieving data", ex);
+			return null;
+		}
+	}
 
 	/**
 	 * Get the last saved data for the session belonging to the given request
@@ -83,7 +119,9 @@ public class UserDataResource {
 			String json = xstream.toXML(userData);
 			return Response.ok(json).build();
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			// no logging, because we do not always expect to find stored session data
+			//log.error("Error retrieving session data", ex);
 			return null;
 		}
 	}
@@ -122,6 +160,7 @@ public class UserDataResource {
 			store.putRecord(sessionId, userData.serialize());
 		}
 		catch (Exception ex) {
+			log.error("Error storing session data", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -137,6 +176,8 @@ public class UserDataResource {
 	public Response listUserData(@PathParam("userId") String userId) {
 
 		try {
+			UrlMapper urlMapper = UrlManager.INSTANCE.getUrlMapper();
+
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			List<String> ids = store.getRecordIds(userId);
 
@@ -146,6 +187,7 @@ public class UserDataResource {
 				String xmlData = store.getRecord(userId, id);
 				UserData userData = UserData.unserialize(xmlData);
 				userData.setId(id);
+				userData.setShortUrl(urlMapper.getShortUrl(userId+"/"+id));
 				userData.setActiveServices(null);
 				userData.setLocationKey(null);
 				userData.setWmcDocument(null);
@@ -160,7 +202,8 @@ public class UserDataResource {
 			String json = xstream.toXML(data);
 			return Response.ok(json).build();
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			log.error("Error listing user data", ex);
 			return null;
 		}
 	}
@@ -189,7 +232,8 @@ public class UserDataResource {
 			String json = xstream.toXML(userData);
 			return Response.ok(json).build();
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			log.error("Error retrieving user data", ex);
 			return null;
 		}
 	}
@@ -231,6 +275,7 @@ public class UserDataResource {
 			store.putRecord(userId, recordId, userData.serialize());
 		}
 		catch (Exception ex) {
+			log.error("Error storing user data", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -248,7 +293,8 @@ public class UserDataResource {
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			store.removeRecord(userId, id);
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			log.error("Error removing user data", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}

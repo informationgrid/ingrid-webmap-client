@@ -25,6 +25,7 @@ public class UserData {
 	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private String id;
+	private String shortUrl; // TODO: transient
 	private String title;
 	private String description;
 	private String date; // we use a string value to better control un-/serialization format
@@ -38,6 +39,14 @@ public class UserData {
 
 	public String getId() {
 		return this.id;
+	}
+
+	public void setShortUrl(String shortUrl) {
+		this.shortUrl = shortUrl;
+	}
+
+	public String getShortUrl() {
+		return this.shortUrl;
 	}
 
 	public void setTitle(String title) {

@@ -11,6 +11,12 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 	monitorResize: true,
 
 	/**
+	 * @cfg The initial map url to load. This is typically a short url which the
+	 * 		server maps to a user data url (optional)
+	 */
+	mapUrl: null,
+
+	/**
 	 * @cfg de.ingrid.mapclient.frontend.data.Session instance
 	 */
 	session: null,
@@ -149,11 +155,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the toolbar items
 	var toolbarItems = [];
-	// a) info tool
+	// a) feature tool
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconInfo',
-			tooltip: 'Info'
+			tooltip: 'Info',
+			handler: function(btn) {
+			    // TODO: implement real handler
+			    var featureInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
+			        queryVisible: true,
+			        drillDown: true
+			    });
+			    self.map.addControl(featureInfoControl);
+			    featureInfoControl.getInfoForClick({xy: {x: 50, y: 50}});
+			}
 		}));
 	}
 	// b) history tool
@@ -227,7 +242,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				});
 				dlg.on('close', function(p) {
 					if (dlg.isLoad()) {
-						self.load(dlg.getFileId());
+						self.load(undefined, dlg.getFileId());
 					}
 				});
 			}
@@ -311,8 +326,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.Workspace.superclass.onRender.apply(this, arguments);
 
-	// try to load existing session data
-	this.load();
+	if (this.mapUrl) {
+		// load the map defined in the mapUrl
+		this.load(this.mapUrl);
+	}
+	else {
+		// try to load existing session data
+		this.load();
+	}
 };
 
 /**
@@ -492,12 +513,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, ti
 };
 
 /**
- * Load the user data with the given id from the server. If no id is given, the
- * last configuration for the current session will be loaded
+ * Load the user data with the given url or id from the server. If neither url nor id are given,
+ * the last configuration for the current session will be loaded
  *
+ * @param shortUrl The short url of the data to load (optional, if given, id will be ignored)
  * @param id The id of the data (optional)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
+de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 	// set parameters according to load type
 	var safeStateAfterLoad = id != undefined ? true : false;
 
@@ -512,7 +534,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(id) {
 	});
 
 	var self = this;
-	this.session.load(state, {
+	this.session.load(state, shortUrl, {
 		success: function(responseText) {
 			// restore map state
 			state.restoreMapState();

@@ -36,7 +36,7 @@ de.ingrid.mapclient.frontend.data.Session.prototype.getUserId = function() {
  * Save the given session state
  * @param state de.ingrid.mapclient.frontend.data.SessionState instance
  * @param isTemporary Boolean indicating, if the data should be saved in the current session
- * 		only or permanently
+ * 		only or permanently for the current user
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
@@ -46,6 +46,9 @@ de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, isTem
 	// determine the request from the isTemporary flag, defaults to session url
 	var url = de.ingrid.mapclient.SESSION_DATA_URL;
 	if (!isTemporary) {
+		if (!this.hasUserId()) {
+			throw "Cannot save permanent data without userId";
+		}
 		url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId();
 	}
 	Ext.Ajax.request({
@@ -71,13 +74,20 @@ de.ingrid.mapclient.frontend.data.Session.prototype.save = function(state, isTem
  * @param state de.ingrid.mapclient.frontend.data.SessionState instance to that the retrieved data will be applied,
  * 		if the state contains an id, the appropriate user data will be loaded, if not, only the current
  * 		session data will be loaded
+ * @param shortUrl A short url that the server maps to a user data url (optional, if given, state id will be ignored)
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
-de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, responseHandler) {
+de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, shortUrl, responseHandler) {
 	// determine the request from the state id, defaults to session url, if no id is given
 	var url = de.ingrid.mapclient.SESSION_DATA_URL;
-	if (state.id) {
+	if (shortUrl) {
+		url = de.ingrid.mapclient.SHORTURL_DATA_URL+"/"+shortUrl;
+	}
+	else if (state.id) {
+		if (!this.hasUserId()) {
+			throw "Cannot load permanent data without userId";
+		}
 		url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId()+"/"+state.id;
 	}
 
@@ -113,6 +123,9 @@ de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, respo
  */
 de.ingrid.mapclient.frontend.data.Session.prototype.list = function(responseHandler) {
 	// determine the request from the userId
+	if (!this.hasUserId()) {
+		throw "Cannot list permanent data without userId";
+	}
 	var url = de.ingrid.mapclient.USER_DATA_URL+"/"+this.getUserId();
 
 	Ext.Ajax.request({

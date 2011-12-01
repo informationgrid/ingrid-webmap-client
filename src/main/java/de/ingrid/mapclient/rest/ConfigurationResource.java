@@ -20,6 +20,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -54,6 +55,8 @@ import de.ingrid.mapclient.model.WmsServer;
 @Path("/config")
 public class ConfigurationResource {
 
+	private static final Logger log = Logger.getLogger(ConfigurationResource.class);
+
 	/**
 	 * Path to static configuration properties
 	 */
@@ -84,6 +87,7 @@ public class ConfigurationResource {
 			return Response.ok(json).build();
 		}
 		catch (Exception ex) {
+			log.error("Error retrieving static application configuration", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -108,6 +112,7 @@ public class ConfigurationResource {
 			return Response.ok(json).build();
 		}
 		catch (Exception ex) {
+			log.error("Error retrieving dynamic application configuration", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -125,7 +130,8 @@ public class ConfigurationResource {
 			config.setWmsCapUrl(wmsCapUrl);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			log.error("Error setting default capabilities url", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -153,6 +159,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting default map layers", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -176,6 +183,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting default map extend", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -203,6 +211,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting projections", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -230,6 +239,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting scales", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -247,7 +257,8 @@ public class ConfigurationResource {
 			config.setProxyUrl(proxyUrl);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
-		catch (IOException ex) {
+		catch (Exception ex) {
+			log.error("Error setting proxy url", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -283,6 +294,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting service categories", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -351,6 +363,7 @@ public class ConfigurationResource {
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
+			log.error("Error setting area categories", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}

@@ -70,7 +70,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	    // reader configs
 	    root: 'files',
 	    idProperty: 'id',
-	    fields: ['id', 'title', 'description',
+	    fields: ['id', 'shortUrl', 'title', 'description',
 	             {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
 	    ],
 	    sortInfo: {

@@ -11,6 +11,8 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import de.ingrid.mapclient.WmsProxy;
 
 /**
@@ -21,6 +23,8 @@ import de.ingrid.mapclient.WmsProxy;
 @Path("/wms")
 public class WmsResource {
 
+	private static final Logger log = Logger.getLogger(WmsResource.class);
+
 	/**
 	 * Get capabilities document from the given url
 	 * @param url The GetCapabilities url
@@ -29,13 +33,13 @@ public class WmsResource {
 	@GET
 	@Path("capabilities")
 	@Produces(MediaType.TEXT_XML)
-	public String getUserDefaultMap(@QueryParam("url") String capUrl) {
-
+	public String doWmsRequest(@QueryParam("url") String url) {
 		try {
-			String capDoc = WmsProxy.getCapabilities(capUrl);
-			return capDoc;
+			String response = WmsProxy.doRequest(url);
+			return response;
 		}
 		catch (Exception ex) {
+			log.error("Error sending WMS request", ex);
 			throw new WebApplicationException(ex, Response.Status.NOT_FOUND);
 		}
 	}

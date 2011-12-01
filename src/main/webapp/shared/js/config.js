@@ -41,6 +41,11 @@ de.ingrid.mapclient.SESSION_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/sessio
 de.ingrid.mapclient.USER_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/user';
 
 /**
+ * Url for retrieving user data encoded in a short url
+ */
+de.ingrid.mapclient.SHORTURL_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/maps';
+
+/**
  * Url for help content
  */
 de.ingrid.mapclient.HELP_URL = 'http://www.portalu.de/hilfe?hkey=maps-1';
@@ -80,3 +85,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasPermaLink: false
 		}
 };
+
+/**
+ * Proxy for OpenLayers XMLHttpRequests
+ */
+OpenLayers.ProxyHost = de.ingrid.mapclient.BASE_URL+'wms/capabilities?url=';

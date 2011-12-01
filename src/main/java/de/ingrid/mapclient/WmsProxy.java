@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,32 +21,51 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 /**
- * WmsProxy is used to proxy remote web map services to eliminate cross domain
- * issues.
+ * WmsProxy is used to call remote web map services to
+ * eliminate cross domain issues.
  * 
  * @author ingo@wemove.com
  */
 public class WmsProxy {
+
 	/**
-	 * Get the GetCapabilities document from a WMS server.
-	 * @param capUrl The url of the GetCapabilities service
+	 * The service pattern that urls must match
+	 */
+	private final static Pattern SERVICE_PATTERN = Pattern.compile("SERVICE=WMS", Pattern.CASE_INSENSITIVE);
+
+	/**
+	 * The request pattern that urls must match
+	 */
+	private final static Pattern REQUEST_PATTERN = Pattern.compile("REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE);
+
+	/**
+	 * Do a WMS request. The method checks, if the url contains the strings
+	 * SERVICE=WMS and REQUEST=GetCapabilities or REQUEST=GetFeatureInfo and throws an
+	 * exception if not. The server response is supposed to be an Xml document and
+	 * the method will fail, if that is not true.
+	 * @param urlStr The request url
 	 * @return String (Xml)
 	 * @throws Exception
 	 */
-	public static String getCapabilities(String capUrl) throws Exception {
-		String result = null;
+	public static String doRequest(String urlStr) throws Exception {
+		String response = null;
+
+		// check if the url string is valid
+		if (!SERVICE_PATTERN.matcher(urlStr).find() && !REQUEST_PATTERN.matcher(urlStr).find()) {
+			throw new IllegalArgumentException("The url is not a valid wms request: "+urlStr);
+		}
+
 		// add protocol if missing
-		if (!capUrl.startsWith("http://")) {
-			capUrl = "http://"+capUrl;
+		if (!urlStr.startsWith("http://")) {
+			urlStr = "http://"+urlStr;
 		}
 		// replace & and ?
-		capUrl.replaceAll("\\&", "%26");
-		capUrl.replaceAll("\\?", "%3f");
+		urlStr.replaceAll("\\&", "%26");
+		urlStr.replaceAll("\\?", "%3f");
 
 		// send request
 		BufferedReader reader = null;
 		try {
-			String urlStr = capUrl;
 			URL url = new URL(urlStr);
 			URLConnection conn = url.openConnection();
 
@@ -66,7 +86,7 @@ public class WmsProxy {
 			tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			//tf.setOutputProperty(OutputKeys.INDENT, "no");
 			tf.transform(new DOMSource(doc), new StreamResult(out));
-			result = out.toString();
+			response = out.toString();
 		}
 		catch (Exception e) {
 			throw e;
@@ -78,6 +98,6 @@ public class WmsProxy {
 				} catch (IOException e) {}
 			}
 		}
-		return result;
+		return response;
 	}
 }
