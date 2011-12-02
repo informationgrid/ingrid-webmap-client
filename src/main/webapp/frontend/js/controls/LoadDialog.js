@@ -114,7 +114,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		}, {
 			id: 'description',
 			header: 'Beschreibung',
-			width: 50,
+			width: 45,
 			sortable: true,
 			renderer: function (val) {
 			    return '<div style="white-space:normal !important;">'+val+'</div>';
@@ -128,6 +128,15 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
 			dataIndex: 'date'
 		}, {
+			id: 'shortUrl',
+			header: '',
+			width: 5,
+			sortable: false,
+			renderer: function(val) {
+				return '<div class="icon iconLink" style="cursor:pointer;" title="link"></div>';
+			},
+			dataIndex: 'shortUrl'
+		}, {
 			id: 'delete',
 			header: '',
 			width: 5,
@@ -140,6 +149,15 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	});
 	// button handler
 	this.fileList.on('cellclick', function(grid, rowIndex, columnIndex, e) {
+		if (columnIndex == grid.getColumnModel().getIndexById('shortUrl')) {
+			var record = grid.getStore().getAt(rowIndex);
+			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+record.get('shortUrl');
+			Ext.Msg.show({
+			   title: 'Kurz-URL',
+			   msg: url,
+			   icon: Ext.MessageBox.INFO
+			});
+		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
 			if (confirm("Soll die Karte wirklich gelöscht werden?")) {
 				var record = grid.getStore().getAt(rowIndex);

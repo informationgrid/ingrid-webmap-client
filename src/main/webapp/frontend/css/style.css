@@ -53,6 +53,10 @@ body {
 	background-image: url(../../shared/images/icon_metadata.png);
 }
 
+.iconLink {
+	background-image: url(../../shared/images/link_go.png);
+}
+
 .icon {
 	width: 16px;
 	height: 16px;

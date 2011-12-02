@@ -6,7 +6,9 @@ package de.ingrid.mapclient.rest;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +70,11 @@ public class ConfigurationResource {
 	private static final String DYNAMIC_PATH = "dynamic";
 
 	/**
+	 * Key in application properties whose value contains public properties
+	 */
+	private static final String PUBLIC_PROPERTIES_KEY = "public.properties";
+
+	/**
 	 * Get the static application configuration
 	 * @return String
 	 */
@@ -76,14 +83,28 @@ public class ConfigurationResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getProperties(@Context HttpServletRequest req) {
 		try {
+			String json = "";
 			Properties properties = ConfigurationProvider.INSTANCE.getProperties();
-			XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-				@Override
-				public HierarchicalStreamWriter createWriter(Writer writer) {
-					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+			if (properties.containsKey(PUBLIC_PROPERTIES_KEY)) {
+				List<String> publicPropertyNames = Arrays.asList(properties.getProperty(PUBLIC_PROPERTIES_KEY).
+						replaceAll("\\s", "").split(","));
+
+				// filter public properties
+				Properties publicProperties = new Properties();
+				for (Entry<Object, Object> property : properties.entrySet()) {
+					if (publicPropertyNames.contains(property.getKey())) {
+						publicProperties.put(property.getKey(), property.getValue());
+					}
 				}
-			});
-			String json = xstream.toXML(properties);
+
+				XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
+					@Override
+					public HierarchicalStreamWriter createWriter(Writer writer) {
+						return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+					}
+				});
+				json = xstream.toXML(publicProperties);
+			}
 			return Response.ok(json).build();
 		}
 		catch (Exception ex) {
