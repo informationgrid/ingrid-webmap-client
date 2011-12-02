@@ -31,7 +31,7 @@ public class WmsResource {
 	 * @return String
 	 */
 	@GET
-	@Path("capabilities")
+	@Path("proxy")
 	@Produces(MediaType.TEXT_XML)
 	public String doWmsRequest(@QueryParam("url") String url) {
 		try {
@@ -39,7 +39,7 @@ public class WmsResource {
 			return response;
 		}
 		catch (Exception ex) {
-			log.error("Error sending WMS request", ex);
+			log.error("Error sending WMS request: "+url, ex);
 			throw new WebApplicationException(ex, Response.Status.NOT_FOUND);
 		}
 	}

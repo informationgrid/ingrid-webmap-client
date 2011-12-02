@@ -25,10 +25,10 @@ de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'conf
 de.ingrid.mapclient.STATIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'config/static';
 
 /**
- * Url of the WMS capabilities proxy. Expected GET parameters:
- * - url The url of the WMS server to get the capabilities from
+ * Url of the WMS proxy. Expected GET parameters:
+ * - url The url of the WMS server make the request to
  */
-de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/capabilities';
+de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/proxy';
 
 /**
  * Url for retrieving and saving session data
@@ -89,4 +89,4 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 /**
  * Proxy for OpenLayers XMLHttpRequests
  */
-OpenLayers.ProxyHost = de.ingrid.mapclient.BASE_URL+'wms/capabilities?url=';
+OpenLayers.ProxyHost = de.ingrid.mapclient.BASE_URL+'wms/proxy?url=';
