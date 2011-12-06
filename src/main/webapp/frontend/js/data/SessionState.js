@@ -9,37 +9,37 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  */
 de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 
-    /**
-     * @cfg The data id (optional)
-     */
-    this.id = "";
+	/**
+	 * @cfg The data id (optional)
+	 */
+	this.id = "";
 
-    /**
-     * @cfg The title (optional)
-     */
-    this.title = "";
+	/**
+	 * @cfg The title (optional)
+	 */
+	this.title = "";
 
-    /**
-     * @cfg The description (optional)
-     */
-    this.description = "";
+	/**
+	 * @cfg The description (optional)
+	 */
+	this.description = "";
 
-    /**
-     * @cfg OpenLayers.Map instance
-     */
-    this.map = "";
+	/**
+	 * @cfg OpenLayers.Map instance
+	 */
+	this.map = "";
 
-    /**
-     * @cfg Array of de.ingrid.mapclient.frontend.data.Service instances
-     */
-    this.activeServices = [];
+	/**
+	 * @cfg Array of de.ingrid.mapclient.frontend.data.Service instances
+	 */
+	this.activeServices = [];
 
-    /**
-     * The serialized map state, will be set by the unserialize method
-     */
-    this.wmcDocument = null;
+	/**
+	 * The serialized map state, will be set by the unserialize method
+	 */
+	this.wmcDocument = null;
 
-    // apply values from the provided config object
+	// apply values from the provided config object
 	Ext.apply(this, config);
 };
 
@@ -131,10 +131,14 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 	// restore map state
 	var context = format.read(this.wmcDocument, this.map);
 	var layers = format.getLayersFromContext(context.layersContext);
+	// merge default params from layers already loaded for the service
+	for (var i=0, count=layers.length; i<count; i++) {
+		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layers[i]);
+	}
 	this.map.addLayers(layers);
 	this.map.setOptions({
-        maxExtent: context.mayExtend,
-        projection: context.projection
+		maxExtent: context.mayExtend,
+		projection: context.projection
 	});
 	this.map.zoomToExtent(context.bounds);
 };

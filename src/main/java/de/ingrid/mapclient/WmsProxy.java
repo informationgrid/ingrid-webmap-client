@@ -3,22 +3,9 @@ package de.ingrid.mapclient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 /**
  * WmsProxy is used to call remote web map services to
@@ -41,14 +28,13 @@ public class WmsProxy {
 	/**
 	 * Do a WMS request. The method checks, if the url contains the strings
 	 * SERVICE=WMS and REQUEST=GetCapabilities or REQUEST=GetFeatureInfo and throws an
-	 * exception if not. The server response is supposed to be an Xml document and
-	 * the method will fail, if that is not true.
+	 * exception if not.
 	 * @param urlStr The request url
-	 * @return String (Xml)
+	 * @return String
 	 * @throws Exception
 	 */
 	public static String doRequest(String urlStr) throws Exception {
-		String response = null;
+		StringBuffer response = new StringBuffer();
 
 		// check if the url string is valid
 		if (!SERVICE_PATTERN.matcher(urlStr).find() && !REQUEST_PATTERN.matcher(urlStr).find()) {
@@ -69,24 +55,13 @@ public class WmsProxy {
 			URL url = new URL(urlStr);
 			URLConnection conn = url.openConnection();
 
-			// read the response into a DOM tree
-			reader = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = factory.newDocumentBuilder();
-			InputSource inStream = new InputSource();
-			inStream.setCharacterStream(reader);
-			Document doc = db.parse(inStream);
-
-			// serialize the DOM tree back into a string
-			// (we encode to utf8)
-			Writer out = new StringWriter();
-			Transformer tf = TransformerFactory.newInstance().newTransformer();
-			tf.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			//tf.setOutputProperty(OutputKeys.INDENT, "no");
-			tf.transform(new DOMSource(doc), new StreamResult(out));
-			response = out.toString();
+			// read the response into the string buffer
+			char[] buf = new char[1024];
+			int numRead = 0;
+			reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			while((numRead = reader.read(buf)) != -1) {
+				response.append(buf, 0, numRead);
+			}
 		}
 		catch (Exception e) {
 			throw e;
@@ -98,6 +73,6 @@ public class WmsProxy {
 				} catch (IOException e) {}
 			}
 		}
-		return response;
+		return response.toString();
 	}
 }

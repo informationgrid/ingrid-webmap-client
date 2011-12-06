@@ -135,44 +135,41 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}]
 	});
 
-	// create the toolbar controls
-	var historyCtrl = new OpenLayers.Control.NavigationHistory();
-	this.map.addControl(historyCtrl);
-	var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
-		persist: true
-	});
-	measurePathCtrl.events.on({
-		"measure": this.measure
-	});
-	this.map.addControl(measurePathCtrl);
-	var measurePolygonCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
-		persist: true
-	});
-	measurePolygonCtrl.events.on({
-		"measure": this.measure
-	});
-	this.map.addControl(measurePolygonCtrl);
-
 	// create the toolbar items
 	var toolbarItems = [];
+
 	// a) feature tool
 	if (this.viewConfig.hasInfoTool) {
+
+		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+			map: this.map
+		});
+		this.map.events.on({
+			'click': featureInfoControl.query,
+			scope: featureInfoControl
+		});
+
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconInfo',
 			tooltip: 'Info',
+			enableToggle: true,
 			handler: function(btn) {
-			    // TODO: implement real handler
-			    var featureInfoControl = new OpenLayers.Control.WMSGetFeatureInfo({
-			        queryVisible: true,
-			        drillDown: true
-			    });
-			    self.map.addControl(featureInfoControl);
-			    featureInfoControl.getInfoForClick({xy: {x: 50, y: 50}});
+				if (btn.pressed) {
+					featureInfoControl.activate();
+				}
+				else {
+					featureInfoControl.deactivate();
+				}
 			}
 		}));
 	}
+
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
+		// create the OpenLayers control
+		var historyCtrl = new OpenLayers.Control.NavigationHistory();
+		this.map.addControl(historyCtrl);
+
 		toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.previous,
 			disabled: true,
@@ -186,8 +183,25 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip: 'Vor'
 		}));
 	}
+
 	// c) measure tool
 	if (this.viewConfig.hasMeasureTool) {
+		// create the OpenLayers control
+		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
+			persist: true
+		});
+		measurePathCtrl.events.on({
+			"measure": this.measure
+		});
+		this.map.addControl(measurePathCtrl);
+		var measurePolygonCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
+			persist: true
+		});
+		measurePolygonCtrl.events.on({
+			"measure": this.measure
+		});
+		this.map.addControl(measurePolygonCtrl);
+
 		toolbarItems.push(new Ext.SplitButton({
 			iconCls: 'iconMeassure',
 			tooltip: 'Messen',
@@ -223,6 +237,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}));
 	}
 	toolbarItems.push(new Ext.Toolbar.Fill());
+
 	// d) print tool
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
@@ -230,6 +245,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip: 'Drucken'
 		}));
 	}
+
 	// e) load tool
 	if (this.viewConfig.hasLoadTool) {
 		toolbarItems.push(new Ext.Button({
@@ -248,6 +264,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			}
 		}));
 	}
+
 	// f) save tool
 	if (this.viewConfig.hasSaveTool) {
 		toolbarItems.push(new Ext.Button({
@@ -264,6 +281,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			}
 		}));
 	}
+
 	// g) help tool
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
@@ -403,6 +421,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
  * Create the OpenLayers controls for the map.
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
+
+	var self = this;
 	// create the overview layer
 	// (we need to configure the baselayer explicitly,
 	// otherwise it is created by the clone operation

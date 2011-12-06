@@ -9,40 +9,40 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel, {
 	title: "Aktive Dienste",
-    autoScroll: true,
+	autoScroll: true,
 
-    /**
-     * @cfg OpenLayers.Map instance to sync the internal store with
-     */
-    map: null,
+	/**
+	 * @cfg OpenLayers.Map instance to sync the internal store with
+	 */
+	map: null,
 
-    /**
-     * The currently selected node
-     */
-    activeNode: null,
+	/**
+	 * The currently selected node
+	 */
+	activeNode: null,
 
-    /**
-     * Ext.util.MixedCollection containing the de.ingrid.mapclient.frontend.data.Service instances
-     */
-    services: new Ext.util.MixedCollection(),
+	/**
+	 * Ext.util.MixedCollection containing the de.ingrid.mapclient.frontend.data.Service instances
+	 */
+	services: new Ext.util.MixedCollection(),
 
-    /**
-     * GeoExt.data.LayerStore instance
-     */
-    layerStore: null,
+	/**
+	 * GeoExt.data.LayerStore instance
+	 */
+	layerStore: null,
 
-    /**
-     * Ext.tree.TreePanel instance
-     */
-    layerTree: null,
+	/**
+	 * Ext.tree.TreePanel instance
+	 */
+	layerTree: null,
 
-    /**
-     * Toolbar buttons
-     */
-    addBtn: null,
-    removeBtn: null,
-    transparencyBtn: null,
-    metaDataBtn: null
+	/**
+	 * Toolbar buttons
+	 */
+	addBtn: null,
+	removeBtn: null,
+	transparencyBtn: null,
+	metaDataBtn: null
 });
 
 /**
@@ -59,63 +59,63 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 
 	// create the layer store
 	this.layerStore = new GeoExt.data.LayerStore({
-	    map: this.map,
-	    initDir: GeoExt.data.LayerStore.MAP_TO_STORE
+		map: this.map,
+		initDir: GeoExt.data.LayerStore.MAP_TO_STORE
 	});
 
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
-        iconCls: 'iconAdd',
-        tooltip: 'Dienst hinzufügen',
-        disabled: false,
-        handler: function(btn) {
-        	new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
-        		activeServicesPanel: self
-        	}).show();
-        }
+		iconCls: 'iconAdd',
+		tooltip: 'Dienst hinzufügen',
+		disabled: false,
+		handler: function(btn) {
+			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
+				activeServicesPanel: self
+			}).show();
+		}
 	});
 	this.removeBtn = new Ext.Button({
-        iconCls: 'iconRemove',
-        tooltip: 'Dienst entfernen',
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeNode) {
-            	self.removeService(self.activeNode.attributes.service);
-        	}
-        }
+		iconCls: 'iconRemove',
+		tooltip: 'Dienst entfernen',
+		disabled: true,
+		handler: function(btn) {
+			if (self.activeNode) {
+				self.removeService(self.activeNode.attributes.service);
+			}
+		}
 	});
 	this.transparencyBtn = new Ext.Button({
-        iconCls: 'iconTransparency',
-        tooltip: 'Layer-Transparenz',
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayOpacitySlider(self.activeNode.layer);
-        	}
-        }
+		iconCls: 'iconTransparency',
+		tooltip: 'Layer-Transparenz',
+		disabled: true,
+		handler: function(btn) {
+			if (self.activeNode) {
+				self.displayOpacitySlider(self.activeNode.layer);
+			}
+		}
 	});
 	this.metaDataBtn = new Ext.Button({
-        iconCls: 'iconMetadata',
-        tooltip: 'Metadaten',
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayMetaData(self.activeNode);
-        	}
-        }
+		iconCls: 'iconMetadata',
+		tooltip: 'Metadaten',
+		disabled: true,
+		handler: function(btn) {
+			if (self.activeNode) {
+				self.displayMetaData(self.activeNode);
+			}
+		}
 	});
 
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
-	    root: {
-	    	nodeType: 'async',
-	        text: 'Layers',
-	        expanded: true,
-	        children: []
-	    },
-	    rootVisible: false,
-        enableDD: true,
-	    border: false
+		root: {
+			nodeType: 'async',
+			text: 'Layers',
+			expanded: true,
+			children: []
+		},
+		rootVisible: false,
+		enableDD: true,
+		border: false
 	});
 
 	var self = this;
@@ -143,10 +143,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	Ext.apply(this, {
 		items: this.layerTree,
 		tbar: items = [
-		    this.addBtn,
-		    this.removeBtn,
-		    this.transparencyBtn,
-		    this.metaDataBtn
+			this.addBtn,
+			this.removeBtn,
+			this.transparencyBtn,
+			this.metaDataBtn
 		]
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
@@ -197,19 +197,19 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 
 	// add service node to the tree
 	var node = new GeoExt.tree.LayerContainer({
-        text: service.getDefinition().title,
-        layerStore: this.layerStore,
-        leaf: false,
-        expanded: true,
-        service: service,
-        loader: {
-            filter: function(record) {
-            	var layer = record.get("layer");
-            	var layerBelongsToService = service.contains(layer);
-                return layerBelongsToService;
-            }
-        }
-    });
+		text: service.getDefinition().title,
+		layerStore: this.layerStore,
+		leaf: false,
+		expanded: true,
+		service: service,
+		loader: {
+			filter: function(record) {
+				var layer = record.get("layer");
+				var layerBelongsToService = service.contains(layer);
+				return layerBelongsToService;
+			}
+		}
+	});
 	this.layerTree.root.appendChild(node);
 
 	this.services.add(service.getCapabilitiesUrl(), service);

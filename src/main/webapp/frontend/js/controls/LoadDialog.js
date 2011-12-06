@@ -5,7 +5,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
 /**
  * @class LoadDialog is the dialog used for loading a previously saved map
- *        state.
+ *		state.
  */
 de.ingrid.mapclient.frontend.controls.LoadDialog = Ext.extend(Ext.Window, {
 	title: "Karte laden",
@@ -67,16 +67,16 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	var store = new Ext.data.JsonStore({
 		autoLoad: false,
 		autoDestroy: true,
-	    // reader configs
-	    root: 'files',
-	    idProperty: 'id',
-	    fields: ['id', 'shortUrl', 'title', 'description',
-	             {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
-	    ],
-	    sortInfo: {
+		// reader configs
+		root: 'files',
+		idProperty: 'id',
+		fields: ['id', 'shortUrl', 'title', 'description',
+				 {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
+		],
+		sortInfo: {
 			field: 'date',
 			direction: 'DESC'
-	    }
+		}
 	});
 
 	// load the data for the store
@@ -117,7 +117,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			width: 45,
 			sortable: true,
 			renderer: function (val) {
-			    return '<div style="white-space:normal !important;">'+val+'</div>';
+				return '<div style="white-space:normal !important;">'+val+'</div>';
 			},
 			dataIndex: 'description'
 		}, {
@@ -176,7 +176,6 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		}
 	});
 
-	var self = this;
 	var windowContent = new Ext.FormPanel({
 		border: false,
 		bodyStyle: 'padding: 10px',

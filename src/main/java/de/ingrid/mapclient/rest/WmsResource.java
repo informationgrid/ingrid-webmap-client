@@ -32,7 +32,7 @@ public class WmsResource {
 	 */
 	@GET
 	@Path("proxy")
-	@Produces(MediaType.TEXT_XML)
+	@Produces(MediaType.TEXT_PLAIN)
 	public String doWmsRequest(@QueryParam("url") String url) {
 		try {
 			String response = WmsProxy.doRequest(url);

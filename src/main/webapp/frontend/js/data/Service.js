@@ -51,6 +51,15 @@ de.ingrid.mapclient.frontend.data.Service.prototype.contains = function(layer) {
 };
 
 /**
+ * Get a layer by it's id
+ * @param id The id
+ * @return layer OpenLayers.Layer instance
+ */
+de.ingrid.mapclient.frontend.data.Service.prototype.getLayerById = function(id) {
+	return this.layers.get(id);
+};
+
+/**
  * Compare two given layers and return true, if they are the same
  * @param a OpenLayers.Layer instance
  * @param b OpenLayers.Layer instance
@@ -88,6 +97,7 @@ de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl = function(c
  * instance is passed to the callback.
  */
 de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callback) {
+	var self = this;
 
 	// if the service is loaded already, return it immediately
 	if (de.ingrid.mapclient.frontend.data.Service.registry.containsKey(capabilitiesUrl)) {
@@ -101,19 +111,19 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 	else {
 		// load the service
 		Ext.Ajax.request({
-		    url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
-		    method: 'GET',
-		    success: function(response, request) {
-			    var format = new OpenLayers.Format.WMSCapabilities();
-			    var capabilities = format.read(response.responseText);
-			    if (capabilities.capability) {
-				    // set up store data
-				    var data = new GeoExt.data.WMSCapabilitiesReader().readRecords(response.responseText);
-				    if (data.success) {
-					    var store = new GeoExt.data.WMSCapabilitiesStore();
-					    store.add(data.records);
+			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
+			method: 'GET',
+			success: function(response, request) {
+				var format = new OpenLayers.Format.WMSCapabilities();
+				var capabilities = format.read(response.responseText);
+				if (capabilities.capability) {
+					// set up store data
+					var data = new GeoExt.data.WMSCapabilitiesReader().readRecords(response.responseText);
+					if (data.success) {
+						var store = new GeoExt.data.WMSCapabilitiesStore();
+						store.add(data.records);
 						// prepare layers from records
-					    var records = store.getRange();
+						var records = store.getRange();
 						var layers = new Ext.util.MixedCollection();
 						for (var i=0, count=records.length; i<count; i++) {
 							var record = records[i];
@@ -121,8 +131,9 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							// extract the layer from the record
 							var layer = record.get("layer");
 							layer.mergeNewParams({
-							    format: "image/png",
-							    transparent: true
+								format: "image/png",
+								transparent: true,
+								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability)
 							});
 							// set layer parameters
 							layer.visibility = false;
@@ -140,16 +151,16 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						if (callback instanceof Function) {
 							callback(service);
 						}
-				    } else {
-				    	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
-				    }
-			    } else {
-			    	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
-			    }
-		    },
-		    failure: function(response, request) {
-		    	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
-		    }
+					} else {
+						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
+					}
+				} else {
+					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
+				}
+			},
+			failure: function(response, request) {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
+			}
 		});
 	}
 };
@@ -168,6 +179,55 @@ de.ingrid.mapclient.frontend.data.Service.findByLayer = function(layer) {
 		}
 	});
 	return result;
+};
+
+/**
+ * Static function to find the service definition to which the given url belongs
+ * @param url The service url
+ * @return de.ingrid.mapclient.frontend.data.Service instance
+ */
+de.ingrid.mapclient.frontend.data.Service.findByUrl = function(url) {
+	var result = null;
+	var urlParts = url.split("?");
+	de.ingrid.mapclient.frontend.data.Service.registry.each(function(service) {
+		var serviceUrlParts = service.getDefinition().href.split("?");
+		if (urlParts[0] == serviceUrlParts[0]) {
+			result = service;
+			return;
+		}
+	});
+	return result;
+};
+
+/**
+ * Merge the service layer params into the passed layer's params
+ * @param layer OpenLayers.Layer instance
+ */
+de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams = function(layer) {
+	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
+	var serviceLayer = service.getLayerById(de.ingrid.mapclient.frontend.data.Service.getLayerId(layer));
+	layer.mergeNewParams(serviceLayer.params);
+};
+
+/**
+ * Get the preferred info format for the GetFeatureInfo request for the given capabilities.
+ * @param capability The capability object created by OpenLayers
+ * @return String (Mime type)
+ */
+de.ingrid.mapclient.frontend.data.Service.getPreferredInfoFormat = function(capability) {
+	if (capability.request && capability.request.getfeatureinfo) {
+		var formats = capability.request.getfeatureinfo.formats || [];
+		// prefer html and fallback to first offered format
+		if (formats.length > 0) {
+			for (var i=0, count=formats.length; i<count; i++) {
+				if (formats[i].match(/html/)) {
+					return formats[i];
+				}
+			}
+			return formats[0];
+		}
+	}
+	return '';
 };
 
 /**
