@@ -61,7 +61,6 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 		drillDown: true,
 		eventListeners: {
 			"getfeatureinfo": function(e) {
-
 				// create a panel for each response
 				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
 				var p = new Ext.Panel({

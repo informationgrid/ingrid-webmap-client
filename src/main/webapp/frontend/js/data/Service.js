@@ -137,6 +137,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							});
 							// set layer parameters
 							layer.visibility = false;
+							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
 
 							// add the layer to the layer lists
 							var layerId = de.ingrid.mapclient.frontend.data.Service.getLayerId(layer);

@@ -11,6 +11,23 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoControl = Ext.extend(OpenLayers
 });
 
 /**
+ * @see OpenLayers.Control.WMSGetFeatureInfo.findLayers
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.findLayers = function() {
+	var layers = de.ingrid.mapclient.frontend.controls.FeatureInfoControl.superclass.findLayers.call(this);
+
+	// only use queryable layers
+	var queryableLayers = [];
+	for (var i=0, count=layers.length; i<count; i++) {
+		if (layers[i].queryable == true) {
+			queryableLayers.push(layers[i]);
+		}
+	}
+
+	return queryableLayers;
+},
+
+/**
  * @see OpenLayers.Control.WMSGetFeatureInfo.buildWMSOptions
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.buildWMSOptions = function(url, layers, clickPosition, format) {
@@ -27,17 +44,17 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.buildWMSOptio
  * @see OpenLayers.Control.WMSGetFeatureInfo.buildWMSOptions
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.triggerGetFeatureInfo = function(request, xy, features, url, layers) {
-    this.events.triggerEvent("getfeatureinfo", {
-        text: request.responseText,
-        features: features,
-        request: request,
-        xy: xy,
-        url: url,
-        layers: layers
-    });
+	this.events.triggerEvent("getfeatureinfo", {
+		text: request.responseText,
+		features: features,
+		request: request,
+		xy: xy,
+		url: url,
+		layers: layers
+	});
 
-    // Reset the cursor.
-    OpenLayers.Element.removeClass(this.map.viewPortDiv, "olCursorWait");
+	// Reset the cursor.
+	OpenLayers.Element.removeClass(this.map.viewPortDiv, "olCursorWait");
 };
 
 /**
