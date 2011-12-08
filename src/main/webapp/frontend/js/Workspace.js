@@ -78,6 +78,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		units: "degrees"
 	});
 
+	// create the map container
+	var mapPanel = new GeoExt.MapPanel({
+		border: false,
+		map: this.map
+	});
+
 	// create the accordion for the west panel
 	var accordionItems = [];
 
@@ -242,7 +248,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconPrint',
-			tooltip: 'Drucken'
+			tooltip: 'Drucken',
+			handler: function(btn) {
+				new de.ingrid.mapclient.frontend.controls.PrintDialog({
+					mapPanel: mapPanel,
+					legendPanel: legendPanel
+				});
+			}
 		}));
 	}
 
@@ -296,12 +308,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// create the toolbar
 	var toolbar = new Ext.Toolbar({
 		items: toolbarItems
-	});
-
-	// create the map container
-	var mapPanel = new GeoExt.MapPanel({
-		border: false,
-		map: this.map
 	});
 
 	// create the settings dialog

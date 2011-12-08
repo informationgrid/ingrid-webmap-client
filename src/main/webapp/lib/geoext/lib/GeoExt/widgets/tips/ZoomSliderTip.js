@@ -17,7 +17,7 @@
 /** api: (define)
  *  module = GeoExt
  *  class = ZoomSliderTip
- *  base_link = `Ext.Tip <http://extjs.com/deploy/dev/docs/?class=Ext.Tip>`_
+ *  base_link = `Ext.Tip <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Tip>`_
  */
 Ext.namespace("GeoExt");
 
@@ -73,11 +73,11 @@ GeoExt.ZoomSliderTip = Ext.extend(GeoExt.SliderTip, {
     /** private: method[getText]
      *  :param slider: ``Ext.Slider`` The slider this tip is attached to.
      */
-    getText: function(slider) {
+    getText: function(thumb) {
         var data = {
-            zoom: slider.getZoom(),
-            resolution: slider.getResolution(),
-            scale: Math.round(slider.getScale()) 
+            zoom: thumb.value,
+            resolution: this.slider.getResolution(),
+            scale: Math.round(this.slider.getScale()) 
         };
         return this.compiledTemplate.apply(data);
     }

@@ -9,7 +9,7 @@
 /** api: (define)
  *  module = GeoExt
  *  class = LegendPanel
- *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Panel>`_
+ *  base_link = `Ext.Panel <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Panel>`_
  */
 
 Ext.namespace('GeoExt');
@@ -54,7 +54,7 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
      *  .. code-block:: javascript
      *
      *      filter: function(record) {
-     *          return record.get("layer").isBaseLayer;
+     *          return record.getLayer().isBaseLayer;
      *      }
      */
     filter: function(record) {
@@ -105,7 +105,7 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
         var record, layer;
         for(var i=count-1; i>=0; --i) {
             record = store.getAt(i);
-            layer = record.get("layer");
+            layer = record.getLayer();
             var types = GeoExt.LayerLegend.getTypes(record);
             if(layer.displayInLayerSwitcher && types.length > 0 &&
                 (store.getAt(i).get("hideInLegend") !== true)) {
@@ -155,7 +155,7 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
      *  :param index: ``Integer`` The index of the removed record.
      */
     onStoreRemove: function(store, record, index) {
-        this.removeLegend(record);
+        this.removeLegend(record);            
     },
 
     /** private: method[removeLegend]
@@ -164,10 +164,12 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
      *      store to remove.
      */
     removeLegend: function(record) {
-        var legend = this.getComponent(this.getIdForLayer(record.get('layer')));
-        if (legend) {
-            this.remove(legend, true);
-            this.doLayout();
+        if (this.items) {
+            var legend = this.getComponent(this.getIdForLayer(record.getLayer()));
+            if (legend) {
+                this.remove(legend, true);
+                this.doLayout();
+            }
         }
     },
 
@@ -197,7 +199,7 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
      */
     addLegend: function(record, index) {
         if (this.filter(record) === true) {
-            var layer = record.get("layer");
+            var layer = record.getLayer();
             index = index || 0;
             var legend;
             var types = GeoExt.LayerLegend.getTypes(record,
@@ -208,7 +210,8 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
                     xtype: types[0],
                     id: this.getIdForLayer(layer),
                     layerRecord: record,
-                    hidden: !(layer.getVisibility() && layer.calculateInRange())
+                    hidden: !((!layer.map && layer.visibility) ||
+                        (layer.getVisibility() && layer.calculateInRange()))
                 });
             }
         }
@@ -222,7 +225,6 @@ GeoExt.LegendPanel = Ext.extend(Ext.Panel, {
             this.layerStore.un("add", this.onStoreAdd, this);
             this.layerStore.un("remove", this.onStoreRemove, this);
             this.layerStore.un("clear", this.onStoreClear, this);
-            this.layerStore.un("update", this.onStoreUpdate, this);
         }
         GeoExt.LegendPanel.superclass.onDestroy.apply(this, arguments);
     }

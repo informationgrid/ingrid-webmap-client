@@ -13,7 +13,7 @@
 /** api: (define)
  *  module = GeoExt.data
  *  class = LayerStore
- *  base_link = `Ext.data.DataStore <http://extjs.com/deploy/dev/docs/?class=Ext.data.DataStore>`_
+ *  base_link = `Ext.data.Store <http://dev.sencha.com/deploy/dev/docs/?class=Ext.data.Store>`_
  */
 Ext.namespace("GeoExt.data");
 
@@ -44,12 +44,13 @@ GeoExt.data.LayerStoreMixin = function() {
     return {
         /** api: config[map]
          *  ``OpenLayers.Map``
-         *  Map that this store will be in sync with.
+         *  Map that this store will be in sync with. If not provided, the
+         *  store will not be bound to a map.
          */
         
         /** api: property[map]
          *  ``OpenLayers.Map``
-         *  Map that the store is synchronized with.
+         *  Map that the store is synchronized with, if any.
          */
         map: null,
         
@@ -136,7 +137,7 @@ GeoExt.data.LayerStoreMixin = function() {
 
             if(initDir & GeoExt.data.LayerStore.STORE_TO_MAP) {
                 this.each(function(record) {
-                    this.map.addLayer(record.get("layer"));
+                    this.map.addLayer(record.getLayer());
                 }, this);
             }
             if(initDir & GeoExt.data.LayerStore.MAP_TO_STORE) {
@@ -194,7 +195,7 @@ GeoExt.data.LayerStoreMixin = function() {
         onChangeLayer: function(evt) {
             var layer = evt.layer;
             var recordIndex = this.findBy(function(rec, id) {
-                return rec.get("layer") === layer;
+                return rec.getLayer() === layer;
             });
             if(recordIndex > -1) {
                 var record = this.getAt(recordIndex);
@@ -276,7 +277,7 @@ GeoExt.data.LayerStoreMixin = function() {
                 if (len > 0) {
                     var layers = new Array(len);
                     for (var j = 0; j < len; j++) {
-                        layers[j] = records[j].get("layer");
+                        layers[j] = records[j].getLayer();
                     }
                     this._adding = true;
                     this.map.addLayers(layers);
@@ -310,7 +311,7 @@ GeoExt.data.LayerStoreMixin = function() {
                 this._adding = true;
                 var layer;
                 for(var i=records.length-1; i>=0; --i) {
-                    layer = records[i].get("layer");
+                    layer = records[i].getLayer();
                     this.map.addLayer(layer);
                     if(index !== this.map.layers.length-1) {
                         this.map.setLayerIndex(layer, index);
@@ -329,7 +330,7 @@ GeoExt.data.LayerStoreMixin = function() {
          */
         onRemove: function(store, record, index){
             if(!this._removing) {
-                var layer = record.get("layer");
+                var layer = record.getLayer();
                 if (this.map.getLayer(layer.id) != null) {
                     this._removing = true;
                     this.removeMapLayer(record);
@@ -348,7 +349,7 @@ GeoExt.data.LayerStoreMixin = function() {
         onUpdate: function(store, record, operation) {
             if(operation === Ext.data.Record.EDIT) {
                 if (record.modified && record.modified.title) {
-                    var layer = record.get("layer");
+                    var layer = record.getLayer();
                     var title = record.get("title");
                     if(title !== layer.name) {
                         layer.setName(title);
@@ -363,7 +364,7 @@ GeoExt.data.LayerStoreMixin = function() {
          *  Removes a record's layer from the bound map.
          */
         removeMapLayer: function(record){
-            this.map.removeLayer(record.get("layer"));
+            this.map.removeLayer(record.getLayer());
         },
 
         /** private: method[onReplace]
@@ -377,6 +378,21 @@ GeoExt.data.LayerStoreMixin = function() {
          */
         onReplace: function(key, oldRecord, newRecord){
             this.removeMapLayer(oldRecord);
+        },
+        
+        /** public: method[getByLayer]
+         *  :param layer: ``OpenLayers.Layer``
+         *  :return: :class:`GeoExt.data.LayerRecord` or undefined if not found
+         *  
+         *  Get the record for the specified layer
+         */
+        getByLayer: function(layer) {
+            var index = this.findBy(function(r) {
+                return r.getLayer() === layer;
+            });
+            if(index > -1) {
+                return this.getAt(index);
+            }
         },
         
         /** private: method[destroy]

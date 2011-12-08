@@ -48,11 +48,9 @@
           <nosuffix>false</nosuffix>
           <preProcessAggregates>true</preProcessAggregates>
           <excludes>
-            <!-- don't compress lib files by default, except for openlayers addins -->
+            <!-- don't compress lib files by default -->
             <exclude>**/lib/extjs/**</exclude>
-            <exclude>**/lib/openlayers/*.js</exclude>
-            <exclude>**/lib/openlayers/lib/**</exclude>
-            <exclude>**/lib/openlayers/theme/**</exclude>
+            <exclude>**/lib/openlayers/**</exclude>
             <exclude>**/lib/geoext/**</exclude>
           </excludes>
           <aggregations>
@@ -84,7 +82,8 @@
               <output>${project.build.directory}/${project.build.finalName}/frontend/js/frontend-all-min.js</output>
               <inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
               <includes>
-                <include>lib/openlayers/addins/LoadingPanel-min.js</include>
+                <include>lib/openlayers.addins/LoadingPanel-min.js</include>
+                <include>lib/geoext.ux/SimplePrint-min.js</include>
                 <include>shared/**/*-min.js</include>
                 <include>frontend/**/*-min.js</include>
               </includes>

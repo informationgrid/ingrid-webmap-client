@@ -46,6 +46,11 @@ de.ingrid.mapclient.USER_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/user';
 de.ingrid.mapclient.SHORTURL_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/maps';
 
 /**
+ * Url of print server
+ */
+de.ingrid.mapclient.PRINT_URL = de.ingrid.mapclient.BASE_URL+'../print';
+
+/**
  * Url for help content
  */
 de.ingrid.mapclient.HELP_URL = 'http://www.portalu.de/hilfe?hkey=maps-1';

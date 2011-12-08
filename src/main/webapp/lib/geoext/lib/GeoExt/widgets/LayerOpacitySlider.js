@@ -6,12 +6,13 @@
 
 /**
  * @include GeoExt/widgets/tips/LayerOpacitySliderTip.js
+ * @include GeoExt/data/LayerRecord.js
  */
 
 /** api: (define)
  *  module = GeoExt
  *  class = LayerOpacitySlider
- *  base_link = `Ext.Slider <http://extjs.com/deploy/dev/docs/?class=Ext.Slider>`_
+ *  base_link = `Ext.Slider <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Slider>`_
  */
 Ext.namespace("GeoExt");
 
@@ -127,54 +128,131 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
      */
     value: null,
 
+    /** api: config[inverse]
+     *  ``Boolean``
+     *  If true, we will work with transparency instead of with opacity.
+     *  Defaults to false.
+     */
+    /** private: property[inverse]
+     *  ``Boolean``
+     */
+    inverse: false,
+
     /** private: method[constructor]
      *  Construct the component.
      */
     constructor: function(config) {
         if (config.layer) {
-            if (config.layer instanceof OpenLayers.Layer) {
-                this.layer = config.layer;
-            } else if (config.layer instanceof GeoExt.data.LayerRecord) {
-                this.layer = config.layer.get('layer');
+            this.layer = this.getLayer(config.layer);
+            this.bind();
+            this.complementaryLayer = this.getLayer(config.complementaryLayer);
+            // before we call getOpacityValue inverse should be set
+            if (config.inverse !== undefined) {
+                this.inverse = config.inverse;
             }
-
-            if (config.complementaryLayer instanceof OpenLayers.Layer) {
-                this.complementaryLayer = config.complementaryLayer;
-            } else if (config.complementaryLayer instanceof
-                       GeoExt.data.LayerRecord) {
-                this.complementaryLayer =
-                    config.complementaryLayer.get('layer');
-            }
-
+            config.value = (config.value !== undefined) ? 
+                config.value : this.getOpacityValue(this.layer);
             delete config.layer;
             delete config.complementaryLayer;
         }
         GeoExt.LayerOpacitySlider.superclass.constructor.call(this, config);
     },
 
+    /** private: method[bind]
+     */
+    bind: function() {
+        if (this.layer && this.layer.map) {
+            this.layer.map.events.on({
+                changelayer: this.update,
+                scope: this
+            });
+        }
+    },
+
+    /** private: method[unbind]
+     */
+    unbind: function() {
+        if (this.layer && this.layer.map) {
+            this.layer.map.events.un({
+                changelayer: this.update,
+                scope: this
+            });
+        }
+    },
+
+    /** private: method[update]
+     *  Registered as a listener for opacity change.  Updates the value of the slider.
+     */
+    update: function(evt) {
+        if (evt.property === "opacity" && evt.layer == this.layer) {
+            this.setValue(this.getOpacityValue(this.layer));
+        }
+    },
+
+    /** api: method[setLayer]
+     *  :param layer: ``OpenLayers.Layer`` or :class:`GeoExt.data.LayerRecord`
+     *
+     *  Bind a new layer to the opacity slider.
+     */
+    setLayer: function(layer) {
+        this.unbind();
+        this.layer = this.getLayer(layer);
+        this.setValue(this.getOpacityValue(layer));
+        this.bind();
+    },
+
+    /** private: method[getOpacityValue]
+     *  :param layer: ``OpenLayers.Layer`` or :class:`GeoExt.data.LayerRecord`
+     *  :return:  ``Integer`` The opacity for the layer.
+     *
+     *  Returns the opacity value for the layer.
+     */
+    getOpacityValue: function(layer) {
+        var value;
+        if (layer && layer.opacity !== null) {
+            value = parseInt(layer.opacity * (this.maxValue - this.minValue));
+        } else {
+            value = this.maxValue;
+        }
+        if (this.inverse === true) {
+            value = (this.maxValue - this.minValue) - value;
+        }
+        return value;
+    },
+
+    /** private: method[getLayer]
+     *  :param layer: ``OpenLayers.Layer`` or :class:`GeoExt.data.LayerRecord`
+     *  :return:  ``OpenLayers.Layer`` The OpenLayers layer object
+     *
+     *  Returns the OpenLayers layer object for a layer record or a plain layer 
+     *  object.
+     */
+    getLayer: function(layer) {
+        if (layer instanceof OpenLayers.Layer) {
+            return layer;
+        } else if (layer instanceof GeoExt.data.LayerRecord) {
+            return layer.getLayer();
+        }
+    },
+
     /** private: method[initComponent]
      *  Initialize the component.
      */
     initComponent: function() {
-        // set the slider initial value
-        if (this.layer && this.layer.opacity !== null) {
-            this.value = parseInt(
-                this.layer.opacity * (this.maxValue - this.minValue)
-            );
-        } else if (this.value == null) {
-            this.value = this.maxValue;
-        }
 
         GeoExt.LayerOpacitySlider.superclass.initComponent.call(this);
 
         if (this.changeVisibility && this.layer &&
-            (this.layer.opacity == 0 || this.value == this.minValue)) {
+            (this.layer.opacity == 0 || 
+            (this.inverse === false && this.value == this.minValue) || 
+            (this.inverse === true && this.value == this.maxValue))) {
             this.layer.setVisibility(false);
         }
 
         if (this.complementaryLayer &&
             ((this.layer && this.layer.opacity == 1) ||
-             (this.value == this.maxValue))) {
+             (this.inverse === false && this.value == this.maxValue) ||
+             (this.inverse === true && this.value == this.minValue))) {
             this.complementaryLayer.setVisibility(false);
         }
 
@@ -197,6 +275,7 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
                 buffer: this.changeVisibilityDelay
             });
         }
+        this.on("beforedestroy", this.unbind, this);
     },
 
     /** private: method[changeLayerOpacity]
@@ -207,7 +286,11 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
      */
     changeLayerOpacity: function(slider, value) {
         if (this.layer) {
-            this.layer.setOpacity(value / 100.0);
+            value = value / (this.maxValue - this.minValue);
+            if (this.inverse === true) {
+                value = 1 - value;
+            }
+            this.layer.setOpacity(value);
         }
     },
 
@@ -219,10 +302,12 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
      */
     changeLayerVisibility: function(slider, value) {
         var currentVisibility = this.layer.getVisibility();
-        if (value == this.minValue &&
+        if ((this.inverse === false && value == this.minValue) ||
+            (this.inverse === true && value == this.maxValue) &&
             currentVisibility === true) {
             this.layer.setVisibility(false);
-        } else if (value > this.minValue &&
+        } else if ((this.inverse === false && value > this.minValue) ||
+            (this.inverse === true && value < this.maxValue) &&
                    currentVisibility == false) {
             this.layer.setVisibility(true);
         }
@@ -236,10 +321,12 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
      */
     changeComplementaryLayerVisibility: function(slider, value) {
         var currentVisibility = this.complementaryLayer.getVisibility();
-        if (value == this.maxValue &&
+        if ((this.inverse === false && value == this.maxValue) ||
+            (this.inverse === true && value == this.minValue) &&
             currentVisibility === true) {
             this.complementaryLayer.setVisibility(false);
-        } else if (value < this.maxValue &&
+        } else if ((this.inverse === false && value < this.maxValue) ||
+            (this.inverse === true && value > this.minValue) &&
                    currentVisibility == false) {
             this.complementaryLayer.setVisibility(true);
         }
@@ -279,6 +366,7 @@ GeoExt.LayerOpacitySlider = Ext.extend(Ext.Slider, {
             click: this.stopMouseEvents,
             scope: this
         });
+        this.unbind();
     },
 
     /** private: method[stopMouseEvents]

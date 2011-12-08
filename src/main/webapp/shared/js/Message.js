@@ -49,7 +49,7 @@ de.ingrid.mapclient.Message.showInfo = function(msg) {
  */
 de.ingrid.mapclient.Message.showError = function(msg) {
 	Ext.Msg.show({
-		title: 'Error',
+		title: 'Fehler',
 		msg: msg,
 		width: 500,
 		height: 400,
@@ -73,3 +73,5 @@ de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht geliste
 de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";
 de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = "Beim Speichern der Karte ist ein Fehler aufgetreten.";
 de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim Löschen der Karte ist ein Fehler aufgetreten.";
+
+de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = "Beim Drucken der Karte ist ein Fehler aufgetreten.";

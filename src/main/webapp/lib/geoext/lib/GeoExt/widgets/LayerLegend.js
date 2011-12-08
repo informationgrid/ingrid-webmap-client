@@ -9,7 +9,7 @@
 /** api: (define)
  *  module = GeoExt
  *  class = LayerLegend
- *  base_link = `Ext.Container <http://extjs.com/deploy/dev/docs/?class=Ext.Container>`_
+ *  base_link = `Ext.Container <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Container>`_
  */
 
 Ext.namespace('GeoExt');
@@ -45,6 +45,11 @@ GeoExt.LayerLegend = Ext.extend(Ext.Container, {
      *  Optional css class to use for the layer title labels.
      */
     labelCls: null,
+    
+    /** private: property[layerStore]
+     *  :class:`GeoExt.data.LayerStore`
+     */
+    layerStore: null,
 
     /** private: method[initComponent]
      */
@@ -57,8 +62,10 @@ GeoExt.LayerLegend = Ext.extend(Ext.Container, {
             cls: 'x-form-item x-form-item-label' +
                 (this.labelCls ? ' ' + this.labelCls : '')
         });
-        this.layerRecord &&
-            this.layerRecord.store.on("update", this.onStoreUpdate, this);
+        if (this.layerRecord && this.layerRecord.store) {
+            this.layerStore = this.layerRecord.store;
+            this.layerStore.on("update", this.onStoreUpdate, this);
+        }
     },
 
     /** private: method[onStoreUpdate]
@@ -73,8 +80,11 @@ GeoExt.LayerLegend = Ext.extend(Ext.Container, {
      *  :param operation: ``String`` The type of operation.
      */
     onStoreUpdate: function(store, record, operation) {
-        if(record === this.layerRecord) {
-            var layer = record.get('layer');
+        // if we don't have items, we are already awaiting garbage
+        // collection after being removed by LegendPanel::removeLegend, and
+        // updating will cause errors
+        if (record === this.layerRecord && this.items.getCount() > 0) {
+            var layer = record.getLayer();
             this.setVisible(layer.getVisibility() &&
                 layer.calculateInRange() && layer.displayInLayerSwitcher &&
                 !record.get('hideInLegend'));
@@ -106,7 +116,7 @@ GeoExt.LayerLegend = Ext.extend(Ext.Container, {
             if (record && !record.get("hideTitle")) {
                 title = record.get("title") || 
                     record.get("name") || 
-                    record.get("layer").name || "";
+                    record.getLayer().name || "";
             }
         }
         return title;
@@ -115,8 +125,8 @@ GeoExt.LayerLegend = Ext.extend(Ext.Container, {
     /** private: method[beforeDestroy]
      */
     beforeDestroy: function() {
-        this.layerRecord && this.layerRecord.store &&
-            this.layerRecord.store.un("update", this.onStoreUpdate, this);
+        this.layerStore &&
+            this.layerStore.un("update", this.onStoreUpdate, this);
         GeoExt.LayerLegend.superclass.beforeDestroy.apply(this, arguments);
     }
 
