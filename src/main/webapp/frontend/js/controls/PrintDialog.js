@@ -111,6 +111,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 	printForm.insert(0, {
 		xtype: "textfield",
 		name: "mapTitle",
+		value: "", // don't send null values because printing will fail
 		fieldLabel: "Titel",
 		plugins: new GeoExt.plugins.PrintPageField({
 			printPage: printForm.printPage
@@ -118,8 +119,9 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 	});
 	printForm.insert(1, {
 		xtype: "textarea",
-		fieldLabel: "Kommentar",
 		name: "comment",
+		value: "", // don't send null values because printing will fail
+		fieldLabel: "Kommentar",
 		plugins: new GeoExt.plugins.PrintPageField({
 			printPage: printForm.printPage
 		})
@@ -137,7 +139,9 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 					};
 				}
 				else {
-					printForm.printOptions = null;
+					if (printForm.printOptions) {
+						delete printForm.printOptions.legend;
+					}
 				}
 			}
 		}
@@ -148,6 +152,11 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 			form.busyMask.hide();
 		}
 	});
+    this.printProvider.on({
+    	// close this form after printing
+        "print": self.close,
+        scope: self
+    });
 
 	return printForm;
 };

@@ -147,16 +147,21 @@
       <artifactId>jsr311-api</artifactId>
       <version>1.1.1</version>
     </dependency>
-	<dependency>
-		<groupId>log4j</groupId>
-		<artifactId>log4j</artifactId>
-		<version>1.2.16</version>
-	</dependency>
-	<dependency>
-		<groupId>com.h2database</groupId>
-		<artifactId>h2</artifactId>
-		<version>1.3.162</version>
-	</dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.3.162</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mapfish.print</groupId>
+      <artifactId>print-lib</artifactId>
+      <version>1.2-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <!-- ==================== REPOSITORIES ==================== -->
@@ -165,6 +170,10 @@
       <id>de.ingrid.all</id>
       <name>InGrid Repo Maven</name>
       <url>http://harrison.its-technidata.de/archiva/repository/ingrid-all</url>
+    </repository>
+    <repository>
+      <id>org.mapfish</id>
+      <url>http://dev.mapfish.org/maven/repository</url>
     </repository>
   </repositories>
   

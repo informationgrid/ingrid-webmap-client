@@ -48,7 +48,7 @@ de.ingrid.mapclient.SHORTURL_DATA_URL = de.ingrid.mapclient.BASE_URL+'data/maps'
 /**
  * Url of print server
  */
-de.ingrid.mapclient.PRINT_URL = de.ingrid.mapclient.BASE_URL+'../print';
+de.ingrid.mapclient.PRINT_URL = de.ingrid.mapclient.BASE_URL+'../pdf';
 
 /**
  * Url for help content
