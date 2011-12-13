@@ -56,6 +56,11 @@ de.ingrid.mapclient.PRINT_URL = de.ingrid.mapclient.BASE_URL+'../pdf';
 de.ingrid.mapclient.HELP_URL = 'http://www.portalu.de/hilfe?hkey=maps-1';
 
 /**
+ * Url for retrieving projection definitions
+ */
+de.ingrid.mapclient.PROJ4S_DEFS_URL = de.ingrid.mapclient.BASE_URL+'proj4s/defs';
+
+/**
  * View configurations for the map client frontend.
  * @see de.ingrid.mapclient.frontend.Workspace
  * TODO: This may be moved to the server

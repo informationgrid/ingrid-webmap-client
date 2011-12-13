@@ -3,6 +3,8 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.util.regex.Pattern;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -13,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import de.ingrid.mapclient.WmsProxy;
+import de.ingrid.mapclient.HttpProxy;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -26,16 +28,32 @@ public class WmsResource {
 	private static final Logger log = Logger.getLogger(WmsResource.class);
 
 	/**
-	 * Get capabilities document from the given url
-	 * @param url The GetCapabilities url
+	 * The service pattern that urls must match
+	 */
+	private final static Pattern SERVICE_PATTERN = Pattern.compile("SERVICE=WMS", Pattern.CASE_INSENSITIVE);
+
+	/**
+	 * The request pattern that urls must match
+	 */
+	private final static Pattern REQUEST_PATTERN = Pattern.compile("REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE);
+
+
+	/**
+	 * Get WMS response from the given url
+	 * @param url The request url
 	 * @return String
 	 */
 	@GET
 	@Path("proxy")
 	@Produces(MediaType.TEXT_PLAIN)
 	public String doWmsRequest(@QueryParam("url") String url) {
+		// check if the url string is valid
+		if (!SERVICE_PATTERN.matcher(url).find() && !REQUEST_PATTERN.matcher(url).find()) {
+			throw new IllegalArgumentException("The url is not a valid wms request: "+url);
+		}
+
 		try {
-			String response = WmsProxy.doRequest(url);
+			String response = HttpProxy.doRequest(url);
 			return response;
 		}
 		catch (Exception ex) {

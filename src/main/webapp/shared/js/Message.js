@@ -66,6 +66,7 @@ de.ingrid.mapclient.Message.SAVE_FAILURE = "Beim Speichern der Daten ist ein Feh
 
 de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = "Das Laden der Konfiguration ist fehlgeschlagen.";
 de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilities Dokuments ist fehlgeschlagen.";
+de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = "Das Laden der Projektionsdefinition ist fehlgeschlagen.";
 
 de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
 

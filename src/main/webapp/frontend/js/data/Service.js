@@ -10,11 +10,13 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  * @param definition Service object as returned by the getCapabilities request
  * @param layers Ext.util.MixedCollection with layer ids as keys and OpenLayers.Layer instances as values
  * 		(see de.ingrid.mapclient.frontend.data.Service.getLayerId)
+ * @param store GeoExt.data.WMSCapabilitiesStore instance
  */
-de.ingrid.mapclient.frontend.data.Service = function(capabilitiesUrl, definition, layers) {
+de.ingrid.mapclient.frontend.data.Service = function(capabilitiesUrl, definition, layers, store) {
 	this.capabilitesUrl = capabilitiesUrl;
 	this.definition = definition;
 	this.layers = layers;
+	this.capabilitiesStore = store;
 };
 
 /**
@@ -51,12 +53,31 @@ de.ingrid.mapclient.frontend.data.Service.prototype.contains = function(layer) {
 };
 
 /**
- * Get a layer by it's id
+ * Get a layer by it's id (@see de.ingrid.mapclient.frontend.data.Service.getLayerId)
  * @param id The id
- * @return layer OpenLayers.Layer instance
+ * @return OpenLayers.Layer instance
  */
 de.ingrid.mapclient.frontend.data.Service.prototype.getLayerById = function(id) {
 	return this.layers.get(id);
+};
+
+/**
+ * Get a layer record contained in the GeoExt.data.WMSCapabilitiesStore by it's id
+ * (@see de.ingrid.mapclient.frontend.data.Service.getLayerId)
+ * @param id The id
+ * @return Ext.data.Record instance
+ */
+de.ingrid.mapclient.frontend.data.Service.prototype.getLayerRecordById = function(id) {
+	var index = this.capabilitiesStore.findBy(function(record, recordId) {
+		if (de.ingrid.mapclient.frontend.data.Service.getLayerId(record.get("layer")) == id) {
+			return true;
+		}
+		return false;
+	}, this);
+	if (index != -1) {
+		return this.capabilitiesStore.getAt(index);
+	}
+	return null;
 };
 
 /**
@@ -145,7 +166,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						}
 
 						// create the service instance from the result
-						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, capabilities.service, layers);
+						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, capabilities.service, layers, store);
 						// register the service
 						de.ingrid.mapclient.frontend.data.Service.registry.add(capabilitiesUrl, service);
 						// call the callback if given

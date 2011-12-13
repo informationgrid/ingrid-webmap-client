@@ -27,17 +27,17 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	 */
 	map: null,
 
-    /**
-     * The view configuration. The default configuration lists all known
-     * properties:
-     */
-    viewConfig: {
-    	hasProjectionsList: true,
-    	hasScaleList: true,
-    	hasAreasList: true
-    },
+	/**
+	 * The view configuration. The default configuration lists all known
+	 * properties:
+	 */
+	viewConfig: {
+		hasProjectionsList: true,
+		hasScaleList: true,
+		hasAreasList: true
+	},
 
-    /**
+	/**
 	 * @cfg projectionsCombo The projections combobox
 	 */
 	projectionsCombo: null,
@@ -61,7 +61,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 	// register the baselayer change handler
 	this.map.events.on({
 		'changebaselayer': this.onBaseLayerChange,
-	    scope: this
+		scope: this
 	});
 
 	this.projectionsCombo = new Ext.form.ComboBox({
@@ -135,56 +135,58 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.controls.SettingsDialog.superclass.onRender.apply(this, arguments);
 
+	var self = this;
+
 	// prevent dragging the underlying map
 	this.getEl().swallowEvent('mousedown', false);
 
 	// initialize the projections list
 	var projections = de.ingrid.mapclient.Configuration.getValue('projections');
-	de.ingrid.mapclient.data.StoreHelper.load(this.projectionsCombo.getStore(),
-			projections, ['name', 'epsgCode']);
+	de.ingrid.mapclient.data.StoreHelper.load(this.projectionsCombo.getStore(), projections, ['name', 'epsgCode']);
 	var projection = this.getMapProjection();
 	// select initial projection
 	this.projectionsCombo.setValue(projection.getCode());
 	// define select callback
 	this.projectionsCombo.on('select', function(comboBox, record, index) {
-
-		// create a new baselayer and trigger the baselayer change event
-		// as suggested in http://www.mail-archive.com/users@geoext.org/msg01704.html
-		var oldProj = this.getMapProjection();
-		var newProj = new OpenLayers.Projection(record.get('epsgCode'));
-
-		var oldBaseLayer = this.map.baseLayer;
-		var newBaseLayer = new OpenLayers.Layer.WMS(
-			oldBaseLayer.name,
-			oldBaseLayer.url, {
-				layers: oldBaseLayer.name,
-				format: "image/png"
-			}, {
-				maxResolution: "auto",
-				minResolution: "auto",
-				//maxExtent: this.map.maxExtent.transform(oldProj, newProj),
-				// TODO: the next two values should be derived from the projection
-				maxExtent: new OpenLayers.Bounds.fromArray([-20037508.34, -20037508.34, 20037508.34, 20037508.34]),
-				units: 'm',
-				numZoomLevels: 16,
-				projection: newProj,
-				isBaseLayer: true
-			}
-		);
-		this.map.removeLayer(oldBaseLayer);
-		this.map.addLayer(newBaseLayer);
+		var newProjCode = record.get('epsgCode');
+		if (Proj4js.defs[newProjCode] == undefined) {
+			// if the projection is not defined yet, we have to load the definition
+			this.loadProjectionDef(newProjCode, function() {
+				// change the projection after loading the definition
+				self.changeProjection(newProjCode);
+			});
+		}
+		else {
+			// change the projection directly
+			this.changeProjection(newProjCode);
+		}
 	}, this);
 
 	// initialize the scales list
 	var scales = de.ingrid.mapclient.Configuration.getValue('scales');
-	de.ingrid.mapclient.data.StoreHelper.load(this.scalesCombo.getStore(),
-			scales, ['name', 'zoomLevel']);
-	// TODO: select initial scale
-	// define select callback
+	de.ingrid.mapclient.data.StoreHelper.load(this.scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
+
+	// bind scales list to map
+	this.map.events.register('zoomend', this, function() {
+		// select the current map scale, if it is in the list
+		var scale = this.map.getScale();
+		var scaleRecords = this.scalesCombo.getStore().queryBy(function(record) {
+			return Math.abs(scale-record.get('zoomLevel')) < 1;
+		});
+		if (scaleRecords.length > 0) {
+			scaleRecord = scaleRecords.items[0];
+			this.scalesCombo.setValue(scaleRecord.get('name'));
+		} else {
+			if (!this.scalesCombo.rendered) {
+				return;
+			}
+			this.scalesCombo.clearValue();
+		}
+	});
 	this.scalesCombo.on('select', function(comboBox, record, index) {
-		// change map scale
 		this.map.zoomToScale(record.get('zoomLevel'), true);
 	}, this);
+	this.map.events.triggerEvent("zoomend");
 
 	// add areas
 	if (this.viewConfig.hasAreasList) {
@@ -251,7 +253,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.getMapProjection 
  * @param exception Ext.form.ComboBox instance that should not be reseted
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.resetAreaComboBoxes = function(exception) {
-	this.scalesCombo.clearValue();
+	//this.scalesCombo.clearValue();
 	this.areaComboBoxes.each(function(item) {
 		if (item != exception) {
 			item.clearValue();
@@ -260,25 +262,62 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.resetAreaComboBox
 };
 
 /**
- * Callback for baselayer change in map, used to change the projection
- * code from: http://www.mail-archive.com/users@geoext.org/msg01704.html
- * @param event
+ * Change the map projection to the given one. We assume that the projection
+ * definition is loaded already
+ * @param newProjCode EPSG code
  */
-de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onBaseLayerChange = function(event) {
-   var mapProj, baseProj, newBase, reproject;
-   newBase = event.layer;
-   mapProj = (this.map.projection && this.map.projection instanceof OpenLayers.Projection) ? this.map.projection : new OpenLayers.Projection(this.map.projection);
-   baseProj = newBase.projection;
-   reproject = !(baseProj.equals(mapProj));
-   if (reproject) {
-      var center, maxExt;
-      //calc proper reporojected center
-      center = this.map.getCenter().transform(mapProj, baseProj);
-      //calc correct reprojected extents
-      maxExt = newBase.maxExtent;
-      //set map projection, extent, & center of map to proper values
-      this.map.projection = baseProj;
-      this.map.maxExtent = maxExt;
-      this.map.setCenter(center);
-   }
+de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.changeProjection = function(newProjCode) {
+	var oldProjection = this.getMapProjection();
+	var newProjection = new OpenLayers.Projection(newProjCode);
+	var options = {
+		maxExtent: this.map.maxExtent.clone().transform(oldProjection, newProjection),
+		projection: newProjection.getCode(),
+		units: newProjection.getUnits()
+	};
+	var newExtent = this.map.getExtent().clone().transform(oldProjection, newProjection);
+
+	// TODO maxExtent calculation is maybe not possible and the values must be provided
+	// left/right values seem to have problems
+
+	// reset map
+	this.map.setOptions(options);
+	// reset layers
+	for(var i=0,len=this.map.layers.length; i<len; i++) {
+		this.map.layers[i].addOptions(options);
+	}
+	// reproject map.layerContainerOrigin, in case the next
+	// call to moveTo does not change the zoom level and
+	// therefore centers the layer container
+	if(this.map.layerContainerOrigin) {
+		this.map.layerContainerOrigin.transform(oldProjection, newProjection);
+	}
+	this.map.zoomToMaxExtent(newExtent);
+};
+
+/**
+ * Load the projection definition for the given projection
+ * @param newProjCode EPSG code
+ * @param callback Function to call after loading
+ */
+de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.loadProjectionDef = function(newProjCode, callback) {
+	var codeNumber = newProjCode.replace(/^EPSG:/, '');
+	Ext.Ajax.request({
+		url: de.ingrid.mapclient.PROJ4S_DEFS_URL+'/'+codeNumber,
+		method: 'GET',
+		success: function(response, request) {
+			// we expect the projection definition in js
+			var defJs = response.responseText;
+			var regexp = new RegExp('^Proj4js\\.defs\\["'+newProjCode+'"] = ');
+			if (defJs && defJs.match(regexp)) {
+				// evaluate the js in order to define the projection
+				eval(response.responseText);
+			}
+			if (callback instanceof Function) {
+				callback();
+			}
+		},
+		failure: function(response, request) {
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE);
+		}
+	});
 };

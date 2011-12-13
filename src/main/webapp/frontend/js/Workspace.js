@@ -69,13 +69,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the map (default projection is WGS 84)
 	this.map = new OpenLayers.Map({
+		fractionalZoom: true,
 		projection: new OpenLayers.Projection("EPSG:4326"),
 		// this will be used by some controls (ArgParser, MousePosition,
 		// Permalink)
-		// displayProjection: new OpenLayers.Projection("EPSG:4326"),
-		minExtent: new OpenLayers.Bounds(-1, -1, 1, 1),
-		maxExtend: new OpenLayers.Bounds(-180, -90, 180, 90),
-		units: "degrees"
+		displayProjection: new OpenLayers.Projection("EPSG:4326")
 	});
 
 	// create the map container
@@ -357,6 +355,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
 	else {
 		// try to load existing session data
 		this.load();
+		// always init default map
+		//var callback = Ext.util.Functions.createDelegate(this.finishInitMap, this);
+		//this.initDefaultMap(callback);
 	}
 };
 
@@ -404,14 +405,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
 				self.map.addLayer(layer);
 			}
 
-			// set initial bounding box for the map
+			// set initial bounding box for the map (expected to be WGS 84)
 			// note: this must be done after layouting the map!
 			var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
-			var bounds = new OpenLayers.Bounds.fromArray([
-					bbox.west, bbox.south, bbox.east, bbox.north ]);
-			// bounds.transform(new
-			// OpenLayers.Projection("EPSG:4326"),
-			// self.map.getProjectionObject());
+			var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
+			//bounds.transform(new OpenLayers.Projection("EPSG:4326"), self.map.getProjectionObject());
 			self.map.zoomToExtent(bounds);
 
 			// add default service to active services
