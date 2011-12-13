@@ -227,8 +227,12 @@ de.ingrid.mapclient.frontend.data.Service.findByUrl = function(url) {
  */
 de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams = function(layer) {
 	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
-	var serviceLayer = service.getLayerById(de.ingrid.mapclient.frontend.data.Service.getLayerId(layer));
-	layer.mergeNewParams(serviceLayer.params);
+	if (service) {
+		var serviceLayer = service.getLayerById(de.ingrid.mapclient.frontend.data.Service.getLayerId(layer));
+		if (serviceLayer) {
+			layer.mergeNewParams(serviceLayer.params);
+		}
+	}
 };
 
 /**

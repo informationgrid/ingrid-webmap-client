@@ -41,7 +41,7 @@ public class HttpProxy {
 			// read the response into the string buffer
 			char[] buf = new char[1024];
 			int numRead = 0;
-			reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			while((numRead = reader.read(buf)) != -1) {
 				response.append(buf, 0, numRead);
 			}
