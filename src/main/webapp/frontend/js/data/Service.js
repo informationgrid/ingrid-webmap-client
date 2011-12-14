@@ -159,6 +159,10 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							// set layer parameters
 							layer.visibility = false;
 							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
+							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
+														// the base layer is defined explicitly
+
+							self.fixLayerProperties(layer);
 
 							// add the layer to the layer lists
 							var layerId = de.ingrid.mapclient.frontend.data.Service.getLayerId(layer);
@@ -233,6 +237,18 @@ de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams = function(layer) {
 			layer.mergeNewParams(serviceLayer.params);
 		}
 	}
+};
+
+/**
+ * Fix layer properties in order to work with OpenLayers
+ * @param layer OpenLayers.Layer instance
+ */
+de.ingrid.mapclient.frontend.data.Service.fixLayerProperties = function(layer) {
+	// fix layer properties
+	layer.maxScale = layer.maxScale == Infinity ? 0 : layer.maxScale;
+	layer.minScale = layer.minScale == Infinity ? 0 : layer.minScale;
+	layer.options.maxScale = layer.options.maxScale == Infinity ? 0 : layer.options.maxScale;
+	layer.options.minScale = layer.options.minScale == Infinity ? 0 : layer.options.minScale;
 };
 
 /**

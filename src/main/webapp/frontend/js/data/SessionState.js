@@ -133,7 +133,9 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 	var layers = format.getLayersFromContext(context.layersContext);
 	// merge default params from layers already loaded for the service
 	for (var i=0, count=layers.length; i<count; i++) {
-		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layers[i]);
+		var layer = layers[i];
+		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layer);
+		de.ingrid.mapclient.frontend.data.Service.fixLayerProperties(layer);
 	}
 	this.map.addLayers(layers);
 	this.map.setOptions({

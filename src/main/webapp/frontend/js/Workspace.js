@@ -456,7 +456,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		// 'addlayer': this.onStateChanged,
 		// 'removelayer': this.onStateChanged,
 		'changelayer': this.onStateChanged,
-		'move': this.onStateChanged,
+		'moveend': this.onStateChanged,
 		'changebaselayer': this.onStateChanged,
 		scope: this
 	});
