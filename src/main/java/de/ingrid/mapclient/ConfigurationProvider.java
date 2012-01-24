@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.thoughtworks.xstream.XStream;
 
 import de.ingrid.mapclient.model.AreaCategory;
@@ -24,6 +26,7 @@ import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
 import de.ingrid.mapclient.model.WmsServer;
+import de.ingrid.mapclient.rest.ConfigurationResource;
 
 /**
  * ConfigurationProvider gives access to the configuration of the map client.
@@ -50,13 +53,14 @@ public enum ConfigurationProvider {
 
 	private Properties properties = null;
 	private Configuration configuration = null;
-
+	
 	/**
 	 * Constructor. Reads the configuration from disk.
 	 */
 	private ConfigurationProvider() {
 
 		BufferedReader input = null;
+		String xml = null;
 		try {
 			// get the configuration file name
 			Properties props = this.getProperties();
@@ -75,14 +79,13 @@ public enum ConfigurationProvider {
 			input = null;
 
 			// deserialize a temporary Configuration instance from xml
-			String xml = content.toString();
+			xml = content.toString();
 			XStream xstream = new XStream();
 			this.setXStreamAliases(xstream);
 			this.configuration = (Configuration)xstream.fromXML(xml);
 		}
 		catch (Exception e) {
-			// if something goes wrong, we start with an empty configuration
-			this.configuration = new Configuration();
+			throw new RuntimeException(e);
 		}
 		finally {
 			if (input != null) {

@@ -17,6 +17,9 @@ public class AreaCategory {
 	private List<AreaCategory> areaCategories = new ArrayList<AreaCategory>();
 	private List<MapArea> areas = new ArrayList<MapArea>();
 
+	public AreaCategory() {
+	}
+
 	public AreaCategory(String name, List<AreaCategory> areaCategories, List<MapArea> areas) {
 		this.name = name;
 		this.areaCategories = areaCategories;

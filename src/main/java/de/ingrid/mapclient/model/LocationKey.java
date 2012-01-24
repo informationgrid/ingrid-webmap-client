@@ -13,6 +13,9 @@ public class LocationKey {
 	private int rsKey;
 	private int agsKey;
 
+	public LocationKey() {
+	}
+
 	public LocationKey(int rsKey, int agsKey) {
 		this.rsKey = rsKey;
 		this.agsKey = agsKey;

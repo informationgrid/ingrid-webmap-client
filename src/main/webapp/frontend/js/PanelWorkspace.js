@@ -4,11 +4,14 @@
 Ext.namespace("de.ingrid.mapclient.frontend");
 
 /**
- * @class Workspace is the main gui component for the frontend.
+ * @class PanelWorkspace is the main gui component for the frontend.
  */
-de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
+de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	layout: 'border',
 	monitorResize: true,
+	renderTo:'openlayersDiv',
+	height:676,
+	autoWidth:true,
 
 	/**
 	 * @cfg The initial map url to load. This is typically a short url which the
@@ -26,7 +29,7 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 	 *      properties:
 	 */
 	viewConfig: {
-		hasServicesPanel: true,
+		hasServicesPanel: true, //the westpanel currently disabled
 		hasInfoTool: true, //now serves as coordinates check
 		hasHistoryTool: true,
 		hasMeasureTool: true, //currently disabled
@@ -61,7 +64,7 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 /**
  * Initialize the component (called by Ext)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function() {
 	if (this.session == null) {
 		throw "Workspace has to be created with a Session instance";
 	}
@@ -118,26 +121,26 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	});
 
 	// create the panel for the west region
-	var westPanel = new Ext.TabPanel({
-		region: 'west',
-		activeTab: 0,
-		width: 200,
-		split: true,
-		collapsible: true,
-		items: [{
-			title: 'Dienste',
-			closable: false,
-			layout: 'accordion',
-			layoutConfig: {
-				animate: true
-			},
-			border: false,
-			items: accordionItems
-		}, {
-			title: 'Legende',
-			items: legendPanel
-		}]
-	});
+//	var westPanel = new Ext.TabPanel({
+//		region: 'west',
+//		activeTab: 0,
+//		width: 200,
+//		split: true,
+//		collapsible: true,
+//		items: [{
+//			title: 'Dienste',
+//			closable: false,
+//			layout: 'accordion',
+//			layoutConfig: {
+//				animate: true
+//			},
+//			border: false,
+//			items: accordionItems
+//		}, {
+//			title: 'Legende',
+//			items: legendPanel
+//		}]
+//	});
 
 	// create the toolbar items
 	var toolbarItems = [];
@@ -153,6 +156,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					},
 					callbacks : {
 						done : function(geometry) {
+							// stimmt noch nicht, aber vom prinzip her schon
 							bounds = geometry.getBounds();
 							alert(bounds.left.toFixed(2) + ", "
 									+ bounds.bottom.toFixed(2) + ", "
@@ -198,7 +202,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}));
 	}
 	
-	// c) measure tool
+//	// c) measure tool
 //	if (this.viewConfig.hasMeasureTool) {
 //		// create the OpenLayers control
 //		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
@@ -208,40 +212,79 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 //			"measure": this.measure
 //		});
 //		this.map.addControl(measurePathCtrl);
-//		var measurePolygonCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
-//			persist: true
-//		});
-//		measurePolygonCtrl.events.on({
-//			"measure": this.measure
-//		});
-//		this.map.addControl(measurePolygonCtrl);
+//		//testest
 //
+//		//this control checks the coordinates of the drawn rectangle
+//		var measurePolygonCtrl = new OpenLayers.Control.Measure(
+//				OpenLayers.Handler.RegularPolygon, {
+//					handlerOptions : {
+//						sides : 4,
+//						irregular : true,
+//						persist : true
+//					},
+//					callbacks : {
+//						done : function(geometry) {
+//							//stimmt noch nicht, aber vom prinzip her schon
+//							bounds = geometry.getBounds();
+//							var ll = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
+//											bounds.left, bounds.bottom));
+//							var ur = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
+//											bounds.right, bounds.top));
+//		 alert(bounds.left.toFixed(2) + ", " +
+//		 bounds.bottom.toFixed(2) + ", " +
+//		 bounds.right.toFixed(2) + ", " +
+//		 bounds.top.toFixed(2));
+//						}
+//					}
+//				});  
+//
+//
+//		this.map.addControl(measurePolygonCtrl);
+//		
+//
+//
+//
+//      
+//
+//            
 //		toolbarItems.push(new Ext.SplitButton({
 //			iconCls: 'iconMeassure',
 //			tooltip: 'Messen',
 //			menu: [new Ext.menu.CheckItem({
 //				id: 'measurePath',
 //				text: 'Strecke',
-//				toggleGroup: 'measure',
+//				toggleGroup: 'addToSearch',
 //				listeners: {
 //					checkchange: function(item, checked) {
 //						if (checked) {
+//							
 //							Ext.getCmp('measurePolygon').setChecked(false);
-//							measurePathCtrl.activate();
+//							//self.addToSearch(true);
+////							var control = self.map.getControl("OpenLayers.Control.PanZoom_5");
+////							control.deactivate();
+//
+//							//self.map.getControl("OpenLayers.Control.PanZoom_5").deactivate();
+//							//measurePathCtrl.activate();
+//							//addSearchControl.activate();
 //						} else {
-//							measurePathCtrl.deactivate();
+//							//measurePathCtrl.deactivate();
+//							//self.addToSearch(false);
+//							//addSearchControl.destroy();
+//							//addSearchControl.deactivate();
+//							//self.map.getControl("OpenLayers.Control.PanZoom_5").activate();
 //						}
 //					}
 //				}
 //			}), new Ext.menu.CheckItem({
 //				id: 'measurePolygon',
 //				text: 'Fläche',
-//				toggleGroup: 'measure',
+//				toggleGroup: 'control',
 //				listeners: {
 //					checkchange: function(item, checked) {
 //						if (checked) {
 //							Ext.getCmp('measurePath').setChecked(false);
 //							measurePolygonCtrl.activate();
+//							
 //						} else {
 //							measurePolygonCtrl.deactivate();
 //						}
@@ -338,33 +381,28 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		items: mapPanel,
 		tbar: toolbar
 	});
-	//dummy panel for the header
-	var northPanel = new Ext.Panel({
-		region: 'north',
-		baseCls:'',
-		height:142
-	});
+
 	
 	
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
-	var items = [ centerPanel,northPanel ];
-	if (this.viewConfig.hasServicesPanel) {
-		items.push(westPanel);
-	}
+	var items = [ centerPanel ];
+//	if (this.viewConfig.hasServicesPanel) {
+//		items.push(westPanel);
+//	}
 
 	Ext.apply(this, {
 		items: items
 	});
 
-	de.ingrid.mapclient.frontend.Workspace.superclass.initComponent.call(this);
+	de.ingrid.mapclient.frontend.PanelWorkspace.superclass.initComponent.call(this);
 };
 
 /**
  * Render callback (called by Ext)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
-	de.ingrid.mapclient.frontend.Workspace.superclass.onRender.apply(this, arguments);
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.onRender = function() {
+	de.ingrid.mapclient.frontend.PanelWorkspace.superclass.onRender.apply(this, arguments);
 
 	if (this.mapUrl) {
 		// load the map defined in the mapUrl
@@ -385,7 +423,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
  * @param callback
  *            Function to be called after initialization finished
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callback) {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initDefaultMap = function(callback) {
 
 	// initialize the map with the default service
 	var self = this;
@@ -442,7 +480,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
 /**
  * Create the OpenLayers controls for the map.
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function() {
 
 	var self = this;
 	// create the overview layer
@@ -489,7 +527,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
  *            Event with measure, units, order, and geometry properties as
  *            received from OpenLayers.Control.Measure
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.measure = function(event) {
 	var units = event.units;
 	var order = event.order;
 	var measure = event.measure;
@@ -519,7 +557,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
  * Method to be called, when any data changes that needs to be stored on the
  * server. To prevent execution set listenToStateChanges to false
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.onStateChanged = function() {
 	if (this.listenToStateChanges) {
 		this.save(true);
 	}
@@ -533,7 +571,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
  * @param title The map state title (optional)
  * @param description The map state description (optional)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, title, description) {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.save = function(isTemporary, title, description) {
 	// set parameters according to save type
 	var responseHandler = (isTemporary == true) ? undefined : {
 		success: function(responseText) {
@@ -561,7 +599,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, ti
  * @param shortUrl The short url of the data to load (optional, if given, id will be ignored)
  * @param id The id of the data (optional)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, id) {
 	// set parameters according to load type
 	var safeStateAfterLoad = id != undefined ? true : false;
 
@@ -595,3 +633,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 		}
 	});
 };
+
+
+
+                
+  
+

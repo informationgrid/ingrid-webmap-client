@@ -13,6 +13,10 @@ public class WmsServer {
 	private String name;
 	private String capabilitiesUrl;
 
+	public WmsServer()
+	{
+	}
+
 	public WmsServer(String name, String capabilitiesUrl)
 	{
 		this.name = name;

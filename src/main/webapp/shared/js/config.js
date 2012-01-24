@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient");
  * The base url for all requests
  * TODO: This needs to be dynamically replaced by the configured Proxy Url
  */
-de.ingrid.mapclient.BASE_URL = '../rest/';
+de.ingrid.mapclient.BASE_URL = '/ingrid-webmap-client/rest/';
 
 /**
  * Base url for all requests related to the dynamic application configuration.

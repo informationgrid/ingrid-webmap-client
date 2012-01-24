@@ -22,11 +22,21 @@ Ext.onReady(function() {
 			// build the gui with the given configuration
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
 			if (configPrams != undefined) {
+				var loc = window.location.toString();
+				var pos = loc.indexOf("env-place-map");
+				if(pos > -1){
+				new de.ingrid.mapclient.frontend.PanelWorkspace({
+					mapUrl: mapUrl,
+					session: session,
+					viewConfig: configPrams
+				});				
+				}else{
 				new de.ingrid.mapclient.frontend.Workspace({
 					mapUrl: mapUrl,
 					session: session,
 					viewConfig: configPrams
 				});
+				}
 			}
 			else {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE);

@@ -12,6 +12,9 @@ public class WmcDocument {
 
 	private String xml;
 
+	public WmcDocument() {
+	}
+	
 	public WmcDocument(String xml) {
 		this.xml = xml;
 	}
