@@ -144,38 +144,29 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// a) feature tool
 	if (this.viewConfig.hasInfoTool) {
-		var coordinatesCtrl = new OpenLayers.Control.Measure(
-				OpenLayers.Handler.RegularPolygon, {
-					handlerOptions : {
-						sides : 4,
-						irregular : true,
-						persist : true
-					},
-					callbacks : {
-						done : function(geometry) {
-							bounds = geometry.getBounds();
-							alert(bounds.left.toFixed(2) + ", "
-									+ bounds.bottom.toFixed(2) + ", "
-									+ bounds.right.toFixed(2) + ", "
-									+ bounds.top.toFixed(2));
-						}
-					}
-				});  
+
+		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+			map: this.map
+		});
+		this.map.events.on({
+			'click': featureInfoControl.query,
+			scope: featureInfoControl
+		});
 
 		toolbarItems.push(new Ext.Button({
-			iconCls: 'iconMeassure',
-			tooltip: 'Koordinaten',
+			iconCls: 'iconInfo',
+			tooltip: 'Info',
 			enableToggle: true,
 			handler: function(btn) {
 				if (btn.pressed) {
-					coordinatesCtrl.activate();
+					featureInfoControl.activate();
 				}
 				else {
-					coordinatesCtrl.deactivate();
+					featureInfoControl.deactivate();
 				}
 			}
 		}));
-		this.map.addControl(coordinatesCtrl);
+
 	}
 
 	// b) history tool
@@ -197,60 +188,59 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip: 'Vor'
 		}));
 	}
-	
+
 	// c) measure tool
-//	if (this.viewConfig.hasMeasureTool) {
-//		// create the OpenLayers control
-//		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
-//			persist: true
-//		});
-//		measurePathCtrl.events.on({
-//			"measure": this.measure
-//		});
-//		this.map.addControl(measurePathCtrl);
-//		var measurePolygonCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
-//			persist: true
-//		});
-//		measurePolygonCtrl.events.on({
-//			"measure": this.measure
-//		});
-//		this.map.addControl(measurePolygonCtrl);
-//
-//		toolbarItems.push(new Ext.SplitButton({
-//			iconCls: 'iconMeassure',
-//			tooltip: 'Messen',
-//			menu: [new Ext.menu.CheckItem({
-//				id: 'measurePath',
-//				text: 'Strecke',
-//				toggleGroup: 'measure',
-//				listeners: {
-//					checkchange: function(item, checked) {
-//						if (checked) {
-//							Ext.getCmp('measurePolygon').setChecked(false);
-//							measurePathCtrl.activate();
-//						} else {
-//							measurePathCtrl.deactivate();
-//						}
-//					}
-//				}
-//			}), new Ext.menu.CheckItem({
-//				id: 'measurePolygon',
-//				text: 'Fläche',
-//				toggleGroup: 'measure',
-//				listeners: {
-//					checkchange: function(item, checked) {
-//						if (checked) {
-//							Ext.getCmp('measurePath').setChecked(false);
-//							measurePolygonCtrl.activate();
-//						} else {
-//							measurePolygonCtrl.deactivate();
-//						}
-//					}
-//				}
-//			})]
-//		}));
-//	}
-	
+	if (this.viewConfig.hasMeasureTool) {
+		// create the OpenLayers control
+		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
+			persist: true
+		});
+		measurePathCtrl.events.on({
+			"measure": this.measure
+		});
+		this.map.addControl(measurePathCtrl);
+		var measurePolygonCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Polygon, {
+			persist: true
+		});
+		measurePolygonCtrl.events.on({
+			"measure": this.measure
+		});
+		this.map.addControl(measurePolygonCtrl);
+
+		toolbarItems.push(new Ext.SplitButton({
+			iconCls: 'iconMeassure',
+			tooltip: 'Messen',
+			menu: [new Ext.menu.CheckItem({
+				id: 'measurePath',
+				text: 'Strecke',
+				toggleGroup: 'measure',
+				listeners: {
+					checkchange: function(item, checked) {
+						if (checked) {
+							Ext.getCmp('measurePolygon').setChecked(false);
+							measurePathCtrl.activate();
+						} else {
+							measurePathCtrl.deactivate();
+						}
+					}
+				}
+			}), new Ext.menu.CheckItem({
+				id: 'measurePolygon',
+				text: 'Fläche',
+				toggleGroup: 'measure',
+				listeners: {
+					checkchange: function(item, checked) {
+						if (checked) {
+							Ext.getCmp('measurePath').setChecked(false);
+							measurePolygonCtrl.activate();
+						} else {
+							measurePolygonCtrl.deactivate();
+						}
+					}
+				}
+			})]
+		}));
+	}
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// d) print tool

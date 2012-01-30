@@ -48,6 +48,7 @@ body {
 .iconTransparency {
 	background-image: url(../../shared/images/icon_transparency.png);
 }
+.iconSelectCoordinates{background-image:url(../../shared/images/icon_select_coordinates.png);}
 
 .iconMetadata {
 	background-image: url(../../shared/images/icon_metadata.png);

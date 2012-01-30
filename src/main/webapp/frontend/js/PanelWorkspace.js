@@ -167,7 +167,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 				});  
 
 		toolbarItems.push(new Ext.Button({
-			iconCls: 'iconMeassure',
+			iconCls: 'iconSelectCoordinates',
 			tooltip: 'Koordinaten',
 			enableToggle: true,
 			handler: function(btn) {
