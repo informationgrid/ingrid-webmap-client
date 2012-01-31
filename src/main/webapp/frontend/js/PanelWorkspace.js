@@ -58,7 +58,9 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	 *
 	 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
 	 */
-	listenToStateChanges: false
+	listenToStateChanges: false,
+	
+	callbackHooks: null
 });
 
 /**
@@ -156,12 +158,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 					},
 					callbacks : {
 						done : function(geometry) {
-							// stimmt noch nicht, aber vom prinzip her schon
-							bounds = geometry.getBounds();
-							alert(bounds.left.toFixed(2) + ", "
-									+ bounds.bottom.toFixed(2) + ", "
-									+ bounds.right.toFixed(2) + ", "
-									+ bounds.top.toFixed(2));
+							if (self.callbackHooks.bboxSelected) {
+								bounds = geometry.getBounds();
+								self.callbackHooks.bboxSelected(bounds.left.toFixed(2), bounds.right.toFixed(2), bounds.bottom.toFixed(2), bounds.top.toFixed(2));
+							} else {
+								// output message to js console
+								console.log("No callback 'bboxSelected' has been defined for selecting a bounding box!") 
+							}
 						}
 					}
 				});  
