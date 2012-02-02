@@ -1,3 +1,4 @@
+
 /**
  * Application startup script
  */
@@ -7,6 +8,12 @@ Ext.onReady(function() {
 	de.ingrid.mapclient.Configuration.load({
 		success: function() {
 
+			// inject call back hooks from outer application
+			var callbackHooks = {};
+			if (!(typeof mapClientCallbackHooks === "undefined")) {
+				callbackHooks = mapClientCallbackHooks;
+			}
+			
 			// check if there is an mapUrl GET parameter
 			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
 
@@ -23,19 +30,22 @@ Ext.onReady(function() {
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
 			if (configPrams != undefined) {
 				var loc = window.location.toString();
-				var pos = loc.indexOf("env-place-map");
-				if(pos > -1){
-				new de.ingrid.mapclient.frontend.PanelWorkspace({
-					mapUrl: mapUrl,
-					session: session,
-					viewConfig: configPrams
-				});				
-				}else{
+				var pos = loc.indexOf("main-maps");
+				var pos2 = loc.indexOf("kartendienste");
+				if(pos > -1 || pos2 > -1){
 				new de.ingrid.mapclient.frontend.Workspace({
 					mapUrl: mapUrl,
 					session: session,
 					viewConfig: configPrams
-				});
+					//callbackHooks: callbackHooks
+				});			
+				}else{
+				new de.ingrid.mapclient.frontend.PanelWorkspace({
+					mapUrl: mapUrl,
+					session: session,
+					viewConfig: configPrams,
+					callbackHooks: callbackHooks
+				});						
 				}
 			}
 			else {
