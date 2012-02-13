@@ -7,14 +7,19 @@ Ext.onReady(function() {
 	// load the configuration
 	de.ingrid.mapclient.Configuration.load({
 		success: function() {
-
+ 
+	
 			// inject call back hooks from outer application
 			var callbackHooks = {};
 			if (!(typeof mapClientCallbackHooks === "undefined")) {
 				callbackHooks = mapClientCallbackHooks;
+//				console.debug("mapClientCallbackHooks defined: "+callbackHooks);
+   			} else if ( window.parent != window && !(typeof window.parent.mapClientCallbackHooks === "undefined")) {
+   			 // check if map is IFRAME embedded and callback was defined outside
+    			var callbackHooks = window.parent.mapClientCallbackHooks;
+//    			console.debug("parent != window, callbackHooks: "+callbackHooks);
 			}
-			
-			// check if there is an mapUrl GET parameter
+
 			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
 
 			// create the session and personalize it, if an user id is given in the userId GET parameter
@@ -28,6 +33,7 @@ Ext.onReady(function() {
 
 			// build the gui with the given configuration
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
+//			console.debug("window.location: "+window.location.toString());
 			if (configPrams != undefined) {
 				var loc = window.location.toString();
 				var pos = loc.indexOf("main-maps");
@@ -39,7 +45,16 @@ Ext.onReady(function() {
 					viewConfig: configPrams
 					//callbackHooks: callbackHooks
 				});			
-				}else{
+				}else if(loc.indexOf("webmap-client") > -1 ){
+				new de.ingrid.mapclient.frontend.PanelWorkspace({
+					height:500,	
+					mapUrl: mapUrl,
+					session: session,
+					viewConfig: configPrams,
+					callbackHooks: callbackHooks
+				});						
+				}
+				else{
 				new de.ingrid.mapclient.frontend.PanelWorkspace({
 					mapUrl: mapUrl,
 					session: session,
