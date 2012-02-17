@@ -179,7 +179,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			control: historyCtrl.previous,
 			disabled: true,
 			iconCls: 'iconZoomPrev',
-			tooltip: 'Zur�ck'
+			tooltip: 'Zur&uuml;ck'
 		}));
 		toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
@@ -226,7 +226,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}
 			}), new Ext.menu.CheckItem({
 				id: 'measurePolygon',
-				text: 'Fl�che',
+				text: 'Fl&auml;che',
 				toggleGroup: 'measure',
 				listeners: {
 					checkchange: function(item, checked) {
@@ -498,7 +498,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
 		title += 'Strecke';
 		content += measure.toFixed(3) + " " + units;
 	} else {
-		title += 'Fl�che';
+		title += 'Fl&auml;che';
 		content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 	}
 	new Ext.Window({

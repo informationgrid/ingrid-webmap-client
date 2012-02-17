@@ -267,17 +267,21 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.resetAreaComboBox
  * @param newProjCode EPSG code
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.changeProjection = function(newProjCode) {
+	
 	var oldProjection = this.getMapProjection();
 	var newProjection = new OpenLayers.Projection(newProjCode);
-	var options = {
-		maxExtent: this.map.maxExtent.clone().transform(oldProjection, newProjection),
-		projection: newProjection.getCode(),
-		units: newProjection.getUnits()
-	};
+	var newMaxExtent = this.getMaxExtent(newProjection);
 	var newExtent = this.map.getExtent().clone().transform(oldProjection, newProjection);
-
-	// TODO maxExtent calculation is maybe not possible and the values must be provided
-	// left/right values seem to have problems
+	var viewSize = this.map.getSize();
+    var idealMaxResolution = Math.max( newMaxExtent.getWidth()  / viewSize.w,
+    		newMaxExtent.getHeight() / viewSize.h );
+    console.debug("New maxResolution: " + idealMaxResolution);
+	var options = {
+		maxExtent: newMaxExtent,
+		projection: newProjection.getCode(),
+		units: newProjection.getUnits(),
+		maxResolution: 'auto'
+	};
 
 	// reset map
 	this.map.setOptions(options);
@@ -291,8 +295,66 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.changeProjection 
 	if(this.map.layerContainerOrigin) {
 		this.map.layerContainerOrigin.transform(oldProjection, newProjection);
 	}
-	this.map.zoomToMaxExtent(newExtent);
+	this.map.zoomToExtent(newExtent);
+	
+	
+    this.map.displayProjection = newProjection;
+    
+    var control = null;
+    if (this.controls) {
+        for (var k = 0; k < this.controls.length; k++) {
+            control = this.controls[k];
+            if (control.displayProjection) {
+                control.displayProjection = newProjection;
+            }
+            if (control instanceof OpenLayers.Control.OverviewMap) {
+            	// reset map
+            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
+            	control.ovmap.setOptions(options);
+            	control.ovmap.baseLayer.addOptions(options);            	
+            	control.ovmap.zoomToExtent(newExtent);
+            }
+            if (control.redraw) {
+                control.redraw();
+            }
+        }
+
+    } else {
+        for (var i = 0; i < this.map.controls.length; i++) {
+            control = this.map.controls[i];
+            if (control.displayProjection) {
+                control.displayProjection = newProjection;
+            }
+            if (control instanceof OpenLayers.Control.OverviewMap) {
+            	// reset map
+            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
+            	control.ovmap.setOptions(options);            	
+            	control.ovmap.baseLayer.addOptions(options);            	
+            	control.ovmap.zoomToExtent(newExtent);
+            }
+            if (control.redraw) {
+                control.redraw();
+            }
+        }
+    } 	
+	
 };
+
+/**
+ * Get the configured maximal extent transformed by a projection.
+ * 
+ * @param protection A projection.
+ * @return OpenLayers.Bounds instance
+ */
+de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.getMaxExtent = function(protection) {
+	var wgs84Proj = new OpenLayers.Projection("EPSG:4326");
+	var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
+	var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
+	var extent = bounds.transform(wgs84Proj, protection);
+	return extent;
+};
+
+
 
 /**
  * Load the projection definition for the given projection
