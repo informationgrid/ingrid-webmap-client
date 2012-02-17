@@ -78,7 +78,11 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasProjectionsList: true,
 	    	hasScaleList: true,
 	    	hasAreasList: true,
-	    	hasPermaLink: false
+	    	hasPermaLink: false,
+	    	isFullScreen: true,
+	    	spacerTop: 142,
+	    	hasSettings: true,
+	    	
 		},
 		"minimal": {
 	    	hasServicesPanel: false,
@@ -92,7 +96,11 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasProjectionsList: false,
 	    	hasScaleList: true,
 	    	hasAreasList: true,
-	    	hasPermaLink: false
+	    	hasPermaLink: false,
+	    	isFullScreen: false,
+	    	panelHeight: 500,
+	    	hasBboxSelectTool: true,
+	    	hasSettings: false,
 		}
 };
 

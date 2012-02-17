@@ -15,7 +15,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	collapsible: true,
 	collapsed: true,
 	expandOnShow: false,
-	width: 200,
+	width: 250,
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
@@ -84,7 +84,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 	});
 
 	this.scalesCombo = new Ext.form.ComboBox({
-		fieldLabel: 'Maﬂstab',
+		fieldLabel: 'Ma&szlig;stab',
 		triggerAction: 'all',
 		mode: 'local',
 		store: new Ext.data.ArrayStore({

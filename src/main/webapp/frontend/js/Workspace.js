@@ -179,7 +179,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			control: historyCtrl.previous,
 			disabled: true,
 			iconCls: 'iconZoomPrev',
-			tooltip: 'Zurück'
+			tooltip: 'Zurï¿½ck'
 		}));
 		toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
@@ -226,7 +226,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}
 			}), new Ext.menu.CheckItem({
 				id: 'measurePolygon',
-				text: 'Fläche',
+				text: 'Flï¿½che',
 				toggleGroup: 'measure',
 				listeners: {
 					checkchange: function(item, checked) {
@@ -310,12 +310,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	});
 
 	// create the settings dialog
-	var settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
+	var settingsDialog;
+	if (this.viewConfig.hasSettings) {
+		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
 		map: this.map,
 		viewConfig: this.viewConfig
-	});
+		});
+	}
+
 	this.on('afterrender', function(el) {
-		if (settingsDialog) {
+		if (settingsDialog && self.viewConfig.hasSettings) {
 			mapPanel.items.add(settingsDialog); // constrain to mapPanel
 			settingsDialog.anchorTo(mapPanel.el, 'tr-tr', [ -10, 10 ]);
 		}
@@ -332,13 +336,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var northPanel = new Ext.Panel({
 		region: 'north',
 		baseCls:'',
-		height:142
+		height:this.viewConfig.spacerTop?this.viewConfig.spacerTop:0
 	});
 	
 	
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
-	var items = [ centerPanel,northPanel ];
+	var items;
+	if (this.viewConfig.spacerTop) {
+		items = [ centerPanel,northPanel ];
+	} else {
+		items = [ centerPanel];
+	}
 	if (this.viewConfig.hasServicesPanel) {
 		items.push(westPanel);
 	}
@@ -489,7 +498,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
 		title += 'Strecke';
 		content += measure.toFixed(3) + " " + units;
 	} else {
-		title += 'Fläche';
+		title += 'Flï¿½che';
 		content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 	}
 	new Ext.Window({

@@ -123,32 +123,33 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	});
 
 	// create the panel for the west region
-//	var westPanel = new Ext.TabPanel({
-//		region: 'west',
-//		activeTab: 0,
-//		width: 200,
-//		split: true,
-//		collapsible: true,
-//		items: [{
-//			title: 'Dienste',
-//			closable: false,
-//			layout: 'accordion',
-//			layoutConfig: {
-//				animate: true
-//			},
-//			border: false,
-//			items: accordionItems
-//		}, {
-//			title: 'Legende',
-//			items: legendPanel
-//		}]
-//	});
+	var westPanel = new Ext.TabPanel({
+		region: 'west',
+		activeTab: 0,
+		width: 200,
+		split: true,
+		collapsible: true,
+		items: [{
+			title: 'Dienste',
+			closable: false,
+			layout: 'accordion',
+			layoutConfig: {
+				animate: true
+			},
+			border: false,
+			items: accordionItems
+		}, {
+			title: 'Legende',
+			items: legendPanel
+		}]
+	});
 
 	// create the toolbar items
 	var toolbarItems = [];
 
-	// a) feature tool
-	if (this.viewConfig.hasInfoTool) {
+	
+	// BBOX select tool
+	if (this.viewConfig.hasBboxSelectTool) {
 		var coordinatesCtrl = new OpenLayers.Control.Measure(
 				OpenLayers.Handler.RegularPolygon, {
 					handlerOptions : {
@@ -184,6 +185,31 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		}));
 		this.map.addControl(coordinatesCtrl);
 	}
+	
+	// a) feature tool
+	if (this.viewConfig.hasInfoTool) {
+		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+			map: this.map
+		});
+		this.map.events.on({
+			'click': featureInfoControl.query,
+			scope: featureInfoControl
+		});
+
+		toolbarItems.push(new Ext.Button({
+			iconCls: 'iconInfo',
+			tooltip: 'Info',
+			enableToggle: true,
+			handler: function(btn) {
+				if (btn.pressed) {
+					featureInfoControl.activate();
+				}
+				else {
+					featureInfoControl.deactivate();
+				}
+			}
+		}));
+	}
 
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
@@ -195,7 +221,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			control: historyCtrl.previous,
 			disabled: true,
 			iconCls: 'iconZoomPrev',
-			tooltip: 'Zurück'
+			tooltip: 'Zurï¿½ck'
 		}));
 		toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
@@ -205,97 +231,93 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		}));
 	}
 	
-//	// c) measure tool
-//	if (this.viewConfig.hasMeasureTool) {
-//		// create the OpenLayers control
-//		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
-//			persist: true
-//		});
-//		measurePathCtrl.events.on({
-//			"measure": this.measure
-//		});
-//		this.map.addControl(measurePathCtrl);
-//		//testest
-//
-//		//this control checks the coordinates of the drawn rectangle
-//		var measurePolygonCtrl = new OpenLayers.Control.Measure(
-//				OpenLayers.Handler.RegularPolygon, {
-//					handlerOptions : {
-//						sides : 4,
-//						irregular : true,
-//						persist : true
-//					},
-//					callbacks : {
-//						done : function(geometry) {
-//							//stimmt noch nicht, aber vom prinzip her schon
-//							bounds = geometry.getBounds();
-//							var ll = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
-//											bounds.left, bounds.bottom));
-//							var ur = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
-//											bounds.right, bounds.top));
-//		 alert(bounds.left.toFixed(2) + ", " +
-//		 bounds.bottom.toFixed(2) + ", " +
-//		 bounds.right.toFixed(2) + ", " +
-//		 bounds.top.toFixed(2));
-//						}
-//					}
-//				});  
-//
-//
-//		this.map.addControl(measurePolygonCtrl);
-//		
-//
-//
-//
-//      
-//
-//            
-//		toolbarItems.push(new Ext.SplitButton({
-//			iconCls: 'iconMeassure',
-//			tooltip: 'Messen',
-//			menu: [new Ext.menu.CheckItem({
-//				id: 'measurePath',
-//				text: 'Strecke',
-//				toggleGroup: 'addToSearch',
-//				listeners: {
-//					checkchange: function(item, checked) {
-//						if (checked) {
-//							
-//							Ext.getCmp('measurePolygon').setChecked(false);
-//							//self.addToSearch(true);
-////							var control = self.map.getControl("OpenLayers.Control.PanZoom_5");
-////							control.deactivate();
-//
-//							//self.map.getControl("OpenLayers.Control.PanZoom_5").deactivate();
-//							//measurePathCtrl.activate();
-//							//addSearchControl.activate();
-//						} else {
-//							//measurePathCtrl.deactivate();
-//							//self.addToSearch(false);
-//							//addSearchControl.destroy();
-//							//addSearchControl.deactivate();
-//							//self.map.getControl("OpenLayers.Control.PanZoom_5").activate();
-//						}
-//					}
-//				}
-//			}), new Ext.menu.CheckItem({
-//				id: 'measurePolygon',
-//				text: 'Fläche',
-//				toggleGroup: 'control',
-//				listeners: {
-//					checkchange: function(item, checked) {
-//						if (checked) {
-//							Ext.getCmp('measurePath').setChecked(false);
-//							measurePolygonCtrl.activate();
-//							
-//						} else {
-//							measurePolygonCtrl.deactivate();
-//						}
-//					}
-//				}
-//			})]
-//		}));
-//	}
+	// c) measure tool
+	if (this.viewConfig.hasMeasureTool) {
+		// create the OpenLayers control
+		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
+			persist: true
+		});
+		measurePathCtrl.events.on({
+			"measure": this.measure
+		});
+		this.map.addControl(measurePathCtrl);
+		//testest
+
+		//this control checks the coordinates of the drawn rectangle
+		var measurePolygonCtrl = new OpenLayers.Control.Measure(
+				OpenLayers.Handler.RegularPolygon, {
+					handlerOptions : {
+						sides : 4,
+						irregular : true,
+						persist : true
+					},
+					callbacks : {
+						done : function(geometry) {
+							//stimmt noch nicht, aber vom prinzip her schon
+							bounds = geometry.getBounds();
+							var ll = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
+											bounds.left, bounds.bottom));
+							var ur = self.map.getLonLatFromPixel(new OpenLayers.Pixel(
+											bounds.right, bounds.top));
+		 alert(bounds.left.toFixed(2) + ", " +
+		 bounds.bottom.toFixed(2) + ", " +
+		 bounds.right.toFixed(2) + ", " +
+		 bounds.top.toFixed(2));
+						}
+					}
+				});  
+
+
+		this.map.addControl(measurePolygonCtrl);
+		
+
+
+		toolbarItems.push(new Ext.SplitButton({
+			iconCls: 'iconMeassure',
+			tooltip: 'Messen',
+			menu: [new Ext.menu.CheckItem({
+				id: 'measurePath',
+				text: 'Strecke',
+				toggleGroup: 'addToSearch',
+				listeners: {
+					checkchange: function(item, checked) {
+						if (checked) {
+							
+							Ext.getCmp('measurePolygon').setChecked(false);
+							//self.addToSearch(true);
+//							var control = self.map.getControl("OpenLayers.Control.PanZoom_5");
+//							control.deactivate();
+
+							//self.map.getControl("OpenLayers.Control.PanZoom_5").deactivate();
+							//measurePathCtrl.activate();
+							//addSearchControl.activate();
+						} else {
+							//measurePathCtrl.deactivate();
+							//self.addToSearch(false);
+							//addSearchControl.destroy();
+							//addSearchControl.deactivate();
+							//self.map.getControl("OpenLayers.Control.PanZoom_5").activate();
+						}
+					}
+				}
+			}), new Ext.menu.CheckItem({
+				id: 'measurePolygon',
+				text: 'Flï¿½che',
+				toggleGroup: 'control',
+				listeners: {
+					checkchange: function(item, checked) {
+						if (checked) {
+							Ext.getCmp('measurePath').setChecked(false);
+							measurePolygonCtrl.activate();
+							
+						} else {
+							measurePolygonCtrl.deactivate();
+						}
+					}
+				}
+			})]
+		}));
+	}
 	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
@@ -366,10 +388,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	});
 
 	// create the settings dialog
-	var settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
+	var settingsDialog;
+	if (this.viewConfig.hasSettings) {
+		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
 		map: this.map,
 		viewConfig: this.viewConfig
-	});
+		});
+	}
 	this.on('afterrender', function(el) {
 		if (settingsDialog) {
 			mapPanel.items.add(settingsDialog); // constrain to mapPanel
@@ -390,9 +415,9 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
 	var items = [ centerPanel ];
-//	if (this.viewConfig.hasServicesPanel) {
-//		items.push(westPanel);
-//	}
+	if (this.viewConfig.hasServicesPanel) {
+		items.push(westPanel);
+	}
 
 	Ext.apply(this, {
 		items: items
@@ -540,7 +565,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.measure = function(event) 
 		title += 'Strecke';
 		content += measure.toFixed(3) + " " + units;
 	} else {
-		title += 'Fläche';
+		title += 'Flï¿½che';
 		content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 	}
 	new Ext.Window({

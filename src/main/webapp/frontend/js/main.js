@@ -30,32 +30,24 @@ Ext.onReady(function() {
 
 			// determine the view configuration from the viewConfig GET parameter
 			var viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
+			console.log("Use viewConfig: " + viewConfig);
 
 			// build the gui with the given configuration
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
-//			console.debug("window.location: "+window.location.toString());
 			if (configPrams != undefined) {
-				var loc = window.location.toString();
-				var pos = loc.indexOf("main-maps");
-				var pos2 = loc.indexOf("kartendienste");
-				if(pos > -1 || pos2 > -1){
+				
+				if(configPrams.isFullScreen){
+					console.log("Use full screen workspace.");
 				new de.ingrid.mapclient.frontend.Workspace({
-					mapUrl: mapUrl,
-					session: session,
-					viewConfig: configPrams
-					//callbackHooks: callbackHooks
-				});			
-				}else if(loc.indexOf("webmap-client") > -1 ){
-				new de.ingrid.mapclient.frontend.PanelWorkspace({
-					height:500,	
 					mapUrl: mapUrl,
 					session: session,
 					viewConfig: configPrams,
 					callbackHooks: callbackHooks
-				});						
-				}
-				else{
+				});			
+				}else {
+					console.log("Use panel based workspace.");
 				new de.ingrid.mapclient.frontend.PanelWorkspace({
+					height: configPrams.panelHeight,
 					mapUrl: mapUrl,
 					session: session,
 					viewConfig: configPrams,
