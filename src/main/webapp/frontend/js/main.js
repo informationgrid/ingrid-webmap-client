@@ -18,6 +18,8 @@ Ext.onReady(function() {
    			 // check if map is IFRAME embedded and callback was defined outside
     			var callbackHooks = window.parent.mapClientCallbackHooks;
 //    			console.debug("parent != window, callbackHooks: "+callbackHooks);
+    			if(window.parent.viewConfiguration)
+    			viewConfiguration = window.parent.viewConfiguration;
 			}
 
 			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
@@ -28,8 +30,14 @@ Ext.onReady(function() {
 				userId: userId
 			});
 
+
 			// determine the view configuration from the viewConfig GET parameter
-			var viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
+			// if there isnt one defined in the template
+			if (!viewConfiguration) {
+				var viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
+			}else{
+				viewConfig = viewConfiguration;
+			}
 			console.log("Use viewConfig: " + viewConfig);
 
 			// build the gui with the given configuration
