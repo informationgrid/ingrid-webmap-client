@@ -116,7 +116,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasPermaLink: false,
 	    	isFullScreen: false,
 	    	panelHeight: 500,
-	    	hasBboxSelectTool: false,
+	    	hasBboxSelectTool: true,
 	    	hasSettings: false
 		},
 		"portalu-extended-search": {
@@ -135,7 +135,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	isFullScreen: false,
 	    	panelHeight: 676,
 	    	hasBboxSelectTool: true,
-	    	hasSettings: false,
+	    	hasSettings: false
 		}		
 };
 
