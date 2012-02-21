@@ -13,13 +13,13 @@ Ext.onReady(function() {
 			var callbackHooks = {};
 			if (!(typeof mapClientCallbackHooks === "undefined")) {
 				callbackHooks = mapClientCallbackHooks;
-//				console.debug("mapClientCallbackHooks defined: "+callbackHooks);
    			} else if ( window.parent != window && !(typeof window.parent.mapClientCallbackHooks === "undefined")) {
-   			 // check if map is IFRAME embedded and callback was defined outside
+   				// check if map is IFRAME embedded and callback was defined outside
     			var callbackHooks = window.parent.mapClientCallbackHooks;
-//    			console.debug("parent != window, callbackHooks: "+callbackHooks);
-    			if(window.parent.viewConfiguration)
-    			viewConfiguration = window.parent.viewConfiguration;
+    			// check for definition in parent window in case we a in IFRAME 
+    			if(window.parent.viewConfiguration) {
+    				viewConfiguration = window.parent.viewConfiguration;
+    			}
 			}
 
 			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
@@ -32,11 +32,10 @@ Ext.onReady(function() {
 
 
 			// determine the view configuration from the viewConfig GET parameter
-			// if there isnt one defined in the template
-			if (!viewConfiguration) {
-				var viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
-			}else{
-				viewConfig = viewConfiguration;
+			// if there isn't one defined in the template
+			var viewConfig = viewConfiguration;
+			if (!viewConfig) {
+				viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
 			}
 			console.log("Use viewConfig: " + viewConfig);
 

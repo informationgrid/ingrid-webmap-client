@@ -101,7 +101,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 		border: false,
 		layoutText: "Format",
 		dpiText: "DPI",
-		scaleText: "Maﬂtab",
+		scaleText: "Ma&szlig;tab",
 		rotationText: "Drehung",
 		printText: "PDF erstellen",
 		creatingPdfText: "Erzeuge PDF...",

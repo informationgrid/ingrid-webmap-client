@@ -129,6 +129,11 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 	de.ingrid.mapclient.frontend.controls.SettingsDialog.superclass.initComponent.call(this);
 };
 
+
+de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onBaseLayerChange = function() {
+	console.debug("onBaseLayerChange fired.");
+}
+
 /**
  * Render callback (called by Ext)
  */
@@ -149,24 +154,14 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	// define select callback
 	this.projectionsCombo.on('select', function(comboBox, record, index) {
 		var newProjCode = record.get('epsgCode');
-		if (Proj4js.defs[newProjCode] == undefined) {
-			// if the projection is not defined yet, we have to load the definition
-			this.loadProjectionDef(newProjCode, function() {
-				// change the projection after loading the definition
-				self.changeProjection(newProjCode);
-			});
-		}
-		else {
-			// change the projection directly
-			this.changeProjection(newProjCode);
-		}
+		de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(newProjCode, function() {self.changeProjection(newProjCode)});
 	}, this);
-
+	
 	// initialize the scales list
 	var scales = de.ingrid.mapclient.Configuration.getValue('scales');
 	de.ingrid.mapclient.data.StoreHelper.load(this.scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
 
-	// bind scales list to map
+	// bind scales list and projection to map
 	this.map.events.register('zoomend', this, function() {
 		// select the current map scale, if it is in the list
 		var scale = this.map.getScale();
@@ -180,8 +175,13 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 			if (!this.scalesCombo.rendered) {
 				return;
 			}
-			this.scalesCombo.clearValue();
+			this.scalesCombo.setValue("1:"+this.addThousandSeparator(Math.floor(scale), '.'));
 		}
+		
+		var projection = this.getMapProjection();
+		// select initial projection
+		this.projectionsCombo.setValue(projection.getCode());
+		
 	});
 	this.scalesCombo.on('select', function(comboBox, record, index) {
 		this.map.zoomToScale(record.get('zoomLevel'), true);
@@ -245,7 +245,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
  * @return OpenLayers.Projection instance
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.getMapProjection = function() {
-	return (this.map.projection && this.map.projection instanceof OpenLayers.Projection) ? this.map.projection : new OpenLayers.Projection(this.map.projection);
+	return de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(this.map);
 };
 
 /**
@@ -267,77 +267,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.resetAreaComboBox
  * @param newProjCode EPSG code
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.changeProjection = function(newProjCode) {
-	
-	var oldProjection = this.getMapProjection();
-	var newProjection = new OpenLayers.Projection(newProjCode);
-	var newMaxExtent = this.getMaxExtent(newProjection);
-	var newExtent = this.map.getExtent().clone().transform(oldProjection, newProjection);
-	var viewSize = this.map.getSize();
-    var idealMaxResolution = Math.max( newMaxExtent.getWidth()  / viewSize.w,
-    		newMaxExtent.getHeight() / viewSize.h );
-    console.debug("New maxResolution: " + idealMaxResolution);
-	var options = {
-		maxExtent: newMaxExtent,
-		projection: newProjection.getCode(),
-		units: newProjection.getUnits(),
-		maxResolution: 'auto'
-	};
-
-	// reset map
-	this.map.setOptions(options);
-	// reset layers
-	for(var i=0,len=this.map.layers.length; i<len; i++) {
-		this.map.layers[i].addOptions(options);
-	}
-	// reproject map.layerContainerOrigin, in case the next
-	// call to moveTo does not change the zoom level and
-	// therefore centers the layer container
-	if(this.map.layerContainerOrigin) {
-		this.map.layerContainerOrigin.transform(oldProjection, newProjection);
-	}
-	this.map.zoomToExtent(newExtent);
-	
-	
-    this.map.displayProjection = newProjection;
-    
-    var control = null;
-    if (this.controls) {
-        for (var k = 0; k < this.controls.length; k++) {
-            control = this.controls[k];
-            if (control.displayProjection) {
-                control.displayProjection = newProjection;
-            }
-            if (control instanceof OpenLayers.Control.OverviewMap) {
-            	// reset map
-            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
-            	control.ovmap.setOptions(options);
-            	control.ovmap.baseLayer.addOptions(options);            	
-            	control.ovmap.zoomToExtent(newExtent);
-            }
-            if (control.redraw) {
-                control.redraw();
-            }
-        }
-
-    } else {
-        for (var i = 0; i < this.map.controls.length; i++) {
-            control = this.map.controls[i];
-            if (control.displayProjection) {
-                control.displayProjection = newProjection;
-            }
-            if (control instanceof OpenLayers.Control.OverviewMap) {
-            	// reset map
-            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
-            	control.ovmap.setOptions(options);            	
-            	control.ovmap.baseLayer.addOptions(options);            	
-            	control.ovmap.zoomToExtent(newExtent);
-            }
-            if (control.redraw) {
-                control.redraw();
-            }
-        }
-    } 	
-	
+	de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(newProjCode, this.map, this);
 };
 
 /**
@@ -347,39 +277,33 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.changeProjection 
  * @return OpenLayers.Bounds instance
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.getMaxExtent = function(protection) {
-	var wgs84Proj = new OpenLayers.Projection("EPSG:4326");
-	var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
-	var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
-	var extent = bounds.transform(wgs84Proj, protection);
-	return extent;
+	return de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(protection);
 };
 
 
 
-/**
- * Load the projection definition for the given projection
- * @param newProjCode EPSG code
- * @param callback Function to call after loading
+/** method[addThousandSeparator]
+ *  Add the thousand separator to a string
+ *  :param value: ``Number`` or ``String`` input value
+ *  :param separator: ``String`` thousand separator
  */
-de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.loadProjectionDef = function(newProjCode, callback) {
-	var codeNumber = newProjCode.replace(/^EPSG:/, '');
-	Ext.Ajax.request({
-		url: de.ingrid.mapclient.PROJ4S_DEFS_URL+'/'+codeNumber,
-		method: 'GET',
-		success: function(response, request) {
-			// we expect the projection definition in js
-			var defJs = response.responseText;
-			var regexp = new RegExp('^Proj4js\\.defs\\["'+newProjCode+'"] = ');
-			if (defJs && defJs.match(regexp)) {
-				// evaluate the js in order to define the projection
-				eval(response.responseText);
-			}
-			if (callback instanceof Function) {
-				callback();
-			}
-		},
-		failure: function(response, request) {
-			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE);
-		}
-	});
+de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.addThousandSeparator = function(value, separator) {
+    if (separator === null) {
+        return value;
+    }
+    value = value.toString();
+    var sRegExp = new RegExp('(-?[0-9]+)([0-9]{3})');
+    while (sRegExp.test(value)) {
+        value = value.replace(sRegExp, '$1' + separator + '$2');
+    }
+    // Remove the thousand separator after decimal separator
+    if (this.decimalNumber > 3) {
+        var decimalPosition = value.lastIndexOf(this.getLocalDecimalSeparator());
+        if (decimalPosition > 0) {
+            var postDecimalCharacter = value.substr(decimalPosition);
+            value = value.substr(0, decimalPosition) + postDecimalCharacter.replace(separator, '');
+        }
+    }
+    return value;
 };
+

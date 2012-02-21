@@ -422,16 +422,29 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
 				self.map.addLayer(layer);
 			}
 
-			// set initial bounding box for the map (expected to be WGS 84)
-			// note: this must be done after layouting the map!
-			var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
-			var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
-			//bounds.transform(new OpenLayers.Projection("EPSG:4326"), self.map.getProjectionObject());
-			self.map.zoomToExtent(bounds);
+
+			// set initial projection, if no projection has been defined, use default projection from map
+			
+			// initialize the projections list
+			var projections = de.ingrid.mapclient.Configuration.getValue('projections');
+			if (projections && projections.length > 0) {
+				de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(projections[0].epsgCode, function() {
+					de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(projections[0].epsgCode, self.map, this);
+					self.map.events.triggerEvent("zoomend");
+				});
+			} else {
+				// set initial bounding box for the map (expected to be WGS 84)
+				// note: this must be done after layouting the map!
+				var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
+				var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
+				//bounds.transform(new OpenLayers.Projection("EPSG:4326"), self.map.getProjectionObject());
+				self.map.zoomToExtent(bounds);
+			}
+			
 
 			// add default service to active services
 			self.activeServicesPanel.addService(service);
-
+			
 			if (callback instanceof Function) {
 				callback();
 			}
@@ -478,6 +491,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		scope: this
 	});
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
+	
 	this.listenToStateChanges = true;
 };
 

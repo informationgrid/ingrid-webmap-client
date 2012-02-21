@@ -7,13 +7,59 @@
     </layer>
   </layers>
   <mapExtend>
-    <north>52.0</north>
-    <south>46.0</south>
-    <west>6.0</west>
-    <east>15.0</east>
+    <north>60.0</north>
+    <south>40.0</south>
+    <west>2.0</west>
+    <east>19.0</east>
   </mapExtend>
-  <projections/>
-  <scales/>
+  <projections>
+    <projection>
+      <name>WGS84</name>
+      <epsgCode>EPSG:4326</epsgCode>
+    </projection>
+    <projection>
+      <name>Gauß Krüger 2</name>
+      <epsgCode>EPSG:31466</epsgCode>
+    </projection>
+    <projection>
+      <name>Gauß Krüger 3</name>
+      <epsgCode>EPSG:31467</epsgCode>
+    </projection>
+  </projections>
+  <scales>
+    <scale>
+      <name>1:25.000</name>
+      <zoomLevel>25000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:50.000</name>
+      <zoomLevel>50000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:100.000</name>
+      <zoomLevel>100000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:250.000</name>
+      <zoomLevel>250000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:500.000</name>
+      <zoomLevel>500000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:1.000.000</name>
+      <zoomLevel>1000000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:2.000.000</name>
+      <zoomLevel>2000000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:4.000.000</name>
+      <zoomLevel>4000000.0</zoomLevel>
+    </scale>
+  </scales>
   <proxyUrl></proxyUrl>
   <serviceCategories>
     <serviceCategory>
