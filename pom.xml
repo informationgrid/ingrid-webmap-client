@@ -52,6 +52,7 @@
             <exclude>**/lib/extjs/**</exclude>
             <exclude>**/lib/openlayers/**</exclude>
             <exclude>**/lib/geoext/**</exclude>
+            <exclude>**/lib/proj4js/**</exclude>
           </excludes>
           <aggregations>
             <aggregation>
