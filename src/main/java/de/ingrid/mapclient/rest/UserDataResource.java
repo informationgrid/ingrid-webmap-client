@@ -6,7 +6,9 @@ package de.ingrid.mapclient.rest;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -151,9 +153,33 @@ public class UserDataResource {
 				activeServices.add(capabilitiesUrl);
 			}
 
+			List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
+			JSONArray kmlTmp = rootObj.getJSONArray("kmlArray");
+			for (int i=0, count=kmlTmp.length(); i<count; i++) {
+				if(kmlTmp.get(i) instanceof JSONObject){
+					JSONObject kmlTmpEntry = kmlTmp.getJSONObject(i);
+					
+					Map<String, String> kmlEntry = new HashMap<String, String>();
+					kmlEntry.put("title", kmlTmpEntry.get("title").toString());
+					kmlEntry.put("url", kmlTmpEntry.get("url").toString());
+					kmlArray.add(kmlEntry);
+				}else if(kmlTmp.get(i) instanceof JSONArray){
+					JSONArray kmlTmpEntries = kmlTmp.getJSONArray(i);
+					Map<String, String> kmlTmpEntry = new HashMap<String, String>();
+					for(int j=0; j < kmlTmpEntries.length(); j++){
+						JSONArray kmlTmpAddedEntries = kmlTmpEntries.getJSONArray(j);
+						kmlTmpEntry.put(kmlTmpAddedEntries.getString(0), kmlTmpAddedEntries.getString(1));
+					}
+					kmlArray.add(kmlTmpEntry);
+				}
+				
+			}
+
 			UserData userData = new UserData();
+			userData.setId(sessionId);
 			userData.setWmcDocument(wmcDocument);
 			userData.setActiveServices(activeServices);
+			userData.setKml(kmlArray);
 
 			// store the data
 			Store store = StoreManager.INSTANCE.getSessionStore();

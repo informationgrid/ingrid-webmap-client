@@ -164,7 +164,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 								self.callbackHooks.bboxSelected(bounds.left.toFixed(2), bounds.right.toFixed(2), bounds.bottom.toFixed(2), bounds.top.toFixed(2));
 							} else {
 								// output message to js console
-								console.log("No callback 'bboxSelected' has been defined for selecting a bounding box!") 
+								//console.log("No callback 'bboxSelected' has been defined for selecting a bounding box!") 
 							}
 						}
 					}

@@ -14,7 +14,7 @@
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/extjs/resources/css/ext-all.css" />
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/frontend/css/style.css" />
 	
-	<script type="text/javascript" src="http://proj4js.org/lib/proj4js-compressed.js"></script>
+	<script type="text/javascript" src="../shared/js/proj4.js"></script>
 	
 	<!-- openlayers extensions -->
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers.addins/LoadingPanel.js"></script>
@@ -54,6 +54,10 @@
 </head>
 
 <div id="openlayersDiv" style="width:800px;"></div></div>
+   <script type="text/javascript">
+   var wms = null;
+   var kml = null;
+   </script>
    <noscript>
    Javascript has to be enabled to run this application.
    </noscript>

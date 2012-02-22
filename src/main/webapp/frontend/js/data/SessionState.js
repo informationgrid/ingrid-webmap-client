@@ -39,6 +39,8 @@ de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 	 */
 	this.wmcDocument = null;
 
+	this.kmlArray = [];
+
 	// apply values from the provided config object
 	Ext.apply(this, config);
 };
@@ -69,7 +71,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 		title: this.title,
 		description: this.description,
 		wmcDocument: wmcDocument,
-		activeServices: capabilityUrls
+		activeServices: capabilityUrls,
+		kmlArray: this.kmlArray
 	});
 	return serializedState;
 };
@@ -89,6 +92,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	this.id = data.id;
 	this.title = data.title;
 	this.description = data.description;
+	this.kmlArray = data.kmlArray;
 
 	// unserialize map state (must be applied)
 	this.wmcDocument = data.wmcDocument;

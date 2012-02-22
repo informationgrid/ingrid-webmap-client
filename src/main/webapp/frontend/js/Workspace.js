@@ -55,7 +55,10 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 	 *
 	 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
 	 */
-	listenToStateChanges: false
+	listenToStateChanges: false, 
+	
+	kmlArray: []
+	
 });
 
 /**
@@ -373,8 +376,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onRender = function() {
 		// try to load existing session data
 		this.load();
 		// always init default map
-		//var callback = Ext.util.Functions.createDelegate(this.finishInitMap, this);
-		//this.initDefaultMap(callback);
+		this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
+		this.listenToStateChanges = true;
 	}
 };
 
@@ -562,7 +565,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary, ti
 		title: title,
 		description: description,
 		map: this.map,
-		activeServices: this.activeServicesPanel.getServiceList()
+		activeServices: this.activeServicesPanel.getServiceList(),
+		kmlArray: this.kmlArray
 	});
 	this.session.save(data, isTemporary, responseHandler);
 };
@@ -583,11 +587,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 
 	this.activeServicesPanel.removeAll();
 	var state = new de.ingrid.mapclient.frontend.data.SessionState({
-		id: id,
-		map: this.map,
-		activeServices: []
-	});
-
+			id: id,
+			map: this.map,
+			activeServices: [],
+			kmlArray: []
+		});
 	var self = this;
 	this.session.load(state, shortUrl, {
 		success: function(responseText) {
@@ -597,14 +601,108 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 			for (var i = 0, count = state.activeServices.length; i < count; i++) {
 				self.activeServicesPanel.addService(state.activeServices[i]);
 			}
-			self.finishInitMap();
-			if (safeStateAfterLoad) {
-				self.save(true);
+			// Load WMS by "Zeige Karte" from Session
+			if(wms != null){
+				var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
+				var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+				de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 			}
+			
+			if(state.kmlArray.length > 0){
+				// Add KML if session with added KML exist
+				if(kml != null){
+					var title = kml.title;
+					var url = kml.url;
+					var isAdded = false;
+					
+					// Check for existing KML
+					if(title != undefined && url != undefined){
+						for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+							var addedKml = state.kmlArray[i];
+							var kmlTitle = addedKml.title;
+							var kmlUrl = addedKml.url;
+							if(kmlTitle == undefined){
+								var addedKmlTitle = addedKml[0];
+								if(addedKmlTitle != undefined){
+									var addedKmlTitleValue = addedKmlTitle[1];
+									if(addedKmlTitleValue != undefined){
+										kmlTitle = addedKmlTitleValue;
+									}
+								}
+							}
+							
+							if(kmlUrl == undefined){
+								var addedKmlUrl = addedKml[1];
+								if(addedKmlUrl != undefined){
+									var addedKmlUrlValue = addedKmlUrl[1];
+									if(addedKmlUrlValue != undefined){
+										kmlUrl = addedKmlUrlValue;
+									}
+								}
+							}
+							if(kmlTitle != title && kmlUrl != url){
+								state.kmlArray.push(kml);
+							}
+						}
+					}
+				}
+				
+				// Load KML by "Zeige Karte" from Session			
+				for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+					var addedKml = state.kmlArray[i];
+					var kmlTitle = addedKml.title;
+					var kmlUrl = addedKml.url;
+					if(kmlTitle == undefined){
+						var addedKmlTitle = addedKml[0];
+						if(addedKmlTitle != undefined){
+							var addedKmlTitleValue = addedKmlTitle[1];
+							if(addedKmlTitleValue != undefined){
+								kmlTitle = addedKmlTitleValue;
+							}
+						}
+					}
+					
+					if(kmlUrl == undefined){
+						var addedKmlUrl = addedKml[1];
+						if(addedKmlUrl != undefined){
+							var addedKmlUrlValue = addedKmlUrl[1];
+							if(addedKmlUrlValue != undefined){
+								kmlUrl = addedKmlUrlValue;
+							}
+						}
+					}
+					if(kmlTitle != undefined && kmlUrl != undefined){
+						self.kmlArray.push({url:kmlUrl, title:kmlTitle});
+					}
+				}
+				self.activeServicesPanel.addKml(self.kmlArray);
+			}else{
+				// Add KML if session exist
+				if(kml != null){
+					self.kmlArray.push(kml);
+					state.kmlArray.push(kml);
+					self.activeServicesPanel.addKml(self.kmlArray);
+				}
+			}			
+			self.finishInitMap();
+			self.save(true);
 		},
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);
 			self.initDefaultMap(callback);
+
+			// Add WMS "Zeige Karte"
+			if(wms != null){
+				var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
+				var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+				de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
+			}
+			
+			// Add KML "Zeige Punktkoordinaten"
+			if(kml != null){
+				self.kmlArray.push(kml);
+				self.activeServicesPanel.addKml(self.kmlArray);
+			}
 		}
 	});
 };

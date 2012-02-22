@@ -131,7 +131,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 
 
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onBaseLayerChange = function() {
-	console.debug("onBaseLayerChange fired.");
+	//console.debug("onBaseLayerChange fired.");
 }
 
 /**

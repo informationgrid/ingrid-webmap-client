@@ -37,14 +37,14 @@ Ext.onReady(function() {
 			if (!viewConfig) {
 				viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
 			}
-			console.log("Use viewConfig: " + viewConfig);
+//			console.log("Use viewConfig: " + viewConfig);
 
 			// build the gui with the given configuration
 			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
 			if (configPrams != undefined) {
 				
 				if(configPrams.isFullScreen){
-					console.log("Use full screen workspace.");
+//					console.log("Use full screen workspace.");
 				new de.ingrid.mapclient.frontend.Workspace({
 					mapUrl: mapUrl,
 					session: session,
@@ -52,7 +52,7 @@ Ext.onReady(function() {
 					callbackHooks: callbackHooks
 				});			
 				}else {
-					console.log("Use panel based workspace.");
+//					console.log("Use panel based workspace.");
 				new de.ingrid.mapclient.frontend.PanelWorkspace({
 					height: configPrams.panelHeight,
 					mapUrl: mapUrl,

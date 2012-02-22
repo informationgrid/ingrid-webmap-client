@@ -66,7 +66,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
 		iconCls: 'iconAdd',
-		tooltip: 'Dienst hinzufügen',
+		tooltip: 'Dienst hinzufï¿½gen',
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
@@ -131,10 +131,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				self.transparencyBtn.enable();
 				self.updateOpacitySlider(node.layer);
 				self.removeBtn.disable();
-			}
-			else {
-				self.transparencyBtn.disable();
-				self.removeBtn.enable();
+			}else {
+				if(node.attributes.service){
+					self.transparencyBtn.disable();
+					self.removeBtn.enable();	
+				}else{
+					// For layer folder "Zeige Punktkoordinaten"
+					self.transparencyBtn.disable();
+					self.removeBtn.disable();
+					self.metaDataBtn.disable();
+				}
 			}
 		}
 		self.activeNode = node;
@@ -174,46 +180,49 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service) {
-
-	if (this.containsService(service)) {
-		return;
-	}
-
-	var serviceLayers = service.getLayers();
-	var serviceRecords = this.layerStore.reader.readRecords(serviceLayers).records;
-
-	// add service layers to the store, if they are not already contained
-	for (var i=0, count=serviceRecords.length; i<count; i++) {
-		var serviceRecord = serviceRecords[i];
-		var index = this.layerStore.findBy(function(record) {
-			var serviceLayer = serviceRecord.get('layer');
-			var layer = record.get('layer');
-			return de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
-		});
-		if (index == -1) {
-			this.layerStore.add([serviceRecord]);
+	if(service != undefined){
+		if (this.containsService(service)) {
+			return;
 		}
-	}
-
-	// add service node to the tree
-	var node = new GeoExt.tree.LayerContainer({
-		text: service.getDefinition().title,
-		layerStore: this.layerStore,
-		leaf: false,
-		expanded: true,
-		service: service,
-		loader: {
-			filter: function(record) {
-				var layer = record.get("layer");
-				var layerBelongsToService = service.contains(layer);
-				return layerBelongsToService;
+	
+		
+		var serviceLayers = service.getLayers();
+		var serviceRecords = this.layerStore.reader.readRecords(serviceLayers).records;
+	
+		// add service layers to the store, if they are not already contained
+		for (var i=0, count=serviceRecords.length; i<count; i++) {
+			var serviceRecord = serviceRecords[i];
+			var index = this.layerStore.findBy(function(record) {
+				var serviceLayer = serviceRecord.get('layer');
+				var layer = record.get('layer');
+				return de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
+			});
+			if (index == -1) {
+				this.layerStore.add([serviceRecord]);
 			}
 		}
-	});
-	this.layerTree.root.appendChild(node);
-
-	this.services.add(service.getCapabilitiesUrl(), service);
-	this.fireEvent('datachanged');
+	
+		// add service node to the tree
+		var node = new GeoExt.tree.LayerContainer({
+			text: service.getDefinition().title,
+			layerStore: this.layerStore,
+			leaf: false,
+			expanded: true,
+			service: service,
+			loader: {
+				filter: function(record) {
+					var layer = record.get("layer");
+					var layerBelongsToService = service.contains(layer);
+					return layerBelongsToService;
+				}
+			}
+		});
+		this.layerTree.root.appendChild(node);
+	
+		this.services.add(service.getCapabilitiesUrl(), service);
+		this.fireEvent('datachanged');
+	}
+	
 };
 
 /**
@@ -282,6 +291,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 			capabilitiesUrl: service.getCapabilitiesUrl(),
 			layer: layer
 		}).show();
+	}else{
+		service = node.attributes.service;
+		if(service){
+			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				capabilitiesUrl: service.getCapabilitiesUrl(),
+				layer: layer
+			}).show();
+		}
 	}
 };
 
@@ -306,3 +323,116 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.updateOpacit
 		this.displayOpacitySlider(layer);
 	}
 };
+
+/**
+ * Add KML to active service panel
+ * @param title of KML
+ * @param url of KML file
+ */
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = function(kmlArray) {
+	var layers = new Array();
+	var styleMap = new OpenLayers.StyleMap({
+		'default':{
+			 label : "${name}",
+			 fontColor: "${fontColor}",
+			 fontSize: "11px",
+			 labelAlign: "${labelAlign}",
+			 strokeColor: "${strokeColor}",
+             fillColor: "${fillColor}",
+			 pointRadius: 3,
+			 labelXOffset : "${labelX}",
+			 labelYOffset : "${labelY}"
+		}});
+
+	for ( var i = 0, count = kmlArray.length; i < count; i++) {
+		var addedKml = kmlArray[i];
+		var kmlTitle = addedKml.title;
+		var kmlUrl = addedKml.url;
+		if(kmlTitle == undefined){
+			var addedKmlTitle = addedKml[0];
+			if(addedKmlTitle != undefined){
+				var addedKmlTitleValue = addedKmlTitle[1];
+				if(addedKmlTitleValue != undefined){
+					kmlTitle = addedKmlTitleValue;
+				}
+			}
+		}
+		
+		if(kmlUrl == undefined){
+			var addedKmlUrl = addedKml[1];
+			if(addedKmlUrl != undefined){
+				var addedKmlUrlValue = addedKmlUrl[1];
+				if(addedKmlUrlValue != undefined){
+					kmlUrl = addedKmlUrlValue;
+				}
+			}
+		}
+		if(kmlTitle != undefined && kmlUrl != undefined){
+			var layer = new OpenLayers.Layer.GML(kmlTitle, kmlUrl, {
+				   format: OpenLayers.Format.KML,
+				   formatOptions: {
+					 extractStyles: true,
+				     extractAttributes: true,
+				     maxDepth: 2},
+				     styleMap: styleMap
+				     },
+				     displayOutsideMaxExtent = false
+				);
+			
+			var selectCtrl = new OpenLayers.Control.SelectFeature(layer);
+			function createPopup(feature) {
+				popup = new GeoExt.Popup({
+			        title: feature.data.name,
+			        location: feature,
+			        unpinnable:false,
+			        width:400,
+			        html: feature.data.description,
+			    });
+			    // unselect feature when the popup
+			    // is closed
+			    popup.on({
+			        close: function() {
+			            if(OpenLayers.Util.indexOf(layer.selectedFeatures,
+			                                       this.feature) > -1) {
+			                selectCtrl.unselect(this.feature);
+			            }
+			        }
+			    });
+			    popup.show();
+			}
+			layer.events.on({
+				featureselected: function(e) {
+		            createPopup(e.feature);
+		        }
+			});
+
+			
+			this.map.addControl(selectCtrl);
+		    selectCtrl.activate();
+
+			layers.push(layer);
+			this.map.addLayer(layer);
+		}
+	}
+	
+	var store = new GeoExt.data.LayerStore({
+	    layers: layers
+	});
+
+	var overlayLayerNode = new GeoExt.tree.OverlayLayerContainer({
+		text: 'Zeige Punktkoordinaten',
+		initDir:0,
+	    layerStore: store,
+	    leaf: false,
+	    expanded: true
+
+	});
+	
+	if(this.layerTree != null){
+		this.layerTree.getRootNode().appendChild(overlayLayerNode);	
+	}
+	
+};
+
+

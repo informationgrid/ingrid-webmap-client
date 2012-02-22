@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -32,6 +33,7 @@ public class UserData {
 	private String wmcDocument;
 	private LocationKey locationKey;
 	private List<String> activeServices = new ArrayList<String>();
+	private List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
 
 	public void setId(String id) {
 		this.id = id;
@@ -124,5 +126,13 @@ public class UserData {
 	 */
 	private static void setXStreamAliases(XStream xstream) {
 		xstream.alias("locationKey", LocationKey.class);
+	}
+
+	public List<Map<String, String>> getKml() {
+		return kmlArray;
+	}
+
+	public void setKml(List<Map<String, String>> kml) {
+		this.kmlArray = kml;
 	}
 }
