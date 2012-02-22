@@ -34,7 +34,7 @@ Ext.onReady(function() {
 			// determine the view configuration from the viewConfig GET parameter
 			// if there isn't one defined in the template
 			var viewConfig;
-			if (!viewConfiguration) {
+			if (typeof viewConfiguration === "undefined") {
 				viewConfig = de.ingrid.mapclient.Configuration.getUrlParameter('viewConfig') || 'default';
 			}else{
 				viewConfig = viewConfiguration;
