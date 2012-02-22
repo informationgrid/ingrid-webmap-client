@@ -122,7 +122,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
  * Applies the serialized data to the map after the data are unserialized
  * @note We define an extra method for this, in order to allow the user to decide when to do this.
  */
-de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = function() {
+de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = function(callback) {
+	var self = this;
 	if (this.wmcDocument == null) {
 		throw "No unserialized data.";
 	}
@@ -143,8 +144,25 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 	}
 	this.map.addLayers(layers);
 	this.map.setOptions({
-		maxExtent: context.mayExtend,
-		projection: context.projection
+		maxExtent: context.maxExtent,
+		projection: context.projection,
+		maxResolution: 'auto'
 	});
-	this.map.zoomToExtent(context.bounds);
+	de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(context.projection, function() {
+		self.changeProjection(context.projection);
+		self.map.zoomToExtent(context.bounds);
+		if (callback instanceof Function) {
+			callback();
+		}
+	});
 };
+
+/**
+ * Change the map projection to the given one. We assume that the projection
+ * definition is loaded already
+ * @param newProjCode EPSG code
+ */
+de.ingrid.mapclient.frontend.data.SessionState.prototype.changeProjection = function(newProjCode) {
+	de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(newProjCode, this.map, this);
+};
+

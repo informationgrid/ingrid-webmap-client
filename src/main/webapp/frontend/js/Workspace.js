@@ -596,96 +596,105 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 	this.session.load(state, shortUrl, {
 		success: function(responseText) {
 			// restore map state
-			state.restoreMapState();
-			// restore active services
-			for (var i = 0, count = state.activeServices.length; i < count; i++) {
-				self.activeServicesPanel.addService(state.activeServices[i]);
-			}
-			// Load WMS by "Zeige Karte" from Session
-			if(wms != null){
-				var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
-				var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
-				de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
-			}
-			
-			if(state.kmlArray.length > 0){
-				// Add KML if session with added KML exist
-				if(kml != null){
-					var title = kml.title;
-					var url = kml.url;
-					var isAdded = false;
-					
-					// Check for existing KML
-					if(title != undefined && url != undefined){
-						for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
-							var addedKml = state.kmlArray[i];
-							var kmlTitle = addedKml.title;
-							var kmlUrl = addedKml.url;
-							if(kmlTitle == undefined){
-								var addedKmlTitle = addedKml[0];
-								if(addedKmlTitle != undefined){
-									var addedKmlTitleValue = addedKmlTitle[1];
-									if(addedKmlTitleValue != undefined){
-										kmlTitle = addedKmlTitleValue;
-									}
-								}
-							}
-							
-							if(kmlUrl == undefined){
-								var addedKmlUrl = addedKml[1];
-								if(addedKmlUrl != undefined){
-									var addedKmlUrlValue = addedKmlUrl[1];
-									if(addedKmlUrlValue != undefined){
-										kmlUrl = addedKmlUrlValue;
-									}
-								}
-							}
-							if(kmlTitle != title && kmlUrl != url){
-								state.kmlArray.push(kml);
-							}
-						}
-					}
+			state.restoreMapState(function() {
+				// restore active services
+				for (var i = 0, count = state.activeServices.length; i < count; i++) {
+					self.activeServicesPanel.addService(state.activeServices[i]);
+				}
+				// restore active services
+				for (var i = 0, count = state.activeServices.length; i < count; i++) {
+					self.activeServicesPanel.addService(state.activeServices[i]);
+				}
+				// Load WMS by "Zeige Karte" from Session
+				if(wms != null){
+					var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
+					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 				}
 				
-				// Load KML by "Zeige Karte" from Session			
-				for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
-					var addedKml = state.kmlArray[i];
-					var kmlTitle = addedKml.title;
-					var kmlUrl = addedKml.url;
-					if(kmlTitle == undefined){
-						var addedKmlTitle = addedKml[0];
-						if(addedKmlTitle != undefined){
-							var addedKmlTitleValue = addedKmlTitle[1];
-							if(addedKmlTitleValue != undefined){
-								kmlTitle = addedKmlTitleValue;
+				if(!(typeof(state.kmlArray) === "undefined") && state.kmlArray.length > 0){
+					// Add KML if session with added KML exist
+					if(kml != null){
+						var title = kml.title;
+						var url = kml.url;
+						var isAdded = false;
+						
+						// Check for existing KML
+						if(title != undefined && url != undefined){
+							for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+								var addedKml = state.kmlArray[i];
+								var kmlTitle = addedKml.title;
+								var kmlUrl = addedKml.url;
+								if(kmlTitle == undefined){
+									var addedKmlTitle = addedKml[0];
+									if(addedKmlTitle != undefined){
+										var addedKmlTitleValue = addedKmlTitle[1];
+										if(addedKmlTitleValue != undefined){
+											kmlTitle = addedKmlTitleValue;
+										}
+									}
+								}
+								
+								if(kmlUrl == undefined){
+									var addedKmlUrl = addedKml[1];
+									if(addedKmlUrl != undefined){
+										var addedKmlUrlValue = addedKmlUrl[1];
+										if(addedKmlUrlValue != undefined){
+											kmlUrl = addedKmlUrlValue;
+										}
+									}
+								}
+								if(kmlTitle != title && kmlUrl != url){
+									state.kmlArray.push(kml);
+								}
 							}
 						}
 					}
 					
-					if(kmlUrl == undefined){
-						var addedKmlUrl = addedKml[1];
-						if(addedKmlUrl != undefined){
-							var addedKmlUrlValue = addedKmlUrl[1];
-							if(addedKmlUrlValue != undefined){
-								kmlUrl = addedKmlUrlValue;
+					// Load KML by "Zeige Karte" from Session			
+					for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+						var addedKml = state.kmlArray[i];
+						var kmlTitle = addedKml.title;
+						var kmlUrl = addedKml.url;
+						if(kmlTitle == undefined){
+							var addedKmlTitle = addedKml[0];
+							if(addedKmlTitle != undefined){
+								var addedKmlTitleValue = addedKmlTitle[1];
+								if(addedKmlTitleValue != undefined){
+									kmlTitle = addedKmlTitleValue;
+								}
 							}
 						}
+						
+						if(kmlUrl == undefined){
+							var addedKmlUrl = addedKml[1];
+							if(addedKmlUrl != undefined){
+								var addedKmlUrlValue = addedKmlUrl[1];
+								if(addedKmlUrlValue != undefined){
+									kmlUrl = addedKmlUrlValue;
+								}
+							}
+						}
+						if(kmlTitle != undefined && kmlUrl != undefined){
+							self.kmlArray.push({url:kmlUrl, title:kmlTitle});
+						}
 					}
-					if(kmlTitle != undefined && kmlUrl != undefined){
-						self.kmlArray.push({url:kmlUrl, title:kmlTitle});
-					}
-				}
-				self.activeServicesPanel.addKml(self.kmlArray);
-			}else{
-				// Add KML if session exist
-				if(kml != null){
-					self.kmlArray.push(kml);
-					state.kmlArray.push(kml);
 					self.activeServicesPanel.addKml(self.kmlArray);
+				}else{
+					// Add KML if session exist
+					if(kml != null){
+						self.kmlArray.push(kml);
+						state.kmlArray.push(kml);
+						self.activeServicesPanel.addKml(self.kmlArray);
+					}
+				}			
+				self.finishInitMap();
+				if (safeStateAfterLoad) {
+					self.save(true);
 				}
-			}			
-			self.finishInitMap();
-			self.save(true);
+			});
+
+
 		},
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);

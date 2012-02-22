@@ -629,15 +629,16 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 	this.session.load(state, shortUrl, {
 		success: function(responseText) {
 			// restore map state
-			state.restoreMapState();
-			// restore active services
-			for (var i = 0, count = state.activeServices.length; i < count; i++) {
-				self.activeServicesPanel.addService(state.activeServices[i]);
-			}
-			self.finishInitMap();
-			if (safeStateAfterLoad) {
-				self.save(true);
-			}
+			state.restoreMapState(function() {
+				// restore active services
+				for (var i = 0, count = state.activeServices.length; i < count; i++) {
+					self.activeServicesPanel.addService(state.activeServices[i]);
+				}
+				self.finishInitMap();
+				if (safeStateAfterLoad) {
+					self.save(true);
+				}
+			});
 		},
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);
@@ -645,8 +646,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 		}
 	});
 };
-
-
 
                 
   
