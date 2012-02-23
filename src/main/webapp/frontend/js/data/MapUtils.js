@@ -22,20 +22,18 @@ de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection = function(map) {
  * Get the current projection of a map
  * @return OpenLayers.Projection instance
  */
-de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCode, map, container) {
+de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCode, map, container, zoomToExtent) {
 	var oldProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(map);
 	var newProjection = new OpenLayers.Projection(newProjCode);
 	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	var newExtent;
 	var mapExtent = map.getExtent();
-	var zoomToExtent = true;
 	if (mapExtent) {
 		newExtent = map.getExtent().clone().transform(oldProjection, newProjection);
 		if (!newMaxExtent.containsBounds(newExtent, false, false)) {
 			newExtent = newMaxExtent;
 		}
 	} else {
-		zoomToExtent = false;
 		newExtent = newMaxExtent;
 	}
 	var options = {
@@ -59,7 +57,7 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	}
 	
 	// only zoom into extent if the map initially had an extent
-	if (zoomToExtent) {
+	if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
 		map.zoomToExtent(newExtent);
 	}
 	

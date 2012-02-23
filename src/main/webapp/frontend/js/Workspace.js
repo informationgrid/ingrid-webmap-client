@@ -432,7 +432,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(callb
 			var projections = de.ingrid.mapclient.Configuration.getValue('projections');
 			if (projections && projections.length > 0) {
 				de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(projections[0].epsgCode, function() {
-					de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(projections[0].epsgCode, self.map, this);
+					de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(projections[0].epsgCode, self.map, this, true);
 					self.map.events.triggerEvent("zoomend");
 				});
 			} else {

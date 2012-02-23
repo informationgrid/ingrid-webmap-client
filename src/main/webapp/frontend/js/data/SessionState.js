@@ -163,6 +163,6 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
  * @param newProjCode EPSG code
  */
 de.ingrid.mapclient.frontend.data.SessionState.prototype.changeProjection = function(newProjCode) {
-	de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(newProjCode, this.map, this);
+	de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(newProjCode, this.map, this, false);
 };
 
