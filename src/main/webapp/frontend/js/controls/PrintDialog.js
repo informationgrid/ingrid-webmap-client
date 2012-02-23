@@ -104,7 +104,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 		scaleText: "Ma&szlig;tab",
 		rotationText: "Drehung",
 		printText: "PDF erstellen",
-		creatingPdfText: "Erzeuge PDF...",
+		creatingPdfText: "Erzeuge PDF..."
 
 	});
 	// add title and description fields to the form
