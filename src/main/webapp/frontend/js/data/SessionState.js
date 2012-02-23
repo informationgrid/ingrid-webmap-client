@@ -143,11 +143,6 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 		de.ingrid.mapclient.frontend.data.Service.fixLayerProperties(layer);
 	}
 	this.map.addLayers(layers);
-	this.map.setOptions({
-		maxExtent: context.maxExtent,
-		projection: context.projection,
-		maxResolution: 'auto'
-	});
 	de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(context.projection, function() {
 		self.changeProjection(context.projection);
 		self.map.zoomToExtent(context.bounds);
