@@ -42,7 +42,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	addBtn: null,
 	removeBtn: null,
 	transparencyBtn: null,
-	metaDataBtn: null
+	metaDataBtn: null,
+	
+	kmlArray: []
 });
 
 /**
@@ -80,7 +82,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
-				self.removeService(self.activeNode.attributes.service);
+				if(self.activeNode.attributes.service != undefined){
+					self.removeService(self.activeNode.attributes.service);	
+				}else if (self.activeNode.layer != undefined){
+					// Remove "Zeige Punktkoordinaten" layers
+					if (self.activeNode.layer.id != undefined){
+						self.removePointCoordinatesLayer(self.activeNode);
+					}
+				}else{
+					// Remove "Zeige Punktkoordinaten" service
+					self.removePointCoordinatesService(self.activeNode);self.remove
+				}
+				
 			}
 		}
 	});
@@ -136,15 +149,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					self.removeBtn.disable();
 				}
 			}else {
-				if(node.attributes.service){
-					self.transparencyBtn.disable();
-					self.removeBtn.enable();	
-				}else{
-					// For layer folder "Zeige Punktkoordinaten"
-					self.transparencyBtn.disable();
-					self.removeBtn.disable();
-					self.metaDataBtn.disable();
-				}
+				self.transparencyBtn.disable();
+				self.removeBtn.enable();	
 			}
 		}
 		self.activeNode = node;
@@ -194,7 +200,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		var serviceRecords = this.layerStore.reader.readRecords(serviceLayers).records;
 	
 		// add service layers to the store, if they are not already contained
-		for (var i=0, count=serviceRecords.length; i<count; i++) {
+		for (var i=0, count4=serviceRecords.length; i<count4; i++) {
 			var serviceRecord = serviceRecords[i];
 			var index = this.layerStore.findBy(function(record) {
 				var serviceLayer = serviceRecord.get('layer');
@@ -336,6 +342,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.updateOpacit
 
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = function(kmlArray) {
 	var self = this;
+	self.kmlArray = kmlArray;
 	var layers = new Array();
 	var styleMap = new OpenLayers.StyleMap({
 		'default':{
@@ -353,7 +360,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	// TODO: add rules so the layer will be displayed on legend
 	// styleMap.styles["default"].addRules([new OpenLayers.Rule({title:"${name}"})]);
 
-	for ( var i = 0, count = kmlArray.length; i < count; i++) {
+	for ( var i = 0, count5 = kmlArray.length; i < count5; i++) {
 		var addedKml = kmlArray[i];
 		var kmlTitle = addedKml.title;
 		var kmlUrl = addedKml.url;
@@ -444,3 +451,127 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 };
 
 
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointCoordinatesLayer = function(activeNode) {
+
+	var layerId = activeNode.layer.id;
+	var parentNode = activeNode.parentNode;
+	
+	// Remove layer from map
+	if(this.layerStore.data){
+		if(this.layerStore.data.items){
+			var items = this.layerStore.data.items;
+			var index = 0;
+			for (var i=0, count6=items.length; i<count6; i++) {
+				var item = items[i];
+				var itemId = item.id;
+				if(itemId){
+					if(itemId == layerId){
+						index = i;
+						break;
+					}	
+				}
+			}
+			this.layerStore.remove(this.layerStore.getAt(index));
+		}
+	}
+	
+	// Remove from tree
+	if(this.layerTree){
+		if(this.layerTree.root){
+			var childNodesTree = this.layerTree.root.childNodes;
+			var indexTree = 0;
+			for (var i=0, count7=childNodesTree.length; i<count7; i++) {
+				var childNodeTree = childNodesTree[i];
+				if(childNodeTree.text == parentNode.text){
+					indexTree = i;
+					break;
+				}
+			}
+			var selectedService = this.layerTree.root.childNodes[indexTree];
+			var selectedServiceLayers = selectedService.childNodes;
+			for (var i=0, count8=selectedServiceLayers.length; i<count8; i++) {
+				var selectedServiceLayer = selectedServiceLayers[i];
+				if(selectedServiceLayer.layerStore.data.items){
+					var serviceTreeItems = selectedServiceLayer.layerStore.data.items;
+					var indexServiceTree = 0;
+					for (var j=0, count9=serviceTreeItems.length; j<count9; j++) {
+						var serviceTreeItem = serviceTreeItems[i];
+						var itemId = serviceTreeItem.id;
+						if(itemId){
+							if(itemId == layerId){
+								indexServiceTree = i;
+								break;
+							}	
+						}
+					}
+					selectedServiceLayer.layerStore.remove(selectedServiceLayer.layerStore.getAt(indexServiceTree));
+					break;
+				}
+			}
+			if(selectedService.childNodes.length == 0){
+				this.layerTree.root.removeChild(selectedService);
+				
+			}
+		}
+	}
+	
+	// Remove from session
+	if(this.kmlArray){
+		var title = activeNode.layer.name;
+		var url = activeNode.layer.url;
+		for (var i=0, count10=this.kmlArray.length; i<count10; i++) {
+			var kml = this.kmlArray[i];
+			if(title == kml.title && url == kml.url){
+				this.kmlArray.remove(kml);
+				break;
+			}
+		}
+	}
+	this.fireEvent('datachanged');
+};
+
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointCoordinatesService = function(activeNode) {
+	
+	// Remove from map
+	if(activeNode.attributes.layerStore.data.items){
+		for (var i=0, count1=activeNode.attributes.layerStore.data.items.length; i<count1; i++) {
+			var childNode = activeNode.attributes.layerStore.data.items[i];
+			if(childNode){
+				var layerId = childNode.id;
+				if(this.layerStore.data){
+					if(this.layerStore.data.items){
+						var items = this.layerStore.data.items;
+						var index = 0;
+						for (var j=0, count2=items.length; j<count2; j++) {
+							var item = items[j];
+							var itemId = item.id;
+							if(itemId){
+								if(itemId == layerId){
+									index = j;
+									this.layerStore.remove(this.layerStore.getAt(index));
+									break;
+								}	
+							}
+						}
+					}
+				}
+			}
+		}
+	}	
+	
+	// Remove from tree
+	activeNode.removeAll();
+	this.layerTree.root.removeChild(activeNode);
+	
+	// Remove from session
+	if(this.kmlArray){
+		for (var i=0, count3=this.kmlArray.length; i<count3; i++) {
+			var kml = this.kmlArray[i];
+			this.kmlArray.remove(kml);
+			count3 = count3 - 1;
+			i--;
+		}
+	}
+	this.fireEvent('datachanged');
+};

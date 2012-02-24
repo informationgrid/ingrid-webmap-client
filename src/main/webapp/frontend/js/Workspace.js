@@ -627,9 +627,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 									}
 								}
 							}
-							if(kmlTitle != title && kmlUrl != url){
-								state.kmlArray.push(kml);
+							if(kmlTitle == title && kmlUrl == url){
+								isAdded=true;
+								break;
 							}
+						}
+						
+						if(!isAdded){
+							state.kmlArray.push(kml);
 						}
 					}
 				}
