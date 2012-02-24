@@ -344,26 +344,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	var self = this;
 	self.kmlArray = kmlArray;
 	var layers = new Array();
-	var styleMap = new OpenLayers.StyleMap({
-		'default':{
-			 label : "${name}",
-			 fontColor: "${fontColor}",
-			 fontSize: "11px",
-			 labelAlign: "${labelAlign}",
-			 strokeColor: "${strokeColor}",
-             fillColor: "${fillColor}",
-			 pointRadius: 3,
-			 labelXOffset : "${labelX}",
-			 labelYOffset : "${labelY}"
-		}
-	});
-	// TODO: add rules so the layer will be displayed on legend
-	// styleMap.styles["default"].addRules([new OpenLayers.Rule({title:"${name}"})]);
 
+	var kmlColor = ["#000000", "#BEBEBE", "#B03060", "#FF0000", "#00FF00", "#32CD32", "#556B2F", "#FFFF00",
+	              "#000080", "#0000FF", "#A020F0", "#FF00FF", "#00F5FF", "#7FFFD4", "#EEE9E9", "#FFFFFF"];
+	var countColor = 0;
+	
 	for ( var i = 0, count5 = kmlArray.length; i < count5; i++) {
 		var addedKml = kmlArray[i];
 		var kmlTitle = addedKml.title;
 		var kmlUrl = addedKml.url;
+		
 		if(kmlTitle == undefined){
 			var addedKmlTitle = addedKml[0];
 			if(addedKmlTitle != undefined){
@@ -384,6 +374,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			}
 		}
 		if(kmlTitle != undefined && kmlUrl != undefined){
+			var styleMap = new OpenLayers.StyleMap({
+				'default':{
+					 label : "${name}"
+				}
+			});
+
 			var layer = new OpenLayers.Layer.GML(kmlTitle, kmlUrl, {
 				   format: OpenLayers.Format.KML,
 				   formatOptions: {
@@ -394,6 +390,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 				     },
 				     displayOutsideMaxExtent = false
 				);
+			
+			// TODO: add rules so the layer will be displayed on legend
+			var rule = new OpenLayers.Rule({
+				  title: kmlTitle,
+				  symbolizer: {pointRadius: 3, fontSize: "11px", fontColor: "#000000",
+				               labelAlign: "center", labelXOffset: 0, 
+				               labelYOffset: 10, fillColor: kmlColor[countColor], strokeColor: "#000000" }
+				});
+
+			styleMap.styles["default"].addRules([rule]);
+			countColor = countColor + 1;
+			if(countColor % 16 == 0){
+				countColor = 0;
+			}
 			
 			var selectCtrl = new OpenLayers.Control.SelectFeature(layer);
 			function createPopup(feature) {
