@@ -66,7 +66,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
 		iconCls: 'iconAdd',
-		tooltip: 'Dienst hinzuf�gen',
+		tooltip: 'Dienst hinzuf&uuml;gen',
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
@@ -130,7 +130,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			if (node.layer) {
 				self.transparencyBtn.enable();
 				self.updateOpacitySlider(node.layer);
-				self.removeBtn.disable();
+				if (node.layer.CLASS_NAME=="OpenLayers.Layer.GML") {
+					self.removeBtn.enable();
+				} else {
+					self.removeBtn.disable();
+				}
 			}else {
 				if(node.attributes.service){
 					self.transparencyBtn.disable();
@@ -331,6 +335,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.updateOpacit
  */
 
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = function(kmlArray) {
+	var self = this;
 	var layers = new Array();
 	var styleMap = new OpenLayers.StyleMap({
 		'default':{
@@ -343,7 +348,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			 pointRadius: 3,
 			 labelXOffset : "${labelX}",
 			 labelYOffset : "${labelY}"
-		}});
+		}
+	});
+	// TODO: add rules so the layer will be displayed on legend
+	// styleMap.styles["default"].addRules([new OpenLayers.Rule({title:"${name}"})]);
 
 	for ( var i = 0, count = kmlArray.length; i < count; i++) {
 		var addedKml = kmlArray[i];
@@ -387,7 +395,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			        location: feature,
 			        unpinnable:false,
 			        width:400,
-			        html: feature.data.description
+			        html: feature.data.description,
 			    });
 			    // unselect feature when the popup
 			    // is closed

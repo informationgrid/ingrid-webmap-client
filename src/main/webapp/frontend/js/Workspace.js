@@ -595,6 +595,82 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 	var self = this;
 	this.session.load(state, shortUrl, {
 		success: function(responseText) {
+			if(!(typeof(state.kmlArray) === "undefined") && state.kmlArray.length > 0){
+				// Add KML if session with added KML exist
+				if(kml != null){
+					var title = kml.title;
+					var url = kml.url;
+					var isAdded = false;
+					
+					// Check for existing KML
+					if(title != undefined && url != undefined){
+						for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+							var addedKml = state.kmlArray[i];
+							var kmlTitle = addedKml.title;
+							var kmlUrl = addedKml.url;
+							if(kmlTitle == undefined){
+								var addedKmlTitle = addedKml[0];
+								if(addedKmlTitle != undefined){
+									var addedKmlTitleValue = addedKmlTitle[1];
+									if(addedKmlTitleValue != undefined){
+										kmlTitle = addedKmlTitleValue;
+									}
+								}
+							}
+							
+							if(kmlUrl == undefined){
+								var addedKmlUrl = addedKml[1];
+								if(addedKmlUrl != undefined){
+									var addedKmlUrlValue = addedKmlUrl[1];
+									if(addedKmlUrlValue != undefined){
+										kmlUrl = addedKmlUrlValue;
+									}
+								}
+							}
+							if(kmlTitle != title && kmlUrl != url){
+								state.kmlArray.push(kml);
+							}
+						}
+					}
+				}
+				
+				// Load KML by "Zeige Karte" from Session			
+				for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
+					var addedKml = state.kmlArray[i];
+					var kmlTitle = addedKml.title;
+					var kmlUrl = addedKml.url;
+					if(kmlTitle == undefined){
+						var addedKmlTitle = addedKml[0];
+						if(addedKmlTitle != undefined){
+							var addedKmlTitleValue = addedKmlTitle[1];
+							if(addedKmlTitleValue != undefined){
+								kmlTitle = addedKmlTitleValue;
+							}
+						}
+					}
+					
+					if(kmlUrl == undefined){
+						var addedKmlUrl = addedKml[1];
+						if(addedKmlUrl != undefined){
+							var addedKmlUrlValue = addedKmlUrl[1];
+							if(addedKmlUrlValue != undefined){
+								kmlUrl = addedKmlUrlValue;
+							}
+						}
+					}
+					if(kmlTitle != undefined && kmlUrl != undefined){
+						self.kmlArray.push({url:kmlUrl, title:kmlTitle});
+					}
+				}
+				self.activeServicesPanel.addKml(self.kmlArray);
+			}else{
+				// Add KML if session exist
+				if(kml != null){
+					self.kmlArray.push(kml);
+					state.kmlArray.push(kml);
+					self.activeServicesPanel.addKml(self.kmlArray);
+				}
+			}			
 			// restore map state
 			state.restoreMapState(function() {
 				// restore active services
@@ -605,6 +681,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
 					self.activeServicesPanel.addService(state.activeServices[i]);
 				}
+				
 				// Load WMS by "Zeige Karte" from Session
 				if(wms != null){
 					var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
@@ -612,82 +689,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 				}
 				
-				if(!(typeof(state.kmlArray) === "undefined") && state.kmlArray.length > 0){
-					// Add KML if session with added KML exist
-					if(kml != null){
-						var title = kml.title;
-						var url = kml.url;
-						var isAdded = false;
-						
-						// Check for existing KML
-						if(title != undefined && url != undefined){
-							for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
-								var addedKml = state.kmlArray[i];
-								var kmlTitle = addedKml.title;
-								var kmlUrl = addedKml.url;
-								if(kmlTitle == undefined){
-									var addedKmlTitle = addedKml[0];
-									if(addedKmlTitle != undefined){
-										var addedKmlTitleValue = addedKmlTitle[1];
-										if(addedKmlTitleValue != undefined){
-											kmlTitle = addedKmlTitleValue;
-										}
-									}
-								}
-								
-								if(kmlUrl == undefined){
-									var addedKmlUrl = addedKml[1];
-									if(addedKmlUrl != undefined){
-										var addedKmlUrlValue = addedKmlUrl[1];
-										if(addedKmlUrlValue != undefined){
-											kmlUrl = addedKmlUrlValue;
-										}
-									}
-								}
-								if(kmlTitle != title && kmlUrl != url){
-									state.kmlArray.push(kml);
-								}
-							}
-						}
-					}
-					
-					// Load KML by "Zeige Karte" from Session			
-					for ( var i = 0, count = state.kmlArray.length; i < count; i++) {
-						var addedKml = state.kmlArray[i];
-						var kmlTitle = addedKml.title;
-						var kmlUrl = addedKml.url;
-						if(kmlTitle == undefined){
-							var addedKmlTitle = addedKml[0];
-							if(addedKmlTitle != undefined){
-								var addedKmlTitleValue = addedKmlTitle[1];
-								if(addedKmlTitleValue != undefined){
-									kmlTitle = addedKmlTitleValue;
-								}
-							}
-						}
-						
-						if(kmlUrl == undefined){
-							var addedKmlUrl = addedKml[1];
-							if(addedKmlUrl != undefined){
-								var addedKmlUrlValue = addedKmlUrl[1];
-								if(addedKmlUrlValue != undefined){
-									kmlUrl = addedKmlUrlValue;
-								}
-							}
-						}
-						if(kmlTitle != undefined && kmlUrl != undefined){
-							self.kmlArray.push({url:kmlUrl, title:kmlTitle});
-						}
-					}
-					self.activeServicesPanel.addKml(self.kmlArray);
-				}else{
-					// Add KML if session exist
-					if(kml != null){
-						self.kmlArray.push(kml);
-						state.kmlArray.push(kml);
-						self.activeServicesPanel.addKml(self.kmlArray);
-					}
-				}			
 				self.finishInitMap();
 				if (safeStateAfterLoad) {
 					self.save(true);
