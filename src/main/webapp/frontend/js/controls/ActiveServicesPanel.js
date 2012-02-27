@@ -412,7 +412,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			        location: feature,
 			        unpinnable:false,
 			        width:400,
-			        html: feature.data.description,
+			        html: feature.data.description
 			    });
 			    // unselect feature when the popup
 			    // is closed
