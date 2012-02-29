@@ -1,1558 +1,1481 @@
 <configuration>
-	<wmsCapUrl>http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</wmsCapUrl>
-	<layers>
-		<layer>
-			<name>10k simplified AGG OpenStreetMap WMS</name>
-			<isBaseLayer>true</isBaseLayer>
-		</layer>
-		<layer>
-			<name>Orte5000000</name>
-			<isBaseLayer>false</isBaseLayer>
-		</layer>
-	</layers>
-	<mapExtend>
-		<north>60.0</north>
-		<south>40.0</south>
-		<west>2.0</west>
-		<east>19.0</east>
-	</mapExtend>
-	<projections>
-		<projection>
-			<name>WGS84</name>
-			<epsgCode>EPSG:4326</epsgCode>
-		</projection>
-		<projection>
-			<name>Gauß Krüger 2</name>
-			<epsgCode>EPSG:31466</epsgCode>
-		</projection>
-		<projection>
-			<name>Gauß Krüger 3</name>
-			<epsgCode>EPSG:31467</epsgCode>
-		</projection>
-	</projections>
-	<scales>
-		<scale>
-			<name>1:25.000</name>
-			<zoomLevel>25000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:50.000</name>
-			<zoomLevel>50000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:100.000</name>
-			<zoomLevel>100000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:250.000</name>
-			<zoomLevel>250000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:500.000</name>
-			<zoomLevel>500000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:1.000.000</name>
-			<zoomLevel>1000000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:2.000.000</name>
-			<zoomLevel>2000000.0</zoomLevel>
-		</scale>
-		<scale>
-			<name>1:4.000.000</name>
-			<zoomLevel>4000000.0</zoomLevel>
-		</scale>
-	</scales>
-	<proxyUrl></proxyUrl>
-	<serviceCategories>
-		<serviceCategory>
-			<name>Partner</name>
-			<serviceCategories>
-				<serviceCategory>
-					<name>Bund</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Abfallbehandlungsanlagen in Deutschland.</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_abfall?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenarten im Oberboden 1:1 Mio. in Deutschland</name>
-							<capabilitiesUrl>http://www.bgr.de/Service/bodenkunde/boart1000_ob/v2.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodeneuthropierung (Stickstoff) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_n?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:1 Mio. Deutschland</name>
-							<capabilitiesUrl>http://www.bgr.de/service/bodenkunde/buek1000/v1.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>   
-						</service>
-						<service>
-							<name>Bodenversauerung (Schwefel) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_s?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Bundeswasserstrassen WMS (DLZ-IT BVBS)</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_bwastr?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.0</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Digitale Bundeswasserstrassenkarte 1:1 Mio. Deutschland</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wmsdbwk1000?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Flusseinzugsgebiete in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_ezg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Flussgebietseinheiten in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_fge?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerlandschaften in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_gwl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Gewässerstrukturkarte Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_gsk?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Kraftwerke in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_kraftwerke?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landnutzung (Corine 2000) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_clc00_250?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Messstellen (Binnengewässer) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_mst?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Navigationskarte (Inland) Deutschland</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_ienc?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Nitratmessstellen in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_nitrat?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>   
-						</service>
-						<service>
-							<name>Ökologische Raumgliederung Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_OekologRaumGl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>   
-						</service>
-						<service>
-							<name>Pegelonlinekarte Deutschland</name>
-							<capabilitiesUrl>http://www.pegelonline.wsv.de/webservices/gis/wms?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Schutzgebiete in Deutschland</name>
-							<capabilitiesUrl>http://geodienste.bfn.de/ogc/wms/schutzgebiet?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Seetypenkartierung Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_seetypen?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Waldbrandriskogebiete in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_wbrisiko?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Baden-Württemberg</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_adb&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Badegewässer 1:50.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/badekarte_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_bergbau&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biosphärengebiet Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000033500001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotope 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000030200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Erdbebendienst Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_erdbeben&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Fließgewässer 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001500003?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Flussdeiche, Längsdämme, Schutzeinrichtungen 1:10.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_n&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermie Oberrheingraben (Südteil) 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_s&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geotope Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotop-Kataster 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_geotope&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotourismus 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geotourismus&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_hydrogeologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p203&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Kläranlagen (kommunal) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000002800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landnutzung (Landsat 2000) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000018000001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Landschaftsschutzgebiete 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Moore Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007700002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturdenkmal Einzelgebilde Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006800002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Naturdenkmal flächenhaft Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000012200002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturparke Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006700001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturräumliche Gliederung 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Quellenschutzgebiete 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007400001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe 1:350.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_NATUR?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Solare Einstrahlung für horizontale Flächen [kWh/m²] Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/solareinstrahlung_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Stehende Gewässer 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001400002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000003900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Waldschutzgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserkraftanlagen Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004100001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete (GDI) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_WASSER?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Wasser: Regelungsbauwerke Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019400001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasser: Schöpfwerke Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019500001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasser: Sohlenbauwerke inkl. Absturz Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Vogelschutzgebiete (Natura 2000) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000013200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Bayern</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Bodenfunktionenkarte Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bfk_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:200.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bk200_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Denkmale in Bayern</name>
-							<capabilitiesUrl>http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?SERVICE=WMS&amp;VERSION=1.1.0&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Karte 1:500.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk500v_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geologische Karte 1:100.000 Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Karte 1:100.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/hk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Konzeptbodenkarte 1:25.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/kbk25_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Lärmkartierung 2007 Hauptverkehrsstraßen Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MROADv?request=getcapabilities&amp;service=wms</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Lärmkartierung 2007 Flughäfen Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MAIRv?request=getcapabilities&amp;service=wms</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Rohstoffe 1:100.000 Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/rk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/wsg_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Berlin</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Art der Kanalisation Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_1artkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotoptypen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_berlinbtk?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotoptypen: FFH-Lebensraumtypen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_p26?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Bodengesellschaften Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_01boges2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Einwohnerdichte Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k06_06ewdichte2010?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Einzugsgebiete der Regenwasserkanalisation Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_2rkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Flurabstand des Grundwassers Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Heizungsarten nach Energieträgern Berlin </name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k08_02_01uebheiz2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Ingenieurgeologische Karte Berlin </name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimamodell Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_11_2plan_stadtklima2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 1971 - 2000 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_04wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 2021 - 2050 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_05wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_06wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Langjährige Entwicklung der Luftqualität Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/messpunkte?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/nsg_lsg?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Straßenverkehr - Emissionen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k03_11_1emisskfzverkehr2009?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Strategische Lärmkarten Gesamtlärmindex Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_05_14verkehr_gesDEN2008?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Verkehrsmengen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Versiegelung Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_02versieg2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/wsg?request=GetCapabilities&amp;service=WMS&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Brandenburg</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Naturschutzgebiete Brandenburg</name>
-							<capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Brandenburg</name>
-							<capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Wasser/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1 </capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Hamburg</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Schutzgebiete (GDI) Hamburg</name>
-							<capabilitiesUrl>http://gateway.hamburg.de/OGCFassade/BSU_GDI.aspx?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Mecklenburg-Vorpommern</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Biotope und Geotope Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_biotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodengeologie Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_bodengeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Bohrdatenspeicher Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_lbds_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>frei verfügbare Ökokonten in Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.kompensationsflaechen-mv.de/geoserver/wms?service=WMS&amp;version=1.1.0&amp;request=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte Mecklenburg-Vorpommern</name>
-						</service>
-						<service>
-							<name>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_erdwaerme_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Potentialkarten Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_potential_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geotope Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>LUNG MV</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a4_geotourismus_geopark_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotourismus, Region Pomerania Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotourismus_pomerania_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Hydrogeologische Karte Mecklenburg-Vorpommern </name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_hydrogeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Hydrologie Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_hydro_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Landschaftsplanung Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_landplan_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_rohstoffgeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/mvwmssg.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name> Tierarten Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_arten_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Umweltkarten Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/lung_wms_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserbuch Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserbuch_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>  
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Niedersachsen</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Altlasten in Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=27&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bergbauliche Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=19&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Biotope, Fauna, Brut- und Gastvögel Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Bereiche/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Bodenkundliche Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=24&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bohrungen in Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=37&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>CrossCompliance Erosionsgefährdung Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=39&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>FFH-Gebiete und EU-Vogelschutzgebiete (Natura2000) Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/natura2000/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Flächenverbrauch und Bodenversiegelung Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=36&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Förderkulisse Kooperationsprogramm Naturschutz Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/KoopNat/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=22&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities </capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=34&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Geotope in Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=38&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerschutzberatung in Grundwasserkörper Nds.</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=40&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=23&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Ingenieurgeologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=25&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Naturschutzrechtlich besonders geschützte Gebiete Niedersachsens</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Gebiete/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Naturschutzprogramme und -konzepte sowie Gebiete mit gesamtstaatlich repräsentativer Bedeutung Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Programme/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Rohstoffsicherungskarte Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=26&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/wms_gdi_de/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Schutz- und Gewinnungsgebiete für Grund- und Trinkwasser Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/SGGW/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete Niedersachsen &amp; Bremen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/uesg/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Nordrhein-Westfalen</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Bodenkarte 1:50 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/bk050?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenkarte Übersicht NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/BK05_Uebersichtskarte?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Bohrungen NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/bohrungen?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Forstamtsgrenzen NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/forstamtsgr?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte 1: 500 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/guek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerstationierungskarte NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/gewstat3c?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Hochwassergefährdete Bereiche des Rheins in NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/hochwasser?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Übersichtskarte 1:500 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/huek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Integrierte ländliche Entwicklung NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/gisile?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimaatlas NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/klimaatlas?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Lärm NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/laerm?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>LINFOS NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/linfos?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Neigungsklassen zur Gelaendebefahrbarkeit NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/hangneigung?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/ruek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Schadstoffbelastung in Oberböden NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/boden/stobo?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-						<service>
-							<name>Schutzgebiete NRW</name>
-							<capabilitiesUrl>http://www.gis2.nrw.de/wmsconnector/wms/schutzgebiete?REQUEST=GetCapabilities&amp;VERSION=1.1.0&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/uesg?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wald NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/waldNRW?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserschutzgebiete NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/wsg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>  
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Rheinland-Pfalz</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Erdbeben Rheinland-Pfalz</name>
-							<capabilitiesUrl>http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=getcapabilities</capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Sachsen-Anhalt</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Schutzgebiete Sachsen-Anhalt</name>
-							<capabilitiesUrl>http://geoportal.geodaten.sachsen-anhalt.de/geodatenportal/servlet/gtEntryPoint?REQUEST=Getcapabilities&amp;VERSION=1.1.1&amp;service=WMS&amp;WMS_Service_Name=Schutzgebiete</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Sachsen</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Bodenübersichtskarte 1:400.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/buek400.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Aufschlüsse Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/bohrung.xml?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte 1:400.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gk400.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gtk50.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Gewässernetz Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gewaessernetz.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_gefahren.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/huek200.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Oberflächennahe Rohstoffe 1:50.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/kor50.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Schutzgebiete Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/schutzgebiete.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Überschwemmte Flächen bei 100-jährigem Hochwasser in Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_intensitaet.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete (festgesetzt) Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_ueberschwemmung.xml?</capabilitiesUrl> 
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/wasserschutzgebiete.xml?</capabilitiesUrl> 
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Schleswig-Holstein</name>
-					<serviceCategories/>
-					<services>
-						<service>
-							<name>Landwirtschaft- und Umweltatlas Schleswig-Holstein</name>
-							<capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe Schleswig-Holstein</name>
-							<capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/llur_boden_wms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-			</serviceCategories>
-			<services/>
-		</serviceCategory>
-		<serviceCategory>
-			<name>Themen</name>
-			<serviceCategories>
-				<serviceCategory>
-					<name>Abfall</name>
-					<services>
-						<service>
-							<name>Abfallbehandlungsanlagen in Deutschland.</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_abfall?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Kläranlagen (kommunal) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000002800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Art der Kanalisation Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_1artkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Einzugsgebiete der Regenwasserkanalisation Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_2rkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Boden</name>
-					<services>						
-						<service>
-							<name>Bodenübersichtskarte 1:1 Mio. Deutschland</name>
-							<capabilitiesUrl>http://www.bgr.de/service/bodenkunde/buek1000/v1.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:200.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bk200_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenübersichtskarte 1:400.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/buek400.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenkarte 1:50 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/bk050?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenkarte Übersicht NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/BK05_Uebersichtskarte?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenarten im Oberboden 1:1 Mio. in Deutschland</name>
-							<capabilitiesUrl>http://www.bgr.de/Service/bodenkunde/boart1000_ob/v2.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenfunktionenkarte Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bfk_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Konzeptbodenkarte 1:25.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/kbk25_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodengesellschaften Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_01boges2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodeneuthropierung (Stickstoff) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_n?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenversauerung (Schwefel) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_s?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schadstoffbelastung in Oberböden NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/boden/stobo?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodengeologie Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_bodengeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bodenkundliche Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=24&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Energie</name>
-					<services>
-						<service>
-							<name>Kraftwerke in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_kraftwerke?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Solare Einstrahlung für horizontale Flächen [kWh/m²] Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/solareinstrahlung_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserkraftanlagen Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004100001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_n&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermie Oberrheingraben (Südteil) 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_s&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gtk50.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_erdwaerme_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Potentialkarten Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_potential_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Heizungsarten nach Energieträgern Berlin </name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k08_02_01uebheiz2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geothermische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=34&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Forstwirtschaft</name>
-					<services>
-						<service>
-							<name>Waldbrandriskogebiete in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_wbrisiko?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Waldschutzgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Forstamtsgrenzen NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/forstamtsgr?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Neigungsklassen zur Gelaendebefahrbarkeit NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/hangneigung?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wald NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/waldNRW?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Geologie</name>
-					<services>
-						<service>
-							<name>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_uek_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte 1: 500 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/guek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Übersichtskarte 1:400.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gk400.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Karte 1:500.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk500v_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Karte 1:100.000 Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_adb&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Aufschlüsse Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/bohrung.xml?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=22&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities </capabilitiesUrl>
-						</service>
-						<service>
-							<name>Ingenieurgeologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=25&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Ingenieurgeologische Karte Berlin </name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe 1:350.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe 1:100.000 Planungsregion Ingolstadt Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/rk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_rohstoffgeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/ruek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffe Schleswig-Holstein</name>
-							<capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/llur_boden_wms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Oberflächennahe Rohstoffe 1:50.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/kor50.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Erdbebendienst Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_erdbeben&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Erdbeben Rheinland-Pfalz</name>
-							<capabilitiesUrl>http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=getcapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotop-Kataster 1:250.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_geotope&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotope Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotope Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Geotope in Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=38&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bohrdatenspeicher Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_lbds_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_bergbau&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Rohstoffsicherungskarte Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=26&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bergbauliche Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=19&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bohrungen in Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=37&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Bohrungen NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/bohrungen?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Lärm und Erschütterungen</name>
-					<services>
-						<service>
-							<name>Lärmkartierung 2007 Flughäfen Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MAIRv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Lärmkartierung 2007 Hauptverkehrsstraßen Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MROADv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Strategische Lärmkarten Gesamtlärmindex Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_05_14verkehr_gesDEN2008?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Luft und Klima</name>
-					<services>
-						<service>
-							<name>Klimamodell Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_11_2plan_stadtklima2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 1971 - 2000 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_04wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 2021 - 2050 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_05wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Langjährige Entwicklung der Luftqualität Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/messpunkte?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimaatlas NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/klimaatlas?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_06wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Straßenverkehr - Emissionen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k03_11_1emisskfzverkehr2009?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Natur und Landschaft</name>
-					<services>
-						<service>
-							<name>Biotope 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000030200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>						
-						<service>
-							<name>Biotoptypen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_berlinbtk?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotoptypen: FFH-Lebensraumtypen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_p26?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotope und Geotope Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_biotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Biotope, Fauna, Brut- und Gastvögel Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Bereiche/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landnutzung (Corine 2000) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_clc00_250?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landnutzung (Landsat 2000) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000018000001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>LINFOS NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/linfos?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landschaftsplanung Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_landplan_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Ökologische Raumgliederung Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_OekologRaumGl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_NATUR?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Landschaftsschutzgebiete 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturparke Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006700001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Vogelschutzgebiete (Natura 2000) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000013200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/nsg_lsg?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Brandenburg</name>
-							<capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete in Deutschland</name>
-							<capabilitiesUrl>http://geodienste.bfn.de/ogc/wms/schutzgebiet?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) 1:25.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) Hamburg</name>
-							<capabilitiesUrl>http://gateway.hamburg.de/OGCFassade/BSU_GDI.aspx?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/mvwmssg.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzgebiete Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete (GDI) Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/wms_gdi_de/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>FFH-Gebiete und EU-Vogelschutzgebiete (Natura2000) Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/natura2000/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzrechtlich besonders geschützte Gebiete Niedersachsens</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Gebiete/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete NRW</name>
-							<capabilitiesUrl>http://www.gis2.nrw.de/wmsconnector/wms/schutzgebiete?REQUEST=GetCapabilities&amp;VERSION=1.1.0&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete Sachsen-Anhalt</name>
-							<capabilitiesUrl>http://geoportal.geodaten.sachsen-anhalt.de/geodatenportal/servlet/gtEntryPoint?REQUEST=Getcapabilities&amp;VERSION=1.1.1&amp;service=WMS&amp;WMS_Service_Name=Schutzgebiete</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutzgebiete Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/schutzgebiete.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturräumliche Gliederung Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_naturraum_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturräumliche Gliederung 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Natur und Landschaft Schleswig-Holstein</name>
-							<capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturdenkmal flächenhaft Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000012200002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturdenkmal Einzelgebilde Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006800002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Moore Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007700002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Naturschutzprogramme und -konzepte sowie Gebiete mit gesamtstaatlich repräsentativer Bedeutung Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Programme/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Förderkulisse Kooperationsprogramm Naturschutz Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/KoopNat/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name> Tierarten Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_arten_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>frei verfügbare Ökokonten in Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.kompensationsflaechen-mv.de/geoserver/wms?service=WMS&amp;version=1.1.0&amp;request=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Verkehr</name>
-					<services>
-						<service>
-							<name>Bundeswasserstrassen WMS (DLZ-IT BVBS)</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_bwastr?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.0</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Digitale Bundeswasserstrassenkarte 1:1 Mio. Deutschland</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wmsdbwk1000?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Navigationskarte (Inland) Deutschland</name>
-							<capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_ienc?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Lärm NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/laerm?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Verkehrsmengen Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-				<serviceCategory>
-					<name>Wasser</name>
-					<services>
-						<service>
-							<name>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_hydrogeologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p203&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Karte 1:100.000 Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/hk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrologie Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_hydro_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Karte Mecklenburg-Vorpommern </name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_hydrogeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Karten Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=23&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/huek200.xml?</capabilitiesUrl>
-						</service>
-  					    <service>
-							<name>Hydrogeologische Übersichtskarte 1:500 000 NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/gd/huek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete (GDI) Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_WASSER?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Bayern</name>
-							<capabilitiesUrl>http://www.bis.bayern.de/wms/gla/wsg_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/wsg?request=GetCapabilities&amp;service=WMS&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Brandenburg</name>
-							<capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Wasser/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1 </capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Schutz- und Gewinnungsgebiete für Grund- und Trinkwasser Niedersachsen</name>
-							<capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/SGGW/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerschutzberatung in Grundwasserkörper Nds.</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=40&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/wsg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserschutzgebiete Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/wasserschutzgebiete.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasser Schleswig-Holstein</name>
-							<capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Wasserbuch Mecklenburg-Vorpommern</name>
-							<capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserbuch_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hochwassergefährdete Bereiche des Rheins in NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/hochwasser?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000003900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete Niedersachsen &amp; Bremen</name>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete NRW</name>
-							<capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/uesg?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmungsgebiete (festgesetzt) Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_ueberschwemmung.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Überschwemmte Flächen bei 100-jährigem Hochwasser in Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_intensitaet.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_gefahren.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerlandschaften in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_gwl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässerstrukturkarte Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_gsk?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Flussgebietseinheiten in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_fge?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Flusseinzugsgebiete in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_ezg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Seetypenkartierung Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_seetypen?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Pegelonlinekarte Deutschland</name>
-							<capabilitiesUrl>http://www.pegelonline.wsv.de/webservices/gis/wms?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Messstellen (Binnengewässer) in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_mst?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Nitratmessstellen in Deutschland</name>
-							<capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_nitrat?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Flurabstand des Grundwassers Berlin</name>
-							<capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Grundwasserneubildung Niedersachsen</name>
-							<capabilitiesUrl>http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Gewässernetz Sachsen</name>
-							<capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gewaessernetz.xml?</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Fließgewässer 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001500003?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Stehende Gewässer 1:200.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001400002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>Badegewässer 1:50.000 Baden-Württemberg</name>
-							<capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/badekarte_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
-						</service>
-						<service>
-							<name>CrossCompliance Erosionsgefährdung Niedersachsen</name>
-							<capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=39&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
-						</service>
-					</services>
-				</serviceCategory>
-			</serviceCategories>
-			<services/>
-		</serviceCategory>
-	</serviceCategories>
-	<areaCategories>
-		<areaCategory>
-			<name>Städte</name>
-			<areaCategories/>
-			<areas>
-				<area>
-					<north>50.188</north>
-					<south>50.072</south>
-					<west>8.611</west>
-					<east>8.759</east>
-					<name>Frankfurt</name>
-				</area>
-				<area>
-					<north>52.457</north>
-					<south>52.319</south>
-					<west>9.651</west>
-					<east>9.627</east>
-					<name>Hannover</name>
-				</area>
-			</areas>
-		</areaCategory>
-	</areaCategories>
+  <wmsCapUrl>http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</wmsCapUrl>
+  <layers>
+    <layer>
+      <name>10k simplified AGG OpenStreetMap WMS</name>
+      <isBaseLayer>true</isBaseLayer>
+    </layer>
+  </layers>
+  <mapExtend>
+    <north>60.0</north>
+    <south>40.0</south>
+    <west>2.0</west>
+    <east>19.0</east>
+  </mapExtend>
+  <projections>
+    <projection>
+      <name>WGS84</name>
+      <epsgCode>EPSG:4326</epsgCode>
+    </projection>
+    <projection>
+      <name>Gauß Krüger 2</name>
+      <epsgCode>EPSG:31466</epsgCode>
+    </projection>
+    <projection>
+      <name>Gauß Krüger 3</name>
+      <epsgCode>EPSG:31467</epsgCode>
+    </projection>
+  </projections>
+  <scales>
+    <scale>
+      <name>1:25.000</name>
+      <zoomLevel>25000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:50.000</name>
+      <zoomLevel>50000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:100.000</name>
+      <zoomLevel>100000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:250.000</name>
+      <zoomLevel>250000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:500.000</name>
+      <zoomLevel>500000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:1.000.000</name>
+      <zoomLevel>1000000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:2.000.000</name>
+      <zoomLevel>2000000.0</zoomLevel>
+    </scale>
+    <scale>
+      <name>1:4.000.000</name>
+      <zoomLevel>4000000.0</zoomLevel>
+    </scale>
+  </scales>
+  <proxyUrl></proxyUrl>
+  <serviceCategories>
+    <serviceCategory>
+      <name>Partner</name>
+      <serviceCategories>
+        <serviceCategory>
+          <name>Bund</name>
+          <serviceCategories/>
+          <services/>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Baden-Württemberg</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_adb&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Badegewässer 1:50.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/badekarte_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_bergbau&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biosphärengebiet Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000033500001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotope 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000030200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenübersichtskarte 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Erdbebendienst Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_erdbeben&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Fließgewässer 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001500003?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flussdeiche, Längsdämme, Schutzeinrichtungen 1:10.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_n&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie Oberrheingraben (Südteil) 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_s&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotop-Kataster 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_geotope&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotourismus 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geotourismus&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_hydrogeologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p203&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Kläranlagen (kommunal) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000002800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landnutzung (Landsat 2000) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000018000001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landschaftsschutzgebiete 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Moore Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007700002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturdenkmal Einzelgebilde Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006800002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturdenkmal flächenhaft Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000012200002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturparke Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006700001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturräumliche Gliederung 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Quellenschutzgebiete 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007400001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe 1:350.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_NATUR?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Solare Einstrahlung für horizontale Flächen [kWh/m²] Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/solareinstrahlung_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Stehende Gewässer 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001400002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000003900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Waldschutzgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserkraftanlagen Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004100001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete (GDI) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_WASSER?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasser: Regelungsbauwerke Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019400001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasser: Schöpfwerke Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019500001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasser: Sohlenbauwerke inkl. Absturz Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000019300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Vogelschutzgebiete (Natura 2000) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000013200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Bayern</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Bodenfunktionenkarte Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bfk_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenübersichtskarte 1:200.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bk200_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Denkmale in Bayern</name>
+              <capabilitiesUrl>http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?SERVICE=WMS&amp;VERSION=1.1.0&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karte 1:500.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk500v_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karte 1:100.000 Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karte 1:100.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/hk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Konzeptbodenkarte 1:25.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/kbk25_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Lärmkartierung 2007 Hauptverkehrsstraßen Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MROADv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Lärmkartierung 2007 Flughäfen Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MAIRv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe 1:100.000 Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/rk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/wsg_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Berlin</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Art der Kanalisation Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_1artkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_berlinbtk?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen: FFH-Lebensraumtypen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_p26?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodengesellschaften Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_01boges2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Einwohnerdichte Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k06_06ewdichte2010?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Einzugsgebiete der Regenwasserkanalisation Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_2rkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flurabstand des Grundwassers Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Heizungsarten nach Energieträgern Berlin </name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k08_02_01uebheiz2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Ingenieurgeologische Karte Berlin </name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimamodell Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_11_2plan_stadtklima2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 1971 - 2000 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_04wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 2021 - 2050 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_05wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_06wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Langjährige Entwicklung der Luftqualität Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/messpunkte?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/nsg_lsg?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Straßenverkehr - Emissionen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k03_11_1emisskfzverkehr2009?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Strategische Lärmkarten Gesamtlärmindex Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_05_14verkehr_gesDEN2008?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Verkehrsmengen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Versiegelung Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_02versieg2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/wsg?request=GetCapabilities&amp;service=WMS&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Brandenburg</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Naturschutzgebiete Brandenburg</name>
+              <capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Brandenburg</name>
+              <capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Wasser/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1 </capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Hamburg</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Schutzgebiete (GDI) Hamburg</name>
+              <capabilitiesUrl>http://gateway.hamburg.de/OGCFassade/BSU_GDI.aspx?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Mecklenburg-Vorpommern</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Biotope und Geotope Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_biotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodengeologie Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_bodengeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrdatenspeicher Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_lbds_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>frei verfügbare Ökokonten in Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.kompensationsflaechen-mv.de/geoserver/wms?service=WMS&amp;version=1.1.0&amp;request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_uek_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_erdwaerme_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Potentialkarten Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_potential_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>LUNG MV</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a4_geotourismus_geopark_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotourismus, Region Pomerania Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotourismus_pomerania_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karte Mecklenburg-Vorpommern </name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_hydrogeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrologie Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_hydro_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landschaftsplanung Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_landplan_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_rohstoffgeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/mvwmssg.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name> Tierarten Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_arten_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Umweltkarten Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/lung_wms_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserbuch Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserbuch_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Niedersachsen</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Altlasten in Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=27&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bergbauliche Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=19&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotope, Fauna, Brut- und Gastvögel Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Bereiche/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenkundliche Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=24&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrungen in Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=37&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>CrossCompliance Erosionsgefährdung Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=39&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>FFH-Gebiete und EU-Vogelschutzgebiete (Natura2000) Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/natura2000/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flächenverbrauch und Bodenversiegelung Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=36&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Förderkulisse Kooperationsprogramm Naturschutz Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/KoopNat/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=22&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities </capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=34&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope in Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=38&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässerschutzberatung in Grundwasserkörper Nds.</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=40&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=23&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Ingenieurgeologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=25&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzrechtlich besonders geschützte Gebiete Niedersachsens</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Gebiete/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzprogramme und -konzepte sowie Gebiete mit gesamtstaatlich repräsentativer Bedeutung Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Programme/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffsicherungskarte Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=26&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/wms_gdi_de/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutz- und Gewinnungsgebiete für Grund- und Trinkwasser Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/SGGW/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete Niedersachsen &amp; Bremen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/uesg/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Nordrhein-Westfalen</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Bodenkarte 1:50 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/bk050?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenkarte Übersicht NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/BK05_Uebersichtskarte?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrungen NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/bohrungen?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Forstamtsgrenzen NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/forstamtsgr?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte 1: 500 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/guek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässerstationierungskarte NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/gewstat3c?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hochwassergefährdete Bereiche des Rheins in NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/hochwasser?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Übersichtskarte 1:500 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/huek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Integrierte ländliche Entwicklung NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/gisile?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimaatlas NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/klimaatlas?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Lärm NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/laerm?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>LINFOS NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/linfos?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Neigungsklassen zur Gelaendebefahrbarkeit NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/hangneigung?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/ruek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schadstoffbelastung in Oberböden NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/boden/stobo?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete NRW</name>
+              <capabilitiesUrl>http://www.gis2.nrw.de/wmsconnector/wms/schutzgebiete?REQUEST=GetCapabilities&amp;VERSION=1.1.0&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/uesg?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wald NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/waldNRW?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/wsg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Rheinland-Pfalz</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Erdbeben Rheinland-Pfalz</name>
+              <capabilitiesUrl>http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=getcapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Sachsen-Anhalt</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Schutzgebiete Sachsen-Anhalt</name>
+              <capabilitiesUrl>http://geoportal.geodaten.sachsen-anhalt.de/geodatenportal/servlet/gtEntryPoint?REQUEST=Getcapabilities&amp;VERSION=1.1.1&amp;service=WMS&amp;WMS_Service_Name=Schutzgebiete</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Sachsen</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Bodenübersichtskarte 1:400.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/buek400.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Aufschlüsse Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/bohrung.xml?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte 1:400.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gk400.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gtk50.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässernetz Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gewaessernetz.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_gefahren.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/huek200.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Oberflächennahe Rohstoffe 1:50.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/kor50.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/schutzgebiete.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmte Flächen bei 100-jährigem Hochwasser in Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_intensitaet.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete (festgesetzt) Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_ueberschwemmung.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/wasserschutzgebiete.xml?</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Schleswig-Holstein</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Landwirtschaft- und Umweltatlas Schleswig-Holstein</name>
+              <capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe Schleswig-Holstein</name>
+              <capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/llur_boden_wms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+      </serviceCategories>
+      <services/>
+    </serviceCategory>
+    <serviceCategory>
+      <name>Themen</name>
+      <serviceCategories>
+        <serviceCategory>
+          <name>Abfall</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Abfallbehandlungsanlagen in Deutschland.</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_abfall?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Kläranlagen (kommunal) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000002800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Art der Kanalisation Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_1artkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Einzugsgebiete der Regenwasserkanalisation Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k02_09_2rkan2006?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Boden</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Bodenübersichtskarte 1:1 Mio. Deutschland</name>
+              <capabilitiesUrl>http://www.bgr.de/service/bodenkunde/buek1000/v1.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenübersichtskarte 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenübersichtskarte 1:200.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bk200_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenübersichtskarte 1:400.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/buek400.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenkarte 1:50 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/bk050?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenkarte Übersicht NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/BK05_Uebersichtskarte?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenarten im Oberboden 1:1 Mio. in Deutschland</name>
+              <capabilitiesUrl>http://www.bgr.de/Service/bodenkunde/boart1000_ob/v2.0/index.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenfunktionenkarte Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/bfk_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Konzeptbodenkarte 1:25.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/kbk25_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodengesellschaften Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k01_01boges2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodeneuthropierung (Stickstoff) in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_n?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenversauerung (Schwefel) in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_cll_ueber_s?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schadstoffbelastung in Oberböden NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/boden/stobo?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodengeologie Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_bodengeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bodenkundliche Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=24&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Energie</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Kraftwerke in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_kraftwerke?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Solare Einstrahlung für horizontale Flächen [kWh/m²] Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/solareinstrahlung_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserkraftanlagen Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000004100001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_n&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie Oberrheingraben (Südteil) 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p179_s&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gtk50.xml?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_erdwaerme_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Potentialkarten Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_potential_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Heizungsarten nach Energieträgern Berlin </name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k08_02_01uebheiz2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geothermische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=34&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Forstwirtschaft</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Waldbrandriskogebiete in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_wbrisiko?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Waldschutzgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Forstamtsgrenzen NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/forstamtsgr?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Neigungsklassen zur Gelaendebefahrbarkeit NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/hangneigung?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wald NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/forst/waldNRW?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Geologie</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_uek_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte 1: 500 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/guek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Übersichtskarte 1:400.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gk400.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karte 1:500.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk500v_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karte 1:100.000 Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/gk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_adb&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Aufschlüsse Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/bohrung.xml?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=22&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities </capabilitiesUrl>
+            </service>
+            <service>
+              <name>Ingenieurgeologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=25&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Ingenieurgeologische Karte Berlin </name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe 1:350.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe 1:100.000 Planungsregion Ingolstadt Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/rk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_rohstoffgeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/ruek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffe Schleswig-Holstein</name>
+              <capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/llur_boden_wms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Oberflächennahe Rohstoffe 1:50.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/kor50.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Erdbebendienst Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_erdbeben&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Erdbeben Rheinland-Pfalz</name>
+              <capabilitiesUrl>http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=getcapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotop-Kataster 1:250.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_geotope&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007800001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_geotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Geotope in Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=38&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrdatenspeicher Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_lbds_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_bergbau&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Rohstoffsicherungskarte Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=26&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bergbauliche Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=19&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrungen in Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=37&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Bohrungen NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/bohrungen?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Lärm und Erschütterungen</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Lärmkartierung 2007 Flughäfen Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MAIRv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Lärmkartierung 2007 Hauptverkehrsstraßen Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/lbk2007MROADv?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Strategische Lärmkarten Gesamtlärmindex Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_05_14verkehr_gesDEN2008?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Luft und Klima</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Klimamodell Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_11_2plan_stadtklima2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 1971 - 2000 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_04wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 2021 - 2050 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_05wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Langjährige Entwicklung der Luftqualität Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/messpunkte?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimaatlas NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/klimaatlas?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k04_12_06wb2005?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Straßenverkehr - Emissionen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k03_11_1emisskfzverkehr2009?request=getCapabilities&amp;service=wms&amp;version=1.1.1</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Natur und Landschaft</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Biotope 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000030200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_berlinbtk?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen: FFH-Lebensraumtypen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_p26?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotope und Geotope Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_biotope_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Biotope, Fauna, Brut- und Gastvögel Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Bereiche/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landnutzung (Corine 2000) in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_clc00_250?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landnutzung (Landsat 2000) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000018000001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>LINFOS NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/linfos?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landschaftsplanung Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_landplan_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Ökologische Raumgliederung Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_OekologRaumGl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_NATUR?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Landschaftsschutzgebiete 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001300001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturparke Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006700001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Vogelschutzgebiete (Natura 2000) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000013200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/nsg_lsg?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Brandenburg</name>
+              <capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete in Deutschland</name>
+              <capabilitiesUrl>http://geodienste.bfn.de/ogc/wms/schutzgebiet?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) 1:25.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) Hamburg</name>
+              <capabilitiesUrl>http://gateway.hamburg.de/OGCFassade/BSU_GDI.aspx?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/mvwmssg.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzgebiete Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete (GDI) Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/wms_gdi_de/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>FFH-Gebiete und EU-Vogelschutzgebiete (Natura2000) Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/natura2000/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities </capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzrechtlich besonders geschützte Gebiete Niedersachsens</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Gebiete/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete NRW</name>
+              <capabilitiesUrl>http://www.gis2.nrw.de/wmsconnector/wms/schutzgebiete?REQUEST=GetCapabilities&amp;VERSION=1.1.0&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete Sachsen-Anhalt</name>
+              <capabilitiesUrl>http://geoportal.geodaten.sachsen-anhalt.de/geodatenportal/servlet/gtEntryPoint?REQUEST=Getcapabilities&amp;VERSION=1.1.1&amp;service=WMS&amp;WMS_Service_Name=Schutzgebiete</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutzgebiete Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/schutzgebiete.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturräumliche Gliederung Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_naturraum_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturräumliche Gliederung 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Natur und Landschaft Schleswig-Holstein</name>
+              <capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturdenkmal flächenhaft Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000012200002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturdenkmal Einzelgebilde Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000006800002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Moore Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000007700002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Naturschutzprogramme und -konzepte sowie Gebiete mit gesamtstaatlich repräsentativer Bedeutung Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/Programme/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Förderkulisse Kooperationsprogramm Naturschutz Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/KoopNat/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name> Tierarten Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a2_arten_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>frei verfügbare Ökokonten in Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.kompensationsflaechen-mv.de/geoserver/wms?service=WMS&amp;version=1.1.0&amp;request=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Verkehr</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Bundeswasserstrassen WMS (DLZ-IT BVBS)</name>
+              <capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_bwastr?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.0</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Digitale Bundeswasserstrassenkarte 1:1 Mio. Deutschland</name>
+              <capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wmsdbwk1000?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Navigationskarte (Inland) Deutschland</name>
+              <capabilitiesUrl>http://wsvmapserv.wsv.bund.de/wms_ienc?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Lärm NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/laerm?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Verkehrsmengen Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+        <serviceCategory>
+          <name>Wasser</name>
+          <serviceCategories/>
+          <services>
+            <service>
+              <name>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_hydrogeologie&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_p203&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karte 1:100.000 Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/hk100_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrologie Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_hydro_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karte Mecklenburg-Vorpommern </name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a7_hydrogeologie_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Karten Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=23&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/huek200.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hydrogeologische Übersichtskarte 1:500 000 NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/gd/huek500?VERSION=1.1.1&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete (GDI) Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/GDI_SCHUTZGEBIET_WASSER?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Bayern</name>
+              <capabilitiesUrl>http://www.bis.bayern.de/wms/gla/wsg_wms?request=getcapabilities&amp;service=wms</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/wsg?request=GetCapabilities&amp;service=WMS&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Brandenburg</name>
+              <capabilitiesUrl>http://luaplims01.brandenburg.de/ArcGIS/services/Wasser/Schutzgebiete/MapServer/WMSServer?&amp;request=GetCapabilities&amp;Version=1.1.1 </capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Schutz- und Gewinnungsgebiete für Grund- und Trinkwasser Niedersachsen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/SGGW/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässerschutzberatung in Grundwasserkörper Nds.</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=40&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/wsg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserschutzgebiete Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/wasserschutzgebiete.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasser Schleswig-Holstein</name>
+              <capabilitiesUrl>http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Wasserbuch Mecklenburg-Vorpommern</name>
+              <capabilitiesUrl>http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserbuch_wms.php?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hochwassergefährdete Bereiche des Rheins in NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/hochwasser?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000003900001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete Niedersachsen &amp; Bremen</name>
+              <capabilitiesUrl>http://www.umweltkarten.niedersachsen.de/arcgis/services/uesg/MapServer/WMSServer?VERSION=1.1.1.&amp;SERVICE=WMS&amp;REQUEST=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete NRW</name>
+              <capabilitiesUrl>http://www.wms.nrw.de/umwelt/wasser/uesg?REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmungsgebiete (festgesetzt) Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_ueberschwemmung.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Überschwemmte Flächen bei 100-jährigem Hochwasser in Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_intensitaet.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/hwsk_gefahren.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässerlandschaften in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_gwl?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässerstrukturkarte Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_gsk?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flussgebietseinheiten in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_fge?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flusseinzugsgebiete in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_ezg?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Seetypenkartierung Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/bkg_seetypen?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Pegelonlinekarte Deutschland</name>
+              <capabilitiesUrl>http://www.pegelonline.wsv.de/webservices/gis/wms?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Messstellen (Binnengewässer) in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_mst?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Nitratmessstellen in Deutschland</name>
+              <capabilitiesUrl>http://gis.uba.de:80/wmsconnector/com.esri.wms.Esrimap/wms_nitrat?REQUEST=GetCapabilities&amp;SERVICE=WMS&amp;VERSION=1.1.1</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Flurabstand des Grundwassers Berlin</name>
+              <capabilitiesUrl>http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?request=getCapabilities&amp;service=wms&amp;version=1.1.1&amp;browser=true</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Grundwasserneubildung Niedersachsen</name>
+              <capabilitiesUrl>http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Gewässernetz Sachsen</name>
+              <capabilitiesUrl>http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/capabilities/gewaessernetz.xml?</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Fließgewässer 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001500003?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Stehende Gewässer 1:200.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000001400002?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>Badegewässer 1:50.000 Baden-Württemberg</name>
+              <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/badekarte_wms?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
+            </service>
+            <service>
+              <name>CrossCompliance Erosionsgefährdung Niedersachsen</name>
+              <capabilitiesUrl>http://nibis.lbeg.de/net3/public/ogc.ashx?PkgId=39&amp;Version=1.1.1&amp;Service=WMS&amp;Request=GetCapabilities</capabilitiesUrl>
+            </service>
+          </services>
+        </serviceCategory>
+      </serviceCategories>
+      <services/>
+    </serviceCategory>
+  </serviceCategories>
+  <areaCategories>
+    <areaCategory>
+      <name>Städte</name>
+      <areaCategories/>
+      <areas>
+        <area>
+          <north>50.188</north>
+          <south>50.072</south>
+          <west>8.611</west>
+          <east>8.759</east>
+          <name>Frankfurt</name>
+        </area>
+        <area>
+          <north>52.457</north>
+          <south>52.319</south>
+          <west>9.651</west>
+          <east>9.627</east>
+          <name>Hannover</name>
+        </area>
+      </areas>
+    </areaCategory>
+  </areaCategories>
 </configuration>
