@@ -26,10 +26,15 @@ Ext.onReady(function() {
 
 			// create the session and personalize it, if an user id is given in the userId GET parameter
 			var userId = de.ingrid.mapclient.Configuration.getUrlParameter('userId') || null;
+			if(mapUserId != 'NoId'){
 			var session = new de.ingrid.mapclient.frontend.data.Session({
+				userId: mapUserId
+			});				
+			}else{
+				var session = new de.ingrid.mapclient.frontend.data.Session({
 				userId: userId
 			});
-
+			}
 
 			// determine the view configuration from the viewConfig GET parameter
 			// if there isn't one defined in the template

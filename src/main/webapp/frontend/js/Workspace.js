@@ -208,8 +208,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		measurePolygonCtrl.events.on({
 			"measure": this.measure
 		});
+		//activate animated toolbar at initial load of map
 		this.map.addControl(measurePolygonCtrl);
-
+		var loadingPanel = new OpenLayers.Control.LoadingPanel();
+		this.map.addControl(loadingPanel);
+		loadingPanel.activate();
+		
 		toolbarItems.push(new Ext.SplitButton({
 			iconCls: 'iconMeassure',
 			tooltip: 'Messen',
@@ -468,15 +472,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	overviewLayer.isBaseLayer = true;
 
 	// add controls to map
+	
 	var controls = [new OpenLayers.Control.Navigation(),
 		new OpenLayers.Control.PanZoomBar(),
 		new OpenLayers.Control.ScaleLine(),
 		new OpenLayers.Control.MousePosition(),
 		new OpenLayers.Control.OverviewMap({
 			layers: [ overviewLayer ]
-		}), new OpenLayers.Control.KeyboardDefaults(),
-		new OpenLayers.Control.LoadingPanel()
+		}), new OpenLayers.Control.KeyboardDefaults()
 	];
+	
 	if (this.viewConfig.hasPermaLink) {
 		controls.push(new OpenLayers.Control.Permalink());
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
