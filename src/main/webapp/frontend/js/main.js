@@ -26,7 +26,12 @@ Ext.onReady(function() {
 
 			// create the session and personalize it, if an user id is given in the userId GET parameter
 			var userId = de.ingrid.mapclient.Configuration.getUrlParameter('userId') || null;
-			if(mapUserId != 'NoId'){
+			if(typeof mapUserId === 'undefined'){
+			var session = new de.ingrid.mapclient.frontend.data.Session({
+				userId: userId
+			});
+			mapUserId = null;
+			}else if(mapUserId != 'NoId'){				
 			var session = new de.ingrid.mapclient.frontend.data.Session({
 				userId: mapUserId
 			});				
@@ -65,6 +70,8 @@ Ext.onReady(function() {
 						callbackHooks: callbackHooks
 				});						
 				}
+				if(typeof endLoadIcon !== 'undefined')
+				endLoadIcon();
 			}
 			else {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE);
