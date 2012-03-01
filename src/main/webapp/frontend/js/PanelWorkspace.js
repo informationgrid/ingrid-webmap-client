@@ -29,10 +29,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	 *      properties:
 	 */
 	viewConfig: {
-		hasServicesPanel: true, //the westpanel currently disabled
-		hasInfoTool: true, //now serves as coordinates check
+		hasServicesPanel: true,
+		hasInfoTool: true, 
 		hasHistoryTool: true,
-		hasMeasureTool: true, //currently disabled
+		hasMeasureTool: true, 
 		hasPrintTool: true,
 		hasLoadTool: true,
 		hasSaveTool: true,
@@ -384,8 +384,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		items: mapPanel,
 		tbar: toolbar
 	});
-
-	
+		//activate animated toolbar at initial load of map
+		var loadingPanel = new OpenLayers.Control.LoadingPanel();
+		this.map.addControl(loadingPanel);
+		loadingPanel.activate();
 	
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
