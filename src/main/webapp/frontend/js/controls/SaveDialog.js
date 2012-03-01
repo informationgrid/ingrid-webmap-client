@@ -80,7 +80,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 		},
 		items: [
 		    this.titleField,
-		    this.descriptionField,
+		    this.descriptionField
 		],
 		buttons: [{
 			text: 'Speichern',
