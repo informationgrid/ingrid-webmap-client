@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * of active services.
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, {
-	title: "Dienst hinzufügen",
+	title: "Dienst hinzuf&uuml;gen",
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -66,8 +66,8 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 		    this.capabilitiesUrlField,
 		    this.activateLayersCheckbox,
 		    this.activateZoomCheckbox, {
-				html: 'Hinweis: Möglicherweise müssen Sie die Ansicht vergrößern, um Ebenen von externen Kartendiensten '+
-					'betrachten zu können. Der Betreiber des Kartendienstes ist für die Anzeige verantwortlich. '+
+				html: 'Hinweis: M&ouml;glicherweise m&uuml;ssen Sie die Ansicht vergr&ouml;&szlig;ern, um Ebenen von externen Kartendiensten '+
+					'betrachten zu k&oumlnnen. Der Betreiber des Kartendienstes ist f&uuml;r die Anzeige verantwortlich. '+
 					'PortalU hat keine Beteiligung an dessen Verhalten.',
 					bodyStyle: {
 			            color: '#A8A8A8'
@@ -76,7 +76,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 			}
 		],
 		buttons: [{
-			text: 'Dienst hinzufügen',
+			text: 'Dienst hinzuf&uuml;gen',
 	        handler: function(btn) {
 	        	if (self.activeServicesPanel && self.capabilitiesUrlField.validate()) {
 	        		var capabilitiesUrl = self.capabilitiesUrlField.getValue();

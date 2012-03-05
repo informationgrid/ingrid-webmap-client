@@ -41,7 +41,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
-        tooltip: 'Dienst hinzufügen',
+        tooltip: 'Dienst hinzuf&uuml;gen',
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
