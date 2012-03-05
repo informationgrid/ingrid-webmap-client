@@ -6,13 +6,37 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">	
 	<title>InGrid Map Client</title>
 
-	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/adapter/ext/ext-base-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/extjs/resources/css/ext-all.css" />
+	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/frontend/css/style.css" />
+
+</head>
+<body>
+<p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
+     <script type="text/javascript">
+     
+    function endLoadIcon() {
+
+    ProgressImage = document.getElementById("progress_image");
+    document.getElementById("progress").style.visibility = "hidden";
+    setTimeout("ProgressImage.src = ProgressImage.src",100);
+    return true;
+
+    } 
+    </script>
+<div id="openlayersDiv" style="width:800px;"></div>
+   <script type="text/javascript">
+   var wms = null;
+   var kml = null;
+   </script>
+   <noscript>
+   Javascript has to be enabled to run this application.
+   </noscript>
+   	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/adapter/ext/ext-base-debug.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/ext-all-debug.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers/lib/OpenLayers.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext/lib/GeoExt.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/extjs/resources/css/ext-all.css" />
-	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/frontend/css/style.css" />
+
 	
     <script type="text/javascript" src="/ingrid-webmap-client/lib/proj4js/lib/proj4js-compressed.js"></script>  
 	
@@ -50,29 +74,6 @@
     <script type="text/javascript" src="/ingrid-webmap-client/frontend/js/Workspace.js"></script>
 
 	 <script type="text/javascript" src="/ingrid-webmap-client/frontend/js/main.js"></script> 
-
-</head>
-<body>
-<p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
-     <script type="text/javascript">
-     
-    function endLoadIcon() {
-
-    ProgressImage = document.getElementById("progress_image");
-    document.getElementById("progress").style.visibility = "hidden";
-    setTimeout("ProgressImage.src = ProgressImage.src",100);
-    return true;
-
-    } 
-    </script>
-<div id="openlayersDiv" style="width:800px;"></div>
-   <script type="text/javascript">
-   var wms = null;
-   var kml = null;
-   </script>
-   <noscript>
-   Javascript has to be enabled to run this application.
-   </noscript>
 </body>
 </html>
 	
