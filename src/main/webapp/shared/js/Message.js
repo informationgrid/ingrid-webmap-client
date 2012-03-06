@@ -61,7 +61,7 @@ de.ingrid.mapclient.Message.showError = function(msg) {
 /**
  * Predefined messages
  */
-de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die Änderungen wurden gespeichert.";
+de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die ï¿½nderungen wurden gespeichert.";
 de.ingrid.mapclient.Message.SAVE_FAILURE = "Beim Speichern der Daten ist ein Fehler aufgetreten.";
 
 de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = "Das Laden der Konfiguration ist fehlgeschlagen.";
@@ -73,6 +73,8 @@ de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration
 de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht gelistet werden.";
 de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";
 de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = "Beim Speichern der Karte ist ein Fehler aufgetreten.";
-de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim Löschen der Karte ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim Lï¿½schen der Karte ist ein Fehler aufgetreten.";
 
 de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = "Beim Drucken der Karte ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.SEARCH_FAILURE = "Beim Suchen ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.SEARCH_SUCCESS = "Suche erfolgreich.";
