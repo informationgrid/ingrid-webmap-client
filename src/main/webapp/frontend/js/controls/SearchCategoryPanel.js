@@ -120,18 +120,18 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
  * @param serviceCategory Object with properties name, serviceCategories, services
  * @return Object to be passed to Ext.tree.TreeLoader
  */
-de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = function(serviceCategory) {
+de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = function(services) {
 	var children = [];
 
 	// transform sub categories
-	var subCategories = serviceCategory.serviceCategories;
-	for (var i=0, count=subCategories.length; i<count; i++) {
-		var childNode = this.transform(subCategories[i]);
-		children.push(childNode);
-	}
+//	var subCategories = serviceCategory.serviceCategories;
+//	for (var i=0, count=subCategories.length; i<count; i++) {
+//		var childNode = this.transform(subCategories[i]);
+//		children.push(childNode);
+//	}
 
 	// transform services
-	var services = serviceCategory.services;
+//	var services = serviceCategory.services;
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);
@@ -146,7 +146,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 
 	// transform serviceCategory
 	var node = {
-		text: serviceCategory.name,
+		text: 'Hallo',
 		children: children,
 		leaf: children.length == 0 ? true : false,
 		expanded: true,
