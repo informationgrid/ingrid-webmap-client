@@ -58,8 +58,9 @@ public class SearchResource {
 						return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
 					}
 				});
-//				List<WmsServer> services = cats.get(1).getServiceCategories().get(1).getServices();
-				String json = xstream.toXML(cats);
+				List<WmsServer> services = cats.getServiceCategories().get(1).getServices();
+				System.out.println(xstream.toXML(services));
+				String json = xstream.toXML(services);
 				return Response.ok(json).build();
 			}
 			catch (Exception ex) {
