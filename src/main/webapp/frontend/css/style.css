@@ -45,6 +45,10 @@ body {
 	background-image: url(../../shared/images/icon_delete.png);
 }
 
+.iconRemoveAll {
+	background-image: url(../../shared/images/icon_deleteall.png);
+}
+
 .iconTransparency {
 	background-image: url(../../shared/images/icon_transparency.png);
 }

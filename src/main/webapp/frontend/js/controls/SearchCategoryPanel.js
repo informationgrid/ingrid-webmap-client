@@ -65,7 +65,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
         }
 	});
 	this.searchDataBtn = new Ext.Button({
-        iconCls: 'iconRemove',
+        iconCls: 'iconRemoveAll',
         tooltip: 'Suchergebnisse l&ouml;schen',
         disabled: false,
         handler: function(btn) {
