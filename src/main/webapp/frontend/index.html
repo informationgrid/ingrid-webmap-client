@@ -19,8 +19,19 @@
 	<script type="text/javascript" src="js/frontend-all-min.js"></script>
 </head>
 <body>
-<div id="mapDiv"></div>
+<p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
+     <script type="text/javascript">
+     
+    function endLoadIcon() {
 
+    ProgressImage = document.getElementById("progress_image");
+    document.getElementById("progress").style.visibility = "hidden";
+    setTimeout("ProgressImage.src = ProgressImage.src",100);
+    return true;
+
+    } 
+    </script>
+<div id="openlayersDiv" style="width:800px;"></div>
 <script type="text/javascript">
    var wms = null;
    var kml = null;

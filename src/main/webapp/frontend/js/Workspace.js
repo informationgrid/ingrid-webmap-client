@@ -110,25 +110,22 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// c) search panel
-	//TODO current workspace
+
 	var searchPanel = new Ext.FormPanel({
 		id : 'searchPanel',
 		title : 'Suche',
 		autoScroll : true,
-		//				cls:'webmapclient_searchpanel',
 		labelWidth : 150,
 		items : [{
 			xtype : 'label',
 			fieldLabel : 'Suchbegriff eingeben'
-				//							html:'Suchbegriff eingeben:<br/>',
-				//							cls:'webmapclient_searchpanel'
 			}, {
 			name : "search",
 			id:'search',
 			allowBlank : false,
 			xtype : 'textfield',
 			cls : 'webmapclient_searchpanel',
-			html : ''
+			html : '' //style class only gets rendered with this setting...
 		}, {
 			name : 'searchButton',
 			text : 'Suchen',
