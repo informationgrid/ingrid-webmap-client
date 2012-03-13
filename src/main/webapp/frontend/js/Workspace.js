@@ -76,7 +76,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				projection : new OpenLayers.Projection("EPSG:4326"),
 				// this will be used by some controls (ArgParser, MousePosition,
 				// Permalink)
-				displayProjection : new OpenLayers.Projection("EPSG:4326")
+				displayProjection : new OpenLayers.Projection("EPSG:4326"),
+				// if we dont add these controls on init
+				// we get the default controls plus the added ones
+				// adding controls at init impedes default controls
+				controls : [new OpenLayers.Control.Navigation(),
+							new OpenLayers.Control.PanZoomBar(),
+							new OpenLayers.Control.ScaleLine(),
+							new OpenLayers.Control.MousePosition()]
 			});
 
 	// create the map container
@@ -112,32 +119,36 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// c) search panel
 
 	var searchPanel = new Ext.FormPanel({
-		id : 'searchPanel',
-		title : 'Suche',
-		autoScroll : true,
-		labelWidth : 150,
-		items : [{
-			xtype : 'label',
-			fieldLabel : 'Suchbegriff eingeben'
-			}, {
-			name : "search",
-			id:'search',
-			allowBlank : false,
-			xtype : 'textfield',
-			cls : 'webmapclient_searchpanel',
-			html : '' //style class only gets rendered with this setting...
-		}, {
-			name : 'searchButton',
-			text : 'Suchen',
-			xtype : 'button',
-			formBind : true,
-			handler : function() {
-				de.ingrid.mapclient.frontend.Workspace.prototype.search(Ext.getCmp('search').getValue(),self); 
-				console.debug('form submitted');
+				id : 'searchPanel',
+				title : 'Suche',
+				autoScroll : true,
+				labelWidth : 150,
+				items : [{
+							xtype : 'label',
+							fieldLabel : 'Suchbegriff eingeben'
+						}, {
+							name : "search",
+							id : 'search',
+							allowBlank : false,
+							xtype : 'textfield',
+							cls : 'webmapclient_searchpanel',
+							html : '' // style class only gets rendered with
+										// this setting...
+						}, {
+							name : 'searchButton',
+							text : 'Suchen',
+							xtype : 'button',
+							formBind : true,
+							handler : function() {
+								de.ingrid.mapclient.frontend.Workspace.prototype
+										.search(
+												Ext.getCmp('search').getValue(),
+												self);
+								console.debug('form submitted');
 
-			}
-		}]
-	})
+							}
+						}]
+			})
 	accordionItems.push(searchPanel);
 
 	// create the legend panel
@@ -149,14 +160,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the panel for the west region
 	var westPanel = new Ext.TabPanel({
-				id:'west',
+				id : 'west',
 				region : 'west',
 				activeTab : 0,
 				width : 200,
 				split : true,
 				collapsible : true,
 				items : [{
-							id:'Dienste',
+							id : 'Dienste',
 							title : 'Dienste',
 							closable : false,
 							layout : 'accordion',
@@ -816,17 +827,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 			method : 'GET',
 			success : function(response, request) {
 				var resp = Ext.decode(response.responseText);
-				if(typeof self.getComponent('west').getComponent('Dienste').getComponent('searchResults') !== 'undefined'){
-					self.getComponent('west').getComponent('Dienste').getComponent('searchResults').destroy();
+				if (typeof self.getComponent('west').getComponent('Dienste')
+						.getComponent('searchResults') !== 'undefined') {
+					self.getComponent('west').getComponent('Dienste')
+							.getComponent('searchResults').destroy();
 				}
 				var searchCategoryPanel = new de.ingrid.mapclient.frontend.controls.SearchCategoryPanel(
 						{
-							id:'searchResults',
+							id : 'searchResults',
 							serviceCategory : resp,
 							activeServicesPanel : self.activeServicesPanel
 						});
-				var servicePanel = self.getComponent('west').getComponent('Dienste');
-				
+				var servicePanel = self.getComponent('west')
+						.getComponent('Dienste');
+
 				servicePanel.add(searchCategoryPanel);
 				servicePanel.doLayout();
 				searchCategoryPanel.expand();
