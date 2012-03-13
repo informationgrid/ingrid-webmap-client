@@ -117,8 +117,10 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 	// transform sub categories
 	var subCategories = serviceCategory.serviceCategories;
 	for (var i=0, count=subCategories.length; i<count; i++) {
+		if(subCategories[i].services.length != 0){
 		var childNode = this.transform(subCategories[i]);
 		children.push(childNode);
+		}
 	}
 
 	// transform services
