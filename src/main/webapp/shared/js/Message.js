@@ -62,7 +62,8 @@ de.ingrid.mapclient.Message.showError = function(msg) {
  * Show the given warning message in a popup window that needs to be closed by the user
  * @param msg The warning message
  */
-de.ingrid.mapclient.Message.showWarning = function(msg) {
+de.ingrid.mapclient.Message.showWarning = function(epsg, service) {
+	var msg = 'Das Raumbezugssystem ('+epsg+') wird von den geladenen Diensten ('+service+') nicht unterst&uuml;tz.';
 	Ext.Msg.show({
 		title: 'Warnung',
 		msg: msg,
@@ -76,7 +77,7 @@ de.ingrid.mapclient.Message.showWarning = function(msg) {
 /**
  * Predefined messages
  */
-de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die �nderungen wurden gespeichert.";
+de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die &Auml;nderungen wurden gespeichert.";
 de.ingrid.mapclient.Message.SAVE_FAILURE = "Beim Speichern der Daten ist ein Fehler aufgetreten.";
 
 de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = "Das Laden der Konfiguration ist fehlgeschlagen.";
@@ -85,7 +86,7 @@ de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = "Das Laden der Projektions
 
 de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
 
-de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem(EPSG) wird von der Basiskarte nicht unterstützt.";
+de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem (EPSG) wird von der Basiskarte nicht unterstützt.";
 
 de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht gelistet werden.";
 de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";

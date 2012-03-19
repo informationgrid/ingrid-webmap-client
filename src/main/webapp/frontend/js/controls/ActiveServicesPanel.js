@@ -207,7 +207,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		}
 		if(!supportsSRS)
-		de.ingrid.mapclient.Message.showWarning(de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG);
+		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
 
 		
 		var serviceLayers = service.getLayers();
