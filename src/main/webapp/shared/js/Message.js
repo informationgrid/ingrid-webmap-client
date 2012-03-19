@@ -62,7 +62,7 @@ de.ingrid.mapclient.Message.showError = function(msg) {
  * Show the given warning message in a popup window that needs to be closed by the user
  * @param msg The warning message
  */
-de.ingrid.mapclient.Message.showWarning = function(epsg, service) {
+de.ingrid.mapclient.Message.showEPSGWarning = function(epsg, service) {
 	var msg = 'Das Raumbezugssystem ('+epsg+') wird von den geladenen Diensten ('+service+') nicht unterst&uuml;tz.';
 	Ext.Msg.show({
 		title: 'Warnung',
