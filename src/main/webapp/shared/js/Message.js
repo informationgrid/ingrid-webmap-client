@@ -59,6 +59,21 @@ de.ingrid.mapclient.Message.showError = function(msg) {
 };
 
 /**
+ * Show the given warning message in a popup window that needs to be closed by the user
+ * @param msg The warning message
+ */
+de.ingrid.mapclient.Message.showWarning = function(msg) {
+	Ext.Msg.show({
+		title: 'Warnung',
+		msg: msg,
+		width: 500,
+		height: 400,
+		buttons: Ext.MessageBox.OK,
+		icon: Ext.MessageBox.ERROR
+	});
+};
+
+/**
  * Predefined messages
  */
 de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die �nderungen wurden gespeichert.";
@@ -69,6 +84,8 @@ de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilit
 de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = "Das Laden der Projektionsdefinition ist fehlgeschlagen.";
 
 de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
+
+de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem(EPSG) wird von der Basiskarte nicht unterstützt.";
 
 de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht gelistet werden.";
 de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";

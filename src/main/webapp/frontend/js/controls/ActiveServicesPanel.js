@@ -138,7 +138,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.removeBtn.enable();
 		self.transparencyBtn.disable();
 		self.metaDataBtn.enable();
-
+		
 		if (node) {
 			if (node.layer) {
 				self.transparencyBtn.enable();
@@ -195,6 +195,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			return;
 		}
 	
+
+		//check if the added service support our base EPSG,
+		//if not warn the user but display the new service
+		var srss = service.capabilitiesStore.data.items[0].data.srs;
+		var supportsSRS = false;
+		for(srs in  srss){
+			if(srs == this.map.projection){
+			supportsSRS = true;
+			break;
+			}
+		}
+		if(!supportsSRS)
+		de.ingrid.mapclient.Message.showWarning(de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG);
+
 		
 		var serviceLayers = service.getLayers();
 		var serviceRecords = this.layerStore.reader.readRecords(serviceLayers).records;
