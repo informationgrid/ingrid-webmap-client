@@ -89,6 +89,16 @@
 								<include>frontend/**/*-min.js</include>
 							</includes>
 						</aggregation>
+						<aggregation>
+							<!-- downloads -->
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/downloads/README.txt</output>
+							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
+							<includes>
+								<include>downloads/README.txt</include>
+							</includes>
+						</aggregation>
 					</aggregations>
 				</configuration>
 			</plugin>

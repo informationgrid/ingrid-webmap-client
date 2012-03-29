@@ -63,7 +63,7 @@ de.ingrid.mapclient.Message.showError = function(msg) {
  * @param msg The warning message
  */
 de.ingrid.mapclient.Message.showEPSGWarning = function(epsg, service) {
-	var msg = 'Das Raumbezugssystem ('+epsg+') wird von den geladenen Diensten ('+service+') nicht unterst&uuml;tz.';
+	var msg = 'Das Raumbezugssystem ('+epsg+') wird von den geladenen Diensten ('+service+') nicht unterst&uuml;tzt.';
 	Ext.Msg.show({
 		title: 'Warnung',
 		msg: msg,

@@ -3,6 +3,12 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -66,6 +72,14 @@ public class UserDataResource {
 	 * Path to user data functions
 	 */
 	private static final String USER_PATH = "user";
+	
+
+	/**
+	 * Path to current user map
+	 */
+	private static final String CURRENT_MAP = "currentmap";
+	
+	private int counter = 0;
 
 	/**
 	 * Load the data for the given short url
@@ -322,6 +336,50 @@ public class UserDataResource {
 		catch (Exception ex) {
 			log.error("Error removing user data", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
+	 * Get the current map as xml file in wmc format
+	 * @param req The httpd servlet request identifying the session
+	 * @param data the map data
+	 * @return String representing a serialized User map as wmc document
+	 */
+	@POST
+	@Path(CURRENT_MAP)
+	@Consumes(MediaType.TEXT_PLAIN)
+	//@Produces("application/xml")
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getCurrentMap(String data) {
+
+		try {
+
+			//TODO das klappt noch nicht mit dem file!!!
+			JSONObject rootObj = new JSONObject(data);
+
+			String wmcDocument = rootObj.getString("wmcDocument");
+	//		File f = new File("C:\\Users\\ma\\develop\\ingrid-portal\\trunk\\ingrid-webmap-client\\target\\ingrid-webmap-client\\downloads");
+			File f = new File("ingrid-webmap-client/downloads");
+			String s = f.getAbsolutePath();
+			File file = new File(s,counter+".xml");
+			//File icon = new File("C:\\Users\\ma\\Downloads\\famfamfam_silk_icons_v013\\icons\\accept.png");
+			String path = file.getParent();
+			String filePath = file.getAbsolutePath();
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "UTF8"));
+			out.write(wmcDocument);
+			out.close();
+			out = null;	
+			counter++;
+//			return Response.ok(wmcDocument).header("Content-Disposition", "attachment; filename=bla").build();
+			return Response.ok("ingrid-webmap-client/downloads/"+file.getName()).build();
+			//return Response.ok().entity(new FileInputStream(file)).build();
+			//return Response.ok(file).build();
+		}
+		catch (Exception ex) {
+			// no logging, because we do not always expect to find stored session data
+			log.error("Error retrieving session data", ex);
+			ex.printStackTrace();
+			return null;
 		}
 	}
 }

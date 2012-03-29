@@ -96,11 +96,11 @@ de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, short
 		method: 'GET',
 		success: function(response, request) {
 			if (response.responseText.length > 0) {
-				state.unserialize(response.responseText, function() {
+
 					if (responseHandler && responseHandler.success instanceof Function) {
 						responseHandler.success(response.responseText);
-					}
-				});
+	
+				};
 			}
 			else {
 				if (responseHandler && responseHandler.failure instanceof Function) {
@@ -169,5 +169,39 @@ de.ingrid.mapclient.frontend.data.Session.prototype.remove = function(state, res
 				responseHandler.failure(response.responseText);
 			}
 		}
+	});
+};
+
+/**
+ * Save the given session state
+ * @param state de.ingrid.mapclient.frontend.data.SessionState instance
+ * @param isTemporary Boolean indicating, if the data should be saved in the current session
+ * 		only or permanently for the current user
+ * @param responseHandler Object with properties success and failure, which are both functions
+ * 		to be called with the response text as parameter in the appropriate case (optional)
+ */
+de.ingrid.mapclient.frontend.data.Session.prototype.download = function(state, responseHandler) {
+	var serializedState = state.serialize();
+
+	// determine the request from the isTemporary flag, defaults to session url
+	var url = de.ingrid.mapclient.DOWNLOAD_URL;
+
+	Ext.Ajax.request({
+		url: url,
+		method: 'POST',
+		headers: { 'Content-Type': 'text/plain' },
+		success: function(response, request) {
+//					window.location.href = response.responseText;
+					window.open(response.responseText);
+					if (responseHandler && responseHandler.success instanceof Function) {
+						responseHandler.success(response.responseText);
+					}
+		},
+		failure: function(response, request) {
+			if (responseHandler && responseHandler.failure instanceof Function) {
+				responseHandler.failure(response.responseText);
+			}
+		},
+		xmlData: serializedState
 	});
 };

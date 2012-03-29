@@ -63,6 +63,10 @@ de.ingrid.mapclient.PROJ4S_DEFS_URL = de.ingrid.mapclient.BASE_URL+'proj4s/defs'
  * Url for searching
  */
 de.ingrid.mapclient.SEARCH_URL = de.ingrid.mapclient.BASE_URL+'search/query';
+/**
+ * Url for downloading
+ */
+de.ingrid.mapclient.DOWNLOAD_URL = de.ingrid.mapclient.BASE_URL+'data/currentmap';
 
 /**
  * View configurations for the map client frontend.
@@ -84,7 +88,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasAreasList: true,
 	    	hasPermaLink: false,
 	    	isFullScreen: true,
-	    	hasSettings: true
+	    	hasSettings: true,
+	    	hasDownloadTool : true
 	    	
 		},
 		"portalu-fullmap": {
@@ -102,7 +107,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasPermaLink: false,
 	    	isFullScreen: true,
 	    	spacerTop: 142,
-	    	hasSettings: true
+	    	hasSettings: true,
+	    	hasDownloadTool : true
 	    	
 		},
 		"portalu-facete-search": {

@@ -27,9 +27,9 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 			 */
 			viewConfig : {
 				hasServicesPanel : true,
-				hasInfoTool : true, // now serves as coordinates check
+				hasInfoTool : true, 
 				hasHistoryTool : true,
-				hasMeasureTool : true, // currently disabled
+				hasMeasureTool : true, 
 				hasPrintTool : true,
 				hasLoadTool : true,
 				hasSaveTool : true,
@@ -37,7 +37,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 				hasProjectionsList : true,
 				hasScaleList : true,
 				hasAreasList : true,
-				hasPermaLink : true
+				hasPermaLink : true,
+				hasDownloadTool : true
 			},
 
 			/**
@@ -356,6 +357,24 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}));
 	}
 
+	// g) download tool
+	if (this.viewConfig.hasDownloadTool) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconDownload',
+			tooltip : 'Karte herunterladen',
+			handler : function(btn) {
+				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog();
+				dia.on('close', function(p) {
+							if (dia.isSave()) {
+								self.download(false, dia.getTitle(), dia
+												.getDescription());
+							}
+						});
+				}
+		
+			}
+		));
+	}
 	// create the toolbar
 	var toolbar = new Ext.Toolbar({
 				items : toolbarItems
@@ -642,6 +661,39 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 	this.session.save(data, isTemporary, responseHandler);
 };
 
+/**
+ * Store the current map state along with the given title and description on the
+ * server.
+ * 
+ * @param title
+ *            The map state title (optional)
+ * @param description
+ *            The map state description (optional)
+ */
+de.ingrid.mapclient.frontend.Workspace.prototype.download = function(
+		title, description) {
+	// set parameters according to save type
+	var responseHandler = {
+		success : function(responseText) {
+			de.ingrid.mapclient.Message
+					.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
+		},
+		failure : function(responseText) {
+			de.ingrid.mapclient.Message
+					.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
+		}
+	};
+
+	// create the session state instance
+	var data = new de.ingrid.mapclient.frontend.data.SessionState({
+				title : title,
+				description : description,
+				map : this.map,
+				activeServices : this.activeServicesPanel.getServiceList(),
+				kmlArray : this.kmlArray
+			});
+	this.session.download(data, responseHandler);
+};
 /**
  * Load the user data with the given url or id from the server. If neither url
  * nor id are given, the last configuration for the current session will be
