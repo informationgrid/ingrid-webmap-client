@@ -6,9 +6,12 @@ package de.ingrid.mapclient.rest;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +36,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import com.thoughtworks.xstream.XStream;
@@ -40,6 +44,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
+import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.UserData;
 import de.ingrid.mapclient.store.Store;
 import de.ingrid.mapclient.store.StoreManager;
@@ -48,8 +53,8 @@ import de.ingrid.mapclient.url.UrlManager;
 import de.ingrid.mapclient.url.UrlMapper;
 
 /**
- * UserDataResource defines the interface for retrieving and storing user
- * data like activate services and the map state.
+ * UserDataResource defines the interface for retrieving and storing user data
+ * like activate services and the map state.
  * 
  * @author ingo@wemove.com
  */
@@ -72,37 +77,37 @@ public class UserDataResource {
 	 * Path to user data functions
 	 */
 	private static final String USER_PATH = "user";
-	
 
 	/**
 	 * Path to current user map
 	 */
 	private static final String CURRENT_MAP = "currentmap";
-	
-	private int counter = 0;
 
 	/**
 	 * Load the data for the given short url
-	 * @param shortUrl The short url
+	 * 
+	 * @param shortUrl
+	 *            The short url
 	 * @return String representing a serialized UserData instance
 	 */
 	@GET
-	@Path(MAPS_PATH+"/{shortUrl}")
+	@Path(MAPS_PATH + "/{shortUrl}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response loadData(@PathParam("shortUrl") String shortUrl) {
 		try {
 			// translate the short url
-			String longUrl = UrlManager.INSTANCE.getUrlMapper().getLongUrl(shortUrl);
+			String longUrl = UrlManager.INSTANCE.getUrlMapper().getLongUrl(
+					shortUrl);
 			// split the long url into user id and id
 			String[] urlParts = longUrl.split("/");
 			if (urlParts.length != 2) {
-				throw new IllegalArgumentException("The long url expected to have the format userId/id");
+				throw new IllegalArgumentException(
+						"The long url expected to have the format userId/id");
 			}
 			String userId = urlParts[0];
 			String id = urlParts[1];
 			return this.loadUserData(userId, id);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error retrieving data", ex);
 			return null;
 		}
@@ -110,7 +115,9 @@ public class UserDataResource {
 
 	/**
 	 * Get the last saved data for the session belonging to the given request
-	 * @param req The httpd servlet request identifying the session
+	 * 
+	 * @param req
+	 *            The httpd servlet request identifying the session
 	 * @return String representing a serialized UserData instance
 	 */
 	@GET
@@ -134,25 +141,28 @@ public class UserDataResource {
 			});
 			String json = xstream.toXML(userData);
 			return Response.ok(json).build();
-		}
-		catch (Exception ex) {
-			// no logging, because we do not always expect to find stored session data
-			//log.error("Error retrieving session data", ex);
+		} catch (Exception ex) {
+			// no logging, because we do not always expect to find stored
+			// session data
+			// log.error("Error retrieving session data", ex);
 			return null;
 		}
 	}
 
 	/**
 	 * Store the given data for the session belonging to the given request
-	 * @param data representing a serialized UserData instance
-	 * @param req The httpd servlet request
+	 * 
+	 * @param data
+	 *            representing a serialized UserData instance
+	 * @param req
+	 *            The httpd servlet request
 	 */
 	@POST
 	@Path(SESSION_PATH)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void storeSessionData(String data, @Context HttpServletRequest req) {
 
-		HttpSession session= req.getSession(true);
+		HttpSession session = req.getSession(true);
 		String sessionId = session.getId();
 
 		try {
@@ -161,32 +171,35 @@ public class UserDataResource {
 			String wmcDocument = rootObj.getString("wmcDocument");
 
 			List<String> activeServices = new ArrayList<String>();
-			JSONArray activeServicesTmp = rootObj.getJSONArray("activeServices");
-			for (int i=0, count=activeServicesTmp.length(); i<count; i++) {
+			JSONArray activeServicesTmp = rootObj
+					.getJSONArray("activeServices");
+			for (int i = 0, count = activeServicesTmp.length(); i < count; i++) {
 				String capabilitiesUrl = activeServicesTmp.getString(i);
 				activeServices.add(capabilitiesUrl);
 			}
 
 			List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
 			JSONArray kmlTmp = rootObj.getJSONArray("kmlArray");
-			for (int i=0, count=kmlTmp.length(); i<count; i++) {
-				if(kmlTmp.get(i) instanceof JSONObject){
+			for (int i = 0, count = kmlTmp.length(); i < count; i++) {
+				if (kmlTmp.get(i) instanceof JSONObject) {
 					JSONObject kmlTmpEntry = kmlTmp.getJSONObject(i);
-					
+
 					Map<String, String> kmlEntry = new HashMap<String, String>();
 					kmlEntry.put("title", kmlTmpEntry.get("title").toString());
 					kmlEntry.put("url", kmlTmpEntry.get("url").toString());
 					kmlArray.add(kmlEntry);
-				}else if(kmlTmp.get(i) instanceof JSONArray){
+				} else if (kmlTmp.get(i) instanceof JSONArray) {
 					JSONArray kmlTmpEntries = kmlTmp.getJSONArray(i);
 					Map<String, String> kmlTmpEntry = new HashMap<String, String>();
-					for(int j=0; j < kmlTmpEntries.length(); j++){
-						JSONArray kmlTmpAddedEntries = kmlTmpEntries.getJSONArray(j);
-						kmlTmpEntry.put(kmlTmpAddedEntries.getString(0), kmlTmpAddedEntries.getString(1));
+					for (int j = 0; j < kmlTmpEntries.length(); j++) {
+						JSONArray kmlTmpAddedEntries = kmlTmpEntries
+								.getJSONArray(j);
+						kmlTmpEntry.put(kmlTmpAddedEntries.getString(0),
+								kmlTmpAddedEntries.getString(1));
 					}
 					kmlArray.add(kmlTmpEntry);
 				}
-				
+
 			}
 
 			UserData userData = new UserData();
@@ -198,20 +211,21 @@ public class UserDataResource {
 			// store the data
 			Store store = StoreManager.INSTANCE.getSessionStore();
 			store.putRecord(sessionId, userData.serialize());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error storing session data", ex);
-			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			throw new WebApplicationException(ex,
+					Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
 
 	/**
 	 * List all stored data for the given user id
-	 * @return String containing a JSON encoded array of data
-	 * 		objects with keys id, title, description
+	 * 
+	 * @return String containing a JSON encoded array of data objects with keys
+	 *         id, title, description
 	 */
 	@GET
-	@Path(USER_PATH+"/{userId}")
+	@Path(USER_PATH + "/{userId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listUserData(@PathParam("userId") String userId) {
 
@@ -221,13 +235,14 @@ public class UserDataResource {
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			List<String> ids = store.getRecordIds(userId);
 
-			// create the list (we only keep id, title, description and set the other values null)
+			// create the list (we only keep id, title, description and set the
+			// other values null)
 			List<UserData> data = new ArrayList<UserData>();
 			for (String id : ids) {
 				String xmlData = store.getRecord(userId, id);
 				UserData userData = UserData.unserialize(xmlData);
 				userData.setId(id);
-				userData.setShortUrl(urlMapper.getShortUrl(userId+"/"+id));
+				userData.setShortUrl(urlMapper.getShortUrl(userId + "/" + id));
 				userData.setActiveServices(null);
 				userData.setLocationKey(null);
 				userData.setWmcDocument(null);
@@ -241,8 +256,7 @@ public class UserDataResource {
 			});
 			String json = xstream.toXML(data);
 			return Response.ok(json).build();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error listing user data", ex);
 			return null;
 		}
@@ -250,14 +264,18 @@ public class UserDataResource {
 
 	/**
 	 * Load the data for the given user id and data id
-	 * @param userId The user id
-	 * @param id The data id
+	 * 
+	 * @param userId
+	 *            The user id
+	 * @param id
+	 *            The data id
 	 * @return String representing a serialized UserData instance
 	 */
 	@GET
-	@Path(USER_PATH+"/{userId}/{id}")
+	@Path(USER_PATH + "/{userId}/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response loadUserData(@PathParam("userId") String userId, @PathParam("id") String id) {
+	public Response loadUserData(@PathParam("userId") String userId,
+			@PathParam("id") String id) {
 		try {
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			String xmlData = store.getRecord(userId, id);
@@ -271,8 +289,7 @@ public class UserDataResource {
 			});
 			String json = xstream.toXML(userData);
 			return Response.ok(json).build();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error retrieving user data", ex);
 			return null;
 		}
@@ -280,11 +297,14 @@ public class UserDataResource {
 
 	/**
 	 * Store the given data for the given user id
-	 * @param data representing a serialized UserData instance
-	 * @param userId The user id
+	 * 
+	 * @param data
+	 *            representing a serialized UserData instance
+	 * @param userId
+	 *            The user id
 	 */
 	@POST
-	@Path(USER_PATH+"/{userId}")
+	@Path(USER_PATH + "/{userId}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void storeUserData(String data, @PathParam("userId") String userId) {
 		try {
@@ -295,8 +315,9 @@ public class UserDataResource {
 			String wmcDocument = rootObj.getString("wmcDocument");
 
 			List<String> activeServices = new ArrayList<String>();
-			JSONArray activeServicesTmp = rootObj.getJSONArray("activeServices");
-			for (int i=0, count=activeServicesTmp.length(); i<count; i++) {
+			JSONArray activeServicesTmp = rootObj
+					.getJSONArray("activeServices");
+			for (int i = 0, count = activeServicesTmp.length(); i < count; i++) {
 				String capabilitiesUrl = activeServicesTmp.getString(i);
 				activeServices.add(capabilitiesUrl);
 			}
@@ -313,73 +334,85 @@ public class UserDataResource {
 
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			store.putRecord(userId, recordId, userData.serialize());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error storing user data", ex);
-			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			throw new WebApplicationException(ex,
+					Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
 
 	/**
 	 * Delete the data for the given user id and data id
-	 * @param userId The user id
-	 * @param id The data id
+	 * 
+	 * @param userId
+	 *            The user id
+	 * @param id
+	 *            The data id
 	 */
 	@DELETE
-	@Path(USER_PATH+"/{userId}/{id}")
+	@Path(USER_PATH + "/{userId}/{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void removeUserData(String data, @PathParam("userId") String userId, @PathParam("id") String id) {
+	public void removeUserData(String data, @PathParam("userId") String userId,
+			@PathParam("id") String id) {
 		try {
 			UserStore store = StoreManager.INSTANCE.getUserStore();
 			store.removeRecord(userId, id);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			log.error("Error removing user data", ex);
-			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			throw new WebApplicationException(ex,
+					Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
-	
+
 	/**
 	 * Get the current map as xml file in wmc format
-	 * @param req The httpd servlet request identifying the session
-	 * @param data the map data
+	 * 
+
+	 * @param data
+	 *            the map data
 	 * @return String representing a serialized User map as wmc document
 	 */
 	@POST
 	@Path(CURRENT_MAP)
 	@Consumes(MediaType.TEXT_PLAIN)
-	//@Produces("application/xml")
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response getCurrentMap(String data) {
 
+		JSONObject rootObj;
 		try {
-
-			//TODO das klappt noch nicht mit dem file!!!
-			JSONObject rootObj = new JSONObject(data);
-
+			rootObj = new JSONObject(data);
 			String wmcDocument = rootObj.getString("wmcDocument");
-	//		File f = new File("C:\\Users\\ma\\develop\\ingrid-portal\\trunk\\ingrid-webmap-client\\target\\ingrid-webmap-client\\downloads");
-			File f = new File("ingrid-webmap-client/downloads");
+			String title = rootObj.getString("title");
+			String mapDir = ConfigurationProvider.INSTANCE.getDownloadmapDir();
+			File f = new File(mapDir);
 			String s = f.getAbsolutePath();
-			File file = new File(s,counter+".xml");
-			//File icon = new File("C:\\Users\\ma\\Downloads\\famfamfam_silk_icons_v013\\icons\\accept.png");
-			String path = file.getParent();
+			File file = new File(s, title + ".xml");
 			String filePath = file.getAbsolutePath();
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), "UTF8"));
+			BufferedWriter out;
+			out = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(filePath), "UTF8"));
 			out.write(wmcDocument);
 			out.close();
-			out = null;	
-			counter++;
-//			return Response.ok(wmcDocument).header("Content-Disposition", "attachment; filename=bla").build();
-			return Response.ok("ingrid-webmap-client/downloads/"+file.getName()).build();
-			//return Response.ok().entity(new FileInputStream(file)).build();
-			//return Response.ok(file).build();
-		}
-		catch (Exception ex) {
-			// no logging, because we do not always expect to find stored session data
-			log.error("Error retrieving session data", ex);
-			ex.printStackTrace();
+			out = null;
+			return Response.ok(
+					"ingrid-webmap-client/downloads/" + file.getName()).build();
+		} catch (JSONException e) {
+			log.error("Error with the json object", e);
+			e.printStackTrace();
+			return null;
+		} catch (UnsupportedEncodingException e) {
+			log.error("Error with the encoding", e);
+			e.printStackTrace();
+			return null;
+		} catch (FileNotFoundException e) {
+			log.error("File not Found Exception", e);
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			log.error("I/O Exception", e);
+			e.printStackTrace();
 			return null;
 		}
+
 	}
 }

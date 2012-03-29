@@ -96,11 +96,11 @@ de.ingrid.mapclient.frontend.data.Session.prototype.load = function(state, short
 		method: 'GET',
 		success: function(response, request) {
 			if (response.responseText.length > 0) {
-
+				state.unserialize(response.responseText, function() {
 					if (responseHandler && responseHandler.success instanceof Function) {
 						responseHandler.success(response.responseText);
-	
-				};
+					}
+				});
 			}
 			else {
 				if (responseHandler && responseHandler.failure instanceof Function) {

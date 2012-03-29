@@ -366,8 +366,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog();
 				dia.on('close', function(p) {
 							if (dia.isSave()) {
-								self.download(false, dia.getTitle(), dia
-												.getDescription());
+								self.download(dia.getTitle());
 							}
 						});
 				}
@@ -671,7 +670,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
  *            The map state description (optional)
  */
 de.ingrid.mapclient.frontend.Workspace.prototype.download = function(
-		title, description) {
+		title) {
 	// set parameters according to save type
 	var responseHandler = {
 		success : function(responseText) {
@@ -687,7 +686,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.download = function(
 	// create the session state instance
 	var data = new de.ingrid.mapclient.frontend.data.SessionState({
 				title : title,
-				description : description,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
 				kmlArray : this.kmlArray

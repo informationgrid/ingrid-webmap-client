@@ -51,6 +51,7 @@ public enum ConfigurationProvider {
 	private static final String APPLICATION_PROPERTIES = "application.properties";
 	private static final String CONFIGURATION_FILE_KEY = "administration.file";
 	private static final String OPENSEARCH_URL = "opensearch.searchurl";
+	private static final String DOWNLOAD_DIR = "mapdownload.dir";
 	private Properties properties = null;
 	private Configuration configuration = null;
 	
@@ -158,6 +159,13 @@ public enum ConfigurationProvider {
 	public String getOpensearchUrl(){
 		return this.properties.getProperty(OPENSEARCH_URL);
 	}
+	/**
+	 * Get the mapdir only
+	 * @return String
+	 */
+	public String getDownloadmapDir(){
+		return this.properties.getProperty(DOWNLOAD_DIR);
+	}	
 
 	/**
 	 * Get the map client configuration

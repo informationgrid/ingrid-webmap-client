@@ -25,8 +25,7 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog = Ext.extend(Ext.Window, {
     /**
      * Form fields
      */
-    titleField: null,
-    descriptionField: null
+    titleField: null
 });
 
 /**
@@ -45,13 +44,7 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog.prototype.getTitle = functi
 	return this.titleField.getValue();
 };
 
-/**
- * Get the description entered by the user
- * @returns String
- */
-de.ingrid.mapclient.frontend.controls.DownloadDialog.prototype.getDescription = function() {
-	return this.descriptionField.getValue();
-};
+
 
 /**
  * Initialize the component (called by Ext)
@@ -64,11 +57,7 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog.prototype.initComponent = f
 		allowBlank: false
 	});
 
-	this.descriptionField = new Ext.form.TextArea({
-		fieldLabel: "Beschreibung",
-		hideLabel: false,
-		allowBlank: true
-	});
+
 
 	var self = this;
 	var windowContent = new Ext.FormPanel({
@@ -79,13 +68,12 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog.prototype.initComponent = f
 			anchor: '100%'
 		},
 		items: [
-		    this.titleField,
-		    this.descriptionField
+		    this.titleField
 		],
 		buttons: [{
 			text: 'Speichern',
 			handler: function(btn) {
-	        	if (self.titleField.validate() && self.descriptionField.validate()) {
+	        	if (self.titleField.validate()) {
 		    		self.savePressed = true;
 		        	self.close();
 	        	}
