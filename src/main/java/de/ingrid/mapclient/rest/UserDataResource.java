@@ -29,6 +29,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -79,9 +80,15 @@ public class UserDataResource {
 	private static final String USER_PATH = "user";
 
 	/**
-	 * Path to current user map
+	 * Path to current user map generation
 	 */
 	private static final String CURRENT_MAP = "currentmap";
+	
+	/**
+	 * Path to current user map location
+	 */
+	private static final String MAP_SITE = "mapsite";
+
 
 	/**
 	 * Load the data for the given short url
@@ -394,8 +401,7 @@ public class UserDataResource {
 			out.write(wmcDocument);
 			out.close();
 			out = null;
-			return Response.ok(
-					"ingrid-webmap-client/downloads/" + file.getName()).build();
+			return Response.ok(file.getName()).build();
 		} catch (JSONException e) {
 			log.error("Error with the json object", e);
 			e.printStackTrace();
@@ -413,6 +419,33 @@ public class UserDataResource {
 			e.printStackTrace();
 			return null;
 		}
+
+	}
+	
+	/**
+	 * Get the current map as xml file in wmc format
+	 * 
+
+	 * @param the map title
+	 * @return Xml representing a serialized User map as wmc document
+	 */
+	@GET
+	@Path(MAP_SITE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_XML)
+	public Response downloadMap(@QueryParam("title") String title) {
+
+
+			
+			String mapDir = ConfigurationProvider.INSTANCE.getDownloadmapDir();
+			File f = new File(mapDir);
+			String s = f.getAbsolutePath();
+			File file = new File(s, title);
+			if(file.exists())
+			return Response.ok(file).build();
+			else 
+			return null;	
+			
 
 	}
 }

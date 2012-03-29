@@ -67,7 +67,10 @@ de.ingrid.mapclient.SEARCH_URL = de.ingrid.mapclient.BASE_URL+'search/query';
  * Url for downloading
  */
 de.ingrid.mapclient.DOWNLOAD_URL = de.ingrid.mapclient.BASE_URL+'data/currentmap';
-
+/**
+ * Url for downloading
+ */
+de.ingrid.mapclient.MAP_SITE = de.ingrid.mapclient.BASE_URL+'data/mapsite';
 /**
  * View configurations for the map client frontend.
  * @see de.ingrid.mapclient.frontend.Workspace

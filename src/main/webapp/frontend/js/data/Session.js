@@ -185,14 +185,13 @@ de.ingrid.mapclient.frontend.data.Session.prototype.download = function(state, r
 
 	// determine the request from the isTemporary flag, defaults to session url
 	var url = de.ingrid.mapclient.DOWNLOAD_URL;
-
+	var dlUrl = de.ingrid.mapclient.MAP_SITE;
 	Ext.Ajax.request({
 		url: url,
 		method: 'POST',
 		headers: { 'Content-Type': 'text/plain' },
 		success: function(response, request) {
-//					window.location.href = response.responseText;
-					window.open(response.responseText);
+					window.open(dlUrl+"?title="+response.responseText);
 					if (responseHandler && responseHandler.success instanceof Function) {
 						responseHandler.success(response.responseText);
 					}
