@@ -122,6 +122,8 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 
 	// if the service is loaded already, return it immediately
 	if (de.ingrid.mapclient.frontend.data.Service.registry.containsKey(capabilitiesUrl)) {
+		//tell the user that the service is already loaded
+		de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 		// get the service from the registry
 		var service = de.ingrid.mapclient.frontend.data.Service.registry.get(capabilitiesUrl);
 		// call the callback if given

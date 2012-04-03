@@ -85,6 +85,7 @@ de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilit
 de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = "Das Laden der Projektionsdefinition ist fehlgeschlagen.";
 
 de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
+de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE = "Der Dienst wurde bereits hinzugef&uuml;gt.";
 
 de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem (EPSG) wird von der Basiskarte nicht unterstützt.";
 
