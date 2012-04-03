@@ -127,7 +127,15 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.onServiceLoaded
 			layer.visibility = true;
 		}
 	}
-
+	
+	//zoom to map service map extent if requested
+	var activateZoomCheckbox = this.activateZoomCheckbox.checked;
+	if (activateZoomCheckbox) {
+	var llbbox = service.capabilitiesStore.data.items[0].data.llbbox;
+	var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+	this.activeServicesPanel.map.zoomToExtent(bounds);
+	}
+	
 	// add the service
 	this.activeServicesPanel.addService(service);
 };
