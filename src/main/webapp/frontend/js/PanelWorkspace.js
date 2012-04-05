@@ -78,7 +78,14 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		projection: new OpenLayers.Projection("EPSG:4326"),
 		// this will be used by some controls (ArgParser, MousePosition,
 		// Permalink)
-		displayProjection: new OpenLayers.Projection("EPSG:4326")
+		displayProjection: new OpenLayers.Projection("EPSG:4326"),
+		// if we dont add these controls on init
+		// we get the default controls plus the added ones
+		// adding controls at init impedes default controls
+		controls : [new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.PanZoomBar(),
+					new OpenLayers.Control.ScaleLine(),
+					new OpenLayers.Control.MousePosition()]
 	});
 
 	// create the map container
@@ -505,11 +512,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	overviewLayer.isBaseLayer = true;
 
 	// add controls to map
-	var controls = [new OpenLayers.Control.Navigation(),
-		new OpenLayers.Control.PanZoomBar(),
-		new OpenLayers.Control.ScaleLine(),
-		new OpenLayers.Control.MousePosition(),
-		new OpenLayers.Control.OverviewMap({
+	var controls = [new OpenLayers.Control.OverviewMap({
 			layers: [ overviewLayer ]
 		}), new OpenLayers.Control.KeyboardDefaults(),
 		new OpenLayers.Control.LoadingPanel()
