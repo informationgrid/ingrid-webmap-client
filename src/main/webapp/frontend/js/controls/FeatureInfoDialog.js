@@ -16,6 +16,8 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window,
 	shadow: false,
 	hidden: true,
 	closeAction: 'hide',
+    autoScroll: true,
+    layout: 'fit',
 
 	/**
 	 * @cfg The OpenLayers.Map instance to query feature infos for
@@ -63,10 +65,13 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 			"getfeatureinfo": function(e) {
 				// create a panel for each response
 				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
-				var p = new Ext.Panel({
+				if(service != null){
+					var p = new Ext.Panel({
 					title: service.getDefinition().title,
 					collapsible: true,
 					border: false,
+					autoScroll: true,
+					boxMaxHeight:500,
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
@@ -74,7 +79,9 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					html: e.text
 				});
 				self.add(p);
-				self.doLayout();
+				self.doLayout();	
+				}
+				
 			}
 		}
 	});

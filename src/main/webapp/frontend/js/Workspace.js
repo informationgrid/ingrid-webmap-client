@@ -346,17 +346,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}));
 	}
 
-	// g) help tool
-	if (this.viewConfig.hasInfoTool) {
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconHelp',
-					tooltip : 'Hilfe',
-					handler : function(btn) {
-						window.open(de.ingrid.mapclient.HELP_URL);
-					}
-				}));
-	}
-
 	// g) download tool
 	if (this.viewConfig.hasDownloadTool) {
 		toolbarItems.push(new Ext.Button({
@@ -374,6 +363,17 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			}
 		));
 	}
+	// h) help tool
+	if (this.viewConfig.hasInfoTool) {
+		toolbarItems.push(new Ext.Button({
+					iconCls : 'iconHelp',
+					tooltip : 'Hilfe',
+					handler : function(btn) {
+						window.open(de.ingrid.mapclient.HELP_URL);
+					}
+				}));
+	}
+
 	// create the toolbar
 	var toolbar = new Ext.Toolbar({
 				items : toolbarItems
