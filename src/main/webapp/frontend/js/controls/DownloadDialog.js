@@ -62,6 +62,7 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog.prototype.initComponent = f
 	var self = this;
 	var windowContent = new Ext.FormPanel({
 		border: false,
+		autoScroll:false,
 		bodyStyle: 'padding: 10px',
 		labelAlign: 'top',
 		defaults: {
