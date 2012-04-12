@@ -245,6 +245,22 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 	
 		this.services.add(service.getCapabilitiesUrl(), service);
 		this.fireEvent('datachanged');
+		
+		/*****************************************************************/
+		/**we set the map to the largest bounding box its layers contain**/
+		/*****************************************************************/
+		var bboxes = service.capabilitiesStore.data.items;
+		var bIndex = 0;
+		var largestCoord = bboxes[0].data.llbbox[0];
+		for (var i = 0; i < bboxes.length; i++){
+			// we look for a smaller x1 coord, since these go into the negative
+			// thus the map becomes larger
+			if (bboxes[i].data.llbbox[0] < largestCoord)
+				bIndex = i;
+		}
+		var llbbox = service.capabilitiesStore.data.items[bIndex].data.llbbox;
+		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+		this.map.zoomToExtent(bounds);
 	}
 	
 };
