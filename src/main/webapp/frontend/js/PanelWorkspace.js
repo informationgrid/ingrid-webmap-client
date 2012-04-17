@@ -179,7 +179,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconSelectCoordinates',
-			tooltip: 'Gebiet auswählen',
+			tooltip: 'Gebiet ausw&auml;hlen',
 			enableToggle: true,
 			handler: function(btn) {
 				if (btn.pressed) {
