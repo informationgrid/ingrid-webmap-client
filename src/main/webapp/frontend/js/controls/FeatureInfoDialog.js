@@ -12,6 +12,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window,
 	draggable: true,
 	resizable: true,
 	width: 300,
+	boxMaxHeight:600,
 	autoHeight: true,
 	shadow: false,
 	hidden: true,
@@ -56,6 +57,9 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 	// remove all panels from preceeding calls
 	this.removeAll();
 
+	
+	
+	
 	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
 	var self = this;
 	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoControl({
@@ -65,26 +69,41 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 			"getfeatureinfo": function(e) {
 				// create a panel for each response
 				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
-				if(service != null){
+				if(service){
 					var p = new Ext.Panel({
 					title: service.getDefinition().title,
 					collapsible: true,
 					border: false,
 					autoScroll: true,
-					boxMaxHeight:500,
+					height:300,
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
 					},
 					html: e.text
 				});
-				self.add(p);
-				self.doLayout();	
+				}else{
+					var p = new Ext.Panel({
+					title:'no title from service available',
+					collapsible: true,
+					border: false,
+					autoScroll: true,
+					height:300,
+					bodyStyle: 'padding: 10px',
+					defaults: {
+						anchor: '100%'
+					},					
+					html: e.text
+				});
 				}
+				self.add(p);
+				self.doLayout();							
 				
 			}
+			
 		}
 	});
+	
 	featureInfoControl.setMap(this.map);
 	featureInfoControl.getInfoForClick(e);
 	this.show();

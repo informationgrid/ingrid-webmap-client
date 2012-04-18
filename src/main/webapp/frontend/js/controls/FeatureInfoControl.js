@@ -25,7 +25,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.findLayers = 
 	}
 
 	return queryableLayers;
-},
+};
 
 /**
  * @see OpenLayers.Control.WMSGetFeatureInfo.buildWMSOptions
