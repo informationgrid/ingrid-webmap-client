@@ -63,7 +63,7 @@
   <proxyUrl></proxyUrl>
   <serviceCategories>
     <serviceCategory>
-      <name>Partner</name>
+      <name>Anbieter</name>
       <serviceCategories>
         <serviceCategory>
           <name>Bund</name>

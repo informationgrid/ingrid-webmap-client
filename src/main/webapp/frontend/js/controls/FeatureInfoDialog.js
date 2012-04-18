@@ -76,6 +76,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					border: false,
 					autoScroll: true,
 					height:300,
+					layout:'box',
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
@@ -89,6 +90,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					border: false,
 					autoScroll: true,
 					height:300,
+					layout:'box',
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
