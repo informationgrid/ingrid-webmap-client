@@ -148,7 +148,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 								console.debug('form submitted');
 
 							}
-						}]
+						}],
+				keys:[{ key: [Ext.EventObject.ENTER], handler: function() {
+                    de.ingrid.mapclient.frontend.Workspace.prototype
+										.search(Ext.getCmp('search').getValue(),
+												self);
+                			}
+            		}]							
+						
 			})
 	accordionItems.push(searchPanel);
 
