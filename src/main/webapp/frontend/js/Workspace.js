@@ -58,7 +58,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 			 */
 			listenToStateChanges : false,
 
-			kmlArray : []
+			kmlArray : [],
+			ctrls: []
 
 		});
 
@@ -70,7 +71,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		throw "Workspace has to be created with a Session instance";
 	}
 	var self = this;
-
+	var navigationControl = new OpenLayers.Control.Navigation();
+	this.ctrls['navigationControl'] = navigationControl;
 	// create the map (default projection is WGS 84)
 	this.map = new OpenLayers.Map({
 				fractionalZoom : true,
@@ -81,7 +83,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				// if we dont add these controls on init
 				// we get the default controls plus the added ones
 				// adding controls at init impedes default controls
-				controls : [new OpenLayers.Control.Navigation(),
+				controls : [navigationControl,
 							new OpenLayers.Control.PanZoomBar(),
 							new OpenLayers.Control.ScaleLine(),
 							new OpenLayers.Control.MousePosition()]
@@ -145,8 +147,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 										.search(
 												Ext.getCmp('search').getValue(),
 												self);
-								console.debug('form submitted');
-
 							}
 						}],
 				keys:[{ key: [Ext.EventObject.ENTER], handler: function() {
@@ -154,8 +154,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 										.search(Ext.getCmp('search').getValue(),
 												self);
                 			}
-            		}]							
-						
+            		}]	
 			})
 	accordionItems.push(searchPanel);
 
@@ -326,10 +325,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 								{
 									session : self.session
 								});
+								self.ctrls.keyboardControl.deactivate();
 						dlg.on('close', function(p) {
 									if (dlg.isLoad()) {
 										self.load(undefined, dlg.getFileId());
 									}
+									self.ctrls.keyboardControl.activate();
 								});
 					}
 				}));
@@ -343,11 +344,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			disabled : !this.session.hasUserId(),
 			handler : function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog();
+				self.ctrls.keyboardControl.deactivate();
 				dlg.on('close', function(p) {
 							if (dlg.isSave()) {
 								self.save(false, dlg.getTitle(), dlg
 												.getDescription());
 							}
+							self.ctrls.keyboardControl.activate();
 						});
 			}
 		}));
@@ -360,10 +363,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip : 'Karte herunterladen',
 			handler : function(btn) {
 				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog();
+				self.ctrls.keyboardControl.deactivate();
 				dia.on('close', function(p) {
 							if (dia.isSave()) {
 								self.download(dia.getTitle());
 							}
+				self.ctrls.keyboardControl.activate();							
 						});
 				}
 		
@@ -557,15 +562,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	overviewLayer.isBaseLayer = true;
 
 	// add controls to map
-
+	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
 	var controls = [new OpenLayers.Control.Navigation(),
 			new OpenLayers.Control.PanZoomBar(),
 			new OpenLayers.Control.ScaleLine(),
 			new OpenLayers.Control.MousePosition(),
 			new OpenLayers.Control.OverviewMap({
 						layers : [overviewLayer]
-					}), new OpenLayers.Control.KeyboardDefaults()];
-
+					}), 
+			keyboardControl];
+	this.ctrls['keyboardControl'] = keyboardControl;
 	if (this.viewConfig.hasPermaLink) {
 		controls.push(new OpenLayers.Control.Permalink());
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
