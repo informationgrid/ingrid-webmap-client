@@ -343,14 +343,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip : 'Speichern',
 			disabled : !this.session.hasUserId(),
 			handler : function(btn) {
-				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog();
-				self.ctrls.keyboardControl.deactivate();
+				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({ctrls:self.ctrls});
 				dlg.on('close', function(p) {
 							if (dlg.isSave()) {
 								self.save(false, dlg.getTitle(), dlg
 												.getDescription());
 							}
-							self.ctrls.keyboardControl.activate();
 						});
 			}
 		}));
@@ -362,13 +360,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			iconCls : 'iconDownload',
 			tooltip : 'Karte herunterladen',
 			handler : function(btn) {
-				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog();
-				self.ctrls.keyboardControl.deactivate();
+				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({ctrls:self.ctrls});
 				dia.on('close', function(p) {
 							if (dia.isSave()) {
 								self.download(dia.getTitle());
 							}
-				self.ctrls.keyboardControl.activate();							
 						});
 				}
 		

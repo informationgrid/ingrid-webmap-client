@@ -16,6 +16,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog = Ext.extend(Ext.Window, {
 	shadow: false,
 	initHidden: false,
 	modal: true,
+	ctrls:null,
 
 	/**
 	 * Signals if the save button was pressed
@@ -58,6 +59,38 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.getDescription = func
  */
 de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = function() {
 
+	Ext.override(Ext.form.TextField, {
+    //  Add functionality to Field's initComponent to enable the change event to bubble
+	// We dont want the map to move while in focus therefore we do this
+    initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
+        this.enableBubble(['focus','blur']);
+    }),
+
+    //  We know that we want Field's events to bubble directly to the FormPanel.
+    getBubbleTarget : function() {
+        if (!this.windowContent) {
+            this.windowContent = this.findParentByType('form');
+        }
+        return this.windowContent;
+    }
+	});
+	Ext.override(Ext.form.TextArea, {
+    //  Add functionality to Field's initComponent to enable the change event to bubble
+	// We dont want the map to move while in focus therefore we do this
+    initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
+        this.enableBubble(['focus','blur']);
+    }),
+
+    //  We know that we want Field's events to bubble directly to the FormPanel.
+    getBubbleTarget : function() {
+        if (!this.windowContent) {
+            this.windowContent = this.findParentByType('form');
+        }
+        return this.windowContent;
+    }
+	});
+	
+	
 	this.titleField = new Ext.form.TextField({
 		fieldLabel: "Titel",
 		hideLabel: false,
@@ -95,7 +128,17 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 	        handler: function(btn) {
 	        	self.close();
 	        }
-		}]
+		}],
+		listeners: {
+        focus: function() {
+            // We deactivate keyboard control when in focus
+            self.ctrls['keyboardControl'].deactivate();
+        },
+        blur: function() {
+            // activate it again
+            self.ctrls['keyboardControl'].activate();
+        }        
+    	}
 	});
 
 	Ext.apply(this, {
