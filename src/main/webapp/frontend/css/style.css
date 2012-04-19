@@ -94,3 +94,4 @@ p.load_icon_webmap{   background-color: transparent;
     display: block;}
 .x-form-element{padding-left:3px !important;}
 input.x-form-text{width:255px !important;}
+textarea.x-form-field{width:255px !important;}
