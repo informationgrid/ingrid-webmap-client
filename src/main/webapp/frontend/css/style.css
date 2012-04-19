@@ -92,3 +92,4 @@ p.load_icon_webmap{   background-color: transparent;
     overflow: visible;
     visibility: visible;
     display: block;}
+.webmapclient_searchpanel{margin:0px -150px;min-width:150px;}
