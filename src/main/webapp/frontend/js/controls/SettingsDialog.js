@@ -15,7 +15,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	collapsible: true,
 	collapsed: true,
 	expandOnShow: false,
-	width: 325,
+	width: 250,
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
