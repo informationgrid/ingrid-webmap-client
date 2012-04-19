@@ -123,15 +123,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = function(services) {
 	var children = [];
 
-	// transform sub categories
-//	var subCategories = serviceCategory.serviceCategories;
-//	for (var i=0, count=subCategories.length; i<count; i++) {
-//		var childNode = this.transform(subCategories[i]);
-//		children.push(childNode);
-//	}
 
-	// transform services
-//	var services = serviceCategory.services;
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);

@@ -60,7 +60,8 @@ public class SearchResource {
 		//get the opensearch url through the applicaton properties file
 		String OSUrl = ConfigurationProvider.INSTANCE.getOpensearchUrl();
 		InputStream result = null;
-		
+		searchTerm = searchTerm.trim();
+		searchTerm = searchTerm.replaceAll("\\s", "+");
 		//some logic borrowed from the opensearch iplug
 		//we open a stream though this module 
 		//the rest is bascially simple xml parsing of the result 

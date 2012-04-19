@@ -77,7 +77,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 	Ext.override(Ext.form.TextArea, {
     //  Add functionality to Field's initComponent to enable the change event to bubble
 	// We dont want the map to move while in focus therefore we do this
-    initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
+    initComponent : Ext.form.TextArea.prototype.initComponent.createSequence(function() {
         this.enableBubble(['focus','blur']);
     }),
 
