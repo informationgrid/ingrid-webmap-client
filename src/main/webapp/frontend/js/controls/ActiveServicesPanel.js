@@ -200,12 +200,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//if not warn the user but display the new service
 		var srss = service.capabilitiesStore.data.items[0].data.srs;
 		var supportsSRS = false;
+		// srss holds the name of the supported projections 
 		for(srs in  srss){
 			if(srs == this.map.projection){
 			supportsSRS = true;
 			break;
 			}
 		}
+
 		if(!supportsSRS)
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
 
@@ -247,8 +249,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		this.fireEvent('datachanged');
 		
 		/*****************************************************************/
-		/**we set the map to the largest bounding box its layers contain**/
+		/* we set the map to the largest bounding box its layers contain */
+		/* but first we check if our layers support our base projection **/ 
 		/*****************************************************************/
+
+		var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(this.map);
+		if(mapProjection.projCode == "EPSG:4326"){
 		var bboxes = service.capabilitiesStore.data.items;
 		var bIndex = 0;
 		var largestCoord = bboxes[0].data.llbbox[0];
@@ -260,7 +266,35 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		var llbbox = service.capabilitiesStore.data.items[bIndex].data.llbbox;
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+		this.map.zoomToExtent(bounds);			
+		}
+		
+		if(supportsSRS && mapProjection.projCode != "EPSG:4326"){
+
+		var bboxes = service.capabilitiesStore.data.items;
+		var bIndex = 0;
+		var largestCoord = Number.MAX_VALUE;
+		for (var i = 0; i < bboxes.length; i++){
+			// we look for a smaller x1 coord, since these go into the negative
+			// thus the map becomes larger
+			// and we check if the layer NOT the service supports the projection
+			if(typeof(bboxes[i].data.bbox[srs]) !== 'undefined'){
+			if (bboxes[i].data.bbox[srs].bbox[0] < largestCoord){
+				bIndex = i;
+				var llbbox = bboxes[i].data.bbox[srs].bbox;
+			}
+			}
+		}		
+		// do we get some data?	
+		if(llbbox){
+		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+		var newProj = new OpenLayers.Projection(srs);
 		this.map.zoomToExtent(bounds);
+		}else{
+		// if not we tell the user
+		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
+		}
+		}
 	}
 	
 };
