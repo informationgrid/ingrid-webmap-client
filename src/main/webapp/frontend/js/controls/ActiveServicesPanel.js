@@ -43,7 +43,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	removeBtn: null,
 	transparencyBtn: null,
 	metaDataBtn: null,
-	
+	ctrls:[],
 	kmlArray: []
 });
 
@@ -306,6 +306,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(service) {
 
 	if (!this.containsService(service)) {
+		//tell the user that the service is already loaded
+		de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);		
 		return;
 	}
 

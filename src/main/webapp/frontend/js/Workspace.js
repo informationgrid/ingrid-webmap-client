@@ -101,7 +101,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// a) layer tree
 	this.activeServicesPanel = new de.ingrid.mapclient.frontend.controls.ActiveServicesPanel(
 			{
-				map : this.map
+				map : this.map,
+				ctrls: self.ctrls
 			});
 	accordionItems.push(this.activeServicesPanel);
 
