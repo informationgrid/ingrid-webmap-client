@@ -101,7 +101,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.transparencyBtn = new Ext.Button({
 		iconCls: 'iconTransparency',
-		tooltip: 'Layer-Transparenz',
+		tooltip: self.activeNode ? 'Layer-Transparenz' : 'Für die Layertransparenz bitte zuerst Layer auswählen!',
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
