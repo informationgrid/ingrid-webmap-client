@@ -25,6 +25,22 @@
       <name>Gauß Krüger 3</name>
       <epsgCode>EPSG:31467</epsgCode>
     </projection>
+    <projection>
+      <name>Gauß Krüger 4</name>
+      <epsgCode>EPSG:31468</epsgCode>
+    </projection>
+    <projection>
+      <name>Gauß Krüger 5</name>
+      <epsgCode>EPSG:31469</epsgCode>
+    </projection>
+    <projection>
+      <name>ETRS89 32N</name>
+      <epsgCode>EPSG:25832</epsgCode>
+    </projection>
+    <projection>
+      <name>ETRS89 33N</name>
+      <epsgCode>EPSG:25833</epsgCode>
+    </projection>    
   </projections>
   <scales>
     <scale>

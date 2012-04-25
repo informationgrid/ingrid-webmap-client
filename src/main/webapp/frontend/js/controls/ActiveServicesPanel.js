@@ -43,7 +43,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	removeBtn: null,
 	transparencyBtn: null,
 	metaDataBtn: null,
-	ctrls:[],
+	expandBtn: null,
+	allExpanded: false,
+	
 	kmlArray: []
 });
 
@@ -117,13 +119,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			}
 		}
 	});
+	this.expandBtn = new Ext.Button({
+		iconCls: 'iconExpand',
+		tooltip: 'Alle auf/zuklappen',
+		disabled: false,
+		handler: function(btn) {
+			if (self.allExpanded) {
+				self.layerTree.collapseAll();
+				self.allExpanded = false;
+			}else{
+				self.layerTree.expandAll();
+				self.allExpanded = true;
+			}
+		}
+	});
 
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
 		root: {
 			nodeType: 'async',
 			text: 'Layers',
-			expanded: true,
+			expanded: false,
 			children: []
 		},
 		rootVisible: false,
@@ -162,7 +178,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			this.addBtn,
 			this.removeBtn,
 			this.transparencyBtn,
-			this.metaDataBtn
+			this.metaDataBtn,
+			this.expandBtn
 		]
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
@@ -192,6 +209,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service) {
 	if(service != undefined){
 		if (this.containsService(service)) {
+			//tell the user that the service is already loaded
+			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
 	
@@ -233,7 +252,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			text: service.getDefinition().title,
 			layerStore: this.layerStore,
 			leaf: false,
-			expanded: true,
+			expanded: false,
 			service: service,
 			loader: {
 				filter: function(record) {
@@ -306,8 +325,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(service) {
 
 	if (!this.containsService(service)) {
-		//tell the user that the service is already loaded
-		de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);		
 		return;
 	}
 
@@ -516,7 +533,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 		initDir:0,
 	    layerStore: store,
 	    leaf: false,
-	    expanded: true
+	    expanded: false
 
 	});
 	

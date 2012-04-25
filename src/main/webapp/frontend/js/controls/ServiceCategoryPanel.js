@@ -28,7 +28,9 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	 * Toolbar buttons
 	 */
 	addBtn: null,
-	metaDataBtn: null
+	metaDataBtn: null,
+	expandBtn: null,
+	allExpanded: false,
 });
 
 /**
@@ -63,7 +65,20 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
         	}
         }
 	});
-
+	this.expandBtn = new Ext.Button({
+		iconCls: 'iconExpand',
+		tooltip: 'Alle auf/zuklappen',
+		disabled: false,
+		handler: function(btn) {
+			if (self.allExpanded) {
+				self.collapseAll();
+				self.allExpanded = false;
+			}else{
+				self.expandAll();
+				self.allExpanded = true;
+			}
+		}
+	});
 	// transform service category object into tree node structure
 	var node = this.transform(this.serviceCategory);
 
@@ -73,11 +88,12 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,
 	        children: node.children,
-	        expanded: true
+	        expanded: false
 		}),
 		tbar: items = [
    		    this.addBtn,
-   		    this.metaDataBtn
+   		    this.metaDataBtn,
+   		    this.expandBtn
    		]
 	});
 
@@ -142,7 +158,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 		text: serviceCategory.name,
 		children: children,
 		leaf: children.length == 0 ? true : false,
-		expanded: true,
+		expanded: false,
 		expandable: true
 	};
 	return node;

@@ -64,7 +64,9 @@ body {
 .iconDownload {
 	background-image: url(../../shared/images/icon_download.png);
 }
-
+.iconExpand {
+	background-image: url(../../shared/images/icon_expand.png);
+}
 .icon {
 	width: 16px;
 	height: 16px;
