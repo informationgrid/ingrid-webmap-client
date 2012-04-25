@@ -407,12 +407,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		items: items
 	});
 
-	Ext.ux.Msg.flash({
-	  body: self.body,	
-	  msg: 'Um der Suche einen Raumbezug hinzuzufügen, bitte eine Auswahl treffen. Das Icon um ein Gebiet zu umspannen befindet sich in der linken obereren Ecke der Karte',
-	  pause: 3,
-	  type: 'success'
-	});
+
 	
 	de.ingrid.mapclient.frontend.PanelWorkspace.superclass.initComponent.call(this);
 };
@@ -542,6 +537,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	});
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
+	Ext.ux.Msg.flash({
+	  body: self.body,	
+	  msg: 'Um der Suche einen Raumbezug hinzuzufügen, bitte eine Auswahl treffen. <br/>Das Icon um ein Gebiet zu umspannen befindet sich in der linken obereren Ecke der Karte',
+	  pause: 3,
+	  type: 'success'
+	});	
+	
 };
 
 /**

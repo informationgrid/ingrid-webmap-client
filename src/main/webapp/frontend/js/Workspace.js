@@ -408,6 +408,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// create the panel for the center region
 	var centerPanel = new Ext.Panel({
 				region : 'center',
+				id: 'centerPanel',
 				layout : 'fit',
 				items : mapPanel,
 				tbar : toolbar
