@@ -117,24 +117,24 @@ body{
     background-position: 0px 0px;
 }
 /* middle */
-.flashMessageBox .success .lm{
+/* .flashMessageBox .success .lm{
     background-image: url(images/s_lm.png);
-}
+} */
 
 .flashMessageBox .success .cm{
     background-image: url(images/s_cm.png);
-    color: #fff;
+    color: #000;
 }
 
-.flashMessageBox .success .rm{
+/* .flashMessageBox .success .rm{
     background-image: url(images/s_rm.png);
-}
+} */
 
-.flashMessageBox .success .icon{
+/* .flashMessageBox .success .icon{
     background-image: url(images/success-icon.png);
     width: 26px;
     height: 21px;
-}
+} */
 
 /* flashMessageBox Error message box style*/
 /* top */

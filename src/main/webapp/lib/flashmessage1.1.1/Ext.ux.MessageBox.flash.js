@@ -29,14 +29,18 @@ Ext.ux.MessageBox = function(){
             if (!config.autoWidth)
                tpl += 'style="width:' + config.width + '"';
             
-        tpl +='><tr><td class="lt"></td><td class="ct"></td><td class="rt"></td></tr>' +
-            '<tr><td class="lm" valign="middle" align="center"><div class="icon"></div></td>' +
+//        tpl +='><tr><td class="lt"></td><td class="ct"></td><td class="rt"></td></tr>' +
+//            '<tr><td class="lm" valign="middle" align="center"><div class="icon"></div></td>' +
+//            '<td class="cm" align="center" valign="middle">' + 
+//            '<div class="msg" style="' + config.msgStyle + ';">'+ config.msg +'</div></td>' +
+//            '<td class="rm"></td></tr>' +
+//            '<tr><td class="lb"></td><td class="cb"></td><td class="rb"></td></tr>' +
+//            '</table></div>';
+        tpl +='><tr><td class="lm" valign="middle" align="center"><div class="icon"></div></td>' +
             '<td class="cm" align="center" valign="middle">' + 
             '<div class="msg" style="' + config.msgStyle + ';">'+ config.msg +'</div></td>' +
-            '<td class="rm"></td></tr>' +
-            '<tr><td class="lb"></td><td class="cb"></td><td class="rb"></td></tr>' +
-            '</table></div>';
-        
+            '<td class="rm"></td></tr></div>';
+                
         return tpl;
     }
     return {
