@@ -341,7 +341,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasSaveTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconSave',
-			tooltip : 'Speichern',
+			tooltip : this.session.hasUserId() ? 'Speichern':'Zum Speichern erst einloggen.',
 			disabled : !this.session.hasUserId(),
 			handler : function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({ctrls:self.ctrls});
