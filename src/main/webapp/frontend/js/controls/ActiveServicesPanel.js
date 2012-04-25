@@ -101,7 +101,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.transparencyBtn = new Ext.Button({
 		iconCls: 'iconTransparency',
-		tooltip: self.activeNode ? 'Layer-Transparenz' : 'Für die Layertransparenz bitte zuerst Layer auswählen!',
+		tooltip: 'Layer-Transparenz',
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
@@ -213,7 +213,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
-	
+		var cntrPanel = Ext.getCmp('centerPanel');
+		//we only have a center panel if we are in the full view
+		if(typeof cntrPanel !== 'undefined'){		
+		Ext.ux.Msg.flash({
+		  body: cntrPanel.body,
+		  msg: 'Dienst erfolgreich hinzugef&uuml;gt! Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen',
+		  pause: 3,
+		  type: 'success'
+		});
+		}
 
 		//check if the added service support our base EPSG,
 		//if not warn the user but display the new service
@@ -327,7 +336,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 	if (!this.containsService(service)) {
 		return;
 	}
-
+		var cntrPanel = Ext.getCmp('centerPanel');
+		//we only have a center panel if we are in the full view
+		if(typeof cntrPanel !== 'undefined'){
+		Ext.ux.Msg.flash({
+		  body: cntrPanel.body,	
+		  msg: 'Dienst erfolgreich entfernt!',
+		  pause: 3,
+		  type: 'success'
+		});
+		}
 	// remove service layers from the store
 	var recordsToRemove = [];
 	this.layerStore.each(function(record) {
