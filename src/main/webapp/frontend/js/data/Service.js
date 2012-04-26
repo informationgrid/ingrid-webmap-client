@@ -117,7 +117,7 @@ de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl = function(c
  * @param callback Function to be called after the data are loaded. A de.ingrid.mapclient.frontend.data.Service
  * instance is passed to the callback.
  */
-de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callback) {
+de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callback, showFlash) {
 	var self = this;
 
 	// if the service is loaded already, return it immediately
@@ -126,6 +126,9 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 		var service = de.ingrid.mapclient.frontend.data.Service.registry.get(capabilitiesUrl);
 		// call the callback if given
 		if (callback instanceof Function) {
+			if(showFlash)
+			callback(service, showFlash);
+			else
 			callback(service);
 		}
 	}
@@ -175,7 +178,10 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						de.ingrid.mapclient.frontend.data.Service.registry.add(capabilitiesUrl, service);
 						// call the callback if given
 						if (callback instanceof Function) {
-							callback(service);
+										if(showFlash)
+											callback(service, showFlash);
+											else
+											callback(service);
 						}
 					} else {
 						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);

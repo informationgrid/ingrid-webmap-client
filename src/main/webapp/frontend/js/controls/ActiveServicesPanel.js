@@ -206,7 +206,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * Add a service to the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService) {
 	if(service != undefined){
 		if (this.containsService(service)) {
 			//tell the user that the service is already loaded
@@ -215,7 +215,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
-		if(typeof cntrPanel !== 'undefined'){		
+		if(typeof cntrPanel !== 'undefined' && showService){		
 		Ext.ux.Msg.flash({
 		  body: cntrPanel.body,
 		  msg: 'Dienst erfolgreich hinzugef&uuml;gt! Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen',
