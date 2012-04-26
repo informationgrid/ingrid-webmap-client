@@ -23,23 +23,7 @@ Ext.ux.MessageBox = function(){
 
     function createBox(config){
         var tpl = '<div class="flashMessageBox">' +
-            '<div class="flashMessageBox">' +
-            '<table class="box ' + config.type + '" cellspacing="0" cellpadding="0"';
-
-            if (!config.autoWidth)
-               tpl += 'style="width:' + config.width + '"';
-            
-//        tpl +='><tr><td class="lt"></td><td class="ct"></td><td class="rt"></td></tr>' +
-//            '<tr><td class="lm" valign="middle" align="center"><div class="icon"></div></td>' +
-//            '<td class="cm" align="center" valign="middle">' + 
-//            '<div class="msg" style="' + config.msgStyle + ';">'+ config.msg +'</div></td>' +
-//            '<td class="rm"></td></tr>' +
-//            '<tr><td class="lb"></td><td class="cb"></td><td class="rb"></td></tr>' +
-//            '</table></div>';
-        tpl +='><tr><td class="lm" valign="middle" align="center"><div class="icon"></div></td>' +
-            '<td class="cm" align="center" valign="middle">' + 
-            '<div class="msg" style="' + config.msgStyle + ';">'+ config.msg +'</div></td>' +
-            '<td class="rm"></td></tr></div>';
+            '<div class="msg" style="' + config.msgStyle + ';">'+ config.msg +'</div></div>';
                 
         return tpl;
     }
