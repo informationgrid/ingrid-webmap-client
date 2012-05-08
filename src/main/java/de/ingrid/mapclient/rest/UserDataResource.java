@@ -176,13 +176,15 @@ public class UserDataResource {
 			// convert json string to UserData
 			JSONObject rootObj = new JSONObject(data);
 			String wmcDocument = rootObj.getString("wmcDocument");
-
+//			log.debug("wmc document: "+wmcDocument);
 			List<String> activeServices = new ArrayList<String>();
 			JSONArray activeServicesTmp = rootObj
 					.getJSONArray("activeServices");
+			log.debug("active services count: "+activeServicesTmp.length());
 			for (int i = 0, count = activeServicesTmp.length(); i < count; i++) {
 				String capabilitiesUrl = activeServicesTmp.getString(i);
 				activeServices.add(capabilitiesUrl);
+				log.debug("capabilities url: "+capabilitiesUrl);
 			}
 
 			List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();

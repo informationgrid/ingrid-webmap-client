@@ -218,7 +218,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(typeof cntrPanel !== 'undefined' && showService){		
 		Ext.ux.Msg.flash({
 		  body: cntrPanel.body,
-		  msg: 'Dienst erfolgreich hinzugef&uuml;gt! Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen',
+		  msg: '<p><strong>Dienst erfolgreich hinzugef&uuml;gt</strong></p> Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen',
 		  pause: 3,
 		  type: 'success'
 		});

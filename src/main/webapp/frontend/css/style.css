@@ -95,3 +95,14 @@ p.load_icon_webmap{   background-color: transparent;
     visibility: visible;
     display: block;}
 .webmapclient_searchpanel{margin:0px -150px;min-width:150px;}
+.olControlOverviewMapElement {
+  background: #d9e7f8 !important;
+  border: 1px solid #8db2e3 !important;
+  border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  padding: 5px 21px 0 5px !important;
+}
+.olMap {
+  border: 1px solid #8db2e3 !important;
+  border-width: 1px 1px 0 !important;
+}
