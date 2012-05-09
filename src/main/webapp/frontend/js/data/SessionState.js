@@ -104,12 +104,13 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	// unserialize active services
 	var self = this;
 	this.activeServices = [];
-	for (var i=0, count=data.activeServices.length; i<count; i++) {
+	var callbackCount = 0;
+	for (var i=0;i<numServices; i++) {
 		// the service needs to be loaded
 		var capabilitiesUrl = data.activeServices[i];
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
 			self.activeServices.push(service);
-			if (i == count) {
+			if (callbackCount == numServices) {
 				//formerly
 				//lastCapUrl == service.getCapabilitiesUrl()
 				if (callback instanceof Function) {
