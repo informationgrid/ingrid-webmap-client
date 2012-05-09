@@ -13,7 +13,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  * @param store GeoExt.data.WMSCapabilitiesStore instance
  */
 de.ingrid.mapclient.frontend.data.Service = function(capabilitiesUrl, definition, layers, store) {
-	this.capabilitesUrl = capabilitiesUrl;
+	this.capabilitiesUrl = capabilitiesUrl;
 	this.definition = definition;
 	this.layers = layers;
 	this.capabilitiesStore = store;
@@ -24,7 +24,7 @@ de.ingrid.mapclient.frontend.data.Service = function(capabilitiesUrl, definition
  * @return The capabilities url
  */
 de.ingrid.mapclient.frontend.data.Service.prototype.getCapabilitiesUrl = function() {
-	return this.capabilitesUrl;
+	return this.capabilitiesUrl;
 };
 
 /**

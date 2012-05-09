@@ -106,3 +106,4 @@ p.load_icon_webmap{   background-color: transparent;
   border: 1px solid #8db2e3 !important;
   border-width: 1px 1px 0 !important;
 }
+#olControlOverviewMapMaximizeButton_innerImage{bottom:-80px;}

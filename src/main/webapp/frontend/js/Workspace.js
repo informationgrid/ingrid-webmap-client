@@ -2,7 +2,16 @@
  * Copyright (c) 2011 wemove digital solutions. All rights reserved.
  */
 Ext.namespace("de.ingrid.mapclient.frontend");
-
+de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
+	constructor: function(config){
+		de.ingrid.mapclient.frontend.IngridMap.superclass.constructor.call(this, config);
+	},
+	containingViewport:null,
+	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
+        de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
+        this.containingViewport.onStateChanged();
+    }
+});
 /**
  * @class Workspace is the main gui component for the frontend.
  */
@@ -74,7 +83,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var navigationControl = new OpenLayers.Control.Navigation();
 	this.ctrls['navigationControl'] = navigationControl;
 	// create the map (default projection is WGS 84)
-	this.map = new OpenLayers.Map({
+	this.map = new de.ingrid.mapclient.frontend.IngridMap({
+				containingViewport:self,
 				fractionalZoom : true,
 				projection : new OpenLayers.Projection("EPSG:4326"),
 				// this will be used by some controls (ArgParser, MousePosition,
@@ -581,9 +591,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	this.map.events.on({
 				// 'addlayer': this.onStateChanged,
 				// 'removelayer': this.onStateChanged,
-				'changelayer' : this.onStateChanged,
-				'moveend' : this.onStateChanged,
-				'changebaselayer' : this.onStateChanged,
+//				'changelayer' : this.onStateChanged,
+//				'moveend' : this.onStateChanged,
+//				'changebaselayer' : this.onStateChanged,
 				scope : this
 			});
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
@@ -628,11 +638,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
  * Method to be called, when any data changes that needs to be stored on the
  * server. To prevent execution set listenToStateChanges to false
  */
+
+
 de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
 	if (this.listenToStateChanges) {
 		this.save(true);
 	}
 };
+
 
 /**
  * Store the current map state along with the given title and description on the
@@ -919,3 +932,5 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 		});
 	}
 };
+
+

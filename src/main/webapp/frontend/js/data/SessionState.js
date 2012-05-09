@@ -110,6 +110,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
 			self.activeServices.push(service);
 			if (lastCapUrl == service.getCapabilitiesUrl()) {
+				//i == count
 				if (callback instanceof Function) {
 					callback();
 				}
