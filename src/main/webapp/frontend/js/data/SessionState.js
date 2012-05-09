@@ -109,8 +109,9 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 		var capabilitiesUrl = data.activeServices[i];
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
 			self.activeServices.push(service);
-			if (lastCapUrl == service.getCapabilitiesUrl()) {
-				//i == count
+			if (i == count) {
+				//formerly
+				//lastCapUrl == service.getCapabilitiesUrl()
 				if (callback instanceof Function) {
 					callback();
 				}
