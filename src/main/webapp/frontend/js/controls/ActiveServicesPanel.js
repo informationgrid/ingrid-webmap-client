@@ -279,7 +279,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//we zoom to the extned of the wmc-session doc
 		if(!initialAdd){
 		this.fireEvent('datachanged');
-		this.map.zoomToExtent(bounds);
 		}
 		/*****************************************************************/
 		/* we set the map to the largest bounding box its layers contain */
@@ -322,6 +321,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(llbbox){
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
 		var newProj = new OpenLayers.Projection(srs);
+		//do we come from session or user interaction? zoom if user interaction
+		if(!initialAdd)
+		this.map.zoomToExtent(bounds);
 		
 		}else{
 		// if not we tell the user

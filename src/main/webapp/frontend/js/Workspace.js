@@ -13,7 +13,6 @@ de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
 	containingViewport:null,
 	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
         de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
-        console.debug("setCenter Ingridmap");
         if(this.sessionWriteEnable)
         this.containingViewport.onStateChanged();
     }
