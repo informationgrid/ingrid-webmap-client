@@ -316,7 +316,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				var llbbox = bboxes[i].data.bbox[srs].bbox;
 			}
 			}
-		}		
+		}
+		}
 		// do we get some data?	
 		if(llbbox){
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
@@ -329,7 +330,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
 		}
-		}
+		
 	}
 	
 };
