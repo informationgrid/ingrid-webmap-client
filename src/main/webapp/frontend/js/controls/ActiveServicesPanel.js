@@ -274,8 +274,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		this.layerTree.root.appendChild(node);
 	
 		this.services.add(service.getCapabilitiesUrl(), service);
+		//if we are not in an initial state, then we fire the event which causes session write
+		//and we zoom to extent, otherwise we load from session, therefore no writing needed and
+		//we zoom to the extned of the wmc-session doc
 		if(!initialAdd){
 		this.fireEvent('datachanged');
+		this.map.zoomToExtent(bounds);
 		}
 		/*****************************************************************/
 		/* we set the map to the largest bounding box its layers contain */
@@ -318,7 +322,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(llbbox){
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
 		var newProj = new OpenLayers.Projection(srs);
-		this.map.zoomToExtent(bounds);
+		
 		}else{
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);

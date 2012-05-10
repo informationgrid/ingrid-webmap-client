@@ -30,7 +30,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	addBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
-	allExpanded: false,
+	allExpanded: false
 });
 
 /**
