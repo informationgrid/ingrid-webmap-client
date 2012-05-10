@@ -298,7 +298,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		var llbbox = service.capabilitiesStore.data.items[bIndex].data.llbbox;
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
-		this.map.zoomToExtent(bounds);			
+
 		}
 		
 		if(supportsSRS && mapProjection.projCode != "EPSG:4326"){
@@ -338,45 +338,57 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
  * Remove a service from the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(service) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
+		service) {
 
 	if (!this.containsService(service)) {
 		return;
 	}
+	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl) {
 		var cntrPanel = Ext.getCmp('centerPanel');
-		//we only have a center panel if we are in the full view
-		if(typeof cntrPanel !== 'undefined'){
 		Ext.ux.Msg.flash({
-		  body: cntrPanel.body,	
-		  msg: 'Dienst erfolgreich entfernt!',
-		  pause: 3,
-		  type: 'success'
+			body : cntrPanel.body,
+			msg : '<p><strong>Basisdienst kann nicht entfernt werden</strong></p>',
+			pause : 3,
+			type : 'success'
 		});
+	} else {
+		var cntrPanel = Ext.getCmp('centerPanel');
+		// we only have a center panel if we are in the full view
+		if (typeof cntrPanel !== 'undefined') {
+			Ext.ux.Msg.flash({
+						body : cntrPanel.body,
+						msg : 'Dienst erfolgreich entfernt!',
+						pause : 3,
+						type : 'success'
+					});
 		}
-	// remove service layers from the store
-	var recordsToRemove = [];
-	this.layerStore.each(function(record) {
-		if (service.contains(record.get("layer"))) {
-			recordsToRemove.push(record);
-		}
-	});
-	this.layerStore.remove(recordsToRemove);
+		// remove service layers from the store
+		var recordsToRemove = [];
+		this.layerStore.each(function(record) {
+					if (service.contains(record.get("layer"))) {
+						recordsToRemove.push(record);
+					}
+				});
+		this.layerStore.remove(recordsToRemove);
 
-	// remove service node from the tree
-	var node = this.layerTree.root.findChildBy(function(child) {
-		var isServiceNode = false;
-		var curService = child.attributes.service;
-		if (curService != undefined) {
-			isServiceNode = (curService.getCapabilitiesUrl() == service.getCapabilitiesUrl());
+		// remove service node from the tree
+		var node = this.layerTree.root.findChildBy(function(child) {
+					var isServiceNode = false;
+					var curService = child.attributes.service;
+					if (curService != undefined) {
+						isServiceNode = (curService.getCapabilitiesUrl() == service
+								.getCapabilitiesUrl());
+					}
+					return isServiceNode;
+				}, this, true);
+		if (node) {
+			node.remove(true);
 		}
-		return isServiceNode;
-	}, this, true);
-	if (node) {
-		node.remove(true);
+
+		this.services.removeKey(service.getCapabilitiesUrl());
+		this.fireEvent('datachanged');
 	}
-
-	this.services.removeKey(service.getCapabilitiesUrl());
-	this.fireEvent('datachanged');
 };
 
 /**
