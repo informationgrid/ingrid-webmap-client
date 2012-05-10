@@ -109,6 +109,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 		// the service needs to be loaded
 		var capabilitiesUrl = data.activeServices[i];
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
+			callbackCount++;
 			self.activeServices.push(service);
 			if (callbackCount == numServices) {
 				//formerly

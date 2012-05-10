@@ -206,7 +206,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * Add a service to the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd) {
 	if(service != undefined){
 		if (this.containsService(service)) {
 			//tell the user that the service is already loaded
@@ -274,8 +274,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		this.layerTree.root.appendChild(node);
 	
 		this.services.add(service.getCapabilitiesUrl(), service);
+		if(!initialAdd){
 		this.fireEvent('datachanged');
-		
+		}
 		/*****************************************************************/
 		/* we set the map to the largest bounding box its layers contain */
 		/* but first we check if our layers support our base projection **/ 

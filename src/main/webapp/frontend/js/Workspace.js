@@ -2,13 +2,19 @@
  * Copyright (c) 2011 wemove digital solutions. All rights reserved.
  */
 Ext.namespace("de.ingrid.mapclient.frontend");
+// we extend the map because we dont listen to the default map events anymore
+// we write the session on the setCenter method now
+// also we disable this method on load, we enable it on finishing the whole init process
 de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
 	constructor: function(config){
 		de.ingrid.mapclient.frontend.IngridMap.superclass.constructor.call(this, config);
 	},
+	sessionWriteEnable:false,
 	containingViewport:null,
 	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
         de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
+        console.debug("setCenter Ingridmap");
+        if(this.sessionWriteEnable)
         this.containingViewport.onStateChanged();
     }
 });
@@ -548,7 +554,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(
 				}
 
 				// add default service to active services
-				self.activeServicesPanel.addService(service);
+				self.activeServicesPanel.addService(service, false, true);
 
 				if (callback instanceof Function) {
 					callback();
@@ -599,6 +605,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 
 	this.listenToStateChanges = true;
+	this.map.sessionWriteEnable = true;
 };
 
 /**
@@ -834,12 +841,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 				// restore active services
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
 					self.activeServicesPanel
-							.addService(state.activeServices[i]);
+							.addService(state.activeServices[i],false,true);
 				}
 				// restore active services
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
 					self.activeServicesPanel
-							.addService(state.activeServices[i]);
+							.addService(state.activeServices[i],false,true);
 				}
 
 				// Load WMS by "Zeige Karte" from Session
