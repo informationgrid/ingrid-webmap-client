@@ -63,7 +63,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 	
 	
 	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
-
+	var self = this;
 	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoControl({
 		queryVisible: true,
 		drillDown: true,
