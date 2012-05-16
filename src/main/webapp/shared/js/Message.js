@@ -97,3 +97,5 @@ de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim L�schen der Karte ist e
 de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = "Beim Drucken der Karte ist ein Fehler aufgetreten.";
 de.ingrid.mapclient.Message.SEARCH_FAILURE = "Beim Suchen ist ein Fehler aufgetreten.";
 de.ingrid.mapclient.Message.SEARCH_SUCCESS = "Suche erfolgreich.";
+
+de.ingrid.mapclient.Message.FEATURE_FAILURE = "Konnte keine administrativen Informationen abrufen.";

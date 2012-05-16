@@ -21,6 +21,17 @@ Ext.onReady(function() {
     				viewConfiguration = window.parent.viewConfiguration;
     			}
 			}
+			var callbackAreaId = {};
+			if (!(typeof mapClientCallbackAreaId === "undefined")) {
+				callbackAreaId = mapClientCallbackAreaId;
+   			} else if ( window.parent != window && !(typeof window.parent.mapClientCallbackAreaId === "undefined")) {
+   				// check if map is IFRAME embedded and callback was defined outside
+    			var callbackAreaId = window.parent.mapClientCallbackAreaId;
+    			// check for definition in parent window in case we a in IFRAME 
+    			if(window.parent.viewConfiguration) {
+    				viewConfiguration = window.parent.viewConfiguration;
+    			}
+			}			
 
 			var mapUrl = de.ingrid.mapclient.Configuration.getUrlParameter('mapUrl') || null;
 
@@ -67,7 +78,8 @@ Ext.onReady(function() {
 						mapUrl: mapUrl,
 						session: session,
 						viewConfig: configPrams,
-						callbackHooks: callbackHooks
+						callbackHooks: callbackHooks,
+						callbackAreaId: callbackAreaId
 				});						
 				}
 				if(typeof endLoadIcon !== 'undefined')

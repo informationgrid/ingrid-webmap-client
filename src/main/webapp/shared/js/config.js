@@ -29,7 +29,11 @@ de.ingrid.mapclient.STATIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'confi
  * - url The url of the WMS server make the request to
  */
 de.ingrid.mapclient.WMS_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/proxy';
-
+/**
+ * Url of the WMS proxy. Expected GET parameters:
+ * - url The url of the WMS server make the request to
+ */
+de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL = de.ingrid.mapclient.BASE_URL+'wms/proxyAdministrativeInfos';
 /**
  * Url for retrieving and saving session data
  */
@@ -116,6 +120,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 		},
 		"portalu-facete-search": {
 	    	hasServicesPanel: false,
+	    	hasAreaTool:true,
 	    	hasInfoTool: false,
 	    	hasHistoryTool: true,
 	    	hasMeasureTool: false,
@@ -134,6 +139,7 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 		},
 		"portalu-extended-search": {
 	    	hasServicesPanel: false,
+	    	hasAreaTool:true,
 	    	hasInfoTool: false,
 	    	hasHistoryTool: true,
 	    	hasMeasureTool: false,

@@ -22,6 +22,9 @@ import de.ingrid.mapclient.model.ServiceCategory;
 public class Configuration {
 
 	private String wmsCapUrl;
+	private String featureUrl;
+
+
 	private List<Layer> layers;
 	private MapExtend mapExtend;
 	private List<Projection> projections;
@@ -104,5 +107,12 @@ public class Configuration {
 
 	public void setAreaCategeories(List<AreaCategory> areaCategories) {
 		this.areaCategories = areaCategories;
+	}
+	public String getFeatureUrl() {
+		return featureUrl;
+	}
+
+	public void setFeatureUrl(String featureUrl) {
+		this.featureUrl = featureUrl;
 	}
 }

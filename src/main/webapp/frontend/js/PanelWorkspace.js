@@ -30,6 +30,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	 */
 	viewConfig: {
 		hasServicesPanel: true,
+		hasAreaTool:true,
 		hasInfoTool: true, 
 		hasHistoryTool: true,
 		hasMeasureTool: true, 
@@ -60,7 +61,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	 */
 	listenToStateChanges: false,
 	
-	callbackHooks: null
+	callbackHooks: null,
+	callbackAreaId:null
 });
 
 /**
@@ -178,15 +180,18 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 				});  
 
 		toolbarItems.push(new Ext.Button({
+			id: 'bboxButton',
 			iconCls: 'iconSelectCoordinates',
 			tooltip: 'Gebiet ausw&auml;hlen',
 			enableToggle: true,
 			handler: function(btn) {
 				if (btn.pressed) {
 					coordinatesCtrl.activate();
+					Ext.getCmp('areaButton').disable();
 				}
 				else {
 					coordinatesCtrl.deactivate();
+					Ext.getCmp('areaButton').enable();
 				}
 			}
 		}));
@@ -218,7 +223,37 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		}));
 	}
 
-	// b) history tool
+	// b.1) area tool
+	if (this.viewConfig.hasAreaTool) {
+		var administrativeFeatureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+			map: this.map,
+			title:'Administrative Auswahl',
+			callbackAreaId:self.callbackAreaId
+		});
+		this.map.events.on({
+			'click': administrativeFeatureInfoControl.checkAdministrativeUnits,
+			scope: administrativeFeatureInfoControl
+		});
+		toolbarItems.push(new Ext.Button({
+			id:'areaButton',
+			iconCls: 'iconInfo',
+			tooltip: 'Administrative Einheit',
+			enableToggle: true,
+			handler: function(btn) {
+				if(btn.pressed){
+				Ext.getCmp('bboxButton').disable();
+
+				administrativeFeatureInfoControl.activate();
+				}
+				else{
+				Ext.getCmp('bboxButton').enable();
+				administrativeFeatureInfoControl.deactivate();
+				}
+			}
+		}));
+	}
+
+	// b.2) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control
 		var historyCtrl = new OpenLayers.Control.NavigationHistory();

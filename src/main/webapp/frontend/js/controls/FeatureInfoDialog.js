@@ -28,7 +28,8 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window,
 	/**
 	 * Boolean indicating, if the control is activated or not
 	 */
-	activated: false
+	activated: false,
+	callbackAreaId: null
 });
 
 /**
@@ -43,6 +44,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.activate = fun
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.deactivate = function() {
 	this.activated = false;
+	this.hide();
 };
 
 /**
@@ -61,7 +63,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 	
 	
 	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
-	var self = this;
+
 	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoControl({
 		queryVisible: true,
 		drillDown: true,
@@ -110,7 +112,81 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 	featureInfoControl.getInfoForClick(e);
 	this.show();
 };
+/**
+ * Query the feature infos for the current map, if the control is activated
+ * @param e OpenLayers.Event
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministrativeUnits = function(e) {
+	if (!this.activated) {
+		return;
+		
+	}
+	var self = this;
+	// remove all panels from preceeding calls
+	this.removeAll();
+	
+	
+	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
+	var self = this;
+	// this method gives us only 2 params, but we need four
+	var lonlat = self.map.getLonLatFromViewPortPx(e.xy);
+    // we build the url from our featureUrl the parameters and the rest/wms url
+    var urlAppendix = '?url='+de.ingrid.mapclient.Configuration.getValue("featureUrl")+'%26REQUEST%3DGetFeatureInfo%26LAYERS%3D0%2C1%2C2%26QUERY_LAYERS%3D0%2C1%2C2%26STYLES' +
+    		'%3D%2C%2C%26BBOX%3D'+lonlat.lon+'%252C'+lonlat.lat+'%252C'+(lonlat.lon+0.00005)+'%252C'+(lonlat.lat+0.00005)+'%26' +
+    				'FEATURE_COUNT%3D10%26HEIGHT%3D508%26WIDTH%3D1711%26FORMAT%3Dimage%252Fpng%26INFO_FORMAT%3Dtext%252Fxml%26SRS%3DEPSG%253A4326%26X%3D1020%26Y%3D173';
+    		
+	var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix;			
 
+	Ext.Ajax.request({
+		url:url,
+		method: 'GET',
+		success: function(response, request) {
+		var p = new Ext.FormPanel({
+					title:'Auswahl zu Suchanfrage hinzuf&uuml;gen',
+					border: false,
+					autoScroll: true,
+					autoHeight: true,
+					bodyStyle: 'padding: 10px',
+					defaults: {
+						anchor: '100%'
+					},
+//					html: response.responseText
+					items:{
+							xtype: 'radiogroup',
+                            fieldLabel: 'Auswahl',
+                            columns:1,
+                            id:"AdministrativeSelection",
+                            items: self.decodeResponse(response.responseText) 
+                          },
+        			buttons: [{
+				            text: 'Hinzuf&uuml;gen',
+				            handler: function(){
+				               if(p.getForm().isValid()){
+				                       var values =  p.getForm().getValues(false);
+				                       self.callbackAreaId(values['AdminInfos']);
+				                       self.hide();
+				                }
+				            }
+					        },{
+					            text: 'Abbrechen',
+					            handler: function(){
+					                p.destroy();
+					                self.hide();
+					            }
+					        }]
+				});
+
+				self.add(p);
+				self.doLayout();							
+				self.show();	
+		},
+		failure: function(response, request) {
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.FEATURE_FAILURE);
+			}
+	});				
+			
+	
+};
 /**
  * Initialize the component (called by Ext)
  */
@@ -123,4 +199,17 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.initComponent 
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.superclass.onRender.apply(this, arguments);
+};
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.decodeResponse = function(responseText){
+	var data=Ext.decode(responseText);
+	var items = []
+	for(var i = 0; i < data.length; i++){
+	var item = {
+			      name: 'AdminInfos',
+			      inputValue: data[i]['rs'],
+			      boxLabel: data[i]['type']+': '+data[i]['name']
+					}
+	items.push(item);		    
+	}
+	return items;
 };
