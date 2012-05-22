@@ -261,8 +261,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			text: service.getDefinition().title,
 			layerStore: this.layerStore,
 			leaf: false,
+			checked:false,
 			expanded: false,
 			service: service,
+			cls: 'x-tree-noicon',
 			loader: {
 				filter: function(record) {
 					var layer = record.get("layer");
@@ -271,8 +273,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 			}
 		});
+		//on checkchange(we check the service) we expand the nodes of the service and check all layers
+		node.on('checkchange', function(node, checked) {
+			var i = 0;
+			this.expand(true);
+		    node.eachChild(function(n) {
+		    	var nodeUrl = n.layer.url;
+		    	
+		    	var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
+		    	//check everything but the first layer, which is our baselayer
+		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1)){
+		    		console.debug("test");
+		    		i++;
+		    	}else{
+		        n.getUI().toggleCheck(checked);
+		    	}
+		    });
+		    
+		});
 		this.layerTree.root.appendChild(node);
-	
+
 		this.services.add(service.getCapabilitiesUrl(), service);
 		//if we are not in an initial state, then we fire the event which causes session write
 		//and we zoom to extent, otherwise we load from session, therefore no writing needed and
