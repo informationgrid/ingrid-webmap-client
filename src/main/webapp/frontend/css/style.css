@@ -112,3 +112,6 @@ p.load_icon_webmap{   background-color: transparent;
 .x-tree-node-loading a span {
 font-style: inherit;
 }
+.x-tree-node a span, .x-dd-drag-ghost a span {
+padding: 1px 3px 1px 3px;
+}
