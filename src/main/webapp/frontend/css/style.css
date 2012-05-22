@@ -80,9 +80,10 @@ body {
 	overflow: hidden;
 }
 
-.metaDataTable td:first-child { 
+.metaDataTable td { 
 	font-weight: bold !important;
-	width: 155px;
+	font-size:9px;
+	/* width: 155px; */
 }
 p.load_icon_webmap{   background-color: transparent;
     text-align: center;
@@ -107,3 +108,7 @@ p.load_icon_webmap{   background-color: transparent;
   border-width: 1px 1px 0 !important;
 }
 #olControlOverviewMapMaximizeButton_innerImage{bottom:-80px;}
+.x-item-disabled{opacity: .45 !important;}
+.x-tree-node-loading a span {
+font-style: inherit;
+}
