@@ -235,9 +235,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			break;
 			}
 		}
-
+		var serviceTitle = "no srs info available";
+		if(service.definition)
+		serviceTitle = service.definition.title
 		if(!supportsSRS)
-		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
+		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,serviceTitle);
 
 		
 		var serviceLayers = service.getLayers();
@@ -258,7 +260,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 	
 		// add service node to the tree
 		var node = new GeoExt.tree.LayerContainer({
-			text: service.getDefinition().title,
+			text: serviceTitle,
 			layerStore: this.layerStore,
 			leaf: false,
 			checked:false,
@@ -306,7 +308,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		/*****************************************************************/
 
 		var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(this.map);
-		if(mapProjection.projCode == "EPSG:4326"){
+		if(mapProjection.projCode == "EPSG:4326" && service.capabilitiesStore.data.items[0].data.llbbox){
 		var bboxes = service.capabilitiesStore.data.items;
 		var bIndex = 0;
 		var largestCoord = bboxes[0].data.llbbox[0];

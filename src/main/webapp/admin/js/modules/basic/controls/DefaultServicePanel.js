@@ -102,7 +102,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 				height: 50,
 				items: {
 					xtype: 'button',
-					text: 'Übernehmen',
+					text: '&Uuml;bernehmen',
 					fieldLabel: '&nbsp;',
 					anchor: '100%',
 					handler: function() {

@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.ScalesPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Maﬂst‰be',
+	title: 'Ma&szlig;st&uaml;be',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',

@@ -138,12 +138,26 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
 			method: 'GET',
 			success: function(response, request) {
+				var type;
+				if(response.responseText.indexOf('<ViewContext') != -1){
+				var format = new OpenLayers.Format.WMC();
+				}
+				else
 				var format = new OpenLayers.Format.WMSCapabilities();
+				
+				
 				var capabilities = format.read(response.responseText);
-				if (capabilities.capability) {
+				if (capabilities.capability || format.name == "WMC") {
 					// set up store data
+					// we check if 
+					if(format.name == "WMC")
+					var data = new GeoExt.data.WMCReader().readRecords(capabilities);
+					else
 					var data = new GeoExt.data.WMSCapabilitiesReader().readRecords(response.responseText);
 					if (data.success) {
+						if(format.name == "WMC")
+						var store = new GeoExt.data.LayerStore();
+						else 
 						var store = new GeoExt.data.WMSCapabilitiesStore();
 						store.add(data.records);
 						// prepare layers from records
@@ -154,10 +168,17 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 
 							// extract the layer from the record
 							var layer = record.get("layer");
+							if(format.name == "WMC")
 							layer.mergeNewParams({
 								format: "image/png",
 								transparent: true,
-								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability)
+								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
+							});
+							else
+							layer.mergeNewParams({
+								format: "image/png",
+								transparent: true,
+								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
 							});
 							// set layer parameters
 							layer.visibility = false;
@@ -173,6 +194,14 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						}
 
 						// create the service instance from the result
+
+						if(format.name == "WMC"){
+						var temp = {
+							title:capabilities.title
+							}							
+						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, temp, layers, store);
+						}
+						else
 						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, capabilities.service, layers, store);
 						// register the service
 						de.ingrid.mapclient.frontend.data.Service.registry.add(capabilitiesUrl, service);
@@ -262,13 +291,24 @@ de.ingrid.mapclient.frontend.data.Service.fixLayerProperties = function(layer) {
  * @param capability The capability object created by OpenLayers
  * @return String (Mime type)
  */
-de.ingrid.mapclient.frontend.data.Service.getPreferredInfoFormat = function(capability) {
+de.ingrid.mapclient.frontend.data.Service.getPreferredInfoFormat = function(capability, wmcData) {
 	if (capability.request && capability.request.getfeatureinfo) {
 		var formats = capability.request.getfeatureinfo.formats || [];
 		// prefer html and fallback to first offered format
 		if (formats.length > 0) {
 			for (var i=0, count=formats.length; i<count; i++) {
 				if (formats[i].match(/html/)) {
+					return formats[i];
+				}
+			}
+			return formats[0];
+		}
+	}else if(wmcData){
+		var formats = wmcData.data.formats || [];
+		// prefer html and fallback to first offered format
+		if (formats.length > 0) {
+			for (var i=0, count=formats.length; i<count; i++) {
+				if (formats[i].value.match(/html/)) {
 					return formats[i];
 				}
 			}

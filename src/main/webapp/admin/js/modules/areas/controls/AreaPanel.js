@@ -41,7 +41,7 @@ de.ingrid.mapclient.admin.modules.areas.AreaPanel = Ext.extend(de.ingrid.mapclie
 		   allowBlank: false
 		}
 	}, {
-		header: 'Süden',
+		header: 'S&uuml;den',
 		sortable: true,
 		dataIndex: 'south',
 		editor: {
@@ -87,7 +87,7 @@ de.ingrid.mapclient.admin.modules.areas.AreaPanel.prototype.createNewRecordField
 		westField: this.newRecordFields.get('west'),
 		eastField: this.newRecordFields.get('east'),
 		southField: this.newRecordFields.get('south'),
-		columnWidth: .7,
+		columnWidth: .7
 	});
 	newRecordFieldContainers.push(mapExtendPanel);
 

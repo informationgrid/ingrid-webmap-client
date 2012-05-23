@@ -92,7 +92,7 @@ de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem 
 de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht gelistet werden.";
 de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";
 de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = "Beim Speichern der Karte ist ein Fehler aufgetreten.";
-de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim L�schen der Karte ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim L&ouml;schen der Karte ist ein Fehler aufgetreten.";
 
 de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = "Beim Drucken der Karte ist ein Fehler aufgetreten.";
 de.ingrid.mapclient.Message.SEARCH_FAILURE = "Beim Suchen ist ein Fehler aufgetreten.";

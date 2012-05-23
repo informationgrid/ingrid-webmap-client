@@ -142,7 +142,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			width: 5,
 			sortable: false,
 			renderer: function(val) {
-				return '<div class="icon iconRemove" style="cursor:pointer;" title="löschen"></div>';
+				return '<div class="icon iconRemove" style="cursor:pointer;" title="l&ouml;schen"></div>';
 			},
 			dataIndex: 'delete'
 		}]
@@ -159,7 +159,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			});
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			if (confirm("Soll die Karte wirklich gelöscht werden?")) {
+			if (confirm("Soll die Karte wirklich gel&ouml;scht werden?")) {
 				var record = grid.getStore().getAt(rowIndex);
 				var state = new de.ingrid.mapclient.frontend.data.SessionState({
 					id: record.id

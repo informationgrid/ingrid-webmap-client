@@ -139,8 +139,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 		'<tr><td>WMS ID</td><td>{wmsId}</td></tr>'+
 		'<tr><td>WMS Titel</td><td>{wmsTitle}</td></tr>'+
 		'<tr><td>WMS Abstract</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>Gebühren</td><td>{fees}</td></tr>'+
-		'<tr><td>Zugriffsbeschränkung</td><td>{restrictions}</td></tr>'+
+		'<tr><td>Geb&uuml;hren</td><td>{fees}</td></tr>'+
+		'<tr><td>Zugriffsbeschr&auml;nkung</td><td>{restrictions}</td></tr>'+
 
 		'<tr><td>Ansprechpartner</td><td>{contactPerson}</td></tr>'+
 		'<tr><td>Organisation</td><td>{contactOrganization}</td></tr>'+
@@ -180,8 +180,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>WMS ID</td><td>{wmsId}</td></tr>'+
 		'<tr><td>WMS Titel</td><td>{wmsTitle}</td></tr>'+
 		'<tr><td>WMS Abstract</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>Gebühren</td><td>{fees}</td></tr>'+
-		'<tr><td>Zugriffsbeschränkung</td><td>{restrictions}</td></tr>'+
+		'<tr><td>Geb&uuml;hren</td><td>{fees}</td></tr>'+
+		'<tr><td>Zugriffsbeschr&auml;nkung</td><td>{restrictions}</td></tr>'+
 
 		'<tr><td>Ansprechpartner</td><td>{contactPerson}</td></tr>'+
 		'<tr><td>Organisation</td><td>{contactOrganization}</td></tr>'+
