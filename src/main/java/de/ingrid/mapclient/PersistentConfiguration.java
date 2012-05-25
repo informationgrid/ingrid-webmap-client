@@ -12,6 +12,8 @@ import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
+import de.ingrid.mapclient.model.MapServiceCategory;
+import de.ingrid.mapclient.model.WmsService;;
 
 /**
  * Configuration holds the dynamic configuration of the map client that
@@ -19,7 +21,7 @@ import de.ingrid.mapclient.model.ServiceCategory;
  * 
  * @author ingo@wemove.com
  */
-public class Configuration {
+public class PersistentConfiguration {
 
 	private String wmsCapUrl;
 	private String featureUrl;
@@ -30,19 +32,40 @@ public class Configuration {
 	private List<Projection> projections;
 	private List<Scale> scales;
 	private String proxyUrl;
-	private List<ServiceCategory> serviceCategories;
+	private List<MapServiceCategory> mapServiceCategories;
+	private List<WmsService> wmsServices;
 	private List<AreaCategory> areaCategories;
+	
 
 	/**
 	 * Constructor
 	 */
-	public Configuration() {
+	public PersistentConfiguration() {
 		this.wmsCapUrl = "";
 		this.layers = new ArrayList<Layer>();
 		this.mapExtend = new MapExtend();
 		this.projections = new ArrayList<Projection>();
 		this.scales = new ArrayList<Scale>();
 		this.proxyUrl = "";
+		this.wmsServices = new ArrayList<WmsService>();
+		this.mapServiceCategories = new ArrayList<MapServiceCategory>();
+	}
+
+	public List<MapServiceCategory> getMapServiceCategories() {
+		return mapServiceCategories;
+	}
+
+	public void setMapServiceCategories(
+			List<MapServiceCategory> mapServiceCategories) {
+		this.mapServiceCategories = mapServiceCategories;
+	}
+
+	public List<WmsService> getWmsServices() {
+		return wmsServices;
+	}
+
+	public void setWmsServices(List<WmsService> wmsServices) {
+		this.wmsServices = wmsServices;
 	}
 
 	public String getWmsCapUrl() {
@@ -93,13 +116,7 @@ public class Configuration {
 		this.proxyUrl = proxyUrl;
 	}
 
-	public List<ServiceCategory> getServiceCategories() {
-		return this.serviceCategories;
-	}
 
-	public void setServiceCategories(List<ServiceCategory> serviceCategories) {
-		this.serviceCategories = serviceCategories;
-	}
 
 	public List<AreaCategory> getAreaCategories() {
 		return this.areaCategories;

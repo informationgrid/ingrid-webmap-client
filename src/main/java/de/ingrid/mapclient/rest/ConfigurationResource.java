@@ -34,6 +34,7 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.mapclient.Configuration;
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.PersistentConfiguration;
 import de.ingrid.mapclient.model.AreaCategory;
 import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapArea;
@@ -147,7 +148,7 @@ public class ConfigurationResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void setWmsCapUrl(String wmsCapUrl, @Context HttpServletRequest req) throws IOException {
 		try {
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setWmsCapUrl(wmsCapUrl);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -175,7 +176,7 @@ public class ConfigurationResource {
 				layers.add(layer);
 			}
 
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setLayers(layers);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -199,7 +200,7 @@ public class ConfigurationResource {
 			MapExtend mapExtend = new MapExtend(mapExtendTmp.getDouble("north"), mapExtendTmp.getDouble("south"),
 					mapExtendTmp.getDouble("west"), mapExtendTmp.getDouble("east"));
 
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setMapExtend(mapExtend);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -227,7 +228,7 @@ public class ConfigurationResource {
 				projections.add(projection);
 			}
 
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setProjections(projections);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -255,7 +256,7 @@ public class ConfigurationResource {
 				scales.add(scale);
 			}
 
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setScales(scales);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -274,7 +275,7 @@ public class ConfigurationResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void seProxyUrl(String proxyUrl, @Context HttpServletRequest req) throws IOException {
 		try {
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setProxyUrl(proxyUrl);
 			ConfigurationProvider.INSTANCE.write(config);
 		}
@@ -309,10 +310,12 @@ public class ConfigurationResource {
 			// convert json string to ServiceCategory
 			JSONObject rootObj = new JSONObject(serviceCategoriesStr);
 			ServiceCategory rootCategory = this.createServiceCategory(rootObj);
-
+			//TODO 
 			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
-			config.setServiceCategeories(rootCategory.getServiceCategories());
-			ConfigurationProvider.INSTANCE.write(config);
+			config.setServiceCategories(rootCategory.getServiceCategories());
+			ConfigurationProvider.INSTANCE.getPersistentConfigurationFromConfiguration();
+			PersistentConfiguration persConfig = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			ConfigurationProvider.INSTANCE.write(persConfig);
 		}
 		catch (Exception ex) {
 			log.error("Error setting service categories", ex);
@@ -379,7 +382,7 @@ public class ConfigurationResource {
 			JSONObject rootObj = new JSONObject(areaCategoriesStr);
 			AreaCategory rootCategory = this.createAreaCategory(rootObj);
 
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setAreaCategeories(rootCategory.getAreaCategories());
 			ConfigurationProvider.INSTANCE.write(config);
 		}

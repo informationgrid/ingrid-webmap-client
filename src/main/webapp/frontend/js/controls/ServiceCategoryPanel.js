@@ -132,6 +132,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 
 	// transform sub categories
 	var subCategories = serviceCategory.serviceCategories;
+	if(subCategories)
 	for (var i=0, count=subCategories.length; i<count; i++) {
 		if(subCategories[i].services.length != 0){
 		var childNode = this.transform(subCategories[i]);
@@ -141,6 +142,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 
 	// transform services
 	var services = serviceCategory.services;
+	if(services)
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);
