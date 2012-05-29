@@ -19,6 +19,15 @@ de.ingrid.mapclient.BASE_URL = '/ingrid-webmap-client/rest/';
 de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'config/dynamic';
 
 /**
+ * Base url for all requests related to the dynamic application persistentconfiguration.
+ * A GET request to this url serves a complete dynamic persistentconfiguration object.
+ * Single persistentconfiguration properties maybe written by POSTing to sub paths
+ * named as the property (e.g. CONFIG_BASE_URL+'/wmsCapUrl')
+ * @see de.ingrid.mapclient.PersistentConfiguration
+ */
+de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'config/persdynamic';
+
+/**
  * Url for retrieving the static application configuration.
  * @see de.ingrid.mapclient.Configuration
  */

@@ -69,6 +69,11 @@ public class ConfigurationResource {
 	 * Path to dynamic configuration properties
 	 */
 	private static final String DYNAMIC_PATH = "dynamic";
+	
+	/**
+	 * Path to dynamic persistentconfiguration properties
+	 */
+	private static final String PERS_DYNAMIC_PATH = "persdynamic";
 
 	/**
 	 * Key in application properties whose value contains public properties
@@ -138,7 +143,30 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
-
+	/**
+	 * Get the dynamic application persistentconfiguration
+	 * @return String
+	 */
+	@GET
+	@Path(PERS_DYNAMIC_PATH)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPersistentConfiguration() {
+		try {
+			PersistentConfiguration persistentconfiguration = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
+				@Override
+				public HierarchicalStreamWriter createWriter(Writer writer) {
+					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+				}
+			});
+			String json = xstream.toXML(persistentconfiguration);
+			return Response.ok(json).build();
+		}
+		catch (Exception ex) {
+			log.error("Error retrieving dynamic application configuration", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
 	/**
 	 * Set the default WMS GetCapabilities url
 	 * @param String containing the url
@@ -310,7 +338,9 @@ public class ConfigurationResource {
 			// convert json string to ServiceCategory
 			JSONObject rootObj = new JSONObject(serviceCategoriesStr);
 			ServiceCategory rootCategory = this.createServiceCategory(rootObj);
-			//TODO 
+			// TODO is this method obsolete?
+			// we currently need it, because it is the way the admin interface delivers data
+			// but this should change
 			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
 			config.setServiceCategories(rootCategory.getServiceCategories());
 			ConfigurationProvider.INSTANCE.getPersistentConfigurationFromConfiguration();
