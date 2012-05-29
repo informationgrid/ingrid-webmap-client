@@ -129,6 +129,14 @@ public enum ConfigurationProvider {
 	 */
 	public synchronized void write(PersistentConfiguration configuration) throws IOException {
 
+		// we dont want to store the old config style, since we compute it when we need it, but we have to save it 
+		// because need it later on
+		List<ServiceCategory> catList = null;
+		if(configuration.getServiceCategories() != null){
+			catList = configuration.getServiceCategories();
+			configuration.setServiceCategories(null);
+			
+		}
 		// serialize the Configuration instance to xml
 		XStream xstream = new XStream();
 		this.setXStreamAliases(xstream);
@@ -147,7 +155,9 @@ public enum ConfigurationProvider {
 				output.close();
 			}
 		}
-
+		// we put the serviceCats back into the persistentconfiguration
+		configuration.setServiceCategories(catList);
+		
 		// move the temporary file to the configuration file
 		Properties props = this.getProperties();
 		String configFile = props.getProperty(CONFIGURATION_FILE_KEY);
@@ -274,7 +284,9 @@ public enum ConfigurationProvider {
 			serviceMap.get(itMap.next()).getServices().add(new WmsServer(service.getName(), service.getCapabilitiesUrl()));
 			}
 		}
-		
+		//TODO at this point we set the old serviceCategories in the persistentConfiguration,
+		//since we still need them in the admin interface
+		this.persistentConfiguration.setServiceCategories(serviceCategories);		
 		
 		//we set the categories, containing the services, in the configuration
 		this.configuration.setServiceCategories(serviceCategories);
@@ -296,7 +308,9 @@ public enum ConfigurationProvider {
 		this.persistentConfiguration.setScales(this.configuration.getScales());
 		this.persistentConfiguration.setProxyUrl(this.configuration.getProxyUrl());
 		this.persistentConfiguration.setAreaCategeories(this.configuration.getAreaCategories());
-		
+		//TODO at this point we set the old serviceCategories in the persistentConfiguration,
+		//since we still need them in the admin interface
+		this.persistentConfiguration.setServiceCategories(this.configuration.getServiceCategories());			
 	
 		
 		
@@ -359,18 +373,7 @@ public enum ConfigurationProvider {
 		
 		
 		
-		//we iterate over the services, we check each category of a service and make a new WmsServer(service) object
-		//which we add to the hashmap
-//		ListIterator<WmsService> wmsIt = this.persistentConfiguration.getWmsServices().listIterator();
-//		while(wmsIt.hasNext()){
-//			WmsService service = wmsIt.next();
-//			Iterator<MapServiceCategory> itMap = service.getMapServiceCategories().iterator();
-//			while(itMap.hasNext()){
-//			serviceMap.get(itMap.next()).getServices().add(new WmsServer(service.getName(), service.getCapabilitiesUrl()));
-//			}
-//		}
-//		
-//		
+
 //		//we set the categories, containing the services, in the configuration
 		this.persistentConfiguration.setMapServiceCategories(mapServiceCategories);
 		this.persistentConfiguration.setWmsServices(wmsServices);

@@ -35,7 +35,10 @@ public class PersistentConfiguration {
 	private List<MapServiceCategory> mapServiceCategories;
 	private List<WmsService> wmsServices;
 	private List<AreaCategory> areaCategories;
+	private List<ServiceCategory> serviceCategories;
 	
+
+
 
 	/**
 	 * Constructor
@@ -51,6 +54,14 @@ public class PersistentConfiguration {
 		this.mapServiceCategories = new ArrayList<MapServiceCategory>();
 	}
 
+	public List<ServiceCategory> getServiceCategories() {
+		return serviceCategories;
+	}
+
+	public void setServiceCategories(List<ServiceCategory> serviceCategories) {
+		this.serviceCategories = serviceCategories;
+	}
+	
 	public List<MapServiceCategory> getMapServiceCategories() {
 		return mapServiceCategories;
 	}
