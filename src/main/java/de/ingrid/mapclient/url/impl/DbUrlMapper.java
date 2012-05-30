@@ -112,7 +112,7 @@ public class DbUrlMapper implements UrlMapper {
 	 * @param longUrl
 	 * @return String
 	 */
-	protected String createShortUrl(String longUrl) {
+	public String createShortUrl(String longUrl) {
 		return this.generateRandomString();
 	}
 

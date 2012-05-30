@@ -99,6 +99,16 @@
 								<include>downloads/README.txt</include>
 							</includes>
 						</aggregation>
+						<aggregation>
+							<!-- wms-copied-maps -->
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/wms/README.txt</output>
+							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
+							<includes>
+								<include>wms/README.txt</include>
+							</includes>
+						</aggregation>
 					</aggregations>
 				</configuration>
 			</plugin>

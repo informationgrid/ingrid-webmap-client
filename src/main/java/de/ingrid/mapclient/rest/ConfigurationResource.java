@@ -3,10 +3,14 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -21,11 +25,29 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -34,15 +56,21 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.mapclient.Configuration;
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.PersistentConfiguration;
 import de.ingrid.mapclient.model.AreaCategory;
 import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapArea;
 import de.ingrid.mapclient.model.MapExtend;
+import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
 import de.ingrid.mapclient.model.WmsServer;
+import de.ingrid.mapclient.model.WmsService;
+import de.ingrid.mapclient.url.impl.DbUrlMapper;
+import de.ingrid.utils.xml.XMLUtils;
+import de.ingrid.utils.xml.XPathUtils;
 
 /**
  * ConfigurationResource gives access to the application configuration
@@ -79,6 +107,11 @@ public class ConfigurationResource {
 	 * Key in application properties whose value contains public properties
 	 */
 	private static final String PUBLIC_PROPERTIES_KEY = "public.properties";
+	
+	/**
+	 * Path for copying a service
+	 */
+	private static final String COPY_SERVICE = "copyservice";
 
 	/**
 	 * Get the static application configuration
@@ -159,6 +192,7 @@ public class ConfigurationResource {
 					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
 				}
 			});
+			xstream.setMode(XStream.NO_REFERENCES);
 			String json = xstream.toXML(persistentconfiguration);
 			return Response.ok(json).build();
 		}
@@ -421,6 +455,73 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
+	
+	/**
+	 * This method gets a servicecopy object from which it creates another service
+	 * and stores it in the persistent configuration
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(COPY_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject json = new JSONObject(serviceCopy);
+				String url = makeCopyOfService(json, req);
+				insertCopyIntoConfig(url, json);
+		}
+		catch (Exception ex) {
+			log.error("Error setting default capabilities url", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}	
+	
+	
+
+	private void insertCopyIntoConfig(String url, JSONObject json) {
+			
+			try {
+				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+				JSONArray jsonArray = json.getJSONArray("categories");
+				String title = json.getString("title");
+				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>());
+				for (int i = 0; i < jsonArray.length(); i++){
+					int id = jsonArray.getInt(i);
+					List<MapServiceCategory> catList = p.getPersistentConfiguration().getMapServiceCategories();
+					Iterator<MapServiceCategory> it = catList.iterator();
+					boolean cond = true;
+					while(it.hasNext() && cond){
+						MapServiceCategory cat = it.next();
+						int catId = cat.getId();
+						if(catId == id){
+							wmsService.getMapServiceCategories().add(cat);
+							cond = false;
+						}else{
+							List<MapServiceCategory> subCats = cat.getMapServiceCategories();
+							Iterator<MapServiceCategory> catIt = subCats.iterator();
+							while(catIt.hasNext() && cond){
+								MapServiceCategory subCat = catIt.next();
+								if(subCat.getId() == id){
+									wmsService.getMapServiceCategories().add(subCat);
+									cond = false;
+								}
+							}
+						}
+					}
+				}
+				
+				p.getPersistentConfiguration().getWmsServices().add(wmsService);
+				p.write(p.getPersistentConfiguration());
+				
+				
+			} catch (JSONException e) {
+				log.error("error on decoding json: "+e.getMessage());
+			} catch (IOException e) {
+				log.error("error on writing configuration to file: "+e.getMessage());
+			}
+			
+		
+	}
 
 	/**
 	 * Create a AreaCategory instance from the given JSON object
@@ -459,4 +560,134 @@ public class ConfigurationResource {
 		AreaCategory result = new AreaCategory(categoryName, categories, areas);
 		return result;
 	}
+	/**
+	 * this method actually does the whole copying of the received service data
+	 * @param json
+	 * @param req 
+	 */
+	private String makeCopyOfService(JSONObject json, HttpServletRequest req){
+		String url = null;
+		try {
+			String title = json.getString("title");
+			String capUrl = json.getString("capabilitiesUrl");			
+			JSONArray	 deactLayers = json.getJSONArray("deactivatedLayers");
+			// get the wms document 
+			String response = HttpProxy.doRequest(capUrl);
+			log.debug(response);
+			Document doc = stringToDom(response);
+			doc = changeXml(doc, deactLayers, title);
+			url = writeWmsCopy(doc, req, title);
+			
+		} catch (JSONException e) {
+			
+			log.error("Unable to decode json object: "+e);
+		} catch (Exception e) {
+
+			log.error("Error on doing request: "+e);
+		}
+		return url;
+		
+	}
+
+	private String writeWmsCopy(Document doc, HttpServletRequest req,
+			String title) {
+
+		String url = null;
+		String urlPrefix = null;
+		try {
+			String path = req.getRealPath("wms");
+			urlPrefix = req.getRequestURL().toString();
+			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			url = title + ".xml";
+			File f = new File(path + "/" + url);
+			if (f.exists())
+				do {
+					url = new DbUrlMapper().createShortUrl(title);
+					url = url + ".xml";
+					f = new File(path + "/" + url);
+				} while (f.exists());
+			else
+				log.debug("created file: " + f.getName());
+			StreamResult result = new StreamResult(f);
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			log.error("problems on creating xml file: " + e.getMessage());
+		} catch (Exception e) {
+			log.error("problems on generating url: " + e.getMessage());
+		}
+		
+		return (urlPrefix+url);
+
+	}
+
+	/**
+	 * this method does all the xml manipulation of the document, deleting layers
+	 * changing title etc.
+	 * @param doc
+	 * @param deactLayers 
+	 * @param title 
+	 * @throws TransformerException 
+	 */
+	private Document changeXml(Document doc, JSONArray deactLayers, String title) throws TransformerException {
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList nl = null;
+		Node titleNode = null;
+		try {
+			//remove layers
+			nl = (NodeList)xpath.evaluate("//Layer", doc, XPathConstants.NODE);			
+			log.debug("length of nodelist: "+nl.getLength());
+			for(int i = 0; i < deactLayers.length();i++){
+			int id = (Integer)deactLayers.get(i);
+			Node e = (Node)xpath.evaluate("//Layer/Layer["+(id - i)+"]", doc, XPathConstants.NODE);
+			//we have to substract i from id, because everytime we remove a node, the index of the nodelist changes
+
+			log.debug("removed node name: "+e.getNodeName());
+			e.getParentNode().removeChild(e);
+			}
+			log.debug("length of nodelist after manipulation: "+nl.getLength());
+			//change title
+			titleNode = (Node)xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);	
+			titleNode.setTextContent(title);
+			log.debug(XMLUtils.toString(doc));
+		} catch (XPathExpressionException e) {
+			log.error("error on xpathing document: "+e.getMessage());
+			e.printStackTrace();
+		} catch (JSONException e) {
+			log.error("error on retrieving data from json document: "+e.getMessage());
+			e.printStackTrace();
+		}
+		return doc;
+	}
+
+	/**
+	 * utility method for parsing xml strings 
+	 * @param xmlSource
+	 * @return
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 */
+    public Document stringToDom(String xmlSource) {
+
+		try {
+	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	        InputSource is = new InputSource();
+	        is.setCharacterStream(new StringReader(xmlSource));
+	        Document doc = db.parse(is);
+	        return doc;
+		} catch (ParserConfigurationException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		} catch (SAXException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		}
+        return null;
+    }
 }

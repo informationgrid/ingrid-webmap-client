@@ -28,6 +28,12 @@ de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'conf
 de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BASE_URL+'config/persdynamic';
 
 /**
+ * the url to send the data for copying a service to
+ * @see de.ingrid.mapclient.frontend.data.ServiceCopy
+ */
+de.ingrid.mapclient.COPY_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/copyservice';
+
+/**
  * Url for retrieving the static application configuration.
  * @see de.ingrid.mapclient.Configuration
  */

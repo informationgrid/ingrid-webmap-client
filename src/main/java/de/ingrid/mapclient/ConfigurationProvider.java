@@ -100,8 +100,9 @@ public enum ConfigurationProvider {
 			this.setXStreamAliases(xstream);
 			this.persistentConfiguration = (PersistentConfiguration)xstream.fromXML(xml); 
 			getConfigurationFromPersistentConfiguration();
-//			getPersistentConfigurationFromConfiguration();
-//			this.configuration = (Configuration)xstream.fromXML(xml);			
+			//we still need this for reading old styled configurations...
+//			this.configuration = (Configuration)xstream.fromXML(xml);
+//			getPersistentConfigurationFromConfiguration();			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -298,8 +299,8 @@ public enum ConfigurationProvider {
 	 * we as of now dont have a method to administer the data with the new model	
 	 */
 	public void getPersistentConfigurationFromConfiguration() {
-		if(this.persistentConfiguration == null)
-			this.persistentConfiguration = new PersistentConfiguration();
+
+		this.persistentConfiguration = new PersistentConfiguration();
 		this.persistentConfiguration.setWmsCapUrl(this.configuration.getWmsCapUrl());
 		this.persistentConfiguration.setFeatureUrl(this.configuration.getFeatureUrl());
 		this.persistentConfiguration.setLayers(this.configuration.getLayers());
@@ -322,15 +323,16 @@ public enum ConfigurationProvider {
 		//we iterate over the service cats in the persistentconf, we set the categories of the (old) conf
 		//we already build a hashmap where we store the categories as key, we later insert the corresponding services
 		//this is done so we already have a list of the services, which we pass to the corresponding category in the old config
+		int id = 0;
 		while(it.hasNext()){
 		    ServiceCategory serCat = it.next();
-		    mapServiceCategories.add(new MapServiceCategory(serCat.getName(),new ArrayList<MapServiceCategory>()));
+		    mapServiceCategories.add(new MapServiceCategory(serCat.getName(),new ArrayList<MapServiceCategory>(), id++));
 			ListIterator<ServiceCategory> ItServ = serCat.getServiceCategories().listIterator();
 			// we have to check the subcategories
 			while(ItServ.hasNext()){
 				ServiceCategory subServiceCat = ItServ.next();
 				int i = it.previousIndex();
-				MapServiceCategory msC = new MapServiceCategory(subServiceCat.getName(),null);
+				MapServiceCategory msC = new MapServiceCategory(subServiceCat.getName(),null, id++);
 				mapServiceCategories.get(i).getMapServiceCategories().add(msC);
 				serviceMap.put(subServiceCat,msC);
 			}
@@ -380,4 +382,5 @@ public enum ConfigurationProvider {
 		System.out.println("!");
 
 	}	
+
 }
