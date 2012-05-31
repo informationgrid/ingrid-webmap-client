@@ -628,6 +628,7 @@ public class ConfigurationResource {
 			String path = req.getRealPath("wms");
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
+			urlPrefix += "wms/";
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -649,7 +650,7 @@ public class ConfigurationResource {
 			log.error("problems on generating url: " + e.getMessage());
 		}
 		
-		return (urlPrefix+url);
+		return (urlPrefix+url+"?REQUEST=GetCapabilities");
 
 	}
 

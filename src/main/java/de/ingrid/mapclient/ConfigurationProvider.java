@@ -99,7 +99,7 @@ public enum ConfigurationProvider {
 			XStream xstream = new XStream();
 			this.setXStreamAliases(xstream);
 			this.persistentConfiguration = (PersistentConfiguration)xstream.fromXML(xml); 
-			getConfigurationFromPersistentConfiguration();
+//			getConfigurationFromPersistentConfiguration();
 			//we still need this for reading old styled configurations...
 //			this.configuration = (Configuration)xstream.fromXML(xml);
 //			getPersistentConfigurationFromConfiguration();			
