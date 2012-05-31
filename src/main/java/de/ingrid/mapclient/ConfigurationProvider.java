@@ -218,7 +218,7 @@ public enum ConfigurationProvider {
 	 * @param xstream XStream instance
 	 */
 	private void setXStreamAliases(XStream xstream) {
-		// some of these tags are obsolote, since they represent the old way of storing
+		// some of these tags are obsolete, since they represent the old way of storing
 		// a config, but we might come across one, so we keep them erstmal
 		xstream.alias("persistentConfiguration", PersistentConfiguration.class);
 		xstream.alias("layer", Layer.class);
@@ -230,7 +230,9 @@ public enum ConfigurationProvider {
 		xstream.alias("areaCategory", AreaCategory.class);
 		xstream.alias("area", MapArea.class);
 		xstream.alias("name", String.class);
+		xstream.alias("originalCapUrl", String.class);
 		xstream.alias("id", Integer.class);
+		xstream.alias("checkedLayers", Integer.class);
 		xstream.alias("configuration", Configuration.class);
 		xstream.alias("serviceCategory", ServiceCategory.class);
 		xstream.alias("service", WmsServer.class);
@@ -364,7 +366,7 @@ public enum ConfigurationProvider {
 					wmsServ.getMapServiceCategories().add(msC);
 				 }
 				 else{
-					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), new ArrayList<MapServiceCategory>());
+					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), new ArrayList<MapServiceCategory>(), null, new ArrayList<Integer>());
 					 wmsService.getMapServiceCategories().add(msC);
 					 wmsServices.add(wmsService);
 				 
@@ -379,7 +381,6 @@ public enum ConfigurationProvider {
 //		//we set the categories, containing the services, in the configuration
 		this.persistentConfiguration.setMapServiceCategories(mapServiceCategories);
 		this.persistentConfiguration.setWmsServices(wmsServices);
-		System.out.println("!");
 
 	}	
 

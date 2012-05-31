@@ -39,6 +39,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -459,6 +460,13 @@ public class ConfigurationResource {
 	/**
 	 * This method gets a servicecopy object from which it creates another service
 	 * and stores it in the persistent configuration
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  deactivatedLayers: [6,9,...],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
 	 */
 	@POST
@@ -483,8 +491,30 @@ public class ConfigurationResource {
 			try {
 				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
 				JSONArray jsonArray = json.getJSONArray("categories");
+				JSONArray jsonCheckedLayers = json.getJSONArray("checkedLayers");
+				JSONArray jsonDeactivatedLayers = json.getJSONArray("deactivatedLayers");
+				List<Integer> checkLayers = new ArrayList<Integer>();
+				int len = jsonCheckedLayers.length();
+				for(int i = 0; i < len; i++){
+					checkLayers.add(jsonCheckedLayers.getInt(i));
+				}
+				//we have to reassemble the list, since by deleting layers the indices are messed up 
+
+				for (int j = 0; j < jsonDeactivatedLayers.length(); j++){
+					for(int k = 0; k < jsonCheckedLayers.length(); k++){
+						int checked;
+						if(jsonDeactivatedLayers.getInt(j) < jsonCheckedLayers.getInt(k)){
+							checked = checkLayers.get(k).intValue();
+							checked--;
+							checkLayers.set(k, (Integer)checked);
+						}
+					}
+				}
+				
+
 				String title = json.getString("title");
-				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>());
+				String originalCapUrl = json.getString("originalCapUrl");
+				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
 				for (int i = 0; i < jsonArray.length(); i++){
 					int id = jsonArray.getInt(i);
 					List<MapServiceCategory> catList = p.getPersistentConfiguration().getMapServiceCategories();
@@ -569,13 +599,13 @@ public class ConfigurationResource {
 		String url = null;
 		try {
 			String title = json.getString("title");
-			String capUrl = json.getString("capabilitiesUrl");			
-			JSONArray	 deactLayers = json.getJSONArray("deactivatedLayers");
+			String capUrl = json.getString("originalCapUrl");			
+
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
 			log.debug(response);
 			Document doc = stringToDom(response);
-			doc = changeXml(doc, deactLayers, title);
+			doc = changeXml(doc,  json);
 			url = writeWmsCopy(doc, req, title);
 			
 		} catch (JSONException e) {
@@ -606,7 +636,7 @@ public class ConfigurationResource {
 			if (f.exists())
 				do {
 					url = new DbUrlMapper().createShortUrl(title);
-					url = url + ".xml";
+					url = title + url + ".xml";
 					f = new File(path + "/" + url);
 				} while (f.exists());
 			else
@@ -631,23 +661,34 @@ public class ConfigurationResource {
 	 * @param title 
 	 * @throws TransformerException 
 	 */
-	private Document changeXml(Document doc, JSONArray deactLayers, String title) throws TransformerException {
+	private Document changeXml(Document doc, JSONObject json) throws TransformerException {
 		XPath xpath = XPathFactory.newInstance().newXPath();
-		NodeList nl = null;
+
 		Node titleNode = null;
 		try {
+		JSONArray deactLayers = json.getJSONArray("deactivatedLayers");
+		JSONObject layerNameChanges = json.getJSONObject("layerNameChanges");
+		Iterator<String> it = layerNameChanges.keys();
+		while(it.hasNext()){
+			String layerId = it.next();
+			Node n = (Node)xpath.evaluate("//Layer/Layer["+layerId+"]", doc, XPathConstants.NODE);
+			Node titleNameNode = n.getFirstChild().getNextSibling();
+			titleNameNode.setTextContent(layerNameChanges.getString(layerId));
+			
+		}
+
+				
+		String title = json.getString("title");
+
 			//remove layers
-			nl = (NodeList)xpath.evaluate("//Layer", doc, XPathConstants.NODE);			
-			log.debug("length of nodelist: "+nl.getLength());
 			for(int i = 0; i < deactLayers.length();i++){
-			int id = (Integer)deactLayers.get(i);
+			int id = deactLayers.getInt(i);
 			Node e = (Node)xpath.evaluate("//Layer/Layer["+(id - i)+"]", doc, XPathConstants.NODE);
 			//we have to substract i from id, because everytime we remove a node, the index of the nodelist changes
 
 			log.debug("removed node name: "+e.getNodeName());
 			e.getParentNode().removeChild(e);
 			}
-			log.debug("length of nodelist after manipulation: "+nl.getLength());
 			//change title
 			titleNode = (Node)xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);	
 			titleNode.setTextContent(title);

@@ -12,17 +12,19 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  * 		(see de.ingrid.mapclient.frontend.data.Service.getLayerId)
  * @param store GeoExt.data.WMSCapabilitiesStore instance
  */
-de.ingrid.mapclient.frontend.data.ServiceCopy = function(capabilitiesUrl, title, categories, deactivatedLayers) {
-	this.capabilitiesUrl = capabilitiesUrl;
+de.ingrid.mapclient.frontend.data.ServiceCopy = function(originalCapUrl, title, categories, deactivatedLayers, checkedLayers,layerNameChanges) {
+	this.originalCapUrl = originalCapUrl;
 	this.title = title;
 	this.categories = categories;
 	this.deactivatedLayers = deactivatedLayers;
+	this.checkedLayers = checkedLayers;
+	this.layerNameChanges = layerNameChanges;
 };
 
 
 
-de.ingrid.mapclient.frontend.data.ServiceCopy.prototype.getCapabilitiesUrl = function() {
-	return this.capabilitiesUrl;
+de.ingrid.mapclient.frontend.data.ServiceCopy.prototype.getOriginalCapUrl = function() {
+	return this.originalCapUrl;
 };
 
 
@@ -51,10 +53,12 @@ de.ingrid.mapclient.frontend.data.ServiceCopy.prototype.getDeactivatedLayers = f
 de.ingrid.mapclient.frontend.data.ServiceCopy.prototype.save = function() {
 	var self = this;
 	var thisSerialized = Ext.encode({
-			capabilitiesUrl: self.capabilitiesUrl,
+			originalCapUrl: self.originalCapUrl,
 			title: self.title,
 			categories: self.categories,
-			deactivatedLayers: self.deactivatedLayers
+			deactivatedLayers: self.deactivatedLayers,
+			checkedLayers: self.checkedLayers,
+			layerNameChanges: self.layerNameChanges
 	
 	});
 
