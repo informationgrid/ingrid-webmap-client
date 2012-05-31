@@ -12,7 +12,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
     /**
      * @cfg serviceCategory Object with service category definition as provided by the configuration
      */
-    serviceCategory: {},
+    mapServiceCategory: {},
 
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -80,7 +80,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		}
 	});
 	// transform service category object into tree node structure
-	var node = this.transform(this.serviceCategory);
+	var node = this.transform(this.mapServiceCategory);
 
 	Ext.apply(this, {
 		title: node.text,
@@ -129,15 +129,33 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform = function(serviceCategory) {
 	var children = [];
-
+	var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 	// transform sub categories
-	var subCategories = serviceCategory.serviceCategories;
-	if(subCategories)
+	var subCategories = serviceCategory.mapServiceCategories;
+
+		
+	if(subCategories){
+	
+	//TODO not very performant ?!?
 	for (var i=0, count=subCategories.length; i<count; i++) {
+		var catId = subCategories[i].id;
+		subCategories[i].services = [];
+		for(var j = 0; j < wmsServices.length; j++){
+			for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
+			if(catId == wmsServices[j].mapServiceCategories[k].id){
+			var tempService = new Object();
+			tempService.name = wmsServices[j].name;
+			tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
+			subCategories[i].services.push(tempService);
+			
+			}
+		}
+		
 		if(subCategories[i].services.length != 0){
 		var childNode = this.transform(subCategories[i]);
 		children.push(childNode);
 		}
+	}
 	}
 
 	// transform services

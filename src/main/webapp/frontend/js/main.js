@@ -92,5 +92,5 @@ Ext.onReady(function() {
 		failure: function() {
 			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
 		}
-	}, "configuration");
+	});
 });

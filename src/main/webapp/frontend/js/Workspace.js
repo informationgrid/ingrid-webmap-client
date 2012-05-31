@@ -122,13 +122,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
-	var serviceCategories = de.ingrid.mapclient.Configuration
-			.getValue("serviceCategories");
-	if (serviceCategories) {
-		for (var i = 0, count = serviceCategories.length; i < count; i++) {
+	var mapServiceCategories = de.ingrid.mapclient.Configuration
+			.getValue("mapServiceCategories");
+	if (mapServiceCategories) {
+		for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel(
 					{
-						serviceCategory : serviceCategories[i],
+						mapServiceCategory : mapServiceCategories[i],
 						activeServicesPanel : this.activeServicesPanel
 					});
 			accordionItems.push(panel);
@@ -206,15 +206,36 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			});
 
 	// create the toolbar items
-	var toolbarItems = [];
-
+	var toolbarItems = []; 
+	// this is a test item for trying different functions
+	// TODO delete it at the end
 	// a) feature tool
+//			toolbarItems.push(new Ext.Button({
+//					iconCls : 'iconInfo',
+//					tooltip : 'TEST',
+//					enableToggle : false, 
+//					handler : function(btn) {
+//
+//							var originalCapUrl = "http://localhost:8080/ingrid-webmap-client/wms/wms.xml"; 
+//							var checkedLayers = [3,5,7];
+//							var title = "Test";
+//							var categories = [1,2,3];
+//							var deactivatedLayers = [1,4,6];
+//							var layerNameChanges = {1:"name1", 3:"name2", 5:"name3"}
+//							var serviceCopy = new de.ingrid.mapclient.frontend.data.ServiceCopy(originalCapUrl, title, categories,deactivatedLayers, checkedLayers, layerNameChanges);
+//							
+//							serviceCopy.save();
+//				
+//					}
+//				}));
+//				
+				
 	if (this.viewConfig.hasInfoTool) {
 
 		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog(
 				{
 					map : this.map
-				});
+				}); 
 		this.map.events.on({
 					'click' : featureInfoControl.query,
 					scope : featureInfoControl
@@ -223,7 +244,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconInfo',
 					tooltip : 'Info',
-					enableToggle : true,
+					enableToggle : true, 
 					handler : function(btn) {
 						if (btn.pressed) {
 							featureInfoControl.activate();
@@ -234,7 +255,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}));
 
 	}
-
+ 
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control

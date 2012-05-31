@@ -106,11 +106,11 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
-	var serviceCategories = de.ingrid.mapclient.Configuration.getValue("serviceCategories");
-	if (serviceCategories) {
-		for ( var i = 0, count = serviceCategories.length; i < count; i++) {
+	var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
+	if (mapServiceCategories) {
+		for ( var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel({
-				serviceCategory: serviceCategories[i],
+				mapServiceCategory: mapServiceCategories[i],
 				activeServicesPanel: this.activeServicesPanel
 			});
 			accordionItems.push(panel);

@@ -33,20 +33,14 @@ de.ingrid.mapclient.Configuration = function() {
  * @param responseHandler Object with properties success and failure, which are both functions
  * 		to be called with the response text as parameter in the appropriate case (optional)
  */
-de.ingrid.mapclient.Configuration.load = function(responseHandler, type) {
-	var configUrl = null;
-	if(type == "configuration")
-	configUrl = de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL;
-	else if(type == "persistentconfiguration")
-	configUrl = de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL;
-	else
-	configUrl = de.ingrid.mapclient.DYNAMIC_CONFIG_BASE_URL;	
+de.ingrid.mapclient.Configuration.load = function(responseHandler) {
+	
 	// load the configuration if not done already
 	if (!de.ingrid.mapclient.Configuration.instance) {
 		de.ingrid.mapclient.Configuration.instance = new de.ingrid.mapclient.Configuration();
 		// load the dynamic configuration
 		Ext.Ajax.request({
-			url: configUrl,
+			url: de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL,
 			method: 'GET',
 			success: function(response, request) {
 				// merge the configuration values into the instance
