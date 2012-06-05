@@ -45,7 +45,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	metaDataBtn: null,
 	expandBtn: null,
 	allExpanded: false,
-	
+	ctrls:null,
 	kmlArray: []
 });
 
@@ -74,7 +74,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
-				activeServicesPanel: self
+				activeServicesPanel: self,
+				ctrls: self.ctrls
 			}).show();
 		}
 	});

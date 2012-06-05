@@ -37,21 +37,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, 
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent = function() {
 
-	Ext.override(Ext.form.TextField, {
-    //  Add functionality to Field's initComponent to enable the change event to bubble
-	// We dont want the map to move while in focus therefore we do this
-    initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
-        this.enableBubble(['focus','blur']);
-    }),
 
-    //  We know that we want Field's events to bubble directly to the FormPanel.
-    getBubbleTarget : function() {
-        if (!this.windowContent) {
-            this.windowContent = this.findParentByType('form');
-        }
-        return this.windowContent;
-    }
-	});	
 	this.capabilitiesUrlField = new Ext.form.TextField({
 		hideLabel: true,
 		allowBlank: false
@@ -101,19 +87,9 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 	        		self.close();
 	        	}
 	        }
-		}],
-		listeners: {
-        focus: function() {
-            // We deactivate keyboard control when in focus
-        	 self.activeServicesPanel.ctrls['keyboardControl'].deactivate();
-        },
-        blur: function() {
-            // activate it again
-            self.activeServicesPanel.ctrls['keyboardControl'].activate();
-        }        
-    	}
+		}]
 	});
-
+	self.ctrls['keyboardControl'].deactivate();
 	Ext.apply(this, {
 		items: windowContent
 	});
