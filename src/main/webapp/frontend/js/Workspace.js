@@ -222,7 +222,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconInfo',
-					tooltip : 'Info',
+					tooltip : 'Objektinformationen',
 					enableToggle : true,
 					handler : function(btn) {
 						if (btn.pressed) {
@@ -317,15 +317,25 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// d) print tool
+	var printActive = false;
+	var printDia = null;
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconPrint',
 					tooltip : 'Drucken',
 					handler : function(btn) {
-						new de.ingrid.mapclient.frontend.controls.PrintDialog({
+						
+						if(!printActive){
+						printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
 									mapPanel : mapPanel,
 									legendPanel : legendPanel
 								});
+								printActive = true;
+						}
+						printDia.on('close', function(){
+							printActive = false;
+						})
+						
 					}
 				}));
 	}
