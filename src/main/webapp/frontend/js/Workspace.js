@@ -331,9 +331,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 									legendPanel : legendPanel
 								});
 								printActive = true;
+								self.ctrls['keyboardControl'].deactivate();
 						}
 						printDia.on('close', function(){
 							printActive = false;
+							self.ctrls['keyboardControl'].activate();
 						})
 						
 					}
@@ -421,6 +423,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					map : this.map,
 					viewConfig : this.viewConfig
 				});
+		settingsDialog.on('expand', function(){
+			self.ctrls['keyboardControl'].deactivate();
+			})
+		settingsDialog.on('collapse', function(){
+							self.ctrls['keyboardControl'].activate();
+						});
 	}
 
 	this.on('afterrender', function(el) {
