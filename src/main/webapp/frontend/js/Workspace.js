@@ -421,14 +421,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog(
 				{
 					map : this.map,
-					viewConfig : this.viewConfig
+					viewConfig : this.viewConfig,
+					ctrls: self.ctrls
 				});
-		settingsDialog.on('expand', function(){
-			self.ctrls['keyboardControl'].deactivate();
-			})
-		settingsDialog.on('collapse', function(){
-							self.ctrls['keyboardControl'].activate();
-						});
 	}
 
 	this.on('afterrender', function(el) {
