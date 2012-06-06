@@ -575,7 +575,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	Ext.ux.Msg.flash({
 	  body: self.body,	
 	  msg: 'Um der Suche einen Raumbezug hinzuzuf&uuml;gen, bitte eine Auswahl treffen. <br/>Das Icon um ein Gebiet zu umspannen befindet sich in der linken obereren Ecke der Karte',
-	  pause: 3,
+	  pause: 4,
 	  type: 'success'
 	});	
 	

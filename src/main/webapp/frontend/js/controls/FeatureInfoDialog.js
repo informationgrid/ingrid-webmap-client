@@ -145,6 +145,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 					title:'Auswahl zu Suchanfrage hinzuf&uuml;gen',
 					border: false,
 					autoScroll: true,
+					autoWidth:true,
 					autoHeight: true,
 					bodyStyle: 'padding: 10px',
 					defaults: {
