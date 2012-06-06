@@ -115,6 +115,26 @@ public class ConfigurationResource {
 	private static final String COPY_SERVICE = "copyservice";
 
 	/**
+	 * Path for adding a service
+	 */
+	private static final String ADD_SERVICE = "addservice";
+
+	/**
+	 * Path for editing a service
+	 */
+	private static final String UPDATE_SERVICE = "updateservice";
+	
+	/**
+	 * Path for removing a service
+	 */
+	private static final String REMOVE_SERVICE = "removeservice";	
+	
+	/**
+	 * Path for getting a service
+	 */
+	private static final String GET_SERVICE = "getservice";
+	
+	/**
 	 * Get the static application configuration
 	 * @return String
 	 */
@@ -484,8 +504,110 @@ public class ConfigurationResource {
 		}
 	}	
 	
-	
+	/**
+	 * This method gets a ServiceContainer object from which adds to the WmsService list
+	 * and stores it in the persistent configuration
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  deactivatedLayers: [6,9,...],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(ADD_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void addService(String service, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject jsonService = new JSONObject(service);
 
+		}
+		catch (Exception ex) {
+			log.error("some error", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}	
+	
+	/**
+	 * This method gets a ServiceContainer object it will look in the list for the original
+	 * service object and update the changes
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  deactivatedLayers: [6,9,...],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(UPDATE_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void updateService(String service, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject jsonService = new JSONObject(service);
+
+		}
+		catch (Exception ex) {
+			log.error("some error", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
+	 * This method gets a ServiceContainer object it will look in the list for the original
+	 * service object and delete it
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  deactivatedLayers: [6,9,...],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(REMOVE_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void removeService(String service, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject jsonService = new JSONObject(service);
+
+		}
+		catch (Exception ex) {
+			log.error("some error", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}	
+
+	/**
+	 * This method gets a ServiceContainer object with just the capUrl, find the corresponding
+	 * WmsService and send it to the caller
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  deactivatedLayers: [6,9,...],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(GET_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response getService(String service, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject jsonService = new JSONObject(service);
+
+		}
+		catch (Exception ex) {
+			log.error("some error", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+		return null;
+	}		
 	private void insertCopyIntoConfig(String url, JSONObject json) {
 			
 			try {
@@ -625,7 +747,8 @@ public class ConfigurationResource {
 		String url = null;
 		String urlPrefix = null;
 		try {
-			String path = req.getRealPath("wms");
+			String path = req.getSession().getServletContext().getRealPath("wms");
+//			String path = req.getRealPath("wms");
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";

@@ -1,6 +1,6 @@
 <persistentConfiguration>
   <wmsCapUrl>http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</wmsCapUrl>
-  <featureUrl>http%3A%2F%2Fgdz.bkg.bund.de%2Fwms_vg2500%3FSERVICE%3DWMS%26VERSION%3D1.1.1</featureUrl>
+  <featureUrl>http%3A%2F%2Fgdz.bkg.bund.de%2Fwms_vg250%3FSERVICE%3DWMS%26VERSION%3D1.1.1</featureUrl>
   <layers>
     <layer>
       <name>10k simplified AGG OpenStreetMap WMS</name>

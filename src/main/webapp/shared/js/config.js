@@ -29,9 +29,31 @@ de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL = de.ingrid.mapclient.BAS
 
 /**
  * the url to send the data for copying a service to
- * @see de.ingrid.mapclient.frontend.data.ServiceCopy
+ * @see de.ingrid.mapclient.frontend.data.ServiceContainer
  */
 de.ingrid.mapclient.COPY_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/copyservice';
+
+/**
+ * the url to send the data for adding a service to
+ * @see de.ingrid.mapclient.frontend.data.ServiceContainer
+ */
+de.ingrid.mapclient.ADD_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/addservice';
+
+/**
+ * the url to send the data for editing a service to
+ * @see de.ingrid.mapclient.frontend.data.ServiceContainer
+ */
+de.ingrid.mapclient.UPDATE_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/updateservice';
+/**
+ * the url to send the data for removing a service to
+ * @see de.ingrid.mapclient.frontend.data.ServiceContainer
+ */
+de.ingrid.mapclient.REMOVE_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/removeservice';
+/**
+ * the url to send the data for getting a service 
+ * @see de.ingrid.mapclient.frontend.data.ServiceContainer
+ */
+de.ingrid.mapclient.GET_SERVICE_URL = de.ingrid.mapclient.BASE_URL+'config/getservice';
 
 /**
  * Url for retrieving the static application configuration.
