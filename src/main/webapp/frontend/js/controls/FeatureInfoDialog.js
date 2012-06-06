@@ -129,7 +129,9 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 	// this method gives us only 2 params, but we need four
 	var lonlat = self.map.getLonLatFromViewPortPx(e.xy);
     // we build the url from our featureUrl the parameters and the rest/wms url
-    var urlAppendix = '?url='+de.ingrid.mapclient.Configuration.getValue("featureUrl")+'%26REQUEST%3DGetFeatureInfo%26LAYERS%3D0%2C1%2C2%26QUERY_LAYERS%3D0%2C1%2C2%26STYLES' +
+	// this appendix is only valid with the url: http://gdz.bkg.bund.de/wms_vg250 because we pick certain layers (8,9,10) this needs some redoing for
+	// generalisation
+     var urlAppendix = '?url='+de.ingrid.mapclient.Configuration.getValue("featureUrl")+'%26REQUEST%3DGetFeatureInfo%26LAYERS%3D08%2C9%2C10%26QUERY_LAYERS%3D8%2C9%2C10%26STYLES' +
     		'%3D%2C%2C%26BBOX%3D'+lonlat.lon+'%252C'+lonlat.lat+'%252C'+(lonlat.lon+0.00005)+'%252C'+(lonlat.lat+0.00005)+'%26' +
     				'FEATURE_COUNT%3D10%26HEIGHT%3D508%26WIDTH%3D1711%26FORMAT%3Dimage%252Fpng%26INFO_FORMAT%3Dtext%252Fxml%26SRS%3DEPSG%253A4326%26X%3D1020%26Y%3D173';
     		
@@ -143,6 +145,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 					title:'Auswahl zu Suchanfrage hinzuf&uuml;gen',
 					border: false,
 					autoScroll: true,
+					autoWidth:true,
 					autoHeight: true,
 					bodyStyle: 'padding: 10px',
 					defaults: {

@@ -45,7 +45,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	metaDataBtn: null,
 	expandBtn: null,
 	allExpanded: false,
-	
+	ctrls:null,
 	kmlArray: []
 });
 
@@ -74,7 +74,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
-				activeServicesPanel: self
+				activeServicesPanel: self,
+				ctrls: self.ctrls
 			}).show();
 		}
 	});
@@ -275,6 +276,21 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 			}
 		});
+		//we check the services which are meant to be checked by default
+		//TODO baselayer needs special treatment
+		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+		for(var i = 0; i < wmsServices.length; i++){
+			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+				console.debug("name: "+service.capabilitiesUrl)
+				var cl = wmsServices[i].checkedLayers;
+				for(var j = 0; j < cl.length; j++){
+					var n = node.attributes.layerstore.item(j);
+					n.getUI().toggleCheck(true);
+				}
+				break;
+			}
+		}
+		
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			var i = 0;

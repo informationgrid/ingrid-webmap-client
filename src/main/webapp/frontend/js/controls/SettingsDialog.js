@@ -19,7 +19,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
-
+	ctrls:null,
 	windowContent: null,
 
 	/**
@@ -57,7 +57,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
  * Initialize the component (called by Ext)
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = function() {
-
+	var self = this;
 	// register the baselayer change handler
 	this.map.events.on({
 		'changebaselayer': this.onBaseLayerChange,
@@ -82,7 +82,12 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		displayField: 'name',
 		editable: false
 	});
-
+	this.projectionsCombo.on('expand', function(){
+		self.ctrls['keyboardControl'].deactivate();
+	});
+	this.projectionsCombo.on('collapse', function(){
+		self.ctrls['keyboardControl'].activate();
+	});	
 	this.scalesCombo = new Ext.form.ComboBox({
 		fieldLabel: 'Ma&szlig;stab',
 		triggerAction: 'all',
@@ -101,7 +106,12 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		displayField: 'name',
 		editable: false
 	});
-
+	this.scalesCombo.on('expand', function(){
+		self.ctrls['keyboardControl'].deactivate();
+	});
+	this.scalesCombo.on('collapse', function(){
+		self.ctrls['keyboardControl'].activate();
+	});	
 	// add items according to view configuration
 	var items = [];
 	if (this.viewConfig.hasProjectionsList) {
@@ -213,6 +223,12 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 					displayField: 'name',
 					editable: false
 				});
+				combo.on('expand', function(){
+					self.ctrls['keyboardControl'].deactivate();
+				});
+				combo.on('collapse', function(){
+					self.ctrls['keyboardControl'].activate();
+				});					
 				var areas = category.areas;
 				// convert item objects into record arrays
 				var records = [];
