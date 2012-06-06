@@ -13,13 +13,16 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  * 		(see de.ingrid.mapclient.frontend.data.Service.getLayerId)
  * @param store GeoExt.data.WMSCapabilitiesStore instance
  */
-de.ingrid.mapclient.frontend.data.ServiceContainer = function(originalCapUrl, title, categories, deactivatedLayers, checkedLayers,layerNameChanges) {
-	this.originalCapUrl = originalCapUrl;
-	this.title = title;
-	this.categories = categories;
-	this.deactivatedLayers = deactivatedLayers;
-	this.checkedLayers = checkedLayers;
-	this.layerNameChanges = layerNameChanges;
+de.ingrid.mapclient.frontend.data.ServiceContainer = function(config) {
+
+
+	this.originalCapUrl = null;
+	this.title = null;
+	this.categories = [];
+	this.layers = [];
+	this.capabilitiesUrl = null;
+	Ext.apply(this,config);
+	
 };
 
 
@@ -46,12 +49,12 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.serialise = functio
 
 	var self = this;
 	var thisSerialised = Ext.encode({
+			capabilitiesUrl: self.capabilitiesUrl,
 			originalCapUrl: self.originalCapUrl,
 			title: self.title,
 			categories: self.categories,
-			deactivatedLayers: self.deactivatedLayers,
-			checkedLayers: self.checkedLayers,
-			layerNameChanges: self.layerNameChanges
+			layers: self.layers
+			
 	
 	});
 	return thisSerialised;
@@ -153,4 +156,28 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.get = function(seri
 			},
 			xmlData: serialisedData
 		});
+};
+
+/**
+ * @class Layers represents a temporary layer object it is only for transfering layer data between
+ * admin interface and backend and it is usually part of a ServiceContainer
+ * 
+ * @param capabilitiesUrl The capabilities url of the service
+ * @param definition Service object as returned by the getCapabilities request
+ * @param layers Ext.util.MixedCollection with layer ids as keys and OpenLayers.Layer instances as values
+ * 		(see de.ingrid.mapclient.frontend.data.Service.getLayerId)
+ * @param store GeoExt.data.WMSCapabilitiesStore instance
+ */
+de.ingrid.mapclient.frontend.data.Layer = function(config) {
+	this.index = null;
+	this.title = null;
+	this.featureInfo = false;
+	this.deactivated = false;
+	this.checked= false;
+	this.legend = false;
+	
+	
+	
+	Ext.apply(this,config);
+	
 };
