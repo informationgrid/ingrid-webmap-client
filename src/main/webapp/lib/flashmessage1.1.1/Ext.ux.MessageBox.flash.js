@@ -56,7 +56,7 @@ Ext.Msg.flash({
                type: 'info',
                msgStyle: '',
                pause: 3,
-               width: 274
+               width: 350
             });
 
             //Create the flash box container
