@@ -121,7 +121,7 @@ public class WmsResource {
 				else if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("3"))
 				aInfo.setType("Regierungsbezirk");
 				aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
-				aInfo.setRs(fields.item(i).getAttributes().getNamedItem("RS").getNodeValue());
+				aInfo.setRs(fields.item(i).getAttributes().getNamedItem("AGS").getNodeValue());
 				adminInfos.add(aInfo);
 			}
 		} catch (XPathExpressionException e) {

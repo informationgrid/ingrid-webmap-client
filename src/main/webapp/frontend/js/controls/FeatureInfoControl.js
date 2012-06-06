@@ -4,75 +4,210 @@
 Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
 /**
- * @class FeatureInfoControl extends OpenLayers WMSGetFeatureInfo in order to
- * handle all responses returned from the server
+ * @class FeatureInfoDialog is the dialog used for displaying WMS feature infos.
  */
-de.ingrid.mapclient.frontend.controls.FeatureInfoControl = Ext.extend(OpenLayers.Control.WMSGetFeatureInfo, {
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window, {
+	title: "Feature Info",
+	closable: true,
+	draggable: true,
+	resizable: true,
+	width: 300,
+	boxMaxHeight:600,
+	autoHeight: true,
+	shadow: false,
+	hidden: true,
+	closeAction: 'hide',
+    autoScroll: true,
+    layout: 'fit',
+
+	/**
+	 * @cfg The OpenLayers.Map instance to query feature infos for
+	 */
+	map: null,
+
+	/**
+	 * Boolean indicating, if the control is activated or not
+	 */
+	activated: false,
+	callbackAreaId: null
 });
 
 /**
- * @see OpenLayers.Control.WMSGetFeatureInfo.findLayers
+ * Activate the control
  */
-de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.findLayers = function() {
-	var layers = de.ingrid.mapclient.frontend.controls.FeatureInfoControl.superclass.findLayers.call(this);
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.activate = function() {
+	this.activated = true;
+};
 
-	// only use queryable layers
-	var queryableLayers = [];
-	for (var i=0, count=layers.length; i<count; i++) {
-		if (layers[i].queryable == true) {
-			queryableLayers.push(layers[i]);
+/**
+ * Deactivate the control
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.deactivate = function() {
+	this.activated = false;
+	this.hide();
+};
+
+/**
+ * Query the feature infos for the current map, if the control is activated
+ * @param e OpenLayers.Event
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = function(e) {
+	if (!this.activated) {
+		return;
+	}
+
+	// remove all panels from preceeding calls
+	this.removeAll();
+
+	
+	
+	
+	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
+	var self = this;
+	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoControl({
+		queryVisible: true,
+		drillDown: true,
+		eventListeners: {
+			"getfeatureinfo": function(e) {
+				// create a panel for each response
+				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
+				if(service){
+					var p = new Ext.Panel({
+					title: service.getDefinition().title,
+					collapsible: true,
+					border: false,
+					autoScroll: true,
+					height:300,
+					bodyStyle: 'padding: 10px',
+					defaults: {
+						anchor: '100%'
+					},
+					html: e.text
+				});
+				}else{
+					var p = new Ext.Panel({
+					title:'no title from service available',
+					collapsible: true,
+					border: false,
+					autoScroll: true,
+					height:300,
+					bodyStyle: 'padding: 10px',
+					defaults: {
+						anchor: '100%'
+					},					
+					html: e.text
+				});
+				}
+				self.add(p);
+				self.doLayout();							
+				
+			}
+			
 		}
-	}
-
-	return queryableLayers;
-};
-
-/**
- * @see OpenLayers.Control.WMSGetFeatureInfo.buildWMSOptions
- */
-de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.buildWMSOptions = function(url, layers, clickPosition, format) {
-	var options = de.ingrid.mapclient.frontend.controls.FeatureInfoControl.superclass.buildWMSOptions.call(this, url, layers, clickPosition, format);
-
-	// use overridden callback
-	options.callback = function(request) {
-		this.handleResponse(clickPosition, request, url, layers);
-	};
-	return options;
-};
-
-/**
- * @see OpenLayers.Control.WMSGetFeatureInfo.buildWMSOptions
- */
-de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.triggerGetFeatureInfo = function(request, xy, features, url, layers) {
-	this.events.triggerEvent("getfeatureinfo", {
-		text: request.responseText,
-		features: features,
-		request: request,
-		xy: xy,
-		url: url,
-		layers: layers
 	});
+	
+	featureInfoControl.setMap(this.map);
+	featureInfoControl.getInfoForClick(e);
+	this.show();
+};
+/**
+ * Query the feature infos for the current map, if the control is activated
+ * @param e OpenLayers.Event
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministrativeUnits = function(e) {
+	if (!this.activated) {
+		return;
+		
+	}
+	var self = this;
+	// remove all panels from preceeding calls
+	this.removeAll();
+	
+	
+	// use a FeatureInfoControl instance to create the GetFeatureInfo requests
+	var self = this;
+	// this method gives us only 2 params, but we need four
+	var lonlat = self.map.getLonLatFromViewPortPx(e.xy);
+    // we build the url from our featureUrl the parameters and the rest/wms url
+     var urlAppendix = '?url='+de.ingrid.mapclient.Configuration.getValue("featureUrl")+'%26REQUEST%3DGetFeatureInfo%26LAYERS%3D08%2C9%2C10%26QUERY_LAYERS%3D8%2C9%2C10%26STYLES' +
+    		'%3D%2C%2C%26BBOX%3D'+lonlat.lon+'%252C'+lonlat.lat+'%252C'+(lonlat.lon+0.00005)+'%252C'+(lonlat.lat+0.00005)+'%26' +
+    				'FEATURE_COUNT%3D10%26HEIGHT%3D508%26WIDTH%3D1711%26FORMAT%3Dimage%252Fpng%26INFO_FORMAT%3Dtext%252Fxml%26SRS%3DEPSG%253A4326%26X%3D1020%26Y%3D173';
+    		
+	var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix;			
 
-	// Reset the cursor.
-	OpenLayers.Element.removeClass(this.map.viewPortDiv, "olCursorWait");
+	Ext.Ajax.request({
+		url:url,
+		method: 'GET',
+		success: function(response, request) {
+		var p = new Ext.FormPanel({
+					title:'Auswahl zu Suchanfrage hinzuf&uuml;gen',
+					border: false,
+					autoScroll: true,
+					autoHeight: true,
+					bodyStyle: 'padding: 10px',
+					defaults: {
+						anchor: '100%'
+					},
+//					html: response.responseText
+					items:{
+							xtype: 'radiogroup',
+                            fieldLabel: 'Auswahl',
+                            columns:1,
+                            id:"AdministrativeSelection",
+                            items: self.decodeResponse(response.responseText) 
+                          },
+        			buttons: [{
+				            text: 'Hinzuf&uuml;gen',
+				            handler: function(){
+				               if(p.getForm().isValid()){
+				                       var values =  p.getForm().getValues(false);
+				                       self.callbackAreaId(values['AdminInfos']);
+				                       self.hide();
+				                }
+				            }
+					        },{
+					            text: 'Abbrechen',
+					            handler: function(){
+					                p.destroy();
+					                self.hide();
+					            }
+					        }]
+				});
+
+				self.add(p);
+				self.doLayout();							
+				self.show();	
+		},
+		failure: function(response, request) {
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.FEATURE_FAILURE);
+			}
+	});				
+			
+	
+};
+/**
+ * Initialize the component (called by Ext)
+ */
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.initComponent = function() {
+	de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.superclass.initComponent.call(this);
 };
 
 /**
- * @see OpenLayers.Control.WMSGetFeatureInfo.handleResponse
+ * Render callback (called by Ext)
  */
-de.ingrid.mapclient.frontend.controls.FeatureInfoControl.prototype.handleResponse = function(xy, request, url, layers) {
-
-	var doc = request.responseXML;
-	if(!doc || !doc.documentElement) {
-		doc = request.responseText;
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.onRender = function() {
+	de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.superclass.onRender.apply(this, arguments);
+};
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.decodeResponse = function(responseText){
+	var data=Ext.decode(responseText);
+	var items = []
+	for(var i = 0; i < data.length; i++){
+	var item = {
+			      name: 'AdminInfos',
+			      inputValue: data[i]['rs'],
+			      boxLabel: data[i]['type']+': '+data[i]['name']
+					}
+	items.push(item);		    
 	}
-	var features = this.format.read(doc);
-	this.triggerGetFeatureInfo(request, xy, features, url, layers);
-
-	this._requestCount++;
-	if (this._requestCount === this._numRequests) {
-		delete this._features;
-		delete this._requestCount;
-		delete this._numRequests;
-	}
+	return items;
 };
