@@ -1584,6 +1584,21 @@
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[9]"/>
       </mapServiceCategories>
     </wmsService>
+    <wmsService>
+      <name>Test</name>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml</capabilitiesUrl>
+      <mapServiceCategories>
+        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory"/>
+        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[2]"/>
+        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[3]"/>
+      </mapServiceCategories>
+      <originalCapUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml</originalCapUrl>
+      <checkedLayers>
+        <int>1</int>
+        <int>4</int>
+        <int>6</int>
+      </checkedLayers>
+    </wmsService>    
   </wmsServices>
   <areaCategories>
     <areaCategory>

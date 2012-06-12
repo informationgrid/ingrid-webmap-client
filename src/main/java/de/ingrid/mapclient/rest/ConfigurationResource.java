@@ -9,6 +9,8 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +62,7 @@ import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.PersistentConfiguration;
 import de.ingrid.mapclient.model.AreaCategory;
+import de.ingrid.mapclient.model.CustomComparator;
 import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapArea;
 import de.ingrid.mapclient.model.MapExtend;
@@ -522,6 +525,8 @@ public class ConfigurationResource {
 	public void addService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
+				String url = makeCopyOfService(jsonService, req);
+				insertCopyIntoConfig(url, jsonService);
 
 		}
 		catch (Exception ex) {
@@ -547,7 +552,18 @@ public class ConfigurationResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void updateService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
+				// find according file, update xml
+				// find wmsservice in conf and update
+				// write conf 
 				JSONObject jsonService = new JSONObject(service);
+				if(jsonService.getString("title") != null){
+					//TODO change title
+				}else if(jsonService.getString("categories") != null){
+					//TODO update categories
+				}else if(jsonService.getString("layers") != null){
+					//TODO update layers
+				}
+					
 
 		}
 		catch (Exception ex) {
@@ -574,13 +590,16 @@ public class ConfigurationResource {
 	public void removeService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
-
+				removeFromConfig(jsonService);
+				deleteWmsFile(jsonService, req);				
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}	
+
+
 
 	/**
 	 * This method gets a ServiceContainer object with just the capUrl, find the corresponding
@@ -613,27 +632,29 @@ public class ConfigurationResource {
 			try {
 				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
 				JSONArray jsonArray = json.getJSONArray("categories");
-				JSONArray jsonCheckedLayers = json.getJSONArray("checkedLayers");
-				JSONArray jsonDeactivatedLayers = json.getJSONArray("deactivatedLayers");
-				List<Integer> checkLayers = new ArrayList<Integer>();
-				int len = jsonCheckedLayers.length();
-				for(int i = 0; i < len; i++){
-					checkLayers.add(jsonCheckedLayers.getInt(i));
+				JSONArray layers = json.getJSONArray("layers");
+				List<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
+				for (int i = 0, count = layers.length(); i < count; i++){
+					sortedLayerList.add(layers.getJSONObject(i));
 				}
-				//we have to reassemble the list, since by deleting layers the indices are messed up 
-
-				for (int j = 0; j < jsonDeactivatedLayers.length(); j++){
-					for(int k = 0; k < jsonCheckedLayers.length(); k++){
-						int checked;
-						if(jsonDeactivatedLayers.getInt(j) < jsonCheckedLayers.getInt(k)){
-							checked = checkLayers.get(k).intValue();
-							checked--;
-							checkLayers.set(k, (Integer)checked);
+				
+				// first of all we sort the list according to their indices
+				// we do this to not have any problems later when deleting layers
+				java.util.Collections.sort(sortedLayerList, new CustomComparator());
+				List<Integer> checkLayers = new ArrayList<Integer>();
+				int deleted = 0;
+				if (layers != null) {
+					for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
+						if (sortedLayerList.get(i).getBoolean("deactivated")) {
+							deleted++;
+						}else if(sortedLayerList.get(i).getBoolean("checked")){
+							int checked = sortedLayerList.get(i).getInt("index") - deleted;
+							checkLayers.add(checked);
 						}
 					}
 				}
-				
 
+				
 				String title = json.getString("title");
 				String originalCapUrl = json.getString("originalCapUrl");
 				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
@@ -785,43 +806,63 @@ public class ConfigurationResource {
 	 * @param title 
 	 * @throws TransformerException 
 	 */
-	private Document changeXml(Document doc, JSONObject json) throws TransformerException {
+	private Document changeXml(Document doc, JSONObject json)
+			throws TransformerException {
 		XPath xpath = XPathFactory.newInstance().newXPath();
 
 		Node titleNode = null;
 		try {
-		JSONArray deactLayers = json.getJSONArray("deactivatedLayers");
-		JSONObject layerNameChanges = json.getJSONObject("layerNameChanges");
-		Iterator<String> it = layerNameChanges.keys();
-		while(it.hasNext()){
-			String layerId = it.next();
-			Node n = (Node)xpath.evaluate("//Layer/Layer["+layerId+"]", doc, XPathConstants.NODE);
-			Node titleNameNode = n.getFirstChild().getNextSibling();
-			titleNameNode.setTextContent(layerNameChanges.getString(layerId));
-			
-		}
-
-				
-		String title = json.getString("title");
-
-			//remove layers
-			for(int i = 0; i < deactLayers.length();i++){
-			int id = deactLayers.getInt(i);
-			Node e = (Node)xpath.evaluate("//Layer/Layer["+(id - i)+"]", doc, XPathConstants.NODE);
-			//we have to substract i from id, because everytime we remove a node, the index of the nodelist changes
-
-			log.debug("removed node name: "+e.getNodeName());
-			e.getParentNode().removeChild(e);
+			JSONArray layers = json.getJSONArray("layers");
+			ArrayList<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
+			for (int i = 0, count = layers.length(); i < count; i++){
+				sortedLayerList.add(layers.getJSONObject(i));
 			}
-			//change title
-			titleNode = (Node)xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);	
+			
+			// first of all we sort the list according to their indices
+			// we do this to not have any problems later when deleting layers
+			java.util.Collections.sort(sortedLayerList, new CustomComparator());
+
+			int deleted = 0;
+			if (layers != null) {
+				for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
+					if (sortedLayerList.get(i).getBoolean("deactivated")) {
+						// we have to substract deleted from index, because
+						// everytime we remove a node, the index of the nodelist
+						// changes
+						Node n = (Node) xpath.evaluate("//Layer/Layer["
+								+ (sortedLayerList.get(i).getInt("index") - deleted) + "]",
+								doc, XPathConstants.NODE);
+						n.getParentNode().removeChild(n);
+						log.debug("delete layer: " + sortedLayerList.get(i));
+						deleted++;
+					} else {
+						// TODO insert all other attibutes in wms
+		
+						JSONObject layerObj = sortedLayerList.get(i);
+						log.debug("layerobject: " + layerObj.toString());
+						Node n = (Node) xpath.evaluate("//Layer/Layer["
+								+ (sortedLayerList.get(i).getInt("index") - deleted) + "]",
+								doc, XPathConstants.NODE);
+						Node titleNameNode = n.getFirstChild().getNextSibling().getNextSibling().getNextSibling();
+						titleNameNode.setTextContent(layerObj
+								.getString("title"));
+					}
+				}
+			}
+
+			String title = json.getString("title");
+
+			// change title
+			titleNode = (Node) xpath.evaluate("//Service/Title", doc,
+					XPathConstants.NODE);
 			titleNode.setTextContent(title);
 			log.debug(XMLUtils.toString(doc));
 		} catch (XPathExpressionException e) {
-			log.error("error on xpathing document: "+e.getMessage());
+			log.error("error on xpathing document: " + e.getMessage());
 			e.printStackTrace();
 		} catch (JSONException e) {
-			log.error("error on retrieving data from json document: "+e.getMessage());
+			log.error("error on retrieving data from json document: "
+					+ e.getMessage());
 			e.printStackTrace();
 		}
 		return doc;
@@ -855,4 +896,73 @@ public class ConfigurationResource {
 		}
         return null;
     }
+	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
+
+
+			String url;
+			try {
+				url = json.getString("capabilitiesUrl");
+
+			String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+			String path = req.getSession().getServletContext().getRealPath("wms");
+			File f = new File(path+fileName);
+			boolean deleted = false;
+			if(f.exists())
+				deleted = f.delete();
+			if(deleted)
+				log.debug("File: "+fileName+" deleted");
+			else
+				log.debug("could not delete file: "+fileName);
+			
+	
+			} catch (JSONException e) {
+				log.error("on file deletion json exception occured: ",e);
+			}
+
+	}
+	private void removeFromConfig(JSONObject jsonService) {
+		try {
+			ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+			PersistentConfiguration pConf = p.getPersistentConfiguration();
+			List<WmsService> services = pConf.getWmsServices();
+			WmsService service = findService(jsonService);
+			if(service != null){
+			services.remove(service);
+			p.write(pConf);
+			}else{
+				log.error("could not find requested service");
+			}
+		} catch (IOException e) {
+			log.error("IO Exception on removing file from config: ", e);
+		}
+	}
+	private WmsService findService(JSONObject jsonService){
+		WmsService service = null;
+		boolean cont = true;
+		try{
+		String capUrl = jsonService.getString("capabilitiesUrl");
+		
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		PersistentConfiguration pConf = p.getPersistentConfiguration();
+		List<WmsService> services = pConf.getWmsServices();
+		Iterator<WmsService> it = services.iterator();
+		
+		while (it.hasNext() && cont) {
+			service = it.next();
+			if (service.getCapabilitiesUrl().equals(capUrl)) {
+				services.remove(service);
+				p.write(pConf);
+				cont = false;
+			}
+
+		}
+		}catch (JSONException e) {
+			log.error("JSON Exception on removing file from config: ", e);
+		}catch (IOException e) {
+			log.error("IO Exception on removing file from config: ", e);
+		}
+		if(cont)
+			service = null;
+		return service;
+	}
 }
