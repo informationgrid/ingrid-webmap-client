@@ -14,6 +14,8 @@ import java.util.List;
 public class WmsService {
 
 	private String name;
+
+
 	private String capabilitiesUrl;
 	private List<MapServiceCategory> mapServiceCategories = new ArrayList<MapServiceCategory>();
 	private String originalCapUrl;
@@ -36,6 +38,13 @@ public class WmsService {
 //		this.deactivatedLayers = deactivatedLayers;
 	}
 
+	public void setMapServiceCategories(
+			List<MapServiceCategory> mapServiceCategories) {
+		this.mapServiceCategories = mapServiceCategories;
+	}
+
+
+
 	public List<Integer> getCheckedLayers() {
 		return checkedLayers;
 	}
@@ -54,6 +63,9 @@ public class WmsService {
 	
 	public List<MapServiceCategory> getMapServiceCategories() {
 		return mapServiceCategories;
+	}	
+	public void setName(String name) {
+		this.name = name;
 	}	
 //	public List<Integer> getDeactivatedLayers() {
 //		return deactivatedLayers;

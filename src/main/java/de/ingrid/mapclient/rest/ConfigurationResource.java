@@ -487,7 +487,7 @@ public class ConfigurationResource {
 	 * {title:"title",
 	 * 	originalCapUrl: "http://xyz",
 	 *  categories: [6,9,...],
-	 *  deactivatedLayers: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
@@ -514,7 +514,7 @@ public class ConfigurationResource {
 	 * {title:"title",
 	 * 	originalCapUrl: "http://xyz",
 	 *  categories: [6,9,...],
-	 *  deactivatedLayers: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
@@ -542,7 +542,7 @@ public class ConfigurationResource {
 	 * {title:"title",
 	 * 	originalCapUrl: "http://xyz",
 	 *  categories: [6,9,...],
-	 *  deactivatedLayers: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
@@ -550,21 +550,26 @@ public class ConfigurationResource {
 	@POST
 	@Path(UPDATE_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void updateService(String service, @Context HttpServletRequest req) throws IOException {
+	public void updateService(String serviceString, @Context HttpServletRequest req) throws IOException {
 		try {
 				// find according file, update xml
 				// find wmsservice in conf and update
 				// write conf 
-				JSONObject jsonService = new JSONObject(service);
-				if(jsonService.getString("title") != null){
-					//TODO change title
-				}else if(jsonService.getString("categories") != null){
-					//TODO update categories
-				}else if(jsonService.getString("layers") != null){
-					//TODO update layers
+				JSONObject jsonService = new JSONObject(serviceString);
+				if(!jsonService.getString("title").equals("null")){
+					WmsService service = findService(jsonService);
+					service.setName(jsonService.getString("title"));
 				}
+				if(!jsonService.getString("categories").equals("null")){
+					//rewrite the categories of the service
+					WmsService service = findService(jsonService);
+					updateCategories(service, jsonService);
+				}
+				if(!jsonService.getString("layers").equals("null")){
+					updateLayersInFile(jsonService, req);
 					
-
+				}
+				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -572,14 +577,16 @@ public class ConfigurationResource {
 		}
 	}
 	
+
+
 	/**
-	 * This method gets a ServiceContainer object it will look in the list for the original
+	 * This method gets a ServiceContainer object, it will look in the list for the original
 	 * service object and delete it
 	 * the following structure is expected:
 	 * {title:"title",
 	 * 	originalCapUrl: "http://xyz",
 	 *  categories: [6,9,...],
-	 *  deactivatedLayers: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
@@ -608,7 +615,7 @@ public class ConfigurationResource {
 	 * {title:"title",
 	 * 	originalCapUrl: "http://xyz",
 	 *  categories: [6,9,...],
-	 *  deactivatedLayers: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
@@ -631,7 +638,6 @@ public class ConfigurationResource {
 			
 			try {
 				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
-				JSONArray jsonArray = json.getJSONArray("categories");
 				JSONArray layers = json.getJSONArray("layers");
 				List<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
 				for (int i = 0, count = layers.length(); i < count; i++){
@@ -653,36 +659,11 @@ public class ConfigurationResource {
 						}
 					}
 				}
-
-				
+			
 				String title = json.getString("title");
 				String originalCapUrl = json.getString("originalCapUrl");
 				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
-				for (int i = 0; i < jsonArray.length(); i++){
-					int id = jsonArray.getInt(i);
-					List<MapServiceCategory> catList = p.getPersistentConfiguration().getMapServiceCategories();
-					Iterator<MapServiceCategory> it = catList.iterator();
-					boolean cond = true;
-					while(it.hasNext() && cond){
-						MapServiceCategory cat = it.next();
-						int catId = cat.getId();
-						if(catId == id){
-							wmsService.getMapServiceCategories().add(cat);
-							cond = false;
-						}else{
-							List<MapServiceCategory> subCats = cat.getMapServiceCategories();
-							Iterator<MapServiceCategory> catIt = subCats.iterator();
-							while(catIt.hasNext() && cond){
-								MapServiceCategory subCat = catIt.next();
-								if(subCat.getId() == id){
-									wmsService.getMapServiceCategories().add(subCat);
-									cond = false;
-								}
-							}
-						}
-					}
-				}
-				
+				updateCategories(wmsService, json);
 				p.getPersistentConfiguration().getWmsServices().add(wmsService);
 				p.write(p.getPersistentConfiguration());
 				
@@ -769,7 +750,6 @@ public class ConfigurationResource {
 		String urlPrefix = null;
 		try {
 			String path = req.getSession().getServletContext().getRealPath("wms");
-//			String path = req.getRealPath("wms");
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
@@ -902,19 +882,17 @@ public class ConfigurationResource {
 			String url;
 			try {
 				url = json.getString("capabilitiesUrl");
-
-			String fileName = url.substring(url.lastIndexOf("/"), url.length());			
-			String path = req.getSession().getServletContext().getRealPath("wms");
-			File f = new File(path+fileName);
-			boolean deleted = false;
-			if(f.exists())
-				deleted = f.delete();
-			if(deleted)
-				log.debug("File: "+fileName+" deleted");
-			else
-				log.debug("could not delete file: "+fileName);
+				String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+				String path = req.getSession().getServletContext().getRealPath("wms");
+				File f = new File(path+fileName);
+				boolean deleted = false;
+				if(f.exists())
+					deleted = f.delete();
+				if(deleted)
+					log.debug("File: "+fileName+" deleted");
+				else
+					log.debug("could not delete file: "+fileName);
 			
-	
 			} catch (JSONException e) {
 				log.error("on file deletion json exception occured: ",e);
 			}
@@ -941,28 +919,89 @@ public class ConfigurationResource {
 		boolean cont = true;
 		try{
 		String capUrl = jsonService.getString("capabilitiesUrl");
-		
-		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
-		PersistentConfiguration pConf = p.getPersistentConfiguration();
-		List<WmsService> services = pConf.getWmsServices();
-		Iterator<WmsService> it = services.iterator();
+		Iterator<WmsService> it = ConfigurationProvider.INSTANCE.getPersistentConfiguration().getWmsServices().iterator();
 		
 		while (it.hasNext() && cont) {
 			service = it.next();
 			if (service.getCapabilitiesUrl().equals(capUrl)) {
-				services.remove(service);
-				p.write(pConf);
 				cont = false;
 			}
 
 		}
 		}catch (JSONException e) {
 			log.error("JSON Exception on removing file from config: ", e);
-		}catch (IOException e) {
-			log.error("IO Exception on removing file from config: ", e);
 		}
 		if(cont)
 			service = null;
 		return service;
+	}
+	private void updateCategories(WmsService service, JSONObject jsonService) {
+		JSONArray categories;
+		try {
+			categories = jsonService.getJSONArray("categories");
+			List<MapServiceCategory> mapCategories = new ArrayList<MapServiceCategory>();
+			for(int i = 0, count = categories.length(); i < count; i++ ){
+				Iterator<MapServiceCategory> mapConfigCategoriesIterator = ConfigurationProvider.INSTANCE.getPersistentConfiguration().getMapServiceCategories().iterator();
+				int index = categories.getInt(i);
+				boolean notFound = true;
+				while(mapConfigCategoriesIterator.hasNext() && notFound){
+					MapServiceCategory cat = mapConfigCategoriesIterator.next();
+					if(cat.getId() == index){
+						mapCategories.add(cat);
+						notFound = false;
+					}
+					if(cat.getMapServiceCategories() != null){
+						Iterator<MapServiceCategory> it = cat.getMapServiceCategories().iterator();
+						while(it.hasNext() && notFound){
+							MapServiceCategory ct = it.next();
+							if(ct.getId() == index){
+								mapCategories.add(ct);
+								notFound = false;
+							}		
+						}
+					}
+				}
+			}
+			service.setMapServiceCategories(mapCategories);
+		} catch (JSONException e) {
+			log.error("error on upddating categories of service: ",e);
+		}
+		
+	}	
+
+
+	private void updateLayersInFile(JSONObject jsonService, HttpServletRequest req) {
+		String url;
+		try {
+			url = jsonService.getString("capabilitiesUrl");
+			String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+			String path = req.getSession().getServletContext().getRealPath("wms");
+			File f = new File(path+fileName);	
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(f);
+			//change the xml structure
+			doc = changeXml(doc, jsonService);
+			//delete the file
+			deleteWmsFile(jsonService, req);
+			
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			StreamResult result = new StreamResult(f);
+			transformer.transform(source, result);
+		} catch (JSONException e) {
+			log.error("JSONException on updating wms file: ",e);
+		} catch (ParserConfigurationException e) {
+			log.error("ParserException on updating wms file: ",e);
+		} catch (SAXException e) {
+			log.error("SAXException on updating wms file: ",e);
+		} catch (IOException e) {
+			log.error("IOException on updating wms file: ",e);
+		} catch (TransformerException e) {
+			log.error("TransformerExceptionException on updating wms file: ",e);
+		}
+
+
 	}
 }
