@@ -44,7 +44,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 		sortable: true,
 		dataIndex: 'capabilitiesUrl', 
 		editor:{
-        	xtype: 'textfield'
+        	xtype: 'label'
         }
 	}],
 	serviceGrid: null,
