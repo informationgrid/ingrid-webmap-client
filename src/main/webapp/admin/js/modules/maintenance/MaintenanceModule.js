@@ -9,15 +9,10 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
  */
 de.ingrid.mapclient.admin.modules.maintenance.MaintenanceModule = Ext.extend(de.ingrid.mapclient.admin.modules.ModuleBase, {
 
-	title: 'Wartung',
+	title: 'Dienste',
 	layout: 'accordion',
-	layoutConfig: {
-		titleCollapse: true,
-		animate: false
-	},
 	defaults: {
 		autoScroll: true,
-		padding: 10
 	}
 });
 
@@ -29,7 +24,6 @@ de.ingrid.mapclient.admin.modules.maintenance.MaintenanceModule.prototype.initCo
 	Ext.apply(this, {
 		items: [
 		        new de.ingrid.mapclient.admin.modules.maintenance.ServicePanel()
-		        
 		]
 	});
 	de.ingrid.mapclient.admin.modules.maintenance.MaintenanceModule.superclass.initComponent.call(this);

@@ -35,47 +35,44 @@ de.ingrid.mapclient.Configuration = function() {
  */
 de.ingrid.mapclient.Configuration.load = function(responseHandler) {
 	
-	// load the configuration if not done already
-	if (!de.ingrid.mapclient.Configuration.instance) {
-		de.ingrid.mapclient.Configuration.instance = new de.ingrid.mapclient.Configuration();
-		// load the dynamic configuration
-		Ext.Ajax.request({
-			url: de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL,
-			method: 'GET',
-			success: function(response, request) {
-				// merge the configuration values into the instance
-				var config = Ext.decode(response.responseText);
-				Ext.apply(de.ingrid.mapclient.Configuration.instance.dynamicConfig, config);
+	de.ingrid.mapclient.Configuration.instance = new de.ingrid.mapclient.Configuration();
+	// load the dynamic configuration
+	Ext.Ajax.request({
+		url: de.ingrid.mapclient.PERSISTENT_DYNAMIC_CONFIG_BASE_URL,
+		method: 'GET',
+		success: function(response, request) {
+			// merge the configuration values into the instance
+			var config = Ext.decode(response.responseText);
+			Ext.apply(de.ingrid.mapclient.Configuration.instance.dynamicConfig, config);
 
-				// load the static configuration
-				Ext.Ajax.request({
-					url: de.ingrid.mapclient.STATIC_CONFIG_BASE_URL,
-					method : 'GET',
-					success : function(response, request) {
-						// merge the configuration values into the instance
-						var config = Ext.decode(response.responseText);
-						for (var i=0, count=config.length; i<count; i++) {
-							var curValue = config[i];
-							de.ingrid.mapclient.Configuration.instance.staticConfig[curValue['@name']] = curValue['@value'];
-						}
-
-						// set the load status
-						de.ingrid.mapclient.Configuration.instance.isLoaded = true;
-
-						// call the callback
-						if (responseHandler.success instanceof Function) {
-							responseHandler.success(response.responseText);
-						}
+			// load the static configuration
+			Ext.Ajax.request({
+				url: de.ingrid.mapclient.STATIC_CONFIG_BASE_URL,
+				method : 'GET',
+				success : function(response, request) {
+					// merge the configuration values into the instance
+					var config = Ext.decode(response.responseText);
+					for (var i=0, count=config.length; i<count; i++) {
+						var curValue = config[i];
+						de.ingrid.mapclient.Configuration.instance.staticConfig[curValue['@name']] = curValue['@value'];
 					}
-				});
-			},
-			failure: function(response, request) {
-				if (responseHandler.failure instanceof Function) {
-					responseHandler.failure(response.responseText);
+
+					// set the load status
+					de.ingrid.mapclient.Configuration.instance.isLoaded = true;
+
+					// call the callback
+					if (responseHandler.success instanceof Function) {
+						responseHandler.success(response.responseText);
+					}
 				}
+			});
+		},
+		failure: function(response, request) {
+			if (responseHandler.failure instanceof Function) {
+				responseHandler.failure(response.responseText);
 			}
-		});
-	}
+		}
+	});
 };
 
 /**

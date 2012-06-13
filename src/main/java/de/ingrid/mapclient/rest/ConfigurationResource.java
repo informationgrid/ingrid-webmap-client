@@ -9,9 +9,6 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -41,14 +38,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -74,7 +68,6 @@ import de.ingrid.mapclient.model.WmsServer;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.utils.xml.XMLUtils;
-import de.ingrid.utils.xml.XPathUtils;
 
 /**
  * ConfigurationResource gives access to the application configuration
@@ -493,13 +486,18 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(COPY_SERVICE)
+	@Path(DYNAMIC_PATH + "/" + COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject json = new JSONObject(serviceCopy);
 				String url = makeCopyOfService(json, req);
-				insertCopyIntoConfig(url, json);
+				if(url != null){
+					insertCopyIntoConfig(url, json);
+				}else{
+					Exception ex = new Exception();
+					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+				}
 		}
 		catch (Exception ex) {
 			log.error("Error setting default capabilities url", ex);
@@ -520,14 +518,18 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(ADD_SERVICE)
+	@Path(DYNAMIC_PATH + "/" + ADD_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void addService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
 				String url = makeCopyOfService(jsonService, req);
-				insertCopyIntoConfig(url, jsonService);
-
+				if(url != null){
+					insertCopyIntoConfig(url, jsonService);
+				}else{
+					Exception ex = new Exception();
+					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+				}
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -548,7 +550,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(UPDATE_SERVICE)
+	@Path(DYNAMIC_PATH + "/" + UPDATE_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void updateService(String serviceString, @Context HttpServletRequest req) throws IOException {
 		try {
@@ -592,7 +594,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(REMOVE_SERVICE)
+	@Path(DYNAMIC_PATH + "/" + REMOVE_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void removeService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
