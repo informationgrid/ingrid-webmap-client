@@ -46,7 +46,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	expandBtn: null,
 	allExpanded: false,
 	ctrls:null,
-	kmlArray: []
+	kmlArray: [],
+	transpBtnActive: false,
+	metadataBtnActive: false
 });
 
 /**
@@ -100,13 +102,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			}
 		}
 	});
+
 	this.transparencyBtn = new Ext.Button({
 		iconCls: 'iconTransparency',
 		tooltip: 'Layer-Transparenz',
 		disabled: true,
 		handler: function(btn) {
-			if (self.activeNode) {
+			if (self.activeNode  && !self.transpBtnActive) {
 				self.displayOpacitySlider(self.activeNode.layer);
+				self.transpBtnActive = true;
 			}
 		}
 	});
@@ -115,8 +119,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		tooltip: 'Metadaten',
 		disabled: true,
 		handler: function(btn) {
-			if (self.activeNode) {
+			if (self.activeNode && !self.metadataBtnActive) {
 				self.displayMetaData(self.activeNode);
+				self.metadataBtnActive = true;
 			}
 		}
 	});
@@ -438,20 +443,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var layer = node.attributes.layer;
 	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 			capabilitiesUrl: service.getCapabilitiesUrl(),
 			layer: layer
 		}).show();
+		metaDialog.on('close', function(){self.metadataBtnActive = false});
 	}else{
 		service = node.attributes.service;
 		if(service){
-			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				capabilitiesUrl: service.getCapabilitiesUrl(),
 				layer: layer
 			}).show();
+			metaDialog.on('close', function(){self.metadataBtnActive = false});
 		}
 	}
 };
@@ -461,9 +469,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
  * @param layer The layer, for which to set the opacity
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpacitySlider = function(layer) {
+	var self = this;
 	this.opacityDialog = new de.ingrid.mapclient.frontend.controls.OpacityDialog({
 		layer: layer
 	});
+	this.opacityDialog.on('close', function(){
+	self.transpBtnActive = false;
+	});
+
 	this.opacityDialog.show();
 };
 
