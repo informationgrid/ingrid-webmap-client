@@ -758,16 +758,13 @@ public class ConfigurationResource {
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			url = title + ".xml";
-			File f = new File(path + "/" + url);
-			if (f.exists())
-				do {
-					url = new DbUrlMapper().createShortUrl(title);
-					url = title + url + ".xml";
-					f = new File(path + "/" + url);
-				} while (f.exists());
-			else
-				log.debug("created file: " + f.getName());
+			File f = null;
+			do {
+				url = new DbUrlMapper().createShortUrl(title);
+				url = url + ".xml";
+				f = new File(path + "/" + url);
+			} while (f.exists());
+			
 			StreamResult result = new StreamResult(f);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
