@@ -356,23 +356,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		node.expand(true);
 
 		//we check the services which are meant to be checked by default
-		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-		for(var i = 0; i < wmsServices.length; i++){
-			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-				console.debug("name: "+service.capabilitiesUrl)
-				var cl = wmsServices[i].checkedLayers;
-				for(var j = 0; j < cl.length; j++){
-					var k = 0;
-					node.eachChild(function(n) {
-			    	if(cl[j] == k)
-			        n.getUI().toggleCheck(true);
-
-			        k++;
-			    	});
-				}
-				break;
-			}
-		}	
+//		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+//		for(var i = 0; i < wmsServices.length; i++){
+//			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+//				console.debug("name: "+service.capabilitiesUrl)
+//				var cl = wmsServices[i].checkedLayers;
+//				for(var j = 0; j < cl.length; j++){
+//					var k = 0;
+//					node.eachChild(function(n) {
+//			    	if(cl[j] == k)
+//			        n.getUI().toggleCheck(true);
+//
+//			        k++;
+//			    	});
+//				}
+//				break;
+//			}
+//		}	
 		}else{
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);

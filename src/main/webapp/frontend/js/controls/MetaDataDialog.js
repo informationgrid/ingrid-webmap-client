@@ -97,7 +97,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		data.wmsTitle = data.title;
 		data.wmsAbstract = data['abstract'];
 		
-		html = tpl.apply(htmlData);
+		html = tpl.apply(data);
 		// TODO do more mapping if required
 	}
 	else {
@@ -140,7 +140,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		// TODO do more mapping if required
 		
 		
-		html = tpl.apply(data);
+		html = tpl.apply(htmlData);
 	}
 
 	// render the content
