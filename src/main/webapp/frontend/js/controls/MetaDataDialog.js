@@ -117,7 +117,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		var htmlData = new Object();
 		// we do this by hand since the apply method doesnt apply our data very well
 		htmlData.name = data.name;
-		htmlData.abstract = data.abstract;
+		htmlData.layerAbstract = data['abstract'];
 		htmlData.projections = data.projection.projCode; //TODO in case of more?
 		htmlData.minScale = data.minScale;
 		htmlData.maxScale = data.maxScale;
@@ -160,7 +160,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>Titel</td><td>{title}</td></tr>'+
-		'<tr><td>Zusammenfassung</td><td>{abstract}</td></tr>'+
+		'<tr><td>Zusammenfassung</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>Koordinatensysteme</td><td>{projections}</td></tr>'+
 		'<tr><td>Datum der Registrierung</td><td>{date}</td></tr>'+
 		'<tr><td>Registrierende Stelle</td><td>{issuer}</td></tr>'+
@@ -199,7 +199,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>Titel</td><td>{name}</td></tr>'+
-		'<tr><td>Zusammenfassung</td><td>{abstract}</td></tr>'+
+		'<tr><td>Zusammenfassung</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>Minscale</td><td>{minScale}</td></tr>'+
 		'<tr><td>Maxscale</td><td>{maxScale}</td></tr>'+
 		'<tr><td>Koordinatensysteme</td><td>{projections}</td></tr>'+

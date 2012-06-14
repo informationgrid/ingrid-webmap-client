@@ -291,7 +291,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 		    	//check everything but the first layer, which is our baselayer
 		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1)){
-		    		console.debug("test");
 		    		i++;
 		    	}else{
 		        n.getUI().toggleCheck(checked);
@@ -503,7 +502,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpaci
 		layer: layer
 	});
 	this.opacityDialog.on('close', function(){
-		if(this.opacityDialog.isDestroyed)
 	self.transpBtnActive = false;
 	});
 
