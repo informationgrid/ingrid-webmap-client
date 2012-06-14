@@ -207,28 +207,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the toolbar items
 	var toolbarItems = []; 
-	// this is a test item for trying different functions
-	// TODO delete it at the end
+
 	// a) feature tool
-//			toolbarItems.push(new Ext.Button({
-//					iconCls : 'iconInfo',
-//					tooltip : 'TEST',
-//					enableToggle : false, 
-//					handler : function(btn) {
-//
-//							var originalCapUrl = "http://localhost:8080/ingrid-webmap-client/wms/wms.xml"; 
-//							var checkedLayers = [3,5,7];
-//							var title = "Test";
-//							var categories = [1,2,3];
-//							var deactivatedLayers = [1,4,6];
-//							var layerNameChanges = {1:"name1", 3:"name2", 5:"name3"}
-//							var serviceCopy = new de.ingrid.mapclient.frontend.data.ServiceCopy(originalCapUrl, title, categories,deactivatedLayers, checkedLayers, layerNameChanges);
-//							
-//							serviceCopy.save();
-//				
-//					}
-//				}));
-//				
 				
 	if (this.viewConfig.hasInfoTool) {
 
@@ -243,7 +223,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconInfo',
-					tooltip : 'Info',
+					tooltip : 'Objektinformationen',
 					enableToggle : true, 
 					handler : function(btn) {
 						if (btn.pressed) {
@@ -338,15 +318,27 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// d) print tool
+	var printActive = false;
+	var printDia = null;
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconPrint',
 					tooltip : 'Drucken',
 					handler : function(btn) {
-						new de.ingrid.mapclient.frontend.controls.PrintDialog({
+						
+						if(!printActive){
+						printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
 									mapPanel : mapPanel,
 									legendPanel : legendPanel
 								});
+								printActive = true;
+								self.ctrls['keyboardControl'].deactivate();
+						}
+						printDia.on('close', function(){
+							printActive = false;
+							self.ctrls['keyboardControl'].activate();
+						})
+						
 					}
 				}));
 	}
@@ -430,8 +422,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog(
 				{
 					map : this.map,
-					viewConfig : this.viewConfig
+					viewConfig : this.viewConfig,
+					ctrls: self.ctrls
 				});
+
 	}
 
 	this.on('afterrender', function(el) {

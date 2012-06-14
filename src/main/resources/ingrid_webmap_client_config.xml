@@ -1586,13 +1586,13 @@
     </wmsService>
     <wmsService>
       <name>Test</name>
-      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[3]"/>
       </mapServiceCategories>
-      <originalCapUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml</originalCapUrl>
+      <originalCapUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</originalCapUrl>
       <checkedLayers>
         <int>1</int>
         <int>4</int>

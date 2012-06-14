@@ -7,6 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class FeatureInfoDialog is the dialog used for displaying WMS feature infos.
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window, {
+	id:'featInfoDia',
 	title: "Feature Info",
 	closable: true,
 	draggable: true,
@@ -134,15 +135,21 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
      var urlAppendix = '?url='+de.ingrid.mapclient.Configuration.getValue("featureUrl")+'%26REQUEST%3DGetFeatureInfo%26LAYERS%3D08%2C9%2C10%26QUERY_LAYERS%3D8%2C9%2C10%26STYLES' +
     		'%3D%2C%2C%26BBOX%3D'+lonlat.lon+'%252C'+lonlat.lat+'%252C'+(lonlat.lon+0.00005)+'%252C'+(lonlat.lat+0.00005)+'%26' +
     				'FEATURE_COUNT%3D10%26HEIGHT%3D508%26WIDTH%3D1711%26FORMAT%3Dimage%252Fpng%26INFO_FORMAT%3Dtext%252Fxml%26SRS%3DEPSG%253A4326%26X%3D1020%26Y%3D173';
-    		
+ 
+			
 	var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix;			
-
+	Ext.Ajax.on('beforerequest', self.showSpinner, self);
+	Ext.Ajax.on('requestcomplete', self.hideSpinner, self);
+	Ext.Ajax.on('requestexception', self.hideSpinner, self);
 	Ext.Ajax.request({
 		url:url,
 		method: 'GET',
+		timeout: 3000,
 		success: function(response, request) {
-		var p = new Ext.FormPanel({
-					title:'Auswahl zu Suchanfrage hinzuf&uuml;gen',
+			var items = self.decodeResponse(response.responseText); 
+			if(items.length != 0){
+			var p = new Ext.FormPanel({
+					header:false,
 					border: false,
 					autoScroll: true,
 					autoWidth:true,
@@ -151,13 +158,13 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 					defaults: {
 						anchor: '100%'
 					},
-//					html: response.responseText
+
 					items:{
 							xtype: 'radiogroup',
-                            fieldLabel: 'Auswahl',
+                            fieldLabel: 'Auswahl zu Suchanfrage hinzuf&uuml;gen',
                             columns:1,
                             id:"AdministrativeSelection",
-                            items: self.decodeResponse(response.responseText) 
+                            items: items
                           },
         			buttons: [{
 				            text: 'Hinzuf&uuml;gen',
@@ -176,17 +183,26 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 					            }
 					        }]
 				});
-
 				self.add(p);
-				self.doLayout();							
-				self.show();	
+				self.doLayout();
+				self.show();
+			}else{
+						Ext.ux.Msg.flash({
+							  body: self.body,	
+							  msg: 'Raumbezug außerhalb des Feldes',
+							  pause: 3,
+							  type: 'success'
+							});	
+				}
+
+											
+					
 		},
 		failure: function(response, request) {
 			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.FEATURE_FAILURE);
 			}
-	});				
-			
-	
+	});						
+
 };
 /**
  * Initialize the component (called by Ext)
@@ -204,6 +220,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.onRender = fun
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.decodeResponse = function(responseText){
 	var data=Ext.decode(responseText);
 	var items = []
+
 	for(var i = 0; i < data.length; i++){
 	var item = {
 			      name: 'AdminInfos',
@@ -212,5 +229,25 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.decodeResponse
 					}
 	items.push(item);		    
 	}
+	
 	return items;
 };
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.showSpinner = function(){
+
+	  Ext.MessageBox.show({
+	       id:'featureInfoMsgBox',	
+           title: 'Please wait',
+           msg: 'Requesting data',
+           width:250,
+           wait:true,
+           waitConfig: {interval:100},
+           closable:false,
+           animEl: 'mb5'
+       });
+}
+
+de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.hideSpinner = function(){
+
+	Ext.MessageBox.hide();
+
+}

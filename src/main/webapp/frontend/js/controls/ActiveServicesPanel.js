@@ -46,7 +46,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	expandBtn: null,
 	allExpanded: false,
 	ctrls:null,
-	kmlArray: []
+	kmlArray: [],
+	transpBtnActive: false,
+	metadataBtnActive: false
 });
 
 /**
@@ -105,8 +107,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		tooltip: 'Layer-Transparenz',
 		disabled: true,
 		handler: function(btn) {
-			if (self.activeNode) {
+			if (self.activeNode  && !self.transpBtnActive) {
 				self.displayOpacitySlider(self.activeNode.layer);
+				self.transpBtnActive = true;
 			}
 		}
 	});
@@ -115,8 +118,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		tooltip: 'Metadaten',
 		disabled: true,
 		handler: function(btn) {
-			if (self.activeNode) {
+			if (self.activeNode && !self.metadataBtnActive) {
 				self.displayMetaData(self.activeNode);
+				self.metadataBtnActive = true;
 			}
 		}
 	});
@@ -278,19 +282,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		});
 		//we check the services which are meant to be checked by default
 		//TODO baselayer needs special treatment
-		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-		for(var i = 0; i < wmsServices.length; i++){
-			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-				console.debug("name: "+service.capabilitiesUrl)
-				var cl = wmsServices[i].checkedLayers;
-				for(var j = 0; j < cl.length; j++){
-					var n = node.attributes.layerstore.item(j);
-					n.getUI().toggleCheck(true);
+
+		node.on('expand', function(node, checked){
+		console.debug("expand event triggered");
+			var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+			for(var i = 0; i < wmsServices.length; i++){
+				if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+					console.debug("name: "+service.capabilitiesUrl)
+					var cl = wmsServices[i].checkedLayers;
+					for(var j = 0; j < cl.length; j++){
+						var k = 0;
+						node.eachChild(function(n) {
+				    	if(cl[j] == k)
+				        n.getUI().toggleCheck(true);
+
+				        k++;
+				    	});
+					}
+					break;
 				}
-				break;
-			}
-		}
-		
+			}		
+		});
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			var i = 0;
@@ -301,7 +313,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 		    	//check everything but the first layer, which is our baselayer
 		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1)){
-		    		console.debug("test");
 		    		i++;
 		    	}else{
 		        n.getUI().toggleCheck(checked);
@@ -363,7 +374,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//do we come from session or user interaction? zoom if user interaction
 		if(!initialAdd)
 		this.map.zoomToExtent(bounds);
-		
+		//we need to expand the nodes otherwise the root node doesnt know its children
+		node.expand(true);
+
+		//we check the services which are meant to be checked by default
+		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+		for(var i = 0; i < wmsServices.length; i++){
+			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+				console.debug("name: "+service.capabilitiesUrl)
+				var cl = wmsServices[i].checkedLayers;
+				for(var j = 0; j < cl.length; j++){
+					var k = 0;
+					node.eachChild(function(n) {
+			    	if(cl[j] == k)
+			        n.getUI().toggleCheck(true);
+
+			        k++;
+			    	});
+				}
+				break;
+			}
+		}	
 		}else{
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
@@ -453,20 +484,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var layer = node.attributes.layer;
 	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 			capabilitiesUrl: service.getCapabilitiesUrl(),
 			layer: layer
 		}).show();
+		metaDialog.on('close', function(){self.metadataBtnActive = false});
 	}else{
 		service = node.attributes.service;
 		if(service){
-			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				capabilitiesUrl: service.getCapabilitiesUrl(),
 				layer: layer
 			}).show();
+			metaDialog.on('close', function(){self.metadataBtnActive = false});
 		}
 	}
 };
@@ -476,9 +510,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
  * @param layer The layer, for which to set the opacity
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpacitySlider = function(layer) {
+	var self = this;
 	this.opacityDialog = new de.ingrid.mapclient.frontend.controls.OpacityDialog({
 		layer: layer
 	});
+	this.opacityDialog.on('close', function(){
+	self.transpBtnActive = false;
+	});
+
 	this.opacityDialog.show();
 };
 
