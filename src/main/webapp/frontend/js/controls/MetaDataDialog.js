@@ -114,8 +114,36 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 
 	// render the content
 	if (tpl != null) {
+		var htmlData = new Object();
+		// we do this by hand since the apply method doesnt apply our data very well
+		htmlData.name = data.name;
+		htmlData.abstract = data.abstract;
+		htmlData.projections = data.projection.projCode; //TODO in case of more?
+		htmlData.minScale = data.minScale;
+		htmlData.maxScale = data.maxScale;
+		htmlData.date = "";
+		htmlData.issuer = data.contactInformation.personPrimary.organization;
+		htmlData.wmsId = data.name;
+		htmlData.wmsAbstract = data.wmsAbstract;
+		htmlData.wmsTitle = data.wmsTitle;
+		htmlData.fees = "";
+		htmlData.restrictions = "";
+		htmlData.contactPerson = data.contactInformation.personPrimary.person;
+		htmlData.contactOrganization = data.contactInformation.personPrimary.organization;
+		htmlData.contactAddress = data.contactInformation.contactAddress.address;
+		htmlData.contactCity = data.contactInformation.contactAddress.city;
+		htmlData.contactState = data.contactInformation.contactAddress.stateOrProvince;
+		htmlData.contactCountry = data.contactInformation.contactAddress.country;
+		htmlData.contactPostalcode = data.contactInformation.contactAddress.postcode;
+		htmlData.contactPhone = data.contactInformation.phone;
+		htmlData.contactFax = data.contactInformation.fax;
+		htmlData.contactEmail = data.contactInformation.email;
+		htmlData.metadata = data.metadata;
+		
+		
+		var html = tpl.apply(htmlData);
 		this.windowContent.add(new Ext.Panel({
-			html: tpl.apply(data),
+			html: html,
 			border: false
 		}));
 		this.windowContent.doLayout();

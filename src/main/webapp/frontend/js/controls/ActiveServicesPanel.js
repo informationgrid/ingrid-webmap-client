@@ -353,7 +353,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//do we come from session or user interaction? zoom if user interaction
 		if(!initialAdd)
 		this.map.zoomToExtent(bounds);
-		
+		//we need to expand the nodes otherwise the root node doesnt know its children
+		node.expand(true);
+
+		//we check the services which are meant to be checked by default
+		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+		for(var i = 0; i < wmsServices.length; i++){
+			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+				console.debug("name: "+service.capabilitiesUrl)
+				var cl = wmsServices[i].checkedLayers;
+				for(var j = 0; j < cl.length; j++){
+					var k = 0;
+					node.eachChild(function(n) {
+			    	if(cl[j] == k)
+			        n.getUI().toggleCheck(true);
+
+			        k++;
+			    	});
+				}
+				break;
+			}
+		}	
 		}else{
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
@@ -444,24 +464,33 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
 	var self = this;
-	var layer = node.attributes.layer;
-	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
-	if (service) {
-		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layer: layer
-		}).show();
-		metaDialog.on('close', function(){self.metadataBtnActive = false});
-	}else{
-		service = node.attributes.service;
-		if(service){
+	var layer = null;
+	if(node.attributes.layer)
+		layer = node.attributes.layer;
+	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
+	if(!layer)
+		layer = node.childNodes[0].layer;
+		
+		var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
+		if (service) {
 			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				capabilitiesUrl: service.getCapabilitiesUrl(),
 				layer: layer
 			}).show();
 			metaDialog.on('close', function(){self.metadataBtnActive = false});
+		}else{
+			service = node.attributes.service;
+			if(service){
+				var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+					capabilitiesUrl: service.getCapabilitiesUrl(),
+					layer: layer
+				}).show();
+				metaDialog.on('close', function(){
+				self.metadataBtnActive = false;
+				});
+			}
 		}
-	}
+	
 };
 
 /**
@@ -474,6 +503,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpaci
 		layer: layer
 	});
 	this.opacityDialog.on('close', function(){
+		if(this.opacityDialog.isDestroyed)
 	self.transpBtnActive = false;
 	});
 
