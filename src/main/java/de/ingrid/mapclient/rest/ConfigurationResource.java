@@ -486,7 +486,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(DYNAMIC_PATH + "/" + COPY_SERVICE)
+	@Path(COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
@@ -648,15 +648,14 @@ public class ConfigurationResource {
 				
 				// first of all we sort the list according to their indices
 				// we do this to not have any problems later when deleting layers
-				java.util.Collections.sort(sortedLayerList, new CustomComparator());
-				List<Integer> checkLayers = new ArrayList<Integer>();
+				//TODO change this we now have names no more indices
+
+				List<String> checkLayers = new ArrayList<String>();
 				int deleted = 0;
 				if (layers != null) {
 					for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
-						if (sortedLayerList.get(i).getBoolean("deactivated")) {
-							deleted++;
-						}else if(sortedLayerList.get(i).getBoolean("checked")){
-							int checked = sortedLayerList.get(i).getInt("index") - deleted;
+						if(sortedLayerList.get(i).getBoolean("checked")){
+							String checked = sortedLayerList.get(i).getString("index");
 							checkLayers.add(checked);
 						}
 					}
@@ -792,37 +791,32 @@ public class ConfigurationResource {
 		Node titleNode = null;
 		try {
 			JSONArray layers = json.getJSONArray("layers");
-			ArrayList<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
-			for (int i = 0, count = layers.length(); i < count; i++){
-				sortedLayerList.add(layers.getJSONObject(i));
-			}
-			
-			// first of all we sort the list according to their indices
-			// we do this to not have any problems later when deleting layers
-			java.util.Collections.sort(sortedLayerList, new CustomComparator());
 
-			int deleted = 0;
+
+			
 			if (layers != null) {
-				for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
-					if (sortedLayerList.get(i).getBoolean("deactivated")) {
+				for (int i = 0, count = layers.length(); i < count; i++) {
+
+					if (layers.getJSONObject(i).getBoolean("deactivated")) {
 						// we have to substract deleted from index, because
 						// everytime we remove a node, the index of the nodelist
 						// changes
-						Node n = (Node) xpath.evaluate("//Layer/Layer["
-								+ (sortedLayerList.get(i).getInt("index") - deleted) + "]",
+						
+						Node n = (Node) xpath.evaluate("//Name[text()=\""
+								+ layers.getJSONObject(i).getString("index") + "\"]",
 								doc, XPathConstants.NODE);
 						n.getParentNode().removeChild(n);
-						log.debug("delete layer: " + sortedLayerList.get(i));
-						deleted++;
+						log.debug("delete layer: " + layers.get(i));
+
 					} else {
 						// TODO insert all other attibutes in wms
 		
-						JSONObject layerObj = sortedLayerList.get(i);
+						JSONObject layerObj = layers.getJSONObject(i);
 						log.debug("layerobject: " + layerObj.toString());
-						Node n = (Node) xpath.evaluate("//Layer/Layer["
-								+ (sortedLayerList.get(i).getInt("index") - deleted) + "]",
+						Node n = (Node) xpath.evaluate("//Name[text()=\""
+								+ layers.getJSONObject(i).getString("index") + "\"]",
 								doc, XPathConstants.NODE);
-						Node titleNameNode = n.getFirstChild().getNextSibling().getNextSibling().getNextSibling();
+						Node titleNameNode = n.getNextSibling().getNextSibling();
 						titleNameNode.setTextContent(layerObj
 								.getString("title"));
 					}

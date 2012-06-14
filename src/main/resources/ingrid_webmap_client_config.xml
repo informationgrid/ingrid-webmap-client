@@ -1585,7 +1585,7 @@
       </mapServiceCategories>
     </wmsService>
     <wmsService>
-      <name>Test</name>
+      <name>WMS Test</name>
       <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory"/>
@@ -1593,11 +1593,6 @@
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[3]"/>
       </mapServiceCategories>
       <originalCapUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</originalCapUrl>
-      <checkedLayers>
-        <int>1</int>
-        <int>4</int>
-        <int>6</int>
-      </checkedLayers>
     </wmsService>    
   </wmsServices>
   <areaCategories>

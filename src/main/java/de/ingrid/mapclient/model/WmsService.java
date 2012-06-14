@@ -19,7 +19,7 @@ public class WmsService {
 	private String capabilitiesUrl;
 	private List<MapServiceCategory> mapServiceCategories = new ArrayList<MapServiceCategory>();
 	private String originalCapUrl;
-	private List<Integer> checkedLayers = new ArrayList<Integer>();
+	private List<String> checkedLayers = new ArrayList<String>();
 //	private List<Integer> deactivatedLayers = new ArrayList<Integer>();
 
 	public WmsService()
@@ -28,7 +28,7 @@ public class WmsService {
 
 
 
-	public WmsService(String name, String capabilitiesUrl,List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<Integer> checkedLayers)//, List<Integer> deactivatedLayers)
+	public WmsService(String name, String capabilitiesUrl,List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<String> checkedLayers)//, List<Integer> deactivatedLayers)
 	{
 		this.name = name;
 		this.capabilitiesUrl = capabilitiesUrl;
@@ -45,7 +45,7 @@ public class WmsService {
 
 
 
-	public List<Integer> getCheckedLayers() {
+	public List<String> getCheckedLayers() {
 		return checkedLayers;
 	}
 
