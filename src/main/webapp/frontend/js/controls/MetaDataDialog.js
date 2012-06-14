@@ -79,6 +79,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 
 	// select the template and map the data to the template variables
 	var tpl = null;
+	var html = null;
 	var data = {};
 	if (isServiceRequest) {
 		tpl = this.serviceInfoTpl;
@@ -95,6 +96,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		data.layers = layerNames.join(', ');
 		data.wmsTitle = data.title;
 		data.wmsAbstract = data['abstract'];
+		
+		html = tpl.apply(htmlData);
 		// TODO do more mapping if required
 	}
 	else {
@@ -109,11 +112,6 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		// id is OpenLayers id per default (remove it)
 		data.id = null;
 		data.metadata = this.serializeObject(data.metadata);
-		// TODO do more mapping if required
-	}
-
-	// render the content
-	if (tpl != null) {
 		var htmlData = new Object();
 		// we do this by hand since the apply method doesnt apply our data very well
 		htmlData.name = data.name;
@@ -139,9 +137,15 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactFax = data.contactInformation.fax;
 		htmlData.contactEmail = data.contactInformation.email;
 		htmlData.metadata = data.metadata;
+		// TODO do more mapping if required
 		
 		
-		var html = tpl.apply(htmlData);
+		html = tpl.apply(data);
+	}
+
+	// render the content
+	if (tpl != null) {
+
 		this.windowContent.add(new Ext.Panel({
 			html: html,
 			border: false
