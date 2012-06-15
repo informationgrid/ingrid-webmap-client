@@ -42,7 +42,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
-        tooltip: 'Dienst hinzuf&uuml;gen',
+        tooltip: i18n('tDienstHinzufuegen'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
@@ -56,7 +56,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
-        tooltip: 'Metadaten',
+        tooltip: i18n('tMetadaten'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
@@ -66,7 +66,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	});
 	this.searchDataBtn = new Ext.Button({
         iconCls: 'iconRemoveAll',
-        tooltip: 'Suchergebnisse l&ouml;schen',
+        tooltip: i18n('tSuchergebnisseLoeschen'),
         disabled: false,
         handler: function(btn) {
 			self.destroy();
@@ -76,7 +76,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	var node = this.transform(this.serviceCategory);
 
 	Ext.apply(this, {
-		title: 'Suchergebnisse',
+		title: i18n('tSuchergebnisse'),
         rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,

@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class PrintDialog is the dialog used for printing the current map.
  */
 de.ingrid.mapclient.frontend.controls.PrintDialog = Ext.extend(Ext.Window, {
-	title: "Karte drucken",
+	title: i18n('tKarteDrucken'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -75,7 +75,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.onRender = function(
 	de.ingrid.mapclient.frontend.controls.PrintDialog.superclass.onRender.apply(this, arguments);
 
 	this.loadMask = new Ext.LoadMask(this.body, {
-		msg:"Lade Druckkonfiguration..."
+		msg:i18n('tLadeDruckkonfiguration')
 	});
 };
 
@@ -99,12 +99,12 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 			width: 150
 		},
 		border: false,
-		layoutText: "Format",
+		layoutText: i18n('tFormat'),
 		dpiText: "DPI",
-		scaleText: "Ma&szlig;tab",
-		rotationText: "Drehung",
-		printText: "PDF erstellen",
-		creatingPdfText: "Erzeuge PDF..."
+		scaleText: i18n('tMaszstab'),
+		rotationText: i18n('tDrehung'),
+		printText: i18n('tPDFErstellen'),
+		creatingPdfText: i18n('tPDFErstellen') + "..."
 
 	});
 	// add title and description fields to the form
@@ -112,7 +112,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 		xtype: "textfield",
 		name: "mapTitle",
 		value: "", // don't send null values because printing will fail
-		fieldLabel: "Titel",
+		fieldLabel: i18n('tTitle'),
 		plugins: new GeoExt.plugins.PrintPageField({
 			printPage: printForm.printPage
 		})
@@ -121,14 +121,14 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = fu
 		xtype: "textarea",
 		name: "comment",
 		value: "", // don't send null values because printing will fail
-		fieldLabel: "Kommentar",
+		fieldLabel: i18n('tKommentar'),
 		plugins: new GeoExt.plugins.PrintPageField({
 			printPage: printForm.printPage
 		})
 	});
 	printForm.insert(2, {
 		xtype: "checkbox",
-		fieldLabel: "Legende",
+		fieldLabel: i18n('tLegende'),
 		name: "legend",
 		listeners: {
 			"check": function(checkbox, checked) {

@@ -223,7 +223,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconInfo',
-					tooltip : 'Objektinformationen',
+					tooltip : i18n('tObjektinformationen'),
 					enableToggle : true, 
 					handler : function(btn) {
 						if (btn.pressed) {

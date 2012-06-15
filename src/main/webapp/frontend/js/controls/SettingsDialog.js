@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class SettingsDialog is the dialog for configuring the map view.
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
-	title: "Erweiterte Einstellungen",
+	title: i18n('tErweiterteEinstellungen'),
 	closable: false,
 	draggable: true,
 	resizable: false,
@@ -65,7 +65,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 	});
 
 	this.projectionsCombo = new Ext.form.ComboBox({
-		fieldLabel: 'Raumbezugssystem',
+		fieldLabel: i18n('tRaumbezugssystem'),
 		triggerAction: 'all',
 		mode: 'local',
 		store: new Ext.data.ArrayStore({
@@ -89,7 +89,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		self.ctrls['keyboardControl'].activate();
 	});	
 	this.scalesCombo = new Ext.form.ComboBox({
-		fieldLabel: 'Ma&szlig;stab',
+		fieldLabel: i18n('tMaszstab'),
 		triggerAction: 'all',
 		mode: 'local',
 		store: new Ext.data.ArrayStore({

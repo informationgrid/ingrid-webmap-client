@@ -43,7 +43,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
-        tooltip: 'Dienst hinzuf&uuml;gen',
+        tooltip: i18n('tDienstHinzufuegen'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
@@ -57,7 +57,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
-        tooltip: 'Metadaten',
+        tooltip: i18n('tMetadaten'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
@@ -67,7 +67,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.expandBtn = new Ext.Button({
 		iconCls: 'iconExpand',
-		tooltip: 'Alle auf/zuklappen',
+		tooltip: i18n('tAlleZuAufklappen'),
 		disabled: false,
 		handler: function(btn) {
 			if (self.allExpanded) {

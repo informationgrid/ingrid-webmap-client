@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class SaveDialog is the dialog used for saving the current map state.
  */
 de.ingrid.mapclient.frontend.controls.SaveDialog = Ext.extend(Ext.Window, {
-	title: "Karte speichern",
+	title: i18n('tKarteSpeichern'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -92,13 +92,13 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 	
 	
 	this.titleField = new Ext.form.TextField({
-		fieldLabel: "Titel",
+		fieldLabel: i18n('tTitle'),
 		hideLabel: false,
 		allowBlank: false
 	});
 
 	this.descriptionField = new Ext.form.TextArea({
-		fieldLabel: "Beschreibung",
+		fieldLabel: i18n('tBeschreibung'),
 		hideLabel: false,
 		allowBlank: true
 	});
@@ -116,7 +116,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 		    this.descriptionField
 		],
 		buttons: [{
-			text: 'Speichern',
+			text: i18n('tSpeichern'),
 			handler: function(btn) {
 	        	if (self.titleField.validate() && self.descriptionField.validate()) {
 		    		self.savePressed = true;
@@ -124,7 +124,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 	        	}
 	        }
 		}, {
-			text: 'Abbrechen',
+			text: i18n('tAbbrechen'),
 	        handler: function(btn) {
 	        	self.close();
 	        }

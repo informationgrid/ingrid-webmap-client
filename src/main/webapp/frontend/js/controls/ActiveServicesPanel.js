@@ -106,7 +106,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.transparencyBtn = new Ext.Button({
 		iconCls: 'iconTransparency',
-		tooltip: 'Layer-Transparenz',
+		tooltip: i18n('tLayerTransparenz'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode  && !self.transpBtnActive) {
@@ -117,7 +117,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.metaDataBtn = new Ext.Button({
 		iconCls: 'iconMetadata',
-		tooltip: 'Metadaten',
+		tooltip: i18n('tMetadaten'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode && !self.metadataBtnActive) {
