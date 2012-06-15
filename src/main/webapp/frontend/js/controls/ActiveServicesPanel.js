@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * The panels fires a 'datachanged' event, if the list of services changed.
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel, {
-	title: "Aktive Dienste",
+	title: i18n('tAktiveDienste'),
 	autoScroll: true,
 
 	/**
@@ -66,13 +66,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	// create the layer store
 	this.layerStore = new GeoExt.data.LayerStore({
 		map: this.map,
+		// add field "styles" to reader, to copy the styles to the layer records
+		reader: new GeoExt.data.LayerReader({fields:[{name: "styles"}]}),
 		initDir: GeoExt.data.LayerStore.MAP_TO_STORE
 	});
 
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
 		iconCls: 'iconAdd',
-		tooltip: 'Dienst hinzuf&uuml;gen',
+		tooltip: i18n('tDienstHinzufuegen'),
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
@@ -83,7 +85,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.removeBtn = new Ext.Button({
 		iconCls: 'iconRemove',
-		tooltip: 'Dienst entfernen',
+		tooltip: i18n('tDienstEntfernen'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
@@ -126,7 +128,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.expandBtn = new Ext.Button({
 		iconCls: 'iconExpand',
-		tooltip: 'Alle auf/zuklappen',
+		tooltip: i18n('tAlleZuAufklappen'),
 		disabled: false,
 		handler: function(btn) {
 			if (self.allExpanded) {
@@ -143,7 +145,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	this.layerTree = new Ext.tree.TreePanel({
 		root: {
 			nodeType: 'async',
-			text: 'Layers',
+			text: i18n('tLayers'),
 			expanded: false,
 			children: []
 		},
@@ -223,7 +225,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(typeof cntrPanel !== 'undefined' && showService){		
 		Ext.ux.Msg.flash({
 		  body: cntrPanel.body,
-		  msg: '<p><strong>Dienst erfolgreich hinzugef&uuml;gt</strong></p> Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen',
+		  msg: i18n('tMsgServiceAdded'),
 		  pause: 3,
 		  type: 'success'
 		});
@@ -418,7 +420,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 		var cntrPanel = Ext.getCmp('centerPanel');
 		Ext.ux.Msg.flash({
 			body : cntrPanel.body,
-			msg : '<p><strong>Basisdienst kann nicht entfernt werden</strong></p>',
+			msg : i18n('tMsgCannotRemoveBaselayer'),
 			pause : 3,
 			type : 'success'
 		});
@@ -428,7 +430,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 		if (typeof cntrPanel !== 'undefined') {
 			Ext.ux.Msg.flash({
 						body : cntrPanel.body,
-						msg : 'Dienst erfolgreich entfernt!',
+						msg : i18n('tMsgServiceRemoved'),
 						pause : 3,
 						type : 'success'
 					});
@@ -644,7 +646,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	});
 
 	var overlayLayerNode = new GeoExt.tree.OverlayLayerContainer({
-		text: 'Zeige Punktkoordinaten',
+		text: i18n('tZeigePunktkoordinaten'),
 		initDir:0,
 	    layerStore: store,
 	    leaf: false,

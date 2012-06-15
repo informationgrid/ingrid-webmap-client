@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class MetaDataDialog is the dialog for displaying meta data about a wms or wms layer.
  */
 de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
-	title: "Metadaten",
+	title: i18n('tMetadaten'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -131,12 +131,12 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 	var tplStr = '<table class="metaDataTable">'+
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
-		'<tr><td>Titel</td><td>{title}</td></tr>'+
-		'<tr><td>Zusammenfassung</td><td>{abstract}</td></tr>'+
-		'<tr><td>Koordinatensysteme</td><td>{projections}</td></tr>'+
-		'<tr><td>Datum der Registrierung</td><td>{date}</td></tr>'+
-		'<tr><td>Registrierende Stelle</td><td>{issuer}</td></tr>'+
-		'<tr><td>WMS ID</td><td>{wmsId}</td></tr>'+
+		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
+		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{abstract}</td></tr>'+
+		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
+		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
+		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
 		'<tr><td>WMS Titel</td><td>{wmsTitle}</td></tr>'+
 		'<tr><td>WMS Abstract</td><td>{wmsAbstract}</td></tr>'+
 		'<tr><td>Geb&uuml;hren</td><td>{fees}</td></tr>'+
