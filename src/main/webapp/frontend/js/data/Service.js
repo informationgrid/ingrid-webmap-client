@@ -186,6 +186,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
 														// the base layer is defined explicitly
 
+							layer.styles = record.get("styles");
 							self.fixLayerProperties(layer);
 
 							// add the layer to the layer lists

@@ -106,8 +106,11 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
     getLegendUrl: function(layerName, layerNames) {
         var rec = this.layerRecord;
         var url;
-        var styles = rec && rec.get("styles");
         var layer = rec.getLayer();
+        var styles = rec && rec.get("styles");
+        if (!styles) {
+        	styles = layer.styles; 
+        }
         layerNames = layerNames || [layer.params.LAYERS].join(",").split(",");
 
         var styleNames = layer.params.STYLES &&
