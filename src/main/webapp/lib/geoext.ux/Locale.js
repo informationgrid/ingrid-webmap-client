@@ -7,23 +7,22 @@ function i18n(key, arrInsertValues) {
 Local = {
 
     // Default locale code - set based on cookie at the bottom of this script
-    languageCode: 'en',
+    languageCode: null,
     languageCodeDefault: 'en',
-    charset: 'utf-8',
 
-    languages: [
-        ['en', 'English', 'utf-8'],
-        ['de', 'Deutsch', 'utf-8']
-    ],
-
+    supportedLanguages: {
+		en: {},
+		de: {}
+	},
+    
     getLocalizedString: function(key, languageCode, arrInsertValues) {
-        if (!this.localizedStrings[key]) {
+	if (!this.localizedStrings[key]) {
             // return key if key is undefined in localization list
             return key;
         }
         if (!this.localizedStrings[key][languageCode]) {
             // return default language string or empty string if the string for the specified language is undefined
-            return this.formatString(this.localizedStrings[key][this.lcDefault] || '', arrInsertValues);
+            return this.formatString(this.localizedStrings[key][this.languageCodeDefault] || '', arrInsertValues);
         }
         // give 'em what they asked for
         return (this.formatString(this.localizedStrings[key][languageCode], arrInsertValues));
@@ -128,6 +127,21 @@ Local = {
     }
 }
 
-// this is the first script to run, so we can set default language here based on cookie
-var cookie = new Ext.state.CookieProvider();
-Local.languageCode = cookie.get('languageCode') ? cookie.get('languageCode') : Local.languageCodeDefault;
+// initialize localizing
+if (!(typeof languageCode === 'undefined')) {
+	Local.languageCode = languageCode;
+}
+if (!(Local.languageCode)) {
+	var getLang = decodeURIComponent((location.search.match(RegExp("[?|&]languageCode=(.+?)(&|$)"))||[,null])[1]);
+	if (getLang) {
+		Local.languageCode = getLang;
+	}	
+}
+if (!(Local.languageCode)) {
+	Local.languageCode = Local.languageCodeDefault;
+}
+if (!Local.supportedLanguages[Local.languageCode]) {
+	Local.languageCode = Local.languageCodeDefault;
+}
+
+
