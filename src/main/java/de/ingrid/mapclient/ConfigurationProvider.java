@@ -232,7 +232,7 @@ public enum ConfigurationProvider {
 		xstream.alias("name", String.class);
 		xstream.alias("originalCapUrl", String.class);
 		xstream.alias("id", Integer.class);
-		xstream.alias("checkedLayers", Integer.class);
+		xstream.alias("checkedLayers", String.class);
 		xstream.alias("configuration", Configuration.class);
 		xstream.alias("serviceCategory", ServiceCategory.class);
 		xstream.alias("service", WmsServer.class);
