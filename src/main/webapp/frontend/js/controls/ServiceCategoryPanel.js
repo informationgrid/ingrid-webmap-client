@@ -30,7 +30,8 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	addBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
-	allExpanded: false
+	allExpanded: false,
+	metadataBtnActive: false
 });
 
 /**
@@ -60,9 +61,10 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
         tooltip: i18n('tMetadaten'),
         disabled: true,
         handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayMetaData(self.activeNode);
-        	}
+			if (self.activeNode && !self.metadataBtnActive) {
+				self.displayMetaData(self.activeNode);
+				self.metadataBtnActive = true;
+			}
         }
 	});
 	this.expandBtn = new Ext.Button({
@@ -202,9 +204,12 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateSer
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMetaData = function(node) {
 	var service = node.attributes.service;
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layerName: node.layer
-		}).show();
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+					capabilitiesUrl: service.getCapabilitiesUrl(),
+					layerName: node.layer
+				}).show();
+				metaDialog.on('close', function(){
+				self.metadataBtnActive = false;
+				});
 	}
 };
