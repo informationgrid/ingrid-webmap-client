@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class DownloadDialog is the dialog used for saving the current map state.
  */
 de.ingrid.mapclient.frontend.controls.DownloadDialog = Ext.extend(Ext.Window, {
-	title: "Karte herunterladen",
+	title: i18n('tKarteHerunterladen'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -69,7 +69,7 @@ Ext.override(Ext.form.TextField, {
 });
 	
 	this.titleField = new Ext.form.TextField({
-		fieldLabel: "Titel",
+		fieldLabel: i18n('tTitle'),
 		hideLabel: false,
 		allowBlank: false
 	});
@@ -89,7 +89,7 @@ Ext.override(Ext.form.TextField, {
 		    this.titleField
 		],
 		buttons: [{
-			text: 'Speichern',
+			text: i18n('tSpeichern'),
 			handler: function(btn) {
 	        	if (self.titleField.validate()) {
 		    		self.savePressed = true;
@@ -97,7 +97,7 @@ Ext.override(Ext.form.TextField, {
 	        	}
 	        }
 		}, {
-			text: 'Abbrechen',
+			text: i18n('tAbbrechen'),
 	        handler: function(btn) {
 	        	self.close();
 	        }

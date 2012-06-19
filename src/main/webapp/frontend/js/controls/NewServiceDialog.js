@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * of active services.
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, {
-	title: "Dienst hinzuf&uuml;gen",
+	title: i18n('tDienstHinzufuegen'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -59,12 +59,12 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 
 	this.activateLayersCheckbox = new Ext.form.Checkbox({
 		hideLabel: true,
-        boxLabel: 'Ebenen des Kartendienstes aktivieren'
+        boxLabel: i18n('tEbenenAktivieren')
 	});
 
 	this.activateZoomCheckbox = new Ext.form.Checkbox({
 		hideLabel: true,
-        boxLabel: 'Auf Ebenenausdehnung des Kartendienstes heranzoomen'
+        boxLabel: i18n('tEbenenZoomen')
 	});
 
 	var self = this;
@@ -76,15 +76,13 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 			anchor: '100%'
 		},
 		items: [{
-				html: 'Bitte geben Sie eine GetCapabilities-URL eines externen web map service (WMS) an:',
+				html: i18n('tBitteCapabilitiesExternerService'),
 				border: false
 			},
 		    this.capabilitiesUrlField,
 		    this.activateLayersCheckbox,
 		    this.activateZoomCheckbox, {
-				html: 'Hinweis: M&ouml;glicherweise m&uuml;ssen Sie die Ansicht vergr&ouml;&szlig;ern, um Ebenen von externen Kartendiensten '+
-					'betrachten zu k&oumlnnen. Der Betreiber des Kartendienstes ist f&uuml;r die Anzeige verantwortlich. '+
-					'PortalU hat keine Beteiligung an dessen Verhalten.',
+				html: i18n('tHintZoomToView'),
 					bodyStyle: {
 			            color: '#A8A8A8'
 			        },
@@ -92,7 +90,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 			}
 		],
 		buttons: [{
-			text: 'Dienst hinzuf&uuml;gen',
+			text: i18n('tDienstHinzufuegen'),
 	        handler: function(btn) {
 	        	if (self.activeServicesPanel && self.capabilitiesUrlField.validate()) {
 	        		var capabilitiesUrl = self.capabilitiesUrlField.getValue();

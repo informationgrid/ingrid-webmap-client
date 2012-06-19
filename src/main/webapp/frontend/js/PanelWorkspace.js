@@ -106,11 +106,11 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
-	var serviceCategories = de.ingrid.mapclient.Configuration.getValue("serviceCategories");
-	if (serviceCategories) {
-		for ( var i = 0, count = serviceCategories.length; i < count; i++) {
+	var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
+	if (mapServiceCategories) {
+		for ( var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel({
-				serviceCategory: serviceCategories[i],
+				mapServiceCategory: mapServiceCategories[i],
 				activeServicesPanel: this.activeServicesPanel
 			});
 			accordionItems.push(panel);
@@ -120,7 +120,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// c) search panel
 	accordionItems.push({
 		id: 'searchPanel',
-		title: 'Suche',
+		title: i18n('tSuche'),
 		autoScroll: true
 	});
 
@@ -139,7 +139,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		split: true,
 		collapsible: true,
 		items: [{
-			title: 'Dienste',
+			title: i18n('tDienste'),
 			closable: false,
 			layout: 'accordion',
 			layoutConfig: {
@@ -148,7 +148,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			border: false,
 			items: accordionItems
 		}, {
-			title: 'Legende',
+			title: i18n('tLegende'),
 			items: legendPanel
 		}]
 	});
@@ -182,7 +182,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		toolbarItems.push(new Ext.Button({
 			id: 'bboxButton',
 			iconCls: 'iconSelectCoordinates',
-			tooltip: 'Gebiet ausw&auml;hlen',
+			tooltip: i18n('tGebietAuswaehlen'),
 			enableToggle: true,
 			handler: function(btn) {
 				if (btn.pressed) {
@@ -210,7 +210,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconInfo',
-			tooltip: 'Info',
+			tooltip: i18n('tInfo'),
 			enableToggle: true,
 			handler: function(btn) {
 				if (btn.pressed) {
@@ -227,7 +227,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	if (this.viewConfig.hasAreaTool) {
 		var administrativeFeatureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
 			map: this.map,
-			title:'Administrative Auswahl',
+			title: i18n('tAdministrativeAuswahl'),
 			callbackAreaId:self.callbackAreaId
 		});
 		this.map.events.on({
@@ -237,7 +237,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		toolbarItems.push(new Ext.Button({
 			id:'areaButton',
 			iconCls: 'iconInfo',
-			tooltip: 'Administrative Einheit',
+			tooltip: i18n('tAdministrativeEinheit'),
 			enableToggle: true,
 			handler: function(btn) {
 				if(btn.pressed){
@@ -263,13 +263,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			control: historyCtrl.previous,
 			disabled: true,
 			iconCls: 'iconZoomPrev',
-			tooltip: 'Zur&uuml;ck'
+			tooltip: i18n('tZurueck')
 		}));
 		toolbarItems.push(new GeoExt.Action({
 			control: historyCtrl.next,
 			disabled: true,
 			iconCls: 'iconZoomNext',
-			tooltip: 'Vor'
+			tooltip: i18n('tVor')
 		}));
 	}
 	
@@ -302,10 +302,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 		toolbarItems.push(new Ext.SplitButton({
 			iconCls: 'iconMeassure',
-			tooltip: 'Messen',
+			tooltip: i18n('tMessen'),
 			menu: [new Ext.menu.CheckItem({
 				id: 'measurePath',
-				text: 'Strecke',
+				text: i18n('tStrecke'),
 				toggleGroup: 'addToSearch',
 				listeners: {
 					checkchange: function(item, checked) {
@@ -319,7 +319,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 				}
 			}), new Ext.menu.CheckItem({
 				id: 'measurePolygon',
-				text: 'Fl&auml;che',
+				text: i18n('tFlaeche'),
 				toggleGroup: 'control',
 				listeners: {
 					checkchange: function(item, checked) {
@@ -342,7 +342,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconPrint',
-			tooltip: 'Drucken',
+			tooltip: i18n('tDrucken'),
 			handler: function(btn) {
 				new de.ingrid.mapclient.frontend.controls.PrintDialog({
 					mapPanel: mapPanel,
@@ -356,7 +356,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	if (this.viewConfig.hasLoadTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconLoad',
-			tooltip: 'Laden',
+			tooltip: i18n('tLaden'),
 			disabled: !this.session.hasUserId(),
 			handler: function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog({
@@ -375,7 +375,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	if (this.viewConfig.hasSaveTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconSave',
-			tooltip: 'Speichern',
+			tooltip: i18n('tSpeichern'),
 			disabled: !this.session.hasUserId(),
 			handler: function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog();
@@ -392,7 +392,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconHelp',
-			tooltip: 'Hilfe',
+			tooltip: i18n('tHilfe'),
 			handler: function(btn) {
 				window.open(de.ingrid.mapclient.HELP_URL);
 			}
@@ -574,7 +574,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	this.listenToStateChanges = true;
 	Ext.ux.Msg.flash({
 	  body: self.body,	
-	  msg: 'Um der Suche einen Raumbezug hinzuzuf&uuml;gen, bitte eine Auswahl treffen. <br/>Das Icon um ein Gebiet zu umspannen befindet sich in der linken obereren Ecke der Karte',
+	  msg: i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),
 	  pause: 4,
 	  type: 'success'
 	});	
@@ -595,10 +595,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.measure = function(event) 
 	var title = '';
 	var content = '';
 	if (order == 1) {
-		title += 'Strecke';
+		title += i18n('Strecke');
 		content += measure.toFixed(3) + " " + units;
 	} else {
-		title += 'Fl&auml;che';
+		title += i18n('Flaeche');
 		content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 	}
 	new Ext.Window({

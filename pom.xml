@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>de.ingrid</groupId>
 		<artifactId>ingrid-base-pom</artifactId>
@@ -24,7 +25,10 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<!-- add class files to WEB-INF/classes also config files -> CONFIG-FILES needed at runtime in classes-path -->
+					<!--
+						add class files to WEB-INF/classes also config files ->
+						CONFIG-FILES needed at runtime in classes-path
+					-->
 					<archiveClasses>false</archiveClasses>
 					<archive>
 						<manifestEntries>
@@ -43,7 +47,7 @@
 							<goal>compress</goal>
 						</goals>
 					</execution>
-				</executions>        
+				</executions>
 				<configuration>
 					<nosuffix>false</nosuffix>
 					<preProcessAggregates>true</preProcessAggregates>
@@ -85,6 +89,7 @@
 							<includes>
 								<include>lib/openlayers.addins/LoadingPanel-min.js</include>
 								<include>lib/geoext.ux/SimplePrint-min.js</include>
+								<include>lib/geoext.ux/Locale-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>frontend/**/*-min.js</include>
 							</includes>
@@ -99,6 +104,16 @@
 								<include>downloads/README.txt</include>
 							</includes>
 						</aggregation>
+						<aggregation>
+							<!-- wms-copied-maps -->
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/wms/README.txt</output>
+							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
+							<includes>
+								<include>wms/README.txt</include>
+							</includes>
+						</aggregation>
 					</aggregations>
 				</configuration>
 			</plugin>
@@ -106,7 +121,10 @@
 	</build>
 
 	<!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
-	<!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
+	<!--
+		ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM
+		ingrid-base-pom, SO ASSEMBLY PLUGIN WORKS !!!!!!!!
+	-->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -174,7 +192,7 @@
 					<artifactId>junit-dep</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -229,6 +247,11 @@
 			<artifactId>print-lib</artifactId>
 			<version>1.2-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- ==================== REPOSITORIES ==================== -->
@@ -243,12 +266,12 @@
 			<url>http://dev.mapfish.org/maven/repository</url>
 		</repository>
 	</repositories>
-  
+
 	<pluginRepositories>
 		<pluginRepository>
 			<name>oss.sonatype.org</name>
 			<id>oss.sonatype.org</id>
 			<url>http://oss.sonatype.org/content/groups/public</url>
 		</pluginRepository>
-	</pluginRepositories>  
+	</pluginRepositories>
 </project>

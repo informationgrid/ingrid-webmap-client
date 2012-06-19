@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window, {
 	id:'featInfoDia',
-	title: "Feature Info",
+	title: i18n('tFeatureInfo'),
 	closable: true,
 	draggable: true,
 	resizable: true,
@@ -161,7 +161,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 
 					items:{
 							xtype: 'radiogroup',
-                            fieldLabel: 'Auswahl zu Suchanfrage hinzuf&uuml;gen',
+                            fieldLabel: i18n('tAuswahlZuSuchanfrageHinzufuegen'),
                             columns:1,
                             id:"AdministrativeSelection",
                             items: items
@@ -176,7 +176,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 				                }
 				            }
 					        },{
-					            text: 'Abbrechen',
+					            text: i18n('tAbbrechen'),
 					            handler: function(){
 					                p.destroy();
 					                self.hide();
@@ -189,7 +189,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 			}else{
 						Ext.ux.Msg.flash({
 							  body: self.body,	
-							  msg: 'Raumbezug außerhalb des Feldes',
+							  msg: i18n('tRaumbezugAuszerhalbDesFeldes'),
 							  pause: 3,
 							  type: 'success'
 							});	
@@ -236,8 +236,8 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.showSpinner = 
 
 	  Ext.MessageBox.show({
 	       id:'featureInfoMsgBox',	
-           title: 'Please wait',
-           msg: 'Requesting data',
+           title: i18n('tPleaseWait'),
+           msg: i18n('tRequestingData'),
            width:250,
            wait:true,
            waitConfig: {interval:100},

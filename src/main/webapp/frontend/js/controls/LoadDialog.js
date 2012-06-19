@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  *		state.
  */
 de.ingrid.mapclient.frontend.controls.LoadDialog = Ext.extend(Ext.Window, {
-	title: "Karte laden",
+	title: i18n('tKarteLaden'),
 	closable: true,
 	draggable: true,
 	resizable: true,
@@ -103,17 +103,17 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		height: 300,
 		viewConfig: {
 			forceFit: true,
-			emptyText: 'Keine Karten vorhanden'
+			emptyText: i18n('tKeineKartenVorhanden')
 		},
 		columns: [{
 			id: 'title',
-			header: 'Titel',
+			header: i18n('tTitle'),
 			width: 25,
 			sortable: true,
 			dataIndex: 'title'
 		}, {
 			id: 'description',
-			header: 'Beschreibung',
+			header: i18n('tBeschreibung'),
 			width: 45,
 			sortable: true,
 			renderer: function (val) {
@@ -122,7 +122,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			dataIndex: 'description'
 		}, {
 			id: 'date',
-			header: 'Datum',
+			header: i18n('tDatum'),
 			width: 20,
 			sortable: true,
 			renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
@@ -142,7 +142,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			width: 5,
 			sortable: false,
 			renderer: function(val) {
-				return '<div class="icon iconRemove" style="cursor:pointer;" title="l&ouml;schen"></div>';
+				return '<div class="icon iconRemove" style="cursor:pointer;" title="' + i18n('tloeschen') + '"></div>';
 			},
 			dataIndex: 'delete'
 		}]
@@ -153,13 +153,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			var record = grid.getStore().getAt(rowIndex);
 			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+record.get('shortUrl');
 			Ext.Msg.show({
-			   title: 'Kurz-URL',
+			   title: i18n('tKurzUrl'),
 			   msg: url,
 			   icon: Ext.MessageBox.INFO
 			});
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			if (confirm("Soll die Karte wirklich gel&ouml;scht werden?")) {
+			if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
 				var record = grid.getStore().getAt(rowIndex);
 				var state = new de.ingrid.mapclient.frontend.data.SessionState({
 					id: record.id
@@ -185,13 +185,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		},
 		items: [ this.fileList ],
 		buttons: [{
-			text: 'Laden',
+			text: i18n('tLaden'),
 			handler: function(btn) {
 				self.loadPressed = true;
 				self.close();
 			}
 		}, {
-			text: 'Abbrechen',
+			text: i18n('tAbbrechen'),
 			handler: function(btn) {
 				self.close();
 			}

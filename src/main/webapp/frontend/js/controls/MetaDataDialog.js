@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class MetaDataDialog is the dialog for displaying meta data about a wms or wms layer.
  */
 de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
-	title: "Metadaten",
+	title: i18n('tMetadaten'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -163,30 +163,30 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 	var tplStr = '<table class="metaDataTable">'+
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
-		'<tr><td>Titel</td><td>{title}</td></tr>'+
-		'<tr><td>Zusammenfassung</td><td>{layerAbstract}</td></tr>'+
-		'<tr><td>Koordinatensysteme</td><td>{projections}</td></tr>'+
-		'<tr><td>Datum der Registrierung</td><td>{date}</td></tr>'+
-		'<tr><td>Registrierende Stelle</td><td>{issuer}</td></tr>'+
-		'<tr><td>WMS ID</td><td>{wmsId}</td></tr>'+
-		'<tr><td>WMS Titel</td><td>{wmsTitle}</td></tr>'+
-		'<tr><td>WMS Abstract</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>Geb&uuml;hren</td><td>{fees}</td></tr>'+
-		'<tr><td>Zugriffsbeschr&auml;nkung</td><td>{restrictions}</td></tr>'+
+		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
+		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
+		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
+		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
+		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
+		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
+		'<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>'+
+		'<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>'+
+		'<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>'+
 
-		'<tr><td>Ansprechpartner</td><td>{contactPerson}</td></tr>'+
-		'<tr><td>Organisation</td><td>{contactOrganization}</td></tr>'+
-		'<tr><td>Adresse</td><td>{contactAddress}</td></tr>'+
-		'<tr><td>Stadt</td><td>{contactCity}</td></tr>'+
-		'<tr><td>Bundesland</td><td>{contactState}</td></tr>'+
-		'<tr><td>PLZ</td><td>{contactPostalcode}</td></tr>'+
-		'<tr><td>Telefon</td><td>{contactPhone}</td></tr>'+
-		'<tr><td>Fax</td><td>{contactFax}</td></tr>'+
-		'<tr><td>E-Mail</td><td>{contactEmail}</td></tr>'+
-		'<tr><td>Land</td><td>{contactCountry}</td></tr>'+
+		'<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>'+
+		'<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>'+
+		'<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>'+
+		'<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>'+
+		'<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>'+
+		'<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>'+
+		'<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>'+
+		'<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>'+
+		'<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>'+
+		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
 
-		'<tr><td>Metadaten</td><td>{metadata}</td></tr>'+
-		'<tr><td>Ebenen</td><td>{layers}</td></tr>'+
+		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
+		'<tr><td>' + i18n('tEbenen') + '</td><td>{layers}</td></tr>'+
 
 	'</table>';
 
@@ -202,31 +202,31 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 	var tplStr = '<table class="metaDataTable">'+
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
-		'<tr><td>Titel</td><td>{name}</td></tr>'+
-		'<tr><td>Zusammenfassung</td><td>{layerAbstract}</td></tr>'+
+		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
+		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>Minscale</td><td>{minScale}</td></tr>'+
 		'<tr><td>Maxscale</td><td>{maxScale}</td></tr>'+
-		'<tr><td>Koordinatensysteme</td><td>{projections}</td></tr>'+
-		'<tr><td>Datum der Registrierung</td><td>{date}</td></tr>'+
-		'<tr><td>Registrierende Stelle</td><td>{issuer}</td></tr>'+
-		'<tr><td>WMS ID</td><td>{wmsId}</td></tr>'+
-		'<tr><td>WMS Titel</td><td>{wmsTitle}</td></tr>'+
-		'<tr><td>WMS Abstract</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>Geb&uuml;hren</td><td>{fees}</td></tr>'+
-		'<tr><td>Zugriffsbeschr&auml;nkung</td><td>{restrictions}</td></tr>'+
+		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
+		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
+		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
+		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
+		'<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>'+
+		'<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>'+
+		'<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>'+
 
-		'<tr><td>Ansprechpartner</td><td>{contactPerson}</td></tr>'+
-		'<tr><td>Organisation</td><td>{contactOrganization}</td></tr>'+
-		'<tr><td>Adresse</td><td>{contactAddress}</td></tr>'+
-		'<tr><td>Stadt</td><td>{contactCity}</td></tr>'+
-		'<tr><td>Bundesland</td><td>{contactState}</td></tr>'+
-		'<tr><td>PLZ</td><td>{contactPostalcode}</td></tr>'+
-		'<tr><td>Telefon</td><td>{contactPhone}</td></tr>'+
-		'<tr><td>Fax</td><td>{contactFax}</td></tr>'+
-		'<tr><td>E-Mail</td><td>{contactEmail}</td></tr>'+
-		'<tr><td>Land</td><td>{contactCountry}</td></tr>'+
+		'<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>'+
+		'<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>'+
+		'<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>'+
+		'<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>'+
+		'<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>'+
+		'<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>'+
+		'<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>'+
+		'<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>'+
+		'<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>'+
+		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
 
-		'<tr><td>Metadaten</td><td>{metadata}</td></tr>'+
+		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
 
 	'</table>';
 

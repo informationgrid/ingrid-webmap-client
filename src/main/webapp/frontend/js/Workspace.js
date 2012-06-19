@@ -122,13 +122,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
-	var serviceCategories = de.ingrid.mapclient.Configuration
-			.getValue("serviceCategories");
-	if (serviceCategories) {
-		for (var i = 0, count = serviceCategories.length; i < count; i++) {
+	var mapServiceCategories = de.ingrid.mapclient.Configuration
+			.getValue("mapServiceCategories");
+	if (mapServiceCategories) {
+		for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel(
 					{
-						serviceCategory : serviceCategories[i],
+						mapServiceCategory : mapServiceCategories[i],
 						activeServicesPanel : this.activeServicesPanel
 					});
 			accordionItems.push(panel);
@@ -139,12 +139,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	var searchPanel = new Ext.FormPanel({
 				id : 'searchPanel',
-				title : 'Suche',
+				title : i18n('tSuche'),
 				autoScroll : true,
 				labelWidth : 150,
 				items : [{
 							xtype : 'label',
-							fieldLabel : 'Suchbegriff eingeben'
+							fieldLabel : i18n('tSuchbegriffEingeben')
 						}, {
 							name : "search",
 							id : 'search',
@@ -155,7 +155,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 										// this setting...
 						}, {
 							name : 'searchButton',
-							text : 'Suchen',
+							text : i18n('tSuchen'),
 							xtype : 'button',
 							formBind : true,
 							handler : function() {
@@ -191,7 +191,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				collapsible : true,
 				items : [{
 							id : 'Dienste',
-							title : 'Dienste',
+							title : i18n('tDienste'),
 							closable : false,
 							layout : 'accordion',
 							layoutConfig : {
@@ -200,21 +200,22 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 							border : false,
 							items : accordionItems
 						}, {
-							title : 'Legende',
+							title : i18n('tLegende'),
 							items : legendPanel
 						}]
 			});
 
 	// create the toolbar items
-	var toolbarItems = [];
+	var toolbarItems = []; 
 
 	// a) feature tool
+				
 	if (this.viewConfig.hasInfoTool) {
 
 		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog(
 				{
 					map : this.map
-				});
+				}); 
 		this.map.events.on({
 					'click' : featureInfoControl.query,
 					scope : featureInfoControl
@@ -222,8 +223,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconInfo',
-					tooltip : 'Objektinformationen',
-					enableToggle : true,
+					tooltip : i18n('tObjektinformationen'),
+					enableToggle : true, 
 					handler : function(btn) {
 						if (btn.pressed) {
 							featureInfoControl.activate();
@@ -234,7 +235,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}));
 
 	}
-
+ 
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control
@@ -245,13 +246,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					control : historyCtrl.previous,
 					disabled : true,
 					iconCls : 'iconZoomPrev',
-					tooltip : 'Zur&uuml;ck'
+					tooltip : i18n('tZurueck')
 				}));
 		toolbarItems.push(new GeoExt.Action({
 					control : historyCtrl.next,
 					disabled : true,
 					iconCls : 'iconZoomNext',
-					tooltip : 'Vor'
+					tooltip : i18n('tVor')
 				}));
 	}
 
@@ -281,10 +282,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 		toolbarItems.push(new Ext.SplitButton({
 			iconCls : 'iconMeassure',
-			tooltip : 'Messen',
+			tooltip : i18n('tMessen'),
 			menu : [new Ext.menu.CheckItem({
 						id : 'measurePath',
-						text : 'Strecke',
+						text : i18n('tStrecke'),
 						toggleGroup : 'measure',
 						listeners : {
 							checkchange : function(item, checked) {
@@ -299,7 +300,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						}
 					}), new Ext.menu.CheckItem({
 						id : 'measurePolygon',
-						text : 'Fl&auml;che',
+						text : i18n('tFlaeche'),
 						toggleGroup : 'measure',
 						listeners : {
 							checkchange : function(item, checked) {
@@ -322,7 +323,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconPrint',
-					tooltip : 'Drucken',
+					tooltip : i18n('tDrucken'),
 					handler : function(btn) {
 						
 						if(!printActive){
@@ -346,7 +347,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasLoadTool) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconLoad',
-					tooltip : 'Laden',
+					tooltip : i18n('tLaden'),
 					disabled : !this.session.hasUserId(),
 					handler : function(btn) {
 						var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog(
@@ -368,7 +369,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasSaveTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconSave',
-			tooltip : this.session.hasUserId() ? 'Speichern':'Zum Speichern erst einloggen.',
+			tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen'),
 			disabled : !this.session.hasUserId(),
 			handler : function(btn) {
 				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({ctrls:self.ctrls});
@@ -386,7 +387,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasDownloadTool) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconDownload',
-			tooltip : 'Karte herunterladen',
+			tooltip : i18n('tKarteHerunterladen'),
 			handler : function(btn) {
 				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({ctrls:self.ctrls});
 				dia.on('close', function(p) {
@@ -403,7 +404,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	if (this.viewConfig.hasInfoTool) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconHelp',
-					tooltip : 'Hilfe',
+					tooltip : i18n('tHilfe'),
 					handler : function(btn) {
 						window.open(de.ingrid.mapclient.HELP_URL,750,550);
 					}
@@ -424,6 +425,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					viewConfig : this.viewConfig,
 					ctrls: self.ctrls
 				});
+
 	}
 
 	this.on('afterrender', function(el) {
@@ -634,10 +636,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
 	var title = '';
 	var content = '';
 	if (order == 1) {
-		title += 'Strecke';
+		title += i18n('tStrecke');
 		content += measure.toFixed(3) + " " + units;
 	} else {
-		title += 'Fl&auml;che';
+		title += i18n('tFlaeche');
 		content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 	}
 	new Ext.Window({

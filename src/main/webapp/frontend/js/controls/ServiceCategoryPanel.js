@@ -12,7 +12,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
     /**
      * @cfg serviceCategory Object with service category definition as provided by the configuration
      */
-    serviceCategory: {},
+    mapServiceCategory: {},
 
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -30,7 +30,8 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	addBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
-	allExpanded: false
+	allExpanded: false,
+	metadataBtnActive: false
 });
 
 /**
@@ -43,7 +44,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
-        tooltip: 'Dienst hinzuf&uuml;gen',
+        tooltip: i18n('tDienstHinzufuegen'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
@@ -57,17 +58,18 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
-        tooltip: 'Metadaten',
+        tooltip: i18n('tMetadaten'),
         disabled: true,
         handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayMetaData(self.activeNode);
-        	}
+			if (self.activeNode && !self.metadataBtnActive) {
+				self.displayMetaData(self.activeNode);
+				self.metadataBtnActive = true;
+			}
         }
 	});
 	this.expandBtn = new Ext.Button({
 		iconCls: 'iconExpand',
-		tooltip: 'Alle auf/zuklappen',
+		tooltip: i18n('tAlleZuAufklappen'),
 		disabled: false,
 		handler: function(btn) {
 			if (self.allExpanded) {
@@ -80,7 +82,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		}
 	});
 	// transform service category object into tree node structure
-	var node = this.transform(this.serviceCategory);
+	var node = this.transform(this.mapServiceCategory);
 
 	Ext.apply(this, {
 		title: node.text,
@@ -129,18 +131,38 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform = function(serviceCategory) {
 	var children = [];
-
+	var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 	// transform sub categories
-	var subCategories = serviceCategory.serviceCategories;
+	var subCategories = serviceCategory.mapServiceCategories;
+
+		
+	if(subCategories){
+	
+	//TODO not very performant ?!?
 	for (var i=0, count=subCategories.length; i<count; i++) {
+		var catId = subCategories[i].id;
+		subCategories[i].services = [];
+		for(var j = 0; j < wmsServices.length; j++){
+			for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
+			if(catId == wmsServices[j].mapServiceCategories[k].id){
+			var tempService = new Object();
+			tempService.name = wmsServices[j].name;
+			tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
+			subCategories[i].services.push(tempService);
+			
+			}
+		}
+		
 		if(subCategories[i].services.length != 0){
 		var childNode = this.transform(subCategories[i]);
 		children.push(childNode);
 		}
 	}
+	}
 
 	// transform services
 	var services = serviceCategory.services;
+	if(services)
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);
@@ -180,11 +202,15 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateSer
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var service = node.attributes.service;
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layerName: node.layer
-		}).show();
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+					capabilitiesUrl: service.getCapabilitiesUrl(),
+					layerName: node.layer
+				}).show();
+				metaDialog.on('close', function(){
+				self.metadataBtnActive = false;
+				});
 	}
 };
