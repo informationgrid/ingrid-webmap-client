@@ -43,7 +43,9 @@ public class WmsService {
 		this.mapServiceCategories = mapServiceCategories;
 	}
 
-
+	public void setCheckedLayers(List<String> checkedLayers) {
+		this.checkedLayers = checkedLayers;
+	}
 
 	public List<String> getCheckedLayers() {
 		return checkedLayers;

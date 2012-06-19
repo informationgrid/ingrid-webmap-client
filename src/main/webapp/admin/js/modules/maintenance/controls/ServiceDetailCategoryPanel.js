@@ -9,8 +9,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.extend(Ext.Panel, {
 	title: 'Kategorie',
 	autoScroll: true,
-	serviceStore: null,
-	selectedCategory: null
+	selectedService: null
 });
 
 /**
@@ -55,8 +54,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 			for (var j=0, countJ=subCategories.length; j<countJ; j++) {
 				var subCategory = subCategories[j];
 				var isCheck = false;
-				for (var k=0, countK=this.selectedCategory.json.length; k<countK; k++) {
-					var categoryId=this.selectedCategory.json[k];
+				for (var k=0, countK=this.selectedService.json.length; k<countK; k++) {
+					var categoryId=this.selectedService.json[k];
 					if (categoryId instanceof Array){
 						for (var l=0, countL=categoryId.length; l<countL; l++) {
 							var id = categoryId[l];
@@ -107,23 +106,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.save = function(node) {
 	if(node){
-		var title = '';
-		var originalCapUrl = '';
 		var capabilitiesUrl = '';
 		var categories = [];
-		var layers = [];
-		var checkedLayers = [];
 		
-		if(this.selectedCategory.json){
-			if(this.selectedCategory.json[0]){
-				title = this.selectedCategory.json[0];
-			}
-			if(this.selectedCategory.json[1]){
-				capabilitiesUrl = this.selectedCategory.json[1];
+		if(this.selectedService.json){
+			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('capabilitiesUrl')]){
+				capabilitiesUrl = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('capabilitiesUrl')];
 			}
 		
-			if(this.selectedCategory.json[3]){
-				categories = this.selectedCategory.json[3];
+			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('mapServiceCategories')]){
+				categories = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('mapServiceCategories')];
 				var nodeIsCheck = false;
 				var nodeId = false;
 				
@@ -141,16 +133,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 				
 			}
 			
-			if(this.selectedCategory.json[4]){
-				originalCapUrl = this.selectedCategory.json[4];
-			}
-			
-			if(this.selectedCategory.json[5]){
-				layers = this.selectedCategory.json[5];
-			}
-			
-			if(this.selectedCategory.json[6]){
-				checkedLayers = this.selectedCategory.json[6];
+			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('name')]){
+				originalCapUrl = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('name')];
 			}
 		}
 
@@ -159,8 +143,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 				   capabilitiesUrl: capabilitiesUrl,
 				   originalCapUrl: null,
 				   categories: categories,
-				   layers: null,
-				   checkedLayers: null
+				   layers: null
 		   };
 		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), de.ingrid.mapclient.admin.DefaultSaveHandler);
 	}

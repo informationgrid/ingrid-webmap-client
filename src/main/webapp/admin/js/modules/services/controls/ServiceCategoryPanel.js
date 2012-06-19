@@ -145,4 +145,4 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 	return store;
 };
 
-de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.CATEGORIES_NAME = 'serviceCategories';
+de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.CATEGORIES_NAME = 'mapServiceCategories';
