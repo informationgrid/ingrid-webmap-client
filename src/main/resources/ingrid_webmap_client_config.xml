@@ -711,14 +711,6 @@
       </mapServiceCategories>
     </wmsService>
     <wmsService>
-      <name>test</name>
-      <capabilitiesUrl>test</capabilitiesUrl>
-      <mapServiceCategories>
-        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory[3]/mapServiceCategories/mapServiceCategory[2]"/>
-        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory[4]/mapServiceCategories/mapServiceCategory"/>
-      </mapServiceCategories>
-    </wmsService>
-    <wmsService>
       <name>Biotope 1:25.000 Baden-Württemberg</name>
       <capabilitiesUrl>http://rips-uis.lubw.baden-wuerttemberg.de/wms/cgi/UIS_0100000030200001?REQUEST=GetCapabilities&amp;SERVICE=WMS</capabilitiesUrl>
       <mapServiceCategories>
@@ -1592,7 +1584,7 @@
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[3]"/>
       </mapServiceCategories>
-      <originalCapUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</originalCapUrl>
+      <originalCapUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</originalCapUrl>
     </wmsService>    
   </wmsServices>
   <areaCategories>

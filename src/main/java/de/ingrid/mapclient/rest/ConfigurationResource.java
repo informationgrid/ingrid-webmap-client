@@ -56,7 +56,6 @@ import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.PersistentConfiguration;
 import de.ingrid.mapclient.model.AreaCategory;
-import de.ingrid.mapclient.model.CustomComparator;
 import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapArea;
 import de.ingrid.mapclient.model.MapExtend;
@@ -114,6 +113,11 @@ public class ConfigurationResource {
 	 * Path for adding a service
 	 */
 	private static final String ADD_SERVICE = "addservice";
+	
+	/**
+	 * Path for reload a service
+	 */
+	private static final String RELOAD_SERVICE = "reloadservice";
 
 	/**
 	 * Path for editing a service
@@ -636,7 +640,44 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 		return null;
-	}		
+	}
+	
+	/**
+	 * This method gets a ServiceContainer object from which adds to the WmsService list
+	 * and stores it in the persistent configuration
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 * @throws Exception 
+	 */
+	@POST
+	@Path(DYNAMIC_PATH + "/" + RELOAD_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void reloadService(String serviceString, @Context HttpServletRequest req) throws Exception {
+		JSONObject jsonService = new JSONObject(serviceString);
+		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
+		String originalCapUrl = jsonService.getString("originalCapUrl"); 
+		String title = jsonService.getString("title"); 
+		
+		String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
+		String [] splitFileName = fileName.split("\\?");
+		String path = req.getSession().getServletContext().getRealPath("wms");
+		
+		String response = HttpProxy.doRequest(originalCapUrl);
+		Document doc = stringToDom(response);
+		writeWmsCopyToFile(doc, req, title, path + "" + splitFileName[0]);
+		
+		WmsService service = findService(jsonService);
+		updateLayers(service, jsonService);
+		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+	}	
+	
+	
 	private void insertCopyIntoConfig(String url, JSONObject json) {
 			
 			try {
@@ -746,7 +787,13 @@ public class ConfigurationResource {
 	}
 
 	private String writeWmsCopy(Document doc, HttpServletRequest req,
-			String title) {
+			String title){
+		
+		return writeWmsCopyToFile(doc, req, title, null);
+	}
+	
+	private String writeWmsCopyToFile(Document doc, HttpServletRequest req,
+			String title, String existingFileName) {
 
 		String url = null;
 		String urlPrefix = null;
@@ -759,12 +806,15 @@ public class ConfigurationResource {
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
 			File f = null;
-			do {
-				url = new DbUrlMapper().createShortUrl(title);
-				url = url + ".xml";
-				f = new File(path + "/" + url);
-			} while (f.exists());
-			
+			if (existingFileName == null){
+				do {
+					url = new DbUrlMapper().createShortUrl(title);
+					url = url + ".xml";
+					f = new File(path + "/" + url);
+				} while (f.exists());
+			}else{
+				f = new File(existingFileName);
+			}
 			StreamResult result = new StreamResult(f);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {

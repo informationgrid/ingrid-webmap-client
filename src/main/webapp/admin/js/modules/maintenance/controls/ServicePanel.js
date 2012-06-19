@@ -35,6 +35,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 		}, {
 			name: 'checkedLayers',
 			type: 'array'
+		}, {
+			name: 'jsonLayers',
+			type: 'string'
 		}]
 	}),
 
@@ -64,7 +67,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	deleteServiceBtn:null,
 	reloadServiceBtn:null,
 	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers']
+	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers'],
+	rowModel:null
 });
 
 /**
@@ -82,6 +86,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	});
 	
 	this.serviceGrid.getSelectionModel().on('selectionchange', function(selModel, node) {
+		this.rowModel = selModel;
 		if(selModel.selection){
 			var serviceRecord = selModel.selection.record; 
 			if(self.selectedService != serviceRecord){
@@ -107,8 +112,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 				               // The first needs mapping, the others are very basic
 				               {name: 'title', mapping: 'Title'},
 				               {name: 'name', mapping: 'Name'},
-				               {name: 'display', mapping: '@queryable', type: 'int'},
-				               {name: 'select', mapping: '@queryable', type: 'int'},
 				               {name: 'featureInfo', mapping: '@queryable', type: 'int'},
 				               {name: 'legend', mapping: '@queryable', type: 'int'}
 				               
@@ -151,6 +154,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 									self.add(myBorderPanel);
 									self.doLayout();
 									self.selectedService = serviceRecord;
+									self.selectedService.data.jsonLayers = layerRecord;
 				               }
 				           }
 				    	});
@@ -418,9 +422,42 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 /**
  * Reload services
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(reloadService, self) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(self) {
 	var reloadService = self.selectedService;
-	// TODO: Reload Service
+	Ext.Msg.show({
+	   title:'Dienst neu einlesen',
+	   msg: 'Sind Sie sicher, das der ausgew&auml;hlte Dienst zur&uuml;ckgesetzt werden soll?',
+	   buttons: Ext.Msg.OKCANCEL,
+	   icon: Ext.MessageBox.QUESTION,
+	   fn: function(btn){
+		   if (btn == 'ok'){
+			   if(reloadService.data){
+				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
+				   // Reload service
+				   de.ingrid.mapclient.Configuration.setValue('reloadservice', Ext.encode(service), {
+						success: function() {
+							de.ingrid.mapclient.Configuration.load({
+								success: function() {
+									// Save load services
+									var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
+									// Set services to store
+									self.loadServices(self.serviceStore, services, self.jsonColumn);
+									// Refresh service panel
+									self.serviceGrid.getView().refresh();
+								},
+								failure: function() {
+									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+								}
+							});
+						},
+						failure: function() {
+							de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+							} 
+					   	});
+			   }
+		   }
+	   	}
+	});
 };
 
 /**
@@ -486,27 +523,38 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     				var layers = [];
     				var checkedLayers = [];
     				
-    				if(copyService.json[self.getJsonIndex('name')]){
-    					title = copyService.json[self.getJsonIndex('name')];
+    				if(copyService.data.name){
+    					title = copyService.data.name;
     				}
-    				if(copyService.json[self.getJsonIndex('capabilitiesUrl')]){
-    					capabilitiesUrl = copyService.json[self.getJsonIndex('capabilitiesUrl')];
+    				if(copyService.data.capabilitiesUrl){
+    					capabilitiesUrl = copyService.data.capabilitiesUrl;
     				}
     			
-    				if(copyService.json[self.getJsonIndex('mapServiceCategories')]){
-    					categories = copyService.json[self.getJsonIndex('mapServiceCategories')];
+    				if(copyService.data.categories){
+    					categories = copyService.data.categories;
     				}
     				
-    				if(copyService.json[self.getJsonIndex('originalCapUrl')]){
-    					originalCapUrl = copyService.json[self.getJsonIndex('originalCapUrl')];
+    				if(copyService.data.originalCapUrl){
+    					originalCapUrl = copyService.data.originalCapUrl;
     				}
     				
-    				if(copyService.json[self.getJsonIndex('layers')]){
-    					layers = copyService.json[self.getJsonIndex('layers')];
-    				}
-    				
-    				if(copyService.json[self.getJsonIndex('checkedLayers')]){
-    					checkedLayers = copyService.json[self.getJsonIndex('checkedLayers')];
+    				if(copyService.data.jsonLayers){
+    					var layers = [];
+    					for (var i=0, countI=copyService.data.jsonLayers.length; i<countI; i++) { 
+    						var layer = copyService.data.jsonLayers[i];
+    						var checkedLayers = copyService.data.checkedLayers;
+    						if(checkedLayers && checkedLayers.length > 0){
+    							var layerIsFound = false;
+    							for (var j=0, countJ=checkedLayers.length; j<countJ; j++) { 
+    								if(layer.index == checkedLayers[j]){
+    									layerIsFound = true;
+    									break;
+    								}
+    							}
+    							copyService.data.jsonLayers[i].checked = layerIsFound;
+    						}
+    					}
+    					layers = copyService.data.jsonLayers;
     				}
     				
     				var service = {
@@ -514,8 +562,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   capabilitiesUrl: capabilitiesUrl,
     					   originalCapUrl: (originalCapUrl) ? originalCapUrl : capabilitiesUrl,
     					   categories: categories,
-    					   layers: layers,
-    					   checkedLayers: checkedLayers
+    					   layers: layers
     				};
     				// Save copy to config
     				de.ingrid.mapclient.Configuration.setValue('copyservice', Ext.encode(service),
@@ -531,6 +578,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     									self.serviceGrid.getView().refresh();
     									// Scroll to bottom
     									self.serviceGrid.getView().focusRow(self.serviceStore.totalLength - 1);
+    									self.serviceGrid.getSelectionModel().select(self.serviceStore.totalLength - 1);
     									de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
     								},
     								failure: function() {
