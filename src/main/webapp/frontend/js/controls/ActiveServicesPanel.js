@@ -282,29 +282,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 			}
 		});
-		//we check the services which are meant to be checked by default
-		//TODO baselayer needs special treatment
 
-		node.on('expand', function(node, checked){
-		console.debug("expand event triggered");
-			var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-			for(var i = 0; i < wmsServices.length; i++){
-				if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-					console.debug("name: "+service.capabilitiesUrl)
-					var cl = wmsServices[i].checkedLayers;
-					for(var j = 0; j < cl.length; j++){
-						var k = 0;
-						node.eachChild(function(n) {
-				    	if(cl[j] == k)
-				        n.getUI().toggleCheck(true);
-
-				        k++;
-				    	});
-					}
-					break;
-				}
-			}		
-		});
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			var i = 0;
@@ -388,7 +366,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				for(var j = 0; j < cl.length; j++){
 					var k = 0;
 					node.eachChild(function(n) {
-			    	if(cl[j] == k)
+			    	if(cl[j] == n.layer.params.LAYERS)
 			        n.getUI().toggleCheck(true);
 
 			        k++;
@@ -487,24 +465,33 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
 	var self = this;
-	var layer = node.attributes.layer;
-	var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
-	if (service) {
-		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layer: layer
-		}).show();
-		metaDialog.on('close', function(){self.metadataBtnActive = false});
-	}else{
-		service = node.attributes.service;
-		if(service){
+	var layer = null;
+	if(node.attributes.layer)
+		layer = node.attributes.layer;
+	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
+	if(!layer)
+		layer = node.childNodes[0].layer;
+		
+		var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
+		if (service) {
 			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				capabilitiesUrl: service.getCapabilitiesUrl(),
 				layer: layer
 			}).show();
 			metaDialog.on('close', function(){self.metadataBtnActive = false});
+		}else{
+			service = node.attributes.service;
+			if(service){
+				var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+					capabilitiesUrl: service.getCapabilitiesUrl(),
+					layer: layer
+				}).show();
+				metaDialog.on('close', function(){
+				self.metadataBtnActive = false;
+				});
+			}
 		}
-	}
+	
 };
 
 /**

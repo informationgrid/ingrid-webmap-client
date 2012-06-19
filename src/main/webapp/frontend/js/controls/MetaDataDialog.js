@@ -79,6 +79,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 
 	// select the template and map the data to the template variables
 	var tpl = null;
+	var html = null;
 	var data = {};
 	if (isServiceRequest) {
 		tpl = this.serviceInfoTpl;
@@ -95,6 +96,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		data.layers = layerNames.join(', ');
 		data.wmsTitle = data.title;
 		data.wmsAbstract = data['abstract'];
+		
+		html = tpl.apply(data);
 		// TODO do more mapping if required
 	}
 	else {
@@ -109,13 +112,42 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		// id is OpenLayers id per default (remove it)
 		data.id = null;
 		data.metadata = this.serializeObject(data.metadata);
+		var htmlData = new Object();
+		// we do this by hand since the apply method doesnt apply our data very well
+		htmlData.name = data.name;
+		htmlData.layerAbstract = data['abstract'];
+		htmlData.projections = data.projection.projCode; //TODO in case of more?
+		htmlData.minScale = data.minScale;
+		htmlData.maxScale = data.maxScale;
+		htmlData.date = "";
+		htmlData.issuer = data.contactInformation.personPrimary.organization;
+		htmlData.wmsId = data.name;
+		htmlData.wmsAbstract = data.wmsAbstract;
+		htmlData.wmsTitle = data.wmsTitle;
+		htmlData.fees = "";
+		htmlData.restrictions = "";
+		htmlData.contactPerson = data.contactInformation.personPrimary.person;
+		htmlData.contactOrganization = data.contactInformation.personPrimary.organization;
+		htmlData.contactAddress = data.contactInformation.contactAddress.address;
+		htmlData.contactCity = data.contactInformation.contactAddress.city;
+		htmlData.contactState = data.contactInformation.contactAddress.stateOrProvince;
+		htmlData.contactCountry = data.contactInformation.contactAddress.country;
+		htmlData.contactPostalcode = data.contactInformation.contactAddress.postcode;
+		htmlData.contactPhone = data.contactInformation.phone;
+		htmlData.contactFax = data.contactInformation.fax;
+		htmlData.contactEmail = data.contactInformation.email;
+		htmlData.metadata = data.metadata;
 		// TODO do more mapping if required
+		
+		
+		html = tpl.apply(htmlData);
 	}
 
 	// render the content
 	if (tpl != null) {
+
 		this.windowContent.add(new Ext.Panel({
-			html: tpl.apply(data),
+			html: html,
 			border: false
 		}));
 		this.windowContent.doLayout();
@@ -132,7 +164,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
-		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{abstract}</td></tr>'+
+		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
 		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
 		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
@@ -171,7 +203,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
-		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{abstract}</td></tr>'+
+		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>Minscale</td><td>{minScale}</td></tr>'+
 		'<tr><td>Maxscale</td><td>{maxScale}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
