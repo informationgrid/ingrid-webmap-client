@@ -124,6 +124,20 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 
 	if (path.length == 3) {
 		// create the service store for path length 3
+		// we do this by hand now, since categories dont maintain services anymore
+		var services = [];
+		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+			for(var j = 0; j < wmsServices.length; j++){
+				for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
+				if(category.id == wmsServices[j].mapServiceCategories[k].id){
+				var tempService = new Object();
+				tempService.name = wmsServices[j].name;
+				tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
+				services.push(tempService);
+				
+				}
+			}
+				
 		store = new Ext.data.ArrayStore({
 			autoDestroy: false, // the component will be destroyed when categories are sorted, but the store should remain
 			fields: [{
@@ -135,7 +149,7 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 			}]
 		});
 		store.setBaseParam("type", "services");
-		this.initializeStore(store, category.services);
+		this.initializeStore(store, services);
 	}
 	else {
 		// for other paths we create a categories store

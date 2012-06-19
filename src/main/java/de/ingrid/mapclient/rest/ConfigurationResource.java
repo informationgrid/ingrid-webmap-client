@@ -9,6 +9,8 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -62,8 +64,7 @@ import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
-import de.ingrid.mapclient.model.ServiceCategory;
-import de.ingrid.mapclient.model.WmsServer;
+
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.utils.xml.XMLUtils;
@@ -113,11 +114,6 @@ public class ConfigurationResource {
 	 * Path for adding a service
 	 */
 	private static final String ADD_SERVICE = "addservice";
-	
-	/**
-	 * Path for reload a service
-	 */
-	private static final String RELOAD_SERVICE = "reloadservice";
 
 	/**
 	 * Path for editing a service
@@ -386,21 +382,15 @@ public class ConfigurationResource {
 	 * The first serviceCategories are supposed to be contained in a serviceCategories named 'root'.
 	 */
 	@POST
-	@Path(DYNAMIC_PATH+"/serviceCategories")
+	@Path(DYNAMIC_PATH+"/mapServiceCategories")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void setServiceCategories(String serviceCategoriesStr, @Context HttpServletRequest req) {
+	public void setMapServiceCategories(String mapServiceCategoriesStr, @Context HttpServletRequest req) {
 		try {
 			// convert json string to ServiceCategory
-			JSONObject rootObj = new JSONObject(serviceCategoriesStr);
-			ServiceCategory rootCategory = this.createServiceCategory(rootObj);
-			// TODO is this method obsolete?
-			// we currently need it, because it is the way the admin interface delivers data
-			// but this should change
-			Configuration config = ConfigurationProvider.INSTANCE.getConfiguration();
-			config.setServiceCategories(rootCategory.getServiceCategories());
-			ConfigurationProvider.INSTANCE.getPersistentConfigurationFromConfiguration();
-			PersistentConfiguration persConfig = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
-			ConfigurationProvider.INSTANCE.write(persConfig);
+			JSONObject rootObj = new JSONObject(mapServiceCategoriesStr);
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			config.setMapServiceCategories(this.createMapServiceCategories(rootObj));
+			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
 			log.error("Error setting service categories", ex);
@@ -408,39 +398,45 @@ public class ConfigurationResource {
 		}
 	}
 
+
 	/**
-	 * Create a ServiceCategory instance from the given JSON object
+	 * Create a MapServiceCategory instance from the given JSON object
 	 * @param object JSONObject instance containing the category data
 	 * @return ServiceCategory instance
 	 * @throws JSONException
 	 */
-	private ServiceCategory createServiceCategory(JSONObject object) throws JSONException {
-		// get category name
-		String categoryName = object.getString("name");
-		// process services
-		List<WmsServer> services = new ArrayList<WmsServer>();
-		if (object.has("services")) {
-			JSONArray servicesTmp = object.getJSONArray("services");
-			for (int i=0, count=servicesTmp.length(); i<count; i++) {
-				JSONObject serviceObj = servicesTmp.getJSONObject(i);
-				WmsServer service = new WmsServer(serviceObj.getString("name"), serviceObj.getString("capabilitiesUrl"));
-				services.add(service);
-			}
-		}
-		// process categories
-		List<ServiceCategory> categories = new ArrayList<ServiceCategory>();
-		if (object.has("serviceCategories")) {
-			JSONArray categoriesTmp = object.getJSONArray("serviceCategories");
-			for (int i=0, count=categoriesTmp.length(); i<count; i++) {
-				JSONObject categoryObj = categoriesTmp.getJSONObject(i);
-				ServiceCategory category = this.createServiceCategory(categoryObj);
-				categories.add(category);
-			}
-		}
-		ServiceCategory result = new ServiceCategory(categoryName, categories, services);
-		return result;
-	}
+	private List<MapServiceCategory> createMapServiceCategories(JSONObject object) throws JSONException {
+		
 
+		List<MapServiceCategory> categories = new ArrayList<MapServiceCategory>();
+		// process categories
+		
+		if (object.has("mapServiceCategories")) {
+			JSONArray categoriesTmp = object.getJSONArray("mapServiceCategories");
+			int id = 0;
+			
+			for (int i=0, count=categoriesTmp.length(); i<count; i++) {
+				MapServiceCategory category = null;
+
+				List<MapServiceCategory> subCategories = new ArrayList<MapServiceCategory>();
+				if(categoriesTmp.getJSONObject(i).has("mapServiceCategories")){
+					JSONArray categoryObj = categoriesTmp.getJSONObject(i).getJSONArray("mapServiceCategories");
+					for (int j=0, count2=categoryObj.length(); j < count2; j++){
+						MapServiceCategory cat = new MapServiceCategory(categoryObj.getJSONObject(j).getString("name"), null, id);
+						subCategories.add(cat);
+						id++;
+					}
+				}
+				category = new MapServiceCategory(categoriesTmp.getJSONObject(i).getString("name"), subCategories, id);
+				categories.add(category);
+				id++;
+			}
+		}
+
+		
+
+		return categories;
+	}
 	/**
 	 * Set the area categories
 	 * @param String containing a JSON encoded category/area hierarchy.
@@ -490,7 +486,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(DYNAMIC_PATH + "/" + COPY_SERVICE)
+	@Path(COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
@@ -560,23 +556,22 @@ public class ConfigurationResource {
 		try {
 				// find according file, update xml
 				// find wmsservice in conf and update
-				// write conf
+				// write conf 
 				JSONObject jsonService = new JSONObject(serviceString);
-				WmsService service = findService(jsonService);
-				if(service != null){
-					if(!jsonService.getString("title").equals("null")){
-						service.setName(jsonService.getString("title"));
-					}
-					if(!jsonService.getString("categories").equals("null")){
-						//rewrite the categories of the service
-						updateCategories(service, jsonService);
-					}
-					if(!jsonService.getString("layers").equals("null")){
-						updateLayersInFile(jsonService, req);
-						updateLayers(service, jsonService);
-					}
-					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+				if(!jsonService.getString("title").equals("null")){
+					WmsService service = findService(jsonService);
+					service.setName(jsonService.getString("title"));
 				}
+				if(!jsonService.getString("categories").equals("null")){
+					//rewrite the categories of the service
+					WmsService service = findService(jsonService);
+					updateCategories(service, jsonService);
+				}
+				if(!jsonService.getString("layers").equals("null")){
+					updateLayersInFile(jsonService, req);
+					
+				}
+				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -640,44 +635,7 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 		return null;
-	}
-	
-	/**
-	 * This method gets a ServiceContainer object from which adds to the WmsService list
-	 * and stores it in the persistent configuration
-	 * the following structure is expected:
-	 * {title:"title",
-	 * 	originalCapUrl: "http://xyz",
-	 *  categories: [6,9,...],
-	 *  layers: [Layer, Layer, Layer],
-	 *  checkedLayers: [3,5,7]}
-	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
-	 * @param String containing the object
-	 * @throws Exception 
-	 */
-	@POST
-	@Path(DYNAMIC_PATH + "/" + RELOAD_SERVICE)
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void reloadService(String serviceString, @Context HttpServletRequest req) throws Exception {
-		JSONObject jsonService = new JSONObject(serviceString);
-		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
-		String originalCapUrl = jsonService.getString("originalCapUrl"); 
-		String title = jsonService.getString("title"); 
-		
-		String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
-		String [] splitFileName = fileName.split("\\?");
-		String path = req.getSession().getServletContext().getRealPath("wms");
-		
-		String response = HttpProxy.doRequest(originalCapUrl);
-		Document doc = stringToDom(response);
-		writeWmsCopyToFile(doc, req, title, path + "" + splitFileName[0]);
-		
-		WmsService service = findService(jsonService);
-		updateLayers(service, jsonService);
-		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
-	}	
-	
-	
+	}		
 	private void insertCopyIntoConfig(String url, JSONObject json) {
 			
 			try {
@@ -688,12 +646,7 @@ public class ConfigurationResource {
 					sortedLayerList.add(layers.getJSONObject(i));
 				}
 				
-				// first of all we sort the list according to their indices
-				// we do this to not have any problems later when deleting layers
-				//TODO change this we now have names no more indices
-
 				List<String> checkLayers = new ArrayList<String>();
-				int deleted = 0;
 				if (layers != null) {
 					for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
 						if(sortedLayerList.get(i).getBoolean("checked")){
@@ -787,13 +740,7 @@ public class ConfigurationResource {
 	}
 
 	private String writeWmsCopy(Document doc, HttpServletRequest req,
-			String title){
-		
-		return writeWmsCopyToFile(doc, req, title, null);
-	}
-	
-	private String writeWmsCopyToFile(Document doc, HttpServletRequest req,
-			String title, String existingFileName) {
+			String title) {
 
 		String url = null;
 		String urlPrefix = null;
@@ -806,15 +753,12 @@ public class ConfigurationResource {
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
 			File f = null;
-			if (existingFileName == null){
-				do {
-					url = new DbUrlMapper().createShortUrl(title);
-					url = url + ".xml";
-					f = new File(path + "/" + url);
-				} while (f.exists());
-			}else{
-				f = new File(existingFileName);
-			}
+			do {
+				url = new DbUrlMapper().createShortUrl(title);
+				url = url + ".xml";
+				f = new File(path + "/" + url);
+			} while (f.exists());
+			
 			StreamResult result = new StreamResult(f);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
@@ -849,9 +793,6 @@ public class ConfigurationResource {
 				for (int i = 0, count = layers.length(); i < count; i++) {
 
 					if (layers.getJSONObject(i).getBoolean("deactivated")) {
-						// we have to substract deleted from index, because
-						// everytime we remove a node, the index of the nodelist
-						// changes
 						
 						Node n = (Node) xpath.evaluate("//Name[text()=\""
 								+ layers.getJSONObject(i).getString("index") + "\"]",
@@ -927,16 +868,15 @@ public class ConfigurationResource {
 			try {
 				url = json.getString("capabilitiesUrl");
 				String fileName = url.substring(url.lastIndexOf("/"), url.length());			
-				String [] splitFileName = fileName.split("\\?");
 				String path = req.getSession().getServletContext().getRealPath("wms");
-				File f = new File(path+splitFileName[0]);
+				File f = new File(path+fileName);
 				boolean deleted = false;
 				if(f.exists())
 					deleted = f.delete();
 				if(deleted)
-					log.debug("File: "+splitFileName[0]+" deleted");
+					log.debug("File: "+fileName+" deleted");
 				else
-					log.debug("could not delete file: "+splitFileName[0]);
+					log.debug("could not delete file: "+fileName);
 			
 			} catch (JSONException e) {
 				log.error("on file deletion json exception occured: ",e);
@@ -1014,43 +954,14 @@ public class ConfigurationResource {
 		
 	}	
 
-	private void updateLayers(WmsService service, JSONObject jsonService) {
-		JSONArray layers;
-		try {
-			layers = jsonService.getJSONArray("layers");
-			List<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
-			for (int i = 0, count = layers.length(); i < count; i++){
-				sortedLayerList.add(layers.getJSONObject(i));
-			}
-			
-			// first of all we sort the list according to their indices
-			// we do this to not have any problems later when deleting layers
-			//TODO change this we now have names no more indices
-
-			List<String> checkLayers = new ArrayList<String>();
-			if (layers != null) {
-				for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
-					if(sortedLayerList.get(i).getBoolean("checked")){
-						String checked = sortedLayerList.get(i).getString("index");
-						checkLayers.add(checked);
-					}
-				}
-			}
-			service.setCheckedLayers(checkLayers);
-		} catch (JSONException e) {
-			log.error("error on upddating categories of service: ",e);
-		}
-		
-	}	
 
 	private void updateLayersInFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
 		try {
 			url = jsonService.getString("capabilitiesUrl");
-			String fileName = url.substring(url.lastIndexOf("/"), url.length());
-			String [] splitFileName = fileName.split("\\?");
+			String fileName = url.substring(url.lastIndexOf("/"), url.length());			
 			String path = req.getSession().getServletContext().getRealPath("wms");
-			File f = new File(path+splitFileName[0]);	
+			File f = new File(path+fileName);	
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(f);
