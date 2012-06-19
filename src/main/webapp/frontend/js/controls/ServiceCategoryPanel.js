@@ -202,6 +202,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateSer
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var service = node.attributes.service;
 	if (service) {
 		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
