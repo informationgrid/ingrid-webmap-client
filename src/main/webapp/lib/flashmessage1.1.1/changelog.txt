@@ -1,0 +1,10 @@
+Ext.ux.MessageBox.flash.js
+
+Version: 1.1.1
+Fixes:
+- Fixed transparency bug in top right box
+- Fixed bug in flash message pause time
+- Fixed documentation
+
+Addons:
+- Added autoWidth config option

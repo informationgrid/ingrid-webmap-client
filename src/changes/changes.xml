@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+  <properties>
+    <title>Changes Web Map Client</title>
+    <author email="joachim@wemove.com">Joachim Müller</author>
+  </properties>
+  <body>
+    <release version="3.2.0-SNAPSHOT" date="????-??-??" description="InGrid 3.2 Initial-Release">
+      <action type="add">
+        Initial Version of Web Map Client (InGrid 3.2).
+      </action>
+    </release>
+  </body>
+</document>

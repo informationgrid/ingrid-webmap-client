@@ -1,0 +1,26 @@
+
+body {
+	font-family:helvetica,tahoma,verdana,sans-serif;
+	font-size:13px;
+}
+
+.title {
+	font-size:20px !important;
+	font-weight:bold !important;
+	color:#4C7FCC;
+	padding:10px !important;
+}
+
+.iconRemove {
+	background-image: url(../../shared/images/icon_delete.png);
+	cursor: pointer;
+	width: 16px; 
+	height: 16px;
+}
+
+.iconInfo {
+	background-image: url(../../shared/images/icon_info.png);
+	cursor: pointer;
+	width: 16px; 
+	height: 16px;
+}

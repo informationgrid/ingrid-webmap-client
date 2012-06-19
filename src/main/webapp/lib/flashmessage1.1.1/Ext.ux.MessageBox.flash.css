@@ -1,0 +1,53 @@
+/* 
+    Document   : Ext.ux.MessageBox.flashMessageBox
+    Created on : 22/01/2010, 16:26:28
+    Author     : Otavio
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.flashMessageBox .success  {
+    background: none;
+    color: #000000;
+     z-index:20000;
+}
+
+.flashMessageBox .msg {
+    background: #D9E7F8;
+    border: 1px solid #8DB2E3;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    font-family: arial;
+    font-size: 13px;
+    font-weight: normal;
+    margin-top: 20px;
+    padding: 20px 10px 5px;
+    text-align: center;
+    width: 300px;
+	 z-index:20000;
+}
+/* 
+    Document   : Ext.ux.MessageBox.flash
+    Created on : 22/01/2010, 16:26:28
+    Author     : Otavio
+    Description:
+        Purpose of the stylesheet follows.
+*/
+body{
+    padding: 0px;
+    margin:0px;
+}
+
+#msg-div {
+    position:absolute;
+    width: 100%;
+    top:10px;
+    z-index:20000;
+    padding: 0px;
+    margin:0px;
+}
+
+
+
+
+
