@@ -114,6 +114,11 @@ public class ConfigurationResource {
 	 * Path for adding a service
 	 */
 	private static final String ADD_SERVICE = "addservice";
+	
+	/**
+	 * Path for reload a service
+	 */
+	private static final String RELOAD_SERVICE = "reloadservice";
 
 	/**
 	 * Path for editing a service
@@ -486,7 +491,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(COPY_SERVICE)
+	@Path(DYNAMIC_PATH + "/" + COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
@@ -556,22 +561,23 @@ public class ConfigurationResource {
 		try {
 				// find according file, update xml
 				// find wmsservice in conf and update
-				// write conf 
+				// write conf
 				JSONObject jsonService = new JSONObject(serviceString);
-				if(!jsonService.getString("title").equals("null")){
-					WmsService service = findService(jsonService);
-					service.setName(jsonService.getString("title"));
+				WmsService service = findService(jsonService);
+				if(service != null){
+					if(!jsonService.getString("title").equals("null")){
+						service.setName(jsonService.getString("title"));
+					}
+					if(!jsonService.getString("categories").equals("null")){
+						//rewrite the categories of the service
+						updateCategories(service, jsonService);
+					}
+					if(!jsonService.getString("layers").equals("null")){
+						updateLayersInFile(jsonService, req);
+						updateLayers(service, jsonService);
+					}
+					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 				}
-				if(!jsonService.getString("categories").equals("null")){
-					//rewrite the categories of the service
-					WmsService service = findService(jsonService);
-					updateCategories(service, jsonService);
-				}
-				if(!jsonService.getString("layers").equals("null")){
-					updateLayersInFile(jsonService, req);
-					
-				}
-				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -635,7 +641,44 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 		return null;
-	}		
+	}
+	
+	/**
+	 * This method gets a ServiceContainer object from which adds to the WmsService list
+	 * and stores it in the persistent configuration
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 * @throws Exception 
+	 */
+	@POST
+	@Path(DYNAMIC_PATH + "/" + RELOAD_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void reloadService(String serviceString, @Context HttpServletRequest req) throws Exception {
+		JSONObject jsonService = new JSONObject(serviceString);
+		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
+		String originalCapUrl = jsonService.getString("originalCapUrl"); 
+		String title = jsonService.getString("title"); 
+		
+		String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
+		String [] splitFileName = fileName.split("\\?");
+		String path = req.getSession().getServletContext().getRealPath("wms");
+		
+		String response = HttpProxy.doRequest(originalCapUrl);
+		Document doc = stringToDom(response);
+		writeWmsCopyToFile(doc, req, title, path + "" + splitFileName[0]);
+		
+		WmsService service = findService(jsonService);
+		updateLayers(service, jsonService);
+		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+	}	
+	
+	
 	private void insertCopyIntoConfig(String url, JSONObject json) {
 			
 			try {
@@ -740,7 +783,13 @@ public class ConfigurationResource {
 	}
 
 	private String writeWmsCopy(Document doc, HttpServletRequest req,
-			String title) {
+			String title){
+		
+		return writeWmsCopyToFile(doc, req, title, null);
+	}
+	
+	private String writeWmsCopyToFile(Document doc, HttpServletRequest req,
+			String title, String existingFileName) {
 
 		String url = null;
 		String urlPrefix = null;
@@ -753,12 +802,15 @@ public class ConfigurationResource {
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
 			File f = null;
-			do {
-				url = new DbUrlMapper().createShortUrl(title);
-				url = url + ".xml";
-				f = new File(path + "/" + url);
-			} while (f.exists());
-			
+			if (existingFileName == null){
+				do {
+					url = new DbUrlMapper().createShortUrl(title);
+					url = url + ".xml";
+					f = new File(path + "/" + url);
+				} while (f.exists());
+			}else{
+				f = new File(existingFileName);
+			}
 			StreamResult result = new StreamResult(f);
 			transformer.transform(source, result);
 		} catch (TransformerException e) {
@@ -868,15 +920,16 @@ public class ConfigurationResource {
 			try {
 				url = json.getString("capabilitiesUrl");
 				String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+				String [] splitFileName = fileName.split("\\?");
 				String path = req.getSession().getServletContext().getRealPath("wms");
-				File f = new File(path+fileName);
+				File f = new File(path+splitFileName[0]);
 				boolean deleted = false;
 				if(f.exists())
 					deleted = f.delete();
 				if(deleted)
-					log.debug("File: "+fileName+" deleted");
+					log.debug("File: "+splitFileName[0]+" deleted");
 				else
-					log.debug("could not delete file: "+fileName);
+					log.debug("could not delete file: "+splitFileName[0]);
 			
 			} catch (JSONException e) {
 				log.error("on file deletion json exception occured: ",e);
@@ -954,14 +1007,43 @@ public class ConfigurationResource {
 		
 	}	
 
+	private void updateLayers(WmsService service, JSONObject jsonService) {
+		JSONArray layers;
+		try {
+			layers = jsonService.getJSONArray("layers");
+			List<JSONObject> sortedLayerList = new ArrayList<JSONObject>();
+			for (int i = 0, count = layers.length(); i < count; i++){
+				sortedLayerList.add(layers.getJSONObject(i));
+			}
+			
+			// first of all we sort the list according to their indices
+			// we do this to not have any problems later when deleting layers
+			//TODO change this we now have names no more indices
+
+			List<String> checkLayers = new ArrayList<String>();
+			if (layers != null) {
+				for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
+					if(sortedLayerList.get(i).getBoolean("checked")){
+						String checked = sortedLayerList.get(i).getString("index");
+						checkLayers.add(checked);
+					}
+				}
+			}
+			service.setCheckedLayers(checkLayers);
+		} catch (JSONException e) {
+			log.error("error on upddating categories of service: ",e);
+		}
+		
+	}	
 
 	private void updateLayersInFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
 		try {
 			url = jsonService.getString("capabilitiesUrl");
-			String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+			String fileName = url.substring(url.lastIndexOf("/"), url.length());
+			String [] splitFileName = fileName.split("\\?");
 			String path = req.getSession().getServletContext().getRealPath("wms");
-			File f = new File(path+fileName);	
+			File f = new File(path+splitFileName[0]);	
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(f);

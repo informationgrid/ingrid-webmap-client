@@ -12,7 +12,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel = Ext.exte
     autoScroll: true,
     activeNode: null,
 	selectedService: null,
-	treePanel:null,
+	mainPanel:null,
 	store:null,
 	layerRecord:[]
 });
@@ -40,9 +40,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					break;
 				}
 			}
-			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend])
+			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
+			this.layerRecord[i].checked = layerIsFound;
 		}else{
-			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend])
+			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
 		
 	}
@@ -131,6 +132,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
  * Update services changes to config
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.updateService = function(title, capabilitiesUrl, originalCapUrl, categories, layers){
+	var self = this;
 	if(capabilitiesUrl){
 		var service = {
 				   title: title,
@@ -140,6 +142,20 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				   layers: layers
 		   };
 		// Update service
-		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), de.ingrid.mapclient.admin.DefaultSaveHandler);
+		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), {
+			success: function() {
+				de.ingrid.mapclient.Configuration.load({
+					success: function() {
+						self.mainPanel.reloadServiceFromConfig(false);
+					},
+					failure: function() {
+						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+					}
+				});
+			},
+			failure: function() {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+				} 
+		   	});
 	}
 };

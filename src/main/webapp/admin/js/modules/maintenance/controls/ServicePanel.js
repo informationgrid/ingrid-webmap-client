@@ -85,7 +85,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		height: 400
 	});
 	
-	this.serviceGrid.getSelectionModel().on('selectionchange', function(selModel, node) {
+	this.serviceGrid.getSelectionModel().on('cellselect', function(selModel, node) {
 		this.rowModel = selModel;
 		if(selModel.selection){
 			var serviceRecord = selModel.selection.record; 
@@ -142,7 +142,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 									            new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel({
 									            	selectedService: serviceRecord,
 									            	layerRecord: layerRecord,
-											    	region:'center'
+											    	region:'center',
+											    	mainPanel: self
 												}),
 												new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel({
 											    	selectedService: serviceRecord,
@@ -377,15 +378,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 						success: function() {
 							de.ingrid.mapclient.Configuration.load({
 								success: function() {
-									// Load services from config
-									var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
-									// Set services to store
-									self.loadServices(self.serviceStore, services, self.jsonColumn);
-									// Refresh service panel
-									self.serviceGrid.getView().refresh();
-									// Scroll to bottom
-									self.serviceGrid.getView().focusRow(self.serviceStore.totalLength - 1);
-									de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+									self.reloadServiceFromConfig(true);
 								},
 								failure: function() {
 									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
@@ -439,11 +432,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 							de.ingrid.mapclient.Configuration.load({
 								success: function() {
 									// Save load services
-									var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
-									// Set services to store
-									self.loadServices(self.serviceStore, services, self.jsonColumn);
-									// Refresh service panel
-									self.serviceGrid.getView().refresh();
+									self.reloadServiceFromConfig(false);
 								},
 								failure: function() {
 									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
@@ -491,6 +480,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteServi
 	});
 };
 
+
+/**
+ * Copy services from config
+ */
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService = function(self) {
 	var copyService = self.selectedService;
 	
@@ -530,8 +523,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					capabilitiesUrl = copyService.data.capabilitiesUrl;
     				}
     			
-    				if(copyService.data.categories){
-    					categories = copyService.data.categories;
+    				if(copyService.data.mapServiceCategories){
+    					categories = copyService.data.mapServiceCategories;
     				}
     				
     				if(copyService.data.originalCapUrl){
@@ -571,15 +564,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     							de.ingrid.mapclient.Configuration.load({
     								success: function() {
     									// Save load services
-    									var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
-    									// Set services to store
-    									self.loadServices(self.serviceStore, services, self.jsonColumn);
-    									// Refresh service panel
-    									self.serviceGrid.getView().refresh();
-    									// Scroll to bottom
-    									self.serviceGrid.getView().focusRow(self.serviceStore.totalLength - 1);
-    									self.serviceGrid.getSelectionModel().select(self.serviceStore.totalLength - 1);
-    									de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+    									self.reloadServiceFromConfig(true);
     								},
     								failure: function() {
     									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
@@ -624,4 +609,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonInde
 		}
 	}
 	return columnIndex;
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(scrollToBottom){
+	var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
+	// Set services to store
+	this.loadServices(this.serviceStore, services, this.jsonColumn);
+	// Refresh service panel
+	this.serviceGrid.getView().refresh();
+	if(scrollToBottom){
+		this.serviceGrid.getView().focusRow(this.serviceStore.totalLength - 1);
+	}
+	de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 };
