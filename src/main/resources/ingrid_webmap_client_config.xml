@@ -1576,16 +1576,6 @@
         <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[9]"/>
       </mapServiceCategories>
     </wmsService>
-    <wmsService>
-      <name>WMS Test</name>
-      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wms.xml?REQUEST=GetCapabilities</capabilitiesUrl>
-      <mapServiceCategories>
-        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory"/>
-        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[2]"/>
-        <mapServiceCategory reference="../../../../mapServiceCategories/mapServiceCategory/mapServiceCategories/mapServiceCategory[3]"/>
-      </mapServiceCategories>
-      <originalCapUrl>http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_boden&amp;REQUEST=GetCapabilities&amp;VERSION=1.1.1&amp;SERVICE=WMS</originalCapUrl>
-    </wmsService>    
   </wmsServices>
   <areaCategories>
     <areaCategory>
