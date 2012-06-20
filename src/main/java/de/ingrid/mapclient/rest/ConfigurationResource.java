@@ -816,8 +816,7 @@ public class ConfigurationResource {
 		String urlPrefix = null;
 		try {
 			String path = req.getSession().getServletContext().getRealPath("wms");
-			ConfigurationProvider p = ConfigurationProvider.INSTANCE;
-			urlPrefix = p.getProperties().getProperty("server.host");
+			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
 			TransformerFactory tFactory = TransformerFactory.newInstance();
