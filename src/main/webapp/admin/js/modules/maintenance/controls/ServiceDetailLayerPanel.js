@@ -14,7 +14,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel = Ext.exte
 	selectedService: null,
 	mainPanel:null,
 	store:null,
-	layerRecord:[]
+	layerRecord:[],
+	loadMask: new Ext.LoadMask(Ext.getBody())
 });
 
 /**
@@ -145,20 +146,31 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				   layers: layers
 		   };
 		// Update service
-		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), {
+		self.setValue('updateservice', service, 'Bitte warten! Layer-&Auml;nderungen werden &uuml;bernommen!', false);
+	}
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom){
+	var self = this;
+	self.loadMask.msg = loadMessage;
+	self.loadMask.show();
+	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), {
 			success: function() {
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
-						self.mainPanel.reloadServiceFromConfig(false);
+						self.mainPanel.reloadServiceFromConfig(scrollToBottom);
+						self.loadMask.hide();
 					},
 					failure: function() {
 						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+						self.loadMask.hide();
 					}
 				});
 			},
 			failure: function() {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+				self.loadMask.hide();
 				} 
 		   	});
-	}
 };
+

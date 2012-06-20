@@ -91,6 +91,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 			var serviceRecord = selModel.selection.record;
 			if(serviceRecord){
 				if(self.selectedService != serviceRecord){
+					self.selectedService = serviceRecord; 
 					var orginalCapUrl = serviceRecord.json[self.getJsonIndex('originalCapUrl')];
 					if(orginalCapUrl){
 						self.loadServiceLayerFromFile(serviceRecord);
@@ -127,7 +128,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'L&ouml;schen',
 		disabled: true,
 		handler: function(btn) {
-			self.deleteService();
+			self.deleteService('Sind Sie sicher, das der ausgew&auml;hlte Dienst entfernt werden soll?');
 		}
 	});
 	self.addServiceBtn = new Ext.Button({
@@ -188,7 +189,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 				}
 				record.push(categories);
 			}
-			
 		}
 		records.push(record);
 	}
@@ -207,6 +207,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
  * Update services changes to config
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateService = function (title, capabilitiesUrl, originalCapUrl, categories, layers) {
+	var self = this;
 	if(capabilitiesUrl){
 		var service = {
 				   title: (title) ? title : null,
@@ -216,7 +217,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateServi
 				   layers: (layers) ? layers : null
 		   };
 		// Update service
-		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), de.ingrid.mapclient.admin.DefaultSaveHandler);
+		self.setValue('updateservice', service, 'Bitte warten! &Auml;nderungen werden gespeichert!');
 	}
 };
 
@@ -297,7 +298,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 				   self.loadMask.show();
 				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
 				   // Reload service
-				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!', false);
+				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!');
 			   }
 		   }
 	   	}
@@ -307,12 +308,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 /**
  * Delete services from config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function() {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function(msg) {
 	var self = this;
 	var deleteService = self.selectedService;
 	Ext.Msg.show({
 	   title:'Dienst l&ouml;schen',
-	   msg: 'Sind Sie sicher, das der ausgew&auml;hlte Dienst entfernt werden soll?',
+	   msg: msg,
 	   buttons: Ext.Msg.OKCANCEL,
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){
@@ -546,13 +547,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 		   if (btn == 'ok'){
 			   var tmpService = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.capabilitiesUrl };
 			   // Refresh service
-			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', false);
+			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', false, true);
 		   }
 	   	}
 	});
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom, doServiceDelete){
 	var self = this;
 	self.loadMask.msg = loadMessage;
 	self.loadMask.show();
@@ -571,7 +572,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				});
 			},
 			failure: function() {
-				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+				if(doServiceDelete){
+					self.deleteService('Dienst kann nicht geladen werden, da dieser nicht mehr zur Verf&uuml;gung steht! Soll dieser Dienst entfernt werden?');
+				}else{
+					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+				}
 				self.loadMask.hide();
 				} 
 		   	}

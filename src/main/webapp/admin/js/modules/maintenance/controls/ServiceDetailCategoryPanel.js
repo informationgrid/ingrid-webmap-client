@@ -9,7 +9,8 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.extend(Ext.Panel, {
 	title: 'Kategorie',
 	autoScroll: true,
-	selectedService: null
+	selectedService: null,
+	loadMask: new Ext.LoadMask(Ext.getBody())
 });
 
 /**
@@ -104,6 +105,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
  * Save the services list on the server
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.save = function(node) {
+	var self = this;
 	if(node){
 		var capabilitiesUrl = '';
 		var categories = [];
@@ -144,6 +146,25 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 				   categories: categories,
 				   layers: null
 		   };
-		de.ingrid.mapclient.Configuration.setValue('updateservice', Ext.encode(service), de.ingrid.mapclient.admin.DefaultSaveHandler);
+		self.setValue('updateservice', service, 'Bitte warten! Kategorien-&Auml;nderungen werden &uuml;bernommen!');
 	}
+};
+
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.setValue = function (key, service, loadMessage){
+	var self = this;
+	self.loadMask.msg = loadMessage;
+	self.loadMask.show();
+	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
+			{
+			success: function() {
+				de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+				self.loadMask.hide();
+			},
+			failure: function() {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+				self.loadMask.hide();
+				} 
+		   	}
+		);
 };
