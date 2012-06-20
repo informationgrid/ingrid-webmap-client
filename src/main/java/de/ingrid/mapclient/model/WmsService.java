@@ -38,6 +38,14 @@ public class WmsService {
 //		this.deactivatedLayers = deactivatedLayers;
 	}
 
+	public void setOriginalCapUrl(String originalCapUrl) {
+		this.originalCapUrl = originalCapUrl;
+	}
+
+	public void setCapabilitiesUrl(String capabilitiesUrl) {
+		this.capabilitiesUrl = capabilitiesUrl;
+	}
+
 	public void setMapServiceCategories(
 			List<MapServiceCategory> mapServiceCategories) {
 		this.mapServiceCategories = mapServiceCategories;

@@ -68,7 +68,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	reloadServiceBtn:null,
 	addServiceBtn:null,
 	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers'],
-	rowModel:null
+	loadMask: new Ext.LoadMask(Ext.getBody())
 });
 
 /**
@@ -85,81 +85,18 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		height: 400
 	});
 	
+		
 	this.serviceGrid.getSelectionModel().on('cellselect', function(selModel, node) {
-		this.rowModel = selModel;
 		if(selModel.selection){
-			var serviceRecord = selModel.selection.record; 
-			if(self.selectedService != serviceRecord){
-				var orginalCapUrl = serviceRecord.json[self.getJsonIndex('originalCapUrl')];
-				
-				if(serviceRecord){
-					self.copyServiceBtn.enable();
-					self.reloadServiceBtn.enable();
-					self.deleteServiceBtn.enable(),
-					self.remove(self.items.get('serviceDetailBorderPanel'));
-					
-					var xmlStore = new Ext.data.Store({
-				        // load using HTTP
-				        url: serviceRecord.data.capabilitiesUrl,
-						// the return will be XML, so lets set up a reader
-				        reader: new Ext.data.XmlReader({
-				               // records will have an "Item" tag
-				               record: 'Layer > Layer',
-				               id: 'Title',
-				               totalRecords: '@total'
-				           }, [
-				               // set up the fields mapping into the xml doc
-				               // The first needs mapping, the others are very basic
-				               {name: 'title', mapping: 'Title'},
-				               {name: 'name', mapping: 'Name'},
-				               {name: 'featureInfo', mapping: '@queryable', type: 'int'},
-				               {name: 'legend', mapping: '@queryable', type: 'int'}
-				               
-				           ]),
-				           listeners : {
-				               load: function(store, records, succesful, operation){
-				            	   var layerRecord = [];
-				            	   for (var i=0, countI=records.length; i<countI; i++) {
-										var layerObj = records[i];
-										if(layerObj.data){
-											layerRecord.push({ 
-												index: layerObj.data.name,
-												title: layerObj.data.title,
-												featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
-												deactivated: false,
-												checked: false,
-												legend: false
-												});
-										}
-				            	  }
-				            	   
-				            	  var myBorderPanel = new Ext.Panel({
-										id: 'serviceDetailBorderPanel',
-										itemId: 'serviceDetailBorderPanel',
-									    height: 550,
-									    layout: 'border',
-									    items: [
-									            new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel({
-									            	selectedService: serviceRecord,
-									            	layerRecord: layerRecord,
-											    	region:'center',
-											    	mainPanel: self
-												}),
-												new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel({
-											    	selectedService: serviceRecord,
-											    	region:'west',
-													width: 400
-												})]
-									});
-									
-									self.add(myBorderPanel);
-									self.doLayout();
-									self.selectedService = serviceRecord;
-									self.selectedService.data.jsonLayers = layerRecord;
-				               }
-				           }
-				    	});
-					xmlStore.load();
+			var serviceRecord = selModel.selection.record;
+			if(serviceRecord){
+				if(self.selectedService != serviceRecord){
+					var orginalCapUrl = serviceRecord.json[self.getJsonIndex('originalCapUrl')];
+					if(orginalCapUrl){
+						self.loadServiceLayerFromFile(serviceRecord);
+					}else{
+						self.copyServiceToServer(serviceRecord);
+				   }
 				}
 			}
 		}
@@ -174,7 +111,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'Kopieren',
 		disabled: true,
 		handler: function(btn) {
-			self.copyService(self);
+			self.copyService();
 		}
 	});
 	self.reloadServiceBtn = new Ext.Button({
@@ -182,7 +119,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'Neu einlesen',
 		disabled: true,
 		handler: function(btn) {
-			self.reloadService(self);
+			self.reloadService();
 		}
 	});
 	self.deleteServiceBtn = new Ext.Button({
@@ -190,7 +127,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'L&ouml;schen',
 		disabled: true,
 		handler: function(btn) {
-			self.deleteService(self);
+			self.deleteService();
 		}
 	});
 	self.addServiceBtn = new Ext.Button({
@@ -198,7 +135,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'Hinzuf&uuml;gen',
 		disabled: false,
 		handler: function(btn) {
-			self.addService(self);
+			self.addService();
 		}
 	});
 	
@@ -241,62 +178,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 		for (var j=0, countJ=attributes.length; j<countJ; j++) {
 			var attribute = attributes[j];
 			if(attribute != 'mapServiceCategories'){
-				//if(attribute != 'checkedLayers'){
-					record.push(item[attribute]);	
-				/*}else{
-					var xmlUrl = item['capabilitiesUrl'];
-					if(xmlUrl){
-						var xmlLayers = item['checkedLayers'];
-						if(xmlLayers == undefined || xmlLayers.length == 0){
-							var xmlStore = new Ext.data.Store({
-						        // load using HTTP
-						        url: xmlUrl,
-								// the return will be XML, so lets set up a reader
-						        reader: new Ext.data.XmlReader({
-						               // records will have an "Item" tag
-						               record: 'Layer > Layer',
-						               id: 'Title',
-						               totalRecords: '@total'
-						           }, [
-						               // set up the fields mapping into the xml doc
-						               // The first needs mapping, the others are very basic
-						               {name: 'title', mapping: 'Title'},
-						               {name: 'name', mapping: 'Name'},
-						               {name: 'display', mapping: '@queryable', type: 'int'},
-						               {name: 'select', mapping: '@queryable', type: 'int'},
-						               {name: 'featureInfo', mapping: '@queryable', type: 'int'},
-						               {name: 'legend', mapping: '@queryable', type: 'int'}
-						               
-						           ]),
-						           listeners : {
-						               load: function(store, records, succesful, operation){
-						            	   var layerRecord = [];
-						            	   for (var i=0, countI=records.length; i<countI; i++) {
-												var layerObj = records[i];
-												if(layerObj.data){
-													layerRecord.push({ 
-														index: layerObj.data.name,
-														title: layerObj.data.title,
-														featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
-														deactivated: false,
-														checked: true,
-														legend: true
-														});
-												}
-						            	  }
-						            	  if(layerRecord){
-						            		  record.push(layerRecord);
-						            		  self.updateService(item['name'], item['capabilitiesUrl'], item['originalCapUrl'], null, layerRecord);
-						            	  }
-						               }
-						           }
-						    	});
-							xmlStore.load();
-							}
-						}else{
-							record.push(item[attribute]);
-						}
-				}*/
+				record.push(item[attribute]);	
 			}else{
 				var mapServiceCategories = item[attribute];
 				var categories = new Array();
@@ -341,7 +223,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateServi
 /**
  * Add services to config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService = function(self) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService = function() {
+	var self = this;
 	var simple = new Ext.FormPanel({
         labelWidth: 75, // label settings here cascade unless overridden
         frame:true,
@@ -373,23 +256,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	
             	if(name != simple.items.get('name').emptyText && url != simple.items.get('url').emptyText){
             		var service = { title:name, originalCapUrl:url, categories:[], layers:[] };
-            		de.ingrid.mapclient.Configuration.setValue('addservice', Ext.encode(service), 
-            			{
-						success: function() {
-							de.ingrid.mapclient.Configuration.load({
-								success: function() {
-									self.reloadServiceFromConfig(true);
-								},
-								failure: function() {
-									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-								}
-							});
-						},
-						failure: function() {
-							de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-							} 
-					   	}
-            		);
+            		// Add service
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugefügt!', true);
                 	win.close();
             	}
     		}
@@ -415,7 +283,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 /**
  * Reload services
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(self) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function() {
+	var self = this;
 	var reloadService = self.selectedService;
 	Ext.Msg.show({
 	   title:'Dienst neu einlesen',
@@ -425,24 +294,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	   fn: function(btn){
 		   if (btn == 'ok'){
 			   if(reloadService.data){
+				   self.loadMask.show();
 				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
 				   // Reload service
-				   de.ingrid.mapclient.Configuration.setValue('reloadservice', Ext.encode(service), {
-						success: function() {
-							de.ingrid.mapclient.Configuration.load({
-								success: function() {
-									// Save load services
-									self.reloadServiceFromConfig(false);
-								},
-								failure: function() {
-									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-								}
-							});
-						},
-						failure: function() {
-							de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-							} 
-					   	});
+				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!', false);
 			   }
 		   }
 	   	}
@@ -452,7 +307,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 /**
  * Delete services from config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function(self) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function() {
+	var self = this;
 	var deleteService = self.selectedService;
 	Ext.Msg.show({
 	   title:'Dienst l&ouml;schen',
@@ -484,9 +340,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteServi
 /**
  * Copy services from config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService = function(self) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService = function() {
+	var self = this;
 	var copyService = self.selectedService;
-	
+
 	var simple = new Ext.FormPanel({
         labelWidth: 75, // label settings here cascade unless overridden
         frame:true,
@@ -558,24 +415,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   layers: layers
     				};
     				// Save copy to config
-    				de.ingrid.mapclient.Configuration.setValue('copyservice', Ext.encode(service),
-    					   	{
-    						success: function() {
-    							de.ingrid.mapclient.Configuration.load({
-    								success: function() {
-    									// Save load services
-    									self.reloadServiceFromConfig(true);
-    								},
-    								failure: function() {
-    									de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-    								}
-    							});
-    						},
-    						failure: function() {
-    							de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-    							} 
-    					   	}
-    		   		);
+    				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!', true);
                 	win.close();
             	}
     		}
@@ -588,13 +428,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     });
 	
 	var win = new Ext.Window({
-							layout: 'fit',
-					        width: 500,
-					        height: 300,
-					        modal: true,
-					        closeAction: 'hide',
-					        items: simple
-					        });
+					layout: 'fit',
+			        width: 500,
+			        height: 300,
+			        modal: true,
+			        closeAction: 'hide',
+			        items: simple
+			        });
 	win.show();
 };
 
@@ -621,4 +461,119 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 		this.serviceGrid.getView().focusRow(this.serviceStore.totalLength - 1);
 	}
 	de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadServiceLayerFromFile  = function (serviceRecord){
+	var self = this;
+	
+	self.copyServiceBtn.enable();
+	self.reloadServiceBtn.enable();
+	self.deleteServiceBtn.enable(),
+	self.remove(self.items.get('serviceDetailBorderPanel'));
+	
+	var xmlStore = new Ext.data.Store({
+        // load using HTTP
+        url: serviceRecord.data.capabilitiesUrl,
+		// the return will be XML, so lets set up a reader
+        reader: new Ext.data.XmlReader({
+               // records will have an "Item" tag
+               record: 'Layer > Layer',
+               id: 'Title',
+               totalRecords: '@total'
+           }, [
+               // set up the fields mapping into the xml doc
+               // The first needs mapping, the others are very basic
+               {name: 'title', mapping: 'Title'},
+               {name: 'name', mapping: 'Name'},
+               {name: 'featureInfo', mapping: '@queryable', type: 'int'},
+               {name: 'legend', mapping: '@queryable', type: 'int'}
+               
+           ]),
+           listeners : {
+               load: function(store, records, succesful, operation){
+            	   var layerRecord = [];
+            	   for (var i=0, countI=records.length; i<countI; i++) {
+						var layerObj = records[i];
+						if(layerObj.data){
+							layerRecord.push({ 
+								index: layerObj.data.name,
+								title: layerObj.data.title,
+								featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
+								deactivated: false,
+								checked: false,
+								legend: false
+								});
+						}
+            	  }
+            	   
+            	  var myBorderPanel = new Ext.Panel({
+						id: 'serviceDetailBorderPanel',
+						itemId: 'serviceDetailBorderPanel',
+					    height: 550,
+					    layout: 'border',
+					    items: [
+					            new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel({
+					            	selectedService: serviceRecord,
+					            	layerRecord: layerRecord,
+							    	region:'center',
+							    	mainPanel: self
+								}),
+								new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel({
+							    	selectedService: serviceRecord,
+							    	region:'west',
+									width: 400
+								})]
+					});
+					
+					self.add(myBorderPanel);
+					self.doLayout();
+					self.selectedService = serviceRecord;
+					self.selectedService.data.jsonLayers = layerRecord;
+               }
+           }
+    	});
+	xmlStore.load();
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyServiceToServer  = function (serviceRecord){
+	var self = this;
+	Ext.Msg.show({
+	   title:'Dienst neu laden',
+	   msg: 'Der Dienst muss lokal vorliegen! Soll dies nun durchgef&uuml;hrt werden?',
+	   buttons: Ext.Msg.OKCANCEL,
+	   icon: Ext.MessageBox.QUESTION,
+	   fn: function(btn){
+		   if (btn == 'ok'){
+			   var tmpService = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.capabilitiesUrl };
+			   // Refresh service
+			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', false);
+		   }
+	   	}
+	});
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom){
+	var self = this;
+	self.loadMask.msg = loadMessage;
+	self.loadMask.show();
+	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
+			{
+			success: function() {
+				de.ingrid.mapclient.Configuration.load({
+					success: function() {
+						self.reloadServiceFromConfig(scrollToBottom);
+						self.loadMask.hide();
+					},
+					failure: function() {
+						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+						self.loadMask.hide();
+					}
+				});
+			},
+			failure: function() {
+				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+				self.loadMask.hide();
+				} 
+		   	}
+		);
 };

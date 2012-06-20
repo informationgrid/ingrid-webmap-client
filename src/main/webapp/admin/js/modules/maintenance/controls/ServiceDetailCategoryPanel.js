@@ -20,7 +20,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 	
 	 var tree = new Ext.tree.TreePanel({
 	        useArrows:true,
-	        autoScroll:true,
 	        animate:true,
 	        enableDD:true,
 	        containerScroll: true,

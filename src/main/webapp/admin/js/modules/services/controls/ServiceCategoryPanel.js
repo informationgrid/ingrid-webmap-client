@@ -68,15 +68,7 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 		panel = new de.ingrid.mapclient.admin.controls.GridPanel({
 			store: this.getStoreManager().getStore(path),
 			columns: columns,
-			gridConfigCb: gridConfigCb,
-			extraButtons: [new Ext.Button({
-				text: 'Capabilities',
-				fieldLabel: '&nbsp;',
-				handler: function() {
-					var url = panel.getNewRecordValue('capabilitiesUrl');
-					self.showCapabilities(url);
-				}
-			})],
+			gridConfigCb: gridConfigCb
 		});
 	}
 	else {

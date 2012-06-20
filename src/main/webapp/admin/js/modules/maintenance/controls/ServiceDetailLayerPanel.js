@@ -51,9 +51,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	// create the grid
 	var grid = new Ext.grid.EditorGridPanel({
         store: this.store,
-        viewConfig: {
-			forceFit: true
-		},	
+        autoHeight: true,
+        autoScroll: true,
+    	viewConfig: {
+    		autoFill: true,
+    		forceFit: true
+    	},
         columns: [{
         	header: "Title", 
             dataIndex: 'title', 

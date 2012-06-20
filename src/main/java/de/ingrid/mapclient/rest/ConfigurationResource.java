@@ -9,8 +9,6 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -64,7 +62,6 @@ import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
-
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.utils.xml.XMLUtils;
@@ -119,6 +116,11 @@ public class ConfigurationResource {
 	 * Path for reload a service
 	 */
 	private static final String RELOAD_SERVICE = "reloadservice";
+	
+	/**
+	 * Path for refresh a service
+	 */
+	private static final String REFRESH_SERVICE = "refreshservice";
 
 	/**
 	 * Path for editing a service
@@ -678,6 +680,25 @@ public class ConfigurationResource {
 		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 	}	
 	
+	@POST
+	@Path(DYNAMIC_PATH + "/" + REFRESH_SERVICE)
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void refreshService(String serviceString, @Context HttpServletRequest req) throws Exception {
+		JSONObject jsonService = new JSONObject(serviceString);
+		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
+		String originalCapUrl = capabilitiesUrl; 
+		String title = jsonService.getString("title"); 
+		
+		String response = HttpProxy.doRequest(originalCapUrl);
+		Document doc = stringToDom(response);
+		String url = writeWmsCopy(doc, req, title);
+		
+		WmsService service = findService(jsonService);
+		service.setCapabilitiesUrl(url);
+		service.setOriginalCapUrl(originalCapUrl);
+		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+	}	
+	
 	
 	private void insertCopyIntoConfig(String url, JSONObject json) {
 			
@@ -795,7 +816,8 @@ public class ConfigurationResource {
 		String urlPrefix = null;
 		try {
 			String path = req.getSession().getServletContext().getRealPath("wms");
-			urlPrefix = req.getRequestURL().toString();
+			ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+			urlPrefix = p.getProperties().getProperty("server.host");
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
 			TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -838,9 +860,6 @@ public class ConfigurationResource {
 		Node titleNode = null;
 		try {
 			JSONArray layers = json.getJSONArray("layers");
-
-
-			
 			if (layers != null) {
 				for (int i = 0, count = layers.length(); i < count; i++) {
 
@@ -914,7 +933,6 @@ public class ConfigurationResource {
         return null;
     }
 	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
-
 
 			String url;
 			try {
