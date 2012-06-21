@@ -140,11 +140,11 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 	
 	//TODO not very performant ?!?
 	for (var i=0, count=subCategories.length; i<count; i++) {
-		var catId = subCategories[i].id;
+		var catId = subCategories[i].idx;
 		subCategories[i].services = [];
 		for(var j = 0; j < wmsServices.length; j++){
 			for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
-			if(catId == wmsServices[j].mapServiceCategories[k].id){
+			if(catId == wmsServices[j].mapServiceCategories[k].idx){
 			var tempService = new Object();
 			tempService.name = wmsServices[j].name;
 			tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;

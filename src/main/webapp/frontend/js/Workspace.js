@@ -185,7 +185,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var westPanel = new Ext.TabPanel({
 				id : 'west',
 				region : 'west',
-				activeTab : 0,
+				defaults:{ autoScroll:true }, 
+    			activeTab : 0,
 				width : 200,
 				split : true,
 				collapsible : true,
@@ -208,7 +209,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// create the toolbar items
 	var toolbarItems = []; 
 
-	// a) feature tool
+	// a) feature tool	
 				
 	if (this.viewConfig.hasInfoTool) {
 
