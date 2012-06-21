@@ -39,7 +39,7 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 			dataIndex: 'name',
 			editor: {
 			   xtype: 'textfield',
-			   allowBlank: false
+			   disabled: true
 			}
 		}, {
 			header: 'Capabilities Url',
@@ -47,13 +47,12 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 			dataIndex: 'capabilitiesUrl',
 			editor: {
 			   xtype: 'textfield',
-			   allowBlank: false
+			   disabled: true
 			}
 		}];
 
-		var gridConfigCb = function(config) {
-			// add the capabilities info button
-			config.columns.push({
+
+			columns.push({
 				header: 'Info',
 				sortable: false,
 				id: 'capabilities',
@@ -62,14 +61,19 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 			        return '<div class="iconInfo"></div>';
 			    }
 			});
-			return config;
-		};
+			
 
-		panel = new de.ingrid.mapclient.admin.controls.GridPanel({
+		panel = new Ext.grid.GridPanel({
 			store: this.getStoreManager().getStore(path),
 			columns: columns,
-			gridConfigCb: gridConfigCb
+			autoScroll:true,
+			autoHeight: true,
+			autoWidth:true,
+			viewConfig: {
+			forceFit: true
+			}
 		});
+
 	}
 	else {
 		// for other paths we build a CategoryPanel instance for managing sub categories
@@ -90,21 +94,21 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
  * @see de.ingrid.mapclient.admin.controls.CategoryPanel.bindEventHandlers
  */
 de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.bindEventHandlers = function(panel) {
-	if (panel instanceof de.ingrid.mapclient.admin.controls.GridPanel) {
+	if (panel instanceof Ext.grid.GridPanel) {
 		var self = this;
 
 		panel.on('datachanged', function(e) {
 			self.save();
 		});
 		// show capabilities if clicking the capabilities icon
-	    panel.gridPanel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
+	    panel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 			if(columnIndex == grid.getColumnModel().getIndexById('capabilities')) {
 				var url = grid.getSelectionModel().getSelected().get('capabilitiesUrl');
 				self.showCapabilities(url);
 			}
 	    });
 		// prevent propagating events up to parent grid
-		panel.gridPanel.getEl().swallowEvent(['click', 'mousedown', 'keydown', 'mouseover', 'contextmenu', 'dblclick'], true);
+		panel.getEl().swallowEvent(['click', 'mousedown', 'keydown', 'mouseover', 'contextmenu', 'dblclick'], true);
 	}
 };
 
@@ -121,7 +125,7 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 			for(var j = 0; j < wmsServices.length; j++){
 				for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
-				if(category.id == wmsServices[j].mapServiceCategories[k].id){
+				if(category.idx == wmsServices[j].mapServiceCategories[k].idx){
 				var tempService = new Object();
 				tempService.name = wmsServices[j].name;
 				tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
