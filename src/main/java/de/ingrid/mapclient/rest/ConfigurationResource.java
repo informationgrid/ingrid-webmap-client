@@ -111,7 +111,7 @@ public class ConfigurationResource {
 	 * Path for adding a service
 	 */
 	private static final String ADD_SERVICE = "addservice";
-	
+
 	/**
 	 * Path for reload a service
 	 */
@@ -391,13 +391,24 @@ public class ConfigurationResource {
 	@POST
 	@Path(DYNAMIC_PATH+"/mapServiceCategories")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void setMapServiceCategories(String mapServiceCategoriesStr, @Context HttpServletRequest req) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateMapServiceCategories(String mapServiceCategoriesStr, @Context HttpServletRequest req) {
 		try {
 			// convert json string to ServiceCategory
 			JSONObject rootObj = new JSONObject(mapServiceCategoriesStr);
 			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			config.setMapServiceCategories(this.createMapServiceCategories(rootObj));
 			ConfigurationProvider.INSTANCE.write(config);
+			PersistentConfiguration configuration = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
+				@Override
+				public HierarchicalStreamWriter createWriter(Writer writer) {
+					return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
+				}
+			});
+			String json = xstream.toXML(configuration);
+			return Response.ok(json).build();
+			
 		}
 		catch (Exception ex) {
 			log.error("Error setting service categories", ex);
@@ -420,30 +431,59 @@ public class ConfigurationResource {
 		
 		if (object.has("mapServiceCategories")) {
 			JSONArray categoriesTmp = object.getJSONArray("mapServiceCategories");
-			int id = 0;
-			
 			for (int i=0, count=categoriesTmp.length(); i<count; i++) {
 				MapServiceCategory category = null;
 
 				List<MapServiceCategory> subCategories = new ArrayList<MapServiceCategory>();
+				if(categoriesTmp.getJSONObject(i).has("idx"))
+					category = new MapServiceCategory(categoriesTmp.getJSONObject(i).getString("name"), subCategories, categoriesTmp.getJSONObject(i).getInt("idx"));
+				else
+					category = new MapServiceCategory(categoriesTmp.getJSONObject(i).getString("name"), subCategories, findHighestId() + 1);
 				if(categoriesTmp.getJSONObject(i).has("mapServiceCategories")){
 					JSONArray categoryObj = categoriesTmp.getJSONObject(i).getJSONArray("mapServiceCategories");
 					for (int j=0, count2=categoryObj.length(); j < count2; j++){
-						MapServiceCategory cat = new MapServiceCategory(categoryObj.getJSONObject(j).getString("name"), null, id);
-						subCategories.add(cat);
-						id++;
+						MapServiceCategory cat = null;
+						if(categoryObj.getJSONObject(j).has("idx")){
+							 cat = new MapServiceCategory(categoryObj.getJSONObject(j).getString("name"), null, categoryObj.getJSONObject(j).getInt("idx"));
+						}else{
+							//TODO check the highest id and enter a higher one
+							 cat = new MapServiceCategory(categoryObj.getJSONObject(j).getString("name"), null, findHighestId() + 1);
+						}
+						category.getMapServiceCategories().add(cat);
 					}
 				}
-				category = new MapServiceCategory(categoriesTmp.getJSONObject(i).getString("name"), subCategories, id);
+				
 				categories.add(category);
-				id++;
 			}
 		}
-
-		
-
 		return categories;
 	}
+	
+	/**
+	 * private function to find highest id
+	 * 
+	 */
+	
+	private int findHighestId(){
+		int highest = 0;
+		Iterator<MapServiceCategory> itCat = ConfigurationProvider.INSTANCE.getPersistentConfiguration().getMapServiceCategories().iterator();
+		while(itCat.hasNext()){
+			MapServiceCategory cat = itCat.next();
+			if(cat.getId() > highest)
+				highest = cat.getId(); 
+			if(cat.getMapServiceCategories() != null){
+				Iterator<MapServiceCategory> catIt = cat.getMapServiceCategories().iterator();
+				while(catIt.hasNext()){
+					MapServiceCategory ct = catIt.next();							
+					if(ct.getId() > highest){
+						highest = ct.getId();
+					}
+				}
+			}
+		}
+		return highest;
+	}
+	
 	/**
 	 * Set the area categories
 	 * @param String containing a JSON encoded category/area hierarchy.
@@ -563,23 +603,23 @@ public class ConfigurationResource {
 		try {
 				// find according file, update xml
 				// find wmsservice in conf and update
-				// write conf
+				// write conf 
 				JSONObject jsonService = new JSONObject(serviceString);
 				WmsService service = findService(jsonService);
 				if(service != null){
-					if(!jsonService.getString("title").equals("null")){
-						service.setName(jsonService.getString("title"));
-					}
-					if(!jsonService.getString("categories").equals("null")){
-						//rewrite the categories of the service
-						updateCategories(service, jsonService);
-					}
-					if(!jsonService.getString("layers").equals("null")){
-						updateLayersInFile(jsonService, req);
-						updateLayers(service, jsonService);
-					}
-					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+				if(!jsonService.getString("title").equals("null")){
+					service.setName(jsonService.getString("title"));
 				}
+				if(!jsonService.getString("categories").equals("null")){
+					//rewrite the categories of the service
+					updateCategories(service, jsonService);
+				}
+				if(!jsonService.getString("layers").equals("null")){
+					updateLayersInFile(jsonService, req);
+						updateLayers(service, jsonService);
+				}
+				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+		}
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -643,7 +683,7 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 		return null;
-	}
+	}		
 	
 	/**
 	 * This method gets a ServiceContainer object from which adds to the WmsService list
@@ -804,8 +844,8 @@ public class ConfigurationResource {
 	}
 
 	private String writeWmsCopy(Document doc, HttpServletRequest req,
-			String title){
-		
+			String title) {
+
 		return writeWmsCopyToFile(doc, req, title, null);
 	}
 	
@@ -824,11 +864,11 @@ public class ConfigurationResource {
 			DOMSource source = new DOMSource(doc);
 			File f = null;
 			if (existingFileName == null){
-				do {
-					url = new DbUrlMapper().createShortUrl(title);
-					url = url + ".xml";
-					f = new File(path + "/" + url);
-				} while (f.exists());
+			do {
+				url = new DbUrlMapper().createShortUrl(title);
+				url = url + ".xml";
+				f = new File(path + "/" + url);
+			} while (f.exists());
 			}else{
 				f = new File(existingFileName);
 			}
@@ -1035,7 +1075,7 @@ public class ConfigurationResource {
 			
 			// first of all we sort the list according to their indices
 			// we do this to not have any problems later when deleting layers
-			//TODO change this we now have names no more indices
+			// index is now the unique layer name
 
 			List<String> checkLayers = new ArrayList<String>();
 			if (layers != null) {

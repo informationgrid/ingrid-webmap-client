@@ -15,16 +15,16 @@ public class MapServiceCategory {
 
 	private String name;
 	private List<MapServiceCategory> mapServiceCategories = new ArrayList<MapServiceCategory>();
-	private Integer id;
+	private Integer idx;
 
 
 	public MapServiceCategory() {
 	}
 	
-	public MapServiceCategory(String name, List<MapServiceCategory> mapServiceCategories, Integer id) {
+	public MapServiceCategory(String name, List<MapServiceCategory> mapServiceCategories, Integer idx) {
 		this.name = name;
 		this.mapServiceCategories = mapServiceCategories;
-		this.id = id;
+		this.idx = idx;
 	}
 
 	public String getName() {
@@ -35,7 +35,7 @@ public class MapServiceCategory {
 		return this.mapServiceCategories;
 	}
 	public int getId() {
-		return id;
+		return idx;
 	}
 
 }
