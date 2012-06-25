@@ -907,7 +907,9 @@ public class ConfigurationResource {
 						Node n = (Node) xpath.evaluate("//Name[text()=\""
 								+ layers.getJSONObject(i).getString("index") + "\"]",
 								doc, XPathConstants.NODE);
-						n.getParentNode().removeChild(n);
+						if(n != null){
+							n.getParentNode().removeChild(n);
+						}
 						log.debug("delete layer: " + layers.get(i));
 
 					} else {
@@ -915,12 +917,25 @@ public class ConfigurationResource {
 		
 						JSONObject layerObj = layers.getJSONObject(i);
 						log.debug("layerobject: " + layerObj.toString());
+						// Title
 						Node n = (Node) xpath.evaluate("//Name[text()=\""
 								+ layers.getJSONObject(i).getString("index") + "\"]",
 								doc, XPathConstants.NODE);
-						Node titleNameNode = n.getNextSibling().getNextSibling();
-						titleNameNode.setTextContent(layerObj
-								.getString("title"));
+						if(n != null){
+							Node titleNameNode = n.getNextSibling().getNextSibling();
+							titleNameNode.setTextContent(layerObj
+									.getString("title"));
+							
+							// Queryable
+							Node layerNode = n.getParentNode();
+							if(layerNode.getAttributes() != null){
+								if(layers.getJSONObject(i).getBoolean("featureInfo")){
+									layerNode.getAttributes().getNamedItem("queryable").setNodeValue("1");	
+								}else{
+									layerNode.getAttributes().getNamedItem("queryable").setNodeValue("0");
+								}
+							}
+						}
 					}
 				}
 			}
@@ -931,7 +946,6 @@ public class ConfigurationResource {
 			titleNode = (Node) xpath.evaluate("//Service/Title", doc,
 					XPathConstants.NODE);
 			titleNode.setTextContent(title);
-			log.debug(XMLUtils.toString(doc));
 		} catch (XPathExpressionException e) {
 			log.error("error on xpathing document: " + e.getMessage());
 			e.printStackTrace();

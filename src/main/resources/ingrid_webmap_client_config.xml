@@ -84,128 +84,128 @@
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Bund</name>
-          <id>1</id>
+          <idx>1</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Baden-Württemberg</name>
-          <id>2</id>
+          <idx>2</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Bayern</name>
-          <id>3</id>
+          <idx>3</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Berlin</name>
-          <id>4</id>
+          <idx>4</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Brandenburg</name>
-          <id>5</id>
+          <idx>5</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Hamburg</name>
-          <id>6</id>
+          <idx>6</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Mecklenburg-Vorpommern</name>
-          <id>7</id>
+          <idx>7</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Niedersachsen</name>
-          <id>8</id>
+          <idx>8</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Nordrhein-Westfalen</name>
-          <id>9</id>
+          <idx>9</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Rheinland-Pfalz</name>
-          <id>10</id>
+          <idx>10</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Sachsen-Anhalt</name>
-          <id>11</id>
+          <idx>11</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Sachsen</name>
-          <id>12</id>
+          <idx>12</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Schleswig-Holstein</name>
-          <id>13</id>
+          <idx>13</idx>
         </mapServiceCategory>
       </mapServiceCategories>
-      <id>0</id>
+      <idx>0</idx>
     </mapServiceCategory>
     <mapServiceCategory>
       <name>Themen</name>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Abfall</name>
-          <id>15</id>
+          <idx>15</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Boden</name>
-          <id>16</id>
+          <idx>16</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Energie</name>
-          <id>17</id>
+          <idx>17</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Forstwirtschaft</name>
-          <id>18</id>
+          <idx>18</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Geologie</name>
-          <id>19</id>
+          <idx>19</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Lärm und Erschütterungen</name>
-          <id>20</id>
+          <idx>20</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Luft und Klima</name>
-          <id>21</id>
+          <idx>21</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Natur und Landschaft</name>
-          <id>22</id>
+          <idx>22</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Verkehr</name>
-          <id>23</id>
+          <idx>23</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>Wasser</name>
-          <id>24</id>
+          <idx>24</idx>
         </mapServiceCategory>
       </mapServiceCategories>
-      <id>14</id>
+      <idx>14</idx>
     </mapServiceCategory>
     <mapServiceCategory>
       <name>test</name>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>test</name>
-          <id>26</id>
+          <idx>26</idx>
         </mapServiceCategory>
         <mapServiceCategory>
           <name>test2</name>
-          <id>27</id>
+          <idx>27</idx>
         </mapServiceCategory>
       </mapServiceCategories>
-      <id>25</id>
+      <idx>25</idx>
     </mapServiceCategory>
     <mapServiceCategory>
       <name>test3</name>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>test4</name>
-          <id>29</id>
+          <idx>29</idx>
         </mapServiceCategory>
       </mapServiceCategories>
-      <id>28</id>
+      <idx>28</idx>
     </mapServiceCategory>
   </mapServiceCategories>
   <wmsServices>

@@ -10,7 +10,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.e
 	title: 'Kategorie',
 	autoScroll: true,
 	selectedService: null,
-	loadMask: new Ext.LoadMask(Ext.getBody())
+	loadMask: new Ext.LoadMask(Ext.getBody()),
+	mainPanel:null
 });
 
 /**
@@ -19,30 +20,29 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.e
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.initComponent = function() {
 	var self = this;
 	
-	 var tree = new Ext.tree.TreePanel({
-	        useArrows:true,
-	        animate:true,
-	        enableDD:true,
-	        containerScroll: true,
-	        rootVisible: false,
-	        frame: true,
-	        draggable: false,
-	        enableDrag: false,
-	        enableDrop: false, 
-	        listeners: {
-	            'checkchange': function(node, checked){
-	                if(checked){
-	                	node.getUI().addClass('complete');
-	                	self.save(node);
-	                }else{
-	                	node.getUI().removeClass('complete');
-	                    self.save(node);
-	                }
-	            }
-	        }
-	    });
-
-	    
+	this.tree = new Ext.tree.TreePanel({
+        useArrows:true,
+        animate:true,
+        enableDD:true,
+        containerScroll: true,
+        rootVisible: false,
+        frame: true,
+        draggable: false,
+        enableDrag: false,
+        enableDrop: false, 
+        listeners: {
+            'checkchange': function(node, checked){
+                if(checked){
+                	node.getUI().addClass('complete');
+                	self.save(node);
+                }else{
+                	node.getUI().removeClass('complete');
+                    self.save(node);
+                }
+            }
+        }
+    });
+	
 	var categories = de.ingrid.mapclient.Configuration.getValue('mapServiceCategories');
 	var data = new Array(); 
 	
@@ -54,27 +54,24 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 			for (var j=0, countJ=subCategories.length; j<countJ; j++) {
 				var subCategory = subCategories[j];
 				var isCheck = false;
-				for (var k=0, countK=this.selectedService.json.length; k<countK; k++) {
-					var categoryId=this.selectedService.json[k];
-					if (categoryId instanceof Array){
-						for (var l=0, countL=categoryId.length; l<countL; l++) {
-							var id = categoryId[l];
-							if(id == subCategory.id){
-							isCheck=true;
-							}
+				if(self.selectedService.data.mapServiceCategories){
+					for (var k=0, countK=self.selectedService.data.mapServiceCategories.length; k<countK; k++) {
+						var categoryId=self.selectedService.data.mapServiceCategories[k].idx;
+						if(categoryId == subCategory.idx){
+								isCheck=true;
 						}
 					}
+					
+					leafData.push({
+						text: subCategory.name,
+				        leaf: true,
+				        draggable: false,
+				        enableDrag: false,
+				        enableDrop: false, 
+				        checked: isCheck,
+				        id: subCategory.idx
+					});
 				}
-				
-				leafData.push({
-					text: subCategory.name,
-			        leaf: true,
-			        draggable: false,
-			        enableDrag: false,
-			        enableDrop: false, 
-			        checked: isCheck,
-			        id: subCategory.id
-				});
 			}
 			data.push({
 				text: category.name,
@@ -92,10 +89,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 		children: data
 	});
 
-	tree.setRootNode(root);
+	self.tree.setRootNode(root);
 	// create the final layout
 	Ext.apply(this, {
-		items: [tree]
+		items: [self.tree]
 	});	
 	
 	de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.superclass.initComponent.call(this);
@@ -107,64 +104,31 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.save = function(node) {
 	var self = this;
 	if(node){
-		var capabilitiesUrl = '';
+		var capabilitiesUrl = null;
 		var categories = [];
-		
-		if(this.selectedService.json){
-			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('capabilitiesUrl')]){
-				capabilitiesUrl = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('capabilitiesUrl')];
-			}
-		
-			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('mapServiceCategories')]){
-				categories = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('mapServiceCategories')];
-				var nodeIsCheck = false;
-				var nodeId = false;
-				
-				if(node.attributes){
-					if(node.attributes.checked){
-						categories.push(node.attributes.id);
-					}else{
-						for (var i=0, countI=categories.length; i<countI; i++) {
-							if(categories[i] == node.attributes.id){
-								categories.remove(i-1);
-							}
-						}
-					}
-				}
-				
-			}
-			
-			if(this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('name')]){
-				originalCapUrl = this.selectedService.json[de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonIndex('name')];
+		if(this.tree){
+			var checkedNodes = self.tree.getChecked();
+			for (var i=0, countI=checkedNodes.length; i<countI; i++) {
+				var checkedNode = checkedNodes[i];
+				categories.push(checkedNode.id)
 			}
 		}
-
-		var service = {
-				   title: null,
-				   capabilitiesUrl: capabilitiesUrl,
-				   originalCapUrl: null,
-				   categories: categories,
-				   layers: null
-		   };
-		self.setValue('updateservice', service, 'Bitte warten! Kategorien-&Auml;nderungen werden &uuml;bernommen!');
+		
+		if(this.selectedService.data){
+			if(this.selectedService.data.capabilitiesUrl){
+				capabilitiesUrl = self.selectedService.data.capabilitiesUrl;
+			}
+			
+			if(capabilitiesUrl != null){
+				var service = {
+						   title: null,
+						   capabilitiesUrl: capabilitiesUrl,
+						   originalCapUrl: null,
+						   categories: categories,
+						   layers: null
+				   };
+				self.mainPanel.setValue('updateservice', service, 'Bitte warten! Kategorien-&Auml;nderungen werden &uuml;bernommen!');
+			}
+		}
 	}
-};
-
-
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototype.setValue = function (key, service, loadMessage){
-	var self = this;
-	self.loadMask.msg = loadMessage;
-	self.loadMask.show();
-	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
-			{
-			success: function() {
-				de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
-				self.loadMask.hide();
-			},
-			failure: function() {
-				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
-				self.loadMask.hide();
-				} 
-		   	}
-		);
 };
