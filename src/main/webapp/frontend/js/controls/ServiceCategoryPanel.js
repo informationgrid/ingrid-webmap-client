@@ -31,7 +31,8 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	metaDataBtn: null,
 	expandBtn: null,
 	allExpanded: false,
-	metadataBtnActive: false
+	metadataBtnActive: false,
+	disabledButtons: []
 });
 
 /**
@@ -51,6 +52,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
         		var service = self.activeNode.attributes.service;
         		self.activateService(service);
         		btn.disable();
+        		self.disabledButtons[service.capabilitiesUrl] = btn;
         		// activate activeServicesPanel
            		self.activeServicesPanel.expand();
         	}
@@ -119,7 +121,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		}
 		self.activeNode = node;
 	});
-
+	this.activeServicesPanel.serviceCategoryPanel = self;
 	de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.superclass.initComponent.call(this);
 };
 

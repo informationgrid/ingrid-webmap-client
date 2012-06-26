@@ -48,7 +48,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	ctrls:null,
 	kmlArray: [],
 	transpBtnActive: false,
-	metadataBtnActive: false
+	metadataBtnActive: false,
+	serviceCategoryPanel:null
 });
 
 /**
@@ -90,6 +91,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		handler: function(btn) {
 			if (self.activeNode) {
 				if(self.activeNode.attributes.service != undefined){
+					//enable add service button
+					if(self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl]){
+					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
+					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
+					}
 					self.removeService(self.activeNode.attributes.service);	
 				}else if (self.activeNode.layer != undefined){
 					// Remove "Zeige Punktkoordinaten" layers
