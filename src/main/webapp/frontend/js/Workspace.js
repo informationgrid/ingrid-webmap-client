@@ -407,7 +407,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					iconCls : 'iconHelp',
 					tooltip : i18n('tHilfe'),
 					handler : function(btn) {
-						ingrid_openWindow(de.ingrid.mapclient.HELP_URL,750,550);
+						popupWin = window.open(de.ingrid.mapclient.HELP_URL, "InternalWin", 'width=750,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
+  						popupWin.focus();
 					}
 				}));
 	}
