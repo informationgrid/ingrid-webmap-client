@@ -126,7 +126,12 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
-		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);
+		var url = services[i].capabilitiesUrl;
+		if(url.indexOf("?") == -1){
+			url = url+"?service=wms&request=GetCapabilities";
+		}else if(url.indexOf("service") == -1)
+		 	url = url + "service=wms&request=GetCapabilities";
+		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(url);
 		var childNode = {
 			text: curService.name,
 			service: serviceInstance,

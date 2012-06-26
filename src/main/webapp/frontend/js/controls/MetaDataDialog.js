@@ -12,9 +12,10 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
 	draggable: true,
 	resizable: false,
 	width: 500,
-	autoHeight: true,
+	height:400,
 	shadow: false,
 	initHidden: false,
+	autoScroll:true,
 
 	windowContent: null,
 

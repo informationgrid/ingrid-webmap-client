@@ -121,18 +121,20 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 	var self = this;
 
 	// if the service is loaded already, return it immediately
-	if (de.ingrid.mapclient.frontend.data.Service.registry.containsKey(capabilitiesUrl)) {
-		// get the service from the registry
-		var service = de.ingrid.mapclient.frontend.data.Service.registry.get(capabilitiesUrl);
-		// call the callback if given
-		if (callback instanceof Function) {
-			if(showFlash)
-			callback(service, showFlash);
-			else
-			callback(service);
-		}
-	}
-	else {
+	// for now we disable simply this disable this function and load the service
+	// in any case, but we might come back to this
+//	if (de.ingrid.mapclient.frontend.data.Service.registry.containsKey(capabilitiesUrl)) {
+//		// get the service from the registry
+//		var service = de.ingrid.mapclient.frontend.data.Service.registry.get(capabilitiesUrl);
+//		// call the callback if given
+//		if (callback instanceof Function) {
+//			if(showFlash)
+//			callback(service, showFlash);
+//			else
+//			callback(service);
+//		}
+//	}
+//	else {
 		// load the service
 		Ext.Ajax.request({
 			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
@@ -224,7 +226,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 			}
 		});
-	}
+//	}
 };
 
 /**
