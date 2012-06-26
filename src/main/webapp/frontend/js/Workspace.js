@@ -407,7 +407,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					iconCls : 'iconHelp',
 					tooltip : i18n('tHilfe'),
 					handler : function(btn) {
-						window.open(de.ingrid.mapclient.HELP_URL,750,550);
+						ingrid_openWindow(de.ingrid.mapclient.HELP_URL,750,550);
 					}
 				}));
 	}
