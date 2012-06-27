@@ -541,12 +541,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initDefaultMap = function(
 de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function() {
 
 	var self = this;
-	// create the overview layer
-	// (we need to configure the baselayer explicitly,
-	// otherwise it is created by the clone operation
-	// which does not copy the isBaseLayer property)
-	var overviewLayer = this.map.baseLayer.clone();
-	overviewLayer.isBaseLayer = true;
 
 	// add controls to map
 	var controls = [new OpenLayers.Control.OverviewMap({
@@ -559,17 +553,20 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
 	}
 	this.map.addControls(controls);
-
-	// listen to session changing events (addLayer and removeLayer are
-	// signaled by datachange of activeServicesPanel)
-	this.map.events.on({
-		// 'addlayer': this.onStateChanged,
-		// 'removelayer': this.onStateChanged,
-		'changelayer': this.onStateChanged,
-		'moveend': this.onStateChanged,
-		'changebaselayer': this.onStateChanged,
-		scope: this
+	
+	// create the overview layer
+	// (we cannot clone the baselayer here, because it would use wrong 
+	// settings form the main map (zoom levels, etc.).)
+	var overviewLayer = new OpenLayers.Layer.WMS(
+			this.map.baseLayer.name, 
+            this.map.baseLayer.url,
+            {layers: this.map.baseLayer.params.LAYERS}
+        );
+	var ov = new OpenLayers.Control.OverviewMap({
+		layers : [overviewLayer]
 	});
+	this.map.addControl(ov);
+
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
 	Ext.ux.Msg.flash({
