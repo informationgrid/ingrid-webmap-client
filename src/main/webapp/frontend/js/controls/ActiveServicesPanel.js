@@ -220,6 +220,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd) {
+	var self = this;
 	if(service != undefined){
 		if (this.containsService(service)) {
 			//tell the user that the service is already loaded
@@ -289,6 +290,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		});
 
+		// we add events to each checkbox, the addlayer event is to general for us
+		// therefore we do it like this
+		node.on('expand', function(){
+		node.eachChild(function(n){
+		n.on('checkchange',function(){
+		self.fireEvent('datachanged');
+		});
+		});
+		});
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			var i = 0;
@@ -367,7 +377,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 		for(var i = 0; i < wmsServices.length; i++){
 			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-				console.debug("name: "+service.capabilitiesUrl)
 				var cl = wmsServices[i].checkedLayers;
 				for(var j = 0; j < cl.length; j++){
 					var k = 0;
