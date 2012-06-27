@@ -179,7 +179,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var legendPanel = new GeoExt.LegendPanel({
 				layerStore : this.activeServicesPanel.getLayerStore(),
 				autoScroll : true,
-				border : false
+				border : false,
+				cls: "mapclientLegendPanel"
 			});
 
 	// create the panel for the west region

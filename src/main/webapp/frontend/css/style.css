@@ -119,3 +119,6 @@ font-style: inherit;
 .x-tree-node a span, .x-dd-drag-ghost a span {
 padding: 1px 3px 1px 3px;
 }
+.mapclientLegendPanel div div div label{
+	background-color: lightgray;
+}
