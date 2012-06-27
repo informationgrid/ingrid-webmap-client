@@ -237,19 +237,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}));
 
 	}
- 	if (this.viewConfig.hasZoomTool) {
 
- 
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconZoom',
-					tooltip : i18n('tKarteZoomen'),
-					enableToggle : false, 
-					handler : function(btn) {
-						self.map.zoomToMaxExtent();
-					}
-				}));
-
-	}
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control
@@ -269,7 +257,19 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					tooltip : i18n('tVor')
 				}));
 	}
+ 	if (this.viewConfig.hasZoomTool) {
 
+ 
+		toolbarItems.push(new Ext.Button({
+					iconCls : 'iconZoom',
+					tooltip : i18n('tKarteZoomen'),
+					enableToggle : false, 
+					handler : function(btn) {
+						self.map.zoomToMaxExtent();
+					}
+				}));
+
+	}
 	// c) measure tool
 	if (this.viewConfig.hasMeasureTool) {
 		// create the OpenLayers control
