@@ -128,7 +128,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		handler: function(btn) {
 			if (self.activeNode && !self.metadataBtnActive) {
 				self.displayMetaData(self.activeNode);
-				self.metadataBtnActive = true;
 			}
 		}
 	});
@@ -493,9 +492,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 		if (service) {
 			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layer: layer
-			}).show();
-			metaDialog.on('close', function(){self.metadataBtnActive = false});
+				layer: layer,
+                listeners: {
+                    'show': function (c) {
+						self.metadataBtnActive = true;
+                    }
+                }				
+			});
+			metaDialog.on('close', function(){
+			self.metadataBtnActive = false;
+			});
+			metaDialog.show();
 		}else{
 			service = node.attributes.service;
 			if(service){
