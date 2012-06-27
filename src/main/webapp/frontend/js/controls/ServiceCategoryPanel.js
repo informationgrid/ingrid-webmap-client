@@ -141,9 +141,11 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 	if(subCategories){
 
 	function sortFunc(a,b){
-		if(a.name == b.v)
+		name1 = a.name.toLowerCase();
+		name2 = b.name.toLowerCase();
+		if(name1 == name2)
 				return 0;
-		return (a.name < b.name) ? -1 : 1;
+		return (name1 < name2) ? -1 : 1;
 	}
 	//TODO not very performant ?!?
 	for (var i=0, count=subCategories.length; i<count; i++) {
