@@ -77,6 +77,7 @@ Local = {
         tKarteDrucken: { en: 'Print map', de: 'Karte drucken' },
         tKarteLaden: { en: 'Load map', de: 'Karte laden' },
         tKarteSpeichern: { en: 'Save map', de: 'Karte speichern' },
+        tKarteZoomen: { en: 'Zoom to initial map', de: 'Auf initiale Kartenausdehnung zoomen' },
         tKeineKartenVorhanden: { en: 'No maps available', de: 'Keine Karten vorhanden' },
         tKommentar: { en: 'Comment', de: 'Kommentar' },
         tKoordinatensysteme: { en: 'Coordinate system', de: 'Koordinatensysteme' },

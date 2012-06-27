@@ -206,8 +206,6 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
-		'<tr><td>Minscale</td><td>{minScale}</td></tr>'+
-		'<tr><td>Maxscale</td><td>{maxScale}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
 		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
 		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
