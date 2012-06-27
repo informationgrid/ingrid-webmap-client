@@ -378,6 +378,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		for(var i = 0; i < wmsServices.length; i++){
 			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
 				var cl = wmsServices[i].checkedLayers;
+				if(cl){
 				for(var j = 0; j < cl.length; j++){
 					var k = 0;
 					node.eachChild(function(n) {
@@ -386,6 +387,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 
 			        k++;
 			    	});
+				}
 				}
 				break;
 			}
