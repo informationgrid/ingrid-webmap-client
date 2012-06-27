@@ -49,7 +49,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	kmlArray: [],
 	transpBtnActive: false,
 	metadataBtnActive: false,
-	serviceCategoryPanel:null
+	serviceCategoryPanel:null,
+	parentCheckChangeActive:false
 });
 
 /**
@@ -294,12 +295,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		node.on('expand', function(){
 		node.eachChild(function(n){
 		n.on('checkchange',function(){
-		self.fireEvent('datachanged');
+			// we only fire if this is not set set, since on checking all, we would fire for every layer 
+			if(!self.parentCheckChangeActive)
+				self.fireEvent('datachanged');
 		});
 		});
 		});
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
+			self.parentCheckChangeActive = true;
 			var i = 0;
 			this.expand(true);
 		    node.eachChild(function(n) {
@@ -310,9 +314,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1)){
 		    		i++;
 		    	}else{
+		    		
 		        n.getUI().toggleCheck(checked);
 		    	}
 		    });
+		    self.parentCheckChangeActive = false;
+		    self.fireEvent('datachanged');
 		    
 		});
 		this.layerTree.root.appendChild(node);
