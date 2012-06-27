@@ -133,7 +133,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasPermaLink: false,
 	    	isFullScreen: true,
 	    	hasSettings: true,
-	    	hasDownloadTool : true
+	    	hasDownloadTool : true,
+	    	hasZoomTool : true
 	    	
 		},
 		"portalu-fullmap": {
@@ -152,7 +153,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	isFullScreen: true,
 	    	spacerTop: 142,
 	    	hasSettings: true,
-	    	hasDownloadTool : true
+	    	hasDownloadTool : true,
+	    	hasZoomTool : true
 	    	
 		},
 		"portalu-facete-search": {
@@ -172,7 +174,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	isFullScreen: false,
 	    	panelHeight: 500,
 	    	hasBboxSelectTool: true,
-	    	hasSettings: false
+	    	hasSettings: false,
+	    	hasZoomTool : false
 		},
 		"portalu-extended-search": {
 	    	hasServicesPanel: false,
@@ -191,7 +194,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	isFullScreen: false,
 	    	panelHeight: 676,
 	    	hasBboxSelectTool: true,
-	    	hasSettings: false
+	    	hasSettings: false,
+	    	hasZoomTool : false
 		}		
 };
 

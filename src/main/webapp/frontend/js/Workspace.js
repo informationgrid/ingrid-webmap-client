@@ -52,7 +52,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 				hasScaleList : true,
 				hasAreasList : true,
 				hasPermaLink : true,
-				hasDownloadTool : true
+				hasDownloadTool : true,
+				hasZoomTool: true
 			},
 
 			/**
@@ -236,7 +237,19 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				}));
 
 	}
+ 	if (this.viewConfig.hasZoomTool) {
+
  
+		toolbarItems.push(new Ext.Button({
+					iconCls : 'iconZoom',
+					tooltip : i18n('tKarteZoomen'),
+					enableToggle : false, 
+					handler : function(btn) {
+						self.map.zoomToMaxExtent();
+					}
+				}));
+
+	}
 	// b) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control
