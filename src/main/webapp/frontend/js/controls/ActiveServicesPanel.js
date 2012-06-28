@@ -219,7 +219,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * Add a service to the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode) {
 	var self = this;
 	if(service != undefined){
 		if (this.containsService(service)) {
@@ -377,6 +377,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(!initialAdd)
 		this.map.zoomToExtent(bounds);
 		//we need to expand the nodes otherwise the root node doesnt know its children
+		if(typeof expandNode === 'undefined' || expandNode == false)
 		node.expand(true);
 
 		//we check the services which are meant to be checked by default

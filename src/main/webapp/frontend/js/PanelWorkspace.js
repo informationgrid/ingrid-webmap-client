@@ -422,6 +422,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// create the panel for the center region
 	var centerPanel = new Ext.Panel({
 		region: 'center',
+		id: 'centerPanel',
 		layout: 'fit',
 		items: mapPanel,
 		tbar: toolbar
@@ -543,9 +544,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	var self = this;
 
 	// add controls to map
-	var controls = [new OpenLayers.Control.OverviewMap({
-			layers: [ overviewLayer ]
-		}), new OpenLayers.Control.KeyboardDefaults(),
+	var controls = [new OpenLayers.Control.KeyboardDefaults(),
 		new OpenLayers.Control.LoadingPanel()
 	];
 	if (this.viewConfig.hasPermaLink) {
@@ -569,8 +568,9 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
+	var panel = Ext.getCmp('centerPanel');
 	Ext.ux.Msg.flash({
-	  body: self.body,	
+	  body: panel.body,	
 	  msg: i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),
 	  pause: 4,
 	  type: 'success'
@@ -678,7 +678,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 			state.restoreMapState(function() {
 				// restore active services
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
-					self.activeServicesPanel.addService(state.activeServices[i]);
+					self.activeServicesPanel.addService(state.activeServices[i], false, false, true);
 				}
 				self.finishInitMap();
 				if (safeStateAfterLoad) {

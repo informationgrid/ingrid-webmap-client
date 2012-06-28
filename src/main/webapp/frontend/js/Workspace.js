@@ -707,7 +707,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 		},
 		failure : function(responseText) {
 				Ext.ux.Msg.flash({
-				  body: self.body,	
+				  body: cntrPanel.body,	
 				  msg: i18n('tKonnteKarteNichtSpeichern'),
 				  pause: 4,
 				  type: 'failure'
