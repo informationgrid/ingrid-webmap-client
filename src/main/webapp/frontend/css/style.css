@@ -42,7 +42,7 @@ body {
 }
 
 .iconZoom {
-	background-image: url(../../shared/images/icon_map.png);
+	background-image: url(../../shared/images/icon_world.png);
 }
 
 .iconRemove {
@@ -120,5 +120,5 @@ font-style: inherit;
 padding: 1px 3px 1px 3px;
 }
 .mapclientLegendPanel div div div label{
-	background-color: lightgray;
+	background-color: #F8F8F8;
 }

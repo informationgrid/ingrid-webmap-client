@@ -306,12 +306,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			self.parentCheckChangeActive = true;
 			var i = 0;
 			this.expand(true);
+			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 		    node.eachChild(function(n) {
 		    	var nodeUrl = n.layer.url;
-		    	
-		    	var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
+
 		    	//check everything but the first layer, which is our baselayer
-		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1)){
+		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
 		    		i++;
 		    	}else{
 		    		
