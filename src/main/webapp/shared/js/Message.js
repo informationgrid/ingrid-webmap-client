@@ -49,7 +49,7 @@ de.ingrid.mapclient.Message.showInfo = function(msg) {
  */
 de.ingrid.mapclient.Message.showError = function(msg) {
 	Ext.Msg.show({
-		title: 'Fehler',
+		title: i18n('tError'),
 		msg: msg,
 		width: 500,
 		height: 400,
@@ -63,9 +63,9 @@ de.ingrid.mapclient.Message.showError = function(msg) {
  * @param msg The warning message
  */
 de.ingrid.mapclient.Message.showEPSGWarning = function(epsg, service) {
-	var msg = 'Das Raumbezugssystem ('+epsg+') wird von den geladenen Diensten ('+service+') nicht unterst&uuml;tzt.';
+	var msg = i18n('tUnsupportedSpatialReferenceSystem', [epsg, service]);
 	Ext.Msg.show({
-		title: 'Warnung',
+		title: i18n('tWarning'),
 		msg: msg,
 		width: 500,
 		height: 400,
@@ -77,25 +77,25 @@ de.ingrid.mapclient.Message.showEPSGWarning = function(epsg, service) {
 /**
  * Predefined messages
  */
-de.ingrid.mapclient.Message.SAVE_SUCCESS = "Die &Auml;nderungen wurden gespeichert.";
-de.ingrid.mapclient.Message.SAVE_FAILURE = "Beim Speichern der Daten ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.SAVE_SUCCESS = i18n('tDieAenderungenWurdenGespeichert');
+de.ingrid.mapclient.Message.SAVE_FAILURE = i18n('tBeimSpeichernDerDatenIstEinFehlerAufgetreten');
 
-de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = "Das Laden der Konfiguration ist fehlgeschlagen.";
-de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = "Das Laden des Capabilities Dokuments ist fehlgeschlagen.";
-de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = "Das Laden der Projektionsdefinition ist fehlgeschlagen.";
+de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE = i18n('tDasLaderDerKonfigurationIstFehlgeschlagen');
+de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE = i18n('tErrorLoadingCapability');
+de.ingrid.mapclient.Message.LOAD_PROJECTION_FAILURE = i18n('tErrorLoadingProjectionDef');
 
-de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = "Die View-Konfiguration ist unbekannt.";
-de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE = "Der Dienst wurde bereits hinzugef&uuml;gt.";
+de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE = i18n('tUnknownViewConfiguration');
+de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE = i18n('tServiceAlreadyAdded');
 
-de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = "Das geladene Raumbezugssystem (EPSG) wird von der Basiskarte nicht unterstützt.";
+de.ingrid.mapclient.Message.NOT_SUPPORTED_EPSG = i18n('tProjectionNotSupported');
 
-de.ingrid.mapclient.Message.MAP_LIST_FAILURE = "Die Karten konnten nicht gelistet werden.";
-de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = "Die Karte wurde gespeichert.";
-de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = "Beim Speichern der Karte ist ein Fehler aufgetreten.";
-de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = "Beim L&ouml;schen der Karte ist ein Fehler aufgetreten.";
+de.ingrid.mapclient.Message.MAP_LIST_FAILURE = i18n('tErrorListingMap');
+de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS = i18n('tSuccessMapSaved');
+de.ingrid.mapclient.Message.MAP_SAVE_FAILURE = i18n('tErrorSavingMap');
+de.ingrid.mapclient.Message.MAP_DELETE_SUCCESS = i18n('tErrorRemovingMap');
 
-de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = "Beim Drucken der Karte ist ein Fehler aufgetreten.";
-de.ingrid.mapclient.Message.SEARCH_FAILURE = "Beim Suchen ist ein Fehler aufgetreten.";
-de.ingrid.mapclient.Message.SEARCH_SUCCESS = "Suche erfolgreich.";
+de.ingrid.mapclient.Message.MAP_PRINT_FAILURE = i18n('tErrorPrintingMap');
+de.ingrid.mapclient.Message.SEARCH_FAILURE = i18n('tErrorSearching');
+de.ingrid.mapclient.Message.SEARCH_SUCCESS = i18n('tSuccessSearching');
 
-de.ingrid.mapclient.Message.FEATURE_FAILURE = "Konnte keine administrativen Informationen abrufen.";
+de.ingrid.mapclient.Message.FEATURE_FAILURE = i18n('tCouldNotObtainAdminInfo');
