@@ -73,12 +73,12 @@
 								<include>admin/js/controls/**/*-min.js</include>
 								<include>admin/js/modules/basic/controls/*-min.js</include>
 								<include>admin/js/modules/basic/*-min.js</include>
+								<include>admin/js/modules/maintenance/controls/*-min.js</include>
+								<include>admin/js/modules/maintenance/*-min.js</include>
 								<include>admin/js/modules/services/controls/*-min.js</include>
 								<include>admin/js/modules/services/*-min.js</include>
 								<include>admin/js/modules/areas/controls/*-min.js</include>
 								<include>admin/js/modules/areas/*-min.js</include>
-								<include>admin/js/modules/maintenance/controls/*-min.js</include>
-								<include>admin/js/modules/maintenance/*-min.js</include>
 								<include>admin/js/**/*-min.js</include>
 							</includes>
 						</aggregation>
