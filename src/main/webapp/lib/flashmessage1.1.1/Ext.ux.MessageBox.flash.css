@@ -11,6 +11,11 @@
     color: #000000;
      z-index:20000;
 }
+.flashMessageBox .failure  {
+    background: none;
+    color: #CC0000;
+     z-index:20000;
+}
 
 .flashMessageBox .msg {
     background: #D9E7F8;

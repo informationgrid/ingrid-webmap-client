@@ -695,16 +695,25 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
 de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 		title, description) {
 	// set parameters according to save type
-	var responseHandler = (isTemporary == true) ? undefined : {
+		var cntrPanel = Ext.getCmp('centerPanel');
+		var responseHandler = (isTemporary == true) ? undefined : {
 		success : function(responseText) {
-			de.ingrid.mapclient.Message
-					.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
+			Ext.ux.Msg.flash({
+			  body: cntrPanel.body,	
+			  msg: i18n('tKarteGespeichert'),
+			  pause: 4,
+			  type: 'success'
+			});	
 		},
 		failure : function(responseText) {
-			de.ingrid.mapclient.Message
-					.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
-		}
-	};
+				Ext.ux.Msg.flash({
+				  body: self.body,	
+				  msg: i18n('tKonnteKarteNichtSpeichern'),
+				  pause: 4,
+				  type: 'failure'
+				});	
+			}
+		};
 
 	// create the session state instance
 	var data = new de.ingrid.mapclient.frontend.data.SessionState({
