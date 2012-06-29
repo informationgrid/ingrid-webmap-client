@@ -64,7 +64,6 @@ import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
-import de.ingrid.utils.xml.XMLUtils;
 
 /**
  * ConfigurationResource gives access to the application configuration
@@ -607,17 +606,17 @@ public class ConfigurationResource {
 				JSONObject jsonService = new JSONObject(serviceString);
 				WmsService service = findService(jsonService);
 				if(service != null){
-				if(!jsonService.getString("title").equals("null")){
+				if(jsonService.get("title") != JSONObject.NULL){
 					service.setName(jsonService.getString("title"));
 				}
-				if(!jsonService.getString("categories").equals("null")){
+				if(jsonService.get("categories") != JSONObject.NULL){
 					//rewrite the categories of the service
 					updateCategories(service, jsonService);
 				}
-				if(!jsonService.getString("layers").equals("null")){
-					updateLayersInFile(jsonService, req);
-						updateLayers(service, jsonService);
+				if(jsonService.get("layers") != JSONObject.NULL){
+					updateLayers(service, jsonService);
 				}
+				updateServiceFile(jsonService, req);
 				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 		}
 		}
@@ -898,54 +897,57 @@ public class ConfigurationResource {
 
 		Node titleNode = null;
 		try {
-			JSONArray layers = json.getJSONArray("layers");
-			if (layers != null) {
-				for (int i = 0, count = layers.length(); i < count; i++) {
+			if(json.get("layers") != JSONObject.NULL){
+				JSONArray layers = json.getJSONArray("layers");
+				if (layers != null) {
+					for (int i = 0, count = layers.length(); i < count; i++) {
 
-					if (layers.getJSONObject(i).getBoolean("deactivated")) {
-						
-						Node n = (Node) xpath.evaluate("//Name[text()=\""
-								+ layers.getJSONObject(i).getString("index") + "\"]",
-								doc, XPathConstants.NODE);
-						if(n != null){
-							n.getParentNode().removeChild(n);
-						}
-						log.debug("delete layer: " + layers.get(i));
-
-					} else {
-						// TODO insert all other attibutes in wms
-		
-						JSONObject layerObj = layers.getJSONObject(i);
-						log.debug("layerobject: " + layerObj.toString());
-						// Title
-						Node n = (Node) xpath.evaluate("//Name[text()=\""
-								+ layers.getJSONObject(i).getString("index") + "\"]",
-								doc, XPathConstants.NODE);
-						if(n != null){
-							Node titleNameNode = n.getNextSibling().getNextSibling();
-							titleNameNode.setTextContent(layerObj
-									.getString("title"));
+						if (layers.getJSONObject(i).getBoolean("deactivated")) {
 							
-							// Queryable
-							Node layerNode = n.getParentNode();
-							if(layerNode.getAttributes() != null){
-								if(layers.getJSONObject(i).getBoolean("featureInfo")){
-									layerNode.getAttributes().getNamedItem("queryable").setNodeValue("1");	
-								}else{
-									layerNode.getAttributes().getNamedItem("queryable").setNodeValue("0");
+							Node n = (Node) xpath.evaluate("//Name[text()=\""
+									+ layers.getJSONObject(i).getString("index") + "\"]",
+									doc, XPathConstants.NODE);
+							if(n != null){
+								n.getParentNode().removeChild(n);
+							}
+							log.debug("delete layer: " + layers.get(i));
+
+						} else {
+							// TODO insert all other attibutes in wms
+			
+							JSONObject layerObj = layers.getJSONObject(i);
+							log.debug("layerobject: " + layerObj.toString());
+							// Title
+							Node n = (Node) xpath.evaluate("//Name[text()=\""
+									+ layers.getJSONObject(i).getString("index") + "\"]",
+									doc, XPathConstants.NODE);
+							if(n != null){
+								Node titleNameNode = n.getNextSibling().getNextSibling();
+								titleNameNode.setTextContent(layerObj
+										.getString("title"));
+								
+								// Queryable
+								Node layerNode = n.getParentNode();
+								if(layerNode.getAttributes() != null){
+									if(layers.getJSONObject(i).getBoolean("featureInfo")){
+										layerNode.getAttributes().getNamedItem("queryable").setNodeValue("1");	
+									}else{
+										layerNode.getAttributes().getNamedItem("queryable").setNodeValue("0");
+									}
 								}
 							}
 						}
 					}
 				}
 			}
+			if(json.get("title") != null){
+				String title = json.getString("title");
 
-			String title = json.getString("title");
-
-			// change title
-			titleNode = (Node) xpath.evaluate("//Service/Title", doc,
-					XPathConstants.NODE);
-			titleNode.setTextContent(title);
+				// change title
+				titleNode = (Node) xpath.evaluate("//Service/Title", doc,
+						XPathConstants.NODE);
+				titleNode.setTextContent(title);
+			}
 		} catch (XPathExpressionException e) {
 			log.error("error on xpathing document: " + e.getMessage());
 			e.printStackTrace();
@@ -1107,7 +1109,7 @@ public class ConfigurationResource {
 		
 	}	
 
-	private void updateLayersInFile(JSONObject jsonService, HttpServletRequest req) {
+	private void updateServiceFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
 		try {
 			url = jsonService.getString("capabilitiesUrl");

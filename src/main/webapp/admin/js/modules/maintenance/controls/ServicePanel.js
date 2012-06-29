@@ -472,7 +472,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	if(scrollToBottom){
 		self.serviceGrid.getSelectionModel().select(self.serviceStore.totalLength - 1, 0);
 	}else{
-		self.serviceGrid.getSelectionModel().select(self.selectedModel.cell[0], self.selectedModel.cell[1]);
+		self.serviceGrid.getSelectionModel().select(self.selectedModel.cell[0], 0);
 	}
 	de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 };
