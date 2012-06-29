@@ -605,20 +605,26 @@ public class ConfigurationResource {
 				// write conf 
 				JSONObject jsonService = new JSONObject(serviceString);
 				WmsService service = findService(jsonService);
+				boolean doServiceUpdate = false;
 				if(service != null){
-				if(jsonService.get("title") != JSONObject.NULL){
-					service.setName(jsonService.getString("title"));
+					if(jsonService.get("title") != JSONObject.NULL){
+						doServiceUpdate = true;
+						service.setName(jsonService.getString("title"));
+					}
+					if(jsonService.get("categories") != JSONObject.NULL){
+						//rewrite the categories of the service
+						updateCategories(service, jsonService);
+					}
+					if(jsonService.get("layers") != JSONObject.NULL){
+						doServiceUpdate = true;
+						updateLayers(service, jsonService);
+					}
+					
+					if(doServiceUpdate){
+						updateServiceFile(jsonService, req);
+					}
+					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 				}
-				if(jsonService.get("categories") != JSONObject.NULL){
-					//rewrite the categories of the service
-					updateCategories(service, jsonService);
-				}
-				if(jsonService.get("layers") != JSONObject.NULL){
-					updateLayers(service, jsonService);
-				}
-				updateServiceFile(jsonService, req);
-				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
-		}
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
@@ -946,7 +952,9 @@ public class ConfigurationResource {
 				// change title
 				titleNode = (Node) xpath.evaluate("//Service/Title", doc,
 						XPathConstants.NODE);
-				titleNode.setTextContent(title);
+				if(titleNode != null){
+					titleNode.setTextContent(title);
+				}
 			}
 		} catch (XPathExpressionException e) {
 			log.error("error on xpathing document: " + e.getMessage());
