@@ -62,6 +62,17 @@ de.ingrid.mapclient.frontend.data.Service.prototype.getLayerById = function(id) 
 };
 
 /**
+ * Get a layer by it's name
+ * @param name The name
+ * @return OpenLayers.Layer instance
+ */
+de.ingrid.mapclient.frontend.data.Service.prototype.getLayerByName = function(name) {
+	return this.layers.find(function(item) {
+		return (item.name == name);
+	});
+};
+
+/**
  * Get a layer record contained in the GeoExt.data.WMSCapabilitiesStore by it's id
  * (@see de.ingrid.mapclient.frontend.data.Service.getLayerId)
  * @param id The id
@@ -146,20 +157,20 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				}
 				else
 				var format = new OpenLayers.Format.WMSCapabilities();
-				
-				
+
+
 				var capabilities = format.read(response.responseText);
 				if (capabilities.capability || format.name == "WMC") {
 					// set up store data
-					// we check if 
+					// we check if
 					if(format.name == "WMC")
 					var data = new GeoExt.data.WMCReader().readRecords(capabilities);
 					else
-					var data = new GeoExt.data.WMSCapabilitiesReader().readRecords(response.responseText);
+					var data = new de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader().readRecords(response.responseText);
 					if (data.success) {
 						if(format.name == "WMC")
 						var store = new GeoExt.data.LayerStore();
-						else 
+						else
 						var store = new GeoExt.data.WMSCapabilitiesStore();
 						store.add(data.records);
 						// prepare layers from records
@@ -201,7 +212,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						if(format.name == "WMC"){
 						var temp = {
 							title:capabilities.title
-							}							
+							}
 						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, temp, layers, store);
 						}
 						else

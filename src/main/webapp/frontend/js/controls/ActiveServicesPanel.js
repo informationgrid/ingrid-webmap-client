@@ -97,7 +97,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
 					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
 					}
-					self.removeService(self.activeNode.attributes.service);	
+					self.removeService(self.activeNode.attributes.service);
 				}else if (self.activeNode.layer != undefined){
 					// Remove "Zeige Punktkoordinaten" layers
 					if (self.activeNode.layer.id != undefined){
@@ -107,7 +107,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					// Remove "Zeige Punktkoordinaten" service
 					self.removePointCoordinatesService(self.activeNode);self.remove
 				}
-				
+
 			}
 		}
 	});
@@ -167,7 +167,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.removeBtn.enable();
 		self.transparencyBtn.disable();
 		self.metaDataBtn.enable();
-		
+
 		if (node) {
 			if (node.layer) {
 				self.transparencyBtn.enable();
@@ -179,7 +179,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 			}else {
 				self.transparencyBtn.disable();
-				self.removeBtn.enable();	
+				self.removeBtn.enable();
 			}
 		}
 		self.activeNode = node;
@@ -229,7 +229,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
-		if(typeof cntrPanel !== 'undefined' && showService){		
+		if(typeof cntrPanel !== 'undefined' && showService){
 		Ext.ux.Msg.flash({
 		  body: cntrPanel.body,
 		  msg: i18n('tMsgServiceAdded'),
@@ -242,7 +242,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//if not warn the user but display the new service
 		var srss = service.capabilitiesStore.data.items[0].data.srs;
 		var supportsSRS = false;
-		// srss holds the name of the supported projections 
+		// srss holds the name of the supported projections
 		for(srs in  srss){
 			if(srs == this.map.projection){
 			supportsSRS = true;
@@ -255,10 +255,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(!supportsSRS)
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,serviceTitle);
 
-		
+
 		var serviceLayers = service.getLayers();
 		var serviceRecords = this.layerStore.reader.readRecords(serviceLayers).records;
-	
+
 		// add service layers to the store, if they are not already contained
 		for (var i=0, count4=serviceRecords.length; i<count4; i++) {
 			var serviceRecord = serviceRecords[i];
@@ -271,7 +271,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				this.layerStore.add([serviceRecord]);
 			}
 		}
-	
+
 		// add service node to the tree
 		var node = new GeoExt.tree.LayerContainer({
 			text: serviceTitle,
@@ -281,13 +281,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			expanded: false,
 			service: service,
 			cls: 'x-tree-noicon',
-			loader: {
+			loader: new de.ingrid.mapclient.frontend.controls.ServiceTreeLoader({
 				filter: function(record) {
 					var layer = record.get("layer");
 					var layerBelongsToService = service.contains(layer);
 					return layerBelongsToService;
 				}
-			}
+			})
 		});
 
 		// we add events to each checkbox, the addlayer event is to general for us
@@ -295,7 +295,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		node.on('expand', function(){
 		node.eachChild(function(n){
 		n.on('checkchange',function(){
-			// we only fire if this is not set set, since on checking all, we would fire for every layer 
+			// we only fire if this is not set set, since on checking all, we would fire for every layer
 			if(!self.parentCheckChangeActive)
 				self.fireEvent('datachanged');
 		});
@@ -314,13 +314,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
 		    		i++;
 		    	}else{
-		    		
+
 		        n.getUI().toggleCheck(checked);
 		    	}
 		    });
 		    self.parentCheckChangeActive = false;
 		    self.fireEvent('datachanged');
-		    
+
 		});
 		this.layerTree.root.appendChild(node);
 
@@ -333,7 +333,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		/*****************************************************************/
 		/* we set the map to the largest bounding box its layers contain */
-		/* but first we check if our layers support our base projection **/ 
+		/* but first we check if our layers support our base projection **/
 		/*****************************************************************/
 
 		var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(this.map);
@@ -351,7 +351,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
 
 		}
-		
+
 		if(supportsSRS && mapProjection.projCode != "EPSG:4326"){
 
 		var bboxes = service.capabilitiesStore.data.items;
@@ -369,7 +369,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		}
 		}
-		// do we get some data?	
+		// do we get some data?
 		if(llbbox){
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
 		var newProj = new OpenLayers.Projection(srs);
@@ -398,14 +398,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 				break;
 			}
-		}	
+		}
 		}else{
 		// if not we tell the user
 		de.ingrid.mapclient.Message.showEPSGWarning(this.map.projection,service.definition.title);
 		}
-		
+
 	}
-	
+
 };
 
 /**
@@ -495,7 +495,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
 	if(!layer)
 		layer = node.childNodes[0].layer;
-		
+
 		var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
 		if (service) {
 			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
@@ -505,7 +505,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
                     'show': function (c) {
 						self.metadataBtnActive = true;
                     }
-                }				
+                }
 			});
 			metaDialog.on('close', function(){
 			self.metadataBtnActive = false;
@@ -523,7 +523,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 				});
 			}
 		}
-	
+
 };
 
 /**
@@ -567,12 +567,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	var kmlColor = ["#000000", "#BEBEBE", "#B03060", "#FF0000", "#00FF00", "#32CD32", "#556B2F", "#FFFF00",
 	              "#000080", "#0000FF", "#A020F0", "#FF00FF", "#00F5FF", "#7FFFD4", "#EEE9E9", "#FFFFFF"];
 	var countColor = 0;
-	
+
 	for ( var i = 0, count5 = kmlArray.length; i < count5; i++) {
 		var addedKml = kmlArray[i];
 		var kmlTitle = addedKml.title;
 		var kmlUrl = addedKml.url;
-		
+
 		if(kmlTitle == undefined){
 			var addedKmlTitle = addedKml[0];
 			if(addedKmlTitle != undefined){
@@ -582,7 +582,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 				}
 			}
 		}
-		
+
 		if(kmlUrl == undefined){
 			var addedKmlUrl = addedKml[1];
 			if(addedKmlUrl != undefined){
@@ -609,12 +609,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 				     },
 				     displayOutsideMaxExtent = false
 				);
-			
+
 			// TODO: add rules so the layer will be displayed on legend
 			var rule = new OpenLayers.Rule({
 				  title: kmlTitle,
 				  symbolizer: {pointRadius: 3, fontSize: "11px", fontColor: "#000000",
-				               labelAlign: "center", labelXOffset: 0, 
+				               labelAlign: "center", labelXOffset: 0,
 				               labelYOffset: 10, fillColor: kmlColor[countColor], strokeColor: "#000000" }
 				});
 
@@ -623,7 +623,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			if(countColor % 16 == 0){
 				countColor = 0;
 			}
-			
+
 			var selectCtrl = new OpenLayers.Control.SelectFeature(layer);
 			function createPopup(feature) {
 				popup = new GeoExt.Popup({
@@ -651,7 +651,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 		        }
 			});
 
-			
+
 			this.map.addControl(selectCtrl);
 		    selectCtrl.activate();
 
@@ -659,7 +659,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 			this.map.addLayer(layer);
 		}
 	}
-	
+
 	var store = new GeoExt.data.LayerStore({
 	    layers: layers
 	});
@@ -672,11 +672,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	    expanded: false
 
 	});
-	
+
 	if(this.layerTree != null){
-		this.layerTree.getRootNode().appendChild(overlayLayerNode);	
+		this.layerTree.getRootNode().appendChild(overlayLayerNode);
 	}
-	
+
 };
 
 
@@ -684,7 +684,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 
 	var layerId = activeNode.layer.id;
 	var parentNode = activeNode.parentNode;
-	
+
 	// Remove layer from map
 	if(this.layerStore.data){
 		if(this.layerStore.data.items){
@@ -697,13 +697,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 					if(itemId == layerId){
 						index = i;
 						break;
-					}	
+					}
 				}
 			}
 			this.layerStore.remove(this.layerStore.getAt(index));
 		}
 	}
-	
+
 	// Remove from tree
 	if(this.layerTree){
 		if(this.layerTree.root){
@@ -730,7 +730,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 							if(itemId == layerId){
 								indexServiceTree = i;
 								break;
-							}	
+							}
 						}
 					}
 					selectedServiceLayer.layerStore.remove(selectedServiceLayer.layerStore.getAt(indexServiceTree));
@@ -739,11 +739,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 			}
 			if(selectedService.childNodes.length == 0){
 				this.layerTree.root.removeChild(selectedService);
-				
+
 			}
 		}
 	}
-	
+
 	// Remove from session
 	if(this.kmlArray){
 		var title = activeNode.layer.name;
@@ -761,7 +761,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 
 
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointCoordinatesService = function(activeNode) {
-	
+
 	// Remove from map
 	if(activeNode.attributes.layerStore.data.items){
 		for (var i=0, count1=activeNode.attributes.layerStore.data.items.length; i<count1; i++) {
@@ -780,19 +780,19 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 									index = j;
 									this.layerStore.remove(this.layerStore.getAt(index));
 									break;
-								}	
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	}	
-	
+	}
+
 	// Remove from tree
 	activeNode.removeAll();
 	this.layerTree.root.removeChild(activeNode);
-	
+
 	// Remove from session
 	if(this.kmlArray){
 		for (var i=0, count3=this.kmlArray.length; i<count3; i++) {
