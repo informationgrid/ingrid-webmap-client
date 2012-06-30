@@ -112,4 +112,8 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode =
 		node.appendChild(child);
 	}
 	child.on("move", this.onChildMove, this);
+	//on checkchange(we check the service) we expand the nodes of the service and check all layers
+	if (this.onCheckChangeCallback) {
+		child.on('checkchange', this.onCheckChangeCallback);
+	}
 };

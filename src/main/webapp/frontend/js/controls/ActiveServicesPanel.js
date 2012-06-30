@@ -281,41 +281,45 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					var layer = record.get("layer");
 					var layerBelongsToService = service.contains(layer);
 					return layerBelongsToService;
+				},
+				onCheckChangeCallback : function (node, checked) {
+					if(!self.firingCheckChangeNode) {
+						self.firingCheckChangeNode = node;
+					}
+					this.expand(true);
+					node.eachChild(function(n) {
+						n.getUI().toggleCheck(checked);
+				    });
+				    if (self.firingCheckChangeNode === node) {
+						self.fireEvent('datachanged');
+						self.firingCheckChangeNode = null;
+				    }
 				}
 			})
 		});
 
-		// we add events to each checkbox, the addlayer event is to general for us
-		// therefore we do it like this
-		node.on('expand', function(){
-		node.eachChild(function(n){
-		n.on('checkchange',function(){
-			// we only fire if this is not set set, since on checking all, we would fire for every layer
-			if(!self.parentCheckChangeActive)
-				self.fireEvent('datachanged');
-		});
-		});
-		});
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
-			self.parentCheckChangeActive = true;
-			var i = 0;
+			// make sure we fire datachanged event only once (see below)
+			if(!self.firingCheckChangeNode) {
+				self.firingCheckChangeNode = node;
+			}
 			this.expand(true);
+			var i = 0;
 			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
-		    node.eachChild(function(n) {
-		    	var nodeUrl = n.layer.url;
-
-		    	//check everything but the first layer, which is our baselayer
-		    	if(i == 0 && (wmsUrl.indexOf(nodeUrl) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
+			node.eachChild(function(n) {
+		    	// check everything but the first layer, which is our baselayer
+		    	if(i == 0 && (wmsUrl.indexOf(n.layer.url) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
 		    		i++;
-		    	}else{
-
-		        n.getUI().toggleCheck(checked);
+		    	} else {
+		    		n.getUI().toggleCheck(checked);
 		    	}
 		    });
-		    self.parentCheckChangeActive = false;
-		    self.fireEvent('datachanged');
-
+			// make sure we fire datachanged event only once (see above)
+		    if (self.firingCheckChangeNode === node) {
+				self.fireEvent('datachanged');
+				self.firingCheckChangeNode = null;
+		    }
 		});
 		this.layerTree.root.appendChild(node);
 
