@@ -569,12 +569,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
 	var panel = Ext.getCmp('centerPanel');
-	Ext.ux.Msg.flash({
-	  body: panel.body,	
-	  msg: i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),
-	  pause: 4,
-	  type: 'success'
-	});	
+	de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'));
 	
 };
 

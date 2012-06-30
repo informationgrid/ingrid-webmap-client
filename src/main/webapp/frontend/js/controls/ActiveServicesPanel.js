@@ -229,13 +229,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
-		if(typeof cntrPanel !== 'undefined' && showService){
-		Ext.ux.Msg.flash({
-		  body: cntrPanel.body,
-		  msg: i18n('tMsgServiceAdded'),
-		  pause: 3,
-		  type: 'success'
-		});
+		if(typeof cntrPanel !== 'undefined' && showService){		
+			de.ingrid.mapclient.Message.showInfo(i18n('tMsgServiceAdded'));
 		}
 
 		//check if the added service support our base EPSG,
@@ -420,22 +415,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 	}
 	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl) {
 		var cntrPanel = Ext.getCmp('centerPanel');
-		Ext.ux.Msg.flash({
-			body : cntrPanel.body,
-			msg : i18n('tMsgCannotRemoveBaselayer'),
-			pause : 3,
-			type : 'success'
-		});
+		de.ingrid.mapclient.Message.showInfo(i18n('tMsgCannotRemoveBaselayer'));
 	} else {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		// we only have a center panel if we are in the full view
 		if (typeof cntrPanel !== 'undefined') {
-			Ext.ux.Msg.flash({
-						body : cntrPanel.body,
-						msg : i18n('tMsgServiceRemoved'),
-						pause : 3,
-						type : 'success'
-					});
+			de.ingrid.mapclient.Message.showInfo(i18n('tMsgServiceRemoved'));
 		}
 		// remove service layers from the store
 		var recordsToRemove = [];

@@ -187,15 +187,8 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
 				self.doLayout();
 				self.show();
 			}else{
-						Ext.ux.Msg.flash({
-							  body: self.body,	
-							  msg: i18n('tRaumbezugAuszerhalbDesFeldes'),
-							  pause: 3,
-							  type: 'success'
-							});	
+				de.ingrid.mapclient.Message.showInfo(i18n('tRaumbezugAuszerhalbDesFeldes'));
 				}
-
-											
 					
 		},
 		failure: function(response, request) {

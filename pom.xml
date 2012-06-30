@@ -90,6 +90,7 @@
 							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
 							<includes>
 								<include>lib/openlayers.addins/LoadingPanel-min.js</include>
+                                <include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
 								<include>lib/geoext.ux/SimplePrint-min.js</include>
 								<include>lib/geoext.ux/Locale-min.js</include>
 								<include>shared/**/*-min.js</include>

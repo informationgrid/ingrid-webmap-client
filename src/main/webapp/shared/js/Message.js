@@ -13,34 +13,18 @@ de.ingrid.mapclient.Message = function() {
  * Show the given message in an overlay that fades out automatically
  * @param msg The message
  */
-de.ingrid.mapclient.Message.showInfo = function(msg) {
-    if (!de.ingrid.mapclient.msgCt) {
-    	// initialize on first call
+de.ingrid.mapclient.Message.showInfo = function(msg, params) {
+	if (!params) params={};
+	new Ext.ux.Notification({
+		iconCls:	params.iconCls || 'x-icon-information',
+		title:	  params.title || 'Info',
+		html:	   msg,
+		width: 300,
+		autoDestroy: true,
+		hideDelay:  params.delay || 5000,
+		displayTarget: Ext.select('div.x-panel-tbar')
+	}).show(Ext.select('div.x-panel-tbar'));
 
-    	// create the container for the message
-    	de.ingrid.mapclient.msgCt = Ext.DomHelper.insertFirst(document.body, {
-    		id: 'msg-div',
-    		style: 'position:absolute; z-index:10000;'
-    	}, true);
-    	// create the message
-    	de.ingrid.mapclient.Message.msg = Ext.DomHelper.append(de.ingrid.mapclient.msgCt, {
-        	html: msg
-        }, true);
-    }
-    else {
-    	// update on succeeding calls
-
-    	// set the message
-    	de.ingrid.mapclient.Message.msg.dom.innerHTML = msg;
-    }
-
-    de.ingrid.mapclient.msgCt.alignTo(document, 't-t', [0, 10]);
-    /*de.ingrid.mapclient.Message.msg.slideIn('t').pause(1.5).ghost("t", {
-    	remove:true
-    });*/
-    de.ingrid.mapclient.Message.msg.fadeIn('t').pause(1.5).fadeOut("t", {
-    	remove: false
-    });
 };
 
 /**

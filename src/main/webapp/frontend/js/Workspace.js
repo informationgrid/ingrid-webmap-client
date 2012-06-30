@@ -698,20 +698,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 		var cntrPanel = Ext.getCmp('centerPanel');
 		var responseHandler = (isTemporary == true) ? undefined : {
 		success : function(responseText) {
-			Ext.ux.Msg.flash({
-			  body: cntrPanel.body,	
-			  msg: i18n('tKarteGespeichert'),
-			  pause: 4,
-			  type: 'success'
-			});	
+			de.ingrid.mapclient.Message.showInfo(i18n('tKarteGespeichert'));
 		},
 		failure : function(responseText) {
-				Ext.ux.Msg.flash({
-				  body: cntrPanel.body,	
-				  msg: i18n('tKonnteKarteNichtSpeichern'),
-				  pause: 4,
-				  type: 'failure'
-				});	
+			de.ingrid.mapclient.Message.showInfo(i18n('tKonnteKarteNichtSpeichern', {iconCls:"x-icon-error", title:i18n('tError')}));
 			}
 		};
 

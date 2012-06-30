@@ -24,3 +24,14 @@ body {
 	width: 16px; 
 	height: 16px;
 }
+
+
+/*
+    Ext.ux.Notification
+*/
+.x-icon-error{background-image:url(../../shared/images/exclamation.gif) ! important;}
+.x-icon-information{background-image:url(../../shared/images/information.gif) ! important;}
+.x-notification .x-window-body{margin: 0;padding:1em ! important; width: auto ! important;}
+.x-notification .x-tool-close{display: none}
+.x-notification.fixed .x-tool-close{display: block}
+.x-notification p{margin: 0;padding:0;}
