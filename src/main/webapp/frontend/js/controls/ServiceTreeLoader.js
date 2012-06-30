@@ -117,3 +117,15 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode =
 		child.on('checkchange', this.onCheckChangeCallback);
 	}
 };
+
+
+Ext.override(GeoExt.tree.LayerNodeUI, {
+    onDblClick: function(e) {
+        e.preventDefault();
+        if(e.getTarget('.x-tree-node-cb', 1)) {
+            this.toggleCheck(this.isChecked());
+        } else {
+            GeoExt.tree.LayerNodeUI.superclass.onClick.apply(this, arguments);
+        }
+    }
+});
