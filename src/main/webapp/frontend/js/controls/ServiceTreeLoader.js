@@ -14,7 +14,25 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = Ext.extend(GeoExt.tree
 		Ext.apply(this, {});
 		de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.superclass.initComponent
 				.apply(this, arguments);
-	}
+	},
+	
+	/** 
+	* Override this method of LayerLoader to prevent duplicate adding of 
+	* nodes, since this method is triggered by the store-event
+	*/
+	onStoreAdd: function(store, records, index, node) {
+		// skip event handling of store
+		return;
+	},
+	
+	/** 
+	* Override this method of LayerLoader to prevent duplicate remove handling of 
+	* nodes, since this method is triggered by the store-event
+	*/
+    onStoreRemove: function(store, record, index, node) {
+		// skip event handling of store
+		return;
+    }
 });
 
 /**

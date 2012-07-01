@@ -287,8 +287,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 						self.firingCheckChangeNode = node;
 					}
 					this.expand(true);
+					var i = 0;
+					var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 					node.eachChild(function(n) {
-						n.getUI().toggleCheck(checked);
+				    	// check everything but the first layer, which is our baselayer
+				    	if(i == 0 && (wmsUrl.indexOf(n.layer.url) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
+				    		i++;
+				    	} else {
+				    		n.getUI().toggleCheck(checked);
+				    	}
 				    });
 				    if (self.firingCheckChangeNode === node) {
 						self.fireEvent('datachanged');
