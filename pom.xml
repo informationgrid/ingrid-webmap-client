@@ -66,6 +66,8 @@
 							<output>${project.build.directory}/${project.build.finalName}/admin/js/admin-all-min.js</output>
 							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
 							<includes>
+								<include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
+								<include>lib/geoext.ux/Locale-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>admin/js/*-min.js</include>
 								<include>admin/js/modules/*-min.js</include>
