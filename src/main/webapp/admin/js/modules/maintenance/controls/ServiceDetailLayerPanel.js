@@ -98,7 +98,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     });
 
 	self.store.loadData(layers);
-	
+	/*
+	grid.on('render',function(cell) {
+		console.debug(cell);
+	});
+	*/
 	self.store.on('update',function(cell) {
 		var modified  = cell.modified;
 		if(modified){

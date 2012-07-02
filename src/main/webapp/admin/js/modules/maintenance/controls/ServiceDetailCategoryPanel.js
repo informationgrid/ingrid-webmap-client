@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
  * @class ServiceDetailCategoryPanel is used to manage a list of categories.
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.extend(Ext.Panel, {
-	title: 'Kategorie',
+	title: 'Rubriken',
 	autoScroll: true,
 	selectedService: null,
 	loadMask: new Ext.LoadMask(Ext.getBody()),

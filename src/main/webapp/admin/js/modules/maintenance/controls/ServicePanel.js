@@ -11,8 +11,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 
 	id: 'serviceGridPanel',
 	itemId: 'serviceGridPanel',
-    height: 400,
-	split: true,
     title: 'Dienste',
     
 	/**
@@ -96,7 +94,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		viewConfig: {
 			forceFit: true
 		},
-		height: 400
+		height: 360
 	});
 	
 	self.serviceGrid.getSelectionModel().on('cellselect', function(selModel, node) {
@@ -339,7 +337,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteServi
 			   self.deleteServiceBtn.disable(),
 			   // Remove categories and layer panel
 			   self.remove(self.items.get('serviceDetailBorderPanel'));
-			   de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 		   }
 	   	}
 	});

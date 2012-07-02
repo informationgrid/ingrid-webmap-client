@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.services");
  */
 de.ingrid.mapclient.admin.modules.services.ServicesModule = Ext.extend(de.ingrid.mapclient.admin.modules.ModuleBase, {
 
-	title: 'Rubrik',
+	title: 'Rubriken',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',
