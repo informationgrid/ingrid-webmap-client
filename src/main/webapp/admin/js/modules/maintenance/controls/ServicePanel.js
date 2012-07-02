@@ -474,7 +474,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	}else{
 		self.serviceGrid.getSelectionModel().select(self.selectedModel.cell[0], 0);
 	}
-	de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 };
 
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadServiceLayerFromFile  = function (serviceRecord){
@@ -574,6 +573,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
 						self.reloadServiceFromConfig(scrollToBottom);
+						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 						self.loadMask.hide();
 					},
 					failure: function() {

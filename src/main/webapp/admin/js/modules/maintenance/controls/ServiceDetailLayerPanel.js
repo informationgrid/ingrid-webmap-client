@@ -53,59 +53,35 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 		
 	}
 	
-	 var cm = new Ext.grid.ColumnModel({
+	var cm = new Ext.grid.ColumnModel({
 	        // specify any defaults for each column
 	        defaults: {
 	            sortable: true // columns are not sortable by default           
 	        },
-	        columns: [/*{
-	              	header: "Name", 
-	                  dataIndex: 'index', 
-	                  sortable: true, 
-	                  width: 200, 
-	                  editor:{
-	                  	xtype: 'textfield',
-	                  	allowBlank: false
-	                  }
-	              },*/{
-	              	header: "Title", 
-	                  dataIndex: 'title', 
-	                  sortable: true, 
-	                  width: 200, 
-	                  editor:{
-	                  	xtype: 'textfield',
-	                  	allowBlank: false
-	                  }
-	              },{
-	              	header: "Ausgeschlossen", 
-	              	dataIndex: 'deactivated', 
-	                  editor:{
-	                  	xtype: 'checkbox',
-	                  	allowBlank: false
-	                  }
-	              },{
-	              	header: "Aktiv (Default)", 
-	              	dataIndex: 'checked', 
-	                  editor:{
-	                  	xtype: 'checkbox',
-	                  	allowBlank: false
-	                  }
-	              },{
-	              	header: "Info", 
-	              	dataIndex: 'featureInfo', 
-	                  editor:{
-	                  	xtype: 'checkbox',
-	                  	allowBlank: false
-	                  }
-	              }/*,{
-	            	header: "Legende", 
-	              	dataIndex: 'legend',
-	              	editor:{
-	                  	xtype: 'checkbox',
-	                  	allowBlank: false
-	                  }
-	              }*/]
-	    });
+	        columns: [{
+	              		header: "Title", 
+	              		dataIndex: 'title', 
+	              		sortable: true, 
+	              		width: 200, 
+	              		editor:{
+	              			xtype: 'textfield',
+	              			allowBlank: false
+	              		}
+	              	}
+		            ,new Ext.ux.grid.CheckColumn({
+		            	  header: "Ausgeschlossen", 
+			              dataIndex: 'deactivated'
+		            })
+		            ,new Ext.ux.grid.CheckColumn({
+		            	  header: "Aktiv (Default)", 
+			              dataIndex: 'checked'
+		            })
+		            ,new Ext.ux.grid.CheckColumn({
+		            	  header: "Info", 
+		            	  dataIndex: 'featureInfo' 
+		            })
+	              ]
+	    	});
 	
 	// create the grid
 	var grid = new Ext.grid.EditorGridPanel({
@@ -123,23 +99,29 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 
 	self.store.loadData(layers);
 	
-	grid.on('afteredit', function(cell) {
-		if(cell.field == "deactivated"){
-			Ext.Msg.show({
-				   title:'Layer wird gel&ouml;scht',
-				   msg: 'Soll das L&ouml;schen des Layers wirklich durchgef&uuml;hrt werden? Layer kann nur durch "Neu einlesen" des Dienstes wiederhergestellt werden!',
-				   buttons: Ext.Msg.OKCANCEL,
-				   icon: Ext.MessageBox.QUESTION,
-				   fn: function(btn){
-					   if (btn == 'ok'){
-						   self.save(cell);
-					   }else{
-						   self.mainPanel.reloadServiceFromConfig(false);
-					   }
-				   	}
-				});
-		}else{
-			self.save(cell);			
+	self.store.on('update',function(cell) {
+		var modified  = cell.modified;
+		if(modified){
+			var modifiedData = modified[0].data;
+			if(modifiedData){
+				if(modified[0].modified.deactivated != undefined){
+					Ext.Msg.show({
+						   title:'Layer wird gel&ouml;scht',
+						   msg: 'Soll das L&ouml;schen des Layers wirklich durchgef&uuml;hrt werden? Layer kann nur durch "Neu einlesen" des Dienstes wiederhergestellt werden!',
+						   buttons: Ext.Msg.OKCANCEL,
+						   icon: Ext.MessageBox.QUESTION,
+						   fn: function(btn){
+							   if (btn == 'ok'){
+								   self.save(modifiedData);
+							   }else{
+								   self.mainPanel.reloadServiceFromConfig(false);
+							   }
+						   	}
+						});
+				}else{
+					self.save(modifiedData);
+				}
+			}
 		}
 	});
 	
@@ -159,8 +141,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	var layers = [];
 	for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
 		var layer = self.layerRecord[i];
-		if(layer.index == store.record.data.index){
-			layers.push(store.record.data)
+		if(layer.index == store.index){
+			layers.push(store)
 		}else{
 			layers.push(layer);
 		}
