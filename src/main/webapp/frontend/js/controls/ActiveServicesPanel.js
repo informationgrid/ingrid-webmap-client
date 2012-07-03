@@ -50,7 +50,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transpBtnActive: false,
 	metadataBtnActive: false,
 	serviceCategoryPanel:null,
-	parentCheckChangeActive:false
+	parentCheckChangeActive:false,
+	supressDataChange: false
 });
 
 /**
@@ -62,7 +63,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 
 	// add the datachanged event
 	this.addEvents({
-		datachanged: true
+		datachanged: false
 	});
 
 	// create the layer store
@@ -235,6 +236,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
+		self.supressDataChange = true;	
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
 		if(typeof cntrPanel !== 'undefined' && showService){		
@@ -291,9 +293,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					return layerBelongsToService;
 				},
 				onCheckChangeCallback : function (node, checked) {
-					if(!self.firingCheckChangeNode) {
-						self.firingCheckChangeNode = node;
-					}
+//					if(!self.firingCheckChangeNode) {
+//						self.firingCheckChangeNode = node;
+//					}
 					this.expand(true);
 					var i = 0;
 					var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
@@ -305,10 +307,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				    		n.getUI().toggleCheck(checked);
 				    	}
 				    });
-				    if (self.firingCheckChangeNode === node) {
-						self.fireEvent('datachanged');
-						self.firingCheckChangeNode = null;
-				    }
+//				    if (self.firingCheckChangeNode === node) {
+////						self.fireEvent('datachanged');
+//						self.firingCheckChangeNode = null;
+//				    }
 				}
 			})
 		});
@@ -316,9 +318,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			// make sure we fire datachanged event only once (see below)
-			if(!self.firingCheckChangeNode) {
-				self.firingCheckChangeNode = node;
-			}
+//			if(!self.firingCheckChangeNode) {
+//				self.firingCheckChangeNode = node;
+//			}
 			this.expand(true);
 			var i = 0;
 			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
@@ -331,17 +333,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	}
 		    });
 			// make sure we fire datachanged event only once (see above)
-		    if (self.firingCheckChangeNode === node) {
-				self.fireEvent('datachanged');
-				self.firingCheckChangeNode = null;
-		    }
+//		    if (self.firingCheckChangeNode === node) {
+//				self.fireEvent('datachanged');
+//				self.firingCheckChangeNode = null;
+//		    }
 		});
 		this.layerTree.root.appendChild(node);
 
 		this.services.add(service.getCapabilitiesUrl(), service);
 		//if we are not in an initial state, then we fire the event which causes session write
 		//and we zoom to extent, otherwise we load from session, therefore no writing needed and
-		//we zoom to the extned of the wmc-session doc
+		//we zoom to the extend of the wmc-session doc
 		if(!initialAdd){
 		this.fireEvent('datachanged');
 		}
@@ -419,7 +421,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 
 	}
-
+		self.supressDataChange = false;
 };
 
 /**
