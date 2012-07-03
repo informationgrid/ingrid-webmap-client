@@ -87,7 +87,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.removeBtn = new Ext.Button({
 		iconCls: 'iconRemove',
-		tooltip: i18n('tDienstEntfernen'),
+		tooltip: i18n('tZumEntfernenErstEinenDienstMarkieren'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
@@ -113,7 +113,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.transparencyBtn = new Ext.Button({
 		iconCls: 'iconTransparency',
-		tooltip: i18n('tLayerTransparenz'),
+		tooltip: i18n('tFuerTransparenzErst'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode  && !self.transpBtnActive) {
@@ -124,7 +124,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 	this.metaDataBtn = new Ext.Button({
 		iconCls: 'iconMetadata',
-		tooltip: i18n('tMetadaten'),
+		tooltip: i18n('tFuerMetadatenErst'),
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode && !self.metadataBtnActive) {
@@ -167,19 +167,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.removeBtn.enable();
 		self.transparencyBtn.disable();
 		self.metaDataBtn.enable();
+		
 
 		if (node) {
 			if (node.layer) {
 				self.transparencyBtn.enable();
+				self.transparencyBtn.setTooltip(i18n('tLayerTransparenz'));
 				self.updateOpacitySlider(node.layer);
 				if (node.layer.CLASS_NAME=="OpenLayers.Layer.GML") {
 					self.removeBtn.enable();
+					self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
 				} else {
 					self.removeBtn.disable();
+					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
+					self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
 				}
 			}else {
 				self.transparencyBtn.disable();
+				self.transparencyBtn.setTooltip(i18n('tFuerTransparenzErst'));
 				self.removeBtn.enable();
+				self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
+				self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
 			}
 		}
 		self.activeNode = node;

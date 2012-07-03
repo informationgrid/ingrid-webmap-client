@@ -1,4 +1,3 @@
-// global shortcut function for retrieving a localized string
 function i18n(key, arrInsertValues) {
     return Local.getLocalizedString(key, Local.languageCode, arrInsertValues);
 }
@@ -80,6 +79,8 @@ Local = {
     	tFeatureInfo: { en: 'Feature Info', de: 'Feature Info' },
     	tFlaeche : { en: 'Area', de: 'Fl&auml;che' },
     	tFormat : { en: 'Format', de: 'Format' },
+    	tFuerTransparenzErst : { en: 'Select a layer for transparency first.', de: '"F&uuml;r Transparenzfunktion einen Layer markieren.' },
+    	tFuerMetadatenErst : { en: 'Select a layer or service to display metadata first.', de: '"F&uuml;r Metadatenanzeige Dienst oder Layer markieren.' },
         tGebietAuswaehlen : { en: 'Select area', de: 'Gebiet ausw&auml;hlen' },
         tGebuehren : { en: 'Fees', de: 'Geb&uuml;hren' },
         tHilfe : { en: 'Help', de: 'Hilfe' },
@@ -107,7 +108,7 @@ Local = {
         tMaszstab : { en: 'Scale', de: 'Ma&szlig;tab' },
         tMessen : { en: 'Measure Tool', de: 'Messen' },
         tMetadaten : { en: 'Metadata', de: 'Metadaten' },
-        tMsgServiceAdded: { en: '<p><strong>Service added successfully</strong></p> Please choose a layer for display.', de: '<p><strong>Dienst erfolgreich hinzugef&uuml;gt</strong></p> Bitte w&auml;hlen sie einen Layer aus, um sich etwas anzeigen zu lassen.' },
+        tMsgServiceAdded: { en: '<p><strong>Service added successfully</strong></p> Please choose a layer for display.', de: '<p><strong>Dienst erfolgreich hinzugef&uuml;gt</strong></p> Sie k&ouml;nnen nun beim neu hinzugef&uuml;gten Dienst aus der Liste verf&uuml;gbarer Layer ausw&auml;hlen.' },
         tMsgCannotRemoveBaselayer: { en: '<p><strong>The base layer cannot be removed.</strong></p>', de: '<p><strong>Basisdienst kann nicht entfernt werden.</strong></p>' },
         tMsgServiceRemoved: { en: '<p><strong>Service removed successfully!</strong></p>', de: '<p><strong>Dienst erfolgreich entfernt!</strong></p>' },
         tObjektinformationen : { en: 'Object information', de: 'Objektinformationen' },
@@ -145,6 +146,7 @@ Local = {
         tZeigePunktkoordinaten: { en: 'Show point coordinates', de: 'Zeige Punktkoordinaten' },
         tZugriffsbeschraenkung: { en: 'Access restriction', de: 'Zugriffsbeschr&auml;nkung' },
         tZumSpeichernErstEinloggen: { en: 'Login to save.', de: 'Zum Speichern erst einloggen.' },
+        tZumEntfernenErstEinenDienstMarkieren: { en: 'To remove a service first select one.', de: 'Zum Entfernen erst einen Dienst markieren.' },
         tZurueck: { en: 'Back', de: 'Zur&uuml;ck' },
         tZusammenfassung: { en: 'Abstract', de: 'Zusammenfassung' }
     }
