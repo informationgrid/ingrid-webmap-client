@@ -85,7 +85,7 @@ Local = {
         tHilfe : { en: 'Help', de: 'Hilfe' },
         tHintZoomToView : { en: 'Hint: You may have to zoom into the map to see the layers of the external service. The provider of the service is responsible for the display of the service. PortalU has no influence here.', de: 'Hinweis: M&ouml;glicherweise m&uuml;ssen Sie die Ansicht vergr&ouml;&szlig;ern, um Ebenen von externen Kartendiensten betrachten zu k&oumlnnen. Der Betreiber des Kartendienstes ist f&uuml;r die Anzeige verantwortlich. PortalU hat keine Beteiligung an dessen Verhalten.' },
         tInfo : { en: 'Info', de: 'Info' },
-        tKarteHerunterladen: { en: 'Download map', de: 'Karte herunterladen' },
+        tKarteHerunterladen: { en: 'Save map as WMC document', de: 'Karte als WMC abspeichern' },
         tKarteDrucken: { en: 'Print map', de: 'Karte drucken' },
         tKarteGespeichert: { en: 'Map succesfully stored', de: 'Karte erfolgreich gespeichert' },
         tKarteKonnteNichtSpeichern: { en: 'Map could not be stored', de: 'Konnte Karte nicht speichern' },         
