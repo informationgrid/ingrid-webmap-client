@@ -31,9 +31,7 @@ import java.nio.charset.Charset;
  * 
  * It uses the following strategies:
  * 
- * <li>use magic bytes</li>
- * <li>use <xml> header</li>
- * <li>presume UTF-8</li>
+ * <li>use magic bytes</li> <li>use <xml> header</li> <li>presume UTF-8</li>
  * 
  */
 public class SniffedXmlInputStream extends BufferedInputStream {
