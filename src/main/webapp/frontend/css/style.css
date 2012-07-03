@@ -132,3 +132,5 @@ padding: 1px 3px 1px 3px;
 .x-notification .x-tool-close{display: none}
 .x-notification.fixed .x-tool-close{display: block}
 .x-notification p{margin: 0;padding:0;}
+.olControlScaleLine {bottom:20px !important;}
+.olControlMousePosition{bottom: 0em;left: 0px;display: block;position: absolute !important;font-family: Arial;font-size: 12px !important;}
