@@ -613,7 +613,19 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
 	}
 	this.map.addControls(controls);
-
+	// create the overview layer
+	// (we cannot clone the baselayer here, because it would use wrong 
+	// settings form the main map (zoom levels, etc.).)
+	var overviewLayer = new OpenLayers.Layer.WMS(
+			this.map.baseLayer.name, 
+            this.map.baseLayer.url,
+            {layers: this.map.baseLayer.params.LAYERS}
+        );
+	var ov = new OpenLayers.Control.OverviewMap({
+		layers : [overviewLayer]
+	});
+	this.map.addControl(ov);
+	
 	// listen to session changing events (addLayer and removeLayer are
 	// signaled by datachange of activeServicesPanel)
 	this.map.events.register('moveend', self.map, function(evt) {
