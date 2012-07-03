@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * HttpProxy is used to call remote services to eliminate cross domain issues.
@@ -14,7 +17,7 @@ import java.net.URLConnection;
 public class HttpProxy {
 
 	/**
-	 * Do a WMS request. The method checks, if the url contains the strings
+	 * Do a HTTP request. The method checks, if the url contains the strings
 	 * SERVICE=WMS and REQUEST=GetCapabilities or REQUEST=GetFeatureInfo and throws an
 	 * exception if not.
 	 * @param urlStr The request url
@@ -37,11 +40,13 @@ public class HttpProxy {
 		try {
 			URL url = new URL(urlStr);
 			URLConnection conn = url.openConnection();
-
+			
+			SniffedXmlInputStream xmlInputStream = new SniffedXmlInputStream(conn.getInputStream());
+			
 			// read the response into the string buffer
 			char[] buf = new char[1024];
 			int numRead = 0;
-			reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(xmlInputStream, xmlInputStream.getXmlEncoding()));
 			while((numRead = reader.read(buf)) != -1) {
 				response.append(buf, 0, numRead);
 			}
