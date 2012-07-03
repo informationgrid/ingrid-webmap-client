@@ -64,7 +64,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.initComponent = func
 			}
 		}
 	});
-	self.setPagePosition(250,200);
+	self.setPagePosition(350,300);
 	de.ingrid.mapclient.frontend.controls.PrintDialog.superclass.initComponent.call(this);
 };
 
