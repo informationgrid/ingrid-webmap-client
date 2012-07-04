@@ -79,8 +79,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	deleteServiceBtn:null,
 	reloadServiceBtn:null,
 	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers'],
-	loadMask: new Ext.LoadMask(Ext.getBody())
+	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers']
 });
 
 /**
@@ -301,7 +300,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	   fn: function(btn){
 		   if (btn == 'ok'){
 			   if(reloadService.data){
-				   self.loadMask.show();
 				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
 				   // Reload service
 				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!');
@@ -562,8 +560,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom, doServiceDelete){
 	var self = this;
-	self.loadMask.msg = loadMessage;
-	self.loadMask.show();
+	Ext.getBody().mask(loadMessage, 'x-mask-loading');
 	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
 			{
 			success: function() {
@@ -571,11 +568,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 					success: function() {
 						self.reloadServiceFromConfig(scrollToBottom);
 						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
-						self.loadMask.hide();
+						Ext.getBody().unmask();
 					},
 					failure: function() {
 						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
-						self.loadMask.hide();
+						Ext.getBody().unmask();
 					}
 				});
 			},
@@ -585,7 +582,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				}else{
 					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
 				}
-				self.loadMask.hide();
+				Ext.getBody().unmask();
 				} 
 		   	}
 		);
