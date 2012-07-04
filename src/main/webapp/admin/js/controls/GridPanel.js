@@ -93,7 +93,7 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
 		viewConfig: {
 			autoFill: true,
 			forceFit: true
-		},
+		}
 	};
 	// allow to modify the configuration
 	if (this.gridConfigCb instanceof Function) {

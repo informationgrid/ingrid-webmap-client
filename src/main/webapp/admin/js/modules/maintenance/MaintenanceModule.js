@@ -12,7 +12,7 @@ de.ingrid.mapclient.admin.modules.maintenance.MaintenanceModule = Ext.extend(de.
 	title: 'Dienste',
 	layout: 'accordion',
 	defaults: {
-		autoScroll: true,
+		autoScroll: true
 	}
 });
 
