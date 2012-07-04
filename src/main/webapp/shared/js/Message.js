@@ -19,7 +19,7 @@ de.ingrid.mapclient.Message.showInfo = function(msg, params) {
 		iconCls:	params.iconCls || 'x-icon-information',
 		title:	  params.title || 'Info',
 		html:	   msg,
-		width: 300,
+		width: params.width || 300,
 		autoDestroy: true,
 		hideDelay:  params.delay || 5000,
 		displayTarget: Ext.select('div.x-panel-tbar')
