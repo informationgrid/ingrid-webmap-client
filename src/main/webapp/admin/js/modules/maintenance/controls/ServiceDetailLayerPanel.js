@@ -14,8 +14,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel = Ext.exte
 	selectedService: null,
 	mainPanel:null,
 	store:null,
-	layerRecord:[],
-	loadMask: new Ext.LoadMask(Ext.getBody())
+	layerRecord:[]
 });
 
 /**

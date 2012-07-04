@@ -10,7 +10,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel = Ext.e
 	title: 'Rubriken',
 	autoScroll: true,
 	selectedService: null,
-	loadMask: new Ext.LoadMask(Ext.getBody()),
 	mainPanel:null
 });
 
