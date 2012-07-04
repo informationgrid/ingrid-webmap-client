@@ -56,7 +56,7 @@ body {
 .iconTransparency {
 	background-image: url(../../shared/images/icon_transparency.png);
 }
-.iconSelectCoordinates{background-image:url(../../shared/images/icon_select_coordinates.png);}
+.iconSelectCoordinates{background-image:url(../../shared/images/icon_shape.png);}
 
 .iconMetadata {
 	background-image: url(../../shared/images/icon_metadata.png);
@@ -70,6 +70,9 @@ body {
 }
 .iconExpand {
 	background-image: url(../../shared/images/icon_expand.png);
+}
+.iconDefault {
+	background-image: url(../../shared/images/icon_zoom.png);
 }
 .icon {
 	width: 16px;

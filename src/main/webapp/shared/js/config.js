@@ -160,8 +160,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 		"portalu-facete-search": {
 	    	hasServicesPanel: false,
 	    	hasAreaTool:true,
-	    	hasInfoTool: false,
-	    	hasHistoryTool: true,
+	    	hasInfoTool: true,
+	    	hasHistoryTool: false,
 	    	hasMeasureTool: false,
 	    	hasPrintTool: false,
 	    	hasLoadTool: false,
@@ -180,8 +180,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 		"portalu-extended-search": {
 	    	hasServicesPanel: false,
 	    	hasAreaTool:true,
-	    	hasInfoTool: false,
-	    	hasHistoryTool: true,
+	    	hasInfoTool: true,
+	    	hasHistoryTool: false,
 	    	hasMeasureTool: false,
 	    	hasPrintTool: false,
 	    	hasLoadTool: false,

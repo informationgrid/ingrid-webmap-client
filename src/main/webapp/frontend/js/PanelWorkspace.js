@@ -179,49 +179,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 					}
 				});  
 
-		toolbarItems.push(new Ext.Button({
-			id: 'bboxButton',
-			iconCls: 'iconSelectCoordinates',
-			tooltip: i18n('tGebietAuswaehlen'),
-			enableToggle: true,
-			handler: function(btn) {
-				if (btn.pressed) {
-					coordinatesCtrl.activate();
-					Ext.getCmp('areaButton').disable();
-				}
-				else {
-					coordinatesCtrl.deactivate();
-					Ext.getCmp('areaButton').enable();
-				}
-			}
-		}));
 		this.map.addControl(coordinatesCtrl);
+		coordinatesCtrl.activate();
 	}
 	
-	// a) feature tool
-	if (this.viewConfig.hasInfoTool) {
-		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
-			map: this.map
-		});
-		this.map.events.on({
-			'click': featureInfoControl.query,
-			scope: featureInfoControl
-		});
-
-		toolbarItems.push(new Ext.Button({
-			iconCls: 'iconInfo',
-			tooltip: i18n('tInfo'),
-			enableToggle: true,
-			handler: function(btn) {
-				if (btn.pressed) {
-					featureInfoControl.activate();
-				}
-				else {
-					featureInfoControl.deactivate();
-				}
-			}
-		}));
-	}
 
 	// b.1) area tool
 	if (this.viewConfig.hasAreaTool) {
@@ -234,25 +195,59 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			'click': administrativeFeatureInfoControl.checkAdministrativeUnits,
 			scope: administrativeFeatureInfoControl
 		});
-		toolbarItems.push(new Ext.Button({
-			id:'areaButton',
-			iconCls: 'iconInfo',
-			tooltip: i18n('tAdministrativeEinheit'),
-			enableToggle: true,
-			handler: function(btn) {
-				if(btn.pressed){
-				Ext.getCmp('bboxButton').disable();
-
-				administrativeFeatureInfoControl.activate();
-				}
-				else{
-				Ext.getCmp('bboxButton').enable();
-				administrativeFeatureInfoControl.deactivate();
-				}
-			}
-		}));
 	}
-
+	
+		toolbarItems.push(new Ext.ButtonGroup({
+					items : [{
+								xtype : 'button',
+								id : 'bboxButton',
+								iconCls : 'iconSelectCoordinates',
+								tooltip : i18n('tGebietAuswaehlen'),
+								toggleGroup : 'mygroup',
+								enableToggle : true,
+								pressed: true,
+								handler : function(btn) {
+									if (btn.pressed) {
+										coordinatesCtrl.activate();
+										administrativeFeatureInfoControl.deactivate();
+				
+									} else {
+										coordinatesCtrl.deactivate();
+			
+									}
+								}
+							}, {
+								xtype : 'button',
+								iconCls : 'iconInfo',
+								tooltip : i18n('tInfo'),
+								enableToggle : true,
+								toggleGroup : 'mygroup',
+								handler : function(btn) {
+									if (btn.pressed) {
+										coordinatesCtrl.deactivate();
+										administrativeFeatureInfoControl.activate();
+									} else {
+										administrativeFeatureInfoControl.deactivate();
+									}
+								}
+							}, {
+								xtype : 'button',
+								iconCls : 'iconDefault',
+								tooltip : i18n('tInfo'),
+								enableToggle : true,
+								toggleGroup : 'mygroup',
+								handler : function(btn) {
+									if (btn.pressed) {
+										coordinatesCtrl.deactivate();
+										administrativeFeatureInfoControl.deactivate();
+									} else {
+										console.debug("button active");
+									}
+								}
+							}]
+				}));	
+	
+	
 	// b.2) history tool
 	if (this.viewConfig.hasHistoryTool) {
 		// create the OpenLayers control
@@ -462,8 +457,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.onRender = function() {
 		// try to load existing session data
 		this.load();
 		// always init default map
-		//var callback = Ext.util.Functions.createDelegate(this.finishInitMap, this);
-		//this.initDefaultMap(callback);
+		var callback = Ext.util.Functions.createDelegate(this.finishInitMap, this);
+		this.initDefaultMap(callback);
 	}
 };
 
@@ -568,7 +563,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
-	var panel = Ext.getCmp('centerPanel');
 	de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'));
 	
 };
