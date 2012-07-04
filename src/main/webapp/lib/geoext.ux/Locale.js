@@ -85,6 +85,7 @@ Local = {
         tGebuehren : { en: 'Fees', de: 'Geb&uuml;hren' },
         tHilfe : { en: 'Help', de: 'Hilfe' },
         tHintZoomToView : { en: 'Hint: You may have to zoom into the map to see the layers of the external service. The provider of the service is responsible for the display of the service. PortalU has no influence here.', de: 'Hinweis: M&ouml;glicherweise m&uuml;ssen Sie die Ansicht vergr&ouml;&szlig;ern, um Ebenen von externen Kartendiensten betrachten zu k&oumlnnen. Der Betreiber des Kartendienstes ist f&uuml;r die Anzeige verantwortlich. PortalU hat keine Beteiligung an dessen Verhalten.' },
+		tIdAuswaehlen : { en: 'Select an ID of an administrative unit', de: 'ID einer Administrativen Einheit ausw&auml;hlen' },
         tInfo : { en: 'Info', de: 'Info' },
         tKarteHerunterladen: { en: 'Save map as WMC document', de: 'Karte als WMC abspeichern' },
         tKarteDrucken: { en: 'Print map', de: 'Karte drucken' },
@@ -92,6 +93,7 @@ Local = {
         tKarteKonnteNichtSpeichern: { en: 'Map could not be stored', de: 'Konnte Karte nicht speichern' },         
         tKarteLaden: { en: 'Load map', de: 'Karte laden' },
         tKarteSpeichern: { en: 'Save map', de: 'Karte speichern' },
+        tKarteVerschieben: { en: 'Move map', de: 'Karte verschieben' },
         tKarteZoomen: { en: 'Zoom to initial map', de: 'Auf initiale Kartenausdehnung zoomen' },
         tKeineKartenVorhanden: { en: 'No maps available', de: 'Keine Karten vorhanden' },
         tKommentar: { en: 'Comment', de: 'Kommentar' },
@@ -104,7 +106,7 @@ Local = {
         tLayers: { en: 'Layers', de: 'Layers' },
         tLayerTransparenz : { en: 'Layer transparency', de: 'Layer Transparenz' },
         tLegende : { en: 'Legend', de: 'Legende' },
-        tloeschen: { en: 'delete', de: 'löschen' },
+        tloeschen: { en: 'delete', de: 'l&ouml;schen' },
         tMaszstab : { en: 'Scale', de: 'Ma&szlig;tab' },
         tMessen : { en: 'Measure Tool', de: 'Messen' },
         tMetadaten : { en: 'Metadata', de: 'Metadaten' },
@@ -135,7 +137,14 @@ Local = {
         tSuchen : { en: 'Search', de: 'Suchen' },
         tTelefon: { en: 'Phone', de: 'Telefon' },
         tTitle: { en: 'Title', de: 'Titel' },
-        tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen: { en: '<p>Please make a selection to add a spatial reference.<br/>The Icon to make a selection is situated in the upper left of the map.</p>', de: '<p>Um der Suche einen Raumbezug hinzuzuf&uuml;gen, bitte eine Auswahl treffen. <br/>Das Icon um ein Gebiet zu umspannen befindet sich in der linken obereren Ecke der Karte</p>' },
+        tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen: { en: '<p><strong>With the following actions you can pick a spatial reference to which the search results will be limited:</strong><br/><br/>' 
+				+'<strong>- "Move map\"</strong> <img style="margin-bottom:-3px;border:0;" class="iconDefault"/> : Move the map, while pressing the left mouse button.<br/><br/>' 
+				+'<strong>- "Gebiet ausw&auml;hlen"</strong> <img style="margin-bottom:-3px;border:0;" class="iconSelectCoordinates"/> : Choose an area which limits the search results. Consider the options at the bottom of the map also.<br/><br/>' 
+				+'<strong>- "Select an ID of an administrative unit"</strong> <img style="margin-bottom:-3px;border:0;" class="iconInfo"/> : With this option you can click on any position in the map and receive the official are area identification as area-ID. </p>', 
+				de: '<p><strong>Mit folgenden Aktionen k&ouml;nnen Sie einen Raumbezug ausw&auml;hlen, auf welchen dann die Suchergebnisse eingeschr&auml;nkt werden:</strong><br/><br/>' 
+				+'<strong>- "Karte verschieben\"</strong> <img style="margin-bottom:-3px;border:0;" class="iconDefault"/> : Verschieben Sie den Kartenausschnitt, indem Sie bei gedr&uuml;ckter linker Maustaste die Karte bewegen.<br/><br/>' 
+				+'<strong>- "Gebiet ausw&auml;hlen"</strong> <img style="margin-bottom:-3px;border:0;" class="iconSelectCoordinates"/> : W&auml;hlen Sie ein Gebiet aus, welches r&auml;umlich die Suchergebnisse beschr&auml;nkt. Beachten Sie auch die Optionen am unterhalb der Karte.<br/><br/>' 
+				+'<strong>- "ID einer Administrativen Einheit ausw&auml;hlen"</strong> <img style="margin-bottom:-3px;border:0;" class="iconInfo"/> : Mit dieser Option k&ouml;nnen Sie an beliebiger Stelle in die Karte klicken und erhalten die verf&uuml;gbaren offiziellen Gebietsbezeichnungen als Area-ID. </p>' },
         tUnknownViewConfiguration: { en: 'Unknown view configuration.', de: 'Die View-Konfiguration ist unbekannt.' },
         tUnsupportedSpatialReferenceSystem: { en: 'The spatial reference system ({0}) is not supported by the service ({1}).', de: 'Das Raumbezugssystem ({0}) wird von den geladenen Diensten ({1}) nicht unterst&uuml;tzt.' },
         tVor: { en: 'Forward', de: 'Vor' },

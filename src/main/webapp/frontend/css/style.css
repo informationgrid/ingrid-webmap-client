@@ -5,6 +5,9 @@ body {
 
 .iconInfo {
 	background-image: url(../../shared/images/icon_info.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
 }
 
 .iconZoomPrev {
@@ -56,7 +59,12 @@ body {
 .iconTransparency {
 	background-image: url(../../shared/images/icon_transparency.png);
 }
-.iconSelectCoordinates{background-image:url(../../shared/images/icon_shape.png);}
+.iconSelectCoordinates{
+	background-image:url(../../shared/images/icon_shape.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	}
 
 .iconMetadata {
 	background-image: url(../../shared/images/icon_metadata.png);
@@ -73,6 +81,9 @@ body {
 }
 .iconDefault {
 	background-image: url(../../shared/images/icon_zoom.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
 }
 .icon {
 	width: 16px;

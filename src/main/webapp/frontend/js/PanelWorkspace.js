@@ -219,7 +219,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 							}, {
 								xtype : 'button',
 								iconCls : 'iconInfo',
-								tooltip : i18n('tInfo'),
+								tooltip : i18n('tIdAuswaehlen'),
 								enableToggle : true,
 								toggleGroup : 'mygroup',
 								handler : function(btn) {
@@ -233,7 +233,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 							}, {
 								xtype : 'button',
 								iconCls : 'iconDefault',
-								tooltip : i18n('tInfo'),
+								tooltip : i18n('tKarteVerschieben'),
 								enableToggle : true,
 								toggleGroup : 'mygroup',
 								handler : function(btn) {
