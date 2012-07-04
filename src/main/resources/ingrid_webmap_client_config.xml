@@ -19,27 +19,27 @@
       <epsgCode>EPSG:4326</epsgCode>
     </projection>
     <projection>
-      <name>Gauß Krüger 2</name>
+      <name>GK 2 (DHDN90)</name>
       <epsgCode>EPSG:31466</epsgCode>
     </projection>
     <projection>
-      <name>Gauß Krüger 3</name>
+      <name>GK 3 (DHDN90)</name>
       <epsgCode>EPSG:31467</epsgCode>
     </projection>
     <projection>
-      <name>Gauß Krüger 4</name>
+      <name>GK 4 (DHDN90)</name>
       <epsgCode>EPSG:31468</epsgCode>
     </projection>
     <projection>
-      <name>Gauß Krüger 5</name>
+      <name>GK 5 (DHDN90)</name>
       <epsgCode>EPSG:31469</epsgCode>
     </projection>
     <projection>
-      <name>ETRS89 32N</name>
+      <name>UTM 32N (ETRS89)</name>
       <epsgCode>EPSG:25832</epsgCode>
     </projection>
     <projection>
-      <name>ETRS89 33N</name>
+      <name>UTM 33N (ETRS89)</name>
       <epsgCode>EPSG:25833</epsgCode>
     </projection>
   </projections>
@@ -182,30 +182,6 @@
         </mapServiceCategory>
       </mapServiceCategories>
       <idx>14</idx>
-    </mapServiceCategory>
-    <mapServiceCategory>
-      <name>test</name>
-      <mapServiceCategories>
-        <mapServiceCategory>
-          <name>test</name>
-          <idx>26</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>test2</name>
-          <idx>27</idx>
-        </mapServiceCategory>
-      </mapServiceCategories>
-      <idx>25</idx>
-    </mapServiceCategory>
-    <mapServiceCategory>
-      <name>test3</name>
-      <mapServiceCategories>
-        <mapServiceCategory>
-          <name>test4</name>
-          <idx>29</idx>
-        </mapServiceCategory>
-      </mapServiceCategories>
-      <idx>28</idx>
     </mapServiceCategory>
   </mapServiceCategories>
   <wmsServices>
