@@ -93,7 +93,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     		forceFit: true
     	},
     	cm: cm,
-        height:350
+        height:350,
+        border: false
     });
 
 	self.store.loadData(layers);

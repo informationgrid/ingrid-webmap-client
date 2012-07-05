@@ -25,10 +25,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
         enableDD:true,
         containerScroll: true,
         rootVisible: false,
-        frame: true,
         draggable: false,
         enableDrag: false,
-        enableDrop: false, 
+        enableDrop: false,
+        border: false,
+        bodyStyle:'padding: 10px 0',
         listeners: {
             'checkchange': function(node, checked){
                 if(checked){
