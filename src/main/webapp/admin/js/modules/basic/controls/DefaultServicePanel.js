@@ -235,7 +235,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveLayers
 de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadLayers = function(callback) {
 	// clear the store and show the loading mask
     this.layerStore.removeAll();
-    Ext.getBody().mask('Layer werden geladen ...', 'x-mask-loading');
+    this.getEl().mask('Layer werden geladen ...', 'x-mask-loading');
 	
     // load the capabilities document to get the layer names
 	var capUrl = this.getCapabilitiesUrl();
@@ -280,14 +280,14 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadLayers
                 if (self.layerStore.findExact('title', baseLayerName) != -1) {
                 	self.baseLayerCombo.setValue(baseLayerName);
                 }
-                Ext.getBody().unmask();
+                self.getEl().unmask();
             	if (callback instanceof Function) {
             		callback(true);
             	}
             }
             else {
             	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
-            	Ext.getBody().unmask();
+            	self.getEl().unmask();
             	if (callback instanceof Function) {
             		callback(false);
             	}
@@ -295,7 +295,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadLayers
 		},
 		failure: function(response, request) {
 			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
-			Ext.getBody().unmask();
+			self.getEl().unmask();
         	if (callback instanceof Function) {
         		callback(false);
         	}
