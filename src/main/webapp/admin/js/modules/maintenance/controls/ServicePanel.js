@@ -255,20 +255,20 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
         title: 'Dienst hinzuf&uuml;gen',
         bodyStyle:'padding:5px 5px 0',
         width: 350,
-        defaults: {width: 230},
+        defaults: {width: 350},
         defaultType: 'textfield',
 
         items: [{
-        	 	xtype: 'textfield',
-             	fieldLabel: 'Name',
-                name: 'name',
-                id: 'name',
-                emptyText: 'Name des Dienstes'
-            },{
                 fieldLabel: 'URL',
                 name: 'url',
                 id: 'url',
                 emptyText: 'URL des Dienstes'
+            },{
+        	 	xtype: 'textfield',
+             	fieldLabel: 'Name',
+                name: 'name',
+                id: 'name',
+                emptyText: 'Name des Dienstes (optional)'
             }
 	],
 
@@ -278,10 +278,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	var name = simple.items.get('name').el.dom.value;
             	var url = simple.items.get('url').el.dom.value;
             	
-            	if(name != simple.items.get('name').emptyText && url != simple.items.get('url').emptyText){
+            	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
             		var service = { title:name, originalCapUrl:url, categories:[], layers:[] };
             		// Add service
-            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugefügt!');
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!');
+                	win.close();
+            	}else if(url != simple.items.get('url').emptyText){
+            		var service = { title:'', originalCapUrl:url, categories:[], layers:[] };
+            		// Add service
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!');
                 	win.close();
             	}
     		}
@@ -507,6 +512,34 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 					}
 				}
 				self.serviceGrid.getSelectionModel().select(row, column);
+			}
+		}
+	}else{
+		if(self.serviceGrid.store.data.items){
+			var lastStoreItem = self.serviceGrid.store.data.items[self.serviceGrid.store.data.length-1];
+			title = lastStoreItem.data.name;
+			originalCapUrl = lastStoreItem.data.originalCapUrl;
+			var dsData = ds.data;
+			if(dsData){
+				var dsDataItems = dsData.items;
+				if(dsDataItems){
+					var row = 0;
+					var column = 0;
+					for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+						var item = dsDataItems[i];
+						if(item.data){
+							var itemTitle = item.data.name;
+							var itemOriginalCapUrl = item.data.originalCapUrl;
+							if(itemTitle && itemOriginalCapUrl){
+								if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
+									row = i;
+									break;
+								}
+							}
+						}
+					}
+					self.serviceGrid.getSelectionModel().select(row, column);
+				}
 			}
 		}
 	}

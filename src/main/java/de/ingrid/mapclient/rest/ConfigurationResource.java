@@ -834,7 +834,11 @@ public class ConfigurationResource {
 			String response = HttpProxy.doRequest(capUrl);
 			log.debug(response);
 			Document doc = stringToDom(response);
-			doc = changeXml(doc,  json);
+			if(title.equals("")){
+				title = getNameFromXML(doc);
+				json.put("title", title);
+			}
+			doc = changeXml(doc, json);
 			url = writeWmsCopy(doc, req, title);
 			
 		} catch (JSONException e) {
@@ -1151,5 +1155,17 @@ public class ConfigurationResource {
 		}
 
 
+	}
+	
+	private String getNameFromXML(Document doc) {
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		String name = "";
+		try {
+			Node n = (Node) xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);
+			name = n.getTextContent();
+		} catch (XPathExpressionException e) {
+			log.error("XPathExpressionException on get xm name: ",e);
+		}
+		return name;
 	}
 }
