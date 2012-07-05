@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>LGRB-BW ISONG: Informationssystem Oberflächennahe Geothermie (Standardversion)</Title>
+  <Abstract>Mit dem Informationssystem Oberflächennahe Geothermie für Baden-Württemberg (ISONG) können Nutzungsmöglichkeiten und Risiken, die beim Bau einer Erdwärmesondenanlage zu beachten sind, interaktiv im Internet abgerufen werden. ISONG ist eine Internet-Anwendung des LGRB (siehe www.geothermie-bw.de) und wird auch als WMS-Dienst angeboten. Die Standardversion liefert Aussagen zur Geothermischen Effizienz und zu den Einschränkungen am jeweiligen Standort (siehe auch erweiterte Version von ISONG)</Abstract>
+        <KeywordList>
+          <Keyword>Erdwärmesonde</Keyword>
+          <Keyword>Geothermie</Keyword>
+          <Keyword>Grundwasser</Keyword>
+          <Keyword/>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Guenter Sokol</ContactPerson>
+      <ContactOrganization>Regierungspraesidium Freiburg - Abt. 9 LGRB</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>none</ContactPosition>
+    <ContactAddress>
+        <AddressType>POSTAL</AddressType>
+        <Address>Regierungspraesidium Freiburg - Abt. 9 LGRB Albertstrasse 5 79104 Freiburg</Address>
+        <City>Freiburg</City>
+        <StateOrProvince>BW</StateOrProvince>
+        <PostCode>79104</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49-761-208-3000</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>abteilung9@rpf.bwl.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>http://www.lgrb.uni-freiburg.de/lgrb/Produkte/geschaeftsbedingungen</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lgrb_isong_light</Name>
+    <Title>LGRB-BW ISONG: Informationssystem Oberflächennahe Geothermie (Standardversion)</Title>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <LatLonBoundingBox maxx="10.4265" maxy="49.7756" minx="7.46042" miny="47.5324"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>isong_gebiet_geothermie_light</Name>
+        <Title>ISONG: Bislang bearbeitetes Gebiet</Title>
+        <Abstract>-</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="693">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=isong_gebiet_geothermie_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>isong_effizienzg</Name>
+        <Title>ISONG: Geothermische Effizienz</Title>
+        <Abstract>Geothermische Effizienz beurteilt anhand der spezifischen jährlichen Entzugsarbeit einer Erdwärmesonde (2400 h/a, 100 m bzw. erlaubte Bohrtiefe), effizient &gt;= 100 kWh/(m*a)</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="77" width="1043">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=isong_effizienzg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>isong_wsg_light</Name>
+      <Title>ISONG: Wasser- und Heilquellenschutzgebiete</Title>
+      <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>wsg_light_1</Name>
+        <Title>Wasser- und Heilquellenschutzgebiete</Title>
+        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="95" width="1001">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg_light_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="74.8354272644456"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>wsg_light_2</Name>
+        <Title>Wasser- und Heilquellenschutzgebiete</Title>
+        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="95" width="1001">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg_light_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.8349283615971" min="4.98902848429637"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>isong_sens_nutz_light</Name>
+        <Title>ISONG: Mineralwasser- und andere sensible Grundwassernutzungen</Title>
+        <Abstract>Zustrombereiche von Mineralwassernutzungen bzw. Nahbereiche von Mineralwasser- und anderen sensiblen Grundwassernutzungen ohne abgegrenzte Zustrombereiche.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="728">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=isong_sens_nutz_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>isong_art_gw_light</Name>
+      <Title>ISONG: Artesische Grundwasserverhältnisse</Title>
+      <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>art_gw_light_1</Name>
+        <Title>Artesische Grundwasserverhaeltnisse</Title>
+        <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="539">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=art_gw_light_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="199.561139371855"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>art_gw_light_2</Name>
+        <Title>Artesische Grundwasserverhaeltnisse</Title>
+        <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="539">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=art_gw_light_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="199.560640469006" min="17.4615996950373"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>art_gw_light_3</Name>
+        <Title>Artesische Grundwasserverhaeltnisse</Title>
+        <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="539">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=art_gw_light_3&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="17.4611007921889" min="4.98902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>art_gwp_light_1</Name>
+        <Title>Artesische Grundwasserverhältnisse</Title>
+        <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="182">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=art_gwp_light_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="199.561139371855"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>art_gwp_light_2</Name>
+        <Title>Artesische Grundwasserverhältnisse</Title>
+        <Abstract>Grundwasseraufschlüsse, in denen artesische Grundwasserverhältnisse nachgewiesen wurden (Punkte) und Gebiete, in denen das Grundwasser möglicherweise artesisch gespannt ist (Übersignatur).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="182">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=art_gwp_light_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="199.560640469006" min="4.98902848429637"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>isong_tophs_light</Name>
+      <Title>ISONG: Begrenzung der Bohrtiefe auf Top Haßmersheim-Schichten</Title>
+      <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes auf Top Haßmersheim-Schichten begrenzt ist. Tiefere Erdwärmesondenbohrungen sind nur dann möglich, wenn durch eine(n) in der regionalen Geologie erfahrene(n) Geologen(in) nachgewiesen ist, dass die hydraulische Trennwirkung der Haßmersheim-Schichten im Planungsbereich aufgehoben ist (vgl. Isong-Erläuterungen).</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>tophs_1_light</Name>
+        <Title>Begrenzung der Bohrtiefe auf Top Haßmersheim-Schichten</Title>
+        <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes auf Top Haßmersheim-Schichten begrenzt ist. Tiefere Erdwärmesondenbohrungen sind nur dann möglich, wenn durch eine(n) in der regionalen Geologie erfahrene(n) Geologen(in) nachgewiesen ist, dass die hydraulische Trennwirkung der Haßmersheim-Schichten im Planungsbereich aufgehoben ist (vgl. Isong-Erläuterungen).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="77" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=tophs_1_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="49.8902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>tophs_2_light</Name>
+        <Title>Begrenzung der Bohrtiefe auf Top Haßmersheim-Schichten</Title>
+        <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes auf Top Haßmersheim-Schichten begrenzt ist. Tiefere Erdwärmesondenbohrungen sind nur dann möglich, wenn durch eine(n) in der regionalen Geologie erfahrene(n) Geologen(in) nachgewiesen ist, dass die hydraulische Trennwirkung der Haßmersheim-Schichten im Planungsbereich aufgehoben ist (vgl. Isong-Erläuterungen).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="77" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=tophs_2_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.8897859401153" min="4.98902848429637"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>isong_begbohr_light</Name>
+      <Title>ISONG: Begrenzung der Bohrtiefe</Title>
+      <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes begrenzt ist</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>begrenzung_bohrteufe_1_light</Name>
+        <Title>Begrenzung der Bohrtiefe</Title>
+        <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes begrenzt ist</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="77" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=begrenzung_bohrteufe_1_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="49.8902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>begrenzung_bohrteufe_2_light</Name>
+        <Title>Begrenzung der Bohrtiefe</Title>
+        <Abstract>Gebiete, in denen die Bohrtiefe aus Gründen des Grundwasserschutzes begrenzt ist</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="77" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=begrenzung_bohrteufe_2_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.8897859401153" min="4.98902848429637"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>isong_stoerungen_light</Name>
+        <Title>ISONG: Störungen</Title>
+        <Abstract>Geologische Störungen</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="98">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=isong_stoerungen_light&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>standort_ews</Name>
+        <Title>ISONG: Standort einer potenziellen Erdwärmesonde</Title>
+        <Abstract>-</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="91">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=standort_ews&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>p214_gemarkungen</Name>
+        <Title>ISONG: Gemarkungen</Title>
+        <Abstract>Datensatz des Landesvermessungsamts Baden-Württemberg, ergänzt und korrigiert durch das LGRB (Stand: Ende 2003)</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="154">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=p214_gemarkungen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="124.725712107409" min="4.98902848429637"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

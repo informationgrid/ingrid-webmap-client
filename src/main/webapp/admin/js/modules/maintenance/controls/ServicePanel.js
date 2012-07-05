@@ -57,6 +57,14 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
         	xtype: 'textfield',
         	disabled: true
         }
+	}, {
+		header: 'Original URL',
+		sortable: true,
+		dataIndex: 'originalCapUrl', 
+		editor:{
+        	xtype: 'textfield',
+        	disabled: true
+        }
 	},{
     	header: 'Info',
 		sortable: false,
@@ -101,7 +109,17 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 			self.selectedModel = selModel.selection; 
 			var serviceRecord = selModel.selection.record;
 			if(serviceRecord){
-				if(selModel.selection.cell[1] == 2){
+				var column = selModel.selection.cell[1];
+				var selectedColumn = 0;
+				
+				for (var i=0, countI=self.columns.length; i<countI; i++) {
+					var columnObj = self.columns[i]
+					if(columnObj.id == "capabilities"){
+						selectedColumn = i;
+						break;
+					}
+				}
+				if(column == selectedColumn){
 					window.open(de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(serviceRecord.data.capabilitiesUrl));
 				}else{
 					if(self.selectedService != serviceRecord){

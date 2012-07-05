@@ -1,9 +1,9 @@
 <persistentConfiguration>
-  <wmsCapUrl>http://harrison.its-technidata.de/wms/relief?VERSION=1.1.1&amp;REQUEST=GetCapabilities&amp;SERVICE=WMS</wmsCapUrl>
+  <wmsCapUrl>http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities</wmsCapUrl>
   <featureUrl>http%3A%2F%2Fgdz.bkg.bund.de%2Fwms_vg250%3FSERVICE%3DWMS%26VERSION%3D1.1.1</featureUrl>
   <layers>
     <layer>
-      <name>basis</name>
+      <name>10k simplified AGG OpenStreetMap WMS</name>
       <isBaseLayer>true</isBaseLayer>
     </layer>
   </layers>
@@ -180,6 +180,34 @@
           <name>Wasser</name>
           <idx>24</idx>
         </mapServiceCategory>
+        <mapServiceCategory>
+          <name>dfsfdfs</name>
+          <idx>25</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>sdfdsfsdf</name>
+          <idx>26</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>sfdsfsdfdsf</name>
+          <idx>27</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>sdddd</name>
+          <idx>28</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>fffff</name>
+          <idx>29</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>222222</name>
+          <idx>30</idx>
+        </mapServiceCategory>
+        <mapServiceCategory>
+          <name>3333333</name>
+          <idx>31</idx>
+        </mapServiceCategory>
       </mapServiceCategories>
       <idx>14</idx>
     </mapServiceCategory>
@@ -187,7 +215,7 @@
   <wmsServices>
     <wmsService>
       <name>Schutzgebiete Sachsen-Anhalt</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/kw782k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/kw782k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Sachsen-Anhalt</name>
@@ -202,7 +230,7 @@
     </wmsService>
     <wmsService>
       <name>Biotope und Geotope Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/potcnh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/potcnh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Mecklenburg-Vorpommern</name>
@@ -214,7 +242,7 @@
     </wmsService>
     <wmsService>
       <name>Landschaftsplanung Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/h8rksf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/h8rksf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -223,7 +251,7 @@
     </wmsService>
     <wmsService>
       <name>Schutzgebiete (GDI) Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/eyigeq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/eyigeq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -232,7 +260,7 @@
     </wmsService>
     <wmsService>
       <name>Naturschutzgebiete Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/24riov.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/24riov.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -241,7 +269,7 @@
     </wmsService>
     <wmsService>
       <name> Tierarten Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/bpq9fy.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/bpq9fy.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -250,7 +278,7 @@
     </wmsService>
     <wmsService>
       <name>frei verfügbare Ökokonten in Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/oyuipu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/oyuipu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -259,7 +287,7 @@
     </wmsService>
     <wmsService>
       <name>Bodengeologie Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/9gsa1z.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/9gsa1z.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory>
@@ -271,7 +299,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/lvpoc1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/lvpoc1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory>
@@ -283,7 +311,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermische Potentialkarten Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/j10mao.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/j10mao.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -292,7 +320,7 @@
     </wmsService>
     <wmsService>
       <name>Bohrdatenspeicher Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/qc9cwi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/qc9cwi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory>
@@ -304,7 +332,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Übersichtskarte Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/j39r8r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/j39r8r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -313,7 +341,7 @@
     </wmsService>
     <wmsService>
       <name>Geotope Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/5agcom.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/5agcom.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -322,7 +350,7 @@
     </wmsService>
     <wmsService>
       <name>LUNG MV</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/0qhoic.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/0qhoic.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -330,7 +358,7 @@
     </wmsService>
     <wmsService>
       <name>Geotourismus, Region Pomerania Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ed9gaj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ed9gaj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -338,7 +366,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Karte Mecklenburg-Vorpommern </name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6yirwv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6yirwv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory>
@@ -350,7 +378,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrologie Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/my9ukr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/my9ukr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -359,7 +387,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffe Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/drvije.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/drvije.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -368,7 +396,7 @@
     </wmsService>
     <wmsService>
       <name>Umweltkarten Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/tr8nme.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/tr8nme.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -376,7 +404,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserbuch Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/prepoq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/prepoq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -385,7 +413,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/70kegi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/70kegi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[2]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -394,7 +422,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenübersichtskarte 1:400.000 Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/r5mtef.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/r5mtef.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -406,7 +434,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenfunktionenkarte Planungsregion Ingolstadt Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/huhfjy.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/huhfjy.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -418,7 +446,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenübersichtskarte 1:200.000 Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/wtaa6t.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wtaa6t.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -427,7 +455,7 @@
     </wmsService>
     <wmsService>
       <name>Konzeptbodenkarte 1:25.000 Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/b3nhys.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/b3nhys.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -436,7 +464,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenkarte 1:50 000 NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ertsg1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ertsg1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -448,7 +476,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenkarte Übersicht NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/lenyq2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/lenyq2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -457,7 +485,7 @@
     </wmsService>
     <wmsService>
       <name>Schadstoffbelastung in Oberböden NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6pulso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6pulso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -466,7 +494,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenkundliche Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/en13qt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/en13qt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -478,7 +506,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenübersichtskarte 1:1 Mio. Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/81z3fs.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/81z3fs.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -486,7 +514,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenübersichtskarte 1:200.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/vf2sbr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/vf2sbr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -498,7 +526,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenarten im Oberboden 1:1 Mio. in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/nb73jh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/nb73jh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -506,7 +534,7 @@
     </wmsService>
     <wmsService>
       <name>Bodengesellschaften Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6c8mbu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6c8mbu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -518,7 +546,7 @@
     </wmsService>
     <wmsService>
       <name>Bodeneuthropierung (Stickstoff) in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/rcjine.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/rcjine.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -526,7 +554,7 @@
     </wmsService>
     <wmsService>
       <name>Bodenversauerung (Schwefel) in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/4vw49r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/4vw49r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[8]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -582,7 +610,7 @@
     </wmsService>
     <wmsService>
       <name>Altlasten in Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ii2z9i.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ii2z9i.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -590,7 +618,7 @@
     </wmsService>
     <wmsService>
       <name>Bergbauliche Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/vmxvb2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/vmxvb2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -599,7 +627,7 @@
     </wmsService>
     <wmsService>
       <name>Bohrungen in Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/1cxp4z.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/1cxp4z.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -608,7 +636,7 @@
     </wmsService>
     <wmsService>
       <name>CrossCompliance Erosionsgefährdung Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ph6as9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ph6as9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -617,7 +645,7 @@
     </wmsService>
     <wmsService>
       <name>Flächenverbrauch und Bodenversiegelung Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/qedlbx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/qedlbx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -625,7 +653,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/odmm1d.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/odmm1d.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -634,7 +662,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermische Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/nfuyi7.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/nfuyi7.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -643,7 +671,7 @@
     </wmsService>
     <wmsService>
       <name>Geotope in Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/qj66mq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/qj66mq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -652,7 +680,7 @@
     </wmsService>
     <wmsService>
       <name>Gewässerschutzberatung in Grundwasserkörper Nds.</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/fafl71.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/fafl71.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -661,7 +689,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/3leci3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/3leci3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -670,7 +698,7 @@
     </wmsService>
     <wmsService>
       <name>Ingenieurgeologische Karten Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/a5mesg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/a5mesg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -679,7 +707,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffsicherungskarte Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/khef4d.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/khef4d.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[29]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -703,7 +731,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/q3bs74.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/q3bs74.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -712,7 +740,7 @@
     </wmsService>
     <wmsService>
       <name>Heizungsarten nach Energieträgern Berlin </name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/au008v.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/au008v.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -721,7 +749,7 @@
     </wmsService>
     <wmsService>
       <name>Kraftwerke in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/4czhf9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/4czhf9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -729,7 +757,7 @@
     </wmsService>
     <wmsService>
       <name>Solare Einstrahlung für horizontale Flächen [kWh/m²] Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/zp7z7s.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/zp7z7s.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -738,7 +766,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserkraftanlagen Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/r1edso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/r1edso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -747,7 +775,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/u4yp7o.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/u4yp7o.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -756,7 +784,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/xyttg2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/xyttg2.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -765,7 +793,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/81ydfx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/81ydfx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -774,7 +802,7 @@
     </wmsService>
     <wmsService>
       <name>Geothermie Oberrheingraben (Südteil) 1:250.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/gj4qc9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/gj4qc9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[9]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -783,7 +811,7 @@
     </wmsService>
     <wmsService>
       <name>Biotope 1:25.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/uwmkk8.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/uwmkk8.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -792,7 +820,7 @@
     </wmsService>
     <wmsService>
       <name>Landnutzung (Landsat 2000) Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/3t9vnj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/3t9vnj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -801,7 +829,7 @@
     </wmsService>
     <wmsService>
       <name>Naturschutzgebiete Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/pg458n.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/pg458n.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -810,7 +838,7 @@
     </wmsService>
     <wmsService>
       <name>Landschaftsschutzgebiete 1:25.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/qi7xkq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/qi7xkq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -819,7 +847,7 @@
     </wmsService>
     <wmsService>
       <name>Naturparke Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/robm5e.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/robm5e.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -828,7 +856,7 @@
     </wmsService>
     <wmsService>
       <name>Vogelschutzgebiete (Natura 2000) Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/npm7le.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/npm7le.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -837,7 +865,7 @@
     </wmsService>
     <wmsService>
       <name>Schutzgebiete (GDI) 1:25.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/o9s7xk.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/o9s7xk.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -846,7 +874,7 @@
     </wmsService>
     <wmsService>
       <name>Naturräumliche Gliederung 1:200.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/034s8a.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/034s8a.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -855,7 +883,7 @@
     </wmsService>
     <wmsService>
       <name>Naturdenkmal flächenhaft Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/gochze.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/gochze.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -864,7 +892,7 @@
     </wmsService>
     <wmsService>
       <name>Naturdenkmal Einzelgebilde Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/u82jd4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/u82jd4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -873,7 +901,7 @@
     </wmsService>
     <wmsService>
       <name>Moore Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/1xaidn.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/1xaidn.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -882,7 +910,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/62juwl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/62juwl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -891,7 +919,7 @@
     </wmsService>
     <wmsService>
       <name>Badegewässer 1:50.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/2wg403.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/2wg403.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -900,7 +928,7 @@
     </wmsService>
     <wmsService>
       <name>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/bvfugg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/bvfugg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -909,7 +937,7 @@
     </wmsService>
     <wmsService>
       <name>Biosphärengebiet Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/atabom.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/atabom.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -917,7 +945,7 @@
     </wmsService>
     <wmsService>
       <name>Erdbebendienst Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/l3z1z5.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/l3z1z5.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -926,7 +954,7 @@
     </wmsService>
     <wmsService>
       <name>Fließgewässer 1:200.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/l1kl15.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/l1kl15.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -935,7 +963,7 @@
     </wmsService>
     <wmsService>
       <name>Flussdeiche, Längsdämme, Schutzeinrichtungen 1:10.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/k1aml1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/k1aml1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -943,7 +971,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/j08438.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/j08438.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -952,7 +980,7 @@
     </wmsService>
     <wmsService>
       <name>Geotope Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/cnqjsc.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/cnqjsc.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -961,7 +989,7 @@
     </wmsService>
     <wmsService>
       <name>Geotop-Kataster 1:250.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/x1cfth.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/x1cfth.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -970,7 +998,7 @@
     </wmsService>
     <wmsService>
       <name>Geotourismus 1:200.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6dvr55.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6dvr55.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -978,7 +1006,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/9t3ygf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/9t3ygf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -987,7 +1015,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ij7867.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ij7867.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -996,7 +1024,7 @@
     </wmsService>
     <wmsService>
       <name>Kläranlagen (kommunal) Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/1zauzw.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/1zauzw.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -1008,7 +1036,7 @@
     </wmsService>
     <wmsService>
       <name>Quellenschutzgebiete 1:25.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/jo7twt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/jo7twt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1016,7 +1044,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffe 1:350.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/06pnfp.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/06pnfp.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1025,7 +1053,7 @@
     </wmsService>
     <wmsService>
       <name>Stehende Gewässer 1:200.000 Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/gqvtzg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/gqvtzg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1034,7 +1062,7 @@
     </wmsService>
     <wmsService>
       <name>Überschwemmungsgebiete Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/twzgvl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/twzgvl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1043,7 +1071,7 @@
     </wmsService>
     <wmsService>
       <name>Waldschutzgebiete Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ao4ad7.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ao4ad7.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -1055,7 +1083,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete (GDI) Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/e6f5ax.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/e6f5ax.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1064,7 +1092,7 @@
     </wmsService>
     <wmsService>
       <name>Wasser: Regelungsbauwerke Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/umi5hj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/umi5hj.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1072,7 +1100,7 @@
     </wmsService>
     <wmsService>
       <name>Wasser: Schöpfwerke Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/1g9itu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/1g9itu.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1080,7 +1108,7 @@
     </wmsService>
     <wmsService>
       <name>Wasser: Sohlenbauwerke inkl. Absturz Baden-Württemberg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/b4hsc1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/b4hsc1.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[31]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1088,7 +1116,7 @@
     </wmsService>
     <wmsService>
       <name>Klimaatlas NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/s7o6iq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/s7o6iq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Luft und Klima</name>
@@ -1100,7 +1128,7 @@
     </wmsService>
     <wmsService>
       <name>Klimamodell Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/tkm2gw.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/tkm2gw.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1109,7 +1137,7 @@
     </wmsService>
     <wmsService>
       <name>Klimawandel - Tage mit Wärmebelastung 1971 - 2000 Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/rtx891.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/rtx891.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1118,7 +1146,7 @@
     </wmsService>
     <wmsService>
       <name>Klimawandel - Tage mit Wärmebelastung 2021 - 2050 Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/up2qvv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/up2qvv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1127,7 +1155,7 @@
     </wmsService>
     <wmsService>
       <name>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/2rin0l.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/2rin0l.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1136,7 +1164,7 @@
     </wmsService>
     <wmsService>
       <name>Langjährige Entwicklung der Luftqualität Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/b656j9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/b656j9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1145,7 +1173,7 @@
     </wmsService>
     <wmsService>
       <name>Straßenverkehr - Emissionen Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/wwhwr8.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wwhwr8.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[99]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1154,7 +1182,7 @@
     </wmsService>
     <wmsService>
       <name>Lärm NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/kcwu3k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/kcwu3k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Verkehr</name>
@@ -1166,7 +1194,7 @@
     </wmsService>
     <wmsService>
       <name>Verkehrsmengen Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/nskqt6.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/nskqt6.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[106]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1175,7 +1203,7 @@
     </wmsService>
     <wmsService>
       <name>Bundeswasserstrassen WMS (DLZ-IT BVBS)</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/uas626.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/uas626.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[106]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -1183,7 +1211,7 @@
     </wmsService>
     <wmsService>
       <name>Digitale Bundeswasserstrassenkarte 1:1 Mio. Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/e559ra.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/e559ra.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[106]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -1191,7 +1219,7 @@
     </wmsService>
     <wmsService>
       <name>Navigationskarte (Inland) Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/qqu5k0.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/qqu5k0.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[106]/mapServiceCategories/mapServiceCategory"/>
       </mapServiceCategories>
@@ -1199,7 +1227,7 @@
     </wmsService>
     <wmsService>
       <name>Lärmkartierung 2007 Hauptverkehrsstraßen Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/g3nemf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/g3nemf.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Lärm und Erschütterungen</name>
@@ -1211,7 +1239,7 @@
     </wmsService>
     <wmsService>
       <name>Lärmkartierung 2007 Flughäfen Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ttclno.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ttclno.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[111]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1220,7 +1248,7 @@
     </wmsService>
     <wmsService>
       <name>Strategische Lärmkarten Gesamtlärmindex Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/55rxso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/55rxso.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[111]/mapServiceCategories/mapServiceCategory"/>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1229,7 +1257,7 @@
     </wmsService>
     <wmsService>
       <name>Biotoptypen Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/sj3t5v.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/sj3t5v.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1238,7 +1266,7 @@
     </wmsService>
     <wmsService>
       <name>Biotoptypen: FFH-Lebensraumtypen Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/w1ezpp.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/w1ezpp.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1247,7 +1275,7 @@
     </wmsService>
     <wmsService>
       <name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/khk2tz.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/khk2tz.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1256,7 +1284,7 @@
     </wmsService>
     <wmsService>
       <name>Naturschutzgebiete Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/wxnkdv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wxnkdv.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1265,7 +1293,7 @@
     </wmsService>
     <wmsService>
       <name>Art der Kanalisation Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/5fb1du.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/5fb1du.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[89]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1274,7 +1302,7 @@
     </wmsService>
     <wmsService>
       <name>Einwohnerdichte Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/3t5vll.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/3t5vll.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1282,7 +1310,7 @@
     </wmsService>
     <wmsService>
       <name>Einzugsgebiete der Regenwasserkanalisation Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/92n2xn.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/92n2xn.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[89]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1291,7 +1319,7 @@
     </wmsService>
     <wmsService>
       <name>Flurabstand des Grundwassers Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/eyjypr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/eyjypr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1300,7 +1328,7 @@
     </wmsService>
     <wmsService>
       <name>Ingenieurgeologische Karte Berlin </name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/to34wx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/to34wx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1309,7 +1337,7 @@
     </wmsService>
     <wmsService>
       <name>Versiegelung Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ez4n1n.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ez4n1n.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1317,7 +1345,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete Berlin</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/xbspzl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/xbspzl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[33]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1326,7 +1354,7 @@
     </wmsService>
     <wmsService>
       <name>Erdbeben Rheinland-Pfalz</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/zr0o8g.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/zr0o8g.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory>
           <name>Rheinland-Pfalz</name>
@@ -1338,7 +1366,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Aufschlüsse Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6lt2oi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6lt2oi.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1347,7 +1375,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Übersichtskarte 1:400.000 Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/hrzxyx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/hrzxyx.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1356,7 +1384,7 @@
     </wmsService>
     <wmsService>
       <name>Oberflächennahe Rohstoffe 1:50.000 Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/v6cl1p.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/v6cl1p.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1365,7 +1393,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Karte 1:500.000 Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/wzwf6r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/wzwf6r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1374,7 +1402,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Karte 1:100.000 Planungsregion Ingolstadt Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/bdtjq4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/bdtjq4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1383,7 +1411,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffe 1:100.000 Planungsregion Ingolstadt Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/nrv43s.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/nrv43s.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1392,7 +1420,7 @@
     </wmsService>
     <wmsService>
       <name>Bohrungen NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ueia42.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ueia42.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1401,7 +1429,7 @@
     </wmsService>
     <wmsService>
       <name>Geologische Übersichtskarte 1: 500 000 NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/g5zi4r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/g5zi4r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1410,7 +1438,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffe NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/d3v2ov.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/d3v2ov.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1419,7 +1447,7 @@
     </wmsService>
     <wmsService>
       <name>Rohstoffe Schleswig-Holstein</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/6njmd4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/6njmd4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[11]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -1431,7 +1459,7 @@
     </wmsService>
     <wmsService>
       <name>Natur und Landschaft Schleswig-Holstein</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/x4swga.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/x4swga.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[135]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1441,7 +1469,7 @@
     </wmsService>
     <wmsService>
       <name>Denkmale in Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/iir15g.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/iir15g.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1449,7 +1477,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Karte 1:100.000 Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/rx8oiz.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/rx8oiz.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1458,7 +1486,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete Bayern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/u5gy86.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/u5gy86.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[23]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1467,7 +1495,7 @@
     </wmsService>
     <wmsService>
       <name>Abfallbehandlungsanlagen in Deutschland.</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/s2wgs0.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/s2wgs0.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[89]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1475,7 +1503,7 @@
     </wmsService>
     <wmsService>
       <name>Schutzgebiete Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/zzyxhh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/zzyxhh.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1484,7 +1512,7 @@
     </wmsService>
     <wmsService>
       <name>Landnutzung (Corine 2000) in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/uocl46.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/uocl46.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1492,7 +1520,7 @@
     </wmsService>
     <wmsService>
       <name>LINFOS NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/1jsj0x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/1jsj0x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1501,7 +1529,7 @@
     </wmsService>
     <wmsService>
       <name>Ökologische Raumgliederung Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/4xx7et.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/4xx7et.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1509,7 +1537,7 @@
     </wmsService>
     <wmsService>
       <name>Naturschutzgebiete Brandenburg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ke7im9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ke7im9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -1521,7 +1549,7 @@
     </wmsService>
     <wmsService>
       <name>Schutzgebiete in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/jfq9xr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/jfq9xr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1529,7 +1557,7 @@
     </wmsService>
     <wmsService>
       <name>Schutzgebiete (GDI) Hamburg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/zcrc4x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/zcrc4x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory>
@@ -1549,7 +1577,7 @@
     </wmsService>
     <wmsService>
       <name>Naturräumliche Gliederung Mecklenburg-Vorpommern</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/3g9k45.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/3g9k45.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1557,7 +1585,7 @@
     </wmsService>
     <wmsService>
       <name>Forstamtsgrenzen NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/fb7cu3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/fb7cu3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[94]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1566,7 +1594,7 @@
     </wmsService>
     <wmsService>
       <name>Neigungsklassen zur Gelaendebefahrbarkeit NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/np76za.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/np76za.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[94]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1575,7 +1603,7 @@
     </wmsService>
     <wmsService>
       <name>Wald NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/rtn2dq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/rtn2dq.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[94]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1584,7 +1612,7 @@
     </wmsService>
     <wmsService>
       <name>Waldbrandriskogebiete in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/zelf7x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/zelf7x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[94]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1592,7 +1620,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete Brandenburg</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/4s3yh9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/4s3yh9.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[145]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1601,7 +1629,7 @@
     </wmsService>
     <wmsService>
       <name>Gewässernetz Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ph4azr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ph4azr.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1610,7 +1638,7 @@
     </wmsService>
     <wmsService>
       <name>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/thdjtc.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/thdjtc.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1619,7 +1647,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/62ckbs.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/62ckbs.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1628,7 +1656,7 @@
     </wmsService>
     <wmsService>
       <name>Überschwemmte Flächen bei 100-jährigem Hochwasser in Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/ekk3rl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/ekk3rl.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1637,7 +1665,7 @@
     </wmsService>
     <wmsService>
       <name>Überschwemmungsgebiete (festgesetzt) Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/232uqb.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/232uqb.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1646,7 +1674,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete Sachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/i2v6vg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/i2v6vg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[22]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1655,7 +1683,7 @@
     </wmsService>
     <wmsService>
       <name>Hochwassergefährdete Bereiche des Rheins in NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/28xogg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/28xogg.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1664,7 +1692,7 @@
     </wmsService>
     <wmsService>
       <name>Hydrogeologische Übersichtskarte 1:500 000 NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/4asyot.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/4asyot.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1673,7 +1701,7 @@
     </wmsService>
     <wmsService>
       <name>Überschwemmungsgebiete NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/loks8r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/loks8r.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1682,7 +1710,7 @@
     </wmsService>
     <wmsService>
       <name>Wasserschutzgebiete NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/285b0k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/285b0k.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
@@ -1698,7 +1726,7 @@
     </wmsService>
     <wmsService>
       <name>Gewässerlandschaften in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/3t2htk.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/3t2htk.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1706,7 +1734,7 @@
     </wmsService>
     <wmsService>
       <name>Gewässerstrukturkarte Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/audkh3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/audkh3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1714,7 +1742,7 @@
     </wmsService>
     <wmsService>
       <name>Flussgebietseinheiten in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/du6ea3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/du6ea3.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1722,7 +1750,7 @@
     </wmsService>
     <wmsService>
       <name>Flusseinzugsgebiete in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/36z2io.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/36z2io.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1730,7 +1758,7 @@
     </wmsService>
     <wmsService>
       <name>Seetypenkartierung Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/iauiam.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/iauiam.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1738,7 +1766,7 @@
     </wmsService>
     <wmsService>
       <name>Pegelonlinekarte Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/sp7yps.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/sp7yps.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1746,7 +1774,7 @@
     </wmsService>
     <wmsService>
       <name>Messstellen (Binnengewässer) in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/bmgm3x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/bmgm3x.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1754,7 +1782,7 @@
     </wmsService>
     <wmsService>
       <name>Nitratmessstellen in Deutschland</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/fxsblt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/fxsblt.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1762,7 +1790,7 @@
     </wmsService>
     <wmsService>
       <name>Grundwasserneubildung Niedersachsen</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/608gag.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/608gag.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[16]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1770,7 +1798,7 @@
     </wmsService>
     <wmsService>
       <name>Gewässerstationierungskarte NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/kk0aqb.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/kk0aqb.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>
@@ -1778,7 +1806,7 @@
     </wmsService>
     <wmsService>
       <name>Integrierte ländliche Entwicklung NRW</name>
-      <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/xx87p4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
+      <capabilitiesUrl>http://localhost:8080/ingrid-webmap-client/wms/xx87p4.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[26]/mapServiceCategories/mapServiceCategory[2]"/>
       </mapServiceCategories>

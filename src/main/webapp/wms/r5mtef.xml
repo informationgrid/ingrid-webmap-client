@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/boden/26191.htm - WMS - LfULG - Bodenuebersichtskarte Sachsen 1:400 000</Title>
+		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/boden/26191.htm - Die BUEK 400 gibt Einblicke in die landesweite Bodenausstattung und erlaubt einfuehrende Informationen ueber Bodenbeschaffenheit, Nutzungsmoeglichkeiten, Bodenbewertung und Bodenschutzerfordernisse. Bei 20 Kartiereinheiten handelt es sich um Pedochoren.</Abstract>
+		<KeywordList>
+			<Keyword>ArcIMS</Keyword>
+			<Keyword>WMS</Keyword>
+			<Keyword>Dienst</Keyword>
+			<Keyword>Umwelt</Keyword>
+			<Keyword>Landwirtschaft</Keyword>
+			<Keyword>Geologie</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_buek400?" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Falk Strobach</ContactPerson>
+				<ContactOrganization>Saechsisches Landesamt fuer Umwelt, Landwirtschaft und Geologie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Pillnitzer Platz 3</Address>
+				<City>Dresden</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>01326</PostCode>
+				<Country>DE</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 (351) 8928-0</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 (351) 8928-225</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>falk.strobach@smul.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_buek400?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_buek400?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_buek400?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title>WMS - LfULG - Bodenuebersichtskarte Sachsen 1:400 000</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:4267</SRS>
+			<SRS>EPSG:4269</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:4314</SRS>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:32632</SRS>
+			<SRS>EPSG:32633</SRS>
+			<LatLonBoundingBox maxx="15.881119413" maxy="52.1442699869" minx="11.0692703133" miny="49.6223689303"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.881119413" maxy="52.1442699869" minx="11.0692703133" miny="49.6223689303"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4765965.97984342" maxy="5779210.13128169" minx="4436293.49815262" miny="5504796.01511433"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Bodenuebersichtskarte 1:400.000</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0688738465" maxy="51.6894219166" minx="11.8687662716" miny="50.1343315683"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.0688738465" maxy="51.6894219166" minx="11.8687662716" miny="50.1343315683"/>
+				<ScaleHint max="NaN" min="0"/>
+				<Style>
+					<Name>0Legend</Name>
+					<Title>Bodenuebersichtskarte</Title>
+					<LegendURL height="578" width="346">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/buek400/buek400.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>				
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

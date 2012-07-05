@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+  <Service>
+    <Name>OGC:WMS</Name>
+    <Title>FIS-Broker WMS-Service SenStadt Berlin : Verkehrsmengen 2009 (Umweltatlas)</Title>
+    <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
+    <KeywordList>
+      <Keyword>GeoTools</Keyword>
+    </KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Renate Zweer</ContactPerson>
+        <ContactOrganization>Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Project Lead</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Fehrbelliner Platz 1</Address>
+        <City>Berlin</City>
+        <StateOrProvince>Berlin</StateOrProvince>
+        <PostCode>10707</PostCode>
+        <Country>Germany</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
+    <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/png</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k07_01verkmeng2009?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+    </Exception>
+    <VendorSpecificCapabilities/>
+    <!-- Layers -->
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Title>Verkehrsmengen 2009 (Umweltatlas)</Title>
+      <Abstract>Anzahl der Kraftfahrtzeuge je 24 Stunden incl. Lkw, Motorräder und Busse als durchschnittliche tägliche Verkehrstärken (DTV) bezogen auf das Jahr 2009
+und das Hauptverkehrsstraßennetz</Abstract>
+      <KeywordList>
+        <Keyword>Karten</Keyword>
+        <Keyword>Geodaten</Keyword>
+        <Keyword>Berlin</Keyword>
+        <Keyword>Kraftfahrtzeuge</Keyword>
+        <Keyword>LKW</Keyword>
+        <Keyword>DTV</Keyword>
+        <Keyword>KFZ</Keyword>
+        <Keyword>PKW</Keyword>
+        <Keyword>Busse</Keyword>
+        <Keyword>Hauptstraßennetz</Keyword>
+        <Keyword>Straßenverkehrszählung</Keyword>
+      </KeywordList>
+      <SRS>EPSG:3068</SRS>
+      <SRS>EPSG:25833</SRS>
+      <SRS>EPSG:31467</SRS>
+      <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4326</SRS>
+      <LatLonBoundingBox maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+      <BoundingBox SRS="EPSG:3068" maxx="52542" maxy="40963" minx="-4650" miny="-2787"/>
+      <BoundingBox SRS="EPSG:25833" maxx="419642.1076" maxy="5839046.1342" minx="361642.8877" miny="5796402.6568"/>
+      <BoundingBox SRS="EPSG:31467" maxx="3825231.7186" maxy="5851152.1143" minx="3770901.0105" miny="5803776.1436"/>
+      <BoundingBox SRS="EPSG:25832" maxx="825029.7755" maxy="5849248.1661" minx="770720.3518" miny="5801891.7144"/>
+      <AuthorityURL name="GDI-DE">
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
+      </AuthorityURL>
+      <Identifier authority="GDI-DE">1a8aa4e4-24cb-3fc7-a306-503073fc08a4</Identifier>
+      <MetadataURL type="TC211">
+        <Format>text/xml</Format>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3b670c75-f1d4-33ce-b334-cb3df4c7c2d1&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+      </MetadataURL>
+      <Style>
+        <Name>default</Name>
+        <Title>Standard</Title>
+        <LegendURL height="72" width="72">
+          <Format>image/gif</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_01verkmeng2009.gif" xlink:type="simple"/>
+        </LegendURL>
+      </Style>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>0</Name>
+        <Title>Bahnlinien</Title>
+        <KeywordList>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Kraftfahrtzeuge</Keyword>
+          <Keyword>LKW</Keyword>
+          <Keyword>DTV</Keyword>
+          <Keyword>KFZ</Keyword>
+          <Keyword>PKW</Keyword>
+          <Keyword>Busse</Keyword>
+          <Keyword>Hauptstraßennetz</Keyword>
+          <Keyword>Straßenverkehrszählung</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <BoundingBox SRS="EPSG:3068" maxx="52542" maxy="40963" minx="-4650" miny="-2787"/>
+        <BoundingBox SRS="EPSG:25833" maxx="419642.1076" maxy="5839046.1342" minx="361642.8877" miny="5796402.6568"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3825231.7186" maxy="5851152.1143" minx="3770901.0105" miny="5803776.1436"/>
+        <BoundingBox SRS="EPSG:25832" maxx="825029.7755" maxy="5849248.1661" minx="770720.3518" miny="5801891.7144"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <Identifier authority="GDI-DE">1a8aa4e4-24cb-3fc7-a306-503073fc08a4</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3b670c75-f1d4-33ce-b334-cb3df4c7c2d1&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_01verkmeng2009.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1071594" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>1</Name>
+        <Title>Verkehrsmengen 2009</Title>
+        <Abstract>Verkehrsmengen</Abstract>
+        <KeywordList>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Kraftfahrtzeuge</Keyword>
+          <Keyword>LKW</Keyword>
+          <Keyword>DTV</Keyword>
+          <Keyword>KFZ</Keyword>
+          <Keyword>PKW</Keyword>
+          <Keyword>Busse</Keyword>
+          <Keyword>Hauptstraßennetz</Keyword>
+          <Keyword>Straßenverkehrszählung</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <BoundingBox SRS="EPSG:3068" maxx="52542" maxy="40963" minx="-4650" miny="-2787"/>
+        <BoundingBox SRS="EPSG:25833" maxx="419642.1076" maxy="5839046.1342" minx="361642.8877" miny="5796402.6568"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3825231.7186" maxy="5851152.1143" minx="3770901.0105" miny="5803776.1436"/>
+        <BoundingBox SRS="EPSG:25832" maxx="825029.7755" maxy="5849248.1661" minx="770720.3518" miny="5801891.7144"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <Identifier authority="GDI-DE">1a8aa4e4-24cb-3fc7-a306-503073fc08a4</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3b670c75-f1d4-33ce-b334-cb3df4c7c2d1&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k07_01verkmeng2009?layerID=1" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>2</Name>
+        <Title>Hintergrund 1:5.000</Title>
+        <Abstract>digitale Karte 1:5.000, Rasterkarte 1:5.000</Abstract>
+        <KeywordList>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Kraftfahrtzeuge</Keyword>
+          <Keyword>LKW</Keyword>
+          <Keyword>DTV</Keyword>
+          <Keyword>KFZ</Keyword>
+          <Keyword>PKW</Keyword>
+          <Keyword>Busse</Keyword>
+          <Keyword>Hauptstraßennetz</Keyword>
+          <Keyword>Straßenverkehrszählung</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <BoundingBox SRS="EPSG:3068" maxx="52542" maxy="40963" minx="-4650" miny="-2787"/>
+        <BoundingBox SRS="EPSG:25833" maxx="419642.1076" maxy="5839046.1342" minx="361642.8877" miny="5796402.6568"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3825231.7186" maxy="5851152.1143" minx="3770901.0105" miny="5803776.1436"/>
+        <BoundingBox SRS="EPSG:25832" maxx="825029.7755" maxy="5849248.1661" minx="770720.3518" miny="5801891.7144"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.8109" maxy="52.6954" minx="12.9709" miny="52.3005"/>
+        <Identifier authority="GDI-DE">1a8aa4e4-24cb-3fc7-a306-503073fc08a4</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3b670c75-f1d4-33ce-b334-cb3df4c7c2d1&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_01verkmeng2009.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.2.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Dig. Bundeswasserstr.Karte 1:1Mio - DBWK1000 (DLZ-IT BMVBS)</Title>
+  <Abstract>Dieser WMS zeigt die DBWK1000, die Digitale Bundeswasserstraßenkarte mit der Gliederung der WSV, die im Maßstab 1:1.000.000 als gedruckte Wandkarte produziert wurde. Inhalt sind Bundeswasserstraßen, Organisation der WSV mit Sitz der Ober-, Mittel- und Unterbehörden, Wasserstraßen-Klassifizierung, Angaben über Kilometrierung, wasserstraßenbezogene Angaben (z.B. freie oder staugeregelte Flussstrecken), schifffahrtsbezogene Bauwerke (z.B. Schleusen, Schiffshebewerke, Sperrwerke), Ortslagen, sonstige Gewässer und Landesgrenzen. Legende: http://www.wsv.de/service/karten_geoinformationen/images/dbwk1000legend.jpg </Abstract>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Abteilung II.1</ContactPerson>
+      <ContactOrganization>Bundesanstalt für IT-Dienstleitungen im Geschäftsbereich des Bundesministeriums für Verkehr, Bau und Stadtentwicklung (DLZ-IT BMVBS)</ContactOrganization>
+    </ContactPersonPrimary>
+    <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Am Ehrenberg 8</Address>
+        <City>Ilmenau</City>
+        <StateOrProvince>Thüringen</StateOrProvince>
+        <PostCode>98693</PostCode>
+        <Country>Deutschland</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49(3677)669-2299</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>gdi-wsv.support@dlz-it-bvbs.bund.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <AccessConstraints>Die Wasser- und Schifffahrtsverwaltung des Bundes (WSV, www.wsv.de) betreibt eine Geodateninfrastruktur (GDI-WSV). In diesem Rahmen werden auch standardisierte Web-Dienste bereitgestellt. Einige Dienste der GDI-WSV sind im Internet kostenfrei verfügbar. Die WSV übernimmt keine Gewähr für die Richtigkeit und Vollständigkeit der Daten. Die Nutzer müssen bei Verwertungen der Dienste jeglicher Art einen deutlich sichtbaren Quellenvermerk an den Daten/Diensten anbringen: © Wasser- und Schifffahrtsverwaltung des Bundes (www.wsv.de). Eine Weiterleitung der hier angebotenen Dienste wie z.B. WMS (Web Mapping Services) darf nur nach Absprache mit der Bundesanstalt für IT-Dienstleistungen im Geschäftsbereich des BMVBS (DLZ-IT BMVBS, www.dlz-it.de) erfolgen. Die WSV besitzt alle Rechte an den von ihr hergestellten und aktuell gehaltenen Daten. Nur im BVBS-Intranet sichtbare Dienste sind ausschließlich für den Dienstgebrauch vorgesehen.
+</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>WmsDBWK1000</Name>
+    <Title>Dig. Bundeswasserstr.Karte 1:1Mio - DBWK1000 (DLZ-IT BMVBS)</Title>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3395</SRS>
+    <SRS>EPSG:3857</SRS>
+    <SRS>EPSG:4019</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:900913</SRS>
+    <LatLonBoundingBox maxx="15.9068" maxy="55.1555" minx="5.09019" miny="46.9823"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3.94202e+06" maxy="6.1139e+06" minx="3.25047e+06" miny="5.22116e+06"/>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>DBWK1000</Name>
+      <Title>DBWK1000</Title>
+      <Abstract>DBWK1000</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>DBWK</Name>
+        <Title>DBWK</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2166</SRS>
+        <SRS>EPSG:2167</SRS>
+        <SRS>EPSG:2168</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting LAYER.EXTENT or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="2010" width="383">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=DBWK&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="374177136322.228" min="0.0374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>copyright</Name>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+        <Title>copyright</Title>
+<!-- WARNING: Mandatory mapfile parameter '(at least one of) MAP.PROJECTION, LAYER.PROJECTION or wms_srs metadata' was missing in this context. -->
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting LAYER.EXTENT or wms_extent metadata. Also check that your data exists in the DATA statement -->
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

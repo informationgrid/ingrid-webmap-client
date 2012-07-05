@@ -1,0 +1,1364 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 6.0.2 (MS4W 3.0.4) OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=CAIRO SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>WMS des Landwirtschaft- und Umweltatlas Schleswig-Holstein</Title>
+  <Abstract/>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Dr. Uwe Rammert</ContactPerson>
+      <ContactOrganization>Landesamt fuer Landwirtschaft, Umwelt und laendliche Raeume (LLUR)</ContactOrganization>
+    </ContactPersonPrimary>
+    <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Hamburger Chaussee 25</Address>
+        <City>Flintbek</City>
+        <StateOrProvince>Schleswig-Holstein</StateOrProvince>
+        <PostCode>24220</PostCode>
+        <Country>Deutschland</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>++49 4347/704 0</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>++49 4347/704 112</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>poststelle@llur.landsh.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>--DE Bei dem Dienst handelt es sich um Landwirtschaft- und Umweltdaten des Landes Schleswig-Holsteins.</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/jpeg</Format>
+      <Format>application/x-pdf</Format>
+      <Format>image/svg+xml</Format>
+      <Format>image/tiff</Format>
+      <Format>application/vnd.google-earth.kml+xml</Format>
+      <Format>application/vnd.google-earth.kmz</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <Format>text/plain</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/jpeg</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lanuwms</Name>
+    <Title>WMS des Landwirtschaft- und Umweltatlas Schleswig-Holstein</Title>
+    <Abstract/>
+    <SRS>epsg:31467</SRS>
+    <SRS>epsg:4326</SRS>
+    <SRS>epsg:25832</SRS>
+    <LatLonBoundingBox maxx="12.0886" maxy="55.0993" minx="7.53218" miny="53.3036"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3.6974e+006" maxy="6.10785e+006" minx="3.40636e+006" miny="5.91205e+006"/>
+    <ScaleHint max="748.354272644456" min="0.249451424214819"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>kueste_operativ</Name>
+        <Title>kueste_operativ</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.4378" maxy="54.9467" minx="7.88063" miny="53.8926"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65636e+006" maxy="6.09086e+006" minx="3.42834e+006" miny="5.97614e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=kueste_operativ&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>seen_wrrl_punkte</Name>
+        <Title>Seentypen WRRL</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.0046" maxy="54.9077" minx="8.31581" miny="53.5491"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.62869e+006" maxy="6.08652e+006" minx="3.45619e+006" miny="5.93705e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="322">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=seen_wrrl_punkte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_ban</Name>
+        <Title>Bachneunauge</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.9072" maxy="54.7969" minx="9.09597" miny="53.4272"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.62277e+006" maxy="6.07419e+006" minx="3.50645e+006" miny="5.92331e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="115">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_ban&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_fln</Name>
+        <Title>Flussneunauge</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.3163" maxy="54.818" minx="8.82448" miny="53.6542"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.5847e+006" maxy="6.07653e+006" minx="3.48879e+006" miny="5.94775e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="115">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_fln&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_gro</Name>
+        <Title>Groppe</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.7864" maxy="54.1422" minx="10.2888" miny="53.5181"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.61683e+006" maxy="6.00209e+006" minx="3.58554e+006" miny="5.93328e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="73">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_gro&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_slp</Name>
+        <Title>Schlammpeitzger</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.6694" maxy="54.6074" minx="8.93217" miny="53.3983"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60797e+006" maxy="6.05309e+006" minx="3.49569e+006" miny="5.91973e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="131">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_slp&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_stb</Name>
+        <Title>Steinbeisser</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.8514" maxy="54.7427" minx="8.95958" miny="53.3727"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.61934e+006" maxy="6.06815e+006" minx="3.49747e+006" miny="5.91716e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="102">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_stb&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>edelkrebs</Name>
+        <Title>Edelkrebs</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.8075" maxy="54.6729" minx="9.41224" miny="53.9663"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.61671e+006" maxy="6.06046e+006" minx="3.52712e+006" miny="5.98319e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="87">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=edelkrebs&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>bachmuschel</Name>
+        <Title>Bachmuschel</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.7427" maxy="54.5869" minx="9.27416" miny="53.5795"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.61277e+006" maxy="6.05084e+006" minx="3.51823e+006" miny="5.94002e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="106">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bachmuschel&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fisch_men</Name>
+        <Title>Meerneunauge</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.3799" maxy="54.7501" minx="8.92775" miny="53.4233"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.58894e+006" maxy="6.06897e+006" minx="3.49542e+006" miny="5.92213e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="115">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fisch_men&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>feldlerche</Name>
+        <Title>Feldlerche</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2408" maxy="54.9524" minx="8.28485" miny="53.3663"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.6437e+006" maxy="6.0915e+006" minx="3.45425e+006" miny="5.91711e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="235">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=feldlerche&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="0.498902848429637"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>shaemter</Name>
+        <Title>shaemter</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="68">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=shaemter&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>waterbody</Name>
+        <Title>Kuesten Wasserkoerper</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.7226" maxy="55.1029" minx="7.48801" miny="53.8532"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.67397e+006" maxy="6.10825e+006" minx="3.40354e+006" miny="5.97238e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=waterbody&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>bgk200</Name>
+        <Title>bgk200</Title>
+        <LatLonBoundingBox maxx="10.1682" maxy="54.1999" minx="9.99633" miny="54.0969"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.57631e+006" maxy="6.00818e+006" minx="3.56525e+006" miny="5.99689e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="328" width="585">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bgk200&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>gk25</Name>
+      <Title>gk25</Title>
+      <Abstract>gk25</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="464" width="337">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gk25&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_poly2</Name>
+        <Title>gk25_poly2</Title>
+        <LatLonBoundingBox maxx="10.6693" maxy="54.2006" minx="10.495" miny="54.0962"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60901e+006" maxy="6.00884e+006" minx="3.59788e+006" miny="5.99747e+006"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_poly3</Name>
+        <Title>gk25_poly3</Title>
+        <LatLonBoundingBox maxx="10.6693" maxy="54.2006" minx="10.495" miny="54.0962"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60901e+006" maxy="6.00884e+006" minx="3.59788e+006" miny="5.99747e+006"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_poly4</Name>
+        <Title>gk25_poly4</Title>
+        <LatLonBoundingBox maxx="10.6693" maxy="54.2006" minx="10.495" miny="54.0962"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60901e+006" maxy="6.00884e+006" minx="3.59788e+006" miny="5.99747e+006"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_poly5</Name>
+        <Title>gk25_poly5</Title>
+        <LatLonBoundingBox maxx="10.6693" maxy="54.2006" minx="10.495" miny="54.0962"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60901e+006" maxy="6.00884e+006" minx="3.59788e+006" miny="5.99747e+006"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_poly</Name>
+        <Title>gk25_poly</Title>
+        <LatLonBoundingBox maxx="10.6693" maxy="54.2006" minx="10.495" miny="54.0962"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60901e+006" maxy="6.00884e+006" minx="3.59788e+006" miny="5.99747e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="328" width="337">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gk25_poly&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_linie</Name>
+        <Title>gk25_linie</Title>
+        <LatLonBoundingBox maxx="10.6675" maxy="54.1994" minx="10.499" miny="54.0963"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60889e+006" maxy="6.00872e+006" minx="3.59814e+006" miny="5.99748e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="56" width="235">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gk25_linie&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gk25_ablagerung</Name>
+        <Title>gk25_ablagerung</Title>
+        <LatLonBoundingBox maxx="10.6657" maxy="54.1957" minx="10.4976" miny="54.1016"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60879e+006" maxy="6.00831e+006" minx="3.59803e+006" miny="5.99807e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="90" width="250">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gk25_ablagerung&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>wald</Name>
+        <Title>Wald</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3445" maxy="55.0233" minx="8.28717" miny="53.3596"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65009e+006" maxy="6.09939e+006" minx="3.45448e+006" miny="5.91657e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="93">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wald&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ffh</Name>
+        <Title>FFH-Gebiete</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.4025" maxy="55.1035" minx="7.77346" miny="53.3479"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.85312e+006" maxy="6.11903e+006" minx="2.61325e+006" miny="5.91628e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="100">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ffh&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>helcom</Name>
+        <Title>Helcom-Gebiete</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.1216" maxy="54.8291" minx="9.85813" miny="54.299"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.83161e+006" maxy="6.08809e+006" minx="2.74862e+006" miny="6.02732e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="73">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=helcom&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>klaer</Name>
+        <Title>Einleitungsstellen</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2783" maxy="54.9711" minx="7.86992" miny="53.3527"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64604e+006" maxy="6.09358e+006" minx="3.42769e+006" miny="5.91568e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="107" width="129">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=klaer&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>naturpark</Name>
+        <Title>Naturpark</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.0049" maxy="54.7206" minx="9.4677" miny="53.4513"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.82846e+006" maxy="6.07546e+006" minx="2.72437e+006" miny="5.93168e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="88">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=naturpark&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>biores</Name>
+        <Title>Biosphaerenreservate</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="10.6627" maxy="55.1029" minx="7.92149" miny="53.3605"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.80583e+006" maxy="6.11692e+006" minx="2.6227e+006" miny="5.91679e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="144">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=biores&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>nationalpark</Name>
+        <Title>Nationalpark</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="9.01763" maxy="55.1035" minx="7.92149" miny="53.8629"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.69849e+006" maxy="6.11248e+006" minx="2.62269e+006" miny="5.972e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="103">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=nationalpark&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>boden_swereg</Name>
+      <Title>boden_swereg</Title>
+      <Abstract>boden_swereg</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="311" width="500">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swereg&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_swereg1</Name>
+        <Title>boden_swereg1</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.349" maxy="55.0576" minx="8.27427" miny="53.3504"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65025e+006" maxy="6.1032e+006" minx="3.45369e+006" miny="5.91555e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swereg1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.902848429637" min="2.49401533929976"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_swereg2</Name>
+        <Title>boden_swereg2</Title>
+        <LatLonBoundingBox maxx="11.6606" maxy="55.1482" minx="7.97232" miny="53.2564"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.66981e+006" maxy="6.11329e+006" minx="3.43454e+006" miny="5.90574e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swereg2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="748.354272644456" min="498.902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>boden_swereg3</Name>
+        <Title>boden_swereg3</Title>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>boden_swesh</Name>
+      <Title>boden_swesh</Title>
+      <Abstract>boden_swesh</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="311" width="407">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swesh&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_swesh1</Name>
+        <Title>boden_swesh1</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.349" maxy="55.0576" minx="8.27427" miny="53.3504"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65025e+006" maxy="6.1032e+006" minx="3.45369e+006" miny="5.91555e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="407">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swesh1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.902848429637" min="2.49401533929976"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_swesh2</Name>
+        <Title>boden_swesh2</Title>
+        <LatLonBoundingBox maxx="11.683" maxy="55.1523" minx="7.9589" miny="53.2467"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.67122e+006" maxy="6.11374e+006" minx="3.43369e+006" miny="5.9047e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="407">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swesh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="748.354272644456" min="498.902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>boden_swesh3</Name>
+        <Title>boden_swesh3</Title>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>boden_bkfsh</Name>
+      <Title>boden_bkfsh</Title>
+      <Abstract>boden_bkfsh</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="481" width="290">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_bkfsh1</Name>
+        <Title>boden_bkfsh1</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.349" maxy="55.0576" minx="8.27427" miny="53.3504"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65025e+006" maxy="6.1032e+006" minx="3.45369e+006" miny="5.91555e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="243" width="290">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.902848429637" min="2.49401533929976"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_bkfsh2</Name>
+        <Title>boden_bkfsh2</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.6956" maxy="55.1523" minx="7.89617" miny="53.2712"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.67203e+006" maxy="6.11374e+006" minx="3.42969e+006" miny="5.90747e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="243" width="290">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="748.354272644456" min="498.902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>boden_bkfsh3</Name>
+        <Title>boden_bkfsh3</Title>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>boden_fkreg</Name>
+      <Title>boden_fkreg</Title>
+      <Abstract>boden_fkreg</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="311" width="500">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fkreg&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_fkreg1</Name>
+        <Title>boden_fkreg1</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.349" maxy="55.0576" minx="8.27427" miny="53.3504"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65025e+006" maxy="6.1032e+006" minx="3.45369e+006" miny="5.91555e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fkreg1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.902848429637" min="2.49401533929976"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_fkreg2</Name>
+        <Title>boden_fkreg2</Title>
+        <LatLonBoundingBox maxx="11.683" maxy="55.1523" minx="7.9589" miny="53.2467"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.67122e+006" maxy="6.11374e+006" minx="3.43369e+006" miny="5.9047e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fkreg2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="748.354272644456" min="498.902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>boden_fkreg3</Name>
+        <Title>boden_fkreg3</Title>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>boden_fksh</Name>
+      <Title>boden_fksh</Title>
+      <Abstract>boden_fksh</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="311" width="405">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_fksh1</Name>
+        <Title>boden_fksh1</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.349" maxy="55.0576" minx="8.27427" miny="53.3504"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65025e+006" maxy="6.1032e+006" minx="3.45369e+006" miny="5.91555e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="405">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.902848429637" min="2.49401533929976"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>boden_fksh2</Name>
+        <Title>boden_fksh2</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.683" maxy="55.1523" minx="7.9589" miny="53.2467"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.67122e+006" maxy="6.11374e+006" minx="3.43369e+006" miny="5.9047e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="405">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="748.354272644456" min="498.902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>boden_fksh3</Name>
+        <Title>boden_fksh3</Title>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>shgrenz</Name>
+        <Title>Grenze SH</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3502" maxy="55.073" minx="8.27072" miny="53.3452"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65027e+006" maxy="6.10492e+006" minx="3.45349e+006" miny="5.91498e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="92">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=shgrenz&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>shkreise</Name>
+        <Title>shkreise</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="311" width="166">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=shkreise&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>shgemeinde</Name>
+        <Title>Gemeinden SH</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3496" maxy="55.0597" minx="7.83666" miny="53.3489"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10344e+006" minx="3.42573e+006" miny="5.91539e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="96">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=shgemeinde&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
+        <Name>tk100c</Name>
+        <Title>SH_WMS_WebAtlasDE</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <ScaleHint max="0" min="1.99561139371855"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>germany</Name>
+        <Title>germany</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.8377" maxy="55.0469" minx="7.57729" miny="53.3387"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.68158e+006" maxy="6.10201e+006" minx="3.40912e+006" miny="5.91534e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="207">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=germany&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="24.9451424214819"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>rohstoffe</Name>
+      <Title>rohstoffe</Title>
+      <Abstract>rohstoffe</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="73" width="167">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=rohstoffe&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gips</Name>
+        <Title>Oberflächennahe Rohstoffe</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="9.68102" maxy="53.7211" minx="9.6774" miny="53.7197"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.54503e+006" maxy="5.95465e+006" minx="3.54479e+006" miny="5.9545e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="113">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gips&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>kreide</Name>
+        <Title>Oberflächennahe Rohstoffe</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="9.60293" maxy="53.9073" minx="9.51371" miny="53.8714"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.5397e+006" maxy="5.97529e+006" minx="3.53386e+006" miny="5.97133e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="68">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=kreide&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>sand</Name>
+        <Title>Oberflächennahe Rohstoffe</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.0846" maxy="54.8523" minx="9.00352" miny="53.382"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.63401e+006" maxy="6.08035e+006" minx="3.50031e+006" miny="5.91859e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="92">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=sand&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>ton</Name>
+        <Title>Oberflächennahe Rohstoffe</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2993" maxy="54.8192" minx="8.93729" miny="53.4182"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64794e+006" maxy="6.07667e+006" minx="3.49604e+006" miny="5.92303e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="167">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ton&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>bvs25</Name>
+        <Title>bvs25</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3495" maxy="55.0589" minx="8.27243" miny="53.3498"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10335e+006" minx="3.45358e+006" miny="5.91549e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="56" width="147">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bvs25&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>uzlr</Name>
+        <Title>Unzerschnittene Lebensraeume</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3493" maxy="55.0594" minx="7.84064" miny="53.35"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65026e+006" maxy="6.10341e+006" minx="3.42598e+006" miny="5.91551e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="124" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=uzlr&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.451424214819" min="2.49451424214819"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>egv</Name>
+        <Title>EU-Vogelschutzgebiete</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.408" maxy="55.1035" minx="7.77346" miny="53.4207"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.85313e+006" maxy="6.11904e+006" minx="2.61325e+006" miny="5.9244e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="161">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=egv&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>lsg</Name>
+        <Title>lsg</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3442" maxy="54.967" minx="8.2741" miny="53.4805"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.09312e+006" minx="3.45358e+006" miny="5.93005e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="176">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=lsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>nsg</Name>
+        <Title>Naturschutzgebiete</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.224" maxy="55.0708" minx="7.77445" miny="53.3521"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.84182e+006" maxy="6.1149e+006" minx="2.61341e+006" miny="5.9164e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="141">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=nsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>ramsar</Name>
+        <Title>ramsar</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2303" maxy="55.0708" minx="7.77445" miny="53.351"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.6426e+006" maxy="6.10468e+006" minx="3.42177e+006" miny="5.91538e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="124">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ramsar&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>fluss</Name>
+        <Title>fluss</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3018" maxy="54.9068" minx="8.3147" miny="53.3493"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64778e+006" maxy="6.08641e+006" minx="3.45611e+006" miny="5.91535e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fluss&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="4.98902848429637"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>pegel</Name>
+        <Title>pegel</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.1241" maxy="55.0629" minx="8.11888" miny="53.4265"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.63584e+006" maxy="6.1038e+006" minx="3.44377e+006" miny="5.9236e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="56" width="194">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=pegel&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>fl_landsch</Name>
+        <Title>fl_landsch</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3495" maxy="55.0589" minx="8.27243" miny="53.3488"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65028e+006" maxy="6.10335e+006" minx="3.45358e+006" miny="5.91538e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="158" width="164">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=fl_landsch&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>guete</Name>
+        <Title>Gewaesserguete</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2696" maxy="54.8395" minx="8.80996" miny="53.3612"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64595e+006" maxy="6.07893e+006" minx="3.48786e+006" miny="5.91662e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="141" width="186">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=guete&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>moor</Name>
+        <Title>Moore</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2692" maxy="54.9049" minx="8.2929" miny="53.3662"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64569e+006" maxy="6.0862e+006" minx="3.45471e+006" miny="5.91717e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="39" width="99">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=moor&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.451424214819" min="2.49451424214819"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>wsg</Name>
+      <Title>wsg</Title>
+      <Abstract>wsg</Abstract>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="90" width="240">
+             <Format>image/png; mode=24bit</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>wsg1</Name>
+        <Title>Wasserschutzgebiete</Title>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31468</SRS>
+        <SRS>epsg:31469</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:25833</SRS>
+        <LatLonBoundingBox maxx="11.1016" maxy="55.0384" minx="8.31084" miny="53.3666"/>
+        <BoundingBox SRS="epsg:31466" maxx="2.83404e+006" maxy="6.11096e+006" minx="2.64777e+006" miny="5.91923e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="39" width="240">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="1.24725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>wsg2</Name>
+        <Title>wsg2</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.1016" maxy="55.0384" minx="8.31084" miny="53.3666"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.63449e+006" maxy="6.10106e+006" minx="3.45601e+006" miny="5.91689e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="56" width="163">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="99.7805696859274"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>bmn</Name>
+        <Title>Kuestenkilometer</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.348" maxy="55.058" minx="7.84513" miny="53.3519"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65018e+006" maxy="6.10325e+006" minx="3.42627e+006" miny="5.91572e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="115">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bmn&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>tmn</Name>
+        <Title>Landesschutzdeiche</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2831" maxy="55.0359" minx="8.29062" miny="53.5544"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64611e+006" maxy="6.10079e+006" minx="3.45471e+006" miny="5.93815e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="119">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=tmn&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>seen</Name>
+        <Title>Seen gesamt</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.254" maxy="54.9109" minx="8.2994" miny="53.361"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.6447e+006" maxy="6.08687e+006" minx="3.45514e+006" miny="5.91656e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="98">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=seen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>seen_chemie</Name>
+        <Title>seen_chemie</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.1521" maxy="54.9077" minx="8.64742" miny="53.5467"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.63816e+006" maxy="6.08652e+006" minx="3.47746e+006" miny="5.93705e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="102">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=seen_chemie&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ueberschwemm</Name>
+        <Title>Überschwemmungsgebiete</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.6563" maxy="53.964" minx="9.37528" miny="53.491"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.6088e+006" maxy="5.98153e+006" minx="3.52497e+006" miny="5.93007e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="184">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ueberschwemm&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="12.4725712107409"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>atlantikkonti</Name>
+        <Title>atlantisch kontinentale Region</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="10.6803" maxy="54.8709" minx="9.29739" miny="53.3694"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60797e+006" maxy="6.08246e+006" minx="3.51986e+006" miny="5.91651e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="255">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=atlantikkonti&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="0.997805696859274"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>naturraum</Name>
+        <Title>Naturraeume</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3494" maxy="55.059" minx="8.27097" miny="53.3581"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.65027e+006" maxy="6.10336e+006" minx="3.45349e+006" miny="5.91641e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="90" width="184">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=naturraum&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>seen_wrrl</Name>
+        <Title>Seenwasserkoerper</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.0208" maxy="54.9109" minx="8.2994" miny="53.5436"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.62972e+006" maxy="6.08688e+006" minx="3.45514e+006" miny="5.93646e+006"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+<!-- WARNING: The layer name 'DAV Linien gesamt' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>DAV Linien gesamt</Name>
+        <Title>DAV Linien gesamt</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.3325" maxy="54.9107" minx="8.29619" miny="53.3488"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64974e+006" maxy="6.08685e+006" minx="3.45493e+006" miny="5.91535e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="362" width="254">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=DAV Linien gesamt&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>dav_tk5</Name>
+        <Title>DAV/DDV-Karten (TK5)</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="11.1433" maxy="54.939" minx="8.28113" miny="53.3414"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.63749e+006" maxy="6.09e+006" minx="3.454e+006" miny="5.91416e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="166">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=dav_tk5&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="7.48354272644456" min="0.249451424214819"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>kueste_ueberblick</Name>
+        <Title>kueste_ueberblick</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="11.2289" maxy="54.9488" minx="7.86958" miny="53.8961"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.64295e+006" maxy="6.09109e+006" minx="3.42763e+006" miny="5.97611e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=kueste_ueberblick&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

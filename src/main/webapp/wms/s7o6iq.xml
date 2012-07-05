@@ -1,0 +1,3626 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name><![CDATA[OGC:WMS]]></Name>
+		<Title><![CDATA[Klimaatlas Nordrhein-Westfalen]]></Title>
+		<Abstract>Der WMS-Dienst "Klimaatlas Nordrhein-Westfalen" enthält flächendeckende Klimakarten für Nordrhein-Westfalen. Es werden verschiedene meteorologische Parameter in den Bereichen Lufttemperatur, Niederschlag, Sonnenstrahlung, Wind und Abgeleitete Größen dargestellt. Die Datengrundlagen stammen vom Deutschen Wetterdienst. Erklärungen zu den Datengrundlagen sowie Erläuterungen zu den Karten sind im Fachinformationssystem "Klimaatlas Nordrhein-Westfalen" unter www.klimaatlas.nrw.de verfügbar.</Abstract>
+		<KeywordList><Keyword><![CDATA[Klimaatlas, Klima, Temperatur, Lufttemperatur, Kenntage, Sommertage, Heiße Tage, Frosttage, Eistage, Niederschlag, Strahlung, Sonnenscheindauer, Wind, Windrichtung, Windgeschwindigkeit, Gradtage]]></Keyword></KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/klimaatlas" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson><![CDATA[Ellen Sträter]]></ContactPerson>
+				<ContactOrganization><![CDATA[Landesamt für Natur, Umwelt und Verbraucherschutz Nordrhein-Westfalen]]></ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition><![CDATA[Fachbereich 34: Koordinierung umweltübergreifender Umwetlthemen, Klimaschutz/Klimafolgen, Umweltinformation]]></ContactPosition>
+			<ContactAddress>
+				<AddressType/>
+				<Address><![CDATA[Leibnitzstraße 10]]></Address>
+				<City><![CDATA[Recklinghausen]]></City>
+				<StateOrProvince><![CDATA[Nordrhein-Westfalen]]></StateOrProvince>
+				<PostCode><![CDATA[45659]]></PostCode>
+				<Country><![CDATA[Deutschland]]></Country>
+			</ContactAddress>
+			<ContactVoiceTelephone><![CDATA[02361-305-1398]]></ContactVoiceTelephone>
+			<ContactFacsimileTelephone><![CDATA[02361-305-1574]]></ContactFacsimileTelephone>
+			<ContactElectronicMailAddress><![CDATA[Ellen.Straeter@lanuv.nrw.de]]></ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees><![CDATA[keine]]></Fees>
+		<AccessConstraints><![CDATA[Das Fachinformationssystem "Klimaatlas Nordrhein-Westfalen" (www.klimaatlas.nrw.de) und der zugehörige WMS-Dienst "Klimaatlas Nordrhein-Westfalen" werden vom Landesamt für Natur, Umwelt und Verbraucherschutz auf der Grundlage von Daten des Deutschen Wetterdienstes bereitgestellt. Die Vervielfältigung und Verbreitung von Inhalten ist, auch auszugsweise, nur mit Angabe des Herausgebers (Landesamt für Natur, Umwelt und Verbraucherschutz Nordrhein-Westfalen, LANUV NRW) und der Datenquelle (Deutscher Wetterdienst) gestattet. Dies gilt ebenso für das bereitgestellte Kartenmaterial von GEObasis.NRW (Geobasisdaten der Landesvermessung, Bezirksregierung Köln Abteilung 7 GEObasis.nrw). Die Informationen werden unter folgenden Bedingungen zur Verfügung gestellt:
+
+1. Meteorologische Aussagen, sowie Karten und Graphiken dürfen nicht verändert werden. 
+2. Für den Privatgebrauch ist die Nutzung des Klimaatlas Nordrhein-Westfalen kostenfrei. Für Ministerien, Bezirksregierungen, Kreise und Kommunen in Nordrhein-Westfalen wird die Nutzung der Karten im Fachinformationssystem sowie die Nutzung des WMS-Dienstes für Planungszwecke und zur Information der BürgerInnen kostenfrei erlaubt. Die Karten und Graphiken dürfen nicht zu kommerziellen Zwecken eingesetzt werden. 
+3. Die Karten sollen möglichst genaue, aktuelle und umfangreiche Informationen zum Klima in NRW geben. Die Datengrundlagen der Dienste wurden mit größter Sorgfalt hergestellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Daten wird keine Gewähr übernommen. 
+4. Für Sach- und Vermögensschäden, die Nutzern durch die Verwendung der Daten oder die sich aus dem Zugriff auf den WMS-Dienst oder dessen Benutzung sowie aus der Unmöglichkeit des Zugriffes oder der Benutzung entstehen, übernimmt der Herausgeber keine Verantwortung. Dem Herausgeber kommt keine Garantie- und Einstandshaftung für das technische Funktionieren, die Kompatibilität mit der von dem Nutzer verwendeten Soft- oder Hardware sowie Virenfreiheit zu. 
+5. Das LANUV NRW behält sich vor, die kostenfreien Dienste ohne Angaben von Gründen einzustellen. 
+Stand 22. August 2011]]></AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/klimaatlas" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/klimaatlas" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/klimaatlas" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/klimaatlas" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title><![CDATA[Klimaatlas NRW]]></Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:25831</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:3034</SRS>
+			<SRS>EPSG:3035</SRS>
+			<SRS>EPSG:3043</SRS>
+			<SRS>EPSG:3044</SRS>
+			<SRS>EPSG:3045</SRS>
+			<SRS>EPSG:3857</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:28992</SRS>
+			<SRS>EPSG:900913</SRS>
+			<LatLonBoundingBox maxx="11.222485" maxy="53.130994" minx="4.145771" miny="49.693718"/>
+			<BoundingBox SRS="EPSG:4326" maxx="11.222485" maxy="53.130994" minx="4.145771" miny="49.693718"/>
+			<BoundingBox SRS="EPSG:25832" maxx="648761.192567" maxy="5886842.644577" minx="174578.793405" miny="5514360.417367"/>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title><![CDATA[Klima]]></Title>
+				<Abstract><![CDATA[Klima]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:3857</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<SRS>EPSG:900913</SRS>
+				<LatLonBoundingBox maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+				<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title><![CDATA[Abgeleitete Groessen]]></Title>
+					<Abstract><![CDATA[Abgeleitete Groessen]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+					<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>2</Name>
+						<Title><![CDATA[Gradtage pro Jahr 1971-2000]]></Title>
+						<Abstract><![CDATA[Gradtage pro Jahr 1971-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+						<Style>
+							<Name>default</Name>
+							<Title>2</Title>
+							<LegendURL height="199" width="220">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=2" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title><![CDATA[Wind]]></Title>
+					<Abstract><![CDATA[Wind]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+					<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>7</Name>
+						<Title><![CDATA[Windgeschwindigkeit 80m 1981-2000]]></Title>
+						<Abstract><![CDATA[Windgeschwindigkeit 80m 1981-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+						<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
+						<Style>
+							<Name>default</Name>
+							<Title>7</Title>
+							<LegendURL height="358" width="293">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=7" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>8</Name>
+						<Title><![CDATA[Windgeschwindigkeit 10m 1981-2000]]></Title>
+						<Abstract><![CDATA[Windgeschwindigkeit 10m 1981-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
+						<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
+						<Style>
+							<Name>default</Name>
+							<Title>8</Title>
+							<LegendURL height="358" width="288">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=8" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title><![CDATA[Strahlung]]></Title>
+					<Abstract><![CDATA[Strahlung]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Title><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Title>
+						<Abstract><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>11</Name>
+							<Title><![CDATA[SD Jahr 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Jahr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>11</Title>
+								<LegendURL height="131" width="229">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=11" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>12</Name>
+							<Title><![CDATA[SD Win 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Win 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>12</Title>
+								<LegendURL height="267" width="244">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=12" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>13</Name>
+							<Title><![CDATA[SD Her 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Her 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>13</Title>
+								<LegendURL height="267" width="245">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=13" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>14</Name>
+							<Title><![CDATA[SD Som 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Som 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>14</Title>
+								<LegendURL height="267" width="259">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=14" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>15</Name>
+							<Title><![CDATA[SD Fru 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Fru 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>15</Title>
+								<LegendURL height="267" width="268">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=15" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>16</Name>
+							<Title><![CDATA[SD Dez 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Dez 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>16</Title>
+								<LegendURL height="245" width="271">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=16" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>17</Name>
+							<Title><![CDATA[SD Nov 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Nov 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>17</Title>
+								<LegendURL height="245" width="273">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=17" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>18</Name>
+							<Title><![CDATA[SD Okt 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Okt 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>18</Title>
+								<LegendURL height="245" width="256">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=18" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>19</Name>
+							<Title><![CDATA[SD Sep 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Sep 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>19</Title>
+								<LegendURL height="245" width="277">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=19" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>20</Name>
+							<Title><![CDATA[SD Aug 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Aug 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>20</Title>
+								<LegendURL height="245" width="249">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=20" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>21</Name>
+							<Title><![CDATA[SD Jul 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Jul 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>21</Title>
+								<LegendURL height="245" width="222">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=21" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>22</Name>
+							<Title><![CDATA[SD Jun 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Jun 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>22</Title>
+								<LegendURL height="245" width="228">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=22" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>23</Name>
+							<Title><![CDATA[SD Mai 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Mai 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>23</Title>
+								<LegendURL height="245" width="221">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=23" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>24</Name>
+							<Title><![CDATA[SD Apr 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Apr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>24</Title>
+								<LegendURL height="245" width="231">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=24" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>25</Name>
+							<Title><![CDATA[SD Mar 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Mar 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>25</Title>
+								<LegendURL height="245" width="231">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=25" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>26</Name>
+							<Title><![CDATA[SD Feb 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Feb 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>26</Title>
+								<LegendURL height="245" width="254">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=26" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>27</Name>
+							<Title><![CDATA[SD Jan 1971-2000]]></Title>
+							<Abstract><![CDATA[SD Jan 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>27</Title>
+								<LegendURL height="245" width="247">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=27" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title><![CDATA[Niederschlag]]></Title>
+					<Abstract><![CDATA[Niederschlag]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Title><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Title>
+						<Abstract><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>30</Name>
+							<Title><![CDATA[NS Jahr 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Jahr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>30</Title>
+								<LegendURL height="245" width="193">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=30" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>31</Name>
+							<Title><![CDATA[NS Win 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Win 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>31</Title>
+								<LegendURL height="199" width="209">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=31" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>32</Name>
+							<Title><![CDATA[NS Her 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Her 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>32</Title>
+								<LegendURL height="199" width="210">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=32" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>33</Name>
+							<Title><![CDATA[NS Som 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Som 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>33</Title>
+								<LegendURL height="199" width="223">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=33" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>34</Name>
+							<Title><![CDATA[NS Fru 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Fru 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>34</Title>
+								<LegendURL height="199" width="232">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=34" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>35</Name>
+							<Title><![CDATA[NS Dez 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Dez 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>35</Title>
+								<LegendURL height="222" width="236">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=35" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>36</Name>
+							<Title><![CDATA[NS Nov 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Nov 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>36</Title>
+								<LegendURL height="222" width="238">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=36" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>37</Name>
+							<Title><![CDATA[NS Okt 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Okt 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>37</Title>
+								<LegendURL height="222" width="221">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=37" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>38</Name>
+							<Title><![CDATA[NS Sep 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Sep 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>38</Title>
+								<LegendURL height="222" width="242">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=38" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>39</Name>
+							<Title><![CDATA[NS Aug 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Aug 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>39</Title>
+								<LegendURL height="222" width="214">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=39" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>40</Name>
+							<Title><![CDATA[NS Jul 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Jul 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>40</Title>
+								<LegendURL height="222" width="187">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=40" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>41</Name>
+							<Title><![CDATA[NS Jun 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Jun 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>41</Title>
+								<LegendURL height="222" width="192">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=41" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>42</Name>
+							<Title><![CDATA[NS Mai 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Mai 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>42</Title>
+								<LegendURL height="222" width="186">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=42" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>43</Name>
+							<Title><![CDATA[NS Apr 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Apr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>43</Title>
+								<LegendURL height="222" width="195">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=43" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>44</Name>
+							<Title><![CDATA[NS Mar 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Mar 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>44</Title>
+								<LegendURL height="222" width="205">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=44" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>45</Name>
+							<Title><![CDATA[NS Feb 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Feb 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>45</Title>
+								<LegendURL height="222" width="219">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=45" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>46</Name>
+							<Title><![CDATA[NS Jan 1971-2000]]></Title>
+							<Abstract><![CDATA[NS Jan 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>46</Title>
+								<LegendURL height="222" width="212">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=46" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title><![CDATA[Lufttemperatur]]></Title>
+					<Abstract><![CDATA[Lufttemperatur]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+					<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>48</Name>
+						<Title><![CDATA[Eistage pro Jahr 1971-2000]]></Title>
+						<Abstract><![CDATA[Eistage pro Jahr 1971-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+						<Style>
+							<Name>default</Name>
+							<Title>48</Title>
+							<LegendURL height="154" width="206">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=48" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>49</Name>
+						<Title><![CDATA[Frosttage pro Jahr 1971-2000]]></Title>
+						<Abstract><![CDATA[Frosttage pro Jahr 1971-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+						<Style>
+							<Name>default</Name>
+							<Title>49</Title>
+							<LegendURL height="177" width="222">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=49" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>50</Name>
+						<Title><![CDATA[Sommertage pro Jahr 1971-2000]]></Title>
+						<Abstract><![CDATA[Sommertage pro Jahr 1971-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+						<Style>
+							<Name>default</Name>
+							<Title>50</Title>
+							<LegendURL height="154" width="246">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=50" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Name>51</Name>
+						<Title><![CDATA[heiße Tage pro Jahr 1971-2000]]></Title>
+						<Abstract><![CDATA[heiße Tage pro Jahr 1971-2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.567429" maxy="52.626785" minx="5.699704" miny="50.228627"/>
+						<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
+						<Style>
+							<Name>default</Name>
+							<Title>51</Title>
+							<LegendURL height="131" width="232">
+								<Format>image/png</Format>
+								<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=51" xlink:type="simple"/>
+							</LegendURL>
+						</Style>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Title><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Title>
+						<Abstract><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+						<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>53</Name>
+							<Title><![CDATA[Tmax Jahr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Jahr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>53</Title>
+								<LegendURL height="698" width="202">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=53" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>54</Name>
+							<Title><![CDATA[Tmax Win 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Win 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>54</Title>
+								<LegendURL height="698" width="218">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=54" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>55</Name>
+							<Title><![CDATA[Tmax Her 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Her 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>55</Title>
+								<LegendURL height="698" width="219">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=55" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>56</Name>
+							<Title><![CDATA[Tmax Som 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Som 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>56</Title>
+								<LegendURL height="698" width="232">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=56" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>57</Name>
+							<Title><![CDATA[Tmax Fru 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Fru 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>57</Title>
+								<LegendURL height="698" width="241">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=57" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>58</Name>
+							<Title><![CDATA[Tmax Dez 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Dez 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>58</Title>
+								<LegendURL height="698" width="245">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=58" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>59</Name>
+							<Title><![CDATA[Tmax Nov 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Nov 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>59</Title>
+								<LegendURL height="698" width="247">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=59" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>60</Name>
+							<Title><![CDATA[Tmax Okt 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Okt 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>60</Title>
+								<LegendURL height="698" width="230">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=60" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>61</Name>
+							<Title><![CDATA[Tmax Sep 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Sep 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>61</Title>
+								<LegendURL height="698" width="251">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=61" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>62</Name>
+							<Title><![CDATA[Tmax Aug 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Aug 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>62</Title>
+								<LegendURL height="698" width="223">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=62" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>63</Name>
+							<Title><![CDATA[Tmax Jul 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Jul 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>63</Title>
+								<LegendURL height="698" width="196">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=63" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>64</Name>
+							<Title><![CDATA[Tmax Jun 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Jun 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>64</Title>
+								<LegendURL height="698" width="201">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=64" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>65</Name>
+							<Title><![CDATA[Tmax Mai 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Mai 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>65</Title>
+								<LegendURL height="698" width="195">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=65" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>66</Name>
+							<Title><![CDATA[Tmax Apr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Apr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>66</Title>
+								<LegendURL height="698" width="204">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=66" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>67</Name>
+							<Title><![CDATA[Tmax Mar 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Mar 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>67</Title>
+								<LegendURL height="698" width="214">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=67" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>68</Name>
+							<Title><![CDATA[Tmax Feb 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Feb 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>68</Title>
+								<LegendURL height="698" width="228">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=68" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>69</Name>
+							<Title><![CDATA[Tmax Jan 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmax Jan 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.449318" maxy="52.537035" minx="5.766227" miny="50.320107"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
+							<Style>
+								<Name>default</Name>
+								<Title>69</Title>
+								<LegendURL height="698" width="221">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=69" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Title><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Title>
+						<Abstract><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>71</Name>
+							<Title><![CDATA[Tmittel Jahr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Jahr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>71</Title>
+								<LegendURL height="698" width="213">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=71" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>72</Name>
+							<Title><![CDATA[Tmittel Win 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Win 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>72</Title>
+								<LegendURL height="698" width="229">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=72" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>73</Name>
+							<Title><![CDATA[Tmittel Her 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Her 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>73</Title>
+								<LegendURL height="698" width="230">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=73" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>74</Name>
+							<Title><![CDATA[Tmittel Som 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Som 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>74</Title>
+								<LegendURL height="698" width="243">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=74" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>75</Name>
+							<Title><![CDATA[Tmittel Fru 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Fru 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>75</Title>
+								<LegendURL height="698" width="252">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=75" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>76</Name>
+							<Title><![CDATA[Tmittel Dez 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Dez 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>76</Title>
+								<LegendURL height="698" width="255">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=76" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>77</Name>
+							<Title><![CDATA[Tmittel Nov 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Nov 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>77</Title>
+								<LegendURL height="698" width="257">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=77" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>78</Name>
+							<Title><![CDATA[Tmittel Okt 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Okt 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>78</Title>
+								<LegendURL height="698" width="240">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=78" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>79</Name>
+							<Title><![CDATA[Tmittel Sep 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Sep 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>79</Title>
+								<LegendURL height="698" width="262">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=79" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>80</Name>
+							<Title><![CDATA[Tmittel Aug 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Aug 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>80</Title>
+								<LegendURL height="698" width="233">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=80" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>81</Name>
+							<Title><![CDATA[Tmittel Jul 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Jul 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>81</Title>
+								<LegendURL height="698" width="207">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=81" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>82</Name>
+							<Title><![CDATA[Tmittel Jun 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Jun 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>82</Title>
+								<LegendURL height="698" width="212">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=82" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>83</Name>
+							<Title><![CDATA[Tmittel Mai 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Mai 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>83</Title>
+								<LegendURL height="698" width="206">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=83" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>84</Name>
+							<Title><![CDATA[Tmittel Apr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Apr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>84</Title>
+								<LegendURL height="698" width="215">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=84" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>85</Name>
+							<Title><![CDATA[Tmittel Mar 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Mar 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>85</Title>
+								<LegendURL height="698" width="224">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=85" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>86</Name>
+							<Title><![CDATA[Tmittel Feb 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Feb 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>86</Title>
+								<LegendURL height="698" width="239">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=86" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>87</Name>
+							<Title><![CDATA[Tmittel Jan 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmittel Jan 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>87</Title>
+								<LegendURL height="698" width="231">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=87" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="0">
+						<Title><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Title>
+						<Abstract><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Abstract>
+						<SRS>EPSG:4326</SRS>
+						<SRS>EPSG:31466</SRS>
+						<SRS>EPSG:31467</SRS>
+						<SRS>EPSG:25831</SRS>
+						<SRS>EPSG:25832</SRS>
+						<SRS>EPSG:25833</SRS>
+						<SRS>EPSG:3034</SRS>
+						<SRS>EPSG:3035</SRS>
+						<SRS>EPSG:3043</SRS>
+						<SRS>EPSG:3044</SRS>
+						<SRS>EPSG:3045</SRS>
+						<SRS>EPSG:3857</SRS>
+						<SRS>EPSG:4258</SRS>
+						<SRS>EPSG:28992</SRS>
+						<SRS>EPSG:900913</SRS>
+						<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>89</Name>
+							<Title><![CDATA[Tmin Jahr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Jahr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>89</Title>
+								<LegendURL height="698" width="199">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=89" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>90</Name>
+							<Title><![CDATA[Tmin Win 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Win 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>90</Title>
+								<LegendURL height="698" width="214">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=90" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>91</Name>
+							<Title><![CDATA[Tmin Her 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Her 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>91</Title>
+								<LegendURL height="698" width="215">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=91" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>92</Name>
+							<Title><![CDATA[Tmin Som 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Som 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>92</Title>
+								<LegendURL height="698" width="229">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=92" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>93</Name>
+							<Title><![CDATA[Tmin Fru 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Fru 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>93</Title>
+								<LegendURL height="698" width="238">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=93" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>94</Name>
+							<Title><![CDATA[Tmin Dez 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Dez 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>94</Title>
+								<LegendURL height="698" width="241">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=94" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>95</Name>
+							<Title><![CDATA[Tmin Nov 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Nov 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>95</Title>
+								<LegendURL height="698" width="243">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=95" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>96</Name>
+							<Title><![CDATA[Tmin Okt 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Okt 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>96</Title>
+								<LegendURL height="698" width="226">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=96" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>97</Name>
+							<Title><![CDATA[Tmin Sep 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Sep 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>97</Title>
+								<LegendURL height="698" width="247">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=97" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>98</Name>
+							<Title><![CDATA[Tmin Aug 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Aug 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>98</Title>
+								<LegendURL height="698" width="219">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=98" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>99</Name>
+							<Title><![CDATA[Tmin Jul 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Jul 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>99</Title>
+								<LegendURL height="698" width="192">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=99" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>100</Name>
+							<Title><![CDATA[Tmin Jun 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Jun 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>100</Title>
+								<LegendURL height="698" width="198">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=100" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>101</Name>
+							<Title><![CDATA[Tmin Mai 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Mai 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>101</Title>
+								<LegendURL height="698" width="191">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=101" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>102</Name>
+							<Title><![CDATA[Tmin Apr 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Apr 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>102</Title>
+								<LegendURL height="698" width="201">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=102" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>103</Name>
+							<Title><![CDATA[Tmin Mar 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Mar 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>103</Title>
+								<LegendURL height="698" width="210">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=103" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>104</Name>
+							<Title><![CDATA[Tmin Feb 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Feb 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>104</Title>
+								<LegendURL height="698" width="224">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=104" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="0">
+							<Name>105</Name>
+							<Title><![CDATA[Tmin Jan 1971-2000]]></Title>
+							<Abstract><![CDATA[Tmin Jan 1971-2000]]></Abstract>
+							<SRS>EPSG:4326</SRS>
+							<SRS>EPSG:31466</SRS>
+							<SRS>EPSG:31467</SRS>
+							<SRS>EPSG:25831</SRS>
+							<SRS>EPSG:25832</SRS>
+							<SRS>EPSG:25833</SRS>
+							<SRS>EPSG:3034</SRS>
+							<SRS>EPSG:3035</SRS>
+							<SRS>EPSG:3043</SRS>
+							<SRS>EPSG:3044</SRS>
+							<SRS>EPSG:3045</SRS>
+							<SRS>EPSG:3857</SRS>
+							<SRS>EPSG:4258</SRS>
+							<SRS>EPSG:28992</SRS>
+							<SRS>EPSG:900913</SRS>
+							<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
+							<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
+							<Style>
+								<Name>default</Name>
+								<Title>105</Title>
+								<LegendURL height="698" width="217">
+									<Format>image/png</Format>
+									<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=105" xlink:type="simple"/>
+								</LegendURL>
+							</Style>
+						</Layer>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title><![CDATA[Kartographie]]></Title>
+				<Abstract><![CDATA[Kartographie]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:3857</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<SRS>EPSG:900913</SRS>
+				<LatLonBoundingBox maxx="10.894003" maxy="52.978795" minx="4.482026" miny="49.856838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="10.894003" maxy="52.978795" minx="4.482026" miny="49.856838"/>
+				<BoundingBox SRS="EPSG:25832" maxx="627207.447151" maxy="5869911.634250" minx="196132.538821" miny="5531291.427694"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>107</Name>
+					<Title><![CDATA[NRW Schablone]]></Title>
+					<Abstract><![CDATA[NRW Schablone]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="10.894003" maxy="52.978795" minx="4.482026" miny="49.856838"/>
+					<BoundingBox SRS="EPSG:4326" maxx="10.894003" maxy="52.978795" minx="4.482026" miny="49.856838"/>
+					<BoundingBox SRS="EPSG:25832" maxx="627207.447151" maxy="5869911.634250" minx="196132.538821" miny="5531291.427694"/>
+					<Style>
+						<Name>default</Name>
+						<Title>107</Title>
+						<LegendURL height="16" width="137">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=107" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>108</Name>
+					<Title><![CDATA[Beschriftung Gewaesser]]></Title>
+					<Abstract><![CDATA[Beschriftung Gewaesser]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="8.773108" maxy="52.184973" minx="6.199891" miny="50.601377"/>
+					<BoundingBox SRS="EPSG:4326" maxx="8.773108" maxy="52.184973" minx="6.199891" miny="50.601377"/>
+					<BoundingBox SRS="EPSG:25832" maxx="483953.670607" maxy="5781637.778714" minx="308441.391202" miny="5608996.027243"/>
+					<Style>
+						<Name>default</Name>
+						<Title>108</Title>
+						<LegendURL height="16" width="184">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=108" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>109</Name>
+					<Title><![CDATA[Gewässer]]></Title>
+					<Abstract><![CDATA[Gewässer]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468286" maxy="52.498502" minx="5.975736" miny="50.474239"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468286" maxy="52.498502" minx="5.975736" miny="50.474239"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531790.317929" maxy="5816485.415597" minx="294541.150251" miny="5595367.122395"/>
+					<Style>
+						<Name>default</Name>
+						<Title>109</Title>
+						<LegendURL height="39" width="245">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=109" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>110</Name>
+					<Title><![CDATA[Städte]]></Title>
+					<Abstract><![CDATA[Städte]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="8.759837" maxy="52.026291" minx="6.006792" miny="50.713685"/>
+					<BoundingBox SRS="EPSG:4326" maxx="8.759837" maxy="52.026291" minx="6.006792" miny="50.713685"/>
+					<BoundingBox SRS="EPSG:25832" maxx="483057.416000" maxy="5763991.214228" minx="294484.563000" miny="5622029.072537"/>
+					<Style>
+						<Name>default</Name>
+						<Title>110</Title>
+						<LegendURL height="16" width="77">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=110" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>111</Name>
+					<Title><![CDATA[Beschriftung Gemeinden]]></Title>
+					<Abstract><![CDATA[Beschriftung Gemeinden]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.360851" maxy="52.468265" minx="5.829724" miny="50.376437"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.360851" maxy="52.468265" minx="5.829724" miny="50.376437"/>
+					<BoundingBox SRS="EPSG:25832" maxx="524513.550000" maxy="5813122.050000" minx="284457.710000" miny="5584880.050000"/>
+					<Style>
+						<Name>default</Name>
+						<Title>111</Title>
+						<LegendURL height="16" width="185">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=111" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="356.381818" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>112</Name>
+					<Title><![CDATA[Gemeinden]]></Title>
+					<Abstract><![CDATA[Gemeinden]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531791.204000" maxy="5820209.140000" minx="280374.968000" miny="5577679.223000"/>
+					<Style>
+						<Name>default</Name>
+						<Title>112</Title>
+						<LegendURL height="16" width="108">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=112" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>113</Name>
+					<Title><![CDATA[Beschriftung Kreise]]></Title>
+					<Abstract><![CDATA[Beschriftung Kreise]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.105899" maxy="52.347331" minx="6.097241" miny="50.470862"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.105899" maxy="52.347331" minx="6.097241" miny="50.470862"/>
+					<BoundingBox SRS="EPSG:25832" maxx="507213.643105" maxy="5799670.550000" minx="302132.140000" miny="5594700.525096"/>
+					<Style>
+						<Name>default</Name>
+						<Title>113</Title>
+						<LegendURL height="16" width="154">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=113" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="593.969696" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>114</Name>
+					<Title><![CDATA[Kreise]]></Title>
+					<Abstract><![CDATA[Kreise]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531791.204000" maxy="5820209.140000" minx="280374.968000" miny="5577679.223000"/>
+					<Style>
+						<Name>default</Name>
+						<Title>114</Title>
+						<LegendURL height="16" width="76">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=114" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>115</Name>
+					<Title><![CDATA[Beschriftung Regierungsbezirke ]]></Title>
+					<Abstract><![CDATA[Beschriftung Regierungsbezirke ]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.469805" maxy="52.533407" minx="5.765724" miny="50.311455"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.469805" maxy="52.533407" minx="5.765724" miny="50.311455"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531868.239880" maxy="5820368.005934" minx="280423.655954" miny="5577810.181122"/>
+					<Style>
+						<Name>default</Name>
+						<Title>115</Title>
+						<LegendURL height="16" width="231">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=115" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="1148.341413" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>116</Name>
+					<Title><![CDATA[Regierungsbezirke]]></Title>
+					<Abstract><![CDATA[Regierungsbezirke]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531791.204000" maxy="5820209.140000" minx="280374.968000" miny="5577679.223000"/>
+					<Style>
+						<Name>default</Name>
+						<Title>116</Title>
+						<LegendURL height="16" width="150">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=116" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>117</Name>
+					<Title><![CDATA[Beschriftung Großlandschaften]]></Title>
+					<Abstract><![CDATA[Beschriftung Großlandschaften]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468671" maxy="52.531989" minx="5.765098" miny="50.310252"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468671" maxy="52.531989" minx="5.765098" miny="50.310252"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531792.335024" maxy="5820210.260206" minx="280374.043777" miny="5577678.331871"/>
+					<Style>
+						<Name>default</Name>
+						<Title>117</Title>
+						<LegendURL height="16" width="223">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=117" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="712.763635" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>118</Name>
+					<Title><![CDATA[Großlandschaften]]></Title>
+					<Abstract><![CDATA[Großlandschaften]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468671" maxy="52.531989" minx="5.765098" miny="50.310252"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468671" maxy="52.531989" minx="5.765098" miny="50.310252"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531792.335024" maxy="5820210.260206" minx="280374.043777" miny="5577678.331871"/>
+					<Style>
+						<Name>default</Name>
+						<Title>118</Title>
+						<LegendURL height="16" width="145">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=118" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Name>119</Name>
+					<Title><![CDATA[NRW]]></Title>
+					<Abstract><![CDATA[NRW]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:3857</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<SRS>EPSG:900913</SRS>
+					<LatLonBoundingBox maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.468655" maxy="52.531979" minx="5.765113" miny="50.310260"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531791.204000" maxy="5820209.140000" minx="280374.968000" miny="5577679.223000"/>
+					<Style>
+						<Name>default</Name>
+						<Title>119</Title>
+						<LegendURL height="16" width="70">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/arcgis/services/klimaatlas2/MapServer/WMSServer?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=119" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+				</Layer>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

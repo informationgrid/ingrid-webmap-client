@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name><![CDATA[Überschwemmungsgebiete NRW]]></Name>
+		<Title><![CDATA[Überschwemmungsgebiete NRW]]></Title>
+		<Abstract>Überschwemmungsgebiete sind Gebiete, die bei Hochwasser überschwemmt, durchflossen bzw. für die Hochwasserrückhaltung beansprucht werden. Dazu zählen insbesondere auch Gebiete zwischen oberirdischen Gewässern und Deichen oder Hochufern. Berechnungsgrundlage ist dabei bundeseinheitlich ein Hochwasserereignis, wie es statistisch einmal in 100 Jahren zu erwarten ist. Die Ausweisung von Überschwemmungsgebieten gehört zu den strategischen Vorsorgemaßnahmen im Hochwasserschutz mit unmittelbaren planungsrechtlichen Auswirkungen, wie z.B. Restriktionen bei der Ausweisung oder Erweiterung kommunaler Baugebiete. Diese Karte wird laufend fortgeschrieben.</Abstract>
+		<KeywordList><Keyword/></KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson><![CDATA[Ernst Küstner]]></ContactPerson>
+				<ContactOrganization><![CDATA[Ministerium für Klimaschutz, Umwelt,  Landwirtschaft, Natur- und Verbraucherschutz]]></ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition><![CDATA[Abteilung Abfallwirtschaft, Bodenschutz, Wasserwirtschaft]]></ContactPosition>
+			<ContactAddress>
+				<AddressType><![CDATA[postalisch]]></AddressType>
+				<Address><![CDATA[Schwannstraße 3]]></Address>
+				<City><![CDATA[Düsseldorf]]></City>
+				<StateOrProvince><![CDATA[DE-NW]]></StateOrProvince>
+				<PostCode><![CDATA[40476]]></PostCode>
+				<Country><![CDATA[DE]]></Country>
+			</ContactAddress>
+			<ContactVoiceTelephone><![CDATA[+49 (0)211 4566 376]]></ContactVoiceTelephone>
+			<ContactFacsimileTelephone><![CDATA[+49 (0)211 4566 388]]></ContactFacsimileTelephone>
+			<ContactElectronicMailAddress><![CDATA[ernst.kuestner@mkulnv.nrw.de]]></ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees><![CDATA[Abhängig von Art und Umfang der Nutzung]]></Fees>
+		<AccessConstraints><![CDATA[Nutzungsbedingungen: Sämtliche Rechte an den mit diesem Dienst bereit gestellten Daten liegen beim Land Nordrhein-Westfalen vertreten durch das Ministerium für Klimaschutz, Umwelt, Landwirtschaft, Natur- und Verbraucherschutz NRW (MKULNV NRW), Schwannstr. 3, 40476 Düsseldorf (E-Mail: poststelle@mkulnv.nrw.de). Die Nutzung der Daten zum Zweck der Erzielung eines wirtschaftlichen Gewinns ist kostenpflichtig und nur mit Genehmigung des Herausgebers gestattet. Alle übrigen Verwendungen dieser Daten sind kostenfrei. Das MKULNV NRW übernimmt keine Gewähr über die Richtigkeit und Vollständigkeit. Die Haftung für Schäden materieller oder ideeller Art, die durch die Nutzung der Inhalte verursacht wurden, ist ausgeschlossen, sofern nicht Vorsatz oder grobe Fahrlässigkeit vorliegt.]]></AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title><![CDATA[Überschwemmungsgebiete NRW]]></Title>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:25831</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:3034</SRS>
+			<SRS>EPSG:3035</SRS>
+			<SRS>EPSG:3043</SRS>
+			<SRS>EPSG:3044</SRS>
+			<SRS>EPSG:3045</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:28992</SRS>
+			<LatLonBoundingBox maxx="9.654904" maxy="52.626276" minx="5.571359" miny="50.231158"/>
+			<BoundingBox SRS="EPSG:4326" maxx="9.654904" maxy="52.626276" minx="5.571359" miny="50.231158"/>
+			<BoundingBox SRS="EPSG:25832" maxx="544330.970065" maxy="5830698.134480" minx="267694.349035" miny="5569410.668920"/>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title><![CDATA[Sonstige Überschwemmungsgebiete]]></Title>
+				<Abstract><![CDATA[Sonstige Überschwemmungsgebiete]]></Abstract>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.381339" maxy="52.519504" minx="5.764466" miny="50.342624"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.381339" maxy="52.519504" minx="5.764466" miny="50.342624"/>
+				<BoundingBox SRS="EPSG:25832" maxx="525875.348200" maxy="5818821.431500" minx="280268.740900" miny="5581287.371900"/>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>1</Name>
+					<Title><![CDATA[Überschwemmungsgebiet preuss. Aufnahme]]></Title>
+					<Abstract><![CDATA[Preußische Überschwemmungsgebiete wurden in den Jahren 1905 bis 1912 nach einem Hochwasser in Karten eingetragen und dienen solange der Orientierung bis eine aktuelle Ermittlung erfolgt ist.]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="8.867338" maxy="52.480223" minx="6.179929" miny="50.352432"/>
+					<BoundingBox SRS="EPSG:4326" maxx="8.867338" maxy="52.480223" minx="6.179929" miny="50.352432"/>
+					<BoundingBox SRS="EPSG:25832" maxx="490568.372700" maxy="5814461.271000" minx="308353.243700" miny="5581287.371900"/>
+					<Style>
+						<Name>default</Name>
+						<Title>1</Title>
+						<LegendURL height="16" width="304">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=1" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>2</Name>
+					<Title><![CDATA[vorläufig gesicherte Überschwemmungsgebiete]]></Title>
+					<Abstract><![CDATA[Für Vorläufig gesicherte Überschwemmungsgebiete gelten die gleichen gesetzlichen Schutzbestimmungen wie für festgesetzte Überschwemmungsgebiete.]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.379399" maxy="52.293916" minx="6.016275" miny="50.484140"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.379399" maxy="52.293916" minx="6.016275" miny="50.484140"/>
+					<BoundingBox SRS="EPSG:25832" maxx="525875.348200" maxy="5793729.231500" minx="296360.124200" miny="5596398.827600"/>
+					<Style>
+						<Name>default</Name>
+						<Title>2</Title>
+						<LegendURL height="16" width="320">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=2" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>3</Name>
+					<Title><![CDATA[Ermittelte Überschwemmungsgebiete]]></Title>
+					<Abstract><![CDATA[Ermittelte Überschwemmungsgebiete wurde bereits berechnet, aber noch nicht verbindlich abgegrenzt.]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="8.890653" maxy="52.519448" minx="5.764466" miny="50.348210"/>
+					<BoundingBox SRS="EPSG:4326" maxx="8.890653" maxy="52.519448" minx="5.764466" miny="50.348210"/>
+					<BoundingBox SRS="EPSG:25832" maxx="492226.854100" maxy="5818821.431500" minx="280268.740900" miny="5581909.482600"/>
+					<Style>
+						<Name>default</Name>
+						<Title>3</Title>
+						<LegendURL height="16" width="260">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=3" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title><![CDATA[Festgesetzte Überschwemmungsgebiete]]></Title>
+				<Abstract><![CDATA[Rechtsverbindlich festgesetzte Überschwemmungsgebiete. Die Regelungen und Restriktionen, die zu beachten sind, finden sich im Wasserhaushaltsgesetz (§ 78) und im Landeswassergesetz (§ 113 LWG) ]]></Abstract>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+				<BoundingBox SRS="EPSG:25832" maxx="531756.578200" maxy="5817335.818600" minx="294291.338300" miny="5607564.261300"/>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>5</Name>
+					<Title><![CDATA[Rückgewinnbare Rückhalteflächen]]></Title>
+					<Abstract><![CDATA[Rückgewinnbare Rückhalteflächen sind frühere Überschwemmungsgebiete hinter Deichen, die als Rückhalteflächen geeignet sind.]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531756.578200" maxy="5817335.818600" minx="294291.338300" miny="5607564.261300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>5</Title>
+						<LegendURL height="16" width="244">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=5" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>6</Name>
+					<Title><![CDATA[Überschwemmungsgefährdetes Gebiet]]></Title>
+					<Abstract><![CDATA[Überschwemmungsgefährdete Gebiete sind Flächen, die bei Versagen von Hochwasserschutzeinrichtungen überflutet werden und bis zum Jahr 2010 nachrichtlich in den Festsetzungskarten dargestellt wurden.]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531756.578200" maxy="5817335.818600" minx="294291.338300" miny="5607564.261300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>6</Title>
+						<LegendURL height="16" width="270">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=6" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>7</Name>
+					<Title><![CDATA[Überflutetes Gebiet]]></Title>
+					<Abstract><![CDATA[Überflutetes Gebiet bebauter Bereiche sind bebaute oder mit Baurecht belegte Flächen, die überflutet werden, und bis 2005 nicht als Überschwemmungsgebiet festgesetzt, sondern nur nachrichtlich dargestellt wurden. Seit der Novellierung des Wasserhaushaltgesetzes im Jahr 2005 gehören auch diese Flächen zum Überschwemmungsgebiet]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531756.578200" maxy="5817335.818600" minx="294291.338300" miny="5607564.261300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>7</Title>
+						<LegendURL height="16" width="154">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=7" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>8</Name>
+					<Title><![CDATA[Überschwemmungsgebiet]]></Title>
+					<Abstract><![CDATA[Überschwemmungsgebiet]]></Abstract>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.467870" maxy="52.506148" minx="5.971540" miny="50.583702"/>
+					<BoundingBox SRS="EPSG:25832" maxx="531756.578200" maxy="5817335.818600" minx="294291.338300" miny="5607564.261300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>8</Title>
+						<LegendURL height="16" width="193">
+							<Format>image/png</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/uesg?request=GetLegendGraphic%26version=1.1.1%26format=image/png%26layer=8" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="Infinity" min="0.395980"/>
+				</Layer>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

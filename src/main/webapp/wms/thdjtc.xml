@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - WMS - LfULG - Hochwassergefaehrdung - Gefahrenkarten fuer Ortslagen</Title>
+		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - Die Hochwassergefaehrdung wird durch die auftretende Wassertiefe, gegebenenfalls auch Fliessgeschwindigkeit und durch die Jaehrlichkeit (statistisches Wiederkehrintervall in Jahren) bestimmt. Die Ausdehnung der ueberschwemmten Flaeche kann dabei neben dem Abfluss auch durch Rueckstau infolge Geschiebe- und Treibgutablagerungen beeinflusst sein. In der Kartendarstellung wird die Gefaehrdung fuer zusammenhaengende Siedlungsgebiete (Ortschaften) an den Gewaessern I. Ordnung und der Elbe dargestellt. Es kann alternativ zwischen den Jaehrlichkeiten 20, 50, 100 oder 200/300 Jahre gewaehlt werden. Eine Beschreibung der konkreten oertlichen Situation ist im Erlaeuterungsbericht fuer die jeweilige Gemeinde oder Ortschaft enthalten. Der detaillierte Erfassungsmassstab ermoeglicht die Nutzung der Karte für die Bauplanung und die operative Hochwasserabwehr.</Abstract>
+		<KeywordList>
+			<Keyword>ArcIMS</Keyword>
+			<Keyword>WMS</Keyword>
+			<Keyword>Dienst</Keyword>
+			<Keyword>Umwelt</Keyword>
+			<Keyword>Landwirtschaft</Keyword>
+			<Keyword>Geologie</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_gefahren?" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Falk Strobach</ContactPerson>
+				<ContactOrganization>Saechsisches Landesamt fuer Umwelt, Landwirtschaft und Geologie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Pillnitzer Platz 3</Address>
+				<City>Dresden</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>01326</PostCode>
+				<Country>DE</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 (351) 8928-0</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 (351) 8928-225</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>falk.strobach@smul.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_gefahren?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_gefahren?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_gefahren?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title>WMS - LfULG - Hochwassergefaehrdung - Gefahrenkarten fuer Ortslagen</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:4267</SRS>
+			<SRS>EPSG:4269</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:4314</SRS>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:32632</SRS>
+			<SRS>EPSG:32633</SRS>
+			<LatLonBoundingBox maxx="15.530915265" maxy="52.3331620512" minx="10.5246992808" miny="49.7393579052"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.530915265" maxy="52.3331620512" minx="10.5246992808" miny="49.7393579052"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4740860.67566718" maxy="5800842.36914822" minx="4399448.26706843" miny="5516656.12505015"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>8</Name>
+				<Title>Extremhochwasser</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0715299955" maxy="51.6892276564" minx="12.0501443882" miny="50.2333970126"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>8Legend</Name>
+					<Title>Extremhochwasser</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/extrem.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>7</Name>
+				<Title>Gefahr HQ200/300</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="14.293684869" maxy="51.6896909002" minx="12.8143238388" miny="50.8595158796"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>7Legend</Name>
+					<Title>Gefahr HQ100</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/stufung.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>6</Name>
+				<Title>Gefahr HQ100</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="14.2936929896" maxy="51.6896909002" minx="12.8143238388" miny="50.8595157255"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>6Legend</Name>
+					<Title>Gefahr HQ100</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/stufung.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>5</Name>
+				<Title>Gefahr HQ50</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="14.2936929896" maxy="51.6896906961" minx="12.8143521736" miny="50.8595106799"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>5Legend</Name>
+					<Title>Gefahr HQ100</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/stufung.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>4</Name>
+				<Title>Gefahr HQ20/25</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="14.2936929896" maxy="51.6896907534" minx="12.8143445944" miny="50.8595336907"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>4Legend</Name>
+					<Title>Gefahr HQ100</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/stufung.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>3</Name>
+				<Title>Verfuegbarkeit im Internet</Title>
+				<LatLonBoundingBox maxx="15.0701341725" maxy="51.7066922022" minx="12.0502523715" miny="50.2215743678"/>
+				<Style>
+					<Name>3Legend</Name>
+					<Title>Verfuegbarkeit im Internet</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/verfuegbarkeit.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>2</Name>
+				<Title>Gewaesserachse</Title>
+				<LatLonBoundingBox maxx="15.0701341725" maxy="51.7066922022" minx="12.0502523715" miny="50.2215743678"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>2Legend</Name>
+					<Title>Gewaesserachse</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/achse.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title>Kilometrierung</Title>
+				<LatLonBoundingBox maxx="15.0682909414" maxy="51.7065672753" minx="12.1740956008" miny="50.375637063"/>
+				<ScaleHint max="18.800" min="0.005"/>
+				<Style>
+					<Name>1Legend</Name>
+					<Title>Kilometrierung</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/km.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Grenze des Bearbeitungsabschnittes</Title>
+				<LatLonBoundingBox maxx="12.8099769032" maxy="51.0904244139" minx="12.4965881725" miny="50.7995862909"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>0Legend</Name>
+					<Title>Grenze des Bearbeitungsabschnittes</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_gefahren/grenze.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

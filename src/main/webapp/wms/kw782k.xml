@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><ServiceExceptionReport version="1.1.1">
+  <ServiceException code="3994">
+    java.io.IOException: 3994,WMS service name not defined, name = 'Schutzgebiete'.
+    The query string was 'REQUEST=Getcapabilities&amp;VERSION=1.1.1&amp;service=WMS&amp;WMS_Service_Name=Schutzgebiete'
+  </ServiceException>
+</ServiceExceptionReport>

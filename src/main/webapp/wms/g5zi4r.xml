@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name><![CDATA[WMS]]></Name>
+		<Title><![CDATA[guek500]]></Title>
+		<Abstract>öffentlicher WMS Dienst des Informationssystem Geologische Übersichtskarte Karte von Nordrhein-Westfalen 1:500 000.</Abstract>
+		<KeywordList>
+			<Keyword><![CDATA[Erdgeschichte]]></Keyword>
+			<Keyword><![CDATA[Geologie]]></Keyword>
+			<Keyword><![CDATA[Gestein]]></Keyword>
+			<Keyword><![CDATA[Unterricht]]></Keyword>
+			<Keyword><![CDATA[Geologie]]></Keyword>
+			<Keyword><![CDATA[Geowissenschaften]]></Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/guek500" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson/>
+				<ContactOrganization><![CDATA[Geologischer Dienst Nordrhein-Westfalen]]></ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition><![CDATA[Fachbereich 21 - Fachinformationssystem Geologie]]></ContactPosition>
+			<ContactAddress>
+				<AddressType><![CDATA[postalisch]]></AddressType>
+				<Address><![CDATA[De-Greiff-Straße 195]]></Address>
+				<City><![CDATA[Krefeld]]></City>
+				<StateOrProvince><![CDATA[Nordrhein-Westfalen]]></StateOrProvince>
+				<PostCode><![CDATA[47803]]></PostCode>
+				<Country><![CDATA[Deutschland]]></Country>
+			</ContactAddress>
+			<ContactVoiceTelephone><![CDATA[+49 (0) 2151 897-410]]></ContactVoiceTelephone>
+			<ContactFacsimileTelephone><![CDATA[+49 (0) 2151 897-505]]></ContactFacsimileTelephone>
+			<ContactElectronicMailAddress><![CDATA[heinz.elfers@gd.nrw.de]]></ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees/>
+		<AccessConstraints/>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/guek500" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/guek500" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/guek500" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/guek500" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title><![CDATA[Layers]]></Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:25831</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:3034</SRS>
+			<SRS>EPSG:3035</SRS>
+			<SRS>EPSG:3043</SRS>
+			<SRS>EPSG:3044</SRS>
+			<SRS>EPSG:3045</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:28992</SRS>
+			<LatLonBoundingBox maxx="9.719970" maxy="52.676402" minx="5.667753" miny="50.136669"/>
+			<BoundingBox SRS="EPSG:4326" maxx="9.719970" maxy="52.676402" minx="5.667753" miny="50.136669"/>
+			<BoundingBox SRS="EPSG:31466" maxx="2751870.000100" maxy="5838007.800005" minx="2477530.000100" miny="5561428.199895"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title><![CDATA[Geologische Schichten]]></Title>
+				<Abstract><![CDATA[Geologische Schichten]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.527117" maxy="52.563413" minx="5.852517" miny="50.254670"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.527117" maxy="52.563413" minx="5.852517" miny="50.254670"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2739400.000000" maxy="5825436.000000" minx="2490000.000100" miny="5574000.000000"/>
+				<Style>
+					<Name>default</Name>
+					<Title>0</Title>
+					<LegendURL height="2984" width="397">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/guek500_MapServer/wms/legende/GK500.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title><![CDATA[Tektonische Verwerfungen]]></Title>
+				<Abstract><![CDATA[Tektonische Verwerfungen]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.527117" maxy="52.563413" minx="5.854600" miny="50.254670"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.527117" maxy="52.563413" minx="5.854600" miny="50.254670"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2739400.000100" maxy="5825436.000000" minx="2490141.281800" miny="5573999.999900"/>
+				<Style>
+					<Name>default</Name>
+					<Title>1</Title>
+					<LegendURL height="61" width="255">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/guek500_MapServer/wms/legende/TV.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>
