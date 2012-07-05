@@ -579,7 +579,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 		   if (btn == 'ok'){
 			   var tmpService = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.capabilitiesUrl };
 			   // Refresh service
-			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', false, true);
+			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', true, true);
 		   }
 	   	}
 	});
