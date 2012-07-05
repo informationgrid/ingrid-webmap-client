@@ -263,7 +263,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	if(name != simple.items.get('name').emptyText && url != simple.items.get('url').emptyText){
             		var service = { title:name, originalCapUrl:url, categories:[], layers:[] };
             		// Add service
-            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugefügt!', true);
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugefügt!');
                 	win.close();
             	}
     		}
@@ -362,7 +362,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
              	fieldLabel: 'Name',
                 name: 'name',
                 id: 'name',
-                emptyText: copyService.data.name
+                emptyText: copyService.data.name + " (Kopie)"
             }
         ],
 
@@ -421,7 +421,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   layers: layers
     				};
     				// Save copy to config
-    				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!', true);
+    				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!');
                 	win.close();
             	}
     		}
@@ -457,44 +457,40 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonInde
 	return columnIndex;
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(service, scrollToItem){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(service){
 	var self = this;
 	var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 	// Set services to store
 	self.loadServices(self.serviceStore, services, self.jsonColumn);
 	// Refresh service panel
 	self.serviceGrid.getView().refresh();
-	if(scrollToItem){
-		var ds = self.serviceGrid.getView().ds;
-		var title = service.title;
-		var originalCapUrl = service.originalCapUrl;
-		
-		if(ds && title && originalCapUrl){
-			var dsData = ds.data;
-			if(dsData){
-				var dsDataItems = dsData.items;
-				if(dsDataItems){
-					var row = 0;
-					var column = 0;
-					for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-						var item = dsDataItems[i];
-						if(item.data){
-							var itemTitle = item.data.name;
-							var itemOriginalCapUrl = item.data.originalCapUrl;
-							if(itemTitle && itemOriginalCapUrl){
-								if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
-									row = i;
-									break;
-								}
+	var ds = self.serviceGrid.getView().ds;
+	var title = service.title;
+	var originalCapUrl = service.originalCapUrl;
+	
+	if(ds && title && originalCapUrl){
+		var dsData = ds.data;
+		if(dsData){
+			var dsDataItems = dsData.items;
+			if(dsDataItems){
+				var row = 0;
+				var column = 0;
+				for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+					var item = dsDataItems[i];
+					if(item.data){
+						var itemTitle = item.data.name;
+						var itemOriginalCapUrl = item.data.originalCapUrl;
+						if(itemTitle && itemOriginalCapUrl){
+							if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
+								row = i;
+								break;
 							}
 						}
 					}
-					self.serviceGrid.getSelectionModel().select(row, column);
 				}
+				self.serviceGrid.getSelectionModel().select(row, column);
 			}
 		}
-	}else{
-		self.serviceGrid.getSelectionModel().select(self.selectedModel.cell[0], 0);
 	}
 };
 
@@ -579,13 +575,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 		   if (btn == 'ok'){
 			   var tmpService = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.capabilitiesUrl };
 			   // Refresh service
-			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', true, true);
+			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', true);
 		   }
 	   	}
 	});
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToItem, doServiceDelete){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, doServiceDelete){
 	var self = this;
 	Ext.getBody().mask(loadMessage, 'x-mask-loading');
 	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
@@ -593,7 +589,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 			success: function() {
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
-						self.reloadServiceFromConfig(service, scrollToItem);
+						self.reloadServiceFromConfig(service);
 						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 						Ext.getBody().unmask();
 					},
