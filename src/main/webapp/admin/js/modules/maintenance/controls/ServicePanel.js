@@ -457,15 +457,42 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonInde
 	return columnIndex;
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(scrollToBottom){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(service, scrollToItem){
 	var self = this;
 	var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 	// Set services to store
 	self.loadServices(self.serviceStore, services, self.jsonColumn);
 	// Refresh service panel
 	self.serviceGrid.getView().refresh();
-	if(scrollToBottom){
-		self.serviceGrid.getSelectionModel().select(self.serviceStore.totalLength - 1, 0);
+	if(scrollToItem){
+		var ds = self.serviceGrid.getView().ds;
+		var title = service.title;
+		var originalCapUrl = service.originalCapUrl;
+		
+		if(ds && title && originalCapUrl){
+			var dsData = ds.data;
+			if(dsData){
+				var dsDataItems = dsData.items;
+				if(dsDataItems){
+					var row = 0;
+					var column = 0;
+					for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+						var item = dsDataItems[i];
+						if(item.data){
+							var itemTitle = item.data.name;
+							var itemOriginalCapUrl = item.data.originalCapUrl;
+							if(itemTitle && itemOriginalCapUrl){
+								if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
+									row = i;
+									break;
+								}
+							}
+						}
+					}
+					self.serviceGrid.getSelectionModel().select(row, column);
+				}
+			}
+		}
 	}else{
 		self.serviceGrid.getSelectionModel().select(self.selectedModel.cell[0], 0);
 	}
@@ -558,7 +585,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 	});
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToBottom, doServiceDelete){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, scrollToItem, doServiceDelete){
 	var self = this;
 	Ext.getBody().mask(loadMessage, 'x-mask-loading');
 	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
@@ -566,7 +593,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 			success: function() {
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
-						self.reloadServiceFromConfig(scrollToBottom);
+						self.reloadServiceFromConfig(service, scrollToItem);
 						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 						Ext.getBody().unmask();
 					},
