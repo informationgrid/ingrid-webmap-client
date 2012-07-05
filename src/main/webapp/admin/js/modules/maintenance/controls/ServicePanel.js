@@ -259,13 +259,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
         defaultType: 'textfield',
 
         items: [{
-                fieldLabel: 'URL',
+                fieldLabel: '<b>URL</b>',
                 name: 'url',
                 id: 'url',
                 emptyText: 'URL des Dienstes'
             },{
         	 	xtype: 'textfield',
-             	fieldLabel: 'Name',
+             	fieldLabel: '<i>Name<i>',
                 name: 'name',
                 id: 'name',
                 emptyText: 'Name des Dienstes (optional)'
