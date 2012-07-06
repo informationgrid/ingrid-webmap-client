@@ -67,6 +67,15 @@
 							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
 							<includes>
 								<include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
+								<include>lib/extjs.ux/gridfilters/GridFilters-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/Filter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/BooleanFilter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/StringFilter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/DateFilter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/ListFilter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/filter/NumericFilter-min.js</include>
+								<include>lib/extjs.ux/gridfilters/menu/ListMenu-min.js</include>
+								<include>lib/extjs.ux/gridfilters/menu/RangeMenu-min.js</include>
 								<include>lib/geoext.ux/Locale-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>admin/js/*-min.js</include>

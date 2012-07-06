@@ -95,9 +95,27 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initComponent = function() {
 	var self = this;
+	
+	var filters = new Ext.ux.grid.GridFilters({
+        // encode and local configuration options defined previously for easier reuse
+        encode: false, // json encode the filter query
+        local: true,   // defaults to false (remote filtering)
+        filters: [{
+            type: 'string',
+            dataIndex: 'name'
+        }, {
+            type: 'string',
+            dataIndex: 'capabilitiesUrl'
+        }, {
+            type: 'string',
+            dataIndex: 'originalCapUrl'
+        }]
+    });
+	
 	this.serviceGrid = new  Ext.grid.EditorGridPanel({
 		store: self.serviceStore,
 		columns: self.columns,
+		plugins:[filters],
 		viewConfig: {
 			forceFit: true
 		},
