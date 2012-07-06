@@ -516,29 +516,33 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 		}
 	}else{
 		if(self.serviceGrid.store.data.items){
-			var lastStoreItem = self.serviceGrid.store.data.items[self.serviceGrid.store.data.length-1];
-			title = lastStoreItem.data.name;
-			originalCapUrl = lastStoreItem.data.originalCapUrl;
-			var dsData = ds.data;
-			if(dsData){
-				var dsDataItems = dsData.items;
-				if(dsDataItems){
-					var row = 0;
-					var column = 0;
-					for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-						var item = dsDataItems[i];
-						if(item.data){
-							var itemTitle = item.data.name;
-							var itemOriginalCapUrl = item.data.originalCapUrl;
-							if(itemTitle && itemOriginalCapUrl){
-								if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
-									row = i;
-									break;
+			var lastStoreItem = self.serviceStore.data.items[self.serviceStore.totalLength - 1]
+			if(lastStoreItem){
+				if(lastStoreItem.data){
+					var capabilitiesUrl = lastStoreItem.data.capabilitiesUrl;
+					if(capabilitiesUrl){
+						var dsData = ds.data;
+						if(dsData){
+							var dsDataItems = dsData.items;
+							if(dsDataItems){
+								var row = 0;
+								var column = 0;
+								for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+									var item = dsDataItems[i];
+									if(item.data){
+										var itemCapabilitiesUrl = item.data.capabilitiesUrl;
+										if(itemCapabilitiesUrl){
+											if(itemCapabilitiesUrl == capabilitiesUrl){
+												row = i;
+												break;
+											}
+										}
+									}
 								}
+								self.serviceGrid.getSelectionModel().select(row, column);
 							}
 						}
 					}
-					self.serviceGrid.getSelectionModel().select(row, column);
 				}
 			}
 		}
