@@ -52,19 +52,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	}, {
 		header: 'URL',
 		sortable: true,
-		dataIndex: 'capabilitiesUrl', 
-		editor:{
-        	xtype: 'textfield',
-        	disabled: true
-        }
+		dataIndex: 'capabilitiesUrl'
 	}, {
 		header: 'Original URL',
 		sortable: true,
-		dataIndex: 'originalCapUrl', 
-		editor:{
-        	xtype: 'textfield',
-        	disabled: true
-        }
+		dataIndex: 'originalCapUrl' 
 	},{
     	header: 'Info',
 		sortable: false,
@@ -100,6 +92,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
         // encode and local configuration options defined previously for easier reuse
         encode: false, // json encode the filter query
         local: true,   // defaults to false (remote filtering)
+        menuFilterText: 'Filtern',
         filters: [{
             type: 'string',
             dataIndex: 'name'
@@ -112,16 +105,59 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
         }]
     });
 	
-	this.serviceGrid = new  Ext.grid.EditorGridPanel({
+	self.serviceGrid = new  Ext.grid.EditorGridPanel({
 		store: self.serviceStore,
 		columns: self.columns,
 		plugins:[filters],
+		autoDestroy:false,
 		viewConfig: {
 			forceFit: true
 		},
 		height: 360
 	});
 	
+	self.serviceGrid.on("filterupdate", function() {
+		 // Remove categories and layer panel
+		 self.remove(self.items.get('serviceDetailBorderPanel'));
+	});
+	
+	self.serviceGrid.on("sortchange", function(grid) {
+		// Remove categories and layer panel
+		if(self.selectedService){
+			if(self.selectedService.data){
+				if(self.selectedService.data.capabilitiesUrl){
+					var capabilitiesUrl = self.selectedService.data.capabilitiesUrl;
+					var ds = grid.getView().ds;
+					if(capabilitiesUrl){
+						var dsData = ds.data;
+						if(dsData){
+							var dsDataItems = dsData.items;
+							if(dsDataItems){
+								var row = 0;
+								var column = 0;
+								for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+									var item = dsDataItems[i];
+									if(item.data){
+										var itemCapabilitiesUrl = item.data.capabilitiesUrl;
+										if(itemCapabilitiesUrl){
+											if(itemCapabilitiesUrl == capabilitiesUrl){
+												row = i;
+												break;
+											}
+										}
+									}
+								}
+								grid.getSelectionModel().select(row, column);
+							}
+						}
+					}
+				}
+			}else{
+				self.remove(self.items.get('serviceDetailBorderPanel'));
+			}
+		}
+	});
+
 	self.serviceGrid.getSelectionModel().on('cellselect', function(selModel, node) {
 		if(selModel.selection){
 			self.selectedModel = selModel.selection; 
