@@ -561,6 +561,14 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	});
 	this.map.addControl(ov);
 
+	// listen to session changing events (addLayer and removeLayer are
+	// signaled by datachange of activeServicesPanel)
+	this.map.events.register('moveend', self.map, function(evt) {
+        if(this.sessionWriteEnable) {
+        	self.onStateChanged();
+        }
+	});
+	
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
 	de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),{width:450, delay:900000});

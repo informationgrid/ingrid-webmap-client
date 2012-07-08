@@ -634,7 +634,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
         }
 	});
 	this.map.events.register('changelayer', self.map, function(evt) {
-        if(this.sessionWriteEnable  && !self.activeServicesPanel.supressDataChange) {
+        if(this.sessionWriteEnable) {
             self.onStateChanged();
         }
 	});	

@@ -50,8 +50,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transpBtnActive: false,
 	metadataBtnActive: false,
 	serviceCategoryPanel:null,
-	parentCheckChangeActive:false,
-	supressDataChange: false
+	parentCheckChangeActive:false
 });
 
 /**
@@ -236,7 +235,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
-		self.supressDataChange = true;	
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
 		if(typeof cntrPanel !== 'undefined' && showService){		
@@ -405,7 +403,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 
 	}
-		self.supressDataChange = false;
 };
 
 /**
