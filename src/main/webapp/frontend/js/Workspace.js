@@ -629,12 +629,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	// listen to session changing events (addLayer and removeLayer are
 	// signaled by datachange of activeServicesPanel)
 	this.map.events.register('moveend', self.map, function(evt) {
-        if(this.sessionWriteEnable)
-        self.onStateChanged();       
+        if(this.sessionWriteEnable) {
+        	self.onStateChanged();
+        }
 	});
 	this.map.events.register('changelayer', self.map, function(evt) {
-        if(this.sessionWriteEnable  && !self.activeServicesPanel.supressDataChange)
-        self.onStateChanged();	
+        if(this.sessionWriteEnable  && !self.activeServicesPanel.supressDataChange) {
+            self.onStateChanged();
+        }
 	});	
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 
@@ -682,8 +684,17 @@ de.ingrid.mapclient.frontend.Workspace.prototype.measure = function(event) {
 
 
 de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
+	var self = this;
 	if (this.listenToStateChanges) {
-		this.save(true);
+    	// try to avoid multiple session save actions
+		// events that are fired within 100ms are canceled
+		// so only the last event of multiple fired events will be 
+		// used. this assures that all changes to the map are taken
+		// into account within the saved session.
+		if (self.stateChangeTimer) {
+    		clearTimeout(self.stateChangeTimer);
+    	}
+    	self.stateChangeTimer = setTimeout(function(){self.save(true)}, 100); 
 	}
 };
 
@@ -871,11 +882,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
 			}
 			// restore map state
 			state.restoreMapState(function() {
-				// restore active services
-				for (var i = 0, count = state.activeServices.length; i < count; i++) {
-					self.activeServicesPanel
-							.addService(state.activeServices[i],false,true);
-				}
 				// restore active services
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
 					self.activeServicesPanel

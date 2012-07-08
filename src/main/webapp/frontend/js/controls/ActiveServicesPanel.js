@@ -293,9 +293,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					return layerBelongsToService;
 				},
 				onCheckChangeCallback : function (node, checked) {
-//					if(!self.firingCheckChangeNode) {
-//						self.firingCheckChangeNode = node;
-//					}
 					this.expand(true);
 					var i = 0;
 					var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
@@ -307,20 +304,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				    		n.getUI().toggleCheck(checked);
 				    	}
 				    });
-//				    if (self.firingCheckChangeNode === node) {
-////						self.fireEvent('datachanged');
-//						self.firingCheckChangeNode = null;
-//				    }
 				}
 			})
 		});
 
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
-			// make sure we fire datachanged event only once (see below)
-//			if(!self.firingCheckChangeNode) {
-//				self.firingCheckChangeNode = node;
-//			}
 			this.expand(true);
 			var i = 0;
 			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
@@ -332,11 +321,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    		n.getUI().toggleCheck(checked);
 		    	}
 		    });
-			// make sure we fire datachanged event only once (see above)
-//		    if (self.firingCheckChangeNode === node) {
-//				self.fireEvent('datachanged');
-//				self.firingCheckChangeNode = null;
-//		    }
 		});
 		this.layerTree.root.appendChild(node);
 

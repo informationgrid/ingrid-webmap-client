@@ -71,7 +71,7 @@ public enum StoreManager {
 		File rootPath = new File(props.getProperty(configKey));
 		if (!rootPath.exists() || !rootPath.canWrite()) {
 			throw new IOException("The configured session dir "+rootPath.getAbsolutePath()+
-					"does not exist or is not writable.");
+					" does not exist or is not writable.");
 		}
 		return rootPath;
 	}

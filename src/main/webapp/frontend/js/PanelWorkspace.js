@@ -605,8 +605,17 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.measure = function(event) 
  * server. To prevent execution set listenToStateChanges to false
  */
 de.ingrid.mapclient.frontend.PanelWorkspace.prototype.onStateChanged = function() {
+	var self = this;
 	if (this.listenToStateChanges) {
-		this.save(true);
+    	// try to avoid multiple session save actions
+		// events that are fired within 100ms are canceled
+		// so only the last event of multiple fired events will be 
+		// used. this assures that all changes to the map are taken
+		// into account within the saved session.
+		if (self.stateChangeTimer) {
+    		clearTimeout(self.stateChangeTimer);
+    	}
+    	self.stateChangeTimer = setTimeout(function(){self.save(true)}, 100); 
 	}
 };
 
