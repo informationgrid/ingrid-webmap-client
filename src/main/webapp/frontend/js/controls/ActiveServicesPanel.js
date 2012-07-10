@@ -292,12 +292,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				},
 				onCheckChangeCallback : function (node, checked) {
 					this.expand(true);
-					var i = 0;
+					var checkedOnce = false;
 					var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 					node.eachChild(function(n) {
 				    	// check everything but the first layer, which is our baselayer
-				    	if(i == 0 && (wmsUrl.indexOf(n.layer.url) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
-				    		i++;
+				    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
+				    		checkedOnce = true;
+				    		// we dont check/uncheck our base layer but we have to pass the checked command to its child nodes
+				    		if(n.hasChildNodes){
+				    			n.eachChild(function(n){
+				    			n.getUI().toggleCheck(checked);
+				    			});
+				    		}
 				    	} else {
 				    		n.getUI().toggleCheck(checked);
 				    	}
@@ -309,12 +315,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//on checkchange(we check the service) we expand the nodes of the service and check all layers
 		node.on('checkchange', function(node, checked) {
 			this.expand(true);
-			var i = 0;
+			var checkedOnce = false;
 			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 			node.eachChild(function(n) {
 		    	// check everything but the first layer, which is our baselayer
-		    	if(i == 0 && (wmsUrl.indexOf(n.layer.url) != -1) && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
-		    		i++;
+		    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
+		    		checkedOnce = true;
+					// we dont check/uncheck our base layer but we have to pass the checked command to its child nodes
+		    		if(n.hasChildNodes){
+		    			n.eachChild(function(n){
+		    			n.getUI().toggleCheck(checked);
+		    			});
+		    		}
 		    	} else {
 		    		n.getUI().toggleCheck(checked);
 		    	}
