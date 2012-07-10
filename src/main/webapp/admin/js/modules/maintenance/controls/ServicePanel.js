@@ -52,11 +52,17 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	}, {
 		header: 'URL',
 		sortable: true,
-		dataIndex: 'capabilitiesUrl'
+		dataIndex: 'capabilitiesUrl', 
+		editor:{
+        	xtype: 'textfield'
+        }
 	}, {
 		header: 'Original URL',
 		sortable: true,
-		dataIndex: 'originalCapUrl' 
+		dataIndex: 'originalCapUrl', 
+		editor:{
+        	xtype: 'textfield'
+        } 
 	},{
     	header: 'Info',
 		sortable: false,
@@ -191,7 +197,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	});
 	
 	self.serviceGrid.on('afteredit', function(store) {
-		self.updateService(store.value, self.selectedService.data.capabilitiesUrl, null, null);
+		if(store.field === "name"){
+			self.updateService(store.value, self.selectedService.data.capabilitiesUrl, null, null);			
+		}else{
+			store.record.reject();
+		}
 	});
 	
 	self.copyServiceBtn = new Ext.Button({
