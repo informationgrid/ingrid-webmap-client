@@ -40,16 +40,20 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					break;
 				}
 			}
-			if(layer.index){
-				layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
-				self.layerRecord[i].checked = layerIsFound;
-			}
+			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
+			self.layerRecord[i].checked = layerIsFound;
 		}else{
-			if(layer.index){
-				layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
-			}
+			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
 		}
 		
+	}
+	
+	function renderRow(value, metadata, record, rowIndex, colIndex, store) {
+		var formatted = value;
+		if (record.get('deactivated')) {
+			formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
+		}
+	   return formatted;
 	}
 	
 	var cm = new Ext.grid.ColumnModel({
@@ -65,19 +69,28 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	              		editor:{
 	              			xtype: 'textfield',
 	              			allowBlank: false
-	              		}
+	              		},
+	              		renderer: renderRow
+	                	
 	              	}
 		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Ausgeschlossen", 
-			              dataIndex: 'deactivated'
+		            	  header: "Verwerfen", 
+			              dataIndex: 'deactivated',
+			              width: 25,
+			              align: "center"
+			              		
 		            })
 		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Aktiv (Default)", 
-			              dataIndex: 'checked'
+		            	  header: "Aktiv", 
+			              dataIndex: 'checked',
+			              width: 25,
+			              align: "center" 
 		            })
 		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Info", 
-		            	  dataIndex: 'featureInfo' 
+		            	  header: "Feature Info", 
+		            	  dataIndex: 'featureInfo',
+			              width: 25,
+			              align: "center" 
 		            })
 	              ]
 	    	});
@@ -94,36 +107,43 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     	},
     	cm: cm,
         height:350,
-        border: false
+        border: false,
+        listeners: {
+			'beforeedit': function(e) {
+				if(e.record.get('deactivated')) {
+					e.cancel = true;
+				}
+			}
+		}
     });
 
 	self.store.loadData(layers);
-	/*
-	grid.on('render',function(cell) {
-		console.debug(cell);
-	});
-	*/
-	self.store.on('update',function(cell) {
-		var modified  = cell.modified;
+	
+	self.store.on('update',function(cell, record, operation) {
+		var modified  = record.modified;
 		if(modified){
-			var modifiedData = modified[0].data;
+			var modifiedData = record.data;
 			if(modifiedData){
-				if(modified[0].modified.deactivated != undefined){
-					Ext.Msg.show({
-						   title:'Layer wird gel&ouml;scht',
-						   msg: 'Soll das L&ouml;schen des Layers wirklich durchgef&uuml;hrt werden? Layer kann nur durch "Neu einlesen" des Dienstes wiederhergestellt werden!',
-						   buttons: Ext.Msg.OKCANCEL,
-						   icon: Ext.MessageBox.QUESTION,
-						   fn: function(btn){
-							   if (btn == 'ok'){
-								   self.save(modifiedData);
-							   }else{
-								   self.mainPanel.reloadServiceFromConfig(false);
-							   }
-						   	}
-						});
+				if(modifiedData.index !== ""){
+					if(record.modified.deactivated != undefined){
+						Ext.Msg.show({
+							   title:'Layer wird gel&ouml;scht',
+							   msg: 'Soll das L&ouml;schen des Layers wirklich durchgef&uuml;hrt werden? Layer kann nur durch "Neu einlesen" des Dienstes wiederhergestellt werden!',
+							   buttons: Ext.Msg.OKCANCEL,
+							   icon: Ext.MessageBox.QUESTION,
+							   fn: function(btn){
+								   if (btn == 'ok'){
+									   self.save(modifiedData);
+								   }else{
+									   record.reject();
+								   }
+							   	}
+							});
+					}else{
+						self.save(modifiedData);
+					}
 				}else{
-					self.save(modifiedData);
+					record.reject();
 				}
 			}
 		}

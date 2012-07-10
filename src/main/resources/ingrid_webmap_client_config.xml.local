@@ -180,34 +180,6 @@
           <name>Wasser</name>
           <idx>24</idx>
         </mapServiceCategory>
-        <mapServiceCategory>
-          <name>dfsfdfs</name>
-          <idx>25</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>sdfdsfsdf</name>
-          <idx>26</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>sfdsfsdfdsf</name>
-          <idx>27</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>sdddd</name>
-          <idx>28</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>fffff</name>
-          <idx>29</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>222222</name>
-          <idx>30</idx>
-        </mapServiceCategory>
-        <mapServiceCategory>
-          <name>3333333</name>
-          <idx>31</idx>
-        </mapServiceCategory>
       </mapServiceCategories>
       <idx>14</idx>
     </mapServiceCategory>
