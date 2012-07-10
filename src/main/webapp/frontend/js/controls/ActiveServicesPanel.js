@@ -98,6 +98,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
 					}
 					self.removeService(self.activeNode.attributes.service);
+					self.removeBtn.disable();
+					self.metaDataBtn.disable();
 				}else if (self.activeNode.layer != undefined){
 					// Remove "Zeige Punktkoordinaten" layers
 					if (self.activeNode.layer.id != undefined){
