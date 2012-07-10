@@ -107,7 +107,7 @@ Local = {
         tLayerTransparenz : { en: 'Layer transparency', de: 'Layer Transparenz' },
         tLegende : { en: 'Legend', de: 'Legende' },
         tloeschen: { en: 'delete', de: 'l&ouml;schen' },
-        tMaszstab : { en: 'Scale', de: 'Ma&szlig;tab' },
+        tMaszstab : { en: 'Scale', de: 'Ma&szlig;stab' },
         tMessen : { en: 'Measure Tool', de: 'Messen' },
         tMetadaten : { en: 'Metadata', de: 'Metadaten' },
         tMsgServiceAdded: { en: '<p><strong>Service added successfully</strong></p> Please choose a layer for display.', de: '<p><strong>Dienst erfolgreich hinzugef&uuml;gt</strong></p> Sie k&ouml;nnen nun beim neu hinzugef&uuml;gten Dienst aus der Liste verf&uuml;gbarer Layer ausw&auml;hlen.' },
