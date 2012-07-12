@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 6.0.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Geologische Übersichtskarte 1:300.000 Rheinland-Pfalz</Title>
+  <Abstract>WMS-Dienst LGB: Geologische Übersichtskarte von Rheinland Pfalz 1:300.000 (GÜK 300) Die GÜK 300 wurde auf der Basis veröffentlichter geologischer Karten unterschiedlicher Maßstäbe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Übersichtskarte von Rheinland-Pfalz im Maßstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt für Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Länder herausgegebenen geologischen Übersichtskarten im Maßstab 1 : 200 000 (CC 5502 Köln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbrücken und CC 7110 Mannheim), die vom Landesamt für Geologie und Bergbau Rheinland-Pfalz veröffentlichten geologischen Karten in den Maßstäben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Maßstabsbedingt wurden stratigraphische Formationen zu größeren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Störungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Störungen reduziert.</Abstract>
+        <KeywordList>
+          <Keyword>geodaten</Keyword>
+          <Keyword>geology</Keyword>
+          <Keyword>stratigraphy</Keyword>
+          <Keyword>Geologie</Keyword>
+          <Keyword>Stratigraphie</Keyword>
+          <Keyword>Gestein</Keyword>
+          <Keyword>Übersichtskarte</Keyword>
+          <Keyword>Vulkanismus</Keyword>
+          <Keyword>Tektonik</Keyword>
+          <Keyword>Formation</Keyword>
+          <Keyword>Störung</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Dr. Jost Haneke</ContactPerson>
+      <ContactOrganization>Landesamt für Geologie und Bergbau, Rheinland-Pfalz</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>Abteilung Geologie/Rohstoffe</ContactPosition>
+    <ContactAddress>
+        <AddressType>postalisch</AddressType>
+        <Address>Emy-Roeder-Str. 5</Address>
+        <City>Mainz</City>
+        <StateOrProvince>DE</StateOrProvince>
+        <PostCode>55129</PostCode>
+        <Country>Deutschland</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>06131/9254-0</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>06131/9254-123</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>webmaster@lgb-rlp.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/tiff</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <Format>text/plain</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=8bit</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>guek300_uebersichtskarte</Name>
+    <Title>LGB: Geologische Übersichtskarte 1:300.000</Title>
+    <Abstract>WMS-Dienst LGB: Geologische Übersichtskarte von Rheinland Pfalz 1:300.000 (GÜK 300) Die GÜK 300 wurde auf der Basis veröffentlichter geologischer Karten unterschiedlicher Maßstäbe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Übersichtskarte von Rheinland-Pfalz im Maßstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt für Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Länder herausgegebenen geologischen Übersichtskarten im Maßstab 1 : 200 000 (CC 5502 Köln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbrücken und CC 7110 Mannheim), die vom Landesamt für Geologie und Bergbau Rheinland-Pfalz veröffentlichten geologischen Karten in den Maßstäben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Maßstabsbedingt wurden stratigraphische Formationen zu größeren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Störungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Störungen reduziert.</Abstract>
+    <KeywordList>
+     <Keyword>geodaten</Keyword>
+     <Keyword>geology</Keyword>
+     <Keyword>stratigraphy</Keyword>
+     <Keyword>Geologie</Keyword>
+     <Keyword>Stratigraphie</Keyword>
+     <Keyword>Gestein</Keyword>
+     <Keyword>Übersichtskarte</Keyword>
+     <Keyword>Vulkanismus</Keyword>
+     <Keyword>Tektonik</Keyword>
+     <Keyword>Formation</Keyword>
+     <Keyword>Störung</Keyword>
+    </KeywordList>
+    <SRS>epsg:31467</SRS>
+    <SRS>epsg:31466</SRS>
+    <SRS>epsg:25832</SRS>
+    <SRS>epsg:54004</SRS>
+    <SRS>epsg:4326</SRS>
+    <SRS>epsg:4258</SRS>
+    <LatLonBoundingBox maxx="8.63243" maxy="51.0128" minx="6.01951" miny="48.892"/>
+    <BoundingBox SRS="EPSG:31466" maxx="2.68489e+06" maxy="5.65306e+06" minx="2.50147e+06" miny="5.42024e+06"/>
+    <Attribution>
+        <Title>Landesamt für Geologie und Bergbau Rheinland-Pfalz</Title>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.lgb-rlp.de" xlink:type="simple"/>
+        <LogoURL height="78" width="157">
+             <Format>image/gif</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.lgb-rlp.de/fileadmin/cd2009/images/layout/rlp_logo_LGB_klein.gif" xlink:type="simple"/>
+          </LogoURL>
+    </Attribution>
+    <ScaleHint max="997.805696859274" min="49.8403945581207"/>
+    <Layer cascaded="0" noSubsets="0" opaque="1" queryable="1">
+        <Name>geologische_uebersichtskarte300</Name>
+        <Title>Geologische Übersichtskarte von Rheinland-Pfalz 1:300000</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="8.84845" maxy="51.0301" minx="5.99937" miny="48.7055"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.48943e+06" maxy="5.65928e+06" minx="3.27938e+06" miny="5.39647e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="1977" width="2762">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=geologische_uebersichtskarte300&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="997.805696859274" min="49.8403945581207"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Einschreibung</Name>
+        <Title>Textlabel der GÜK300</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="8.84845" maxy="51.0301" minx="5.99937" miny="48.7055"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.48943e+06" maxy="5.65928e+06" minx="3.27938e+06" miny="5.39647e+06"/>
+        <ScaleHint max="74.8354272644456" min="49.8403945581207"/>
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>logo</Name>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+        <Title>logo</Title>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

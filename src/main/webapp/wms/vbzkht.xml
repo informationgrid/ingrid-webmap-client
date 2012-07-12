@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SWF OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=RGBA_PNG INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>PortalU-WMS</Title>
+  <Abstract>WMS des Umweltportales PortalU</Abstract>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/>
+  <ContactInformation>
+  </ContactInformation>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>Deutschland</Name>
+    <Title>PortalU-WMS</Title>
+    <Abstract>WMS des Umweltportales PortalU</Abstract>
+    <SRS>epsg:4326</SRS>
+    <SRS>epsg:31467</SRS>
+    <SRS>epsg:25832</SRS>
+    <SRS>epsg:25833</SRS>
+    <SRS>epsg:31466</SRS>
+    <SRS>epsg:31468</SRS>
+    <SRS>epsg:31469</SRS>
+    <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+    <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+    <ScaleHint max="49.8902848429637" min="4.98902848429637e-05"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Hauptstaedte_EU</Name>
+        <Title>Hauptstädte (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Hauptstaedte_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Grossstaedte_EU_gt500T</Name>
+        <Title>Grossstädte (EU), &gt; 500T Einw.</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="243">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Grossstaedte_EU_gt500T&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Grossstaedte_EU_lt500T</Name>
+        <Title>Grossstädte (EU), &lt; 500T Einw.</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="243">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Grossstaedte_EU_lt500T&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Mittelstaedte_EU</Name>
+        <Title>Mittelstädte (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="145">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Mittelstaedte_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Kleinstaedte_EU</Name>
+        <Title>Kleinstädte (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="138">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Kleinstaedte_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Landstaedte_EU</Name>
+        <Title>Landstädte (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="131">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Landstaedte_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Landgemeinden_EU</Name>
+        <Title>Landgemeinden (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="145">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Landgemeinden_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Bahnhoefe_EU</Name>
+        <Title>Bahnhöfe (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Bahnhoefe_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Eisenbahnlinien_EU</Name>
+        <Title>Eisenbahnlinien (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="159">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Eisenbahnlinien_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Fernstrassen_EU</Name>
+        <Title>Fernstrassen (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="138">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fernstrassen_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Hauptstrassen_EU</Name>
+        <Title>Hauptstrassen (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="145">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Hauptstrassen_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Strassen_EU</Name>
+        <Title>Strassen (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Gitter10Grad</Name>
+        <Title>10° Gitternetz</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Gitter10Grad&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Gitter20Grad</Name>
+        <Title>20° Gitternetz</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Gitter20Grad&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Gitter30Grad</Name>
+        <Title>30° Gitternetz</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Gitter30Grad&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Gewaesser_EU</Name>
+        <Title>Gewässer (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Gewaesser_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Gemeinden</Name>
+        <Title>Gemeinden (DE)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="96">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Gemeinden&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Landkreise</Name>
+        <Title>Landkreise (DE)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="103">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Landkreise&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Regierungsbezirke</Name>
+        <Title>Regierungsbezirke (DE)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="16" maxy="55.6" minx="4.9" miny="46.9"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="152">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Regierungsbezirke&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Laender</Name>
+        <Title>Länder (DE)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.0419" maxy="55.0573" minx="5.8667" miny="47.2701"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.0419" maxy="55.0573" minx="5.8667" miny="47.2701"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Laender&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Laender_EU</Name>
+        <Title>Länder (EU)</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="25" width="103">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/portalu?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Laender_EU&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Laender_Welt</Name>
+        <Title>Länder (global)</Title>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Landmassen_Welt</Name>
+        <Title>Landoberflächen (global)</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Hintergrund_Welt</Name>
+        <Title>Hintergrund</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <LatLonBoundingBox maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.2" maxy="55.1" minx="5.7" miny="47.2"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

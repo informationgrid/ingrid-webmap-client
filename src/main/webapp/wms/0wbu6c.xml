@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>WMS</Name>
+		<Title>Topographie</Title>
+		<Abstract>Digitale Topographische Karten</Abstract>
+		<KeywordList><Keyword/></KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson/>
+				<ContactOrganization>Geodatenzentrum (GDZ) des Bundesamtes für Kartographie und Geodäsie (BKG)</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType/>
+				<Address>Karl-Rothe-Str. 10 - 14</Address>
+				<City>Leipzig</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>04105</PostCode>
+				<Country>Deutschland</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 341 5634 369</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 341 5634 415</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>geodatenzentrum@bkg.bund.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees/>
+		<AccessConstraints/>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title>DTK_BKG</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<LatLonBoundingBox maxx="16.6082809653705" maxy="55.4062721814881" minx="4.99473984538275" miny="46.4384278143611"/>
+			<BoundingBox SRS="EPSG:4326" maxx="16.6082809653705" maxy="55.4062721814881" minx="4.99473984538275" miny="46.4384278143611"/>
+			<BoundingBox SRS="EPSG:25832" maxx="984150" maxy="6140002.5" minx="246037.5" miny="5162097.6"/>
+			<BoundingBox SRS="EPSG:25833" maxx="602442.883626026" maxy="6178380.3273917" minx="-213637.452227182" miny="5142806.35218524"/>
+			<BoundingBox SRS="EPSG:31466" maxx="3214688.15639252" maxy="6166868.9800732" minx="2436224.35731785" miny="5158348.68895495"/>
+			<BoundingBox SRS="EPSG:31467" maxx="3984284.99773998" maxy="6141822.8455656" minx="3245966.69043419" miny="5163638.01374695"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4793518.95979362" maxy="6156888.81631542" minx="4016025.21502418" miny="5149601.14096918"/>
+			<BoundingBox SRS="EPSG:31469" maxx="5602471.29550261" maxy="6180211.2658803" minx="4786163.58410278" miny="5144341.38749265"/>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>0</Name>
+				<Title>Dtk1000</Title>
+				<Abstract>Dtk1000</Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:31468</SRS>
+				<SRS>EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="16.4491581869157" maxy="55.3163908598552" minx="5.14444145560814" miny="46.5156214213525"/>
+				<BoundingBox SRS="EPSG:4326" maxx="16.4491581869157" maxy="55.3163908598552" minx="5.14444145560814" miny="46.5156214213525"/>
+				<BoundingBox SRS="EPSG:25832" maxx="975000" maxy="6130000" minx="255000" miny="5170000"/>
+				<BoundingBox SRS="EPSG:25833" maxx="592493.389763846" maxy="6167596.69141942" minx="-204045.162665921" miny="5151357.21824795"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3205207.84856511" maxy="6156448.8609282" minx="2445605.10465338" miny="5166582.557449"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3975132.4401351" maxy="6131817.50637352" minx="3254931.69250329" miny="5171542.69927453"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4783960.85861597" maxy="6146489.16222533" minx="4025304.41924646" miny="5157831.69350923"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5592519.04344439" maxy="6169424.57795469" minx="4795758.55681479" miny="5152894.72009733"/>
+				<ScaleHint max="Infinity" min="197.989899"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>1</Name>
+				<Title>Dtk500</Title>
+				<Abstract>Dtk500</Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:31468</SRS>
+				<SRS>EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="16.5874708728432" maxy="55.3845239444241" minx="5.00762638251904" miny="46.4391972310788"/>
+				<BoundingBox SRS="EPSG:4326" maxx="16.5874708728432" maxy="55.3845239444241" minx="5.00762638251904" miny="46.4391972310788"/>
+				<BoundingBox SRS="EPSG:25832" maxx="983077.275" maxy="6137582.22" minx="246717.9" miny="5162097.845"/>
+				<BoundingBox SRS="EPSG:25833" maxx="601169.371208092" maxy="6175900.07811116" minx="-212955.315386012" miny="5142887.85160346"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3213612.27737161" maxy="6164397.15119735" minx="2437008.02723943" miny="5158374.79930895"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3983211.97358121" maxy="6139401.87860848" minx="3246647.28015074" miny="5163638.25964066"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4792344.67067321" maxy="6154436.73986652" minx="4016706.73552168" miny="5149642.14531931"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5601197.43022782" maxy="6177730.31339327" minx="4786845.91113197" miny="5144422.91045737"/>
+				<ScaleHint max="197.989899" min="59.396970"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>2</Name>
+				<Title>Dtk200</Title>
+				<Abstract>Dtk200</Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:31468</SRS>
+				<SRS>EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="16.603620422972" maxy="55.381707148976" minx="4.9972142961804" miny="46.4396233353684"/>
+				<BoundingBox SRS="EPSG:4326" maxx="16.603620422972" maxy="55.381707148976" minx="4.9972142961804" miny="46.4396233353684"/>
+				<BoundingBox SRS="EPSG:25832" maxx="984150" maxy="6137268.75" minx="246037.5" miny="5162231.25"/>
+				<BoundingBox SRS="EPSG:25833" maxx="602208.298063171" maxy="6175645.55409018" minx="-213627.179722551" miny="5142939.23370409"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3214683.02197666" maxy="6164129.64094351" minx="2436342.06899899" miny="5158482.17583475"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3984284.99763851" maxy="6139088.31963195" minx="3245966.69048772" miny="5163771.70228587"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4793401.2557176" maxy="6154152.3962231" minx="4016030.32519327" miny="5149734.45397667"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5602236.64529037" maxy="6177475.71649696" minx="4786173.85962086" miny="5144474.30734018"/>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

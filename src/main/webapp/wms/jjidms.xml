@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>Gewässernetz Sachsen</Title>
+		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8561.htm - Gewaessernetz Sachsen</Abstract>
+		<KeywordList>
+			<Keyword>ArcIMS</Keyword>
+			<Keyword>WMS</Keyword>
+			<Keyword>Dienst</Keyword>
+			<Keyword>Umwelt</Keyword>
+			<Keyword>Landwirtschaft</Keyword>
+			<Keyword>Geologie</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_gewaessernetz?" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Falk Strobach</ContactPerson>
+				<ContactOrganization>Saechsisches Landesamt fuer Umwelt, Landwirtschaft und Geologie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Pillnitzer Platz 3</Address>
+				<City>Dresden</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>01326</PostCode>
+				<Country>DE</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 (351) 8928-0</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 (351) 8928-225</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>falk.strobach@smul.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_gewaessernetz?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_gewaessernetz?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_gewaessernetz?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title>WMS - LfULG - Gewaessernetz Sachsen</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:4267</SRS>
+			<SRS>EPSG:4269</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:4314</SRS>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:32632</SRS>
+			<SRS>EPSG:32633</SRS>
+			<LatLonBoundingBox maxx="15.8563128548" maxy="52.1117920554" minx="11.2807408634" miny="49.7082051979"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.8563128548" maxy="52.1117920554" minx="11.2807408634" miny="49.7082051979"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4764462.70167327" maxy="5775432.23442011" minx="4450732.1927362" miny="5514287.96213156"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>6</Name>
+				<Title>Hauptflusseinzugsgebiete</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0689366644" maxy="51.6891588863" minx="11.86972098" miny="50.1349716695"/>
+				<Style>
+					<Name>6Legend</Name>
+					<Title>Hauptflusseinzugsgebiete</Title>
+					<LegendURL height="295" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/hauptflusseinzugsgebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>5</Name>
+				<Title>Einzugsgebiete</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.3906230206" maxy="52.1029736483" minx="11.8409619933" miny="50.0960834921"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>5Legend</Name>
+					<Title>Einzugsgebiete</Title>
+					<LegendURL height="25" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/einzugsgebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>4</Name>
+				<Title>weitere Fliessgewaesser</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0687744419" maxy="51.6870951241" minx="11.8699588732" miny="50.1352819296"/>
+				<ScaleHint max="75.000" min="0.005"/>
+				<Style>
+					<Name>4Legend</Name>
+					<Title>weitere Fliessgewaesser</Title>
+					<LegendURL height="25" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/weitere_fliessgewaesser.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>3</Name>
+				<Title>Hauptfliessgewaesser</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0687744419" maxy="51.6870951241" minx="11.8699588732" miny="50.1352819296"/>
+				<Style>
+					<Name>3Legend</Name>
+					<Title>Hauptfliessgewaesser</Title>
+					<LegendURL height="99" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/hauptfliessgewaesser.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>2</Name>
+				<Title>Bundeswasserstrasse Elbe</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0687744419" maxy="51.6870951241" minx="11.8699588732" miny="50.1352819296"/>
+				<Style>
+					<Name>2Legend</Name>
+					<Title>Bundeswasserstrasse Elbe</Title>
+					<LegendURL height="25" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/elbe.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title>Standgewaesser &gt; 30 ha</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0357973524" maxy="51.6725608095" minx="11.866241239" miny="50.0103483966"/>
+				<Style>
+					<Name>1Legend</Name>
+					<Title>Standgewaesser &gt; 30 ha</Title>
+					<LegendURL height="25" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/standgewaesser.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Talsperren</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0357973524" maxy="51.6725608095" minx="11.866241239" miny="50.0103483966"/>
+				<Style>
+					<Name>0Legend</Name>
+					<Title>Talsperren</Title>
+					<LegendURL height="25" width="240">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/gewaessernetz/talsperren.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities updateSequence="1" version="1.1.0">
+	<Service>
+		<Name>OCG:WMS</Name>
+		<Title>Basiskarte Sachsen</Title>
+		<Abstract>SICAD Internet Suite V6.0A05@http://www.landesvermessung.sachsen.de/sims/sicad-</Abstract>
+		<KeywordList>
+			<Keyword>none</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.landesvermessung.sachsen.de/sims/sicad" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Herr Berg</ContactPerson>
+				<ContactOrganization>Landesvermessungsamt Sachsen</ContactOrganization>    
+			</ContactPersonPrimary>    
+			<ContactPosition/>    
+			<ContactAddress>      
+		         	<AddressType/>      
+		         		<Address>Olbrichtplatz 3</Address>      
+		         		<City>Dresden</City>      
+		         		<StateOrProvince>Sachsen</StateOrProvince>      
+		         		<PostCode>01099</PostCode>      
+		         		<Country>Deutschland</Country>    
+		         </ContactAddress>   
+		         <ContactVoiceTelephone>+49 (0)351 8283-0</ContactVoiceTelephone>
+		         <ContactFacsimileTelephone>+49 (0)351 8283-6310</ContactFacsimileTelephone>
+		         <ContactElectronicMailAddress>info@lvsn.smi.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>		
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>      
+			<Format>
+				application/vnd.ogc.wms_xml
+			</Format>
+			<DCPType>
+				<HTTP>
+					<Get>            
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.landesvermessung.sachsen.de/sims/sicad/GetCapabilities.pl?datasource=freetk:de:" xlink:type="simple"/>
+					</Get>
+				</HTTP>
+			</DCPType>
+			</GetCapabilities>
+			<GetMap>      
+				<Format>image/gif</Format>
+<Format>image/jpeg</Format>
+<Format>image/png</Format>
+<Format>image/wbmp</Format>
+
+				<DCPType>
+					<HTTP>         
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.landesvermessung.sachsen.de/sims/sicad/ShowMap.pl?datasource=freetk:de:" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>      
+				<Format>text/html</Format> 
+				<DCPType>
+					<HTTP>         
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.landesvermessung.sachsen.de/sims/sicad/ShowOnlineAlpha.pl?datasource=freetk:de:" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			
+	</Request>
+		 <Exception>    
+		 	<Format>application/vnd.ogc.se_xml</Format>
+		 </Exception>
+	<VendorSpecificCapabilities>
+		<DataService available="0"/>
+	</VendorSpecificCapabilities>
+	<Layer noSubsets="0" opaque="0" queryable="0">
+	<Title>Topographische Karten</Title>
+	<Abstract>Topographische Karten</Abstract>
+	<SRS> EPSG:31468</SRS>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Name>UEB</Name>
+		<Title>Uebersicht</Title>
+		<Abstract>FREETK:MS:FREETK:RASTER UEB</Abstract>
+		<SRS> EPSG:31468</SRS>
+		<LatLonBoundingBox maxx="180" maxy="90" minx="-180" miny="-90"/>
+		<BoundingBox SRS="EPSG:31468" maxx="4712373" maxy="5728178" minx="4491000" miny="5559498"/>
+			<Style>
+			<Name>default</Name>
+				<Title>Uebersicht, default style</Title>
+			<Abstract>Uebersicht, default style</Abstract>
+			</Style>
+			<ScaleHint max="1000000000  " min="58.5130720010512"/>
+			</Layer>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Name>tk100</Name>
+		<Title>TK 100</Title>
+		<Abstract>FREETK:MS:FREETK:</Abstract>
+		<SRS> EPSG:31468</SRS>
+		<LatLonBoundingBox maxx="180" maxy="90" minx="-180" miny="-90"/>
+		<BoundingBox SRS="EPSG:31468" maxx="4712373" maxy="5728178" minx="4491000" miny="5559498"/>
+			<Style>
+			<Name>default</Name>
+				<Title>TK 100, default style</Title>
+			<Abstract>TK 100, default style</Abstract>
+			</Style>
+			<ScaleHint max="58.5129447218306  " min="11.7026030865017"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk100w</Name>
+				<Title>TK 100 - Gewaesser</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK100GEW</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 100 - Gewaesser, default style</Title>
+				<Abstract>TK 100 - Gewaesser, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk100i</Name>
+				<Title>TK 100 - Hoehenlinien</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK100ISO</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 100 - Hoehenlinien, default style</Title>
+				<Abstract>TK 100 - Hoehenlinien, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk100v</Name>
+				<Title>TK 100 - Vegetation</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK100VEG</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 100 - Vegetation, default style</Title>
+				<Abstract>TK 100 - Vegetation, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk100g</Name>
+				<Title>TK 100 - Grundriss</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK100GRU</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 100 - Grundriss, default style</Title>
+				<Abstract>TK 100 - Grundriss, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk100s</Name>
+				<Title>TK 100 - Schriften</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK100SCHR</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 100 - Schriften, default style</Title>
+				<Abstract>TK 100 - Schriften, default style</Abstract>
+				</Style>
+				</Layer>
+			</Layer>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Name>tk50</Name>
+		<Title>TK 50</Title>
+		<Abstract>FREETK:MS:FREETK:</Abstract>
+		<SRS> EPSG:31468</SRS>
+		<LatLonBoundingBox maxx="180" maxy="90" minx="-180" miny="-90"/>
+		<BoundingBox SRS="EPSG:31468" maxx="4712373" maxy="5728178" minx="4491000" miny="5559498"/>
+			<Style>
+			<Name>default</Name>
+				<Title>TK 50, default style</Title>
+			<Abstract>TK 50, default style</Abstract>
+			</Style>
+			<ScaleHint max="11.7024758072811  " min="4.68090547009871"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk50w</Name>
+				<Title>TK 50 - Gewaesser</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK50GEW</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 50 - Gewaesser, default style</Title>
+				<Abstract>TK 50 - Gewaesser, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk50i</Name>
+				<Title>TK 50 - Hoehenlinien</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK50ISO</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 50 - Hoehenlinien, default style</Title>
+				<Abstract>TK 50 - Hoehenlinien, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk50v</Name>
+				<Title>TK 50 - Vegetation</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK50VEG</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 50 - Vegetation, default style</Title>
+				<Abstract>TK 50 - Vegetation, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk50g</Name>
+				<Title>TK 50 - Grundriss</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK50GRU</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 50 - Grundriss, default style</Title>
+				<Abstract>TK 50 - Grundriss, default style</Abstract>
+				</Style>
+				</Layer>
+			</Layer>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Name>tk25</Name>
+		<Title>TK 25</Title>
+		<Abstract>FREETK:MS:FREETK:</Abstract>
+		<SRS> EPSG:31468</SRS>
+		<LatLonBoundingBox maxx="180" maxy="90" minx="-180" miny="-90"/>
+		<BoundingBox SRS="EPSG:31468" maxx="4712373" maxy="5728178" minx="4491000" miny="5559498"/>
+			<Style>
+			<Name>default</Name>
+				<Title>TK 25, default style</Title>
+			<Abstract>TK 25, default style</Abstract>
+			</Style>
+			<ScaleHint max="4.68076404874247  " min="2.34050930359185"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk25w</Name>
+				<Title>TK 25 - Gewaesser</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK25GEW</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 25 - Gewaesser, default style</Title>
+				<Abstract>TK 25 - Gewaesser, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk25i</Name>
+				<Title>TK 25 - Hoehenlinien</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK25ISO</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 25 - Hoehenlinien, default style</Title>
+				<Abstract>TK 25 - Hoehenlinien, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk25v</Name>
+				<Title>TK 25 - Vegetation</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK25VEG</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 25 - Vegetation, default style</Title>
+				<Abstract>TK 25 - Vegetation, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk25g</Name>
+				<Title>TK 25 - Grundriss</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK25GRU</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 25 - Grundriss, default style</Title>
+				<Abstract>TK 25 - Grundriss, default style</Abstract>
+				</Style>
+				</Layer>
+			</Layer>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Name>tk10</Name>
+		<Title>TK 10</Title>
+		<Abstract>FREETK:MS:FREETK:</Abstract>
+		<SRS> EPSG:31468</SRS>
+		<LatLonBoundingBox maxx="180" maxy="90" minx="-180" miny="-90"/>
+		<BoundingBox SRS="EPSG:31468" maxx="4712373" maxy="5728178" minx="4491000" miny="5559498"/>
+			<Style>
+			<Name>default</Name>
+				<Title>TK 10, default style</Title>
+			<Abstract>TK 10, default style</Abstract>
+			</Style>
+			<ScaleHint max="2.34038202437124  " min="0.0468104689145494"/>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk10w</Name>
+				<Title>TK 10 - Gewaesser</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK10GEW</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 10 - Gewaesser, default style</Title>
+				<Abstract>TK 10 - Gewaesser, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk10i</Name>
+				<Title>TK 10 - Hoehenlinien</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK10ISO</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 10 - Hoehenlinien, default style</Title>
+				<Abstract>TK 10 - Hoehenlinien, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk10v</Name>
+				<Title>TK 10 - Vegetation</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK10VEG</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 10 - Vegetation, default style</Title>
+				<Abstract>TK 10 - Vegetation, default style</Abstract>
+				</Style>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Name>tk10g</Name>
+				<Title>TK 10 - Grundriss</Title>
+				<Abstract>FREETK:MS:FREETK:RASTER TK10GRU</Abstract>
+				<Style>
+				<Name>default</Name>
+				<Title>TK 10 - Grundriss, default style</Title>
+				<Abstract>TK 10 - Grundriss, default style</Abstract>
+				</Style>
+				</Layer>
+			</Layer>
+		</Layer></Capability>
+</WMT_MS_Capabilities>

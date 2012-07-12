@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</Title>
+  <Abstract>Im Rahmen der Nutzung der Geothermie (Erdwärme) ist das LGRB als Genehmigungs- und Beratungsbehörde tätig und liefert wichtige, geowissenschaftliche Grundlageninformationen. Im Thema Geothermie werden eine Übersicht über die aktuell gemeldeten Erdwärmesonden und Wärmepumpen gegeben, die derzeitigen Geothermiekonzessionen gezeigt sowie Übersichtsdarstellungen der Temparaturverteilung in unterschiedlichen Tiefen gegeben.</Abstract>
+        <KeywordList>
+          <Keyword>Erdwärme</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Guenter Sokol</ContactPerson>
+      <ContactOrganization>Regierungspraesidium Freiburg - Abt. 9 LGRB</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>none</ContactPosition>
+    <ContactAddress>
+        <AddressType>POSTAL</AddressType>
+        <Address>Regierungspraesidium Freiburg - Abt. 9 LGRB Albertstrasse 5 79104 Freiburg</Address>
+        <City>Freiburg</City>
+        <StateOrProvince>BW</StateOrProvince>
+        <PostCode>79104</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49-761-208-3000</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>abteilung9@rpf.bwl.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>Die Temperaturkarten wurden nach bestem Wissen sorgfältig als Übersichtskarten für Baden-Württemberg zusammengestellt und geprüft. Es wird jedoch keine Gewähr - weder ausdrücklich noch stillschweigend - für die Vollständigkeit, Richtigkeit, Aktualität oder Qualität und jederzeitige Verfügbarkeit der bereit gestellten Informationen übernommen. In keinem Fall wird für Schäden, die sich aus der Verwendung der abgerufenen Informationen ergeben, eine Haftung übernommen.</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lgrb_uek350_geothermie</Name>
+    <Title>LGRB-BW GEOTH: Geothermische Übersichtskarten 1 : 1 000 000</Title>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <LatLonBoundingBox maxx="10.4265" maxy="49.7756" minx="7.46042" miny="47.5324"/>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z300</Name>
+      <Title>GEOTH: Untergrundtemp. 300 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z300f</Name>
+        <Title>Untergrundtemperaturen 300 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="167" width="91">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z300f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z300p</Name>
+        <Title>Untergrundtemperaturen 300 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z300p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z500</Name>
+      <Title>GEOTH: Untergrundtemp. 500 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z500f</Name>
+        <Title>Untergrundtemperaturen 500 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="131" width="91">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z500f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z500p</Name>
+        <Title>Untergrundtemperaturen 500 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z500p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z1000</Name>
+      <Title>GEOTH: Untergrundtemp. 1000 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z1000f</Name>
+        <Title>Untergrundtemperaturen 1000 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="203" width="91">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z1000f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z1000p</Name>
+        <Title>Untergrundtemperaturen: Tz=1000</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z1000p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z1500</Name>
+      <Title>GEOTH: Untergrundtemp. 1500 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z1500f</Name>
+        <Title>Untergrundtemperaturen 1500 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="185" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z1500f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z1500p</Name>
+        <Title>Untergrundtemperaturen: Tz=1500</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z1500p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z2000</Name>
+      <Title>GEOTH: Untergrundtemp. 2000 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z2000f</Name>
+        <Title>Untergrundtemperaturen 2000 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="275" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z2000f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z2000p</Name>
+        <Title>Untergrundtemperaturen 2000 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z2000p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>erd_z2500</Name>
+      <Title>GEOTH: Untergrundtemp. 2500 m u. Gelände</Title>
+      <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z2500f</Name>
+        <Title>Untergrundtemperaturen 2500 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="221" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z2500f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_z2500p</Name>
+        <Title>Untergrundtemperaturen 2500 m u. Gelaende</Title>
+        <Abstract>Die Temperaturkarte zeigt die räumliche Verteilung der Untergrundtemperatur in einer Tiefe von 2500 Metern unter der Erdoberfläche. Die Temperaturkarten sind als Übersichtsdarstellungen gedacht und wurden auf der Grundlage ausgesuchter Stützstellen nach bestem Wissen zusammengestellt und geprüft. Es wird keine Gewähr für Vollständigkeit, Richtigkeit, Aktualität und Qualität der Informationen übernommen. Herausgeber sind das Institut für Geeowissenschaftliche Gemeinschaftsaufgaben (GGA), Hannover und das LGRB.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_z2500p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erdwaerme_m</Name>
+        <Title>BRS: Erdwärme (Geothermie)-konzessionen</Title>
+        <Abstract>Für die Nutzung der Geothermie (Erdwärme) in Baden-Württemberg werden Bergbauberechtigungen (Konzessionen) zur Aufsuchung (Erlaubnis) und Gewinnung (Bewilligung) durch die Landesbergdirektion versehen. Die Karte zeigt die derzeitigen Konzessionsfelder.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="224">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erdwaerme_m&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_ews</Name>
+        <Title>GEOTH: Gemeldete Erdewärmesonden</Title>
+        <Abstract>Das Thema gibt einen Überblick über die räumliche Verteilung der derzeit beim LGRB gemeldeten Erdwärmesonden in Baden-Württemberg und zeigt die jeweiligen Bohrtiefen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="95" width="280">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_ews&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>erd_wp</Name>
+        <Title>GEOTH: Grundwasserwärmepumpen</Title>
+        <Abstract>Das Thema gibt einen Überblick über die räumliche Verteilung der derzeig beim LGRB gemeldeten Wärmepumpen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=erd_wp&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>lgrb_uek350_geothermie_ov</Name>
+        <Title>LGRB-BW GEOTH: Geothermische Übersichtskarten 1 : 1 000 000</Title>
+        <Abstract>Im Rahmen der Nutzung der Geothermie (Erdwärme) ist das LGRB als Genehmigungs- und Beratungsbehörde tätig und liefert wichtige, geowissenschaftliche Grundlageninformationen. Im Thema Geothermie werden eine Übersicht über die aktuell gemeldeten Erdwärmesonden und Wärmepumpen gegeben, die derzeitigen Geothermiekonzessionen gezeigt sowie Übersichtsdarstellungen der Temparaturverteilung in unterschiedlichen Tiefen gegeben.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="126">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geothermie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=lgrb_uek350_geothermie_ov&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149670.854528891" min="249.451424214819"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

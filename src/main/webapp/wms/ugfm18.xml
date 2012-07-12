@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities updateSequence="0" version="1.1.1">
+	<Service>
+		<Name>Bundesamt fuer Naturschutz: Landschaft</Name>
+		<Title>Landschaftstypen und -bewertung Deutschland</Title>
+		<Abstract>Kulturlandschaften sind durch die Taetigkeit des Menschen gepraegte Naturraumeinheiten.</Abstract>
+		<KeywordList>
+			<Keyword>Landschaftstyp</Keyword>
+			<Keyword>Landschaftsbewertung</Keyword>
+			<Keyword>Landschaftsgliederung</Keyword>
+			<Keyword>Naturraum</Keyword>
+			<Keyword>Naturraumgliederung</Keyword>
+			<Keyword>Landschaft</Keyword>
+			</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/ogc/wms/landschaft?  " xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Bettina Dibbern</ContactPerson>
+				<ContactOrganization>Bundesamt fuer Naturschutz</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>GIS-Koordinatorin</ContactPosition>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address/>
+				<City>Bonn</City>
+				<StateOrProvince>Nordrhein-Westfalen</StateOrProvince>
+				<PostCode>53179</PostCode>
+				<Country>Deutschland</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>0049 (0)228 8491 339</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>0049 (0)228 8491 200</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>bettina.dibbern@bfn.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/ogc/wms/landschaft?  " xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+				<DCPType>
+					<HTTP>
+						<Post>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/ogc/wms/landschaft?  " xlink:type="simple"/>
+						</Post>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/ogc/wms/landschaft?  " xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<Format>application/vnd.esri.xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/ogc/wms/landschaft?  " xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+		</Exception>
+		<VendorSpecificCapabilities/>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="1" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="1">
+			<Title>landschaft</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<LatLonBoundingBox maxx="3921408.23738449" maxy="6104254.65779284" minx="3280293.0054137" miny="5237451.72496072"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.0" maxy="55.255" minx="5.8" miny="46.744"/>
+			<BoundingBox SRS="EPSG:31466" maxx="3071493.0979" maxy="6162189.1954" minx="2484762.8270" miny="5178367.8774"/>
+			<BoundingBox SRS="EPSG:31467" maxx="3881348.6569" maxy="6141610.1915" minx="3255546.0547" miny="5183321.9371"/>
+			<BoundingBox SRS="EPSG:25832" maxx="881128.3399" maxy="6139590.6335" minx="255566.1971" miny="5181690.2012"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Landschaftsbewertung</Title>
+				<LatLonBoundingBox maxx="3921408.23738449" maxy="6104254.65779284" minx="3280293.0054137" miny="5237451.72496072"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.0" maxy="55.255" minx="5.8" miny="46.744"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3071493.0979" maxy="6162189.1954" minx="2484762.8270" miny="5178367.8774"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3881348.6569" maxy="6141610.1915" minx="3255546.0547" miny="5183321.9371"/>
+				<BoundingBox SRS="EPSG:25832" maxx="881128.3399" maxy="6139590.6335" minx="255566.1971" miny="5181690.2012"/>
+			<Style>
+				<Name/>
+				<Title>Landschaftsbewertung</Title>
+				<LegendURL height="289" width="274">
+				<Format>image/jpg</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/legend/landschaften.jpg" xlink:type="simple"/>
+				</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title>Hecken-Landschaften</Title>
+				<LatLonBoundingBox maxx="3911680.32364491" maxy="6057075.34429336" minx="3306473.16187643" miny="5300510.9590616"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.0" maxy="55.255" minx="5.8" miny="46.744"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3071493.0979" maxy="6162189.1954" minx="2484762.8270" miny="5178367.8774"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3881348.6569" maxy="6141610.1915" minx="3255546.0547" miny="5183321.9371"/>
+				<BoundingBox SRS="EPSG:25832" maxx="881128.3399" maxy="6139590.6335" minx="255566.1971" miny="5181690.2012"/>
+			<Style>
+				<Name/>
+				<Title>Hecken-Landschaften</Title>
+				<LegendURL height="39" width="40">
+				<Format>image/jpg</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/legend/heckenl.jpg" xlink:type="simple"/>
+				</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>2</Name>
+				<Title>Fluss-Landschaften</Title>
+				<LatLonBoundingBox maxx="3919497.13594486" maxy="5995951.99903969" minx="3296188.88524579" miny="5261574.58867308"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.0" maxy="55.255" minx="5.8" miny="46.744"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3071493.0979" maxy="6162189.1954" minx="2484762.8270" miny="5178367.8774"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3881348.6569" maxy="6141610.1915" minx="3255546.0547" miny="5183321.9371"/>
+				<BoundingBox SRS="EPSG:25832" maxx="881128.3399" maxy="6139590.6335" minx="255566.1971" miny="5181690.2012"/>
+			<Style>
+				<Name/>
+				<Title>Fluss-Landschaften</Title>
+				<LegendURL height="37" width="36">
+				<Format>image/jpg</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.floraweb.de/proxy/legend/flussl.jpg" xlink:type="simple"/>
+				</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

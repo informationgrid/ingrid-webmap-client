@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+  <Service>
+    <Name>OGC:WMS</Name>
+    <Title>Ingenieurgeologische Karte Berlin</Title>
+    <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
+    <KeywordList>
+      <Keyword>GeoTools</Keyword>
+    </KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Renate Zweer</ContactPerson>
+        <ContactOrganization>Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Project Lead</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Fehrbelliner Platz 1</Address>
+        <City>Berlin</City>
+        <StateOrProvince>Berlin</StateOrProvince>
+        <PostCode>10707</PostCode>
+        <Country>Germany</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
+    <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/png</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_inggeo?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+    </Exception>
+    <VendorSpecificCapabilities/>
+    <!-- Layers -->
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Title>Ingenieurgeologische Karte (Umweltatlas)</Title>
+      <Abstract>Geologischer Aufbau Berlins, Schichten und Mächtigkeiten, Schichtfolge über Sachdatenanzeige</Abstract>
+      <KeywordList>
+        <Keyword>inspireidentifiziert</Keyword>
+        <Keyword>Karten</Keyword>
+        <Keyword>Geodaten</Keyword>
+        <Keyword>Berlin</Keyword>
+        <Keyword>Quartär</Keyword>
+        <Keyword>Tertiär</Keyword>
+        <Keyword>Torf</Keyword>
+        <Keyword>Mudde</Keyword>
+        <Keyword>Feinsand</Keyword>
+        <Keyword>Mittelsand</Keyword>
+        <Keyword>Talsand</Keyword>
+        <Keyword>Geschiebelehm</Keyword>
+        <Keyword>Geschiebemergel</Keyword>
+        <Keyword>Schmelzwassersand</Keyword>
+        <Keyword>Ton</Keyword>
+        <Keyword>Schluff</Keyword>
+        <Keyword>Urstromtal</Keyword>
+        <Keyword>Hochfläche</Keyword>
+        <Keyword>Grundmoräne</Keyword>
+        <Keyword>Ingenieurgeologie</Keyword>
+      </KeywordList>
+      <SRS>EPSG:3068</SRS>
+      <SRS>EPSG:25833</SRS>
+      <SRS>EPSG:31467</SRS>
+      <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4326</SRS>
+      <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+      <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+      <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+      <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+      <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+      <AuthorityURL name="GDI-DE">
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
+      </AuthorityURL>
+      <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+      <MetadataURL type="TC211">
+        <Format>text/xml</Format>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+      </MetadataURL>
+      <Style>
+        <Name>default</Name>
+        <Title>Standard</Title>
+        <LegendURL height="72" width="72">
+          <Format>image/gif</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_inggeo.gif" xlink:type="simple"/>
+        </LegendURL>
+      </Style>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>0</Name>
+        <Title>Hintergrund 1:5.000</Title>
+        <Abstract>digitale Karte 1:5.000, Rasterkarte 1:5.000</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_inggeo.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>1</Name>
+        <Title>Blattschnitt 1:5000</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_inggeo?layerID=1" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>2</Name>
+        <Title>Gewässer</Title>
+        <Abstract>Gewässer</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>3</Name>
+        <Title>Obere Schicht</Title>
+        <Abstract>Obere Schicht</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>4</Name>
+        <Title>Altwasser</Title>
+        <Abstract>Altwasser</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>5</Name>
+        <Title>Bauwerke</Title>
+        <Abstract>Bauwerke</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>6</Name>
+        <Title>Aufschüttungen</Title>
+        <Abstract>Aufschüttungen</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>7</Name>
+        <Title>Bohrpunkte</Title>
+        <Abstract>Bohrpunkte</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>8</Name>
+        <Title>Bauwerke Nummern</Title>
+        <Abstract>Bauwerke Nummern</Abstract>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Quartär</Keyword>
+          <Keyword>Tertiär</Keyword>
+          <Keyword>Torf</Keyword>
+          <Keyword>Mudde</Keyword>
+          <Keyword>Feinsand</Keyword>
+          <Keyword>Mittelsand</Keyword>
+          <Keyword>Talsand</Keyword>
+          <Keyword>Geschiebelehm</Keyword>
+          <Keyword>Geschiebemergel</Keyword>
+          <Keyword>Schmelzwassersand</Keyword>
+          <Keyword>Ton</Keyword>
+          <Keyword>Schluff</Keyword>
+          <Keyword>Urstromtal</Keyword>
+          <Keyword>Hochfläche</Keyword>
+          <Keyword>Grundmoräne</Keyword>
+          <Keyword>Ingenieurgeologie</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
+        <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
+        <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
+        <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=10ab8f24-dc7a-3fc8-a7b1-6d97e6f8254f&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/keine_legende.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+  <Service>
+    <Name>OGC:WMS</Name>
+    <Title>Biotoptypen: FFH-Lebensraumtypen Berlin</Title>
+    <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
+    <KeywordList>
+      <Keyword>GeoTools</Keyword>
+    </KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Renate Zweer</ContactPerson>
+        <ContactOrganization>Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Project Lead</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Fehrbelliner Platz 1</Address>
+        <City>Berlin</City>
+        <StateOrProvince>Berlin</StateOrProvince>
+        <PostCode>10707</PostCode>
+        <Country>Germany</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
+    <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/png</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/k_fb_ffh?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+    </Exception>
+    <VendorSpecificCapabilities/>
+    <!-- Layers -->
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Title>Biotoptypen: Lebensraumtypen FFH (Flora-Fauna-Habitat-Richtlinie)(Umweltatlas)</Title>
+      <Abstract>FFH-Lebensraumtypen (LRT) oder -komplexe (Biotop hat nicht die erforderliche Ausprägung jedoch das Entwicklungspotential zu einem LRT)gemäß Flora-Fauna-Habitat-Richtlinie der EU, Flächendeckende Biotopkartierung Berlin</Abstract>
+      <KeywordList>
+        <Keyword>inspireidentifiziert</Keyword>
+        <Keyword>Karten</Keyword>
+        <Keyword>Geodaten</Keyword>
+        <Keyword>Berlin</Keyword>
+        <Keyword>Umweltatlas</Keyword>
+        <Keyword>Biotope</Keyword>
+        <Keyword>Biotopkartierung</Keyword>
+        <Keyword>Biotoptypenkartierung</Keyword>
+        <Keyword>Biotoptypenliste</Keyword>
+        <Keyword>Sekundärdaten</Keyword>
+        <Keyword>Biotopwert</Keyword>
+        <Keyword>Biotopschutz</Keyword>
+        <Keyword>FFH</Keyword>
+        <Keyword>Lebensraumtypen</Keyword>
+        <Keyword>LRT</Keyword>
+        <Keyword>Naturhaushalt</Keyword>
+        <Keyword>Landschaft</Keyword>
+        <Keyword>Wälder</Keyword>
+        <Keyword>Forsten</Keyword>
+        <Keyword>Stadtgrün</Keyword>
+        <Keyword>wertvolle Biotope</Keyword>
+      </KeywordList>
+      <SRS>EPSG:3068</SRS>
+      <SRS>EPSG:25833</SRS>
+      <SRS>EPSG:31467</SRS>
+      <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4326</SRS>
+      <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+      <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+      <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+      <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+      <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+      <AuthorityURL name="GDI-DE">
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
+      </AuthorityURL>
+      <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+      <MetadataURL type="TC211">
+        <Format>text/xml</Format>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+      </MetadataURL>
+      <Style>
+        <Name>default</Name>
+        <Title>Standard</Title>
+        <LegendURL height="72" width="72">
+          <Format>image/gif</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_fb_ffh.gif" xlink:type="simple"/>
+        </LegendURL>
+      </Style>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>0</Name>
+        <Title>Biotope</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_fb_ffh.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="499" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>1</Name>
+        <Title>Blockkarte 1:5000 (ISU5, Raumbezug Umweltatlas 2005)</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=1" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="499" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>2</Name>
+        <Title>Gleise</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=2" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="499" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>3</Name>
+        <Title>LRT-Schlüssel</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=3" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="499" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>4</Name>
+        <Title>Grenzen Biotoptypen</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=4" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="499" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>5</Name>
+        <Title>K5</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=5" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="7" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>6</Name>
+        <Title>ALK</Title>
+        <KeywordList>
+          <Keyword>inspireidentifiziert</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+          <Keyword>Biotope</Keyword>
+          <Keyword>Biotopkartierung</Keyword>
+          <Keyword>Biotoptypenkartierung</Keyword>
+          <Keyword>Biotoptypenliste</Keyword>
+          <Keyword>Sekundärdaten</Keyword>
+          <Keyword>Biotopwert</Keyword>
+          <Keyword>Biotopschutz</Keyword>
+          <Keyword>FFH</Keyword>
+          <Keyword>Lebensraumtypen</Keyword>
+          <Keyword>LRT</Keyword>
+          <Keyword>Naturhaushalt</Keyword>
+          <Keyword>Landschaft</Keyword>
+          <Keyword>Wälder</Keyword>
+          <Keyword>Forsten</Keyword>
+          <Keyword>Stadtgrün</Keyword>
+          <Keyword>wertvolle Biotope</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
+        <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=d592cc11-9d82-3681-9550-9635ac69ec16&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/k_fb_ffh?layerID=6" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="2" min="0"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

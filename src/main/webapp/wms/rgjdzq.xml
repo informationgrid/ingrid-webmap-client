@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Wald NRW</Title>
+  <Abstract>WMS-Dienst Wald NRW mit Waldfunktions-, Waldtypen-, und Waldstandortkarte, Wuchsgebiete u.-bezirke, Kyrill-Schadflächen</Abstract>
+        <KeywordList>
+          <Keyword>Wald</Keyword>
+          <Keyword> Forst</Keyword>
+          <Keyword> Schutzgebiete</Keyword>
+          <Keyword> Wuchsgebiete</Keyword>
+          <Keyword> Waldstandort</Keyword>
+          <Keyword> Kyrill</Keyword>
+          <Keyword> Schadflaechen</Keyword>
+          <Keyword> SchadflaechenKyrill</Keyword>
+          <Keyword> ForstlicheWuchsbezirkeNRW</Keyword>
+          <Keyword> Waldstandortkarte</Keyword>
+          <Keyword> WaldtypenNRW</Keyword>
+          <Keyword> WaldtypenNRWReal</Keyword>
+          <Keyword> WaldtypenNRWVoll</Keyword>
+          <Keyword> Waldfunktionskarte</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Dr. Stefan Franz</ContactPerson>
+      <ContactOrganization>Landesbetrieb Wald und Holz NRW</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition/>
+    <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Albrecht-Thaer-Str. 34</Address>
+        <City>Münster</City>
+        <StateOrProvince>NRW</StateOrProvince>
+        <PostCode>48147</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>++49 251 91797-333</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>++49 251 91797-100</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>stefan.franz@wald-und-holz.nrw.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>WaldNRW</Name>
+    <Title>WaldNRW</Title>
+    <Abstract>WMS-Dienst Wald NRW mit Waldfunktions-, Waldtypen-, und Waldstandortkarte, Wuchsgebiete u.-bezirke, Kyrill-Schadflächen</Abstract>
+    <KeywordList>
+     <Keyword>Wald</Keyword>
+     <Keyword> Forst</Keyword>
+     <Keyword> Schutzgebiete</Keyword>
+     <Keyword> Wuchsgebiete</Keyword>
+     <Keyword> Waldstandort</Keyword>
+     <Keyword> Kyrill</Keyword>
+     <Keyword> Schadflaechen</Keyword>
+     <Keyword> SchadflaechenKyrill</Keyword>
+     <Keyword> ForstlicheWuchsbezirkeNRW</Keyword>
+     <Keyword> Waldstandortkarte</Keyword>
+     <Keyword> WaldtypenNRW</Keyword>
+     <Keyword> WaldtypenNRWReal</Keyword>
+     <Keyword> WaldtypenNRWVoll</Keyword>
+     <Keyword> Waldfunktionskarte</Keyword>
+    </KeywordList>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25831</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:28992</SRS>
+    <SRS>EPSG:31467</SRS>
+    <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+    <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Waldfunktionskarte</Name>
+        <Title>Waldfunktionskarte (1:10000 - 1:80000)</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/wfk/wfk.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="29.9341709057782" min="3.74177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'WaldtypenNRWVoll(1:50000-1:250000)' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>WaldtypenNRWVoll(1:50000-1:250000)</Name>
+        <Title>Waldtypen NRW Voll (1:50000 - 1:250000)</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <ScaleHint max="93.5442840805569" min="18.7088568161114"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'WaldtypenNRWReal(1:50000-1:250000)' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>WaldtypenNRWReal(1:50000-1:250000)</Name>
+        <Title>Waldtypen NRW Real (1:50000 - 1:250000)</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <ScaleHint max="93.5442840805569" min="18.7088568161114"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+<!-- WARNING: The layer name 'WaldtypenNRW(1:50000-1:500000)' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>WaldtypenNRW(1:50000-1:500000)</Name>
+        <Title>Waldtypen NRW (1:50000 - 1:500000)</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/Waldtyp/Waldtyp_trs.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="187.088568161114" min="18.7088568161114"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'Waldstandortkarte(1:5000-1:15000)' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>Waldstandortkarte(1:5000-1:15000)</Name>
+        <Title>Waldstandortkarte (1:5000 - 1:15000)</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <ScaleHint max="5.61265704483342" min="1.87088568161114"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ForstlicheWuchsgebieteNRW</Name>
+        <Title>Forstliche Wuchsgebiete NRW</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ForstlicheWuchsbezirkeNRW</Name>
+        <Title>Forstliche Wuchsbezirke NRW</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>SchadflaechenKyrill</Name>
+        <Title>Schadflaechen Kyrill</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Forstamtsgrenzen</Name>
+        <Title>Forstamtsgrenzen</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="147">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/forst/waldNRW?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Forstamtsgrenzen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>
