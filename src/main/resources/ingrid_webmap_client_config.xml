@@ -385,7 +385,7 @@
       <checkedLayers/>
     </wmsService>
     <wmsService>
-      <name>Biotoptypen: Schutzstatus §26 NatSchGBln Berlin</name>
+      <name>Biotoptypen: Schutzstatus 26 NatSchGBln Berlin</name>
       <capabilitiesUrl>http://harrison.its-technidata.de/ingrid-webmap-client/wms/y07idk.xml?REQUEST=GetCapabilities</capabilitiesUrl>
       <mapServiceCategories>
         <mapServiceCategory reference="../../../wmsService[3]/mapServiceCategories/mapServiceCategory"/>
