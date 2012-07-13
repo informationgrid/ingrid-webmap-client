@@ -28,32 +28,49 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	    idIndex: 0 
 	});
 	
+	var layersChecked = [];
 	var layers = [];
+	var allDeactivated = true;
+	var allChecked = true;
+	var allFeatureInfo = true;
+	var allLegend = true;
+	
 	for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
 		var layer = self.layerRecord[i];
 		var checkedLayers = self.selectedService.data.checkedLayers;
+		var layerIsFound = false;
 		if(checkedLayers && checkedLayers.length > 0){
-			var layerIsFound = false;
 			for (var j=0, countJ=checkedLayers.length; j<countJ; j++) { 
 				if(layer.index == checkedLayers[j]){
 					layerIsFound = true;
 					break;
 				}
 			}
-			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
+			layersChecked.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
 			self.layerRecord[i].checked = layerIsFound;
 		}else{
-			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
+			layersChecked.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
 		}
-		
+		if(layer.index){
+			if(layer.deactivated == false){
+				allDeactivated = false;
+			}
+			if(layerIsFound == false){
+				allChecked = false;
+			}
+			if(layer.featureInfo == false){
+				allFeatureInfo = false;
+			}
+			if(layer.legend == false){
+				allLegend = false;
+			}
+		}
 	}
 	
-	function renderRow(value, metadata, record, rowIndex, colIndex, store) {
-		var formatted = value;
-		if (record.get('deactivated')) {
-			formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
-		}
-	   return formatted;
+	layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, allChecked, allFeatureInfo, allLegend]);
+	for (var i=0, countI=layersChecked.length; i<countI; i++) {
+		var layer = layersChecked[i];
+		layers.push([layer[0], layer[1], layer[2], layer[3], layer[4], layer[5]]);
 	}
 	
 	var cm = new Ext.grid.ColumnModel({
@@ -70,7 +87,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	              			xtype: 'textfield',
 	              			allowBlank: false
 	              		},
-	              		renderer: renderRow
+	              		renderer: self.renderRow
 	                	
 	              	}
 		            ,new Ext.ux.grid.CheckColumn({
@@ -143,7 +160,56 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 						self.save(modifiedData);
 					}
 				}else{
-					record.reject();
+					if(modifiedData.title === "<b>Alle Ausw&auml;hlen</b>"){
+						if(modifiedData.deactivated && record.modified.deactivated == undefined){
+							record.reject();
+						}else{
+							if(record){
+								if(record.modified){
+									var layers = [];
+									for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
+										var layer = self.layerRecord[i];
+										if(record.modified.checked != undefined){
+											if(record.modified.checked == false){
+												layer.checked = true;
+											}else{
+												layer.checked = false;
+											}
+										}
+										
+										if(record.modified.deactivated != undefined){
+											if(record.modified.deactivated == false){
+												layer.deactivated = true;
+											}else{
+												record.reject();
+											}
+										}
+										
+										if(record.modified.featureInfo != undefined){
+											if(record.modified.featureInfo == false){
+												layer.featureInfo = true;
+											}else{
+												layer.featureInfo = false;
+											}
+										}
+										
+										if(record.modified.legend != undefined){
+											if(record.modified.legend == false){
+												layer.legend = true;
+											}else{
+												layer.legend = false;
+											}
+										}
+										
+										layers.push(layer);
+									}
+									self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+								}
+							}
+						}
+					}else{
+						record.reject();
+					}
 				}
 			}
 		}
@@ -191,3 +257,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 		self.mainPanel.setValue('updateservice', service, 'Bitte warten! Layer-&Auml;nderungen werden &uuml;bernommen!');
 	}
 };
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.renderRow = function(value, metadata, record, rowIndex, colIndex, store) {
+	var formatted = value;
+	if(rowIndex != 0){
+		if (record.get('deactivated')) {
+			formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
+		}
+	}
+	
+   return formatted;
+};
+
+

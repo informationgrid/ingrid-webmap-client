@@ -198,7 +198,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	
 	self.serviceGrid.on('afteredit', function(store) {
 		if(store.field === "name"){
-			self.updateService(store.value, self.selectedService.data.capabilitiesUrl, null, null);			
+			self.updateService(store.value, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl);			
 		}else{
 			store.record.reject();
 		}
@@ -241,8 +241,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	Ext.apply(this, {
 		items: self.serviceGrid,
 		tbar: items = [ self.addServiceBtn,
+		                '-',
 		                self.deleteServiceBtn,
+		                '-',
 		                self.copyServiceBtn,
+		                '-',
 		                self.reloadServiceBtn
 		              ]
 	});
