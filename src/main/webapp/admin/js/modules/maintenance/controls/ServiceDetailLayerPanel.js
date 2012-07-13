@@ -66,8 +66,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			}
 		}
 	}
+	if(allDeactivated){
+		layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, false, false, false]);	
+	}else{
+		layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, allChecked, allFeatureInfo, allLegend]);
+	}
 	
-	layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, allChecked, allFeatureInfo, allLegend]);
 	for (var i=0, countI=layersChecked.length; i<countI; i++) {
 		var layer = layersChecked[i];
 		layers.push([layer[0], layer[1], layer[2], layer[3], layer[4], layer[5]]);

@@ -128,7 +128,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	});
 	
 	self.serviceGrid.on("sortchange", function(grid) {
-		// Remove categories and layer panel
 		if(self.selectedService){
 			if(self.selectedService.data){
 				if(self.selectedService.data.capabilitiesUrl){
@@ -198,7 +197,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	
 	self.serviceGrid.on('afteredit', function(store) {
 		if(store.field === "name"){
-			self.updateService(store.value, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl);			
+			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.originalCapUrl);			
 		}else{
 			store.record.reject();
 		}
