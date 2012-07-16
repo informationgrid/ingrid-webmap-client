@@ -70,11 +70,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	    width: 10,
 	    renderer: function(v, p, record, rowIndex){
 	        return '<div class="iconInfo"></div>';
-	    }, 
-	    listeners: {
-	        'click': function(store) {
-	        	window.open(de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(url));
-	        }   
 	    }
 	}],
 	serviceGrid: null,
