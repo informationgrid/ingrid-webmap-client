@@ -623,6 +623,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
         );
 	var ov = new OpenLayers.Control.OverviewMap({
 		layers : [overviewLayer]
+// commented out because this does not work with other projections than WGS84		          
+//        ,
+//		mapOptions: {
+//			numZoomLevels: 1,
+//			resolutions: [0.075]
+//		}
 	});
 	this.map.addControl(ov);
 	
