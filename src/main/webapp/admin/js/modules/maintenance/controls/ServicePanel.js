@@ -347,7 +347,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	}else if(url != simple.items.get('url').emptyText){
             		var service = { title:'', originalCapUrl:url, categories:[], layers:[] };
             		// Add service
-            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!');
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
                 	win.close();
             	}
     		}
@@ -541,7 +541,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getJsonInde
 	return columnIndex;
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(service){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServiceFromConfig = function(service, doServiceNew){
 	var self = this;
 	var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 	// Set services to store
@@ -576,11 +576,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 			}
 		}
 	}else{
-		if(self.serviceGrid.store.data.items){
-			var lastStoreItem = self.serviceStore.data.items[self.serviceStore.totalLength - 1]
-			if(lastStoreItem){
-				if(lastStoreItem.data){
-					var capabilitiesUrl = lastStoreItem.data.capabilitiesUrl;
+		if(doServiceNew){
+			if(services){
+				var newService = services[services.length - 1];
+				if(newService){
+					var capabilitiesUrl = newService.capabilitiesUrl;
 					if(capabilitiesUrl){
 						var dsData = ds.data;
 						if(dsData){
@@ -601,6 +601,38 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 									}
 								}
 								self.serviceGrid.getSelectionModel().select(row, column);
+							}
+						}
+					}
+				}
+			}
+		}else{
+			if(self.serviceGrid.store.data.items){
+				var lastStoreItem = self.serviceStore.data.items[self.serviceStore.totalLength - 1]
+				if(lastStoreItem){
+					if(lastStoreItem.data){
+						var capabilitiesUrl = lastStoreItem.data.capabilitiesUrl;
+						if(capabilitiesUrl){
+							var dsData = ds.data;
+							if(dsData){
+								var dsDataItems = dsData.items;
+								if(dsDataItems){
+									var row = 0;
+									var column = 0;
+									for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+										var item = dsDataItems[i];
+										if(item.data){
+											var itemCapabilitiesUrl = item.data.capabilitiesUrl;
+											if(itemCapabilitiesUrl){
+												if(itemCapabilitiesUrl == capabilitiesUrl){
+													row = i;
+													break;
+												}
+											}
+										}
+									}
+									self.serviceGrid.getSelectionModel().select(row, column);
+								}
 							}
 						}
 					}
@@ -697,7 +729,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 	});
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, doServiceDelete){
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = function (key, service, loadMessage, doServiceDelete, doServiceNew){
 	var self = this;
 	Ext.getBody().mask(loadMessage, 'x-mask-loading');
 	de.ingrid.mapclient.Configuration.setValue(key, Ext.encode(service), 
@@ -705,7 +737,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 			success: function() {
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
-						self.reloadServiceFromConfig(service);
+						self.reloadServiceFromConfig(service, doServiceNew);
 						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
 						Ext.getBody().unmask();
 					},

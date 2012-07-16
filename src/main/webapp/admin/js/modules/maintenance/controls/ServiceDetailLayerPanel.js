@@ -111,8 +111,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
             id : 'cb_deactivated',
             checked: allDeactivated,
             disabled: allDeactivated ? true : false,
-            handler: function(btn) {
-    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
+            handler: function(checkbox) {
+    			self.allCheckboxesDeactivated(checkbox, Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
     		},
 			renderer: self.allCheckboxesStyle
 		};
@@ -246,7 +246,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	return formatted;
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(allDeactivated, record) {
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(checkbox, allDeactivated, record) {
 	var self = this;
 	if(record){
 		var layers = [];

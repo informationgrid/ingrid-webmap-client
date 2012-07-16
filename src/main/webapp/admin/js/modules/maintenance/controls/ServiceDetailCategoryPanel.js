@@ -106,7 +106,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 	if(node){
 		var capabilitiesUrl = null;
 		var categories = [];
-		if(this.tree){
+		if(self.tree){
 			var checkedNodes = self.tree.getChecked();
 			for (var i=0, countI=checkedNodes.length; i<countI; i++) {
 				var checkedNode = checkedNodes[i];
@@ -114,16 +114,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 			}
 		}
 		
-		if(this.selectedService.data){
-			if(this.selectedService.data.capabilitiesUrl){
+		if(self.selectedService.data){
+			if(self.selectedService.data.capabilitiesUrl){
 				capabilitiesUrl = self.selectedService.data.capabilitiesUrl;
 			}
 			
 			if(capabilitiesUrl != null){
 				var service = {
-						   title: null,
+						   title: self.selectedService.data.name,
 						   capabilitiesUrl: capabilitiesUrl,
-						   originalCapUrl: null,
+						   originalCapUrl: self.selectedService.data.originalCapUrl,
 						   categories: categories,
 						   layers: null
 				   };
