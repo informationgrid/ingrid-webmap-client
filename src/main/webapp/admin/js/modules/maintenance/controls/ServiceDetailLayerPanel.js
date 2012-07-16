@@ -110,6 +110,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
             boxLabel: 'Alle Layer verwerfen',
             id : 'cb_deactivated',
             checked: allDeactivated,
+            disabled: allDeactivated ? true : false,
             handler: function(btn) {
     			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
     		},
@@ -121,6 +122,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
             boxLabel: 'Alle Layer aktvieren',
             id : 'cb_checked',
             checked: allChecked,
+            disabled: allDeactivated ? true : false,
             handler: function(btn) {
     			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue(), self.layerRecord);
     		}
@@ -131,13 +133,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
             boxLabel: 'Alle Layer Infos aktvieren',
             id : 'cb_featureInfo',
             checked: allFeatureInfo,
+            disabled: allDeactivated ? true : false,
             handler: function(btn) {
             	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue(), self.layerRecord);
     		}
 		};
 
-	console.debug(featureInfoTbar);
-	
 	// create the grid
 	var grid = new Ext.grid.EditorGridPanel({
         store: self.store,

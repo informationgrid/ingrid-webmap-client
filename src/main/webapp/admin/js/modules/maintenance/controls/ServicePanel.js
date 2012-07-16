@@ -620,8 +620,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 	
 	self.copyServiceBtn.enable();
 	self.reloadServiceBtn.enable();
-	self.deleteServiceBtn.enable(),
-	self.remove(self.items.get('serviceDetailBorderPanel'));
+	self.deleteServiceBtn.enable();
 	
 	var xmlStore = new Ext.data.Store({
         // load using HTTP
@@ -675,10 +674,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 								})]
 					});
 					
-					self.add(myBorderPanel);
-					self.doLayout();
-					self.selectedService = serviceRecord;
-					self.selectedService.data.jsonLayers = layerRecord;
+            	self.remove(self.items.get('serviceDetailBorderPanel'));
+            	self.add(myBorderPanel);
+				self.doLayout();
+				self.selectedService = serviceRecord;
+				self.selectedService.data.jsonLayers = layerRecord;
                }
            }
     	});
