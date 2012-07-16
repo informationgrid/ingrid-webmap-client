@@ -28,7 +28,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	    idIndex: 0 
 	});
 	
-	var layersChecked = [];
 	var layers = [];
 	var allDeactivated = true;
 	var allChecked = true;
@@ -46,10 +45,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					break;
 				}
 			}
-			layersChecked.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
+			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
 			self.layerRecord[i].checked = layerIsFound;
 		}else{
-			layersChecked.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
+			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
 		}
 		if(layer.index){
 			if(layer.deactivated == false){
@@ -65,16 +64,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				allLegend = false;
 			}
 		}
-	}
-	if(allDeactivated){
-		layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, false, false, false]);	
-	}else{
-		layers.push(['', '<b>Alle Ausw&auml;hlen</b>', allDeactivated, allChecked, allFeatureInfo, allLegend]);
-	}
-	
-	for (var i=0, countI=layersChecked.length; i<countI; i++) {
-		var layer = layersChecked[i];
-		layers.push([layer[0], layer[1], layer[2], layer[3], layer[4], layer[5]]);
 	}
 	
 	var cm = new Ext.grid.ColumnModel({
@@ -116,6 +105,39 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	              ]
 	    	});
 	
+	var deactivatedTbar = {
+            xtype: 'checkbox',
+            boxLabel: 'Alle Layer verwerfen',
+            id : 'cb_deactivated',
+            checked: allDeactivated,
+            handler: function(btn) {
+    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
+    		},
+			renderer: self.allCheckboxesStyle
+		};
+
+	var checkedTbar = {
+            xtype: 'checkbox',
+            boxLabel: 'Alle Layer aktvieren',
+            id : 'cb_checked',
+            checked: allChecked,
+            handler: function(btn) {
+    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue(), self.layerRecord);
+    		}
+		};
+
+	var featureInfoTbar = {
+            xtype: 'checkbox',
+            boxLabel: 'Alle Layer Infos aktvieren',
+            id : 'cb_featureInfo',
+            checked: allFeatureInfo,
+            handler: function(btn) {
+            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue(), self.layerRecord);
+    		}
+		};
+
+	console.debug(featureInfoTbar);
+	
 	// create the grid
 	var grid = new Ext.grid.EditorGridPanel({
         store: self.store,
@@ -135,7 +157,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					e.cancel = true;
 				}
 			}
-		}
+		}, 
+		tbar:[deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar]
     });
 
 	self.store.loadData(layers);
@@ -164,56 +187,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 						self.save(modifiedData);
 					}
 				}else{
-					if(modifiedData.title === "<b>Alle Ausw&auml;hlen</b>"){
-						if(modifiedData.deactivated && record.modified.deactivated == undefined){
-							record.reject();
-						}else{
-							if(record){
-								if(record.modified){
-									var layers = [];
-									for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
-										var layer = self.layerRecord[i];
-										if(record.modified.checked != undefined){
-											if(record.modified.checked == false){
-												layer.checked = true;
-											}else{
-												layer.checked = false;
-											}
-										}
-										
-										if(record.modified.deactivated != undefined){
-											if(record.modified.deactivated == false){
-												layer.deactivated = true;
-											}else{
-												record.reject();
-											}
-										}
-										
-										if(record.modified.featureInfo != undefined){
-											if(record.modified.featureInfo == false){
-												layer.featureInfo = true;
-											}else{
-												layer.featureInfo = false;
-											}
-										}
-										
-										if(record.modified.legend != undefined){
-											if(record.modified.legend == false){
-												layer.legend = true;
-											}else{
-												layer.legend = false;
-											}
-										}
-										
-										layers.push(layer);
-									}
-									self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
-								}
-							}
-						}
-					}else{
-						record.reject();
-					}
+					record.reject();
 				}
 			}
 		}
@@ -264,13 +238,54 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.renderRow = function(value, metadata, record, rowIndex, colIndex, store) {
 	var formatted = value;
-	if(rowIndex != 0){
-		if (record.get('deactivated')) {
-			formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
-		}
+	if (record.get('deactivated')) {
+		formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
 	}
 	
-   return formatted;
+	return formatted;
 };
 
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(allDeactivated, record) {
+	var self = this;
+	if(record){
+		var layers = [];
+		for (var i=0, countI=record.length; i<countI; i++) { 
+			var layer = record[i];
+			if(allDeactivated != undefined){
+				layer.deactivated = allDeactivated;
+			}
+			layers.push(layer);
+		}
+		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+	}
+};
 
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesChecked = function(allChecked, record) {
+	var self = this;
+	if(record){
+		var layers = [];
+		for (var i=0, countI=record.length; i<countI; i++) { 
+			var layer = record[i];
+			if(allChecked != undefined){
+				layer.checked = allChecked;
+			}
+			layers.push(layer);
+		}
+		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+	}
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesFeatureInfo = function(allFeatureInfo, record) {
+	var self = this;
+	if(record){
+		var layers = [];
+		for (var i=0, countI=record.length; i<countI; i++) { 
+			var layer = record[i];
+			if(allFeatureInfo != undefined){
+				layer.featureInfo = allFeatureInfo;
+			}
+			layers.push(layer);
+		}
+		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+	}
+};
