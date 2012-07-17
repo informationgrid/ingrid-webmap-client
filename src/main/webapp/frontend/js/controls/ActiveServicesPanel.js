@@ -99,7 +99,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					}
 					self.removeService(self.activeNode.attributes.service);
 					self.removeBtn.disable();
+					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
 					self.metaDataBtn.disable();
+					self.metaDataBtn.enable().setTooltip(i18n('tFuerMetadatenErst'));
 				}else if (self.activeNode.layer != undefined){
 					// Remove "Zeige Punktkoordinaten" layers
 					if (self.activeNode.layer.id != undefined){

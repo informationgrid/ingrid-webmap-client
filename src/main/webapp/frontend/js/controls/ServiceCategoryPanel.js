@@ -60,7 +60,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
-        tooltip: i18n('tMetadaten'),
+        tooltip: i18n('tFuerMetadatenErst'),
         disabled: true,
         handler: function(btn) {
 			if (self.activeNode && !self.metadataBtnActive) {
@@ -105,7 +105,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		// default
 		self.addBtn.disable();
 		self.metaDataBtn.disable();
-
+		self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
 		if (node) {
 			var service = node.attributes.service;
 			if (service != undefined) {
@@ -115,8 +115,10 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 				}
 				else {
 					self.addBtn.disable();
+					
 				}
 				self.metaDataBtn.enable();
+				self.metaDataBtn.setTooltip(i18n('tMetadaten'));
 			}
 		}
 		self.activeNode = node;

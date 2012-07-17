@@ -56,7 +56,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
-        tooltip: i18n('tMetadaten'),
+        tooltip: i18n('tFuerMetadatenErst'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeNode) {
@@ -94,6 +94,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		// default
 		self.addBtn.disable();
 		self.metaDataBtn.disable();
+		self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
 
 		if (node) {
 			var service = node.attributes.service;
@@ -101,11 +102,14 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 				// a service node is selected
 				if (!self.activeServicesPanel.containsService(service)) {
 					self.addBtn.enable();
+					self.addBtn.setTooltip(i18n('tDienstHinzufuegen'));
 				}
 				else {
 					self.addBtn.disable();
+					self.addBtn.setTooltip(i18n('tDienstHinzufuegen'));
 				}
 				self.metaDataBtn.enable();
+				self.metaDataBtn.setTooltip(i18n('tMetadaten'));
 			}
 		}
 		self.activeNode = node;
@@ -128,9 +132,9 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 		var curService = services[i];
 		var url = services[i].capabilitiesUrl;
 		if(url.indexOf("?") == -1){
-			url = url+"?service=WMS&request=GetCapabilities";
+			url = url+"?service=wms&request=GetCapabilities";
 		}else if(url.indexOf("service") == -1)
-		 	url = url + "service=WMS&request=GetCapabilities";
+		 	url = url + "service=wms&request=GetCapabilities";
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(url);
 		var childNode = {
 			text: curService.name,
