@@ -372,7 +372,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 								self.ctrls.keyboardControl.deactivate();
 						dlg.on('close', function(p) {
 									if (dlg.isLoad()) {
-										self.load(undefined, dlg.getFileId());
+										var supressMsgs = true;
+										self.load(undefined, dlg.getFileId(), supressMsgs);
 									}
 									self.ctrls.keyboardControl.activate();
 								});
@@ -784,14 +785,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.download = function(
  * @param id
  *            The id of the data (optional)
  */
-de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id) {
+de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, supressMsgs) {
 	// set parameters according to load type
 	var safeStateAfterLoad = id != undefined ? true : false;
 
 	// prevent recording state changes
 	this.listenToStateChanges = false;
 
-	this.activeServicesPanel.removeAll();
+	this.activeServicesPanel.removeAll(supressMsgs);
 	var state = new de.ingrid.mapclient.frontend.data.SessionState({
 				id : id,
 				map : this.map,

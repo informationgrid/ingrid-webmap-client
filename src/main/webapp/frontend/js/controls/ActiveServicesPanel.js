@@ -426,18 +426,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
-		service) {
-
+		service, supressMsgs) {
+	
 	if (!this.containsService(service)) {
 		return;
 	}
-	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl) {
+	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl && (typeof supressMsgs == 'undefined')) {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		de.ingrid.mapclient.Message.showInfo(i18n('tMsgCannotRemoveBaselayer'));
 	} else {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		// we only have a center panel if we are in the full view
-		if (typeof cntrPanel !== 'undefined') {
+		if (typeof cntrPanel !== 'undefined' && !supressMsgs) {
 			de.ingrid.mapclient.Message.showInfo(i18n('tMsgServiceRemoved'));
 		}
 		// remove service layers from the store
@@ -471,10 +471,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 /**
  * Remove all services from the panel
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeAll = function() {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeAll = function(supressMsgs) {
 	var self = this;
 	this.services.each(function(service) {
-		self.removeService(service);
+		self.removeService(service, supressMsgs);
 	});
 };
 
