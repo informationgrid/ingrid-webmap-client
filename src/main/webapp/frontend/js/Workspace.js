@@ -624,7 +624,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
         );
 	var ov = new OpenLayers.Control.OverviewMap({
 		layers : [overviewLayer],
-		minRatio: 1, maxRatio: 100
+		minRatio: 2, maxRatio: 100
 		
 	});
 	this.map.addControl(ov);
