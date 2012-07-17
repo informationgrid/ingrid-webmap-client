@@ -181,15 +181,19 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 
 							// extract the layer from the record
 							var layer = record.get("layer");
+							// we want the base layers to be displayed as jpg
+							var layerFormat = "image/png";
+							if(de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == capabilitiesUrl)
+								layerFormat = "image/jpeg";
 							if(format.name == "WMC")
 							layer.mergeNewParams({
-								format: "image/png",
+								format: layerFormat,
 								transparent: true,
 								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
 							});
 							else
 							layer.mergeNewParams({
-								format: "image/png",
+								format: layerFormat,
 								transparent: true,
 								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
 							});
