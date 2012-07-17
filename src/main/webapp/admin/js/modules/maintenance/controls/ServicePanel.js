@@ -127,30 +127,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 			if(self.selectedService.data){
 				if(self.selectedService.data.capabilitiesUrl){
 					var capabilitiesUrl = self.selectedService.data.capabilitiesUrl;
-					var ds = grid.getView().ds;
-					if(capabilitiesUrl){
-						var dsData = ds.data;
-						if(dsData){
-							var dsDataItems = dsData.items;
-							if(dsDataItems){
-								var row = 0;
-								var column = 0;
-								for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-									var item = dsDataItems[i];
-									if(item.data){
-										var itemCapabilitiesUrl = item.data.capabilitiesUrl;
-										if(itemCapabilitiesUrl){
-											if(itemCapabilitiesUrl == capabilitiesUrl){
-												row = i;
-												break;
-											}
-										}
-									}
-								}
-								grid.getSelectionModel().select(row, column);
-							}
-						}
-					}
+					var service = {
+							   title: self.selectedService.data.name,
+							   capabilitiesUrl: self.selectedService.data.capabilitiesUrl,
+							   originalCapUrl: self.selectedService.data.originalCapUrl
+					   };
+					self.reloadServiceFromConfig(service);
 				}
 			}else{
 				self.remove(self.items.get('serviceDetailBorderPanel'));
