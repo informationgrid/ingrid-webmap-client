@@ -97,7 +97,7 @@ Local = {
         tKarteZoomen: { en: 'Zoom to initial map', de: 'Auf initiale Kartenausdehnung zoomen' },
         tKeineKartenVorhanden: { en: 'No maps available', de: 'Keine Karten vorhanden' },
         tKommentar: { en: 'Comment', de: 'Kommentar' },
-
+		tKonnteKarteNichtSpeichern: { en: 'Error saving map.', de: 'Beim Speichern der Karte ist ein Fehler aufgetreten.' },
         tKoordinatensysteme: { en: 'Coordinate system', de: 'Koordinatensysteme' },
         tKurzUrl: { en: 'Short-Url', de: 'Kurz-Url' },
         tKurzUrlMessage: { en: 'With this short-url the saved map can be accessed directly:', de: 'Mit dieser Url kann die gespeicherte Karte direkt aufgerufen werden:' },
