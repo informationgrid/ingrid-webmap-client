@@ -100,6 +100,7 @@ Local = {
 
         tKoordinatensysteme: { en: 'Coordinate system', de: 'Koordinatensysteme' },
         tKurzUrl: { en: 'Short-Url', de: 'Kurz-Url' },
+        tKurzUrlMessage: { en: 'With this short-url the saved map can be accessed directly:', de: 'Mit dieser Url kann die gespeicherte Karte direkt aufgerufen werden:' },
         tLaden : { en: 'Load', de: 'Laden' },
         tLadeDruckkonfiguration : { en: 'Loading print configuration...', de: 'Lade Druckkonfiguration...' },
         tLand : { en: 'Country', de: 'Land' },

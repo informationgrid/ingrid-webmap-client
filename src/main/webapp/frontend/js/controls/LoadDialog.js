@@ -151,12 +151,21 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	this.fileList.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 		if (columnIndex == grid.getColumnModel().getIndexById('shortUrl')) {
 			var record = grid.getStore().getAt(rowIndex);
-			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+record.get('shortUrl');
-			Ext.Msg.show({
-			   title: i18n('tKurzUrl'),
-			   msg: url,
-			   icon: Ext.MessageBox.INFO
-			});
+			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
+			new Ext.ux.Notification({
+				iconCls:	'x-icon-information',
+				title:	  i18n('tKurzUrl'),
+				html:	  i18n('tKurzUrlMessage') +'<br/>'+url,
+				width: 300,
+				autoDestroy: true,
+				hideDelay:  30000,
+				icon: Ext.MessageBox.INFO,
+				displayTarget: Ext.select('div.x-panel-tbar'),
+				buttons:[{
+					        text: 'Karte aufrufen',
+					        handler: function() {window.location=url;}
+					    }]
+			}).show(Ext.select('div.x-panel-tbar'));
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
 			if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
