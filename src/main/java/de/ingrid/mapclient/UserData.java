@@ -3,8 +3,12 @@
  */
 package de.ingrid.mapclient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -19,17 +23,56 @@ import de.ingrid.mapclient.model.LocationKey;
  */
 public class UserData {
 
+	private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	private String id;
+	private String shortUrl; // TODO: transient
+	private String title;
+	private String description;
+	private String date; // we use a string value to better control un-/serialization format
 	private String wmcDocument;
 	private LocationKey locationKey;
-	private List<String> activeServices;
+	private List<String> activeServices = new ArrayList<String>();
+	private List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
 
-	/**
-	 * Constructor
-	 */
-	public UserData() {
-		this.wmcDocument = null;
-		this.locationKey = null;
-		this.activeServices = new ArrayList<String>();
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setShortUrl(String shortUrl) {
+		this.shortUrl = shortUrl;
+	}
+
+	public String getShortUrl() {
+		return this.shortUrl;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDate(Date date) {
+		this.date = df.format(date);
+	}
+
+	public Date getDate() throws ParseException {
+		return df.parse(this.date);
 	}
 
 	public void setWmcDocument(String wmcDocument) {
@@ -83,5 +126,13 @@ public class UserData {
 	 */
 	private static void setXStreamAliases(XStream xstream) {
 		xstream.alias("locationKey", LocationKey.class);
+	}
+
+	public List<Map<String, String>> getKml() {
+		return kmlArray;
+	}
+
+	public void setKml(List<Map<String, String>> kml) {
+		this.kmlArray = kml;
 	}
 }

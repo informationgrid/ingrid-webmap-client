@@ -13,6 +13,10 @@ public class Layer {
 	private String name;
 	private Boolean isBaseLayer;
 
+	public Layer() {
+	}
+
+	
 	public Layer(String name, Boolean isBaseLayer) {
 		this.name = name;
 		this.isBaseLayer = isBaseLayer;
@@ -25,4 +29,16 @@ public class Layer {
 	public Boolean isBaseLayer() {
 		return this.isBaseLayer;
 	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public void setIsBaseLayer(Boolean isBaseLayer) {
+		this.isBaseLayer = isBaseLayer;
+	}
+	
+	
 }

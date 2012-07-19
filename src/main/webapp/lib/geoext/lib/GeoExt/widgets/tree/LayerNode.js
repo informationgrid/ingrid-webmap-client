@@ -73,7 +73,9 @@ GeoExt.tree.LayerNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
     enforceOneVisible: function() {
         var attributes = this.node.attributes;
         var group = attributes.checkedGroup;
-        if(group) {
+        // If we are in the baselayer group, the map will take care of
+        // enforcing visibility.
+        if(group && group !== "gx_baselayer") {
             var layer = this.node.layer;
             var checkedNodes = this.node.getOwnerTree().getChecked();
             var checkedCount = 0;
@@ -114,7 +116,7 @@ GeoExt.tree.LayerNodeUI = Ext.extend(Ext.tree.TreeNodeUI, {
 /** api: (define)
  *  module = GeoExt.tree
  *  class = LayerNode
- *  base_link = `Ext.tree.TreeNode <http://extjs.com/deploy/dev/docs/?class=Ext.tree.TreeNode>`_
+ *  base_link = `Ext.tree.TreeNode <http://dev.sencha.com/deploy/dev/docs/?class=Ext.tree.TreeNode>`_
  */
 
 /** api: constructor
@@ -218,7 +220,7 @@ GeoExt.tree.LayerNode = Ext.extend(Ext.tree.AsyncTreeNode, {
             if(i != -1) {
                 // if we found the layer, we can assign it and everything
                 // will be fine
-                layer = this.layerStore.getAt(i).get("layer");
+                layer = this.layerStore.getAt(i).getLayer();
             }
         }
         if (!this.rendered || !layer) {
@@ -316,7 +318,7 @@ GeoExt.tree.LayerNode = Ext.extend(Ext.tree.AsyncTreeNode, {
     onStoreAdd: function(store, records, index) {
         var l;
         for(var i=0; i<records.length; ++i) {
-            l = records[i].get("layer");
+            l = records[i].getLayer();
             if(this.layer == l) {
                 this.getUI().show();
                 break;
@@ -338,7 +340,7 @@ GeoExt.tree.LayerNode = Ext.extend(Ext.tree.AsyncTreeNode, {
      *  handler for remove events on the store 
      */
     onStoreRemove: function(store, record, index) {
-        if(this.layer == record.get("layer")) {
+        if(this.layer == record.getLayer()) {
             this.getUI().hide();
         }
     },
@@ -351,7 +353,7 @@ GeoExt.tree.LayerNode = Ext.extend(Ext.tree.AsyncTreeNode, {
      *  Listener for the store's update event.
      */
     onStoreUpdate: function(store, record, operation) {
-        var layer = record.get("layer");
+        var layer = record.getLayer();
         if(!this.fixedText && (this.layer == layer && this.text !== layer.name)) {
             this.setText(layer.name);
         }

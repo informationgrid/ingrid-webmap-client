@@ -17,6 +17,9 @@ public class ServiceCategory {
 	private List<ServiceCategory> serviceCategories = new ArrayList<ServiceCategory>();
 	private List<WmsServer> services = new ArrayList<WmsServer>();
 
+	public ServiceCategory() {
+	}
+	
 	public ServiceCategory(String name, List<ServiceCategory> serviceCategories, List<WmsServer> services) {
 		this.name = name;
 		this.serviceCategories = serviceCategories;

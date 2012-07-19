@@ -8,13 +8,14 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.services");
  */
 de.ingrid.mapclient.admin.modules.services.ServicesModule = Ext.extend(de.ingrid.mapclient.admin.modules.ModuleBase, {
 
-	title: 'Kategorisierte Dienste',
+	title: 'Rubriken',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',
 	buttonAlign: 'right',
 	border: false,
-	padding: 10
+	padding: 10,
+	autoScroll:true
 
 });
 

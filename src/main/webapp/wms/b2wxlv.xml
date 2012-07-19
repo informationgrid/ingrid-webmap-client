@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+  <Service>
+    <Name>OGC:WMS</Name>
+    <Title>Flurabstand des Grundwassers Berlin</Title>
+    <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
+    <KeywordList>
+      <Keyword>GeoTools</Keyword>
+    </KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.stadtentwicklung.berlin.de/geoinformation/fis-broker/" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Renate Zweer</ContactPerson>
+        <ContactOrganization>Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Project Lead</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Fehrbelliner Platz 1</Address>
+        <City>Berlin</City>
+        <StateOrProvince>Berlin</StateOrProvince>
+        <PostCode>10707</PostCode>
+        <Country>Germany</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
+    <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <Format>image/png</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/senstadt/flurab2006_diff?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+    </Exception>
+    <VendorSpecificCapabilities/>
+    <!-- Layers -->
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Title>Flurabstand des Grundwassers 2006 differenziert (Umweltatlas)</Title>
+      <Abstract>Tiefe des Grundwassers unter der Geländeoberfläche - Flurabstand</Abstract>
+      <KeywordList>
+        <Keyword>Karte</Keyword>
+        <Keyword>Karten</Keyword>
+        <Keyword>Geodaten</Keyword>
+        <Keyword>Berlin</Keyword>
+        <Keyword>Flurabstand</Keyword>
+        <Keyword>Umweltatlas</Keyword>
+      </KeywordList>
+      <SRS>EPSG:3068</SRS>
+      <SRS>EPSG:25833</SRS>
+      <SRS>EPSG:31467</SRS>
+      <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4326</SRS>
+      <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+      <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+      <BoundingBox SRS="EPSG:25833" maxx="427459.5703" maxy="5857931.0499" minx="356157.9378" miny="5789293.7004"/>
+      <BoundingBox SRS="EPSG:31467" maxx="3831457.8899" maxy="5870655.156" minx="3766018.2359" miny="5796229.7355"/>
+      <BoundingBox SRS="EPSG:25832" maxx="831253.653" maxy="5868743.3343" minx="765839.4586" miny="5794348.3773"/>
+      <AuthorityURL name="GDI-DE">
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
+      </AuthorityURL>
+      <Identifier authority="GDI-DE">93a3d6f1-4539-3340-93b8-5769621cbd95</Identifier>
+      <MetadataURL type="TC211">
+        <Format>text/xml</Format>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3643af6b-d2e4-3710-81cc-1d87f20e2818&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+      </MetadataURL>
+      <Style>
+        <Name>default</Name>
+        <Title>Standard</Title>
+        <LegendURL height="809" width="283">
+          <Format>image/gif</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_flurab2006_diff.gif" xlink:type="simple"/>
+        </LegendURL>
+      </Style>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>0</Name>
+        <Title>Hintergrund 1:5.000</Title>
+        <Abstract>digitale Karte 1:5.000, Rasterkarte 1:5.000</Abstract>
+        <KeywordList>
+          <Keyword>Karte</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Flurabstand</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427459.5703" maxy="5857931.0499" minx="356157.9378" miny="5789293.7004"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3831457.8899" maxy="5870655.156" minx="3766018.2359" miny="5796229.7355"/>
+        <BoundingBox SRS="EPSG:25832" maxx="831253.653" maxy="5868743.3343" minx="765839.4586" miny="5794348.3773"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">93a3d6f1-4539-3340-93b8-5769621cbd95</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3643af6b-d2e4-3710-81cc-1d87f20e2818&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="72" width="72">
+            <Format>image/gif</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_flurab2006_diff.gif" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0">
+        <Name>1</Name>
+        <Title>Flurabstand</Title>
+        <KeywordList>
+          <Keyword>Karte</Keyword>
+          <Keyword>Karten</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Berlin</Keyword>
+          <Keyword>Flurabstand</Keyword>
+          <Keyword>Umweltatlas</Keyword>
+        </KeywordList>
+        <SRS>EPSG:3068</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427459.5703" maxy="5857931.0499" minx="356157.9378" miny="5789293.7004"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3831457.8899" maxy="5870655.156" minx="3766018.2359" miny="5796229.7355"/>
+        <BoundingBox SRS="EPSG:25832" maxx="831253.653" maxy="5868743.3343" minx="765839.4586" miny="5794348.3773"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
+        <Identifier authority="GDI-DE">93a3d6f1-4539-3340-93b8-5769621cbd95</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/csw?REQUEST=GetRecordById&amp;SERVICE=CSW&amp;VERSION=2.0.2&amp;ID=3643af6b-d2e4-3710-81cc-1d87f20e2818&amp;ELEMENTSETNAME=FULL" xlink:type="simple"/>
+        </MetadataURL>
+        <Style>
+          <Name>gdi_default</Name>
+          <Title>Standard GDI Style</Title>
+          <LegendURL height="300" width="300">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb/wms/legend/senstadt/flurab2006_diff?layerID=1" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="105" min="0"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

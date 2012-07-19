@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</Title>
+  <Abstract>Baden-Württemberg ist ein geologisch und landschaftlich überaus abwechslungsreiches Land. Dies ist das Ergebnis einer hunderte von Millionen Jahre langen geologischen Entwicklung. Schichten und Gesteine aus fast allen Perioden der Erdgeschichte bilden den Untergrund, auf dem wir leben und den wir nutzen. Wesentliche Aufgabe des Fachbereichs Geologie des LGRB ist die geowissenschaftliche Landesaufnahme und Dokumentation dieses Untergrundes. Im Thema Geologie wird eine Übersicht über die geologischen Verhältnisse (Geologische Einheiten, Tektonik) in Baden-Württemberg gegeben.</Abstract>
+        <KeywordList>
+          <Keyword>Allgemeine</Keyword>
+          <Keyword>Geologie</Keyword>
+          <Keyword>Geologische</Keyword>
+          <Keyword>Karte</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword>Tektonik</Keyword>
+          <Keyword/>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Guenter Sokol</ContactPerson>
+      <ContactOrganization>Regierungspraesidium Freiburg - Abt. 9 LGRB</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>none</ContactPosition>
+    <ContactAddress>
+        <AddressType>POSTAL</AddressType>
+        <Address>Regierungspraesidium Freiburg - Abt. 9 LGRB Albertstrasse 5 79104 Freiburg</Address>
+        <City>Freiburg</City>
+        <StateOrProvince>BW</StateOrProvince>
+        <PostCode>79104</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49-761-208-3000</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>abteilung9@rpf.bwl.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>http://www.lgrb.uni-freiburg.de/lgrb/Produkte/geschaeftsbedingungen</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lgrb_uek350_geologie</Name>
+    <Title>LGRB-BW GÜK300: Geologische Übersichtskarte 1 : 300 000</Title>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <LatLonBoundingBox maxx="10.4265" maxy="49.7756" minx="7.46042" miny="47.5324"/>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>gu300af_m</Name>
+      <Title>GÜK300: Geologische Einheiten</Title>
+      <Abstract>Das Thema zeigt die Geologischen Einheiten im Maßstab 1 : 300.000. Grundlage dieser Darstellung ist die überarbeitete Geologische Übersichtskarte 1 : 500.000. Es zeigt vor allem die Verbreitung der Gesteinsschichten an der Erdoberfläche und gibt Auskunft über deren Alter (Stratigraphie) und Lagerungsverhältnisse. Weitere Attribute sind das Geologische Kürzel sowie das Geologische Zeitalter</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>gu300af_m_1</Name>
+        <Title>Geologische Einheiten</Title>
+        <Abstract>Das Thema zeigt die Geologischen Einheiten im Maßstab 1 : 300.000. Grundlage dieser Darstellung ist die überarbeitete Geologische Übersichtskarte 1 : 500.000. Es zeigt vor allem die Verbreitung der Gesteinsschichten an der Erdoberfläche und gibt Auskunft über deren Alter (Stratigraphie) und Lagerungsverhältnisse. Weitere Attribute sind das Geologische Kürzel sowie das Geologische Zeitalter</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="2309" width="679">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gu300af_m_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="174.615996950373"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>gu300af_m_2</Name>
+        <Title>Geologische Einheiten</Title>
+        <Abstract>Das Thema zeigt die Geologischen Einheiten im Maßstab 1 : 300.000. Grundlage dieser Darstellung ist die überarbeitete Geologische Übersichtskarte 1 : 500.000. Es zeigt vor allem die Verbreitung der Gesteinsschichten an der Erdoberfläche und gibt Auskunft über deren Alter (Stratigraphie) und Lagerungsverhältnisse. Weitere Attribute sind das Geologische Kürzel sowie das Geologische Zeitalter</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="2309" width="679">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gu300af_m_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="174.615498047525" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>gu300tl_m</Name>
+      <Title>GÜK300: Tektonik</Title>
+      <Abstract>Das Thema gibt eine Übersicht über die tektonischen Verhältnisse im Land Baden-Württemberg. Gezeigt werden nachgewiesene und vermutete Störungen sowie einzelne bekannte Überschiebungen.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>gu300tl_m_1</Name>
+        <Title>Tektonik</Title>
+        <Abstract>Das Thema gibt eine Übersicht über die tektonischen Verhältnisse im Land Baden-Württemberg. Gezeigt werden nachgewiesene und vermutete Störungen sowie einzelne bekannte Überschiebungen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="224">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gu300tl_m_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149.670355626043" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>gu300tl_m_2</Name>
+        <Title>Tektonik</Title>
+        <Abstract>Das Thema gibt eine Übersicht über die tektonischen Verhältnisse im Land Baden-Württemberg. Gezeigt werden nachgewiesene und vermutete Störungen sowie einzelne bekannte Überschiebungen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="308">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gu300tl_m_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="149.670854528891"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>lgrb_uek350_geologie_ov</Name>
+        <Title>LGRB-BW GÜK300: Geologische Übersichtskarte 1 : 300 000</Title>
+        <Abstract>Baden-Württemberg ist ein geologisch und landschaftlich überaus abwechslungsreiches Land. Dies ist das Ergebnis einer hunderte von Millionen Jahre langen geologischen Entwicklung. Schichten und Gesteine aus fast allen Perioden der Erdgeschichte bilden den Untergrund, auf dem wir leben und den wir nutzen. Wesentliche Aufgabe des Fachbereichs Geologie des LGRB ist die geowissenschaftliche Landesaufnahme und Dokumentation dieses Untergrundes. Im Thema Geologie wird eine Übersicht über die geologischen Verhältnisse (Geologische Einheiten, Tektonik) in Baden-Württemberg gegeben.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="126">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_geologie&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=lgrb_uek350_geologie_ov&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149670.854528891" min="249.451424214819"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

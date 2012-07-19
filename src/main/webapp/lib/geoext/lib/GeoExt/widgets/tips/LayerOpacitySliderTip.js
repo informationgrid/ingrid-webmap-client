@@ -17,7 +17,7 @@
 /** api: (define)
  *  module = GeoExt
  *  class = LayerOpacitySliderTip
- *  base_link = `Ext.Tip <http://extjs.com/deploy/dev/docs/?class=Ext.Tip>`_
+ *  base_link = `Ext.Tip <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Tip>`_
  */
 Ext.namespace("GeoExt");
 
@@ -69,9 +69,9 @@ GeoExt.LayerOpacitySliderTip = Ext.extend(GeoExt.SliderTip, {
     /** private: method[getText]
      *  :param slider: ``Ext.Slider`` The slider this tip is attached to.
      */
-    getText: function(slider) {
+    getText: function(thumb) {
         var data = {
-            opacity: slider.getValue()
+            opacity: thumb.value
         };
         return this.compiledTemplate.apply(data);
     }

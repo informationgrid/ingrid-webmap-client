@@ -12,7 +12,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
     /**
      * @cfg serviceCategory Object with service category definition as provided by the configuration
      */
-    serviceCategory: {},
+    mapServiceCategory: {},
 
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -28,7 +28,11 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
 	 * Toolbar buttons
 	 */
 	addBtn: null,
-	metaDataBtn: null
+	metaDataBtn: null,
+	expandBtn: null,
+	allExpanded: false,
+	metadataBtnActive: false,
+	disabledButtons: []
 });
 
 /**
@@ -41,12 +45,14 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	// create the toolbar buttons
 	this.addBtn = new Ext.Button({
         iconCls: 'iconAdd',
+        tooltip: i18n('tDienstHinzufuegen'),
         disabled: true,
         handler: function(btn) {
         	if (self.activeServicesPanel && self.activeNode) {
         		var service = self.activeNode.attributes.service;
         		self.activateService(service);
         		btn.disable();
+        		self.disabledButtons[service.capabilitiesUrl] = btn;
         		// activate activeServicesPanel
            		self.activeServicesPanel.expand();
         	}
@@ -54,16 +60,31 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	});
 	this.metaDataBtn = new Ext.Button({
         iconCls: 'iconMetadata',
+        tooltip: i18n('tFuerMetadatenErst'),
         disabled: true,
         handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayMetaData(self.activeNode);
-        	}
+			if (self.activeNode && !self.metadataBtnActive) {
+				self.displayMetaData(self.activeNode);
+				self.metadataBtnActive = true;
+			}
         }
 	});
-
+	this.expandBtn = new Ext.Button({
+		iconCls: 'iconExpand',
+		tooltip: i18n('tAlleZuAufklappen'),
+		disabled: false,
+		handler: function(btn) {
+			if (self.allExpanded) {
+				self.collapseAll();
+				self.allExpanded = false;
+			}else{
+				self.expandAll();
+				self.allExpanded = true;
+			}
+		}
+	});
 	// transform service category object into tree node structure
-	var node = this.transform(this.serviceCategory);
+	var node = this.transform(this.mapServiceCategory);
 
 	Ext.apply(this, {
 		title: node.text,
@@ -71,11 +92,12 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,
 	        children: node.children,
-	        expanded: true
+	        expanded: false
 		}),
 		tbar: items = [
    		    this.addBtn,
-   		    this.metaDataBtn
+   		    this.metaDataBtn,
+   		    this.expandBtn
    		]
 	});
 
@@ -83,7 +105,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		// default
 		self.addBtn.disable();
 		self.metaDataBtn.disable();
-
+		self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
 		if (node) {
 			var service = node.attributes.service;
 			if (service != undefined) {
@@ -93,13 +115,15 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 				}
 				else {
 					self.addBtn.disable();
+					
 				}
 				self.metaDataBtn.enable();
+				self.metaDataBtn.setTooltip(i18n('tMetadaten'));
 			}
 		}
 		self.activeNode = node;
 	});
-
+	this.activeServicesPanel.serviceCategoryPanel = self;
 	de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.superclass.initComponent.call(this);
 };
 
@@ -111,16 +135,46 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform = function(serviceCategory) {
 	var children = [];
-
+	var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 	// transform sub categories
-	var subCategories = serviceCategory.serviceCategories;
+	var subCategories = serviceCategory.mapServiceCategories;
+
+		
+	if(subCategories){
+
+	function sortFunc(a,b){
+		name1 = a.name.toLowerCase();
+		name2 = b.name.toLowerCase();
+		if(name1 == name2)
+				return 0;
+		return (name1 < name2) ? -1 : 1;
+	}
+	//TODO not very performant ?!?
 	for (var i=0, count=subCategories.length; i<count; i++) {
+		var catId = subCategories[i].idx;
+		subCategories[i].services = [];
+		for(var j = 0; j < wmsServices.length; j++){
+			for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
+			if(catId == wmsServices[j].mapServiceCategories[k].idx){
+			var tempService = new Object();
+			tempService.name = wmsServices[j].name;
+			tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
+			subCategories[i].services.push(tempService);
+			
+			}
+			subCategories[i].services.sort(sortFunc);
+		}
+		
+		if(subCategories[i].services.length != 0){
 		var childNode = this.transform(subCategories[i]);
 		children.push(childNode);
+		}
+	}
 	}
 
 	// transform services
 	var services = serviceCategory.services;
+	if(services)
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(curService.capabilitiesUrl);
@@ -138,7 +192,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 		text: serviceCategory.name,
 		children: children,
 		leaf: children.length == 0 ? true : false,
-		expanded: true,
+		expanded: false,
 		expandable: true
 	};
 	return node;
@@ -151,7 +205,8 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateService = function(service) {
 	var callback = Ext.util.Functions.createDelegate(this.activeServicesPanel.addService, this.activeServicesPanel);
-	de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback);
+	var showFlash = true;
+	de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback, showFlash);
 };
 
 /**
@@ -159,11 +214,15 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateSer
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var service = node.attributes.service;
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layerName: node.layer
-		}).show();
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+					capabilitiesUrl: service.getCapabilitiesUrl(),
+					layerName: node.layer
+				}).show();
+				metaDialog.on('close', function(){
+				self.metadataBtnActive = false;
+				});
 	}
 };

@@ -67,7 +67,7 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.buildContent = functi
 
 	// create the contained GridPanel instance
 	var columns = [{
-		header: 'Neue Kategorie',
+		header: 'Neue Rubrik',
 		sortable: true,
 		dataIndex: 'name',
 		editor: {
@@ -115,7 +115,8 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.buildContent = functi
 			path.push(name);
 			var initialCategory = self.createCategory(name);
 			self.buildStore(path, initialCategory);
-			self.save();
+			self.saveAndReload(store, records);
+	
 		},
 		'update': function(store, record, operation) {
 			// relocate the store of the category and save
@@ -204,6 +205,7 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.getCategoriesName = f
  */
 de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.save = function() {
 	var result = {};
+	var self = this;
 	var categoriesName = this.getCategoriesName();
 	this.getStoreManager().iterate(function(path, store, context) {
 		// find the next parent for the current item
@@ -229,7 +231,63 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.save = function() {
 	},
 	// initial context
 	result);
+	de.ingrid.mapclient.Configuration.setValue(categoriesName, Ext.encode(result), {success: self.success, failure: self.failure});
+};
+
+/**
+ * Save the category data
+ */
+de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.saveAndReload = function(storeFromAdd, records) {
+	var result = {};
+	var self = this;
+	var categoriesName = this.getCategoriesName();
+	this.getStoreManager().iterate(function(path, store, context) {
+		// find the next parent for the current item
+		var parent = context;
+		var categories = parent[categoriesName];
+		if (categories != undefined) {
+			for (var j=0, countJ=categories.length; j<countJ; j++) {
+				if (categories[j].name == path[path.length-1]) {
+					parent = categories[j];
+					break;
+				}
+			}
+		}
+		// create items of store record type from the store content
+		var items = [];
+		store.each(function(record) {
+			items.push(record.data);
+		}, this);
+		// create item
+		parent.name = path[path.length-1];
+		parent[store.baseParams.type] = items;
+		return parent;
+	},
+	// initial context
+	result);
+	var highest = 0;
+	var catReference = null;
+	for (var i = 0; i < result.mapServiceCategories.length; i++){
+		if(result.mapServiceCategories[i].idx || result.mapServiceCategories[i].idx == 0){
+			if(result.mapServiceCategories[i].idx > highest)
+				highest = result.mapServiceCategories[i].idx; 
+		}else{
+			catReference = result.mapServiceCategories[i]
+		}
+		if(result.mapServiceCategories[i].mapServiceCategories){
+			for (var j = 0; j < result.mapServiceCategories[i].mapServiceCategories.length; j++){
+				if(result.mapServiceCategories[i].mapServiceCategories[j].idx){
+					if(result.mapServiceCategories[i].mapServiceCategories[j].idx > highest)
+						highest = result.mapServiceCategories[i].mapServiceCategories[j].idx; 
+				}else{
+					catReference = result.mapServiceCategories[i].mapServiceCategories[j];						
+				}
+			}
+		}
+	}
+	catReference.idx = highest + 1;
 	de.ingrid.mapclient.Configuration.setValue(categoriesName, Ext.encode(result), de.ingrid.mapclient.admin.DefaultSaveHandler);
+
 };
 
 /**
@@ -404,3 +462,6 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.initializeStore = fun
 		store.resumeEvents(false);
 	}
 };
+
+
+

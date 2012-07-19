@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.0">
+
+<!-- MapServer version 5.2.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=PDF OUTPUT=SWF OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=RGBA_PNG INPUT=JPEG INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Geobasisdaten Muenster</Title>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Norbert Dephoff</ContactPerson>
+      <ContactOrganization>Vermessungs- und Katasteramt</ContactOrganization>
+    </ContactPersonPrimary>
+    <ContactAddress>
+        <AddressType/>
+        <Address>Albersloher Weg 33</Address>
+        <City>Münster</City>
+        <StateOrProvince/>
+        <PostCode>48155</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+  <ContactElectronicMailAddress>dephoff@stadt-muenster.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/jpeg</Format>
+      <Format>image/gif</Format>
+      <Format>image/png</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>MUENSTER</Name>
+    <Title>Geobasisdaten Muenster</Title>
+    <SRS>EPSG:4326 EPSG:25832 EPSG:31466 EPSG:31467</SRS>
+    <LatLonBoundingBox maxx="7.83995" maxy="52.0774" minx="7.39549" miny="51.8027"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3.42e+006" maxy="5.772e+006" minx="3.39e+006" miny="5.742e+006"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>splan</Name>
+        <Title>Stadtplan</Title>
+        <SRS>EPSG:31467</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting LAYER.EXTENT or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="30" width="123">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=splan&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="50.3891876913933" min="1.19736683623113"/>
+    </Layer>
+    <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
+        <Name>luftb</Name>
+        <Title>Luftbilder</Title>
+        <SRS>EPSG:31467</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting LAYER.EXTENT or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <ScaleHint max="1.94572110887558" min="0.187088568161114"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>dgk5dbr</Name>
+        <Title>DGK5</Title>
+        <SRS>EPSG:31467</SRS>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting LAYER.EXTENT or wms_extent metadata. Also check that your data exists in the DATA statement -->
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="30" width="88">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=dgk5dbr&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1.94572110887558" min="0.000498902848429637"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>Stadtgrundkarte</Name>
+      <Title>Stadtgrundkarte</Title>
+      <Abstract>Stadtgrundkarte</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>flst</Name>
+        <Title>Flurstuecke</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="7.77743" maxy="52.0633" minx="7.47065" miny="51.8398"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.41576e+006" maxy="5.77051e+006" minx="3.39512e+006" miny="5.74603e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="60" width="249">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=flst&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="4.98902848429637" min="0.000498902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>gebaeude</Name>
+        <Title>Gebaeude</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="7.77212" maxy="52.0614" minx="7.47588" miny="51.8426"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.41539e+006" maxy="5.7703e+006" minx="3.39548e+006" miny="5.74632e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="150" width="200">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=gebaeude&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="4.98902848429637" min="0.000498902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>texte</Name>
+        <Title>Beschriftung</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="7.77682" maxy="52.0627" minx="7.47426" miny="51.8402"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.41571e+006" maxy="5.77044e+006" minx="3.39537e+006" miny="5.74606e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="30" width="144">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=texte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1.24725712107409" min="0.000498902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>linien</Name>
+        <Title>Topographie</Title>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="7.80566" maxy="52.0636" minx="7.47065" miny="51.8398"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.4177e+006" maxy="5.77051e+006" minx="3.39512e+006" miny="5.74603e+006"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="30" width="137">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geo.stadt-muenster.de/cgi-bin/geobasis?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=linien&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1.24725712107409" min="0.000498902848429637"/>
+      </Layer>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

@@ -13,6 +13,9 @@ public class Scale {
 	private String name;
 	private double zoomLevel;
 
+	public Scale() {
+	}
+
 	public Scale(String name, double zoomLevel) {
 		this.name = name;
 		this.zoomLevel = zoomLevel;

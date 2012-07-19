@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <link rel="stylesheet" type="text/css" href="Ext.ux.MessageBox.flash.css">
+
+  <title id="page-title">Ext.ux.MessageBox.flash</title>
+
+</head>
+
+<body>
+  <script type="text/javascript" src="lib/ext-core-debug.js"></script>
+  <script type="text/javascript" src="Ext.ux.MessageBox.flash.js"></script>
+  <script type="text/javascript">
+
+  // Path to the blank image must point to a valid location on your server
+  Ext.BLANK_IMAGE_URL = '../../resources/images/default/s.gif';
+
+  function showFlash(sender){
+        Ext.ux.Msg.flash({
+                msg: 'Sample ' + sender.id + ' Message',
+                time: 2,
+                type: sender.id
+        });
+  };
+  </script>
+  <br>
+  <input type="button" value="Success" id="success" onclick="showFlash(this)"/><br/>
+  <input type="button" value="Error" id="error" onclick="showFlash(this)"/><br/>
+  <input type="button" value="Warning" id="warning" onclick="showFlash(this)"/><br/>
+  <input type="button" value="Info" id="info" onclick="showFlash(this)"/>
+</body>
+
+</html>

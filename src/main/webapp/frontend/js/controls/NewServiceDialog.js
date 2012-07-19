@@ -4,11 +4,11 @@
 Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
 /**
- * @class NewServiceDialog is the dialog for adding a new service to the list
+ * @class NewServiceDialog is the dialog used for adding a new service to the list
  * of active services.
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, {
-	title: "Dienst hinzufügen",
+	title: i18n('tDienstHinzufuegen'),
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -16,11 +16,13 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, 
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
-
+	modal: true,
+	ctrls:null,
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
      */
     activeServicesPanel: null,
+    
 
     /**
      * Form fields
@@ -35,6 +37,21 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, 
  */
 de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent = function() {
 
+	Ext.override(Ext.form.TextField, {
+    //  Add functionality to Field's initComponent to enable the change event to bubble
+	// We dont want the map to move while in focus therefore we do this
+    initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
+        this.enableBubble(['focus','blur']);
+    }),
+
+    //  We know that we want Field's events to bubble directly to the FormPanel.
+    getBubbleTarget : function() {
+        if (!this.windowContent) {
+            this.windowContent = this.findParentByType('form');
+        }
+        return this.windowContent;
+    }
+	});	
 	this.capabilitiesUrlField = new Ext.form.TextField({
 		hideLabel: true,
 		allowBlank: false
@@ -42,12 +59,12 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 
 	this.activateLayersCheckbox = new Ext.form.Checkbox({
 		hideLabel: true,
-        boxLabel: 'Ebenen des Kartendienstes aktivieren'
+        boxLabel: i18n('tEbenenAktivieren')
 	});
 
 	this.activateZoomCheckbox = new Ext.form.Checkbox({
 		hideLabel: true,
-        boxLabel: 'Auf Ebenenausdehnung des Kartendienstes heranzoomen'
+        boxLabel: i18n('tEbenenZoomen')
 	});
 
 	var self = this;
@@ -56,18 +73,16 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 		bodyStyle: 'padding: 10px',
 		labelAlign: 'top',
 		defaults: {
-			anchor:'100%'
+			anchor: '100%'
 		},
 		items: [{
-				html: 'Bitte geben Sie eine GetCapabilities-URL eines externen web map service (WMS) an:',
+				html: i18n('tBitteCapabilitiesExternerService'),
 				border: false
 			},
 		    this.capabilitiesUrlField,
 		    this.activateLayersCheckbox,
 		    this.activateZoomCheckbox, {
-				html: 'Hinweis: Möglicherweise müssen Sie die Ansicht vergrößern, um Ebenen von externen Kartendiensten '+
-					'betrachten zu können. Der Betreiber des Kartendienstes ist für die Anzeige verantwortlich. '+
-					'PortalU hat keine Beteiligung an dessen Verhalten.',
+				html: i18n('tHintZoomToView'),
 					bodyStyle: {
 			            color: '#A8A8A8'
 			        },
@@ -75,7 +90,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 			}
 		],
 		buttons: [{
-			text: 'Dienst hinzufügen',
+			text: i18n('tDienstHinzufuegen'),
 	        handler: function(btn) {
 	        	if (self.activeServicesPanel && self.capabilitiesUrlField.validate()) {
 	        		var capabilitiesUrl = self.capabilitiesUrlField.getValue();
@@ -84,7 +99,17 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.initComponent =
 	        		self.close();
 	        	}
 	        }
-		}]
+		}],
+		listeners: {
+        focus: function() {
+            // We deactivate keyboard control when in focus
+        	 self.activeServicesPanel.ctrls['keyboardControl'].deactivate();
+        },
+        blur: function() {
+            // activate it again
+            self.activeServicesPanel.ctrls['keyboardControl'].activate();
+        }        
+    	}
 	});
 
 	Ext.apply(this, {
@@ -126,7 +151,15 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.onServiceLoaded
 			layer.visibility = true;
 		}
 	}
-
+	
+	//zoom to map service map extent if requested
+	var activateZoomCheckbox = this.activateZoomCheckbox.checked;
+	if (activateZoomCheckbox) {
+	var llbbox = service.capabilitiesStore.data.items[0].data.llbbox;
+	var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+	this.activeServicesPanel.map.zoomToExtent(bounds);
+	}
+	
 	// add the service
-	this.activeServicesPanel.addService(service);
+	this.activeServicesPanel.addService(service, true);
 };

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- The DTD (Document Type Definition) given here must correspond to the version number declared in the WMT_MS_Capabilities element below. --><!-- end of DOCTYPE declaration --><!-- The version number listed in the WMT_MS_Capabilities element here must correspond to the DTD declared above.  See the WMT specification document for how to respond when a client requests a version number not implemented by the server. --><WMT_MS_Capabilities updateSequence="0" version="1.1.1">
+	<Service>
+	<!-- The WMT-defined name for this type of service -->
+	<Name>OGC:WMS cardo.Map System</Name>
+	<!-- Human-readable title for pick lists -->
+	<Title>Grundwasserneubildung Niedersachsen</Title>
+	<!-- Narrative description providing additional information -->
+	<Abstract>Grundwasserneubildung, Methode: GROWA06v2 (1961-90)
+Grundwasser ist ein Rohstoff, der sich regenerieren und erneuern kann. Hauptlieferant für den Grundwasservorrat ist versickerndes Niederschlagswasser. Es sorgt dafür, dass die Grundwasservorkommen der Speichergesteine im Untergrund aufgefüllt werden. Besonders hoch ist die Grundwasserneubildung im Winter, da zu dieser Zeit ein großer Teil der Niederschläge im Boden versickert. In den wärmeren Jahreszeiten verdunstet dagegen ein großer Teil des Niederschlags bereits an der Oberfläche oder wird von Pflanzen aufgenommen. Die Grundwasserneubildung ist nicht überall gleich. Sie hängt unter anderem ab von der Niederschlagsmenge und -verteilung, der Durchlässigkeit des Bodens, dem Bewuchs und dem Relief der Bodenoberfläche sowie dem Grundwasserflurabstand. Da sich diese Parameter in Niedersachsen zum Teil auf kleinstem Raum deutlich unterscheiden, unterliegt auch die Grundwasserneubildungsrate großen lateralen Schwankungen. Die vorliegende Karte zeigt eine flächendifferenzierte Ausweisung der mittleren Grundwasserneubildungsraten und eröffnet damit die Möglichkeit, eine Reihe von hydrogeologischen Fragestellungen zu beantworten. Um die Rate der Grundwasserneubildung zu ermitteln, gibt es verschiedene Verfahren. Die vorliegende Karte stellt Ergebnisse dar, die mit dem Verfahren GROWA berechnet wurden (KUNKEL &amp; WENDLAND, 1998, BOGENA et al. 2003, MÜLLER 2004). Sie zeigt basierend auf Niederschlagsaufzeichnungen des Deutschen Wetterdienstes die mittlere Grundwasserneubildungsrate des Zeitraumes 1961 &#150; 1990. Die Grundwasserneubildungsrate wurde berechnet als Differenz aus Niederschlag, realer Evapotranspiration und Oberflächenabfluss. Eine detaillierte Beschreibung zur Version GROWA06v2 ist LEMKE &amp; ELBRACHT (2008) zu entnehmen. 
+Für die Darstellung wurden die Ergebnisse der Berechnung der Grundwasserneubildungsrate in 10 Klassen mit Stufen von jeweils 50 mm/a eingeteilt. Für Niedersachsen ergeben sich hohe Neubildungsraten in den Hochlagen der Mittelgebirge und des Harzes sowie in den Geestflächen des norddeutschen Tieflandes. Nach Osten nehmen die Grundwasserneubildungsraten wegen der dort generell geringeren Niederschlagsmengen deutlich ab. 
+Literatur: 
+BOGENA, H., KUNKEL, R. , SCHÖBEL, T. , SCHREY, H.P. &amp; WENDLAND, F.  (2003): Die Grundwasserneubildung in Nordrhein-Westfalen.- Schriften des Forschungszentrum Jülich, Reihe Umwelt, Vol. 37.
+KUNKEL, R. &amp; WENDLAND, F.  (1998): Der Landschaftswasserhaushalt im Flusseinzugsgebiet der Elbe.-  Schriften des Forschungszentrum Jülich, Reihe Umwelt, Vol. 12.
+LEMKE, D. &amp; ELBRACHT, J. (2008): Grundwasserneubildung in Niedersachsen. Ein Vergleich der Methoden &#132;Dörhöfer &amp; Josopait&#147; und GROWA06V2. &#150; GeoBerichte 10; Hannover. 
+MÜLLER, U. (2004): Auswertungsmethoden im Bodenschutz.- Arbeitshefte Boden 2004/2.</Abstract>
+	<KeywordList><Keyword>Grundwasser</Keyword><Keyword>Grundwasserneubildung</Keyword><Keyword>Hydrogeologie</Keyword></KeywordList>
+	<!-- Top-level web address of service or service provider.  See also OnlineResource	  elements under <DCPType>. -->
+	<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="www.lbeg.niedersachsen.de" xlink:type="simple"/>
+	<!-- Contact information -->
+	<ContactInformation>
+		<ContactPersonPrimary>
+			<ContactPerson>Dr. Jörg Elbracht</ContactPerson>
+			<ContactOrganization>LBEG</ContactOrganization>
+		</ContactPersonPrimary>
+		<ContactPosition/>
+		<ContactAddress>
+			<AddressType>postal</AddressType>
+			<Address>Stilleweg 2</Address>
+			<City>Hannover</City>
+			<StateOrProvince>Niedersachsen</StateOrProvince>
+			<PostCode>30655</PostCode>
+			<Country>DE</Country>
+		</ContactAddress>
+		<ContactVoiceTelephone>0511 - 643 - 3613</ContactVoiceTelephone>
+		<ContactElectronicMailAddress>Joerg.Elbracht@lbeg.niedersachsen.de</ContactElectronicMailAddress>
+	</ContactInformation>
+	<Fees>none</Fees>
+	<AccessConstraints>none</AccessConstraints>
+</Service>
+
+	<Capability>
+	  <Request>
+	    <GetCapabilities>
+	      <Format>application/vnd.ogc.wms_xml</Format>
+	      <DCPType>
+	        <HTTP>
+	          <Get>
+	            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;" xlink:type="simple"/>
+	          </Get>
+	          
+	        </HTTP>
+	      </DCPType>
+	    </GetCapabilities>
+	    <GetMap>
+		  <Format>image/png</Format>
+	      <Format>image/png8</Format>
+	      <Format>image/png32</Format>
+	      <Format>image/png24</Format>
+	      <Format>image/png;mode=32bit</Format>
+	      <Format>image/png;mode=24bit</Format>
+	      <Format>image/png;mode=8bit</Format>
+	      <Format>image/jpeg</Format>
+	      <!--
+		  <Format>image/gif</Format>
+	      <Format>image/emf</Format>
+	      <Format>image/ecw</Format>
+		  -->
+	      <DCPType>
+	        <HTTP>
+	          <Get>
+	            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;" xlink:type="simple"/>
+	          </Get>
+	        </HTTP>
+	      </DCPType>
+	    </GetMap>
+	    <GetFeatureInfo>
+	      <Format>text/html</Format>
+	      <Format>text/html;cardo</Format>
+	      <Format>text/html;fragment</Format>
+	      <Format>text/plain</Format>
+	      <Format>text/xml</Format>
+	      <DCPType>
+	        <HTTP>
+	          <Get>
+	            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;" xlink:type="simple"/>
+	          </Get>
+	          
+	        </HTTP>
+	      </DCPType>
+	    </GetFeatureInfo>
+		<GetLegendGraphic>
+		  <Format>image/png</Format> 
+		  <DCPType>
+			<HTTP>
+			<Get>
+	            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;" xlink:type="simple"/>
+			  </Get>
+		  </HTTP>
+		  </DCPType>
+	  </GetLegendGraphic>
+	  </Request>
+	  <Exception>
+	    <Format>application/vnd.ogc.se_xml</Format>
+	  </Exception>
+	  <VendorSpecificCapabilities>
+	<cardoVersion>2.0.0</cardoVersion>
+	<iwanVersion>4.1.10 Build 62</iwanVersion>
+	<supportsResolution>true</supportsResolution>
+	<supportsWKBSelGeom>true</supportsWKBSelGeom>
+</VendorSpecificCapabilities><Layer noSubsets="0" opaque="1" queryable="0">
+	<Name>_IWAFT_</Name>
+	<Title>Grundwasserneubildung, Methode: GROWA06v2 (1961-90)</Title>
+	<SRS>EPSG:25832</SRS><SRS>EPSG:31466</SRS><SRS>EPSG:31467</SRS><SRS>EPSG:31468</SRS><SRS>EPSG:31469</SRS><SRS>EPSG:4326</SRS>
+	<LatLonBoundingBox maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706"/><BoundingBox SRS="EPSG:25832" maxx="674555" maxy="5972299" minx="339258" miny="5682497" resx="1" resy="1"/><BoundingBox SRS="EPSG:31466" maxx="2883930" maxy="5985825" minx="2536538" miny="5682042" resx="1" resy="1"/><BoundingBox SRS="EPSG:31467" maxx="3674697" maxy="5974252" minx="3339266" miny="5684334" resx="1" resy="1"/><BoundingBox SRS="EPSG:31468" maxx="4477406" maxy="5985233" minx="4130039" miny="5681472" resx="1" resy="1"/><BoundingBox SRS="EPSG:31469" maxx="5280135" maxy="6004601" minx="4921038" miny="5687165" resx="1" resy="1"/><BoundingBox SRS="EPSG:4326" maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706" resx="1" resy="1"/>
+	<Layer noSubsets="1" opaque="1" queryable="1">
+		<Name>L354</Name>
+		<Title>Grundwasserneubildung, Methode: GROWA06v2 (1961-90) 1 : 50 000 </Title>
+		<SRS>EPSG:25832</SRS><SRS>EPSG:31466</SRS><SRS>EPSG:31467</SRS><SRS>EPSG:31468</SRS><SRS>EPSG:31469</SRS><SRS>EPSG:4326</SRS>
+		<LatLonBoundingBox maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706"/><BoundingBox SRS="EPSG:25832" maxx="674555" maxy="5972299" minx="339258" miny="5682497" resx="1" resy="1"/><BoundingBox SRS="EPSG:31466" maxx="2883930" maxy="5985825" minx="2536538" miny="5682042" resx="1" resy="1"/><BoundingBox SRS="EPSG:31467" maxx="3674697" maxy="5974252" minx="3339266" miny="5684334" resx="1" resy="1"/><BoundingBox SRS="EPSG:31468" maxx="4477406" maxy="5985233" minx="4130039" miny="5681472" resx="1" resy="1"/><BoundingBox SRS="EPSG:31469" maxx="5280135" maxy="6004601" minx="4921038" miny="5687165" resx="1" resy="1"/><BoundingBox SRS="EPSG:4326" maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706" resx="1" resy="1"/>
+		<Style>
+			<Name>default</Name>
+			<Title>L354</Title>
+			<LegendURL height="295" width="160">
+				<Format>image/png</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;REQUEST=getLegendGraphic&amp;LAYER=L354" xlink:type="simple"/>
+			</LegendURL>
+		</Style>
+		<ScaleHint max="66.2910937500" min="0"/>
+	</Layer>
+	<Layer noSubsets="1" opaque="1" queryable="1">
+		<Name>L353</Name>
+		<Title>Grundwasserneubildung, Methode: GROWA06v2 (1961-90) 1 : 200 000 </Title>
+		<SRS>EPSG:25832</SRS><SRS>EPSG:31466</SRS><SRS>EPSG:31467</SRS><SRS>EPSG:31468</SRS><SRS>EPSG:31469</SRS><SRS>EPSG:4326</SRS>
+		<LatLonBoundingBox maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706"/><BoundingBox SRS="EPSG:25832" maxx="674555" maxy="5972299" minx="339258" miny="5682497" resx="1" resy="1"/><BoundingBox SRS="EPSG:31466" maxx="2883930" maxy="5985825" minx="2536538" miny="5682042" resx="1" resy="1"/><BoundingBox SRS="EPSG:31467" maxx="3674697" maxy="5974252" minx="3339266" miny="5684334" resx="1" resy="1"/><BoundingBox SRS="EPSG:31468" maxx="4477406" maxy="5985233" minx="4130039" miny="5681472" resx="1" resy="1"/><BoundingBox SRS="EPSG:31469" maxx="5280135" maxy="6004601" minx="4921038" miny="5687165" resx="1" resy="1"/><BoundingBox SRS="EPSG:4326" maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706" resx="1" resy="1"/>
+		<Style>
+			<Name>default</Name>
+			<Title>L353</Title>
+			<LegendURL height="270" width="160">
+				<Format>image/png</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;REQUEST=getLegendGraphic&amp;LAYER=L353" xlink:type="simple"/>
+			</LegendURL>
+		</Style>
+	</Layer>
+	<Layer noSubsets="1" opaque="1" queryable="1">
+		<Name>L355</Name>
+		<Title>Grundwasserneubildung, Methode: GROWA06v2 (1961-90) 1 : 500 000 </Title>
+		<SRS>EPSG:25832</SRS><SRS>EPSG:31466</SRS><SRS>EPSG:31467</SRS><SRS>EPSG:31468</SRS><SRS>EPSG:31469</SRS><SRS>EPSG:4326</SRS>
+		<LatLonBoundingBox maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706"/><BoundingBox SRS="EPSG:25832" maxx="674555" maxy="5972299" minx="339258" miny="5682497" resx="1" resy="1"/><BoundingBox SRS="EPSG:31466" maxx="2883930" maxy="5985825" minx="2536538" miny="5682042" resx="1" resy="1"/><BoundingBox SRS="EPSG:31467" maxx="3674697" maxy="5974252" minx="3339266" miny="5684334" resx="1" resy="1"/><BoundingBox SRS="EPSG:31468" maxx="4477406" maxy="5985233" minx="4130039" miny="5681472" resx="1" resy="1"/><BoundingBox SRS="EPSG:31469" maxx="5280135" maxy="6004601" minx="4921038" miny="5687165" resx="1" resy="1"/><BoundingBox SRS="EPSG:4326" maxx="11.65496" maxy="53.87423" minx="6.55492" miny="51.26706" resx="1" resy="1"/>
+		<Style>
+			<Name>default</Name>
+			<Title>L355</Title>
+			<LegendURL height="270" width="160">
+				<Format>image/png</Format>
+				<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://memas01.lbeg.de/LucidaMap/ogc/srv/wms/wms.srv.asp?pkgId=WMSGRUNDNEU&amp;sessionId=AD35A965%2D8E63%2D435D%2D8AF1%2D1C16796726D0%2EWMS&amp;REQUEST=getLegendGraphic&amp;LAYER=L355" xlink:type="simple"/>
+			</LegendURL>
+		</Style>
+		<ScaleHint max="100000" min="220.9707544406"/>
+	</Layer>
+</Layer>
+	  </Capability>
+	</WMT_MS_Capabilities>

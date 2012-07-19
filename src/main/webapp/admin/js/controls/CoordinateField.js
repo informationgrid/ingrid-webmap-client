@@ -9,7 +9,7 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
 de.ingrid.mapclient.admin.controls.CoordinateField = Ext.extend(Ext.form.NumberField, {
 
 	allowBlank: false,
-	allowNegative: false,
+	allowNegative: true,
  	decimalPrecision: 16
 });
 

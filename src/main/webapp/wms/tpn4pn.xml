@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.0">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>NWSIB-online</Title>
+		<Abstract>Web Map Service auf Basis des Smallworld GIS</Abstract>
+		<KeywordList>
+			<Keyword>NWSIB</Keyword>
+			<Keyword>klassifiziertes Straßennetz</Keyword>
+			<Keyword>Anweisung Straßeninformationsbank ASB</Keyword>
+			<Keyword>Netzknoten-Stationierungssystem</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.strassen.nrw.de" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Stefan Wick</ContactPerson>
+				<ContactOrganization>Landesbetrieb Strassenbau NRW</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>FCVS</ContactPosition>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>???</Address>
+				<City>???</City>
+				<StateOrProvince>D</StateOrProvince>
+				<PostCode>???</PostCode>
+				<Country>Germany</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 221 8397-538</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>???</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>stefan.wick@strassen.nrw.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://services.gis-consult.de/NWSIB-online/GCGisService" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<Format>image/tif</Format>
+				<Format>image/png</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://services.gis-consult.de/NWSIB-online/GCGisService" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>text/html</Format>
+				<Format>application/vnd.ogc.gml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://services.gis-consult.de/NWSIB-online/GCGisService" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_blank</Format>
+			<Format>text/vnd.wap.wml</Format>
+			<Format>application/msword</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>text/html</Format>
+			<Format>application/vnd.ms-excel</Format>
+			<Format>application/vnd.ogc.se_xml</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0">
+			<Title>verfügbare Layer</Title>
+			<SRS>EPSG:25832 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469 EPSG:4326</SRS>
+			<LatLonBoundingBox maxx="9.34836008" maxy="52.19410981" minx="8.60809290" miny="51.78834264"/>
+			<BoundingBox SRS="EPSG:25832" maxx="523811.497" maxy="5782685.209" minx="472968.711" miny="5737570.143" resx="1" resy="1"/>
+			<BoundingBox SRS="EPSG:31466" maxx="2728970.886" maxy="5789795.054" minx="2679988.101" miny="5742577.626" resx="1" resy="1"/>
+			<BoundingBox SRS="EPSG:31467" maxx="3523893.108" maxy="5784562.002" minx="3473029.995" miny="5739428.900" resx="1" resy="1"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4318799.064" maxy="5787816.984" minx="4266089.232" miny="5744798.150" resx="1" resy="1"/>
+			<BoundingBox SRS="EPSG:31469" maxx="5113828.945" maxy="5799571.250" minx="5059300.081" miny="5758704.537" resx="1" resy="1"/>
+			<BoundingBox SRS="EPSG:4326" maxx="9.34836008" maxy="52.19410981" minx="8.60809290" miny="51.78834264" resx="1" resy="1"/>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Straßennetz</Title>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Straßen</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Autobahn</Name>
+						<Title>Autobahn</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Bundesstr.</Name>
+						<Title>Bundesstr.</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Landesstr.</Name>
+						<Title>Landesstr.</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Kreisstr.</Name>
+						<Title>Kreisstr.</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Aeste</Name>
+						<Title>Äste</Title>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Netzknoten/Nullpunkte</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Netzknoten</Name>
+						<Title>Netzknoten</Title>
+						<ScaleHint max="34.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Nullpunkte</Name>
+						<Title>Nullpunkte</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Beschriftung</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Anschlussstellen</Name>
+						<Title>Anschlussstellen</Title>
+						<ScaleHint max="116.667" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Strassenbezeichnung</Name>
+						<Title>Straßenbezeichnung</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Abschnittsnummer</Name>
+						<Title>Abschnittsnummer</Title>
+						<ScaleHint max="50.000" min="0.000"/>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Verwaltungsbezirke</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Bundesland</Name>
+						<Title>Bundesland</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Regierungsbezirke</Name>
+						<Title>Regierungsbezirke</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Kreise_/_kreisfreie_Staedte</Name>
+						<Title>Kreise / kreisfreie Städte</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gemeinden</Name>
+						<Title>Gemeinden</Title>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Kreis Lippe</Title>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Querschnittstreifen</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrliche_Anlagen</Name>
+						<Title>Verkehrliche Anlagen</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Fahrbahn</Name>
+							<Title>Fahrbahn</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Abgehende_Strasse</Name>
+							<Title>Abgehende Straße</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Bus-__Ausweichbuchten</Name>
+							<Title>Bus-, Ausweichbuchten</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Mehrzweckstreifen</Name>
+							<Title>Mehrzweckstreifen</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Rad-__Gehweg</Name>
+							<Title>Rad-, Gehweg</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Verkehrsinsel</Name>
+							<Title>Verkehrsinsel</Title>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Entwaesserungsanl.</Name>
+						<Title>Entwässerungsanl.</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Graben__Mulde</Name>
+							<Title>Graben, Mulde</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Rinne__Bordstein</Name>
+							<Title>Rinne, Bordstein</Title>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gruenflaechen</Name>
+						<Title>Grünflächen</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Bankettstreifen</Name>
+							<Title>Bankettstreifen</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Boeschung</Name>
+							<Title>Böschung</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Extensivflaeche</Name>
+							<Title>Extensivfläche</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Gehoelzflaeche</Name>
+							<Title>Gehölzfläche</Title>
+						</Layer>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Entwässerungsanlagen</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Kontrollschaechte/Strassenablaeufe</Name>
+						<Title>Kontrollschächte/Straßenabläufe</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Rohrleitungen</Name>
+						<Title>Rohrleitungen</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Versickerungsanlagen/Kaskaden</Name>
+						<Title>Versickerungsanlagen/Kaskaden</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Durchlaesse_(Kreisstr.)</Name>
+						<Title>Durchlässe (Kreisstr.)</Title>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Straßenausstattung</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Schutzplanken</Name>
+						<Title>Schutzplanken</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Stationszeichen</Name>
+						<Title>Stationszeichen</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Streugutbehaelter</Name>
+						<Title>Streugutbehälter</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrszeichen</Name>
+						<Title>Verkehrszeichen</Title>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Verkehrsdaten (Kreisstr.)</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrsdaten_2005</Name>
+						<Title>Verkehrsdaten 2005</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrsdaten_2000</Name>
+						<Title>Verkehrsdaten 2000</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrsdaten_1995</Name>
+						<Title>Verkehrsdaten 1995</Title>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>ZEB (2008)</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gesamtwert_(GW)</Name>
+						<Title>Gesamtwert (GW)</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gebrauchswert_(TWGEB)</Name>
+						<Title>Gebrauchswert (TWGEB)</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Substanzwert_(TWSUB)</Name>
+						<Title>Substanzwert (TWSUB)</Title>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Sonstiges</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Bohrkerne</Name>
+						<Title>Bohrkerne</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Ortsdurchfahrten</Name>
+						<Title>Ortsdurchfahrten</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Siedlungsflaechen</Name>
+						<Title>Siedlungsflächen</Title>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Baustellen</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Dauerbaustellen_(Lage)</Name>
+					<Title>Dauerbaustellen (Lage)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Dauerbaustellen_(Symbol)</Name>
+					<Title>Dauerbaustellen (Symbol)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Tagesbaustellen_(Lage)</Name>
+					<Title>Tagesbaustellen (Lage)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Tagesbaustellen_(Symbol)</Name>
+					<Title>Tagesbaustellen (Symbol)</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Bauwerke</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Bauwerkslage</Name>
+					<Title>Bauwerkslage</Title>
+					<ScaleHint max="25.000" min="0.000"/>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Bruecke</Name>
+						<Title>Brücke</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrszeichenbruecke</Name>
+						<Title>Verkehrszeichenbrücke</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Tunnel/Trogbauwerk</Name>
+						<Title>Tunnel/Trogbauwerk</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Laermschutz/Schutzbauwerk</Name>
+						<Title>Lärmschutz/Schutzbauwerk</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Stuetzbauwerk</Name>
+						<Title>Stützbauwerk</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>sonstige_Bauwerke</Name>
+						<Title>sonstige Bauwerke</Title>
+						<ScaleHint max="25.000" min="0.000"/>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Bauwerksnummer</Name>
+					<Title>Bauwerksnummer</Title>
+					<ScaleHint max="25.000" min="0.000"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Bauwerksname</Name>
+					<Title>Bauwerksname</Title>
+					<ScaleHint max="25.000" min="0.000"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>TK25-Blatt</Name>
+					<Title>TK25-Blatt</Title>
+					<ScaleHint max="83.333" min="0.000"/>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Durchlässe</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Quer-/Laengsdurchlass</Name>
+					<Title>Quer-/Längsdurchlass</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Gefahrgutnetze</Title>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Positivnetz</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gemeindestrassen_(Positivnetz)</Name>
+						<Title>Gemeindestraßen (Positivnetz)</Title>
+						<ScaleHint max="26.667" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>klass._Strassen_(Positivnetz)</Name>
+						<Title>klass. Straßen (Positivnetz)</Title>
+						<ScaleHint max="50.000" min="0.000"/>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Negativnetz</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Flaechen_(Negativnetz)</Name>
+						<Title>Flächen (Negativnetz)</Title>
+						<ScaleHint max="50.000" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gemeindestrassen_(Negativnetz)</Name>
+						<Title>Gemeindestraßen (Negativnetz)</Title>
+						<ScaleHint max="26.667" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>klass._Strassen_(Negativnetz)</Name>
+						<Title>klass. Straßen (Negativnetz)</Title>
+						<ScaleHint max="50.000" min="0.000"/>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Parkplatzsituation Lkw</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Rastanlagen_Lkw-P</Name>
+					<Title>Rastanlagen Lkw-P</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Fehlbestandsstrecken_Lkw-P</Name>
+					<Title>Fehlbestandsstrecken Lkw-P</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Unfalldaten</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Unfaelle</Name>
+					<Title>Unfälle</Title>
+					<ScaleHint max="33.333" min="0.000"/>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Fahrunfall</Name>
+						<Title>Fahrunfall</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Abbiege-Unfall</Name>
+						<Title>Abbiege-Unfall</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Einbiegen/Kreuzen-Unfall</Name>
+						<Title>Einbiegen/Kreuzen-Unfall</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>ueberschreiten-Unfall</Name>
+						<Title>Überschreiten-Unfall</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Unfall_durch_ruhenden_Verkehr</Name>
+						<Title>Unfall durch ruhenden Verkehr</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Unfall_im_Laengsverkehr</Name>
+						<Title>Unfall im Längsverkehr</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Sonstiger_Unfall</Name>
+						<Title>Sonstiger Unfall</Title>
+						<ScaleHint max="33.333" min="0.000"/>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Verkehrsdaten</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>DTV_Kfz_(Flaeche)</Name>
+					<Title>DTV Kfz (Fläche)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>DTV_Kfz_(Beschriftung)</Name>
+					<Title>DTV Kfz (Beschriftung)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>DTV_SV_(Beschriftung)</Name>
+					<Title>DTV SV (Beschriftung)</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Zaehlstellenlage</Name>
+					<Title>Zählstellenlage</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Zaehlstellennummer</Name>
+					<Title>Zählstellennummer</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Zustandsdaten</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Gesamtwert</Name>
+					<Title>Gesamtwert</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Gebrauchswert</Name>
+					<Title>Gebrauchswert</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Substanzwert</Name>
+					<Title>Substanzwert</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Zustandswerte</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Allgemeine_Unebenheit</Name>
+						<Title>Allgemeine Unebenheit</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Laengsebenheitswirkindex</Name>
+						<Title>Längsebenheitswirkindex</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Spurrinnentiefe</Name>
+						<Title>Spurrinnentiefe</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Fiktive_Wassertiefe</Name>
+						<Title>Fiktive Wassertiefe</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Griffigkeit</Name>
+						<Title>Griffigkeit</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Netzrisse__Risse_und_Risshaeufungen</Name>
+						<Title>Netzrisse, Risse und Risshäufungen</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Flickstellen</Name>
+						<Title>Flickstellen</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Laengs-_und_Querrisse</Name>
+						<Title>Längs- und Querrisse</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Eckabbrueche</Name>
+						<Title>Eckabbrüche</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Kantenschaeden</Name>
+						<Title>Kantenschäden</Title>
+					</Layer>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Notizen</Title>
+				<Layer noSubsets="0" opaque="1" queryable="0">
+					<Name>Notizgeometrien</Name>
+					<Title>Notizgeometrien</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Rasterkarten</Title>
+				<Layer noSubsets="0" opaque="1" queryable="0">
+					<Name>DGK_5</Name>
+					<Title>DGK 5</Title>
+					<ScaleHint max="12.333" min="0.000"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="1" queryable="0">
+					<Name>Strassenkarte</Name>
+					<Title>Straßenkarte</Title>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0">
+				<Title>Kreis Coesfeld</Title>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Bauwerke_COE</Name>
+					<Title>Bauwerke COE</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Bohrkerne_COE</Name>
+					<Title>Bohrkerne COE</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>Einzelbaeume_COE</Name>
+					<Title>Einzelbäume COE</Title>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Querschnittstreifen COE</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Verkehrliche_Anlagen_COE</Name>
+						<Title>Verkehrliche Anlagen COE</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Fahrbahn_COE</Name>
+							<Title>Fahrbahn COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Parkflaechen_COE</Name>
+							<Title>Parkflächen COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Rad_und_Gehweg_COE</Name>
+							<Title>Rad und Gehweg COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Rand_und_Trennstreifen_COE</Name>
+							<Title>Rand und Trennstreifen COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Sonstiges_COE</Name>
+							<Title>Sonstiges COE</Title>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Entwaesserungsanl._COE</Name>
+						<Title>Entwässerungsanl. COE</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Bordstein_COE</Name>
+							<Title>Bordstein COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Graben__Mulde_COE</Name>
+							<Title>Graben, Mulde COE</Title>
+						</Layer>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Gruenflaechen_COE</Name>
+						<Title>Grünflächen COE</Title>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Bankettstreifen_COE</Name>
+							<Title>Bankettstreifen COE</Title>
+						</Layer>
+						<Layer noSubsets="0" opaque="0" queryable="1">
+							<Name>Boeschung_COE</Name>
+							<Title>Böschung COE</Title>
+						</Layer>
+					</Layer>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="0">
+					<Title>Gewässer COE</Title>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Fluesse_COE</Name>
+						<Title>Flüsse COE</Title>
+					</Layer>
+					<Layer noSubsets="0" opaque="0" queryable="1">
+						<Name>Seen_COE</Name>
+						<Title>Seen COE</Title>
+					</Layer>
+				</Layer>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

@@ -13,6 +13,9 @@ public class Projection {
 	private String name;
 	private String epsgCode;
 
+	public Projection() {
+	}
+
 	public Projection(String name, String epsgCode) {
 		this.name = name;
 		this.epsgCode = epsgCode;

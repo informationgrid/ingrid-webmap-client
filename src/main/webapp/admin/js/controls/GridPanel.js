@@ -93,7 +93,7 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
 		viewConfig: {
 			autoFill: true,
 			forceFit: true
-		},
+		}
 	};
 	// allow to modify the configuration
 	if (this.gridConfigCb instanceof Function) {
@@ -143,7 +143,7 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
     // check for clicks on the delete column to delete the record
     this.gridPanel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 		if(columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			if (confirm("Soll der Eintrag wirklich gelöscht werden?")) {
+			if (confirm("Soll der Eintrag wirklich gel&ouml;scht werden?")) {
 				var record = grid.getStore().getAt(rowIndex);
 				grid.getStore().remove(record);
 				grid.getView().refresh();
@@ -261,7 +261,7 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.createButtons = function(
 	// add the add button
 	var self = this;
     buttons.push(new Ext.Button({
-		text: 'Hinzufügen',
+		text: 'Hinzuf&uuml;gen',
 		fieldLabel: '&nbsp;',
 		handler: function() {
 			if (self.validateNewRecord()) {

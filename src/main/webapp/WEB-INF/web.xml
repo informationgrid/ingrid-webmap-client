@@ -30,27 +30,44 @@
 		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>mapfish.print</servlet-name>
+		<servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>WEB-INF/classes/print_config.yaml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mapfish.print</servlet-name>
+		<url-pattern>/pdf/*</url-pattern>
+	</servlet-mapping>
+
 	<!-- which resources should be protected -->
-	<!--security-constraint>
+	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>Administration</web-resource-name>
+			<web-resource-name>MapClient Administration</web-resource-name>
 			<url-pattern>/admin/*</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>MapClient Configuration Write Access</web-resource-name>
+			<url-pattern>/rest/config/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>DELETE</http-method>
 		</web-resource-collection>
 		<auth-constraint>
 			<description>Has to be an administrator</description>
-			<role-name>admin</role-name>
+			<role-name>admin-gui</role-name>
 		</auth-constraint>
-	</security-constraint-->
+	</security-constraint>
 
 	<!-- which realm to use for basic auth -->
-	<!--
 	<login-config>
 		<auth-method>BASIC</auth-method>
 		<realm-name>Tomcat Supported Realm</realm-name>
 	</login-config>
 	
 	<security-role>
-		<role-name>admin</role-name>
+		<role-name>admin-gui</role-name>
 	</security-role>
-	-->
 </web-app>

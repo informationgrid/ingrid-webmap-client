@@ -13,7 +13,7 @@
 /** api: (define)
  *  module = GeoExt.data
  *  class = FeatureStore
- *  base_link = `Ext.data.DataStore <http://extjs.com/deploy/dev/docs/?class=Ext.data.DataStore>`_
+ *  base_link = `Ext.data.Store <http://dev.sencha.com/deploy/dev/docs/?class=Ext.data.Store>`_
  */
 Ext.namespace("GeoExt.data");
 
@@ -77,19 +77,11 @@ GeoExt.data.FeatureStoreMixin = function() {
          */
         reader: null,
 
-        /** api: config[addFeatureFilter]
-         *  ``Function`` This function is called before a feature record is added to
-         *  the store, it receives the feature from which a feature record is to be
-         *  created, if it returns false then no record is added.
+        /** api: config[featureFilter]
+         *  ``OpenLayers.Filter`` This filter is evaluated before a feature
+         *  record is added to the store.
          */
-        addFeatureFilter: null,
-        
-        /** api: config[addRecordFilter]
-         *  ``Function`` This function is called before a feature is added to the
-         *  layer, it receives the feature record associated with the feature to be
-         *  added, if it returns false then no feature is added.
-         */
-        addRecordFilter: null,
+        featureFilter: null,
         
         /** api: config[initDir]
          *  ``Number``  Bitfields specifying the direction to use for the
@@ -146,7 +138,7 @@ GeoExt.data.FeatureStoreMixin = function() {
             if(initDir & GeoExt.data.FeatureStore.STORE_TO_LAYER) {
                 var records = this.getRange();
                 for(var i=records.length - 1; i>=0; i--) {
-                    this.layer.addFeatures([records[i].get("feature")]);
+                    this.layer.addFeatures([records[i].getFeature()]);
                 }
             }
 
@@ -204,7 +196,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                 record = this.getById(feature.id);
             } else {
                 var index = this.findBy(function(r) {
-                    return r.get("feature") === feature;
+                    return r.getFeature() === feature;
                 });
                 if(index > -1) {
                     record = this.getAt(index);
@@ -219,12 +211,12 @@ GeoExt.data.FeatureStoreMixin = function() {
         onFeaturesAdded: function(evt) {
             if(!this._adding) {
                 var features = evt.features, toAdd = features;
-                if(typeof this.addFeatureFilter == "function") {
+                if(this.featureFilter) {
                     toAdd = [];
                     var i, len, feature;
                     for(var i=0, len=features.length; i<len; i++) {
                         feature = features[i];
-                        if(this.addFeatureFilter(feature) !== false) {
+                        if (this.featureFilter.evaluate(feature) !== false) {
                             toAdd.push(feature);
                         }
                     }
@@ -265,7 +257,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                 var record = this.getRecordFromFeature(feature);
                 if(record !== undefined) {
                     record.beginEdit();
-                    attributes = feature.attributes;
+                    var attributes = feature.attributes;
                     if(attributes) {
                         var fields = this.recordType.prototype.fields;
                         for(var i=0, len=fields.length; i<len; i++) {
@@ -282,9 +274,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                     // endEdit
                     record.set("state", feature.state);
                     record.set("fid", feature.fid);
-                    // Ext 3.0 does not allow circular references in objects passed
-                    // to record.set
-                    record.data["feature"] = feature;
+                    record.setFeature(feature);
                     this._updating = true;
                     record.endEdit();
                     delete this._updating;
@@ -297,20 +287,10 @@ GeoExt.data.FeatureStoreMixin = function() {
          *  function is used by the onLoad and onAdd handlers.
          */
         addFeaturesToLayer: function(records) {
-            var i, len, features, record;
-            if(typeof this.addRecordFilter == "function") {
-                features = [];
-                for(i=0, len=records.length; i<len; i++) {
-                    record = records[i];
-                    if(this.addRecordFilter(record) !== false) {
-                        features.push(record.get("feature"));
-                    }
-                }
-            } else {
-                features = new Array((len=records.length));
-                for(i=0; i<len; i++) {
-                    features[i] = records[i].get("feature");
-                }
+            var i, len, features;
+            features = new Array((len=records.length));
+            for(i=0; i<len; i++) {
+                features[i] = records[i].getFeature();
             }
             if(features.length > 0) {
                 this._adding = true;
@@ -374,10 +354,10 @@ GeoExt.data.FeatureStoreMixin = function() {
          */
         onRemove: function(store, record, index){
             if(!this._removing) {
-                var feature = record.get("feature");
+                var feature = record.getFeature();
                 if (this.layer.getFeatureById(feature.id) != null) {
                     this._removing = true;
-                    this.layer.removeFeatures([record.get("feature")]);
+                    this.layer.removeFeatures([record.getFeature()]);
                     delete this._removing;
                 }
             }
@@ -398,7 +378,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                   * In that case, it would be sufficient to check (key in feature.attributes). 
                   */
                 var defaultFields = new GeoExt.data.FeatureRecord().fields;
-                var feature = record.get("feature");
+                var feature = record.getFeature();
                 if(record.fields) {
                     var cont = this.layer.events.triggerEvent(
                         "beforefeaturemodified", {feature: feature}

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 6.0.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Erdbeben Rheinland-Pfalz</Title>
+  <Abstract>Die Online Karte Erdbebenereignisse stellt die vom Landeserdbebendienst Rheinland-Pfalz registrierten Erdbeben seit dem Jahr 2000 dar. Wie in der Beschreibung des Stationsnetzes (http://www.lgb-rlp.de/stationsnetz.html) dargestellt, ist der LER ein lokal ausgerichtetes Messnetz, es werden ausschließlich Beben im Umfeld von Rheinland-Pfalz dargestellt. Eine tabellarische Auflistung der registrierten Erdbeben finden sie auf der Webseite http://www.lgb-rlp.de/erdbeben.html</Abstract>
+        <KeywordList>
+          <Keyword>Erdbeben</Keyword>
+          <Keyword> Rheinland-Pfalz</Keyword>
+          <Keyword> Earthquake</Keyword>
+          <Keyword> Erdbebenmessung</Keyword>
+          <Keyword> Seismologie</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>B. Schmitt</ContactPerson>
+      <ContactOrganization>Landesamt für Geologie und Bergbau, Rheinland-Pfalz</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>Referat 2.3 Ingenieurgeologie </ContactPosition>
+    <ContactAddress>
+        <AddressType>postalisch</AddressType>
+        <Address>Emy-Roeder-Str. 5</Address>
+        <City>Mainz</City>
+        <StateOrProvince>DE</StateOrProvince>
+        <PostCode>55129</PostCode>
+        <Country>Deutschland</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>06131/9254-0</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>06131/9254-123</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>webmaster@lgb-rlp.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=8bit</Format>
+      <Format>image/tiff</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <Format>text/plain</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=8bit</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>erdbeben</Name>
+    <Title>LGB: Erdbeben</Title>
+    <Abstract>Die Online Karte Erdbebenereignisse stellt die vom Landeserdbebendienst Rheinland-Pfalz registrierten Erdbeben seit dem Jahr 2000 dar. Wie in der Beschreibung des Stationsnetzes (http://www.lgb-rlp.de/stationsnetz.html) dargestellt, ist der LER ein lokal ausgerichtetes Messnetz, es werden ausschließlich Beben im Umfeld von Rheinland-Pfalz dargestellt. Eine tabellarische Auflistung der registrierten Erdbeben finden sie auf der Webseite http://www.lgb-rlp.de/erdbeben.html</Abstract>
+    <KeywordList>
+     <Keyword>Erdbeben</Keyword>
+     <Keyword> Rheinland-Pfalz</Keyword>
+     <Keyword> Earthquake</Keyword>
+     <Keyword> Erdbebenmessung</Keyword>
+     <Keyword> Seismologie</Keyword>
+    </KeywordList>
+    <SRS>epsg:31467</SRS>
+    <SRS>epsg:31466</SRS>
+    <SRS>epsg:25832</SRS>
+    <SRS>epsg:54004</SRS>
+    <SRS>epsg:4326</SRS>
+    <SRS>epsg:4258</SRS>
+    <LatLonBoundingBox maxx="8.8157" maxy="50.8134" minx="5.87847" miny="48.9977"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3.4866e+06" maxy="5.6309e+06" minx="3.2799e+06" miny="5.4333e+06"/>
+    <Attribution>
+        <Title>Landesamt für Geologie und Bergbau Rheinland-Pfalz</Title>
+        <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.lgb-rlp.de" xlink:type="simple"/>
+        <LogoURL height="78" width="157">
+             <Format>image/gif</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.lgb-rlp.de/fileadmin/cd2009/images/layout/rlp_logo_LGB_klein.gif" xlink:type="simple"/>
+          </LogoURL>
+    </Attribution>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Erdbebenereignisse</Name>
+        <Title>Erdbebenereignisse</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="177" maxy="72" minx="-178" miny="-32"/>
+        <BoundingBox SRS="epsg:31467" maxx="1.2189e+07" maxy="9.99368e+06" minx="-5.18906e+06" miny="-1.09768e+07"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="118" width="124">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Erdbebenereignisse&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="2494.51424214819" min="49.8902848429637"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Messstationen</Name>
+        <Title>Messstationen</Title>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="8.01973" maxy="50.7311" minx="6.27956" miny="49.043"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.42845e+06" maxy="5.62222e+06" minx="3.30791e+06" miny="5.4373e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="30" width="176">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Messstationen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="2494.51424214819" min="24.9451424214819"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Erdbebenzonen</Name>
+        <Title>Erdbebenzonen</Title>
+        <Abstract>Die Karte der Erdbebenzonen und geologischen Untergrundklassen für Rheinland-Pfalz bezieht sich auf die DIN 4149:2005-04 &amp;bdquo;Bauten in deutschen Erdbebengebieten &amp;ndash; Lastannahmen, Bemessung und Ausf&amp;uuml;hrung &amp;uuml;blicher Hochbauten&amp;quot;, herausgegeben vom DIN Deutsches Institut f&amp;uuml;r Normung e.V., Burggrafenstr. 6, D-10787 Berlin. Nichttektonische, seismisch induzierte Ereignisse sind nicht Gegenstand dieser Darstellung (DIN 4149:2005-04, Kapitel 5.1). Den Erdbebenzonen werden Intensit&amp;auml;tsintervalle nach der Europ&amp;auml;ischen Makroseismischen Skala (EMS) und Bemessungswerte der Bodenbeschleunigung a&lt;sub&gt;g&lt;/sub&gt; zugeordnet. Der zugrunde liegenden Referenz-Wiederkehrperiode entspricht eine Wahrscheinlichkeit des Auftretens oder &amp;Uuml;berschreitens von 10 % innerhalb von 50 Jahren.</Abstract>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="8.51292" maxy="50.9474" minx="6.06017" miny="48.9339"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.46441e+06" maxy="5.64592e+06" minx="3.29333e+06" miny="5.42568e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="74" width="415">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Erdbebenzonen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="2494.51424214819" min="24.9451424214819"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Untergrundklassen</Name>
+        <Title>Untergrundklassen</Title>
+        <Abstract>Die Karte der Erdbebenzonen und geologischen Untergrundklassen für Rheinland-Pfalz bezieht sich auf die DIN 4149:2005-04 &amp;bdquo;Bauten in deutschen Erdbebengebieten &amp;ndash; Lastannahmen, Bemessung und Ausf&amp;uuml;hrung &amp;uuml;blicher Hochbauten&amp;quot;, herausgegeben vom DIN Deutsches Institut f&amp;uuml;r Normung e.V., Burggrafenstr. 6, D-10787 Berlin. Nichttektonische, seismisch induzierte Ereignisse sind nicht Gegenstand dieser Darstellung (DIN 4149:2005-04, Kapitel 5.1). Die Gef&amp;auml;hrdung innerhalb jeder Erdbebenzone wird als einheitlich angenommen, abgesehen von den Variationen, die sich durch unterschiedliche Untergrundbedingungen ergeben. Dazu wird zwischen den geologischen Untergrundklassen unterschieden.</Abstract>
+        <SRS>epsg:31467</SRS>
+        <SRS>epsg:31466</SRS>
+        <SRS>epsg:25832</SRS>
+        <SRS>epsg:54004</SRS>
+        <SRS>epsg:4326</SRS>
+        <SRS>epsg:4258</SRS>
+        <LatLonBoundingBox maxx="8.51292" maxy="50.9474" minx="6.06017" miny="48.9339"/>
+        <BoundingBox SRS="epsg:31467" maxx="3.46441e+06" maxy="5.64592e+06" minx="3.29333e+06" miny="5.42568e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="74" width="234">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/erdbeben?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Untergrundklassen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="2494.51424214819" min="24.9451424214819"/>
+    </Layer>
+<!-- WARNING: This layer has its status set to DEFAULT and will always be displayed when doing a GetMap request even if it is not requested by the client. This is not in line with the expected behavior of a WMS server. Using status ON or OFF is recommended. -->
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>logo</Name>
+<!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
+        <Title>logo</Title>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

@@ -9,22 +9,39 @@ Ext.namespace("de.ingrid.mapclient.frontend.data");
  */
 de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 
-    /**
-     * @cfg OpenLayers.Map instance
-     */
-    this.map = "";
+	/**
+	 * @cfg The data id (optional)
+	 */
+	this.id = "";
 
-    /**
-     * @cfg Array of de.ingrid.mapclient.frontend.data.Service instances
-     */
-    this.activeServices = [];
+	/**
+	 * @cfg The title (optional)
+	 */
+	this.title = "";
 
-    /**
-     * The serialized map state, will be set by the unserialize method
-     */
-    this.wmcDocument = null;
+	/**
+	 * @cfg The description (optional)
+	 */
+	this.description = "";
 
-    // apply values from the provided config object
+	/**
+	 * @cfg OpenLayers.Map instance
+	 */
+	this.map = "";
+
+	/**
+	 * @cfg Array of de.ingrid.mapclient.frontend.data.Service instances
+	 */
+	this.activeServices = [];
+
+	/**
+	 * The serialized map state, will be set by the unserialize method
+	 */
+	this.wmcDocument = null;
+
+	this.kmlArray = [];
+
+	// apply values from the provided config object
 	Ext.apply(this, config);
 };
 
@@ -50,8 +67,12 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 
 	// encode to JSON
 	var serializedState = Ext.encode({
+		id: id,
+		title: this.title,
+		description: this.description,
 		wmcDocument: wmcDocument,
-		activeServices: capabilityUrls
+		activeServices: capabilityUrls,
+		kmlArray: this.kmlArray
 	});
 	return serializedState;
 };
@@ -67,6 +88,12 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	// decode from JSON
 	var data = Ext.decode(data);
 
+	// unserialize simple properties
+	this.id = data.id;
+	this.title = data.title;
+	this.description = data.description;
+	this.kmlArray = data.kmlArray;
+
 	// unserialize map state (must be applied)
 	this.wmcDocument = data.wmcDocument;
 
@@ -77,12 +104,16 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	// unserialize active services
 	var self = this;
 	this.activeServices = [];
-	for (var i=0, count=data.activeServices.length; i<count; i++) {
+	var callbackCount = 0;
+	for (var i=0;i<numServices; i++) {
 		// the service needs to be loaded
 		var capabilitiesUrl = data.activeServices[i];
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
+			callbackCount++;
 			self.activeServices.push(service);
-			if (lastCapUrl == service.getCapabilitiesUrl()) {
+			if (callbackCount == numServices) {
+				//formerly
+				//lastCapUrl == service.getCapabilitiesUrl()
 				if (callback instanceof Function) {
 					callback();
 				}
@@ -95,7 +126,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
  * Applies the serialized data to the map after the data are unserialized
  * @note We define an extra method for this, in order to allow the user to decide when to do this.
  */
-de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = function() {
+de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = function(callback) {
+	var self = this;
 	if (this.wmcDocument == null) {
 		throw "No unserialized data.";
 	}
@@ -108,10 +140,28 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 	// restore map state
 	var context = format.read(this.wmcDocument, this.map);
 	var layers = format.getLayersFromContext(context.layersContext);
+	// merge default params from layers already loaded for the service
+	for (var i=0, count=layers.length; i<count; i++) {
+		var layer = layers[i];
+		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layer);
+		de.ingrid.mapclient.frontend.data.Service.fixLayerProperties(layer);
+	}
 	this.map.addLayers(layers);
-	this.map.setOptions({
-        maxExtent: context.mayExtend,
-        projection: context.projection
+	de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(context.projection, function() {
+		self.changeProjection(context.projection);
+		self.map.zoomToExtent(context.bounds);
+		if (callback instanceof Function) {
+			callback();
+		}
 	});
-	this.map.zoomToExtent(context.bounds);
 };
+
+/**
+ * Change the map projection to the given one. We assume that the projection
+ * definition is loaded already
+ * @param newProjCode EPSG code
+ */
+de.ingrid.mapclient.frontend.data.SessionState.prototype.changeProjection = function(newProjCode) {
+	de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(newProjCode, this.map, this, false);
+};
+

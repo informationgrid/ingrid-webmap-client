@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>LINFOS NRW</Title>
+  <Abstract>WMS-Dienst LinfosNRW</Abstract>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Dirk Hinterlang</ContactPerson>
+      <ContactOrganization>Landesamt für Natur, Umwelt und Verbraucherschutz NRW</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition/>
+    <ContactAddress>
+        <AddressType>postalisch</AddressType>
+        <Address>Leibnitzstraße 10</Address>
+        <City>Recklinghausen</City>
+        <StateOrProvince>DE-NW</StateOrProvince>
+        <PostCode>45659</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49 (0)2361 - 305 3202</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49 (0)2361 - 305 5 3202</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>Dirk.Hinterlang@lanuv.nrw.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/linfos?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>LINFOSNRW</Name>
+    <Title>LINFOS NRW</Title>
+    <Abstract>WMS-Dienst LinfosNRW</Abstract>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25831</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:28992</SRS>
+    <SRS>EPSG:31467</SRS>
+    <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+    <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Verbundflaechen</Name>
+        <Title>Verbundflächen</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VB.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>geschuetzteBiotope</Name>
+      <Title>§62-Biotope (abgestimmt/ nicht abgestimmt)</Title>
+      <Abstract>geschuetzteBiotope</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+<!-- WARNING: The layer name '11' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>11</Name>
+        <Title>Flächen</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/GBdf.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+<!-- WARNING: The layer name '12' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>12</Name>
+        <Title>Linien</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/GBdl.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+<!-- WARNING: The layer name '13' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>13</Name>
+        <Title>Punkte</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/GBdp.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Naturraeumliche_Haupteinheiten</Name>
+        <Title>Naturräumliche Haupteinheiten</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/NHE.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1122.53140896668" min="0.000374177136322228"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>Vegetationstypen</Name>
+      <Title>Vegetationstypen</Title>
+      <Abstract>Vegetationstypen</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Vegetationstypen_Flaeche</Name>
+        <Title>Fläche</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VTdf.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Vegetationstypen_Punkt</Name>
+        <Title>Punkt</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VTdp.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>Vegetationsaufnahmen</Name>
+      <Title>Vegetationsaufnahmen</Title>
+      <Abstract>Vegetationsaufnahmen</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Vegetationsaufnahmen_Flaeche</Name>
+        <Title>Fläche</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VAdf.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Vegetationsaufnahmen_Punkt</Name>
+        <Title>Punkt</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VAdp.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Alleen-Kataster</Name>
+        <Title>Alleen-Kataster</Title>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:25831</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:28992</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/AL.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>Biotoptypen</Name>
+      <Title>Biotoptypen</Title>
+      <Abstract>Biotoptypen</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotoptypen_Flaeche</Name>
+        <Title>Fläche</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BTdf.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotoptypen_Linie</Name>
+        <Title>Linie</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BTdl.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotoptypen_Punkt</Name>
+        <Title>Punkt</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BTdp.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>Biotopkataster</Name>
+      <Title>Biotopkataster</Title>
+      <Abstract>Biotopkataster</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotopkataster_Flaeche</Name>
+        <Title>Fläche</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BKdf.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotopkataster_Linie</Name>
+        <Title>Linie</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BKdl.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Biotopkataster_Punkt</Name>
+        <Title>Punkt</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/BKdp.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="74.9416935711611" min="0.000374177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Naturschutzgebiete</Name>
+        <Title>Naturschutzgebiete</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/NSG.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>FFH-Gebiete</Name>
+        <Title>FFH-Gebiete</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/FFH.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Vogelschutzgebiete</Name>
+        <Title>Vogelschutzgebiete</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/VSG.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>RAMSAR</Name>
+        <Title>RAMSAR</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/RAM.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Naturpark</Name>
+        <Title>Naturpark</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/NTP.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Nationalpark</Name>
+        <Title>Nationalpark</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/NP.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>GSN</Name>
+        <Title>Gebiete für den Schutz der Natur</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/GSN.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>SCH</Name>
+        <Title>Sonstige Schutzgebiete</Title>
+        <SRS>EPSG:31466</SRS>
+        <LatLonBoundingBox maxx="9.52193" maxy="52.585" minx="5.70431" miny="50.2178"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.828e+06" minx="2.48e+06" miny="5.57e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="4655" width="500">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/linfos/linfos/SCH.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>
