@@ -95,6 +95,10 @@ de.ingrid.mapclient.PRINT_URL = de.ingrid.mapclient.BASE_URL+'../pdf';
  * Url for help content
  */
 de.ingrid.mapclient.HELP_URL = 'http://www.portalu.de/hilfe?hkey=maps-1';
+/**
+ * Url for help extended search help content
+ */
+de.ingrid.mapclient.HELP_URL_EXT_SEARCH = 'http://www.portalu.de/hilfe?hkey=ext-search-spacial-6';
 
 /**
  * Url for retrieving projection definitions
