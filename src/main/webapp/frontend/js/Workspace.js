@@ -444,19 +444,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				});
 
 	}
-
-	this.on('afterrender', function(el) {
-				if (settingsDialog && self.viewConfig.hasSettings) {
-					mapPanel.items.add(settingsDialog); // constrain to mapPanel
-					settingsDialog.anchorTo(mapPanel.el, 'tr-tr', [-10, 10]);
-				}
-			});
-	westPanel.on('resize', function(el) {
-				if (settingsDialog && self.viewConfig.hasSettings) {
-					settingsDialog.setPosition(50,50);
-				}
-			});
-	// create the panel for the center region
 	var centerPanel = new Ext.Panel({
 				region : 'center',
 				id: 'centerPanel',
@@ -464,6 +451,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				items : mapPanel,
 				tbar : toolbar
 			});
+	this.on('afterrender', function(el) {
+				if (settingsDialog && self.viewConfig.hasSettings) {
+					mapPanel.items.add(settingsDialog); // constrain to mapPanel
+					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
+				}
+			});
+	// create the panel for the center region
+
+		centerPanel.on('afterlayout', function(el) {
+					if (settingsDialog && self.viewConfig.hasSettings) {
+						settingsDialog.anchorTo(this.el, 'tr-tr', [-20, 50]);
+					}				
+			});		
+			
 	// dummy panel for the header
 	var northPanel = new Ext.Panel({
 				region : 'north',
