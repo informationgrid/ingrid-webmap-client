@@ -448,7 +448,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	this.on('afterrender', function(el) {
 				if (settingsDialog && self.viewConfig.hasSettings) {
 					mapPanel.items.add(settingsDialog); // constrain to mapPanel
-					settingsDialog.anchorTo(mapPanel.el, '', [-10, 10]);
+					settingsDialog.anchorTo(mapPanel.el, 'tr-tr', [-10, 10]);
 				}
 			});
 	westPanel.on('resize', function(el) {
