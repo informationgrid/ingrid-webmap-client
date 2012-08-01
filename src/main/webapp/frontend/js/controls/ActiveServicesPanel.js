@@ -402,12 +402,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				if(cl){
 				for(var j = 0; j < cl.length; j++){
 					var k = 0;
-					node.eachChild(function(n) {
-			    	if(cl[j] == n.layer.params.LAYERS)
-			        n.getUI().toggleCheck(true);
-
-			        k++;
-			    	});
+					self.checkRecursively(cl[j],node);
 				}
 				}
 				break;
@@ -420,6 +415,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 
 	}
 };
+
+/**
+ * check layer nodes recursively, since we implemented tree view in the panel
+ * this method checks wether our childnodes need to be checked and since we
+ * have a tree it is done recursively now
+ * @param {} layerName
+ * @param {} node
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursively = function(layerName, node){
+					var self = this;
+					node.eachChild(function(n) {
+			    	if(layerName == n.layer.params.LAYERS)
+			        n.getUI().toggleCheck(true);
+			        if(n.hasChildNodes){
+			        n.expand();
+			        self.checkRecursively(layerName,n);
+			        }
+			    	});
+			        
+}
 
 /**
  * Remove a service from the panel
