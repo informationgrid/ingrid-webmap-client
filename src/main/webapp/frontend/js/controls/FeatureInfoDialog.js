@@ -167,7 +167,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.checkAdministr
                             items: items
                           },
         			buttons: [{
-				            text: 'Hinzuf&uuml;gen',
+				            text: i18n('tHinzufuegen'),
 				            handler: function(){
 				               if(p.getForm().isValid()){
 				                       var values =  p.getForm().getValues(false);
