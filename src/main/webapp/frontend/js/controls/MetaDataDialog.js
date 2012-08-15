@@ -113,11 +113,21 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		// id is OpenLayers id per default (remove it)
 		data.id = null;
 		data.metadata = this.serializeObject(data.metadata);
+		
+		// get the layer abstract, which we put into the layer object by hand
+		for( var i = 0; i < service.layers.items.length; i++){
+			var layerItem = service.layers.items[i];
+			if(layerItem.name == data.name){
+				var layerAbstractInfo = layerItem.layerAbstract;
+				break;
+			}	
+		}
+		
 		var htmlData = new Object();
 		// we do this by hand since the apply method doesnt apply our data very well
 		var contactInformation = data.contactInformation;
 		htmlData.name = data.name;
-		htmlData.layerAbstract = data['abstract'];
+		htmlData.layerAbstract = layerAbstractInfo;
 		htmlData.projections = data.projection.projCode; //TODO in case of more?
 		htmlData.minScale = data.minScale;
 		htmlData.maxScale = data.maxScale;
@@ -164,7 +174,6 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 	var tplStr = '<table class="metaDataTable">'+
 
-		'<tr><td>ID</td><td>{id}</td></tr>'+
 		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
@@ -203,7 +212,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 
 	var tplStr = '<table class="metaDataTable">'+
 
-		'<tr><td>ID</td><td>{id}</td></tr>'+
+
 		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
