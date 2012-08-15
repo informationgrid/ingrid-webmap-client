@@ -133,7 +133,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 		var url = services[i].capabilitiesUrl;
 		if(url.indexOf("?") == -1){
 			url = url+"?SERVICE=WMS&REQUEST=GetCapabilities";
-		}else if(url.indexOf("service") == -1)
+		}else if(url.toLowerCase().indexOf("service=wms") == -1)
 		 	url = url + "SERVICE=WMS&REQUEST=GetCapabilities";
 		var serviceInstance = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(url);
 		var childNode = {
@@ -147,7 +147,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 
 	// transform serviceCategory
 	var node = {
-		text: 'Hallo',
+		text: '',
 		children: children,
 		leaf: children.length == 0 ? true : false,
 		expanded: true,
