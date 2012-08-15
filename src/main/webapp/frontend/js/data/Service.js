@@ -194,7 +194,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
 							});
 							// set layer parameters
-							layer.addOptions({layerAbstract:record.data.abstract},true);
+							layer.addOptions({layerAbstract:record.data['abstract']},true);
 							layer.visibility = false;
 							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
 							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
