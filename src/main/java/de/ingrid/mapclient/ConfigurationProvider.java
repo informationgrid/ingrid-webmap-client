@@ -65,6 +65,8 @@ public enum ConfigurationProvider {
 	private static final String CONFIGURATION_FILE_KEY = "administration.file";
 	private static final String OPENSEARCH_URL = "opensearch.searchurl";
 	private static final String DOWNLOAD_DIR = "mapdownload.dir";
+	private static final String SINGLE_TILE = "frontend.singleTile";
+
 	private Properties properties = null;
 	private Configuration configuration = null;
 	private PersistentConfiguration persistentConfiguration = null;
@@ -197,7 +199,9 @@ public enum ConfigurationProvider {
 	public String getDownloadmapDir(){
 		return this.properties.getProperty(DOWNLOAD_DIR);
 	}	
-
+	public static String getSingleTile() {
+		return SINGLE_TILE;
+	}
 	/**
 	 * Get the map client configuration
 	 * @return Configuration
