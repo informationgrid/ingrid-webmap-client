@@ -55,7 +55,9 @@ body {
 .iconRemoveAll {
 	background-image: url(../../shared/images/icon_deleteall.png);
 }
-
+.iconZoomLayerExtent {
+	background-image: url(../../shared/images/icon_zoomLayerExtent.png);
+}
 .iconTransparency {
 	background-image: url(../../shared/images/icon_transparency.png);
 }

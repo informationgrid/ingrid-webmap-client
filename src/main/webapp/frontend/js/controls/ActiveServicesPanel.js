@@ -889,3 +889,34 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	return layer.data.llbbox;
 
 };
+/**
+ * disable/enable layer nodes recursively, based on the fact if they support our current zoomlevel
+ * @param {} node
+ * @param {} scale
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRecursively  = function(node, scale){
+		var self = this;
+		node.expand();
+		node.eachChild(function(n) {
+    	var layer = n.layer;
+    	if(layer){
+    		if(layer.maxScale > scale || layer.minScale < scale){
+    			n.disable();
+    		}
+        	else
+        		n.enable();
+    	}
+        if(n.hasChildNodes){
+        self.checkScaleRecursively(n, scale);
+        }
+    	});
+    	if(node instanceof GeoExt.tree.LayerNode){
+    		var layer = node.layer;
+    		if(layer){
+	    		if(layer.maxScale > scale || layer.minScale < scale){
+	    			node.disable();
+	    		}else
+	    			node.enable();
+    		}
+    	}			        
+}

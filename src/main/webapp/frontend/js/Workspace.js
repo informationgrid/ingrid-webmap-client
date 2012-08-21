@@ -13,8 +13,13 @@ de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
 	containingViewport:null,
 	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
         de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
-//        if(this.sessionWriteEnable)
-//        this.containingViewport.onStateChanged();
+        //TODO delete if, when ready
+        if(de.ingrid.mapclient.Configuration.instance.hiddenFeature){
+	        var servicesPanel = this.containingViewport.activeServicesPanel;
+	        var root = servicesPanel.layerTree.getRootNode();
+	        servicesPanel.checkScaleRecursively(root, this.getScale());
+        }
+        
     }
 });
 /**
@@ -650,6 +655,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 
 	this.listenToStateChanges = true;
 	this.map.sessionWriteEnable = true;
+	//TODO delete if, when ready
+    if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)
+	this.map.setCenter();
 };
 
 /**
