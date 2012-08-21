@@ -194,11 +194,14 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
 							});
 							// set layer parameters
+							// we explicitly set a layerAbstract param, since it somehow gets lost later
 							layer.addOptions({layerAbstract:record.data['abstract']},true);
-							if(de.ingrid.mapclient.Configuration.getProperty("frontend.singleTile").toLowerCase() == "true"){
-							layer.singleTile = true;
-							layer.ratio = 1;
-							}
+							//check if the config wants us to singleTile or not, but first we check if this property exists
+							if(de.ingrid.mapclient.Configuration.getProperty("frontend.singleTile"))
+								if(de.ingrid.mapclient.Configuration.getProperty("frontend.singleTile").toLowerCase() == "true"){
+								layer.singleTile = true;
+								layer.ratio = 1;
+								}
 							layer.visibility = false;
 							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
 							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
