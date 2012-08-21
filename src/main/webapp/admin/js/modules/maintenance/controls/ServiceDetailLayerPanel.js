@@ -28,7 +28,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	    idIndex: 0 
 	});
 	
-	var layers = [];
 	var allDeactivated = true;
 	var allChecked = true;
 	var allFeatureInfo = true;
@@ -37,6 +36,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	if(self.selectedService){
 		if(self.selectedService.data){
 			if(self.selectedService.data.capabilitiesUrl){
+				var layers = [];
 				// Check edit XML
 				var url = self.selectedService.data.capabilitiesUrl;
 				var editDoc = self.displayResult(url);
@@ -143,8 +143,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            boxLabel: 'Alle Layer verwerfen',
 				            id : 'cb_deactivated',
 				            checked: allDeactivated,
-				            handler: function(checkbox) {
-				    			self.allCheckboxesDeactivated(checkbox, Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
+				            handler: function(btn) {
+				    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue());
 				    		},
 							renderer: self.allCheckboxesStyle
 						};
@@ -156,7 +156,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            checked: allChecked,
 				            disabled: allDeactivated ? true : false,
 				            handler: function(btn) {
-				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue(), self.layerRecord);
+				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue());
 				    		}
 						};
 
@@ -167,7 +167,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            checked: allFeatureInfo,
 				            disabled: allDeactivated ? true : false,
 				            handler: function(btn) {
-				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue(), self.layerRecord);
+				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue());
 				    		}
 						};
 					
@@ -283,49 +283,65 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	return formatted;
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(checkbox, allDeactivated, record) {
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(allDeactivated) {
 	var self = this;
-	if(record){
+	if(self.store){
 		var layers = [];
-		for (var i=0, countI=record.length; i<countI; i++) { 
-			var layer = record[i];
-			if(allDeactivated != undefined){
-				layer.deactivated = allDeactivated;
+		if(self.store.data.items){
+			var items = self.store.data.items;
+			for (var i=0, countI=items.length; i<countI; i++) { 
+				var layer = items[i].data;
+				if(layer){
+					if(allDeactivated != undefined){
+						layer.deactivated = allDeactivated;
+					}
+					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
+					
+				}
 			}
-			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
 		self.store.loadData(layers);
 	}
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesChecked = function(allChecked, record) {
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesChecked = function(allChecked) {
 	var self = this;
-	if(record){
+	if(self.store){
 		var layers = [];
-		for (var i=0, countI=record.length; i<countI; i++) { 
-			var layer = record[i];
-			if(allChecked != undefined){
-				layer.checked = allChecked;
+		if(self.store.data.items){
+			var items = self.store.data.items;
+			for (var i=0, countI=items.length; i<countI; i++) { 
+				var layer = items[i].data;
+				if(layer){
+					if(allChecked != undefined){
+						layer.checked = allChecked;
+					}
+					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
+				}
 			}
-			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
 		self.store.loadData(layers);
 	}
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesFeatureInfo = function(allFeatureInfo, record) {
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesFeatureInfo = function(allFeatureInfo) {
 	var self = this;
-	if(record){
+	if(self.store){
 		var layers = [];
-		for (var i=0, countI=record.length; i<countI; i++) { 
-			var layer = record[i];
-			if(allFeatureInfo != undefined){
-				layer.featureInfo = allFeatureInfo;
+		if(self.store.data.items){
+			var items = self.store.data.items;
+			for (var i=0, countI=items.length; i<countI; i++) { 
+				var layer = items[i].data;
+				if(layer){
+					if(allFeatureInfo != undefined){
+						layer.featureInfo = allFeatureInfo;
+					}
+					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
+				}
 			}
-			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
 		self.store.loadData(layers);
 	}

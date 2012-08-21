@@ -121,8 +121,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 			
 			if(capabilitiesUrl != null){
 				var service = {
-						   title: null,
+						   title: self.selectedService.data.name,
 						   capabilitiesUrl: capabilitiesUrl,
+						   capabilitiesUrlOrg: self.selectedService.data.capabilitiesUrlOrg,
 						   originalCapUrl: self.selectedService.data.originalCapUrl,
 						   categories: categories,
 						   layers: null

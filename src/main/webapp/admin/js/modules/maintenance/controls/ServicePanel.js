@@ -177,7 +177,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	
 	self.serviceGrid.on('afteredit', function(store) {
 		if(store.field === "name"){
-			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.originalCapUrl);			
+			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.capabilitiesUrlOrg, store.record.data.originalCapUrl);			
 		}else{
 			store.record.reject();
 		}
@@ -275,12 +275,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 /**
  * Update services changes to config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateService = function (title, capabilitiesUrl, originalCapUrl, categories, layers) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateService = function (title, capabilitiesUrl, capabilitiesUrlOrg, originalCapUrl, categories, layers) {
 	var self = this;
 	if(capabilitiesUrl){
 		var service = {
 				   title: (title) ? title : null,
 				   capabilitiesUrl: capabilitiesUrl,
+				   capabilitiesUrlOrg: capabilitiesUrlOrg,
 				   originalCapUrl: originalCapUrl,
 				   categories: (categories) ? categories : null,
 				   layers: (layers) ? layers : null
