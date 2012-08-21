@@ -5,6 +5,8 @@ package de.ingrid.mapclient.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,15 @@ import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -27,7 +38,9 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
@@ -39,6 +52,7 @@ import de.ingrid.iplug.opensearch.communication.OSCommunication;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.model.AdministrativeInfo;
 import de.ingrid.mapclient.model.WmsServer;
+import de.ingrid.mapclient.utils.CapabilitiesUtils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -77,12 +91,41 @@ public class WmsResource {
 
 		try {
 			String response = HttpProxy.doRequest(url);
+			Document doc =  DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(response)));
+			doc =  CapabilitiesUtils.addIndexToLayers(doc);
+            Source source = new DOMSource(doc);
+            StringWriter stringWriter = new StringWriter();
+            Result result = new StreamResult(stringWriter);
+            TransformerFactory.newInstance().newTransformer().transform(source, result);
+            response = stringWriter.getBuffer().toString();
 			return response;
 		}
-		catch (Exception ex) {
+		catch (IOException ex) {
 			log.error("Error sending WMS request: "+url, ex);
 			throw new WebApplicationException(ex, Response.Status.NOT_FOUND);
+		} catch (XPathExpressionException e) {
+			
+			log.error("Error sending WMS request: "+url, e);
+		} catch (TransformerConfigurationException e) {
+			
+			log.error("Error sending WMS request: "+url, e);;
+		} catch (TransformerException e) {
+			
+			log.error("Error sending WMS request: "+url, e);
+		} catch (TransformerFactoryConfigurationError e) {
+			
+			log.error("Error sending WMS request: "+url, e);
+		} catch (SAXException e) {
+			
+			log.error("Error sending WMS request: "+url, e);
+		} catch (ParserConfigurationException e) {
+			
+			log.error("Error sending WMS request: "+url, e);
+		} catch (Exception e) {
+			
+			log.error("Error sending WMS request: "+url, e);
 		}
+		return null;
 	}
 	
 	/**
