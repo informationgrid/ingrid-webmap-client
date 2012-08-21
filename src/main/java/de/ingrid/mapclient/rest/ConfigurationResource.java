@@ -1303,8 +1303,14 @@ public class ConfigurationResource {
 				Element nameNode = doc.createElement("Name");
 				String txt = "";
 				if(node.getFirstChild() != null){
-					txt = createMD5NameText(txt, node.getFirstChild());
-					Text textNode = doc.createTextNode(txt);
+					Node childNode = node.getFirstChild();
+					if(node.getNodeName() != null)
+						txt = txt + "" + node.getNodeName();
+					if(node.getNodeValue() != null)
+						txt = txt + "" + node.getNodeValue();
+					if(node.getTextContent() != null)
+						txt = txt + "" + node.getTextContent();
+					Text textNode = doc.createTextNode(createMD5NameText(txt));
 					nameNode.appendChild(textNode);
 					node.appendChild(nameNode);					
 				}
@@ -1312,15 +1318,10 @@ public class ConfigurationResource {
 		}
 		return doc;
 	}
-
 	
-	private String createMD5NameText(String text, Node node) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		DOMSource source = new DOMSource(node);
-		StreamResult outputTarget = new StreamResult(outputStream);
-		TransformerFactory.newInstance().newTransformer().transform(source, outputTarget);
-		InputStream is = new ByteArrayInputStream(outputStream.toByteArray());
-		
+	private String createMD5NameText(String text) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
+		InputStream is = new ByteArrayInputStream(text.getBytes());
+		 
 		return MD5Util.getMD5(is);
 	}
 }
