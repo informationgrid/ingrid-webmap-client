@@ -708,7 +708,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 		if(serviceRecord.data){
 			var service = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.originalCapUrl };
 			// Add service
-			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, false);
+			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird aktualisiert!', false, false);
 		}
 	}
 };
