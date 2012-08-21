@@ -44,6 +44,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transparencyBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
+			zoomLayerBtn : null,
 	allExpanded: false,
 	ctrls:null,
 	kmlArray: [],
@@ -150,7 +151,31 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			}
 		}
 	});
-
+	//TODO remove hiddenFeature, when ready
+	// zoom to layer extent
+	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature){
+	this.zoomLayerBtn = new Ext.Button({
+				iconCls : 'iconZoomLayerExtent',
+				tooltip : i18n('tFuerMetadatenErst'),
+				disabled : true,
+				handler : function(btn) {
+					if (self.activeNode) {
+						// self.zoomLayerBtn.enable();
+						console.debug("zommLayerBtn handler");
+						//check if we have a service(root) node 
+						if(self.activeNode instanceof GeoExt.tree.LayerContainer){
+							llbbox = self.bboxOfServiceExtent(self.activeNode.attributes.service)		
+							
+						}else{
+							llbbox = self.bboxOfLayerExtent(self.activeNode.attributes)
+						}
+						var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+						self.map.zoomToExtent(bounds);
+						this.fireEvent('datachanged');
+					}
+				}
+			});
+	}
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
 		root: {
@@ -171,6 +196,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.removeBtn.enable();
 		self.transparencyBtn.disable();
 		self.metaDataBtn.enable();
+	//TODO remove hiddenFeature, when ready
+	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)		
+		self.zoomLayerBtn.enable();
 		
 
 		if (node) {
@@ -196,16 +224,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		}
 		self.activeNode = node;
 	});
-
-	Ext.apply(this, {
-		items: this.layerTree,
-		tbar: items = [
+	var items = [
 			this.addBtn,
 			this.removeBtn,
 			this.transparencyBtn,
 			this.metaDataBtn,
 			this.expandBtn
 		]
+	//TODO remove hiddenFeature, when ready
+	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)	
+		items.push(this.zoomLayerBtn);
+	
+	Ext.apply(this, {
+		items: this.layerTree,
+		tbar: items
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
 };
@@ -256,6 +288,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			break;
 			}
 		}
+		// maybe the srs is not in the support list, but there is a bbox defined for it
+		var srss = service.capabilitiesStore.data.items[0].data.bbox;
+		if(!supportsSRS && srss)
+			for(srs in  srss){
+				if(srs.toLowerCase() == this.map.projection.toLowerCase()){
+				supportsSRS = true;
+				break;
+				}
+			}
 		var serviceTitle = "no srs info available";
 		if(service.definition)
 		serviceTitle = service.definition.title
@@ -345,44 +386,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(!initialAdd){
 		this.fireEvent('datachanged');
 		}
-		/*****************************************************************/
-		/* we set the map to the largest bounding box its layers contain */
-		/* but first we check if our layers support our base projection **/
-		/*****************************************************************/
 
-		var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(this.map);
-		if(mapProjection.projCode == "EPSG:4326" && service.capabilitiesStore.data.items[0].data.llbbox){
-		var bboxes = service.capabilitiesStore.data.items;
-		var bIndex = 0;
-		var largestCoord = bboxes[0].data.llbbox[0];
-		for (var i = 0; i < bboxes.length; i++){
-			// we look for a smaller x1 coord, since these go into the negative
-			// thus the map becomes larger
-			if (bboxes[i].data.llbbox[0] < largestCoord)
-				bIndex = i;
-		}
-		var llbbox = service.capabilitiesStore.data.items[bIndex].data.llbbox;
-		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
 
-		}
-
-		if(supportsSRS && mapProjection.projCode != "EPSG:4326"){
-
-		var bboxes = service.capabilitiesStore.data.items;
-		var bIndex = 0;
-		var largestCoord = Number.MAX_VALUE;
-		for (var i = 0; i < bboxes.length; i++){
-			// we look for a smaller x1 coord, since these go into the negative
-			// thus the map becomes larger
-			// and we check if the layer NOT the service supports the projection
-			if(typeof(bboxes[i].data.bbox[srs]) !== 'undefined'){
-			if (bboxes[i].data.bbox[srs].bbox[0] < largestCoord){
-				bIndex = i;
-				var llbbox = bboxes[i].data.bbox[srs].bbox;
-			}
-			}
-		}
-		}
+		llbbox = self.bboxOfServiceExtent(service, supportsSRS);
 		// do we get some data?
 		if(llbbox){
 		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
@@ -821,4 +827,65 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removePointC
 		}
 	}
 	this.fireEvent('datachanged');
+};
+		
+	/**
+	 * we set the map to the largest bounding box its layers contain 
+	 * but first we check if our layers support our base projection 
+	 * @param {} service
+	 * @param {} supportsSRS
+	 * @return {}
+	 */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfServiceExtent = function(
+		service, supportsSRS) {
+	var self = this;
+	var llbbox = null;
+	var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils
+			.getMapProjection(self.map);
+	if (mapProjection.projCode == "EPSG:4326"
+			&& service.capabilitiesStore.data.items[0].data.llbbox) {
+		var bboxes = service.capabilitiesStore.data.items;
+		var bIndex = 0;
+		var largestCoord = bboxes[0].data.llbbox[0];
+		for (var i = 0; i < bboxes.length; i++) {
+			// we look for a smaller x1 coord, since these go into the negative
+			// thus the map becomes larger
+			if (bboxes[i].data.llbbox[0] < largestCoord)
+				bIndex = i;
+		}
+		llbbox = service.capabilitiesStore.data.items[bIndex].data.llbbox;
+		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+	}
+
+	if (supportsSRS && mapProjection.projCode != "EPSG:4326") {
+
+		var bboxes = service.capabilitiesStore.data.items;
+		var bIndex = 0;
+		var largestCoord = Number.MAX_VALUE;
+		for (var i = 0; i < bboxes.length; i++) {
+			// we look for a smaller x1 coord, since these go into the negative
+			// thus the map becomes larger
+			// and we check if the layer NOT the service supports the projection
+			if (typeof(bboxes[i].data.bbox[srs]) !== 'undefined') {
+				if (bboxes[i].data.bbox[srs].bbox[0] < largestCoord) {
+					bIndex = i;
+					llbbox = bboxes[i].data.bbox[srs].bbox;
+				}
+			}
+		}
+	}
+
+	return llbbox;
+
+};
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerExtent = function(attributes) {
+	var llbbox = null;
+
+	//layerUrl
+	var url = attributes.layer.url;
+	//get the layerId, but the right one! our layer id doesnt help, now bbox in this object
+	var layerId = attributes.service.layers.get(url+':'+attributes.layer.name)
+	var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
+	return layer.data.llbbox;
+
 };

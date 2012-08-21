@@ -26,6 +26,11 @@ de.ingrid.mapclient.Configuration = function() {
 	 * Indicates if the configuration is loaded
 	 */
 	this.isLoaded = false;
+	
+	/**
+	 * hide (or not) experimental features
+	 */
+	this.hiddenFeature = false;
 };
 
 /**
