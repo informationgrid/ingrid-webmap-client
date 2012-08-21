@@ -20,11 +20,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
-
-import org.apache.log4j.Logger;
-
-import sun.print.resources.serviceui;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -33,13 +28,11 @@ import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapArea;
 import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.MapServiceCategory;
-import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
 import de.ingrid.mapclient.model.WmsServer;
 import de.ingrid.mapclient.model.WmsService;
-import de.ingrid.mapclient.rest.ConfigurationResource;
 
 /**
  * ConfigurationProvider gives access to the configuration of the map client.
@@ -370,7 +363,7 @@ public enum ConfigurationProvider {
 					wmsServ.getMapServiceCategories().add(msC);
 				 }
 				 else{
-					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), new ArrayList<MapServiceCategory>(), null, new ArrayList<String>());
+					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), null, new ArrayList<MapServiceCategory>(), null, new ArrayList<String>());
 					 wmsService.getMapServiceCategories().add(msC);
 					 wmsServices.add(wmsService);
 				 

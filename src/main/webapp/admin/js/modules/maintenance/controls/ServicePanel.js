@@ -25,6 +25,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 			name: 'capabilitiesUrl',
 			type: 'string'
 		}, {
+			name: 'capabilitiesUrlOrg',
+			type: 'string'
+		}, {
 			name: 'mapServiceCategories',
 			type: 'array'
 		}, {
@@ -80,7 +83,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	deleteServiceBtn:null,
 	reloadServiceBtn:null,
 	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers']
+	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers']
 });
 
 /**
@@ -322,12 +325,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	var url = simple.items.get('url').el.dom.value;
             	
             	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
-            		var service = { title:name, originalCapUrl:url, categories:[], layers:[] };
+            		var service = { title:name, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!');
                 	win.close();
             	}else if(url != simple.items.get('url').emptyText){
-            		var service = { title:'', originalCapUrl:url, categories:[], layers:[] };
+            		var service = { title:null, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
                 	win.close();
@@ -366,7 +369,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	   fn: function(btn){
 		   if (btn == 'ok'){
 			   if(reloadService.data){
-				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
+				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, capabilitiesUrlOrg: reloadService.data.capabilitiesUrlOrg, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
 				   // Reload service
 				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!');
 			   }
@@ -438,7 +441,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
             	var name = simple.items.get('name').el.dom.value;
             	if(name != ''){
             		var originalCapUrl = '';
-    				var capabilitiesUrl = '';
+            		var capabilitiesUrl = '';
+            		var capabilitiesUrlOrg = '';
     				var categories = [];
     				var layers = [];
     				var checkedLayers = [];
@@ -448,6 +452,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     				}
     				if(copyService.data.capabilitiesUrl){
     					capabilitiesUrl = copyService.data.capabilitiesUrl;
+    				}
+    				
+    				if(copyService.data.capabilitiesUrlOrg){
+    					capabilitiesUrlOrg = copyService.data.capabilitiesUrlOrg;
     				}
     			
     				if(copyService.data.mapServiceCategories){
@@ -482,6 +490,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     				var service = {
     					   title: name,
     					   capabilitiesUrl: capabilitiesUrl,
+    					   capabilitiesUrlOrg: capabilitiesUrlOrg,
     					   originalCapUrl: (originalCapUrl) ? originalCapUrl : capabilitiesUrl,
     					   categories: categories,
     					   layers: layers
@@ -533,8 +542,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	var ds = self.serviceGrid.getView().ds;
 	var title = service.title;
 	var originalCapUrl = service.originalCapUrl;
+	var capabilitiesUrlService = service.capabilitiesUrl;
 	
-	if(ds && title && originalCapUrl){
+	if(ds && title && originalCapUrl && capabilitiesUrlService){
 		var dsData = ds.data;
 		if(dsData){
 			var dsDataItems = dsData.items;
@@ -546,8 +556,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 					if(item.data){
 						var itemTitle = item.data.name;
 						var itemOriginalCapUrl = item.data.originalCapUrl;
+						var itemCapabilitiesUrl = item.data.capabilitiesUrl;
 						if(itemTitle && itemOriginalCapUrl){
-							if(itemTitle == title && itemOriginalCapUrl == originalCapUrl){
+							if(itemTitle == title && itemOriginalCapUrl == originalCapUrl && itemCapabilitiesUrl == capabilitiesUrlService){
 								row = i;
 								break;
 							}
@@ -631,67 +642,75 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 	self.reloadServiceBtn.enable();
 	self.deleteServiceBtn.enable();
 	
-	var xmlStore = new Ext.data.Store({
-        // load using HTTP
-        url: serviceRecord.data.capabilitiesUrl,
-		// the return will be XML, so lets set up a reader
-        reader: new Ext.data.XmlReader({
-               record: 'Layer'
-           }, [
-               // set up the fields mapping into the xml doc
-               // The first needs mapping, the others are very basic
-               {name: 'title', mapping: '/Title'},
-               {name: 'name', mapping: '/Name'},
-               {name: 'featureInfo', mapping: '/@queryable', type: 'int'},
-               {name: 'legend', mapping: '/Style/LegendURL/OnlineResource'}
-               
-           ]),
-           listeners : {
-               load: function(store, records, succesful, operation){
-            	   var layerRecord = [];
-            	   for (var i=0, countI=records.length; i<countI; i++) {
-						var layerObj = records[i];
-						if(layerObj.data){
-							layerRecord.push({ 
-								index: layerObj.data.name,
-								title: layerObj.data.title,
-								featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
-								deactivated: (layerObj.data.name) ? false : true,
-								checked: false,
-								legend: false
-								});
-						}
-            	  }
-            	   
-            	  var myBorderPanel = new Ext.Panel({
-						id: 'serviceDetailBorderPanel',
-						itemId: 'serviceDetailBorderPanel',
-					    height: 550,
-					    layout: 'border',
-					    items: [
-					            new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel({
-					            	selectedService: serviceRecord,
-					            	layerRecord: layerRecord,
-							    	region:'center',
-							    	mainPanel: self
-								}),
-								new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel({
-							    	selectedService: serviceRecord,
-							    	region:'west',
-									width: 400,
-							    	mainPanel: self
-								})]
-					});
-					
-            	self.remove(self.items.get('serviceDetailBorderPanel'));
-            	self.add(myBorderPanel);
-				self.doLayout();
-				self.selectedService = serviceRecord;
-				self.selectedService.data.jsonLayers = layerRecord;
-               }
-           }
-    	});
-	xmlStore.load();
+	if(serviceRecord.data.capabilitiesUrlOrg){
+		var xmlStore = new Ext.data.Store({
+	        // load using HTTP
+	        url: serviceRecord.data.capabilitiesUrlOrg,
+			// the return will be XML, so lets set up a reader
+	        reader: new Ext.data.XmlReader({
+	               record: 'Layer'
+	           }, [
+	               // set up the fields mapping into the xml doc
+	               // The first needs mapping, the others are very basic
+	               {name: 'title', mapping: '/Title'},
+	               {name: 'name', mapping: '/Name'},
+	               {name: 'featureInfo', mapping: '/@queryable', type: 'int'},
+	               {name: 'legend', mapping: '/Style/LegendURL/OnlineResource'}
+	               
+	           ]),
+	           listeners : {
+	               load: function(store, records, succesful, operation){
+	            	   var layerRecord = [];
+	            	   for (var i=0, countI=records.length; i<countI; i++) {
+							var layerObj = records[i];
+							if(layerObj.data){
+								layerRecord.push({ 
+									index: layerObj.data.name,
+									title: layerObj.data.title,
+									featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
+									deactivated: (layerObj.data.name) ? false : true,
+									checked: false,
+									legend: false
+									});
+							}
+	            	  }
+	            	   
+	            	  var myBorderPanel = new Ext.Panel({
+							id: 'serviceDetailBorderPanel',
+							itemId: 'serviceDetailBorderPanel',
+						    height: 550,
+						    layout: 'border',
+						    items: [
+						            new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel({
+						            	selectedService: serviceRecord,
+						            	layerRecord: layerRecord,
+								    	region:'center',
+								    	mainPanel: self
+									}),
+									new de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel({
+								    	selectedService: serviceRecord,
+								    	region:'west',
+										width: 400,
+								    	mainPanel: self
+									})]
+						});
+						
+	            	self.remove(self.items.get('serviceDetailBorderPanel'));
+	            	self.add(myBorderPanel);
+					self.doLayout();
+					self.selectedService = serviceRecord;
+					self.selectedService.data.jsonLayers = layerRecord;
+	               }
+	           }
+	    	});
+		xmlStore.load();
+	}else{
+		if(serviceRecord.data){
+			var service = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.originalCapUrl };
+			// Add service
+			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, false);
+		}
+	}
 };
 
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyServiceToServer  = function (serviceRecord){

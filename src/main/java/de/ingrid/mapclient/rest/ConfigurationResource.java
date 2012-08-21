@@ -3,12 +3,16 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -28,8 +32,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -42,7 +48,10 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -64,6 +73,8 @@ import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
+import de.ingrid.utils.tool.MD5Util;
+import de.ingrid.utils.xml.XPathUtils;
 
 /**
  * ConfigurationResource gives access to the application configuration
@@ -537,9 +548,9 @@ public class ConfigurationResource {
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject json = new JSONObject(serviceCopy);
-				String url = makeCopyOfService(json, req);
+				HashMap<String, String> url = makeCopyOfService(json, true, req);
 				if(url != null){
-					insertCopyIntoConfig(url, json);
+					insertCopyIntoConfig(url.get("url"), url.get("urlOrg"), json);
 				}else{
 					Exception ex = new Exception();
 					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
@@ -569,9 +580,9 @@ public class ConfigurationResource {
 	public void addService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
-				String url = makeCopyOfService(jsonService, req);
+				HashMap<String, String> url = makeCopyOfService(jsonService, false, req);
 				if(url != null){
-					insertCopyIntoConfig(url, jsonService);
+					insertCopyIntoConfig(url.get("url"), url.get("urlOrg"), jsonService);
 				}else{
 					Exception ex = new Exception();
 					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
@@ -583,6 +594,89 @@ public class ConfigurationResource {
 		}
 	}	
 	
+	/**
+	 * This method gets a ServiceContainer object from which adds to the WmsService list
+	 * and stores it in the persistent configuration
+	 * the following structure is expected:
+	 * {title:"title",
+	 * 	originalCapUrl: "http://xyz",
+	 *  categories: [6,9,...],
+	 *  layers: [Layer, Layer, Layer],
+	 *  checkedLayers: [3,5,7]}
+	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
+	 * @param String containing the object
+	 */
+	@POST
+	@Path(DYNAMIC_PATH + "/addServiceOrgCopy")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void addServiceOrgCopy(String service, @Context HttpServletRequest req) throws IOException {
+		try {
+				JSONObject json = new JSONObject(service);
+				HashMap<String, String> url = makeOrgCopyOfService(json, req);
+				if(url != null){
+					WmsService wmsService = findService(json);
+					wmsService.setCapabilitiesUrlOrg(url.get("urlOrg"));
+					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+				}else{
+					Exception ex = new Exception();
+					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+				}
+		}
+		catch (Exception ex) {
+			log.error("some error", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}	
+	
+	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req) throws JSONException {
+		HashMap<String, String> urls = null;
+		String urlOrg = null;
+		String urlPrefix = null;
+		try {
+			String capUrl = json.getString("originalCapUrl");			
+			
+			String path = req.getSession().getServletContext().getRealPath("wms");
+			urlPrefix = req.getRequestURL().toString();
+			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
+			urlPrefix += "wms/";
+			
+			// get the wms document 
+			String response = HttpProxy.doRequest(capUrl);
+			Document doc = stringToDom(response);
+			doc = addIndexToLayers(doc);
+			
+			String title = getNameFromXML(doc);
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			DOMSource source = new DOMSource(doc);
+			
+			File fOrg = null;
+			do {
+				urlOrg = new DbUrlMapper().createShortUrl(title) + "_org.xml";
+				fOrg = new File(path + "/" + urlOrg);
+				
+			} while (fOrg.exists());
+			// Create original copy file
+			StreamResult resultOrg = new StreamResult(fOrg);
+			transformer.transform(source, resultOrg);
+			
+		} catch (JSONException e) {
+			
+			log.error("Unable to decode json object: "+e);
+		} catch (Exception e) {
+
+			log.error("Error on doing request: "+e);
+		}
+		
+		if(urls == null){
+			urls = new HashMap<String, String>();
+		}
+		urls.put("url", json.getString("capabilitiesUrl"));
+		urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
+		return urls;
+		
+	}
+
 	/**
 	 * This method gets a ServiceContainer object it will look in the list for the original
 	 * service object and update the changes
@@ -709,16 +803,22 @@ public class ConfigurationResource {
 	public void reloadService(String serviceString, @Context HttpServletRequest req) throws Exception {
 		JSONObject jsonService = new JSONObject(serviceString);
 		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
+		String capabilitiesUrlOrg = jsonService.getString("capabilitiesUrlOrg"); 
 		String originalCapUrl = jsonService.getString("originalCapUrl"); 
 		String title = jsonService.getString("title"); 
+		HashMap<String, String> fileNames = new HashMap<String, String>();
 		
 		String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
 		String [] splitFileName = fileName.split("\\?");
 		String path = req.getSession().getServletContext().getRealPath("wms");
+		fileNames.put("url", path + "" + splitFileName[0]);
+		fileName = capabilitiesUrlOrg.substring(capabilitiesUrlOrg.lastIndexOf("/"), capabilitiesUrlOrg.length());			
+		splitFileName = fileName.split("\\?");
+		fileNames.put("urlOrg", path + "" + splitFileName[0]);
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		writeWmsCopyToFile(doc, req, title, path + "" + splitFileName[0]);
+		writeWmsCopyToFile(doc, req, title, capabilitiesUrlOrg, fileNames);
 		
 		WmsService service = findService(jsonService);
 		updateLayers(service, jsonService);
@@ -731,21 +831,22 @@ public class ConfigurationResource {
 	public void refreshService(String serviceString, @Context HttpServletRequest req) throws Exception {
 		JSONObject jsonService = new JSONObject(serviceString);
 		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
+		String capabilitiesUrlOrg = jsonService.getString("capabilitiesUrlOrg"); 
 		String originalCapUrl = capabilitiesUrl; 
 		String title = jsonService.getString("title"); 
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		String url = writeWmsCopy(doc, req, title);
+		HashMap<String, String> url = writeWmsCopy(doc, req, title, capabilitiesUrlOrg);
 		
 		WmsService service = findService(jsonService);
-		service.setCapabilitiesUrl(url);
+		service.setCapabilitiesUrl(url.get("url"));
 		service.setOriginalCapUrl(originalCapUrl);
 		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 	}	
 	
 	
-	private void insertCopyIntoConfig(String url, JSONObject json) {
+	private void insertCopyIntoConfig(String url, String urlOrg, JSONObject json) {
 			
 			try {
 				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
@@ -767,7 +868,7 @@ public class ConfigurationResource {
 			
 				String title = json.getString("title");
 				String originalCapUrl = json.getString("originalCapUrl");
-				WmsService wmsService = new WmsService(title, url, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
+				WmsService wmsService = new WmsService(title, url, urlOrg, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
 				updateCategories(wmsService, json);
 				p.getPersistentConfiguration().getWmsServices().add(wmsService);
 				p.write(p.getPersistentConfiguration());
@@ -824,22 +925,33 @@ public class ConfigurationResource {
 	 * @param json
 	 * @param req 
 	 */
-	private String makeCopyOfService(JSONObject json, HttpServletRequest req){
-		String url = null;
+	private HashMap<String, String> makeCopyOfService(JSONObject json, boolean isCopy, HttpServletRequest req){
+		HashMap<String, String> urls = null;
 		try {
-			String title = json.getString("title");
+			String title = null;
+			if(json.get("title") != JSONObject.NULL){
+				title = json.getString("title");
+			} 
 			String capUrl = json.getString("originalCapUrl");			
-
+			if(isCopy){
+				capUrl = json.getString("capabilitiesUrl");
+			}
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
 			log.debug(response);
 			Document doc = stringToDom(response);
-			if(title.equals("")){
+			if(title == null){
 				title = getNameFromXML(doc);
 				json.put("title", title);
 			}
-			doc = changeXml(doc, json);
-			url = writeWmsCopy(doc, req, title);
+			if(!isCopy){
+				doc = changeXml(doc, json);
+			}
+			if(json.get("capabilitiesUrlOrg") != JSONObject.NULL && json.getString("capabilitiesUrlOrg") != ""){
+				urls = writeWmsCopy(doc, req, title, json.getString("capabilitiesUrlOrg"));
+			}else{
+				urls = writeWmsCopy(doc, req, title, null);
+			}
 			
 		} catch (JSONException e) {
 			
@@ -848,20 +960,20 @@ public class ConfigurationResource {
 
 			log.error("Error on doing request: "+e);
 		}
-		return url;
+		return urls;
 		
 	}
 
-	private String writeWmsCopy(Document doc, HttpServletRequest req,
-			String title) {
+	private HashMap<String, String> writeWmsCopy(Document doc, HttpServletRequest req, String title, String copyCapOrg) {
 
-		return writeWmsCopyToFile(doc, req, title, null);
+		return writeWmsCopyToFile(doc, req, title, copyCapOrg, null);
 	}
 	
-	private String writeWmsCopyToFile(Document doc, HttpServletRequest req,
-			String title, String existingFileName) {
+	private HashMap<String, String> writeWmsCopyToFile(Document doc, HttpServletRequest req, String title, String copyCapOrg, HashMap<String, String> fileNames) {
 
+		HashMap<String, String> urls = null;
 		String url = null;
+		String urlOrg = null;
 		String urlPrefix = null;
 		try {
 			String path = req.getSession().getServletContext().getRealPath("wms");
@@ -870,26 +982,62 @@ public class ConfigurationResource {
 			urlPrefix += "wms/";
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
+			// Add name to layers
+			doc = addIndexToLayers(doc);
 			DOMSource source = new DOMSource(doc);
+			
 			File f = null;
-			if (existingFileName == null){
-			do {
-				url = new DbUrlMapper().createShortUrl(title);
-				url = url + ".xml";
-				f = new File(path + "/" + url);
-			} while (f.exists());
+			File fOrg = null;
+			if (fileNames == null){
+				do {
+					url = new DbUrlMapper().createShortUrl(title);
+					if(copyCapOrg == null || copyCapOrg.equals("")){
+						urlOrg = url + "_org.xml";
+						fOrg = new File(path + "/" + urlOrg);
+					}
+					url = url + ".xml";
+					f = new File(path + "/" + url);
+				} while (f.exists());
 			}else{
-				f = new File(existingFileName);
+				f = new File(fileNames.get("url"));
+				fOrg = new File(fileNames.get("urlOrg"));
 			}
-			StreamResult result = new StreamResult(f);
-			transformer.transform(source, result);
+			// Create original copy file
+			if(copyCapOrg == null || copyCapOrg.equals("") || fileNames != null){
+				StreamResult resultOrg = new StreamResult(fOrg);
+				transformer.transform(source, resultOrg);
+			}
+			// Create copy file
+			if(copyCapOrg != null){
+				if(title != null){
+					// change title
+					Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
+					if(titleNode != null){
+						titleNode.setTextContent(title);
+					}
+				}
+				source = new DOMSource(doc);
+				StreamResult result = new StreamResult(f);
+				transformer.transform(source, result);
+			}
+
 		} catch (TransformerException e) {
 			log.error("problems on creating xml file: " + e.getMessage());
 		} catch (Exception e) {
 			log.error("problems on generating url: " + e.getMessage());
 		}
 		
-		return (urlPrefix+url+"?REQUEST=GetCapabilities");
+		if(urls == null){
+			urls = new HashMap<String, String>();
+		}
+		urls.put("url", urlPrefix+url+"?REQUEST=GetCapabilities");
+		if(!copyCapOrg.equals("")){
+			urls.put("urlOrg", copyCapOrg.toString());
+		}else{
+			urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
+		}
+		
+		return urls;
 
 	}
 
@@ -903,66 +1051,39 @@ public class ConfigurationResource {
 	 */
 	private Document changeXml(Document doc, JSONObject json)
 			throws TransformerException {
-		XPath xpath = XPathFactory.newInstance().newXPath();
-
-		Node titleNode = null;
 		try {
 			if(json.get("layers") != JSONObject.NULL){
 				JSONArray layers = json.getJSONArray("layers");
 				if (layers != null) {
 					for (int i = 0, count = layers.length(); i < count; i++) {
-
-						if (layers.getJSONObject(i).getBoolean("deactivated")) {
+						JSONObject layer = layers.getJSONObject(i);
+						if (layer.getBoolean("deactivated")) {
 							
-							Node n = (Node) xpath.evaluate("//Name[text()=\""
-									+ layers.getJSONObject(i).getString("index") + "\"]",
-									doc, XPathConstants.NODE);
+							Node n = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
 							if(n != null){
-								n.getParentNode().removeChild(n);
+								n.getParentNode().getParentNode().removeChild(n.getParentNode());
 							}
 							log.debug("delete layer: " + layers.get(i));
 
 						} else {
 							// TODO insert all other attibutes in wms
 			
-							JSONObject layerObj = layers.getJSONObject(i);
-							log.debug("layerobject: " + layerObj.toString());
 							// Title
-							Node n = (Node) xpath.evaluate("//Name[text()=\""
-									+ layers.getJSONObject(i).getString("index") + "\"]",
-									doc, XPathConstants.NODE);
-							if(n != null){
-								Node titleNameNode = n.getNextSibling().getNextSibling();
-								titleNameNode.setTextContent(layerObj
-										.getString("title"));
-								
-								// Queryable
-								Node layerNode = n.getParentNode();
-								if(layerNode.getAttributes() != null){
-									if(layers.getJSONObject(i).getBoolean("featureInfo")){
-										layerNode.getAttributes().getNamedItem("queryable").setNodeValue("1");	
-									}else{
-										layerNode.getAttributes().getNamedItem("queryable").setNodeValue("0");
-									}
-								}
+							Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
+							if(nameNode != null){
+								Node titleNode = XPathUtils.getNode(nameNode.getParentNode(), "./Title");
+								titleNode.setTextContent(layer.getString("title"));
+							
+								if(layers.getJSONObject(i).getBoolean("featureInfo")){
+									nameNode.getParentNode().getAttributes().getNamedItem("queryable").setNodeValue("1");	
+								}else{
+									nameNode.getParentNode().getAttributes().getNamedItem("queryable").setNodeValue("0");
+								}								
 							}
 						}
 					}
 				}
 			}
-			if(json.get("title") != null){
-				String title = json.getString("title");
-
-				// change title
-				titleNode = (Node) xpath.evaluate("//Service/Title", doc,
-						XPathConstants.NODE);
-				if(titleNode != null){
-					titleNode.setTextContent(title);
-				}
-			}
-		} catch (XPathExpressionException e) {
-			log.error("error on xpathing document: " + e.getMessage());
-			e.printStackTrace();
 		} catch (JSONException e) {
 			log.error("error on retrieving data from json document: "
 					+ e.getMessage());
@@ -1124,7 +1245,7 @@ public class ConfigurationResource {
 	private void updateServiceFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
 		try {
-			url = jsonService.getString("capabilitiesUrl");
+			url = jsonService.getString("capabilitiesUrlOrg");
 			String fileName = url.substring(url.lastIndexOf("/"), url.length());
 			String [] splitFileName = fileName.split("\\?");
 			String path = req.getSession().getServletContext().getRealPath("wms");
@@ -1136,6 +1257,11 @@ public class ConfigurationResource {
 			doc = changeXml(doc, jsonService);
 			//delete the file
 			deleteWmsFile(jsonService, req);
+			url = jsonService.getString("capabilitiesUrl");
+			fileName = url.substring(url.lastIndexOf("/"), url.length());
+			splitFileName = fileName.split("\\?");
+			path = req.getSession().getServletContext().getRealPath("wms");
+			f = new File(path+splitFileName[0]);	
 			
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
@@ -1167,5 +1293,34 @@ public class ConfigurationResource {
 			log.error("XPathExpressionException on get xm name: ",e);
 		}
 		return name;
+	}
+	
+	private Document addIndexToLayers(Document doc) throws XPathExpressionException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException{
+		NodeList nodeList = XPathUtils.getNodeList(doc, "//Layer");
+		for(int i=0; i < nodeList.getLength(); i++){
+			Node node = nodeList.item(i);
+			if(!XPathUtils.nodeExists(node, "./Name")){
+				Element nameNode = doc.createElement("Name");
+				String txt = "";
+				if(node.getFirstChild() != null){
+					txt = createMD5NameText(txt, node.getFirstChild());
+					Text textNode = doc.createTextNode(txt);
+					nameNode.appendChild(textNode);
+					node.appendChild(nameNode);					
+				}
+			}
+		}
+		return doc;
+	}
+
+	
+	private String createMD5NameText(String text, Node node) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		DOMSource source = new DOMSource(node);
+		StreamResult outputTarget = new StreamResult(outputStream);
+		TransformerFactory.newInstance().newTransformer().transform(source, outputTarget);
+		InputStream is = new ByteArrayInputStream(outputStream.toByteArray());
+		
+		return MD5Util.getMD5(is);
 	}
 }

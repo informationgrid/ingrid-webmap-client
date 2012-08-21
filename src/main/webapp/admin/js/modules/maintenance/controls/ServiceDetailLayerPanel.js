@@ -34,202 +34,239 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	var allFeatureInfo = true;
 	var allLegend = true;
 	
-	for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
-		var layer = self.layerRecord[i];
-		var checkedLayers = self.selectedService.data.checkedLayers;
-		var layerIsFound = false;
-		if(checkedLayers && checkedLayers.length > 0){
-			for (var j=0, countJ=checkedLayers.length; j<countJ; j++) { 
-				if(layer.index == checkedLayers[j]){
-					layerIsFound = true;
-					break;
+	if(self.selectedService){
+		if(self.selectedService.data){
+			if(self.selectedService.data.capabilitiesUrl){
+				// Check edit XML
+				var url = self.selectedService.data.capabilitiesUrl;
+				var editDoc = self.displayResult(url);
+				var editLayers = editDoc.getElementsByTagName("Layer");
+				var checkedLayers = self.selectedService.data.checkedLayers;
+				// Get Layers from edit XML
+				var editLayerRecord = self.getContent(editLayers);
+				// Get Layers from org XML
+				var orgLayerRecord = self.layerRecord;
+				if(editLayerRecord){
+					for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
+						var orgLayer = self.layerRecord[i];
+						var orgLayerName = orgLayer.index;
+						var isFound = false; 
+						
+						var title = orgLayer.title;
+						var deactivated = true;
+						var featureInfo = false;
+						
+						for (var j=0, countJ=editLayerRecord.length; j<countJ; j++) {
+							var editLayer = editLayerRecord[j];
+							var editLayerName = editLayer.index; 
+							if(orgLayerName == editLayerName){
+								title = editLayer.title;
+								deactivated = false;
+								featureInfo = editLayer.featureInfo
+								isFound = true; 
+							}
+						}
+						
+						var layerIsFound = false;
+						if(checkedLayers && checkedLayers.length > 0){
+							for (var j=0, countJ=checkedLayers.length; j<countJ; j++) { 
+								if(orgLayer.index == checkedLayers[j]){
+									layerIsFound = true;
+									break;
+								}
+							}
+						}
+						
+						layers.push([orgLayer.index, title, deactivated, layerIsFound, featureInfo, orgLayer.legend]);
+					}
+					
+					if(layers){
+						for (var i=0, countI=layers.length; i<countI; i++) {
+							var layer = layers[i];
+							if(layer[2] == false){
+								allDeactivated = false;
+							}
+							if(layer[3] == false){
+								allChecked = false;
+							}
+							if(layer[4] == false){
+								allFeatureInfo = false;
+							}
+							if(layer[5] == false){
+								allLegend = false;
+							}
+						}
+					}
+					
+					var cm = new Ext.grid.ColumnModel({
+					        // specify any defaults for each column
+					        defaults: {
+					            sortable: true // columns are not sortable by default           
+					        },
+					        columns: [{
+					              		header: "Title", 
+					              		dataIndex: 'title', 
+					              		sortable: true, 
+					              		width: 200, 
+					              		editor:{
+					              			xtype: 'textfield',
+					              			allowBlank: false
+					              		},
+					              		renderer: self.renderRow
+					                	
+					              	}
+						            ,new Ext.ux.grid.CheckColumn({
+						            	  header: "Verwerfen", 
+							              dataIndex: 'deactivated',
+							              width: 25,
+							              align: "center"
+							              		
+						            })
+						            ,new Ext.ux.grid.CheckColumn({
+						            	  header: "Aktiv", 
+							              dataIndex: 'checked',
+							              width: 25,
+							              align: "center" 
+						            })
+						            ,new Ext.ux.grid.CheckColumn({
+						            	  header: "Feature Info", 
+						            	  dataIndex: 'featureInfo',
+							              width: 25,
+							              align: "center" 
+						            })
+					              ]
+					    	});
+					
+					// Checkboxes for tbar
+					var deactivatedTbar = {
+				            xtype: 'checkbox',
+				            boxLabel: 'Alle Layer verwerfen',
+				            id : 'cb_deactivated',
+				            checked: allDeactivated,
+				            handler: function(checkbox) {
+				    			self.allCheckboxesDeactivated(checkbox, Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
+				    		},
+							renderer: self.allCheckboxesStyle
+						};
+
+					var checkedTbar = {
+				            xtype: 'checkbox',
+				            boxLabel: 'Alle Layer aktvieren',
+				            id : 'cb_checked',
+				            checked: allChecked,
+				            disabled: allDeactivated ? true : false,
+				            handler: function(btn) {
+				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue(), self.layerRecord);
+				    		}
+						};
+
+					var featureInfoTbar = {
+				            xtype: 'checkbox',
+				            boxLabel: 'Alle Layer Infos aktvieren',
+				            id : 'cb_featureInfo',
+				            checked: allFeatureInfo,
+				            disabled: allDeactivated ? true : false,
+				            handler: function(btn) {
+				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue(), self.layerRecord);
+				    		}
+						};
+					
+					// Button for tbar
+					var saveBtn = new Ext.Button({
+						tooltip: 'Speichern',
+						text: 'Speichern',
+						disabled: false,
+						buttonAlign:'right',
+						handler: function(btn) {
+							self.save();
+						}
+					});
+					
+					// create the grid
+					var grid = new Ext.grid.EditorGridPanel({
+				        store: self.store,
+				        layout: 'form',
+				        autoHeight: true,
+				        autoScroll: true,
+				    	viewConfig: {
+				    		autoFill: true,
+				    		forceFit: true
+				    	},
+				    	cm: cm,
+				        height:350,
+				        border: false,
+				        listeners: {
+							'beforeedit': function(e) {
+								if(e.record.get('deactivated')) {
+									e.cancel = true;
+								}
+							}
+						}, 
+						tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
+				    });
+
+					self.store.loadData(layers);
+					
+					self.store.on('update',function(cell, record, operation) {
+						var modified  = record.modified;
+						if(modified){
+							var modifiedData = record.data;
+							if(modifiedData){
+								if(modifiedData.index !== ""){
+									
+								}else{
+									record.reject();
+								}
+							}
+						}
+					});
+					
+					// create the final layout
+					Ext.apply(this, {
+						items: [grid]
+					});
 				}
-			}
-			layers.push([layer.index, layer.title, layer.deactivated, layerIsFound, layer.featureInfo, layer.legend]);
-			self.layerRecord[i].checked = layerIsFound;
-		}else{
-			layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);				
-		}
-		if(layer.index){
-			if(layer.deactivated == false){
-				allDeactivated = false;
-			}
-			if(layerIsFound == false){
-				allChecked = false;
-			}
-			if(layer.featureInfo == false){
-				allFeatureInfo = false;
-			}
-			if(layer.legend == false){
-				allLegend = false;
 			}
 		}
 	}
-	
-	var cm = new Ext.grid.ColumnModel({
-	        // specify any defaults for each column
-	        defaults: {
-	            sortable: true // columns are not sortable by default           
-	        },
-	        columns: [{
-	              		header: "Title", 
-	              		dataIndex: 'title', 
-	              		sortable: true, 
-	              		width: 200, 
-	              		editor:{
-	              			xtype: 'textfield',
-	              			allowBlank: false
-	              		},
-	              		renderer: self.renderRow
-	                	
-	              	}
-		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Verwerfen", 
-			              dataIndex: 'deactivated',
-			              width: 25,
-			              align: "center"
-			              		
-		            })
-		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Aktiv", 
-			              dataIndex: 'checked',
-			              width: 25,
-			              align: "center" 
-		            })
-		            ,new Ext.ux.grid.CheckColumn({
-		            	  header: "Feature Info", 
-		            	  dataIndex: 'featureInfo',
-			              width: 25,
-			              align: "center" 
-		            })
-	              ]
-	    	});
-	
-	var deactivatedTbar = {
-            xtype: 'checkbox',
-            boxLabel: 'Alle Layer verwerfen',
-            id : 'cb_deactivated',
-            checked: allDeactivated,
-            disabled: allDeactivated ? true : false,
-            handler: function(checkbox) {
-    			self.allCheckboxesDeactivated(checkbox, Ext.getCmp('cb_deactivated').getValue(), self.layerRecord);
-    		},
-			renderer: self.allCheckboxesStyle
-		};
-
-	var checkedTbar = {
-            xtype: 'checkbox',
-            boxLabel: 'Alle Layer aktvieren',
-            id : 'cb_checked',
-            checked: allChecked,
-            disabled: allDeactivated ? true : false,
-            handler: function(btn) {
-    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue(), self.layerRecord);
-    		}
-		};
-
-	var featureInfoTbar = {
-            xtype: 'checkbox',
-            boxLabel: 'Alle Layer Infos aktvieren',
-            id : 'cb_featureInfo',
-            checked: allFeatureInfo,
-            disabled: allDeactivated ? true : false,
-            handler: function(btn) {
-            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue(), self.layerRecord);
-    		}
-		};
-
-	// create the grid
-	var grid = new Ext.grid.EditorGridPanel({
-        store: self.store,
-        layout: 'form',
-        autoHeight: true,
-        autoScroll: true,
-    	viewConfig: {
-    		autoFill: true,
-    		forceFit: true
-    	},
-    	cm: cm,
-        height:350,
-        border: false,
-        listeners: {
-			'beforeedit': function(e) {
-				if(e.record.get('deactivated')) {
-					e.cancel = true;
-				}
-			}
-		}, 
-		tbar:[deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar]
-    });
-
-	self.store.loadData(layers);
-	
-	self.store.on('update',function(cell, record, operation) {
-		var modified  = record.modified;
-		if(modified){
-			var modifiedData = record.data;
-			if(modifiedData){
-				if(modifiedData.index !== ""){
-					if(record.modified.deactivated != undefined){
-						Ext.Msg.show({
-							   title:'Layer wird gel&ouml;scht',
-							   msg: 'Soll das L&ouml;schen des Layers wirklich durchgef&uuml;hrt werden? Layer kann nur durch "Neu einlesen" des Dienstes wiederhergestellt werden!',
-							   buttons: Ext.Msg.OKCANCEL,
-							   icon: Ext.MessageBox.QUESTION,
-							   fn: function(btn){
-								   if (btn == 'ok'){
-									   self.save(modifiedData);
-								   }else{
-									   record.reject();
-								   }
-							   	}
-							});
-					}else{
-						self.save(modifiedData);
-					}
-				}else{
-					record.reject();
-				}
-			}
-		}
-	});
-	
-	// create the final layout
-	Ext.apply(this, {
-		items: [grid]
-	});
-	
 	de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.superclass.initComponent.call(this);
 };
 
 /**
  * Save the services list on the server
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.save = function(store) {
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.save = function() {
 	var self = this;
 	var layers = [];
-	for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
-		var layer = self.layerRecord[i];
-		if(layer.index == store.index){
-			layers.push(store)
-		}else{
-			layers.push(layer);
+	if(self.store.data){
+		var data = self.store.data;
+		if(data.items){
+			var items = data.items;
+			if(items){
+				for (var i=0, countI=items.length; i<countI; i++) { 
+					var layer = items[i];
+					if(layer.data){
+						layers.push(layer.data);
+					}
+				}
+				self.updateService(self.selectedService.data, layers);
+			}
 		}
 	}
-	self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
 };
 
 /**
  * Update services changes to config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.updateService = function(title, capabilitiesUrl, originalCapUrl, categories, layers){
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.updateService = function(service, layers){
 	var self = this;
-	if(capabilitiesUrl){
+	if(service.capabilitiesUrl){
 		var service = {
-				   title: title,
-				   capabilitiesUrl: capabilitiesUrl,
-				   originalCapUrl: originalCapUrl,
-				   categories: categories,
+				   title: service.name,
+				   capabilitiesUrl: service.capabilitiesUrl,
+				   capabilitiesUrlOrg: service.capabilitiesUrlOrg,
+				   originalCapUrl: service.originalCapUrl,
+				   categories: null,
 				   layers: layers
 		   };
 		// Update service
@@ -255,9 +292,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			if(allDeactivated != undefined){
 				layer.deactivated = allDeactivated;
 			}
-			layers.push(layer);
+			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
-		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+		self.store.loadData(layers);
 	}
 };
 
@@ -270,9 +308,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			if(allChecked != undefined){
 				layer.checked = allChecked;
 			}
-			layers.push(layer);
+			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
-		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+		self.store.loadData(layers);
 	}
 };
 
@@ -285,8 +324,69 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			if(allFeatureInfo != undefined){
 				layer.featureInfo = allFeatureInfo;
 			}
-			layers.push(layer);
+			// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+		    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
 		}
-		self.updateService(self.selectedService.data.name, self.selectedService.data.capabilitiesUrl, self.selectedService.data.originalCapUrl, null, layers);
+		self.store.loadData(layers);
 	}
 };
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.loadDoc = function(url) {
+    var xmlhttp = null;
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET", url, false);
+    xmlhttp.send();
+    return xmlhttp.responseXML;
+}
+
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.displayResult = function(url){
+	var self = this;
+	
+    var xmlDoc = self.loadDoc(url);
+    return xmlDoc;
+}
+
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.getContent = function (layers) {
+	var editLayers = [];
+    for (i = 0; i < layers.length; i++) { 
+    	var layer = layers[i];
+    	if(layer.attributes){
+    		var layerAttributes = layer.attributes;
+    		var queryable = "";
+	    	for (j = 0; j < layerAttributes.length; j++) {
+				var attribute = layerAttributes[j];
+				if(attribute.nodeName == "queryable"){
+					queryable = attribute.nodeValue;
+				}
+			}
+    	}
+    	if(layer.children){
+    		var layerChildren = layer.children;
+    		var index = "";
+    		var title = "";
+    		var featureinfo = (queryable == "1") ? true : false;
+    		
+    		for (j = 0; j < layerChildren.length; j++) {
+    			var children = layerChildren[j];
+    			if(children.tagName == "Title"){
+    				title = children.textContent;
+    			}else if(children.tagName == "Name"){
+    				index = children.textContent;
+    			}
+    		}
+    		editLayers.push({ 
+				index: index,
+				title: title,
+				featureInfo: featureinfo
+				});
+    	}
+    }
+    return editLayers;
+}
