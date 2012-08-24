@@ -85,9 +85,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 								checked: layerIsFound, 
 								featureInfo: featureInfo, 
 								legend:orgLayer.legend, 
+								expanded:orgLayer.expanded, 
 								_id:orgLayer.id, 
 								_parent:orgLayer.parent, 
-								_level:orgLayer.level, 
 								_is_leaf:orgLayer.is_leaf
 								});
 					}
@@ -95,16 +95,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					if(layers){
 						for (var i=0, countI=layers.length; i<countI; i++) {
 							var layer = layers[i];
-							if(layer[2] == false){
+							if(layer.deactivated == false){
 								allDeactivated = false;
 							}
-							if(layer[3] == false){
+							if(layer.checked == false){
 								allChecked = false;
 							}
-							if(layer[4] == false){
+							if(layer.featureInfo == false){
 								allFeatureInfo = false;
 							}
-							if(layer[5] == false){
+							if(layer.legend == false){
 								allLegend = false;
 							}
 						}
@@ -117,15 +117,27 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				     	{name: 'deactivated', type: 'bool'},
 				     	{name: 'checked', type: 'bool'},
 				     	{name: 'featureInfo', type: 'bool'},
+				     	{name: 'expanded', type: 'bool'},
 				     	{name: '_id', type: 'string'},
 				     	{name: '_parent', type: 'string'},
-
 				     	{name: '_is_leaf', type: 'bool'}
 				   	]);
 				    self.store = new Ext.ux.maximgb.tg.AdjacencyListStore({
-				    	autoLoad : true,
-							reader: new Ext.data.JsonReader({id: '_id'}, record),
-							proxy: new Ext.data.MemoryProxy(layers)
+				    	defaultExpanded : true,
+			    	    autoLoad : true,
+						reader: new Ext.data.JsonReader({id: '_id'}, record),
+						proxy: new Ext.data.MemoryProxy(layers),
+						isExpandedNode : function(record) {
+							if ("ux_maximgb_tg_expanded" in record) {
+			                    return record.ux_maximgb_tg_expanded;
+			                }
+			                
+							var isExpanded = record.data.expanded;
+			                if (isExpanded === undefined) 
+			                	return true;
+			                else
+			                	return isExpanded;
+			            }
 				    });
 				    
 				    self.store.on('update',function(cell, record, operation) {
@@ -190,7 +202,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				    // create the Grid
 				    var grid = new Ext.ux.maximgb.tg.EditorGridPanel({
 				      store: self.store,
+				      layout: 'form',
+				      autoHeight: true,
+				      autoScroll: true,
+				      viewConfig: {
+				    	  autoFill: true,
+				    	  forceFit: true
+				      },
 				      height:350,
+				      border: false,
 				      master_column_id : 'title',
 				      columns: [{
 				            id:'title',
@@ -298,15 +318,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	}
 };
 
-de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.renderRow = function(value, metadata, record, rowIndex, colIndex, store) {
-	var formatted = value;
-	if (record.get('deactivated')) {
-		formatted = '<span style="font-style: italic; color:#C0C0C0;">'+value+'</span>';
-	}
-	
-	return formatted;
-};
-
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.allCheckboxesDeactivated = function(allDeactivated) {
 	var self = this;
 	if(self.store){
@@ -319,9 +330,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					if(allDeactivated != undefined){
 						layer.deactivated = allDeactivated;
 					}
-					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
-					
+				    layers.push(layer);
 				}
 			}
 		}
@@ -341,8 +350,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					if(allChecked != undefined){
 						layer.checked = allChecked;
 					}
-					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
+				    layers.push(layer);
 				}
 			}
 		}
@@ -362,8 +370,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 					if(allFeatureInfo != undefined){
 						layer.featureInfo = allFeatureInfo;
 					}
-					// fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
-				    layers.push([layer.index, layer.title, layer.deactivated, layer.checked, layer.featureInfo, layer.legend]);
+				    layers.push(layer);
 				}
 			}
 		}
@@ -429,4 +436,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     	}
     }
     return editLayers;
+}
+
+function exandedNodes (record) {
+	if ("ux_maximgb_tg_expanded" in record) {
+        return record.ux_maximgb_tg_expanded;
+    }
+    
+	var isExpanded = record.data.expanded;
+    if (isExpanded === undefined) 
+    	return true;
+    else
+    	return isExpanded;
 }

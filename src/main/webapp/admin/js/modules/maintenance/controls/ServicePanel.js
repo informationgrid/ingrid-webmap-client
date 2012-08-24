@@ -667,7 +667,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 							// Get parent node name
 							var layerObjNode = layerObj.node;
 							var parent = null; 
-							var level = 1;
+							var expanded = true;
 							var is_leaf = true;
 							if(layerObjNode){
 								var layerObjParentNode = layerObjNode.parentNode;
@@ -682,12 +682,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 													if(!parent){
 														parent = node.text;
 													}
+													expanded = false;
 												}
 											}
 										}
 									}
 								}
-								level = self.getLevelOfLayer(layerObjNode, 1)
 							}
 							
 							if(layerObjNode){
@@ -712,7 +712,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 									legend: false,
 									id:layerObj.data.name,
 									parent: parent,
-									level: level, 
+									expanded: expanded, 
 									is_leaf: is_leaf
 									});
 							}
@@ -801,18 +801,4 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				} 
 		   	}
 		);
-};
-
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getLevelOfLayer = function (node, level){
-	var self = this;
-	if(node.parentNode){
-		var parentNode = node.parentNode
-		if(parentNode){
-			if(parentNode.tagName == "Layer"){
-				level = level + 1;
-				level = self.getLevelOfLayer(parentNode, level);
-			}
-		}
-	}
-	return level;
 };
