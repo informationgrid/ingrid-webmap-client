@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,10 +21,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
-
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 

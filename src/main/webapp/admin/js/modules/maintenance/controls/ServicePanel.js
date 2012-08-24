@@ -664,6 +664,44 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 	            	   var layerRecord = [];
 	            	   for (var i=0, countI=records.length; i<countI; i++) {
 							var layerObj = records[i];
+							// Get parent node name
+							var layerObjNode = layerObj.node;
+							var parent = null; 
+							var level = 1;
+							var is_leaf = true;
+							if(layerObjNode){
+								var layerObjParentNode = layerObjNode.parentNode;
+								if(layerObjParentNode){
+									if(layerObjParentNode.tagName == "Layer"){
+										var layerObjParentChildNodes = layerObjParentNode.childNodes;
+										if(layerObjParentChildNodes){
+											for (var j=0, countJ=layerObjParentChildNodes.length; j<countJ; j++) {
+												var node = layerObjParentChildNodes[j];
+												if(node.tagName == "Name"){
+													parent = node.textContent;
+													if(!parent){
+														parent = node.text;
+													}
+												}
+											}
+										}
+									}
+								}
+								level = self.getLevelOfLayer(layerObjNode, 1)
+							}
+							
+							if(layerObjNode){
+								var childNodes = layerObjNode.childNodes;
+								if(childNodes){
+									for (var j=0, countJ=childNodes.length; j<countJ; j++) {
+										var childNode = childNodes[j];
+										if(childNode.tagName == "Layer"){
+											is_leaf = false;
+											break;
+										}
+									}
+								}
+							}
 							if(layerObj.data){
 								layerRecord.push({ 
 									index: layerObj.data.name,
@@ -671,7 +709,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 									featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
 									deactivated: (layerObj.data.name) ? false : true,
 									checked: false,
-									legend: false
+									legend: false,
+									id:layerObj.data.name,
+									parent: parent,
+									level: level, 
+									is_leaf: is_leaf
 									});
 							}
 	            	  }
@@ -759,4 +801,18 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				} 
 		   	}
 		);
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.getLevelOfLayer = function (node, level){
+	var self = this;
+	if(node.parentNode){
+		var parentNode = node.parentNode
+		if(parentNode){
+			if(parentNode.tagName == "Layer"){
+				level = level + 1;
+				level = self.getLevelOfLayer(parentNode, level);
+			}
+		}
+	}
+	return level;
 };

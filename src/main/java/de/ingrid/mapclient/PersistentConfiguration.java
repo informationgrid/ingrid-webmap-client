@@ -9,11 +9,11 @@ import java.util.List;
 import de.ingrid.mapclient.model.AreaCategory;
 import de.ingrid.mapclient.model.Layer;
 import de.ingrid.mapclient.model.MapExtend;
+import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
-import de.ingrid.mapclient.model.MapServiceCategory;
-import de.ingrid.mapclient.model.WmsService;;
+import de.ingrid.mapclient.model.WmsService;
 
 /**
  * Configuration holds the dynamic configuration of the map client that

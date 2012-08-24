@@ -46,9 +46,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				var editLayerRecord = self.getContent(editLayers);
 				// Get Layers from org XML
 				var orgLayerRecord = self.layerRecord;
+				
 				if(editLayerRecord){
-					for (var i=0, countI=self.layerRecord.length; i<countI; i++) { 
-						var orgLayer = self.layerRecord[i];
+					for (var i=0, countI=orgLayerRecord.length; i<countI; i++) { 
+						var orgLayer = orgLayerRecord[i];
 						var orgLayerName = orgLayer.index;
 						var isFound = false; 
 						
@@ -76,8 +77,19 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 								}
 							}
 						}
-						
-						layers.push([orgLayer.index, title, deactivated, layerIsFound, featureInfo, orgLayer.legend]);
+
+						layers.push( {
+								index: orgLayer.index,
+								title: title, 
+								deactivated: deactivated, 
+								checked: layerIsFound, 
+								featureInfo: featureInfo, 
+								legend:orgLayer.legend, 
+								_id:orgLayer.id, 
+								_parent:orgLayer.parent, 
+								_level:orgLayer.level, 
+								_is_leaf:orgLayer.is_leaf
+								});
 					}
 					
 					if(layers){
@@ -98,46 +110,39 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 						}
 					}
 					
-					var cm = new Ext.grid.ColumnModel({
-					        // specify any defaults for each column
-					        defaults: {
-					            sortable: true // columns are not sortable by default           
-					        },
-					        columns: [{
-					              		header: "Title", 
-					              		dataIndex: 'title', 
-					              		sortable: true, 
-					              		width: 200, 
-					              		editor:{
-					              			xtype: 'textfield',
-					              			allowBlank: false
-					              		},
-					              		renderer: self.renderRow
-					                	
-					              	}
-						            ,new Ext.ux.grid.CheckColumn({
-						            	  header: "Verwerfen", 
-							              dataIndex: 'deactivated',
-							              width: 25,
-							              align: "center"
-							              		
-						            })
-						            ,new Ext.ux.grid.CheckColumn({
-						            	  header: "Aktiv", 
-							              dataIndex: 'checked',
-							              width: 25,
-							              align: "center" 
-						            })
-						            ,new Ext.ux.grid.CheckColumn({
-						            	  header: "Feature Info", 
-						            	  dataIndex: 'featureInfo',
-							              width: 25,
-							              align: "center" 
-						            })
-					              ]
-					    	});
-					
-					// Checkboxes for tbar
+					// create the data store
+				    var record = Ext.data.Record.create([
+				   		{name: 'index'},
+				   		{name: 'title'},
+				     	{name: 'deactivated', type: 'bool'},
+				     	{name: 'checked', type: 'bool'},
+				     	{name: 'featureInfo', type: 'bool'},
+				     	{name: '_id', type: 'string'},
+				     	{name: '_parent', type: 'string'},
+
+				     	{name: '_is_leaf', type: 'bool'}
+				   	]);
+				    self.store = new Ext.ux.maximgb.tg.AdjacencyListStore({
+				    	autoLoad : true,
+							reader: new Ext.data.JsonReader({id: '_id'}, record),
+							proxy: new Ext.data.MemoryProxy(layers)
+				    });
+				    
+				    self.store.on('update',function(cell, record, operation) {
+						var modified  = record.modified;
+						if(modified){
+							var modifiedData = record.data;
+							if(modifiedData){
+								if(modifiedData.index !== ""){
+									
+								}else{
+									record.reject();
+								}
+							}
+						}
+					});
+				    
+				    // Checkboxes for tbar
 					var deactivatedTbar = {
 				            xtype: 'checkbox',
 				            boxLabel: 'Alle Layer verwerfen',
@@ -181,46 +186,65 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 							self.save();
 						}
 					});
-					
-					// create the grid
-					var grid = new Ext.grid.EditorGridPanel({
-				        store: self.store,
-				        layout: 'form',
-				        autoHeight: true,
-				        autoScroll: true,
-				    	viewConfig: {
-				    		autoFill: true,
-				    		forceFit: true
-				    	},
-				    	cm: cm,
-				        height:350,
-				        border: false,
-				        listeners: {
-							'beforeedit': function(e) {
-								if(e.record.get('deactivated')) {
-									e.cancel = true;
-								}
-							}
-						}, 
+										
+				    // create the Grid
+				    var grid = new Ext.ux.maximgb.tg.EditorGridPanel({
+				      store: self.store,
+				      height:350,
+				      master_column_id : 'title',
+				      columns: [{
+				            id:'title',
+				            header: "Name",
+				            width: 160, 
+				            sortable: true,
+				            dataIndex: 'title',
+				            editor: new Ext.grid.GridEditor(new Ext.form.TextField(), {
+				                offsets : [-4, -5],
+				                realign : function(auto_size)
+				                {
+				                    var size;
+
+				                    this.boundEl = this.boundEl.child('.ux-maximgb-tg-mastercol-editorplace');
+				                    Ext.grid.GridEditor.prototype.realign.call(this, auto_size);
+
+				                    size = this.boundEl.getSize();
+				                    this.setSize(size.width + 10, size.height);
+				                }
+				            }),
+				            renderer : function(v, meta, record, row_idx, col_idx, store)
+				            {
+				                return [
+				                   '<img src="', Ext.BLANK_IMAGE_URL, '" class="ux-maximgb-tg-mastercol-icon" />',
+				                   '<span class="ux-maximgb-tg-mastercol-editorplace">', v, '</span>'
+				                ].join('');
+				            }
+				        }, {
+				            header: "Verwerfen", 
+				            xtype: 'checkcolumn',
+				            width: 75, 
+				            sortable: true, 
+				            dataIndex: 'deactivated'
+				        }, {
+				            header: "Aktivieren", 
+				            xtype: 'checkcolumn',
+				            width: 75, 
+				            sortable: true, 
+				            dataIndex: 'checked'
+				        }, {
+				            header: "Feature Info",
+				            xtype: 'checkcolumn',
+				            width: 75, 
+				            sortable: true, 
+				            dataIndex: 'featureInfo'
+				        }
+				      ],
+				      stripeRows: true,
+				      autoExpandColumn: 'title',
+				      viewConfig : {
+				      	enableRowBody : true
+				      }, 
 						tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
 				    });
-
-					self.store.loadData(layers);
-					
-					self.store.on('update',function(cell, record, operation) {
-						var modified  = record.modified;
-						if(modified){
-							var modifiedData = record.data;
-							if(modifiedData){
-								if(modifiedData.index !== ""){
-									
-								}else{
-									record.reject();
-								}
-							}
-						}
-					});
-					
 					// create the final layout
 					Ext.apply(this, {
 						items: [grid]
