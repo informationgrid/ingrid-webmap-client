@@ -141,17 +141,28 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				    });
 				    
 				    self.store.on('update',function(cell, record, operation) {
-						var modified  = record.modified;
-						if(modified){
-							var modifiedData = record.data;
-							if(modifiedData){
-								if(modifiedData.index !== ""){
-									
-								}else{
-									record.reject();
+				    	var data = record.data;
+				    	if(data){
+				    		var deactivated = data.deactivated;
+				    		var checked = data.checked;
+				    		var featureInfo = data.featureInfo;
+
+				    		var modified  = record.modified;
+							if(modified){
+								var modifiedDeactivated = modified.deactivated;
+					    		var modifiedChecked = modified.checked;
+					    		var modifiedFeatureInfo = modified.featureInfo;
+
+								if(deactivated){
+									if(deactivated == modifiedDeactivated || (deactivated && modifiedDeactivated === undefined)){
+										if((modifiedChecked !== undefined && modifiedChecked != checked) || (modifiedFeatureInfo !== undefined && modifiedFeatureInfo != featureInfo)){
+											record.reject();
+										}
+									}
 								}
 							}
-						}
+
+				    	}
 					});
 				    
 				    // Checkboxes for tbar
@@ -235,7 +246,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            {
 				                return [
 				                   '<img src="', Ext.BLANK_IMAGE_URL, '" class="ux-maximgb-tg-mastercol-icon" />',
-				                   '<span class="ux-maximgb-tg-mastercol-editorplace">', v, '</span>'
+				                   '<span class="ux-maximgb-tg-mastercol-editorplace">', (record.get('deactivated')) ? '<span style="font-style: italic; color:#C0C0C0;">'+v+'</span>': v, '</span>'
 				                ].join('');
 				            }
 				        }, {
@@ -262,8 +273,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				      autoExpandColumn: 'title',
 				      viewConfig : {
 				      	enableRowBody : true
-				      }, 
-						tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
+				      },
+				      listeners: {
+				    	  'beforeedit': function(e) {
+				    		  if(e.record.get('deactivated')) {
+				    			  e.cancel = true;
+				    		  }
+  							}
+				      },  
+				      tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
 				    });
 					// create the final layout
 					Ext.apply(this, {
@@ -290,6 +308,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				for (var i=0, countI=items.length; i<countI; i++) { 
 					var layer = items[i];
 					if(layer.data){
+						var layerData = layer.data;
+						if(layerData.deactivated){
+							layerData.checked = false;
+						}
 						layers.push(layer.data);
 					}
 				}
