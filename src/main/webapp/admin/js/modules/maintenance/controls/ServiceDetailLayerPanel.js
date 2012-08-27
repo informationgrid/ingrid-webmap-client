@@ -459,15 +459,3 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     }
     return editLayers;
 }
-
-function exandedNodes (record) {
-	if ("ux_maximgb_tg_expanded" in record) {
-        return record.ux_maximgb_tg_expanded;
-    }
-    
-	var isExpanded = record.data.expanded;
-    if (isExpanded === undefined) 
-    	return true;
-    else
-    	return isExpanded;
-}

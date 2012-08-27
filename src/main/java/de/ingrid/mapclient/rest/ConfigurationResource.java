@@ -122,6 +122,11 @@ public class ConfigurationResource {
 	private static final String ADD_SERVICE = "addservice";
 
 	/**
+	 * Path for adding a service
+	 */
+	private static final String ADD_COPY_SERVICE = "addServiceOrgCopy";
+	
+	/**
 	 * Path for reload a service
 	 */
 	private static final String RELOAD_SERVICE = "reloadservice";
@@ -606,7 +611,7 @@ public class ConfigurationResource {
 	 * @param String containing the object
 	 */
 	@POST
-	@Path(DYNAMIC_PATH + "/addServiceOrgCopy")
+	@Path(DYNAMIC_PATH + "/" + ADD_COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void addServiceOrgCopy(String service, @Context HttpServletRequest req) throws IOException {
 		try {
@@ -627,7 +632,7 @@ public class ConfigurationResource {
 		}
 	}	
 	
-	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req) throws JSONException {
+	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req){
 		HashMap<String, String> urls = null;
 		String urlOrg = null;
 		String urlPrefix = null;
@@ -659,19 +664,20 @@ public class ConfigurationResource {
 			StreamResult resultOrg = new StreamResult(fOrg);
 			transformer.transform(source, resultOrg);
 			
+			if(urls == null){
+				urls = new HashMap<String, String>();
+			}
+			urls.put("url", json.getString("capabilitiesUrl"));
+			urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
+			
 		} catch (JSONException e) {
 			
 			log.error("Unable to decode json object: "+e);
 		} catch (Exception e) {
-
 			log.error("Error on doing request: "+e);
+			throw new WebApplicationException(e, Response.Status.SERVICE_UNAVAILABLE);
 		}
 		
-		if(urls == null){
-			urls = new HashMap<String, String>();
-		}
-		urls.put("url", json.getString("capabilitiesUrl"));
-		urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
 		return urls;
 		
 	}
@@ -1309,9 +1315,9 @@ public class ConfigurationResource {
 						txt = txt + "" + node.getNodeValue();
 					if(node.getTextContent() != null)
 						txt = txt + "" + node.getTextContent();
-					Text textNode = doc.createTextNode(createMD5NameText(txt));
+					Text textNode = doc.createTextNode("INGRID-" + createMD5NameText(txt));
 					nameNode.appendChild(textNode);
-					node.appendChild(nameNode);					
+					node.insertBefore(nameNode, childNode);					
 				}
 			}
 		}

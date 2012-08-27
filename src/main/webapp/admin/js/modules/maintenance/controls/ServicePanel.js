@@ -328,7 +328,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
             		var service = { title:name, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
             		// Add service
-            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!');
+            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
                 	win.close();
             	}else if(url != simple.items.get('url').emptyText){
             		var service = { title:null, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
@@ -398,6 +398,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteServi
 			   // Remove service from store
 			   self.serviceStore.data.removeKey(self.selectedService.id);
 			   // Refresh service panel
+			   self.serviceGrid.getView().refresh();
+			   // Disable copy, reload, delete Button
+			   self.copyServiceBtn.disable();
+			   self.reloadServiceBtn.disable();
+			   self.deleteServiceBtn.disable(),
+			   // Remove categories and layer panel
+			   self.remove(self.items.get('serviceDetailBorderPanel'));
+		   }else{
+			// Refresh service panel
 			   self.serviceGrid.getView().refresh();
 			   // Disable copy, reload, delete Button
 			   self.copyServiceBtn.disable();
@@ -497,7 +506,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   layers: layers
     				};
     				// Save copy to config
-    				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!');
+    				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!', false, true);
                 	win.close();
             	}
     		}
@@ -545,91 +554,60 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	var originalCapUrl = service.originalCapUrl;
 	var capabilitiesUrlService = service.capabilitiesUrl;
 	
-	if(ds && title && originalCapUrl && capabilitiesUrlService){
-		var dsData = ds.data;
-		if(dsData){
-			var dsDataItems = dsData.items;
-			if(dsDataItems){
-				var row = 0;
-				var column = 0;
-				for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-					var item = dsDataItems[i];
-					if(item.data){
-						var itemTitle = item.data.name;
-						var itemOriginalCapUrl = item.data.originalCapUrl;
-						var itemCapabilitiesUrl = item.data.capabilitiesUrl;
-						if(itemTitle && itemOriginalCapUrl){
-							if(itemTitle == title && itemOriginalCapUrl == originalCapUrl && itemCapabilitiesUrl == capabilitiesUrlService){
-								row = i;
-								break;
+	
+	if(doServiceNew){
+		if(services){
+			var newService = services[services.length - 1];
+			if(newService){
+				var capabilitiesUrl = newService.capabilitiesUrl;
+				if(capabilitiesUrl){
+					var dsData = ds.data;
+					if(dsData){
+						var dsDataItems = dsData.items;
+						if(dsDataItems){
+							var row = 0;
+							var column = 0;
+							for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+								var item = dsDataItems[i];
+								if(item.data){
+									var itemCapabilitiesUrl = item.data.capabilitiesUrl;
+									if(itemCapabilitiesUrl){
+										if(itemCapabilitiesUrl == capabilitiesUrl){
+											row = i;
+											break;
+										}
+									}
+								}
 							}
+							self.serviceGrid.getSelectionModel().select(row, column);
 						}
 					}
 				}
-				self.serviceGrid.getSelectionModel().select(row, column);
 			}
 		}
 	}else{
-		if(doServiceNew){
-			if(services){
-				var newService = services[services.length - 1];
-				if(newService){
-					var capabilitiesUrl = newService.capabilitiesUrl;
-					if(capabilitiesUrl){
-						var dsData = ds.data;
-						if(dsData){
-							var dsDataItems = dsData.items;
-							if(dsDataItems){
-								var row = 0;
-								var column = 0;
-								for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-									var item = dsDataItems[i];
-									if(item.data){
-										var itemCapabilitiesUrl = item.data.capabilitiesUrl;
-										if(itemCapabilitiesUrl){
-											if(itemCapabilitiesUrl == capabilitiesUrl){
-												row = i;
-												break;
-											}
-										}
-									}
-								}
-								self.serviceGrid.getSelectionModel().select(row, column);
-							}
-						}
-					}
-				}
-			}
-		}else{
-			if(self.serviceGrid.store.data.items){
-				var lastStoreItem = self.serviceStore.data.items[self.serviceStore.totalLength - 1]
-				if(lastStoreItem){
-					if(lastStoreItem.data){
-						var capabilitiesUrl = lastStoreItem.data.capabilitiesUrl;
-						if(capabilitiesUrl){
-							var dsData = ds.data;
-							if(dsData){
-								var dsDataItems = dsData.items;
-								if(dsDataItems){
-									var row = 0;
-									var column = 0;
-									for (var i=0, countI=dsDataItems.length; i<countI; i++) {
-										var item = dsDataItems[i];
-										if(item.data){
-											var itemCapabilitiesUrl = item.data.capabilitiesUrl;
-											if(itemCapabilitiesUrl){
-												if(itemCapabilitiesUrl == capabilitiesUrl){
-													row = i;
-													break;
-												}
-											}
-										}
-									}
-									self.serviceGrid.getSelectionModel().select(row, column);
+		if(ds && title && originalCapUrl && capabilitiesUrlService){
+			var dsData = ds.data;
+			if(dsData){
+				var dsDataItems = dsData.items;
+				if(dsDataItems){
+					var row = 0;
+					var column = 0;
+					for (var i=0, countI=dsDataItems.length; i<countI; i++) {
+						var item = dsDataItems[i];
+						if(item.data){
+							var itemTitle = item.data.name;
+							var itemOriginalCapUrl = item.data.originalCapUrl;
+							var itemCapabilitiesUrl = item.data.capabilitiesUrl;
+							if(itemTitle && itemOriginalCapUrl){
+								if(itemTitle == title && itemOriginalCapUrl == originalCapUrl && itemCapabilitiesUrl == capabilitiesUrlService){
+									row = i;
+									break;
 								}
 							}
 						}
 					}
+					self.serviceGrid.getSelectionModel().select(row, column);
 				}
 			}
 		}
@@ -751,7 +729,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 		if(serviceRecord.data){
 			var service = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.originalCapUrl };
 			// Add service
-			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird aktualisiert!', false, false);
+			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird aktualisiert!', true, false);
 		}
 	}
 };
