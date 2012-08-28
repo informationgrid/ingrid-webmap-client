@@ -1097,6 +1097,32 @@ public class ConfigurationResource {
 		return doc;
 	}
 
+	
+	private Document changeXmlCopy(Document doc, JSONObject json)
+			throws TransformerException {
+		try {
+			if(json.get("layers") != JSONObject.NULL){
+				JSONArray layers = json.getJSONArray("layers");
+				if (layers != null) {
+					for (int i = 0, count = layers.length(); i < count; i++) {
+						JSONObject layer = layers.getJSONObject(i);
+						// Title
+						Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
+						if(nameNode != null){
+							Node titleNode = XPathUtils.getNode(nameNode.getParentNode(), "./Title");
+							titleNode.setTextContent(layer.getString("title"));
+						}
+					}
+				}
+			}
+		} catch (JSONException e) {
+			log.error("error on retrieving data from json document: "
+					+ e.getMessage());
+			e.printStackTrace();
+		}
+		return doc;
+	}
+
 	/**
 	 * utility method for parsing xml strings 
 	 * @param xmlSource
@@ -1250,28 +1276,38 @@ public class ConfigurationResource {
 	private void updateServiceFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
 		try {
+			// Get original copy xml file
 			url = jsonService.getString("capabilitiesUrlOrg");
 			String fileName = url.substring(url.lastIndexOf("/"), url.length());
 			String [] splitFileName = fileName.split("\\?");
 			String path = req.getSession().getServletContext().getRealPath("wms");
 			File f = new File(path+splitFileName[0]);	
+			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(f);
-			//change the xml structure
-			doc = changeXml(doc, jsonService);
-			//delete the file
-			deleteWmsFile(jsonService, req);
+			
+			// Change the xml stucture for original copy
+			Document docCopy = changeXmlCopy(doc, jsonService);
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			DOMSource source = new DOMSource(docCopy);
+			StreamResult result = new StreamResult(f);
+			transformer.transform(source, result);
+			
+			// Get copy xml file
 			url = jsonService.getString("capabilitiesUrl");
 			fileName = url.substring(url.lastIndexOf("/"), url.length());
 			splitFileName = fileName.split("\\?");
 			path = req.getSession().getServletContext().getRealPath("wms");
 			f = new File(path+splitFileName[0]);	
 			
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Transformer transformer = tFactory.newTransformer();
-			DOMSource source = new DOMSource(doc);
-			StreamResult result = new StreamResult(f);
+			//change the xml structure for copy
+			doc = changeXml(doc, jsonService);
+			tFactory = TransformerFactory.newInstance();
+			transformer = tFactory.newTransformer();
+			source = new DOMSource(doc);
+			result = new StreamResult(f);
 			transformer.transform(source, result);
 		} catch (JSONException e) {
 			log.error("JSONException on updating wms file: ",e);

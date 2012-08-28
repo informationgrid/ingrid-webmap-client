@@ -695,7 +695,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 									});
 							}
 	            	  }
-	            	   
 	            	  var myBorderPanel = new Ext.Panel({
 							id: 'serviceDetailBorderPanel',
 							itemId: 'serviceDetailBorderPanel',
@@ -727,7 +726,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 		xmlStore.load();
 	}else{
 		if(serviceRecord.data){
-			var service = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.originalCapUrl };
+			var service = { 
+					title:serviceRecord.data.name, 
+					capabilitiesUrl:serviceRecord.data.capabilitiesUrl, 
+					originalCapUrl:serviceRecord.data.originalCapUrl 
+					};
 			// Add service
 			self.setValue ('addServiceOrgCopy', service, 'Bitte warten! Dienst wird aktualisiert!', true, false);
 		}
@@ -743,7 +746,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){
 		   if (btn == 'ok'){
-			   var tmpService = { title:serviceRecord.data.name, capabilitiesUrl:serviceRecord.data.capabilitiesUrl, originalCapUrl:serviceRecord.data.capabilitiesUrl };
+			   var tmpService = { 
+					   title:serviceRecord.data.name, 
+					   capabilitiesUrl:serviceRecord.data.capabilitiesUrl, 
+					   originalCapUrl:serviceRecord.data.capabilitiesUrl 
+					   };
 			   // Refresh service
 			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', true);
 		   }
@@ -761,6 +768,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 					success: function() {
 						self.reloadServiceFromConfig(service, doServiceNew);
 						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+						self.pausecomp(2000);
 						Ext.getBody().unmask();
 					},
 					failure: function() {
@@ -779,4 +787,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				} 
 		   	}
 		);
+};
+
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.pausecomp = function (millis){
+	var date = new Date();
+	var curDate = null;
+	
+	do { curDate = new Date(); }
+	while(curDate-date < millis);
 };

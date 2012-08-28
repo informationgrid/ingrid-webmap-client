@@ -213,14 +213,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				    // create the Grid
 				    var grid = new Ext.ux.maximgb.tg.EditorGridPanel({
 				      store: self.store,
-				      layout: 'form',
-				      autoHeight: true,
-				      autoScroll: true,
-				      viewConfig: {
-				    	  autoFill: true,
-				    	  forceFit: true
-				      },
-				      height:350,
+				      layout: 'fit',
 				      border: false,
 				      master_column_id : 'title',
 				      columns: [{
@@ -252,18 +245,21 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				        }, {
 				            header: "Verwerfen", 
 				            xtype: 'checkcolumn',
+				            align: 'center',
 				            width: 75, 
 				            sortable: true, 
 				            dataIndex: 'deactivated'
 				        }, {
 				            header: "Aktivieren", 
 				            xtype: 'checkcolumn',
+				            align: 'center',
 				            width: 75, 
 				            sortable: true, 
 				            dataIndex: 'checked'
 				        }, {
 				            header: "Feature Info",
 				            xtype: 'checkcolumn',
+				            align: 'center',
 				            width: 75, 
 				            sortable: true, 
 				            dataIndex: 'featureInfo'
@@ -279,13 +275,58 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				    		  if(e.record.get('deactivated')) {
 				    			  e.cancel = true;
 				    		  }
-  							}
-				      },  
-				      tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
+  							},
+  							'afteredit': function(e) {
+  								var editValue = e.value;
+  								var editValueOriginal = e.originalValue;
+  								var editValueParent = e.record.data._parent;
+  								var editValueIndex = e.record.data.index;
+  								if(editValue == ""){
+  									Ext.Msg.show({
+  									   title:'Ung&uuml;ltiger Layername',
+  									   msg: 'Layername ist nicht g&uuml;ltig. Die &Auml;nderungen des Layers werden zur&uuml;ckgesetzt!',
+  									   buttons: Ext.Msg.OK,
+  									   icon: Ext.MessageBox.ERROR,
+  									   fn: function(btn){
+  										   if (btn == 'ok'){
+  											 e.record.reject();  										   }
+  									   	}
+  									});
+  								}else{
+  									if(e.grid.store.data){
+  										var data = e.grid.store.data;
+  										if(data.items){
+  											var items = data.items;
+  											var isDuplicat = false;
+  											for (var i=0, countI=items.length; i<countI; i++) {
+  												var item = items[i];
+  												if(editValueIndex != item.data.index){
+	  												if(editValue == item.data.title && editValueParent == item.data._parent){
+	  													Ext.Msg.show({
+	  				  									   title:'Ung&uuml;ltiger Layername',
+	  				  									   msg: 'Layername existiert schon. Die &Auml;nderungen des Layers werden zur&uuml;ckgesetzt!',
+	  				  									   buttons: Ext.Msg.OK,
+	  				  									   icon: Ext.MessageBox.ERROR,
+	  				  									   fn: function(btn){
+	  				  										   if (btn == 'ok'){
+	  				  											 e.record.reject();
+	  				  										   }
+	  				  									   	}
+	  				  									});
+	  												}
+  												}
+  											}
+  										}
+  									}
+  								}
+    						}
+				      },
+				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
 				    });
 					// create the final layout
 					Ext.apply(this, {
-						items: [grid]
+						items: [grid],
+						layout : 'fit'
 					});
 				}
 			}
