@@ -284,7 +284,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		var supportsSRS = false;
 		// srss holds the name of the supported projections
 		for(srs in  srss){
-			if(srs.toLowerCase() == this.map.projection.toLowerCase()){
+			if(srs.toLowerCase() == this.map.projection.toString().toLowerCase()){
 			supportsSRS = true;
 			break;
 			}

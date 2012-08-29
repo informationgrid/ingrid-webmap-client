@@ -153,6 +153,7 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.onServiceLoaded
 	}
 	
 	//zoom to map service map extent if requested
+	//TODO use service method from activeServicesPanel
 	var activateZoomCheckbox = this.activateZoomCheckbox.checked;
 	if (activateZoomCheckbox) {
 	var llbbox = service.capabilitiesStore.data.items[0].data.llbbox;
