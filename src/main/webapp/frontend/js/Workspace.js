@@ -1060,11 +1060,26 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
 
         return url;
     }
+    
     /**
-     * overwrite Openlayers.Layer  function
+     * @overwrite Openlayers.Layer.setVisibility  
+     * the problem is that we give random names to our layers,
+     * that dont have one, to make them visible in tree view.
+     * This gives us another problem, now every layer has a node,
+     * but in GeoExt every node also is a layer with a request when 
+     * checked. Every check triggers this(setVisibility) function,
+     * our random layer names are all prefixed with "INGRID-".
+     * There are several ways to deal with this matter, but this one 
+     * seems to be the cheapest, since every other involves overwriting
+     * even more api functions.
+     *
+  
+     * 
+     * 
      * basically a hack until a better solution is found 
      * @param {} visibility
      */
+    //TODO if OpenLayers is updated check if this still makes sense
     OpenLayers.Layer.prototype.setVisibility = function(visibility){
     	
 	    if(this.params['LAYERS'].indexOf('INGRID-') != -1)

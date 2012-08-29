@@ -33,9 +33,9 @@ public class CapabilitiesUtils {
 			Node node = nodeList.item(i);
 			if(!XPathUtils.nodeExists(node, "./Name")){
 				Element nameNode = doc.createElement("Name");
-				String txt = "";
+				String txt = "INGRID-";
 				if(node.getFirstChild() != null){
-					txt = generateRandomString();
+					txt = txt.concat(generateRandomString());
 					Text textNode = doc.createTextNode(txt);
 					nameNode.appendChild(textNode);
 					node.insertBefore(nameNode, node.getFirstChild());					

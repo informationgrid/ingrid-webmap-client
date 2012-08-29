@@ -108,7 +108,7 @@ de.ingrid.mapclient.frontend.data.Service.compareLayers = function(a, b) {
  * @return String
  */
 de.ingrid.mapclient.frontend.data.Service.getLayerId = function(layer) {
-	return layer.url+':'+layer.name;
+	return layer.url+':'+layer.id;
 };
 
 /**

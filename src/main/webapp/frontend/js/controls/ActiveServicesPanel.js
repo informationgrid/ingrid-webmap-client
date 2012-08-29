@@ -846,6 +846,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfServic
 		for (var i = 0; i < bboxes.length; i++) {
 			if (bboxes[i].data.llbbox[0]){
 				bbox = service.capabilitiesStore.data.items[i].data.bbox;
+				//TODO doesnt work properly	
+				if (typeof bbox == 'object')
+					bbox = bbox['EPSG:4326'].bbox;
 				var bounds = new OpenLayers.Bounds.fromArray(bbox);
 				return bounds;
 				}
@@ -892,7 +895,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	//layerUrl
 	var url = attributes.layer.url;
 	//get the layerId, but the right one! our layer id doesnt help, now bbox in this object
-	var layerId = attributes.service.layers.get(url+':'+attributes.layer.name)
+	var layerId = attributes.service.layers.get(url+':'+attributes.layer.id)
 	var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
 	//check if our layers upport the map projection
 	if(layer.data.bbox[srs]){
