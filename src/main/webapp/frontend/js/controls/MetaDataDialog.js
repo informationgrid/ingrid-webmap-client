@@ -94,11 +94,35 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 
 		// map the data
 		var data = service.getDefinition();
-		data.layers = layerNames.join(', ');
+		
 		data.wmsTitle = data.title;
 		data.wmsAbstract = data['abstract'];
 		
-		html = tpl.apply(data);
+		var htmlData = new Object();
+		// we do this by hand since the apply method doesnt apply our data very well
+		var contactInformation = data.contactInformation;
+		htmlData.layers = layerNames.join('<br/> ');
+		htmlData.name = data.name;
+		htmlData.date = "";
+		htmlData.issuer = contactInformation.personPrimary ? contactInformation.personPrimary.organization : "";
+		htmlData.wmsId = data.name;
+		htmlData.wmsAbstract = data.wmsAbstract;
+		htmlData.wmsTitle = data.wmsTitle;
+		htmlData.fees = data.fees ? data.fees : "";
+		htmlData.restrictions = data.accessConstraints ? data.accessConstraints : "";
+		htmlData.contactPerson = contactInformation.personPrimary ? contactInformation.personPrimary.person: "";
+		htmlData.contactOrganization = contactInformation.personPrimary ? contactInformation.personPrimary.organization : "";
+		htmlData.contactAddress = contactInformation.contactAddress ? data.contactInformation.contactAddress.address:"";
+		htmlData.contactCity = contactInformation.contactAddress ? data.contactInformation.contactAddress.city:"";
+		htmlData.contactState = contactInformation.contactAddress ? data.contactInformation.contactAddress.stateOrProvince:"";
+		htmlData.contactCountry = contactInformation.contactAddress ? data.contactInformation.contactAddress.country:"";
+		htmlData.contactPostalcode = contactInformation.contactAddress ? data.contactInformation.contactAddress.postcode:"";
+		htmlData.contactPhone = contactInformation ? data.contactInformation.phone:"";
+		htmlData.contactFax = contactInformation.fax ? data.contactInformation.fax:"";
+		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
+		htmlData.metadata = data.metadata;		
+		
+		html = tpl.apply(htmlData);
 		// TODO do more mapping if required
 	}
 	else {
@@ -136,8 +160,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.wmsId = data.name;
 		htmlData.wmsAbstract = data.wmsAbstract;
 		htmlData.wmsTitle = data.wmsTitle;
-		htmlData.fees = "";
-		htmlData.restrictions = "";
+		htmlData.fees = data.fees ? data.fees : "";
+		htmlData.restrictions = data.accessConstraints ? data.accessConstraints : "";
 		htmlData.contactPerson = contactInformation.personPrimary ? contactInformation.personPrimary.person: "";
 		htmlData.contactOrganization = contactInformation.personPrimary ? contactInformation.personPrimary.organization : "";
 		htmlData.contactAddress = contactInformation.contactAddress ? data.contactInformation.contactAddress.address:"";
