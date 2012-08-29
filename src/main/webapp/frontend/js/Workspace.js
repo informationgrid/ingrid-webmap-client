@@ -215,7 +215,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the toolbar items
 	var toolbarItems = []; 
-
+	//controls are done in finishinitmap
+	// but we need the keybiard control earlier
+	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
+	this.ctrls['keyboardControl'] = keyboardControl;
 	// a) feature tool
 				
 	if (this.viewConfig.hasInfoTool) {
@@ -611,14 +614,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	var self = this;
 
 	// add controls to map
-	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
+	var keyboardControl =this.ctrls['keyboardControl'];
 	var controls = [new OpenLayers.Control.Navigation(),
 			new OpenLayers.Control.PanZoomBar(),
 			new OpenLayers.Control.ScaleLine(),
 			new OpenLayers.Control.MousePosition(),
 			keyboardControl];
-	
-	this.ctrls['keyboardControl'] = keyboardControl;
+
 	if (this.viewConfig.hasPermaLink) {
 		controls.push(new OpenLayers.Control.Permalink());
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
@@ -1057,4 +1059,27 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
         }
 
         return url;
+    }
+    /**
+     * overwrite Openlayers.Layer  function
+     * basically a hack until a better solution is found 
+     * @param {} visibility
+     */
+    OpenLayers.Layer.prototype.setVisibility = function(visibility){
+    	
+	    if(this.params['LAYERS'].indexOf('INGRID-') != -1)
+			visibility = false;
+	
+        if (visibility != this.visibility) {
+            this.visibility = visibility;
+            this.display(visibility);
+            this.redraw();
+            if (this.map != null) {
+                this.map.events.triggerEvent("changelayer", {
+                    layer: this,
+                    property: "visibility"
+                });
+            }
+            this.events.triggerEvent("visibilitychanged");
+        }
     }
