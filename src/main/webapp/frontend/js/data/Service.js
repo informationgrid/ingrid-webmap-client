@@ -68,10 +68,21 @@ de.ingrid.mapclient.frontend.data.Service.prototype.getLayerById = function(id) 
  */
 de.ingrid.mapclient.frontend.data.Service.prototype.getLayerByName = function(name) {
 	return this.layers.find(function(item) {
+		return (item.params.LAYERS == name);
+	});
+};
+/**
+ * Get a layer by it's name
+ * @param name The name
+ * @return OpenLayers.Layer instance
+ */
+
+//TODO this is not yet implemented titles can not be unique names
+de.ingrid.mapclient.frontend.data.Service.prototype.getLayerByTitle = function(name) {
+	return this.layers.find(function(item) {
 		return (item.name == name);
 	});
 };
-
 /**
  * Get a layer record contained in the GeoExt.data.WMSCapabilitiesStore by it's id
  * (@see de.ingrid.mapclient.frontend.data.Service.getLayerId)
@@ -108,7 +119,7 @@ de.ingrid.mapclient.frontend.data.Service.compareLayers = function(a, b) {
  * @return String
  */
 de.ingrid.mapclient.frontend.data.Service.getLayerId = function(layer) {
-	return layer.url+':'+layer.id;
+	return layer.url+':'+layer.params.LAYERS;
 };
 
 /**

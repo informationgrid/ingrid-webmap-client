@@ -845,7 +845,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfServic
 		var bboxes = service.capabilitiesStore.data.items;
 		for (var i = 0; i < bboxes.length; i++) {
 			if (bboxes[i].data.llbbox[0]){
-				bbox = service.capabilitiesStore.data.items[i].data.bbox;
+				bbox = bboxes[i].data.llbbox[0];
+				//TODO thi is not properly tested
+//				bbox = service.capabilitiesStore.data.items[i].data.bbox;
 				//TODO doesnt work properly	
 				if (typeof bbox == 'object')
 					bbox = bbox['EPSG:4326'].bbox;

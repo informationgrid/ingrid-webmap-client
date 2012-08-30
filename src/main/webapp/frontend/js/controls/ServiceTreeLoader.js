@@ -61,7 +61,17 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.load = functio
 		if (!service) {
 			throw "Service attribute is expected on node: "+node.text;
 		}
-		var layer = service.getLayerByName(node.text);
+		// problem is that node.text is at first the service title
+		// so we need a routine that checks what the node is i.e. layer/service
+		// if its a service we null it and look for the rootlayer
+		// otherwise its a layer and we have the info we need
+		var layer = null;
+		if(node.layer)
+			layer = service.getLayerByName(node.layer.params.LAYERS);// layer = node.layer does NOT work!
+		else if (node.text == service.getDefinition().title)
+			layer = null; // it is a service so we look for the rootlayer
+		else
+			layer = service.getLayerByTitle("");//not yet implemented since id are made with unique names not titles		
 		if (layer) {
 			// the node represents a layer -> get child layers
 			var nestedLayers = layer.options.nestedLayers;
@@ -80,7 +90,7 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.load = functio
 			// the node represents the service -> load root layers
 			this.store.each(function(record) {
 				if (this.filter(record) === true) {
-					var layer = service.getLayerByName(record.getLayer().name);
+					var layer = service.getLayerByName(record.getLayer().params.LAYERS);
 					if (layer.options.isRootLayer) {
 						this.addLayerNode(node, record);
 					}
@@ -108,7 +118,7 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.load = functio
 de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode = function(node, layerRecord, index) {
 	index = index || 0;
 	var service = node.attributes.service;
-	var layer = service.getLayerByName(layerRecord.get('title'));
+	var layer = service.getLayerByName(layerRecord.data.layer.params.LAYERS);
 	if (!layer) {
 		// something went wrong...
 		return;

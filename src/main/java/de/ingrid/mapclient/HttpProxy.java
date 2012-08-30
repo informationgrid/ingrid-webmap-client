@@ -30,6 +30,9 @@ public class HttpProxy {
 			urlStr = "http://"+urlStr;
 		}
 		// replace & and ?
+		// TODO this doesn't replace anything , String are immutable,
+		// so nothing happens here, which never seemed to be a problem though...
+		// should be urlStr = urlStr.repl...
 		urlStr.replaceAll("\\&", "%26");
 		urlStr.replaceAll("\\?", "%3f");
 
@@ -44,8 +47,33 @@ public class HttpProxy {
 			// read the response into the string buffer
 			char[] buf = new char[1024];
 			int numRead = 0;
+			boolean firstRow = true;
 			reader = new BufferedReader(new InputStreamReader(xmlInputStream, xmlInputStream.getXmlEncoding()));
 			while((numRead = reader.read(buf)) != -1) {
+				//in some case the first char is a blank which brings the parser to thrown an exception
+				
+				
+				if(buf[0] != '<' && firstRow){
+					//25 is '<' should be the beginning of the xml doc
+					int i = 0;
+					while(buf[i] != '<'){
+						i++;	
+					}
+					
+					// String s = String.copyValueOf(buf);					
+					// buf = s.substring(i).toCharArray();
+					// this doesnt work since toCharArray inits a new array
+					// we make this c-style
+
+					for (int j = i; j < buf.length; j++){
+						buf[j -i] = buf[j];
+					}
+					for(int j = buf.length - 1; j > (buf.length-1) - i; j--)
+						buf[j] = ' ';
+					
+				}
+					//do something	
+				firstRow = false;
 				response.append(buf, 0, numRead);
 			}
 		}
