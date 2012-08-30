@@ -39,7 +39,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
                 	node.getUI().removeClass('complete');
                     self.save(node);
                 }
-            }
+            },
+			'afterrender': function(e) {
+				self.mainPanel.isSave=false;
+			}
         }
     });
 	
@@ -128,6 +131,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 						   categories: categories,
 						   layers: null
 				   };
+				self.mainPanel.isSave=true;
 				self.mainPanel.setValue('updateservice', service, 'Bitte warten! Kategorien-&Auml;nderungen werden &uuml;bernommen!');
 			}
 		}

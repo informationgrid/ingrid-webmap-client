@@ -326,23 +326,28 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
   								}
     						},
     						'removed': function(e) {
-    							if(e.store){
-    								if(e.store.modified){
-    									if(e.store.modified.length > 0){
-    										Ext.Msg.show({
- 		  									   title:'&Auml;nderungen speichern',
- 		  									   msg: 'Am vorherigen Dienst wurden &Auml;nderungen vorgenommen. Sollen diese &Auml;nderungen gespeichert werden?',
- 		  									   buttons: Ext.Msg.OKCANCEL,
- 		  									   icon: Ext.MessageBox.QUESTION,
- 		  									   fn: function(btn){
- 		  										   if (btn == 'ok'){
- 		  											  self.save();
- 		  										   }
- 		  									   }
-    										});
-    									}
+    							if(!self.mainPanel.isSave){
+    								if(e.store){
+        								if(e.store.modified){
+        									if(e.store.modified.length > 0){
+        										Ext.Msg.show({
+     		  									   title:'&Auml;nderungen speichern',
+     		  									   msg: 'Am vorherigen Dienst wurden &Auml;nderungen vorgenommen. Sollen diese &Auml;nderungen gespeichert werden?',
+     		  									   buttons: Ext.Msg.OKCANCEL,
+     		  									   icon: Ext.MessageBox.QUESTION,
+     		  									   fn: function(btn){
+     		  										   if (btn == 'ok'){
+     		  											  self.save();
+     		  										   }
+     		  									   }
+        										});
+        									}
+            							}
         							}
     							}
+    						},
+    						'afterrender': function(e) {
+    							self.mainPanel.isSave=false;
     						}
 				      },
 				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
@@ -401,7 +406,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				   layers: layers
 		   };
 		// Update service
-		self.mainPanel.setValue('updateservice', service, 'Bitte warten! Layer-&Auml;nderungen werden &uuml;bernommen!');
+		self.mainPanel.isSave = true;
+		self.mainPanel.setValue('updateservice', service, 'Bitte warten! Layer-&Auml;nderungen werden &uuml;bernommen!', false, false, false);
 	}
 };
 

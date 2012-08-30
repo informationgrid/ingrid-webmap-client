@@ -83,7 +83,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	deleteServiceBtn:null,
 	reloadServiceBtn:null,
 	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers']
+	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers'],
+	isSave:false
 });
 
 /**
@@ -326,12 +327,24 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             	var url = simple.items.get('url').el.dom.value;
             	
             	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
-            		var service = { title:name, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
+            		var service = { 
+            				title:name, 
+            				originalCapUrl:url, 
+            				capabilitiesUrlOrg:"",
+            				categories:[],
+            				layers:[] 
+            		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
                 	win.close();
             	}else if(url != simple.items.get('url').emptyText){
-            		var service = { title:null, originalCapUrl:url, capabilitiesUrlOrg:"", categories:[], layers:[] };
+            		var service = { 
+            				title:null,
+            				originalCapUrl:url,
+            				capabilitiesUrlOrg:"",
+            				categories:[],
+            				layers:[]
+            		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
                 	win.close();
@@ -370,7 +383,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 	   fn: function(btn){
 		   if (btn == 'ok'){
 			   if(reloadService.data){
-				   var service = { title: reloadService.data.name, capabilitiesUrl: reloadService.data.capabilitiesUrl, capabilitiesUrlOrg: reloadService.data.capabilitiesUrlOrg, originalCapUrl: reloadService.data.originalCapUrl, layers: [] };
+				   var service = { 
+						   title: reloadService.data.name,
+						   capabilitiesUrl: reloadService.data.capabilitiesUrl,
+						   capabilitiesUrlOrg: reloadService.data.capabilitiesUrlOrg,
+						   originalCapUrl: reloadService.data.originalCapUrl, 
+						   layers: [] };
 				   // Reload service
 				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!');
 			   }
