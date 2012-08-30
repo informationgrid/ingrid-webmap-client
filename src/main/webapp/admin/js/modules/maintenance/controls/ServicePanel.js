@@ -645,7 +645,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 							// Get parent node name
 							var layerObjNode = layerObj.node;
 							var parent = null; 
-							var expanded = true;
 							var is_leaf = true;
 							if(layerObjNode){
 								var layerObjParentNode = layerObjNode.parentNode;
@@ -660,7 +659,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 													if(!parent){
 														parent = node.text;
 													}
-													expanded = false;
 												}
 											}
 										}
@@ -690,7 +688,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 									legend: false,
 									id:layerObj.data.name,
 									parent: parent,
-									expanded: expanded, 
 									is_leaf: is_leaf
 									});
 							}

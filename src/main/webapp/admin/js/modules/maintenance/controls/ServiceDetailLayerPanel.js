@@ -118,6 +118,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				     	{name: 'checked', type: 'bool'},
 				     	{name: 'featureInfo', type: 'bool'},
 				     	{name: 'expanded', type: 'bool'},
+				     	{name: 'reload', type: 'bool'},
 				     	{name: '_id', type: 'string'},
 				     	{name: '_parent', type: 'string'},
 				     	{name: '_is_leaf', type: 'bool'}
@@ -129,14 +130,18 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 						proxy: new Ext.data.MemoryProxy(layers),
 						isExpandedNode : function(record) {
 							if ("ux_maximgb_tg_expanded" in record) {
-			                    return record.ux_maximgb_tg_expanded;
+								return record.ux_maximgb_tg_expanded;
+			                }else{
+			                	if(record.data.reload == true){
+			                		if(record.data.expanded == true){
+				                		record.ux_maximgb_tg_expanded = true;
+				                	}else{
+				                		record.ux_maximgb_tg_expanded = false;
+				                	}
+			                	} else{
+			                		record.ux_maximgb_tg_expanded = true;
+			                	}
 			                }
-			                
-							var isExpanded = record.data.expanded;
-			                if (isExpanded === undefined) 
-			                	return true;
-			                else
-			                	return isExpanded;
 			            }
 				    });
 				    
@@ -271,11 +276,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				      	enableRowBody : true
 				      },
 				      listeners: {
-				    	  'beforeedit': function(e) {
+				    	  	'beforeedit': function(e) {
 				    		  if(e.record.get('deactivated')) {
 				    			  e.cancel = true;
 				    		  }
-  							},
+				    	  	},
   							'afteredit': function(e) {
   								var editValue = e.value;
   								var editValueOriginal = e.originalValue;
@@ -319,6 +324,25 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
   										}
   									}
   								}
+    						},
+    						'removed': function(e) {
+    							if(e.store){
+    								if(e.store.modified){
+    									if(e.store.modified.length > 0){
+    										Ext.Msg.show({
+ 		  									   title:'&Auml;nderungen speichern',
+ 		  									   msg: 'Am vorherigen Dienst wurden &Auml;nderungen vorgenommen. Sollen diese &Auml;nderungen gespeichert werden?',
+ 		  									   buttons: Ext.Msg.OKCANCEL,
+ 		  									   icon: Ext.MessageBox.QUESTION,
+ 		  									   fn: function(btn){
+ 		  										   if (btn == 'ok'){
+ 		  											  self.save();
+ 		  										   }
+ 		  									   }
+    										});
+    									}
+        							}
+    							}
     						}
 				      },
 				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
@@ -389,11 +413,14 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			var items = self.store.data.items;
 			for (var i=0, countI=items.length; i<countI; i++) { 
 				var layer = items[i].data;
+				var expanded = items[i].ux_maximgb_tg_expanded;
 				if(layer){
 					if(allDeactivated != undefined){
 						layer.deactivated = allDeactivated;
 					}
-				    layers.push(layer);
+					layer.expanded = expanded;
+					layer.reload = true;
+					layers.push(layer);
 				}
 			}
 		}
@@ -409,11 +436,14 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			var items = self.store.data.items;
 			for (var i=0, countI=items.length; i<countI; i++) { 
 				var layer = items[i].data;
+				var expanded = items[i].ux_maximgb_tg_expanded;
 				if(layer){
 					if(allChecked != undefined){
 						layer.checked = allChecked;
 					}
-				    layers.push(layer);
+					layer.expanded = expanded;
+					layer.reload = true;
+					layers.push(layer);
 				}
 			}
 		}
@@ -429,10 +459,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 			var items = self.store.data.items;
 			for (var i=0, countI=items.length; i<countI; i++) { 
 				var layer = items[i].data;
+				var expanded = items[i].ux_maximgb_tg_expanded;
 				if(layer){
 					if(allFeatureInfo != undefined){
 						layer.featureInfo = allFeatureInfo;
 					}
+					layer.expanded = expanded;
+					layer.reload = true;
 				    layers.push(layer);
 				}
 			}
