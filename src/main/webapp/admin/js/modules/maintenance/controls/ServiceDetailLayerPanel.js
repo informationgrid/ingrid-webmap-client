@@ -225,7 +225,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            id:'title',
 				            header: "Name",
 				            width: 160, 
-				            sortable: true,
+				            sortable: false,
 				            dataIndex: 'title',
 				            editor: new Ext.grid.GridEditor(new Ext.form.TextField(), {
 				                offsets : [-4, -5],
@@ -252,21 +252,21 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				            xtype: 'checkcolumn',
 				            align: 'center',
 				            width: 75, 
-				            sortable: true, 
+				            sortable: false, 
 				            dataIndex: 'deactivated'
 				        }, {
 				            header: "Aktivieren", 
 				            xtype: 'checkcolumn',
 				            align: 'center',
 				            width: 75, 
-				            sortable: true, 
+				            sortable: false, 
 				            dataIndex: 'checked'
 				        }, {
 				            header: "Feature Info",
 				            xtype: 'checkcolumn',
 				            align: 'center',
 				            width: 75, 
-				            sortable: true, 
+				            sortable: false, 
 				            dataIndex: 'featureInfo'
 				        }
 				      ],
