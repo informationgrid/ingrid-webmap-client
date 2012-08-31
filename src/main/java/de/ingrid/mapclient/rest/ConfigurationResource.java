@@ -638,7 +638,9 @@ public class ConfigurationResource {
 		String urlPrefix = null;
 		try {
 			String capUrl = json.getString("originalCapUrl");			
+			String capabilitiesUrl = json.getString("capabilitiesUrl");
 			
+			// Create WMS original Copy
 			String path = req.getSession().getServletContext().getRealPath("wms");
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
@@ -669,6 +671,15 @@ public class ConfigurationResource {
 			}
 			urls.put("url", json.getString("capabilitiesUrl"));
 			urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
+			
+			// Write WMS copy
+			HashMap<String, String> fileNames = new HashMap<String, String>();
+			
+			String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
+			String [] splitFileName = fileName.split("\\?");
+			fileNames.put("url", path + "" + splitFileName[0]);
+			fileNames.put("urlOrg", path + "" + urlOrg);
+			writeWmsCopyToFile(doc, req, title, urlPrefix+urlOrg+"?REQUEST=GetCapabilities", fileNames);
 			
 		} catch (JSONException e) {
 			
