@@ -56,14 +56,14 @@ public class SearchResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response search(@QueryParam("searchTerm") String searchTerm) {
-		//get the opensearch url through the applicaton properties file
+		//get the opensearch url through the application properties file
 		String OSUrl = ConfigurationProvider.INSTANCE.getOpensearchUrl();
 		InputStream result = null;
 		searchTerm = searchTerm.trim();
 		searchTerm = searchTerm.replaceAll("\\s", "+");
 		//some logic borrowed from the opensearch iplug
 		//we open a stream though this module 
-		//the rest is bascially simple xml parsing of the result 
+		//the rest is basically simple xml parsing of the result 
 		//into a json string which gets to the mapclient through the 
 		//response
 		OSCommunication comm = new OSCommunication();
@@ -81,9 +81,11 @@ public class SearchResource {
 			nodesWmsUrls = (NodeList) xpath.evaluate(
 					"/rss/channel/item/wms-url", doc, XPathConstants.NODESET);
 			for (int i = 0; i < nodesTitles.getLength(); i++) {
-				WmsServer wmsServer = new WmsServer(nodesTitles.item(i).getTextContent(), 
-						nodesWmsUrls.item(i).getTextContent().replace("&amp;", "&"));
-				services.add(wmsServer);
+				if(nodesTitles.item(i) != null && nodesWmsUrls.item(i) != null){
+					WmsServer wmsServer = new WmsServer(nodesTitles.item(i).getTextContent(), 
+							nodesWmsUrls.item(i).getTextContent().replace("&amp;", "&"));
+					services.add(wmsServer);
+				}
 			}
 		} catch (XPathExpressionException e) {
 			log.error("Error while parsing the InputStream!");
