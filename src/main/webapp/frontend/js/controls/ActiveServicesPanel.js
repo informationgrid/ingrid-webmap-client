@@ -839,25 +839,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfServic
 	var bboxes = service.capabilitiesStore.data.items;	
 	var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils
 			.getMapProjection(self.map);
-	// looking for the lonlatbbox
+	// default case, projection is 4326 and the service defines a lonlatbox
+	// we just take it as base zoomextent, should cover most cases
 	if (mapProjection.projCode == "EPSG:4326"
 			&& service.capabilitiesStore.data.items[0].data.llbbox) {
-		var bboxes = service.capabilitiesStore.data.items;
-		for (var i = 0; i < bboxes.length; i++) {
-			if (bboxes[i].data.llbbox[0]){
-				bbox = bboxes[i].data.llbbox[0];
-				//TODO thi is not properly tested
-//				bbox = service.capabilitiesStore.data.items[i].data.bbox;
-				//TODO doesnt work properly	
-				if (typeof bbox == 'object')
-					bbox = bbox['EPSG:4326'].bbox;
+		var bbox = service.capabilitiesStore.data.items[0].data.llbbox;
 				var bounds = new OpenLayers.Bounds.fromArray(bbox);
 				return bounds;
-				}
-		}
-		
-	}
+		}	
 
+	//our service supports the map projection but the map is not in the default projection
+	// we look for bboxes, which might be defined in the service
 	if (supportsSRS && mapProjection.projCode != "EPSG:4326") {
 
 
@@ -896,8 +888,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	var bounds=null;
 	//layerUrl
 	var url = attributes.layer.url;
-	//get the layerId, but the right one! our layer id doesnt help, now bbox in this object
-	var layerId = attributes.service.layers.get(url+':'+attributes.layer.id)
+	//get the layerId, but the right one! our layer id doesnt help, no bbox in this object
+	var layerId = attributes.service.layers.get(url+':'+attributes.layer.params.LAYERS)
 	var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
 	//check if our layers upport the map projection
 	if(layer.data.bbox[srs]){
