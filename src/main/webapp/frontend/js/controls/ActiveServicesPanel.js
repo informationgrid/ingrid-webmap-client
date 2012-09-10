@@ -157,7 +157,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature){
 	this.zoomLayerBtn = new Ext.Button({
 				iconCls : 'iconZoomLayerExtent',
-				tooltip : i18n('tFuerMetadatenErst'),
+				tooltip : i18n('tZoomeAufServiceOderLayer'),
 				disabled : true,
 				handler : function(btn) {
 					var bounds=null;

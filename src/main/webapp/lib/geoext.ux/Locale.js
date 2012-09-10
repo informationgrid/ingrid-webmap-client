@@ -155,6 +155,7 @@ Local = {
         tWmsTitle: { en: 'WMS Title', de: 'WMS Titel' },
         tWmsAbstract: { en: 'WMS Abstract', de: 'WMS Abstract' },
         tZeigePunktkoordinaten: { en: 'Show point coordinates', de: 'Zeige Punktkoordinaten' },
+        tZoomeAufServiceOderLayer: { en: 'Zoom to service or layer extent', de: 'Zoome auf Service oder Layer' },
         tZugriffsbeschraenkung: { en: 'Access restriction', de: 'Zugriffsbeschr&auml;nkung' },
         tZumSpeichernErstEinloggen: { en: 'Login to save.', de: 'Zum Speichern erst einloggen.' },
         tZumEntfernenErstEinenDienstMarkieren: { en: 'To remove a service first select one.', de: 'Zum Entfernen erst einen Dienst markieren.' },
