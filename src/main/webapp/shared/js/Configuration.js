@@ -30,7 +30,7 @@ de.ingrid.mapclient.Configuration = function() {
 	/**
 	 * hide (or not) experimental features
 	 */
-	this.hiddenFeature = false;
+	this.hiddenFeature = true;
 };
 
 /**
