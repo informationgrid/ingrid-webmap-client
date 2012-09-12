@@ -52,9 +52,10 @@ public class HttpProxy {
 			while((numRead = reader.read(buf)) != -1) {
 				//in some case the first char is a blank which brings the parser to thrown an exception
 				
-				
-				if(buf[0] != '<' && firstRow){
+				// if the first character is not empty we usually have some kind of status message
+				if(buf[0] != '<' && firstRow && buf[0] == " ".toCharArray()[0]){
 					//25 is '<' should be the beginning of the xml doc
+					
 					int i = 0;
 					while(buf[i] != '<'){
 						i++;	

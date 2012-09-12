@@ -87,14 +87,22 @@ public class WmsResource {
 		}
 
 		try {
+			
 			String response = HttpProxy.doRequest(url);
-			Document doc =  DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(response)));
+			if(url.toLowerCase().indexOf("getfeatureinfo") > 0){
+				return response;
+			}
+			// if we do this routine on other than wms docs we get an exception,
+			// so we return the response as is
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			docFactory.setValidating(false);
+			Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
 			doc =  CapabilitiesUtils.addIndexToLayers(doc);
             Source source = new DOMSource(doc);
             StringWriter stringWriter = new StringWriter();
             Result result = new StreamResult(stringWriter);
             TransformerFactory.newInstance().newTransformer().transform(source, result);
-            response = stringWriter.getBuffer().toString();
+            response = stringWriter.getBuffer().toString();			
 			return response;
 		}
 		catch (IOException ex) {
