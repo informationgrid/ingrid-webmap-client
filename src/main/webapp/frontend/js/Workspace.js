@@ -13,12 +13,12 @@ de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
 	containingViewport:null,
 	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
         de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
-        //TODO delete if, when ready
-        if(de.ingrid.mapclient.Configuration.instance.hiddenFeature){
-	        var servicesPanel = this.containingViewport.activeServicesPanel;
-	        var root = servicesPanel.layerTree.getRootNode();
-	        servicesPanel.checkScaleRecursively(root, this.getScale());
-        }
+		//on each setcenter method(fired when zoomed), we check if our layers are in the right
+        //scale to be displayed
+        var servicesPanel = this.containingViewport.activeServicesPanel;
+        var root = servicesPanel.layerTree.getRootNode();
+        servicesPanel.checkScaleRecursively(root, this.getScale());
+
         
     }
 });
@@ -657,8 +657,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 
 	this.listenToStateChanges = true;
 	this.map.sessionWriteEnable = true;
-	//TODO delete if, when ready
-    if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)
+	// this is to manually invoke the method, we do this at last, cause we dont have the checkboxes before
 	this.map.setCenter();
 };
 

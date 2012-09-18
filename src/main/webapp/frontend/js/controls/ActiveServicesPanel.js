@@ -44,7 +44,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transparencyBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
-			zoomLayerBtn : null,
+	zoomLayerBtn : null,
 	allExpanded: false,
 	ctrls:null,
 	kmlArray: [],
@@ -151,10 +151,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			}
 		}
 	});
-	//TODO remove hiddenFeature, when ready
+
 	// zoom to layer extent
 	var bbox = null;
-	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature){
+
 	this.zoomLayerBtn = new Ext.Button({
 				iconCls : 'iconZoomLayerExtent',
 				tooltip : i18n('tZoomeAufServiceOderLayer'),
@@ -176,7 +176,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					}
 				}
 			});
-	}
+
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
 		root: {
@@ -196,9 +196,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.addBtn.enable();
 		self.removeBtn.enable();
 		self.transparencyBtn.disable();
-		self.metaDataBtn.enable();
-	//TODO remove hiddenFeature, when ready
-	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)		
+		self.metaDataBtn.enable();	
 		self.zoomLayerBtn.enable();
 		
 
@@ -230,11 +228,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			this.removeBtn,
 			this.transparencyBtn,
 			this.metaDataBtn,
-			this.expandBtn
+			this.expandBtn,
+			this.zoomLayerBtn
 		]
-	//TODO remove hiddenFeature, when ready
-	if(de.ingrid.mapclient.Configuration.instance.hiddenFeature)	
-		items.push(this.zoomLayerBtn);
 	
 	Ext.apply(this, {
 		items: this.layerTree,
@@ -393,11 +389,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		// do we get some data?
 		if(bounds){
 		//do we come from session or user interaction? zoom if user interaction
-		if(!initialAdd)
-		this.map.zoomToExtent(bounds);
+			if(!initialAdd)
+				this.map.zoomToExtent(bounds);
+		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
 		if(typeof expandNode === 'undefined' || expandNode == false)
-		node.expand(true);
+			node.expand(true);
 
 		//we check the services which are meant to be checked by default
 		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
@@ -405,15 +402,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
 				var cl = wmsServices[i].checkedLayers;
 				if(cl){
-				for(var j = 0; j < cl.length; j++){
-					var k = 0;
-					self.checkRecursively(cl[j],node);
-				}
+					for(var j = 0; j < cl.length; j++){
+						var k = 0;
+						self.checkRecursively(cl[j],node);
+					}
 				}
 				break;
 			}
 		}
-		}
+		
 	}
 };
 
@@ -921,7 +918,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
     	var layer = n.layer;
     	if(layer){
     		if(layer.maxScale > scale || layer.minScale < scale){
-    			n.disable();
+    			//if we disable, they are not selectable anymore
+    			//this style class is set on disable, but doesnt reeally disable
+    			//n.disable();
+    			n.setCls('x-tree-node-disabled');
     		}
         	else
         		n.enable();
@@ -934,7 +934,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
     		var layer = node.layer;
     		if(layer){
 	    		if(layer.maxScale > scale || layer.minScale < scale){
-	    			node.disable();
+//	    			node.disable();
+	    			node.setCls('x-tree-node-disabled');
 	    		}else
 	    			node.enable();
     		}
