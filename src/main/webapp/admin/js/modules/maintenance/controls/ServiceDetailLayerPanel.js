@@ -2,7 +2,8 @@
  * Copyright (c) 2011 wemove digital solutions. All rights reserved.
  */
 Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
-
+// this variable stores the attribute of checked box of our layers(which one)
+var globalSelectedLayerCheckbox;
 /**
  * @class ServiceDetailLayerPanel is used to manage a list of map projections.
  */
@@ -154,6 +155,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 
 				    		var modified  = record.modified;
 							if(modified){
+								//check if record has children and/or is disabled
+								self.checkChildrenAndSelf(record);
 								var modifiedDeactivated = modified.deactivated;
 					    		var modifiedChecked = modified.checked;
 					    		var modifiedFeatureInfo = modified.featureInfo;
@@ -169,40 +172,41 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 
 				    	}
 					});
-				    
+				    //TODO diese logik verträgt sich nicht so gut mit dem checken/unchecken der boxen, daher ist sie erstmal auskommentiert
+					// Toan muss entscheiden, ob er das so machen will, wie unten oder anders, es funktioniert aber erstmal 
 				    // Checkboxes for tbar
-					var deactivatedTbar = {
-				            xtype: 'checkbox',
-				            boxLabel: 'Alle Layer verwerfen',
-				            id : 'cb_deactivated',
-				            checked: allDeactivated,
-				            handler: function(btn) {
-				    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue());
-				    		},
-							renderer: self.allCheckboxesStyle
-						};
-
-					var checkedTbar = {
-				            xtype: 'checkbox',
-				            boxLabel: 'Alle Layer aktvieren',
-				            id : 'cb_checked',
-				            checked: allChecked,
-				            disabled: allDeactivated ? true : false,
-				            handler: function(btn) {
-				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue());
-				    		}
-						};
-
-					var featureInfoTbar = {
-				            xtype: 'checkbox',
-				            boxLabel: 'Alle Layer Infos aktvieren',
-				            id : 'cb_featureInfo',
-				            checked: allFeatureInfo,
-				            disabled: allDeactivated ? true : false,
-				            handler: function(btn) {
-				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue());
-				    		}
-						};
+//					var deactivatedTbar = {
+//				            xtype: 'checkbox',
+//				            boxLabel: 'Alle Layer verwerfen',
+//				            id : 'cb_deactivated',
+//				            checked: allDeactivated,
+//				            handler: function(btn) {
+//				    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue());
+//				    		},
+//							renderer: self.allCheckboxesStyle
+//						};
+//
+//					var checkedTbar = {
+//				            xtype: 'checkbox',
+//				            boxLabel: 'Alle Layer aktvieren',
+//				            id : 'cb_checked',
+//				            checked: allChecked,
+//				            disabled: allDeactivated ? true : false,
+//				            handler: function(btn) {
+//				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue());
+//				    		}
+//						};
+//
+//					var featureInfoTbar = {
+//				            xtype: 'checkbox',
+//				            boxLabel: 'Alle Layer Infos aktvieren',
+//				            id : 'cb_featureInfo',
+//				            checked: allFeatureInfo,
+//				            disabled: allDeactivated ? true : false,
+//				            handler: function(btn) {
+//				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue());
+//				    		}
+//						};
 					
 					// Button for tbar
 					var saveBtn = new Ext.Button({
@@ -349,8 +353,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     						'afterrender': function(e) {
     							self.mainPanel.isSave=false;
     						}
-				      },
-				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar, ]
+				      }
+//				      ,
+//				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar ]
 				    });
 					// create the final layout
 					Ext.apply(this, {
@@ -539,3 +544,121 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     }
     return editLayers;
 }
+/**
+ * this function iterates through the adjancy list and (un)checks the children of the record accrodingly
+ * it is necesary because we use an extension as a loader and not a genuine tree structure provided by Ext
+ * @param {} record
+ * @return {}
+ */
+de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.checkChildrenAndSelf = function(record) {
+	//if our parent is deactivated we dont do anything
+	var parent;
+	if (parent = record.data._parent) {
+		var thisParent = this.store.data.get(parent);
+		if (thisParent.data.deactivated) {
+			if(!record.data.deactivated)
+				record.data.deactivated = true;
+//			record.reject();
+			return;
+		}
+	}
+	
+		if (record.data.deactivated) {
+			record.data.checked = false;
+			record.data.featureInfo = false;
+		}
+
+
+		var children = this.store.getNodeChildren(this.store.getActiveNode());
+		
+		// if the record is the root node, (un)check all
+		// else check only its children
+		if (record.id == this.store.data.keys[0]) {
+			for (var j = 0; j < this.store.data.items.length; j++) {
+				// the root is not deactivated AND the checkchange is fired by either checkbox 2 or 3
+				if(!record.data.deactivated && (globalSelectedLayerCheckbox[1] == 2 || globalSelectedLayerCheckbox[1] == 3)){
+					//deactivated was checked
+					if (this.store.data.items[j].data.deactivated) {
+						this.store.data.items[j].data.checked = false;
+						this.store.data.items[j].data.featureInfo = false;
+					}else{					
+						if(globalSelectedLayerCheckbox[1] == 2)
+							this.store.data.items[j].data.checked = record.data.checked;
+						if(globalSelectedLayerCheckbox[1] == 3)
+							this.store.data.items[j].data.featureInfo = record.data.featureInfo;						
+								
+					}
+				}else{
+					// checkbox 1 (deactivated) was checked so we uncheck everything else
+					this.store.data.items[j].data.deactivated = record.data.deactivated;
+					if (this.store.data.items[j].data.deactivated) {
+						this.store.data.items[j].data.checked = false;
+						this.store.data.items[j].data.featureInfo = false;
+					} else {
+						this.store.data.items[j].data.checked = record.data.checked;
+						this.store.data.items[j].data.featureInfo = record.data.featureInfo;
+					}
+				}
+			}
+		} else {
+			// the node is not the root node, but we basically need the same logic, this doesnt work generically, we can not
+			// use this method on the root node, because the children dont necessarly contain all layers, which we need if we check the root, pity! 
+			for (var j = 0; j < children.length; j++) {
+				if(!record.data.deactivated && (globalSelectedLayerCheckbox[1] == 2 || globalSelectedLayerCheckbox[1] == 3)){
+					//deactivated was checked
+					if (children[j].data.deactivated) {
+						children[j].data.checked = false;
+						children[j].data.featureInfo = false;
+					}else{					
+						if(globalSelectedLayerCheckbox[1] == 2)
+							children[j].data.checked = record.data.checked;
+						if(globalSelectedLayerCheckbox[1] == 3)
+							children[j].data.featureInfo = record.data.featureInfo;						
+								
+					}
+				}
+				else{		
+
+					children[j].data.deactivated = record.data.deactivated;
+					if (children[j].data.deactivated) {
+						children[j].data.checked = false;
+						children[j].data.featureInfo = false;
+					} else {
+						children[j].data.checked = record.data.checked;
+						children[j].data.featureInfo = record.data.featureInfo;
+					}
+				}
+			}
+		}
+}
+    /**
+     * @access private
+     */
+   Ext.ux.maximgb.tg.EditorGridPanel.prototype.onTreeGridSelectionChange = function(sm, selection)
+    {
+    	globalSelectedLayerCheckbox = sm.getSelectedCell();
+        var record, ancestors, store = this.getStore();
+        // Row selection model
+        if (sm.getSelected) {
+            record = sm.getSelected();
+            store.setActiveNode(record);
+        }
+        // Cell selection model
+        else if (sm.getSelectedCell && selection) {
+            record = selection.record;
+            store.setActiveNode(record);
+        }
+
+        // Ensuring that selected node is visible.
+        if (record) {
+            if (!store.isVisibleNode(record)) {
+                ancestors = store.getNodeAncestors(record);
+                while (ancestors.length > 0) {
+                    store.expandNode(ancestors.pop());
+                }
+            }
+        }
+    }
+
+
+
