@@ -48,16 +48,18 @@ public class HttpProxy {
 			char[] buf = new char[1024];
 			int numRead = 0;
 			boolean firstRow = true;
+			
 			reader = new BufferedReader(new InputStreamReader(xmlInputStream, xmlInputStream.getXmlEncoding()));
 			while((numRead = reader.read(buf)) != -1) {
 				//in some case the first char is a blank which brings the parser to thrown an exception
 				
 				// if the first character is not empty we usually have some kind of status message
-				if(buf[0] != '<' && firstRow && buf[0] == " ".toCharArray()[0]){
+				// HACK 
+				if(buf[0] != '<' && firstRow && Character.getNumericValue(buf[0]) == -1){
 					//25 is '<' should be the beginning of the xml doc
 					
 					int i = 0;
-					while(buf[i] != '<'){
+					while(buf[i] != '<' && Character.getNumericValue(buf[0]) == -1){
 						i++;	
 					}
 					
