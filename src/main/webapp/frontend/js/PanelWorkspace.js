@@ -241,7 +241,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 										coordinatesCtrl.deactivate();
 										administrativeFeatureInfoControl.deactivate();
 									} else {
-										console.debug("button active");
+										// console.debug("button active");
 									}
 								}
 							}]
@@ -491,6 +491,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initDefaultMap = function(
 
 			// process the layers
 			var layers = service.getLayers();
+			var baseLayerSet = false;
 			for ( var i = 0, count = layers.length; i < count; i++) {
 				var layer = layers[i];
 
@@ -499,11 +500,17 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initDefaultMap = function(
 				var isDefaultLayer = selectedLayerNames.indexOf(layer.name) != -1 ? true: false;
 				// set the baselayer attribute
 				var isBaseLayer = (layer.name == baseLayerName) ? true : false;
+				if (isBaseLayer) {
+					baseLayerSet = true;
+				}
 				layer.visibility = isDefaultLayer;
 				layer.isBaseLayer = isBaseLayer;
 
 				// bind the layer to the map
 				self.map.addLayer(layer);
+			}
+			if (!baseLayerSet) {
+				console.debug("Error!! BaseLayer '" + baseLayerName + "' does not match any layer.");
 			}
 
 

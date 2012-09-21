@@ -162,8 +162,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				handler : function(btn) {
 					var bounds=null;
 					if (self.activeNode) {
-						// self.zoomLayerBtn.enable();
-						console.debug("zommLayerBtn handler");
 						//check if we have a service(root) node 
 						if(self.activeNode instanceof GeoExt.tree.LayerContainer){
 							bounds = self.bboxOfServiceExtent(self.activeNode.attributes.service)		
@@ -864,7 +862,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfServic
 	// at this point we didnt get a bbox with our map projection so we have to transform 
 	// any bbox we get and try to fit it
 
-	console.debug("bbox selber machen");
 		for (var i = 0; i < bboxes.length; i++) {
 			if (bboxes[i].data.bbox) {
 				for (var srsIn in bboxes[i].data.bbox){

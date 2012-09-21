@@ -549,6 +549,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(
 
 				// process the layers
 				var layers = service.getLayers();
+				var baseLayerSet = false;
 				for (var i = 0, count = layers.length; i < count; i++) {
 					var layer = layers[i];
 
@@ -561,11 +562,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(
 					var isBaseLayer = (layer.name == baseLayerName)
 							? true
 							: false;
+					if (isBaseLayer) {
+						baseLayerSet = true;
+					}
 					layer.visibility = isDefaultLayer;
 					layer.isBaseLayer = isBaseLayer;
 
 					// bind the layer to the map
 					self.map.addLayer(layer);
+				}
+				
+				if (!baseLayerSet) {
+					console.debug("Error!! BaseLayer '"+baseLayerName+"' does not match any layer.");
 				}
 
 				// set initial projection, if no projection has been defined,

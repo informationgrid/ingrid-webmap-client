@@ -73,7 +73,7 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.copy = function(ser
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },			
 			success: function(response, request) {
-				console.debug("Gut.");
+//				console.debug("Gut.");
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.COPY_SERVICE_FAILURE);	
@@ -92,7 +92,7 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.add = function(seri
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },			
 			success: function(response, request) {
-				console.debug("Gut.");
+//				console.debug("Gut.");
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.ADD_SERVICE_FAILURE);	
@@ -111,7 +111,7 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.update = function(s
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },			
 			success: function(response, request) {
-				console.debug("Gut.");
+//				console.debug("Gut.");
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.UPDATE_SERVICE_FAILURE);	
@@ -130,7 +130,7 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.remove = function(s
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },			
 			success: function(response, request) {
-				console.debug("Gut.");
+//				console.debug("Gut.");
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.REMOVE_SERVICE_FAILURE);	
@@ -149,7 +149,7 @@ de.ingrid.mapclient.frontend.data.ServiceContainer.prototype.get = function(seri
 			method: 'POST',
 			headers: { 'Content-Type': 'text/plain' },			
 			success: function(response, request) {
-				console.debug("Gut.");
+//				console.debug("Gut.");
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.REMOVE_SERVICE_FAILURE);	
