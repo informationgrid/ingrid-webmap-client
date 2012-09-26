@@ -12,8 +12,8 @@
 	<packaging>war</packaging>
 	<name>InGrid Web Map Client</name>
 	<scm>
-		<connection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/tags/ingrid-webmap-client-3.2.0</connection>
-		<developerConnection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/tags/ingrid-webmap-client-3.2.0</developerConnection>
+		<connection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/trunk</connection>
+		<developerConnection>scm:svn:https://harrison.its-technidata.de/svn/ingrid/ingrid-webmap-client/trunk</developerConnection>
 	</scm>
 	<build>
 		<finalName>${project.artifactId}</finalName>
