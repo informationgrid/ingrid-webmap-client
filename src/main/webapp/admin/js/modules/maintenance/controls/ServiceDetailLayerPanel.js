@@ -354,8 +354,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     							self.mainPanel.isSave=false;
     						}
 				      }
-//				      ,
-//				    	tbar:[saveBtn, '->', deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar ]
+				      ,
+				    	tbar:[saveBtn, '->' /*, deactivatedTbar, "-", checkedTbar, "-", featureInfoTbar*/ ]
 				    });
 					// create the final layout
 					Ext.apply(this, {
