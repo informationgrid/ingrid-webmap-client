@@ -92,13 +92,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: true,
 		handler: function(btn) {
 			if (self.activeNode) {
+
 				if(self.activeNode.attributes.service != undefined){
 					//enable add service button
 					if(self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl]){
 					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
 					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
 					}
-					self.removeService(self.activeNode.attributes.service);
+					self.removeService(self.activeNode.attributes.service, null, self.activeNode);
 					self.removeBtn.disable();
 					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
 					self.metaDataBtn.disable();
@@ -437,8 +438,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursi
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
-		service, supressMsgs) {
-	
+		service, supressMsgs, activeNode) {
+	var self = this;
 	if (!this.containsService(service)) {
 		return;
 	}
@@ -451,28 +452,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 		if (typeof cntrPanel !== 'undefined' && !supressMsgs) {
 			de.ingrid.mapclient.Message.showInfo(i18n('tMsgServiceRemoved'));
 		}
-		// remove service layers from the store
-		var recordsToRemove = [];
-		this.layerStore.each(function(record) {
-					if (service.contains(record.get("layer"))) {
-						recordsToRemove.push(record);
-					}
-				});
-		this.layerStore.remove(recordsToRemove);
+		// remove service layers from the store by hand 
+		// we dont use the remove method of the store anymore
+		// because if we have a request open it keeps loading tiles
+		// destroying each layers will impede further loading
+		self.destroyLayersRecursively(activeNode);
+		 
 
-		// remove service node from the tree
-		var node = this.layerTree.root.findChildBy(function(child) {
-					var isServiceNode = false;
-					var curService = child.attributes.service;
-					if (curService != undefined) {
-						isServiceNode = (curService.getCapabilitiesUrl() == service
-								.getCapabilitiesUrl());
-					}
-					return isServiceNode;
-				}, this, true);
-		if (node) {
-			node.remove(true);
-		}
+		// remove service node from the tree, again we do this manually
+		activeNode.remove();
+
 
 		this.services.removeKey(service.getCapabilitiesUrl());
 		this.fireEvent('datachanged');
@@ -937,4 +926,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    			node.enable();
     		}
     	}			        
+}
+/**
+ * destroy layers by hand so that they dont keep loading when removed
+ * @param {} node
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.destroyLayersRecursively  = function(node){
+		var self = this;
+
+		node.eachChild(function(n) {
+    	var layer = n.layer;
+    	if(layer){
+	        if(n.hasChildNodes){
+		    	self.destroyLayersRecursively(n);
+		    }
+        	layer.destroy();
+    	}
+		
+    	});		
+ 
 }
