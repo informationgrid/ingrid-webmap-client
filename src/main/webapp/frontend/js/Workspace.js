@@ -452,6 +452,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				});
 
 	}
+	// welcome dialog
+	// show only if cookies do not prevent this
+	var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
+	if (showWelcomeDialog) {
+        welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
+                {
+                    map : this.map,
+                    viewConfig : this.viewConfig,
+                    ctrls: self.ctrls
+                });
+
+    }
 	var centerPanel = new Ext.Panel({
 				region : 'center',
 				id: 'centerPanel',
