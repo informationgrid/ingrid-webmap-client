@@ -170,7 +170,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						}else{
 							bounds = self.bboxOfLayerExtent(self.activeNode.attributes)
 						}
-						self.map.zoomToExtent(bounds);
+						if(self.activeNode.layer.minScale)
+							self.map.zoomToScale((((self.activeNode.layer.minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
 						this.fireEvent('datachanged');
 					}
 				}
@@ -875,12 +876,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	var layerId = attributes.service.layers.get(url+':'+attributes.layer.params.LAYERS)
 	var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
 	//check if our layers upport the map projection
-	if(layer.data.bbox[srs]){
-		bbox = layer.data.bbox[srs].bbox
-		bounds = new OpenLayers.Bounds.fromArray(bbox);
-	}
-	else{
+//	if(layer.data.bbox[srs]){
+//		bbox = layer.data.bbox[srs].bbox
+//		bounds = new OpenLayers.Bounds.fromArray(bbox);
+//	}
+//	else{
 		for (var srsIn in layer.data.bbox){
+			if(srsIn != srs){
 				bbox = layer.data.bbox[srsIn].bbox;
 				var projMap = new OpenLayers.Projection(srs);
 				var projLayer = new OpenLayers.Projection(srsIn);
@@ -889,6 +891,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 				return bounds;	
 			}
 		}
+//		}
 	return bounds;
 
 };
