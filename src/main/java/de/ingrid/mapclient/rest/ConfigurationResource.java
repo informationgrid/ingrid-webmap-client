@@ -678,7 +678,7 @@ public class ConfigurationResource {
 			String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
 			String [] splitFileName = fileName.split("\\?");
 			fileNames.put("url", path + "" + splitFileName[0]);
-			fileNames.put("urlOrg", path + "" + urlOrg);
+			fileNames.put("urlOrg", path + "/" + urlOrg);
 			writeWmsCopyToFile(doc, req, title, urlPrefix+urlOrg+"?REQUEST=GetCapabilities", fileNames);
 			
 		} catch (JSONException e) {
