@@ -143,11 +143,19 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
     // check for clicks on the delete column to delete the record
     this.gridPanel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 		if(columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			if (confirm("Soll der Eintrag wirklich gel&ouml;scht werden?")) {
-				var record = grid.getStore().getAt(rowIndex);
-				grid.getStore().remove(record);
-				grid.getView().refresh();
-			}
+			Ext.Msg.show({
+				   title:'Raumbezugsystem l&ouml;schen',
+				   msg: 'Soll der Eintrag wirklich gel&ouml;scht werden?',
+				   buttons: Ext.Msg.OKCANCEL,
+				   icon: Ext.MessageBox.QUESTION,
+				   fn: function(btn){
+					   if (btn == 'ok'){
+						   var record = grid.getStore().getAt(rowIndex);
+							grid.getStore().remove(record);
+							grid.getView().refresh();
+					   }
+				   	}
+				});
 		}
     });
 
