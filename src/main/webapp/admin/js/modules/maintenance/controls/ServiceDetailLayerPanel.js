@@ -521,8 +521,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				}
 			}
     	}
-    	if(layer.children){
-    		var layerChildren = layer.children;
+    	if(layer.childNodes){
+    		var layerChildren = layer.childNodes;
     		var index = "";
     		var title = "";
     		var featureinfo = (queryable == "1") ? true : false;
@@ -530,9 +530,18 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     		for (j = 0; j < layerChildren.length; j++) {
     			var children = layerChildren[j];
     			if(children.tagName == "Title"){
-    				title = children.textContent;
+    				if(children.textContent){
+    					title = children.textContent;
+    				}else{
+    					title = children.text;
+    				}
+    				
     			}else if(children.tagName == "Name"){
-    				index = children.textContent;
+    				if(children.textContent){
+    					index = children.textContent;
+    				}else{
+    					index = children.text;
+    				}
     			}
     		}
     		editLayers.push({ 
