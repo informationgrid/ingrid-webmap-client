@@ -1,33 +1,40 @@
 <style type="text/css">
-    body {font: normal 100%/120% Verdana, Arial, sans-serif;}
-    h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
-    .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
-    .odd { background-color: #EEE;}
-    .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
-    .info_img {position: absolute;right: 12px;margin: 0px;top: 6px;}
-    .info_link { margin-bottom: 0.5em; font-size: 12px; }
-    .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
-    .welcomeTable { width: 100%; }
-    .welcomeTable tr td { padding: 3px; }
-    #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; }
-    a {color: rgb(23, 103, 152); text-decoration: none;}
+    #welcomePage {font: normal 100%/120% Verdana, Arial, sans-serif;}
+    #welcomePage h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
+    #welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
+    #welcomePage .welcomeHeader { height: 85px; }
+    #welcomePage .odd { background-color: #EEE;}
+    #welcomePage .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
+    #welcomePage .info_img {position: absolute;right: 12px !important;margin: 0px;top: 6px !important;}
+    #welcomePage .info_link { margin-bottom: 0.5em !important; font-size: 12px; }
+    #welcomePage .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
+    #welcomePage .welcomeTable { width: 100%; }
+    #welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
+    #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; }
+    #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
 </style>
 
 <script type="text/javascript">
 
 Ext.onReady(function() {
+    
+    // replace innerHTML texts with localized ones
+    Ext.fly("text_title").update(i18n('tWelcomeTextTitle'));
+    Ext.fly("text_subtitle").update(i18n('tWelcomeTextSubtitle'));
+    Ext.fly("text_link1").update(i18n('tWelcomeTextLink1'));
+    Ext.fly("text_link2").update(i18n('tWelcomeTextLink2'));
 
     var chooseMapService = new Ext.Panel({
         title: i18n('tChooseMapServices'),
         border: false,
         html: "<div><table class='welcomeTable'> \
-            <tr class='odd'><td><div class='iconTable iconAdd'></div></td><td>a) Lädt markierten Kartendienst in das Kartenfenster <br />b) Hinzufügen externer Kartendienste mithilfe der GetCapabilities-URL</td></tr> \
-            <tr><td><div class='iconTable iconRemove'></div></td><td>Löscht markierte Kartendienste unter Aktive Dienste aus der aktuellen Kartenansicht</td></tr> \
-            <tr class='odd'><td><div class='iconTable iconRemoveAll'></div></td><td>Löscht die Ergebnisliste der Suchanfrage</td></tr> \
-            <tr><td><div class='iconTable iconTransparency'></div></td><td>Steuert die Layer-Transparenz mithilfe eines Schiebereglers</td></tr> \
-            <tr class='odd'><td><div class='iconTable iconMetadata'></div></td><td>Zeigt Informationen (Metadaten) zu Kartendiensten oder Layer an</td></tr> \
-            <tr><td><div class='iconTable iconExpand'></div></td><td>Klappt alle Layer eines Dienstes auf bzw. zu</td></tr> \
-            <tr class='odd'><td><div class='iconTable iconZoomLayerExtent'></div></td><td>Zoomt auf Kartendienst oder Layer</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconAdd'></div></td><td>"+ i18n('tWelcomeTextAdd') +"</td></tr> \
+            <tr><td><div class='iconTable iconRemove'></div></td><td>"+ i18n('tWelcomeTextRemove') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconRemoveAll'></div></td><td>"+ i18n('tWelcomeTextRemoveAll') +"</td></tr> \
+            <tr><td><div class='iconTable iconTransparency'></div></td><td>"+ i18n('tWelcomeTextTransparency') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconMetadata'></div></td><td>"+ i18n('tWelcomeTextMetadata') +"</td></tr> \
+            <tr><td><div class='iconTable iconExpand'></div></td><td>"+ i18n('tWelcomeTextExpand') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconZoomLayerExtent'></div></td><td>"+ i18n('tWelcomeTextZoomLayerExtent') +"</td></tr> \
             </table></div>",
         autoScroll: false
     });
@@ -36,11 +43,11 @@ Ext.onReady(function() {
         title: i18n('tUseMapServices'),
         border: false,
         html: '<div><table class="welcomeTable"> \
-            <tr class="odd"><td><div class="iconTable iconInfo"></div></td><td>Zeigt Objektinformationen (Sachattribute) aller aktiven Layer an</td></tr> \
-            <tr><td><div class="iconTable iconZoomPrev"></div></td><td>Nimmt schrittweise die vorangegangenen Aktionen zurück</td></tr> \
-            <tr class="odd"><td><div class="iconTable iconZoomNext"></div></td><td>Führt eine zurückgenommene Aktion erneut aus</td></tr> \
-            <tr><td><div class="iconTable iconZoom"></div></td><td>Zoomt auf die Originalgröße der Hintergrundkarte </td></tr> \
-            <tr class="odd"><td><div class="iconTable iconMeassure"></div></td><td>Misst Entfernungen oder Flächen auf der Karte</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconInfo"></div></td><td>'+ i18n('tWelcomeTextInfo') +'</td></tr> \
+            <tr><td><div class="iconTable iconZoomPrev"></div></td><td>'+ i18n('tWelcomeTextZoomPrev') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconZoomNext"></div></td><td>'+ i18n('tWelcomeTextZoomNext') +'</td></tr> \
+            <tr><td><div class="iconTable iconZoom"></div></td><td>'+ i18n('tWelcomeTextZoom') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconMeassure"></div></td><td>'+ i18n('tWelcomeTextMeassure') +'</td></tr> \
             </table></div>',
         autoScroll: true
     });
@@ -49,10 +56,10 @@ Ext.onReady(function() {
         title: i18n('tPrintAndSaveFunctions'),
         border: false,
         html: '<div><table class="welcomeTable"> \
-            <tr class="odd"><td><div class="iconTable iconPrint"></div></td><td>Druckt den aktuellen Kartenausschnitt als PDF</td></tr> \
-            <tr><td><div class="iconTable iconLoad"></div></td><td>Lädt zuvor gespeicherte Karten (PortalU-Nutzer-Login erforderlich)</td></tr> \
-            <tr class="odd"><td><div class="iconTable iconSave"></div></td><td>Speichert die aktuelle Kartenansicht (PortalU-Nutzer-Login erforderlich)</td></tr> \
-            <tr><td><div class="iconTable iconDownload"></div></td><td>Speichert Karte als WMC (Web Map Context)</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconPrint"></div></td><td>'+ i18n('tWelcomeTextPrint') +'#</td></tr> \
+            <tr><td><div class="iconTable iconLoad"></div></td><td>'+ i18n('tWelcomeTextLoad') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconSave"></div></td><td>'+ i18n('tWelcomeTextSave') +'</td></tr> \
+            <tr><td><div class="iconTable iconDownload"></div></td><td>'+ i18n('tWelcomeTextDownload') +'</td></tr> \
             </table></div>',
         autoScroll: true
     });
@@ -87,22 +94,22 @@ Ext.onReady(function() {
         }],
         items: [{
             id: 'card-0',
-            html: 'Sie wollen eine detailliertere Ansicht eines bestimmten Kartenbereichs? Mit gedrückter SHIFT- und linker Maustaste können Sie ein Zoom-Rechteck auf den gewünschten Bereich aufziehen.'
+            html: i18n('tWelcomeTextTipp0')
         },{
             id: 'card-1',
-            html: 'Mithilfe des roten Rechtecks im Übersichtfenster unten rechts im Kartenviewer können Sie im aktuellen Kartenausschnitt navigieren. Alternativ können Sie auch mit gedrückter linker Maustaste den Ausschnitt im Kartenfenster verschieben.'
+            html: i18n('tWelcomeTextTipp1')
         },{
             id: 'card-2',
-            html: 'Sie wollen eigene Kartendienste in unserem Kartenviewer visualisieren? <br/>Externe Kartendienste lassen sich über eine WMS-URL einbinden. Unterstützt werden die Standards 1.1.1 und 1.3.0. Öffnen Sie mit dem   das Fenster Dienst hinzufügen und geben eine valide WMS-URL ein.'
+            html: i18n('tWelcomeTextTipp2')
         },{
             id: 'card-3',
-            html: 'Sind haben einen Kartendienst (WMS) geladen, aber keine Informationen werden angezeigt? Die Informationen mancher Layer werden nur innerhalb eines bestimmten Maßstabbereichs gezeichnet. Maßstabsabhängige Layer erkennen Sie an der ausgegrauten Farbgebung. Ändern Sie den Maßstab mithilfe des Navigation-Tools im Kartenfenster oder den Maßstabseinstellung unter "Erweiterten Einstellungen".'
+            html: i18n('tWelcomeTextTipp3')
         },{
             id: 'card-4',
-            html: 'Sie suchen Karten zu einem bestimmten Umweltthema? Finden Sie eine passende Karte mit Hilfe der Suchfunktion unterhalb der Anbieter- und Themenliste. Mit der Suchanfrage werden sämtliche angeschlossene Kataloge aus Bund und Ländern nach passenden Kartendiensten (WMS) durchsucht.'
+            html: i18n('tWelcomeTextTipp4')
         },{
             id: 'card-5',
-            html: 'Sie wollen eine Kartenansicht speichern und zu einem späteren Zeitpunkt wieder aufrufen? Nutzen Sie die Vorteile eines persönlichen PortalU-Logins: Auf der Seite <a href="www.portalu.de/personalisierungsoptionen">Mein PortalU</a> können Sie sich als Benutzer registrieren. Damit stehen Ihnen eine Vielzahl von ...'
+            html: i18n('tWelcomeTextTipp5')
         }]
     });
 
@@ -134,34 +141,36 @@ Ext.onReady(function() {
 
 </script>
 
-<div class="welcomeHeader">
-    <img class="info_img" src="/ingrid-portal-apps/images/map_info.png">
-    <h1>WILLKOMMEN BEIM KARTENVIEWER</h1>
-    <span class="clearer">
-        <img class="info_img_line" src="/ingrid-portal-apps/images/portlet_feature_info_line_big.png">
-    </span>
-    <p class="title_extra_text">Unser Kartenviewer enthält eine Auswahl digitaler Kartendienste (WMS) von Umweltbehörden aus Bund und Ländern. Sie haben die Wahl: Mehr als 200 digitale Karten stellen wir zur Zeit über die Themen- und Anbieterliste bereit. Weitere Kartendienste können Sie über die Suchmaske ercherchieren.</p>
-</div>
-
-<div id="welcomePanel"></div>
-
-<div class="welcomeFooter">
-    <p class="info_link">
-        <span class="icon">
-            <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
+<div id="welcomePage">
+    <div class="welcomeHeader">
+        <img class="info_img" src="/ingrid-portal-apps/images/map_info.png">
+        <h1 id="text_title">WILLKOMMEN BEIM KARTENVIEWER (will be replaced!)</h1>
+        <span class="clearer">
+            <img class="info_img_line" src="/ingrid-portal-apps/images/portlet_feature_info_line_big.png">
         </span>
-        <span>
-            <a href="/funktionen?action=doService" title="Funktionen und Beispiele">Woher kommen die Daten</a>
-        </span>
-        <span class="clearer"></span>
-    </p>
-    <p class="info_link">
-        <span class="icon">
-            <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
-        </span>
-        <span>
-            <a href="/funktionen?action=doService" title="Funktionen und Beispiele">Ausführliche Hilfe zum Kartenviewer</a>
-        </span>
-        <span class="clearer"></span>
-    </p>
+        <p id="text_subtitle" class="title_extra_text">Unser Kartenviewer enthält eine Auswahl digitaler Kartendienste (WMS) von Umweltbehörden aus Bund und Ländern. Sie haben die Wahl: Mehr als 200 digitale Karten stellen wir zur Zeit über die Themen- und Anbieterliste bereit. Weitere Kartendienste können Sie über die Suchmaske ercherchieren. (will be replaced!)</p>
+    </div>
+    
+    <div id="welcomePanel"></div>
+    
+    <div class="welcomeFooter">
+        <p class="info_link">
+            <span class="icon">
+                <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
+            </span>
+            <span>
+                <a id="text_link1" href="/funktionen?action=doService">Woher kommen die Daten (will be replaced!)</a>
+            </span>
+            <span class="clearer"></span>
+        </p>
+        <p class="info_link">
+            <span class="icon">
+                <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
+            </span>
+            <span>
+                <a id="text_link2" href="/funktionen?action=doService">Ausführliche Hilfe zum Kartenviewer (will be replaced!)</a>
+            </span>
+            <span class="clearer"></span>
+        </p>
+    </div>
 </div>
