@@ -1,0 +1,185 @@
+<style type="text/css">
+    #welcomePage {font: normal 100%/120% Verdana, Arial, sans-serif;}
+    #welcomePage h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
+    #welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
+    #welcomePage .welcomeHeader { height: 85px; }
+    #welcomePage .odd { background-color: #EEE;}
+    #welcomePage .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
+    #welcomePage .info_img {position: absolute;right: 12px !important;margin: 0px;top: 6px !important;}
+    #welcomePage .info_link { margin-bottom: 0.5em !important; font-size: 12px; }
+    #welcomePage .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
+    #welcomePage .welcomeTable { width: 100%; }
+    #welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
+    #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
+    #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
+</style>
+
+<script type="text/javascript">
+
+Ext.onReady(function() {
+    
+    // replace innerHTML texts with localized ones
+    Ext.fly("text_title").update(i18n('tWelcomeTextTitle'));
+    Ext.fly("text_subtitle").update(i18n('tWelcomeTextSubtitle'));
+    Ext.fly("text_link1").update(i18n('tWelcomeTextLink1'));
+    Ext.fly("text_link2").update(i18n('tWelcomeTextLink2'));
+
+    var chooseMapService = new Ext.Panel({
+        title: i18n('tChooseMapServices'),
+        border: false,
+        html: "<div><table class='welcomeTable'> \
+            <tr class='odd'><td><div class='iconTable iconAdd'></div></td><td>"+ i18n('tWelcomeTextAdd') +"</td></tr> \
+            <tr><td><div class='iconTable iconRemove'></div></td><td>"+ i18n('tWelcomeTextRemove') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconRemoveAll'></div></td><td>"+ i18n('tWelcomeTextRemoveAll') +"</td></tr> \
+            <tr><td><div class='iconTable iconTransparency'></div></td><td>"+ i18n('tWelcomeTextTransparency') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconMetadata'></div></td><td>"+ i18n('tWelcomeTextMetadata') +"</td></tr> \
+            <tr><td><div class='iconTable iconExpand'></div></td><td>"+ i18n('tWelcomeTextExpand') +"</td></tr> \
+            <tr class='odd'><td><div class='iconTable iconZoomLayerExtent'></div></td><td>"+ i18n('tWelcomeTextZoomLayerExtent') +"</td></tr> \
+            </table></div>",
+        autoScroll: false
+    });
+
+    var useMapService = new Ext.Panel({
+        title: i18n('tUseMapServices'),
+        border: false,
+        html: '<div><table class="welcomeTable"> \
+            <tr class="odd"><td><div class="iconTable iconInfo"></div></td><td>'+ i18n('tWelcomeTextInfo') +'</td></tr> \
+            <tr><td><div class="iconTable iconZoomPrev"></div></td><td>'+ i18n('tWelcomeTextZoomPrev') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconZoomNext"></div></td><td>'+ i18n('tWelcomeTextZoomNext') +'</td></tr> \
+            <tr><td><div class="iconTable iconZoom"></div></td><td>'+ i18n('tWelcomeTextZoom') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconMeassure"></div></td><td>'+ i18n('tWelcomeTextMeassure') +'</td></tr> \
+            </table></div>',
+        autoScroll: true
+    });
+
+    var printSaveFunctions = new Ext.Panel({
+        title: i18n('tPrintAndSaveFunctions'),
+        border: false,
+        html: '<div><table class="welcomeTable"> \
+            <tr class="odd"><td><div class="iconTable iconPrint"></div></td><td>'+ i18n('tWelcomeTextPrint') +'#</td></tr> \
+            <tr><td><div class="iconTable iconLoad"></div></td><td>'+ i18n('tWelcomeTextLoad') +'</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconSave"></div></td><td>'+ i18n('tWelcomeTextSave') +'</td></tr> \
+            <tr><td><div class="iconTable iconDownload"></div></td><td>'+ i18n('tWelcomeTextDownload') +'</td></tr> \
+            </table></div>',
+        autoScroll: true
+    });
+
+    var cardNav = function(incr){
+        var l = Ext.getCmp('tipsPanel').getLayout();
+        var i = l.activeItem.id.split('card-')[1];
+        var next = parseInt(i, 10) + incr;
+        l.setActiveItem(next);
+        Ext.getCmp('card-prev').setDisabled(next===0);
+        Ext.getCmp('card-next').setDisabled(next===5);
+    };
+
+    tips = new Ext.Panel({
+        id: 'tipsPanel',
+        title: i18n('tTipsAndTricks'),
+        layout: 'card',
+        activeItem: 0,
+        border: false,
+        defaults: {
+            border: false
+        },
+        bbar: ['->', {
+            id: 'card-prev',
+            text: i18n('tPreviousHint'),
+            handler: cardNav.createDelegate(this, [-1]),
+            disabled: true,
+        },{
+            id: 'card-next',
+            text: i18n('tNextHint'),
+            handler: cardNav.createDelegate(this, [1])
+        }],
+        items: [{
+            id: 'card-0',
+            html: i18n('tWelcomeTextTipp0')
+        },{
+            id: 'card-1',
+            html: i18n('tWelcomeTextTipp1')
+        },{
+            id: 'card-2',
+            html: i18n('tWelcomeTextTipp2')
+        },{
+            id: 'card-3',
+            html: i18n('tWelcomeTextTipp3')
+        },{
+            id: 'card-4',
+            html: i18n('tWelcomeTextTipp4')
+        },{
+            id: 'card-5',
+            html: i18n('tWelcomeTextTipp5')
+        }]
+    });
+
+
+    var accordion = new Ext.Panel({
+        region:'center',
+        layout: 'accordion',
+        border: false,
+        layoutConfig: {
+            titleCollapse: true,
+            animate: true
+        },
+        defaults: {
+            autoScroll: true,
+            padding: 5
+        },
+        items: [chooseMapService, useMapService, printSaveFunctions, tips]
+    });
+
+    borderl = new Ext.Panel({
+        renderTo: 'welcomePanel',
+        height: 266,
+        //border: false,
+        layout: 'border',
+        bodyStyle: "margin: 0 5px;",
+        items: [accordion]
+    });
+});
+
+function openHelpPage() {
+    var popupWin = window.open(de.ingrid.mapclient.HELP_URL, "InternalWin", 'width=750,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
+    popupWin.focus();
+}
+
+function openDataPage() {
+    alert("Wohin soll es hier gehen?");
+}
+
+</script>
+
+<div id="welcomePage">
+    <div class="welcomeHeader">
+        <img class="info_img" src="/ingrid-portal-apps/images/map_info.png">
+        <h1 id="text_title">WILLKOMMEN BEIM KARTENVIEWER (will be replaced!)</h1>
+        <span class="clearer">
+            <img class="info_img_line" src="/ingrid-portal-apps/images/portlet_feature_info_line_big.png">
+        </span>
+        <p id="text_subtitle" class="title_extra_text">Unser Kartenviewer enthält eine Auswahl digitaler Kartendienste (WMS) von Umweltbehörden aus Bund und Ländern. Sie haben die Wahl: Mehr als 200 digitale Karten stellen wir zur Zeit über die Themen- und Anbieterliste bereit. Weitere Kartendienste können Sie über die Suchmaske ercherchieren. (will be replaced!)</p>
+    </div>
+    
+    <div id="welcomePanel"></div>
+    
+    <div class="welcomeFooter">
+        <p class="info_link">
+            <span class="icon">
+                <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
+            </span>
+            <span>
+                <a id="text_link1" href="#" onclick="openDataPage(); return false;">Woher kommen die Daten (will be replaced!)</a>
+            </span>
+            <span class="clearer"></span>
+        </p>
+        <p class="info_link">
+            <span class="icon">
+                <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
+            </span>
+            <span>
+                <a id="text_link2" href="#" onclick="openHelpPage(); return false;">Ausführliche Hilfe zum Kartenviewer (will be replaced!)</a>
+            </span>
+            <span class="clearer"></span>
+        </p>
+    </div>
+</div>
