@@ -10,7 +10,7 @@
     #welcomePage .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
     #welcomePage .welcomeTable { width: 100%; }
     #welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
-    #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; }
+    #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
     #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
 </style>
 
@@ -139,6 +139,15 @@ Ext.onReady(function() {
     });
 });
 
+function openHelpPage() {
+    var popupWin = window.open(de.ingrid.mapclient.HELP_URL, "InternalWin", 'width=750,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
+    popupWin.focus();
+}
+
+function openDataPage() {
+    alert("Wohin soll es hier gehen?");
+}
+
 </script>
 
 <div id="welcomePage">
@@ -159,7 +168,7 @@ Ext.onReady(function() {
                 <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
             </span>
             <span>
-                <a id="text_link1" href="/funktionen?action=doService">Woher kommen die Daten (will be replaced!)</a>
+                <a id="text_link1" href="#" onclick="openDataPage(); return false;">Woher kommen die Daten (will be replaced!)</a>
             </span>
             <span class="clearer"></span>
         </p>
@@ -168,7 +177,7 @@ Ext.onReady(function() {
                 <img src="/ingrid-portal-apps/images/icn_linkintern.gif" alt="externer Link">
             </span>
             <span>
-                <a id="text_link2" href="/funktionen?action=doService">Ausführliche Hilfe zum Kartenviewer (will be replaced!)</a>
+                <a id="text_link2" href="#" onclick="openHelpPage(); return false;">Ausführliche Hilfe zum Kartenviewer (will be replaced!)</a>
             </span>
             <span class="clearer"></span>
         </p>
