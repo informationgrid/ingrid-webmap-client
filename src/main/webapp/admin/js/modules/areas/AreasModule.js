@@ -14,7 +14,8 @@ de.ingrid.mapclient.admin.modules.areas.AreasModule = Ext.extend(de.ingrid.mapcl
 	labelSeparator: '',
 	buttonAlign: 'right',
 	border: false,
-	padding: 10
+	padding: 10,
+	autoScroll:true
 
 });
 
