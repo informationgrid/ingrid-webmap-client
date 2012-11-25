@@ -3,6 +3,7 @@ package de.ingrid.mapclient.rest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +62,11 @@ public class SearchResource {
 		InputStream result = null;
 		searchTerm = searchTerm.trim();
 		searchTerm = searchTerm.replaceAll("\\s", "+");
+		try {
+		    searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+		} catch (Exception e) {
+		    log.error("Error url encoding seach term: " + searchTerm, e);
+		}
 		//some logic borrowed from the opensearch iplug
 		//we open a stream though this module 
 		//the rest is basically simple xml parsing of the result 
