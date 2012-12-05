@@ -56,7 +56,7 @@ Ext.onReady(function() {
         title: i18n('tPrintAndSaveFunctions'),
         border: false,
         html: '<div><table class="welcomeTable"> \
-            <tr class="odd"><td><div class="iconTable iconPrint"></div></td><td>'+ i18n('tWelcomeTextPrint') +'#</td></tr> \
+            <tr class="odd"><td><div class="iconTable iconPrint"></div></td><td>'+ i18n('tWelcomeTextPrint') +'</td></tr> \
             <tr><td><div class="iconTable iconLoad"></div></td><td>'+ i18n('tWelcomeTextLoad') +'</td></tr> \
             <tr class="odd"><td><div class="iconTable iconSave"></div></td><td>'+ i18n('tWelcomeTextSave') +'</td></tr> \
             <tr><td><div class="iconTable iconDownload"></div></td><td>'+ i18n('tWelcomeTextDownload') +'</td></tr> \
@@ -71,6 +71,7 @@ Ext.onReady(function() {
         l.setActiveItem(next);
         Ext.getCmp('card-prev').setDisabled(next===0);
         Ext.getCmp('card-next').setDisabled(next===5);
+        $('card-info-page').innerHTML = next+1;
     };
 
     tips = new Ext.Panel({
@@ -82,11 +83,15 @@ Ext.onReady(function() {
         defaults: {
             border: false
         },
-        bbar: ['->', {
+        bbar: [{
+            id: 'card-info',
+            text: '<span id="card-info-page">1</span> ' + i18n('tTextOf') + ' 6 ' + i18n('tTextHints'),
+            disabled: true
+        },'->', {
             id: 'card-prev',
             text: i18n('tPreviousHint'),
             handler: cardNav.createDelegate(this, [-1]),
-            disabled: true,
+            disabled: true
         },{
             id: 'card-next',
             text: i18n('tNextHint'),
@@ -131,7 +136,7 @@ Ext.onReady(function() {
 
     borderl = new Ext.Panel({
         renderTo: 'welcomePanel',
-        height: 266,
+        height: 286,
         //border: false,
         layout: 'border',
         bodyStyle: "margin: 0 5px;",
