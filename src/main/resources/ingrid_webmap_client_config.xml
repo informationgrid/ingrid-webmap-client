@@ -3,7 +3,7 @@
   <featureUrl>http%3A%2F%2Fgdz.bkg.bund.de%2Fwms_vg250%3FSERVICE%3DWMS%26VERSION%3D1.1.1</featureUrl>
   <layers>
     <layer>
-      <name>basis</name> 
+      <name>Basiskarte</name> 
       <isBaseLayer>true</isBaseLayer>
     </layer>
   </layers>

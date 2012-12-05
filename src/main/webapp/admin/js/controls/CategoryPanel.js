@@ -115,8 +115,11 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.buildContent = functi
 			path.push(name);
 			var initialCategory = self.createCategory(name);
 			self.buildStore(path, initialCategory);
-			self.saveAndReload(store, records);
-	
+			if(initialCategory.mapServiceCategories != undefined){
+				self.saveAndReload(store, records);				
+			}else{
+				self.save();
+			}
 		},
 		'update': function(store, record, operation) {
 			// relocate the store of the category and save
