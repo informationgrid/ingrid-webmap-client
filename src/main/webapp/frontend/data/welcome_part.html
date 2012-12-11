@@ -85,8 +85,8 @@ Ext.onReady(function() {
         },
         bbar: [{
             id: 'card-info',
-            text: '<span id="card-info-page">1</span> ' + i18n('tTextOf') + ' 6 ' + i18n('tTextHints'),
-            disabled: true
+            html: i18n('tTextHints') + ' <span id="card-info-page">1</span> ' + i18n('tTextOf') + ' 6',
+            disabled: false
         },'->', {
             id: 'card-prev',
             text: i18n('tPreviousHint'),
@@ -150,7 +150,8 @@ function openHelpPage() {
 }
 
 function openDataPage() {
-    alert("Wohin soll es hier gehen?");
+    var popupWin = window.open("http://www.kst.portalu.de/verwaltungskooperation/kooperation.html", "InternalWin", 'width=1024,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
+    popupWin.focus();
 }
 
 </script>
