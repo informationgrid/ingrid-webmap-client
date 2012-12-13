@@ -148,7 +148,18 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.onServiceLoaded
 		var layers = service.getLayers();
 		for (var i=0, count=layers.length; i<count; i++) {
 			var layer = layers[i];
-			layer.visibility = true;
+		     
+			/* the problem is that we give random names to our layers,
+		     * that dont have one, to make them visible in tree view.
+		     * This gives us another problem, now every layer has a node,
+		     * but in GeoExt every node also is a layer with a request when 
+		     * checked. A little bit of a hack: we set all layers with random 
+		     * IDs starting with "INGRID-" invisible.
+		     */
+		    if(layer.params['LAYERS'].indexOf('INGRID-') != -1)
+		    	layer.visibility = false;
+		    else 
+		    	layer.visibility = true;
 		}
 	}
 	
