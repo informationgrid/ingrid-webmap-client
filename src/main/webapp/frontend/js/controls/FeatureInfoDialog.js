@@ -78,7 +78,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					collapsible: true,
 					border: false,
 					autoScroll: true,
-					height:300,
+					autoHeight:true,
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
@@ -91,7 +91,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					collapsible: true,
 					border: false,
 					autoScroll: true,
-					height:300,
+					autoHeight:true,
 					bodyStyle: 'padding: 10px',
 					defaults: {
 						anchor: '100%'
