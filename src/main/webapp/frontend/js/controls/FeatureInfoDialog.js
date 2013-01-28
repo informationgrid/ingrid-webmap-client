@@ -13,7 +13,6 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window,
 	draggable: true,
 	resizable: true,
 	width: 300,
-	boxMaxHeight:600,
 	autoHeight: true,
 	shadow: false,
 	hidden: true,
@@ -78,7 +77,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					collapsible: true,
 					border: false,
 					autoScroll: true,
-					autoHeight:true,
+					boxMaxHeight:400,
 					bodyStyle: 'padding: 10px; font-size:13px;',
 					defaults: {
 						anchor: '100%'
@@ -91,7 +90,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 					collapsible: true,
 					border: false,
 					autoScroll: true,
-					autoHeight:true,
+					boxMaxHeight:400,
 					bodyStyle: 'padding: 10px; font-size:13px;',
 					defaults: {
 						anchor: '100%'
