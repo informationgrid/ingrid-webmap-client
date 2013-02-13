@@ -65,7 +65,8 @@ de.ingrid.mapclient.admin.modules.basic.ScalesPanel.prototype.initComponent = fu
 	// create the scales grid
 	this.scalesGrid = new de.ingrid.mapclient.admin.controls.GridPanel({
 		store: this.scalesStore,
-		columns: this.columns
+		columns: this.columns,
+		dropBoxTitle:'Ma&szlig;stab l&ouml;schen'
 	});
 
 	// listen to changes in the grid

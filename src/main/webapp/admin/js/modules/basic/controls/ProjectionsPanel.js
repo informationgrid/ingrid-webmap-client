@@ -66,7 +66,9 @@ de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel.prototype.initComponent
 	// create the projections grid
 	this.projectionsGrid = new de.ingrid.mapclient.admin.controls.GridPanel({
 		store: this.projectionsStore,
-		columns: this.columns
+		columns: this.columns,
+		dropBoxTitle:'Raumbezugsystem l&ouml;schen'
+		
 	});
 
 	// listen to changes in the grid

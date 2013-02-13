@@ -7,6 +7,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.services");
  * @class ServiceCategoryPanel is used to manage WMS servers in hierarchical categories.
  */
 de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel = Ext.extend(de.ingrid.mapclient.admin.controls.CategoryPanel, {
+	dropBoxTitle: 'Rubrik l&ouml;schen'
 });
 
 /**

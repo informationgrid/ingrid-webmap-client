@@ -48,7 +48,12 @@ de.ingrid.mapclient.admin.controls.GridPanel = Ext.extend(Ext.Panel, {
 	/**
 	 * The editor fields for a new record
 	 */
-	newRecordFields: null
+	newRecordFields: null,
+	
+	/**
+	 *  Drop box title
+	 */
+	dropBoxTitle: null
 });
 
 /**
@@ -144,7 +149,7 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
     this.gridPanel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 		if(columnIndex == grid.getColumnModel().getIndexById('delete')) {
 			Ext.Msg.show({
-				   title:'Raumbezugsystem l&ouml;schen',
+				   title: self.dropBoxTitle,
 				   msg: 'Soll der Eintrag wirklich gel&ouml;scht werden?',
 				   buttons: Ext.Msg.OKCANCEL,
 				   icon: Ext.MessageBox.QUESTION,

@@ -30,7 +30,12 @@ de.ingrid.mapclient.admin.controls.CategoryPanel = Ext.extend(Ext.Panel, {
 	/**
 	 * Array of category names defining the path to this category panel (defaults to root panel configuration)
 	 */
-	path: ["root"]
+	path: ["root"],
+	
+	/**
+	 *  Drop box title
+	 */
+	dropBoxTitle: null
 });
 
 /**
@@ -102,7 +107,8 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.buildContent = functi
 	this.grid = new de.ingrid.mapclient.admin.controls.GridPanel({
 		store: store,
 		columns: columns,
-		gridConfigCb: self.gridConfigCb
+		gridConfigCb: self.gridConfigCb,
+		dropBoxTitle: self.dropBoxTitle
 	});
 
 	// listen to category stores in order to update the store registry on any change

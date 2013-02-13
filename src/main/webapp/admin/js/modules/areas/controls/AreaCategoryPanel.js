@@ -7,6 +7,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.areas");
  * @class AreaCategoryPanel is used to manage map areas in hierarchical categories.
  */
 de.ingrid.mapclient.admin.modules.areas.AreaCategoryPanel = Ext.extend(de.ingrid.mapclient.admin.controls.CategoryPanel, {
+	dropBoxTitle: 'Vordefinierte Bereiche l&ouml;schen'
 });
 
 /**

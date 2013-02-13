@@ -48,7 +48,8 @@ de.ingrid.mapclient.admin.modules.areas.AreaPanel = Ext.extend(de.ingrid.mapclie
 		   xtype: 'coordinatefield',
 		   allowBlank: false
 		}
-	}]
+	}],
+	dropBoxTitle:'Vordefinierten Bereich l&ouml;schen'
 });
 
 /**
