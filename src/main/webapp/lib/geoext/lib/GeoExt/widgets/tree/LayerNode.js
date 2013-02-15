@@ -1,9 +1,14 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
+ */
+
+/*
+ * @include GeoExt/widgets/MapPanel.js
+ * @require OpenLayers/Layer.js
  */
 
 Ext.namespace("GeoExt.tree");
@@ -167,6 +172,13 @@ GeoExt.tree.LayerNode = Ext.extend(Ext.tree.AsyncTreeNode, {
      *  string.
      */
     layerStore: null,
+    
+    /** api: config[checkedGroup]
+     *  ``String`` If provided, nodes will be rendered with a radio button
+     *  instead of a checkbox. All layers represented by nodes with the same
+     *  checkedGroup are considered mutually exclusive - only one can be
+     *  visible at a time.
+     */
     
     /** api: config[loader]
      *  ``Ext.tree.TreeLoader|Object`` If provided, subnodes will be added to

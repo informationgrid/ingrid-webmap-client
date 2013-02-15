@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -8,12 +8,13 @@
 
 /**
  * @include GeoExt/widgets/tips/ZoomSliderTip.js
+ * @require OpenLayers/Util.js
  */
 
 /** api: (define)
  *  module = GeoExt
  *  class = ZoomSlider
- *  base_link = `Ext.Slider <http://dev.sencha.com/deploy/dev/docs/?class=Ext.Slider>`_
+ *  base_link = `Ext.slider.SingleSlider <http://dev.sencha.com/deploy/dev/docs/?class=Ext.slider.SingleSlider>`_
  */
 Ext.namespace("GeoExt");
 
@@ -61,7 +62,7 @@ Ext.namespace("GeoExt");
  *   
  *      Create a slider for controlling a map's zoom level.
  */
-GeoExt.ZoomSlider = Ext.extend(Ext.Slider, {
+GeoExt.ZoomSlider = Ext.extend(Ext.slider.SingleSlider, {
     
     /** api: config[map]
      *  ``OpenLayers.Map`` or :class:`GeoExt.MapPanel`
@@ -122,7 +123,7 @@ GeoExt.ZoomSlider = Ext.extend(Ext.Slider, {
      *  to call update.
      */
     afterRender : function(){
-        Ext.Slider.superclass.afterRender.apply(this, arguments);
+        Ext.slider.SingleSlider.superclass.afterRender.apply(this, arguments);
         this.update();
     },
     
@@ -189,7 +190,7 @@ GeoExt.ZoomSlider = Ext.extend(Ext.Slider, {
     /** private: method[unbind]
      */
     unbind: function() {
-        if(this.map) {
+        if(this.map && this.map.events) {
             this.map.events.un({
                 zoomend: this.update,
                 changebaselayer: this.initZoomValues,

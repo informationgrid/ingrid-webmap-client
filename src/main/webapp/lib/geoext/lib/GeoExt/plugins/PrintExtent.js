@@ -1,16 +1,22 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-Ext.namespace("GeoExt.plugins");
+
+/**
+ * @require OpenLayers/Layer/Vector.js
+ * @require OpenLayers/Control/TransformFeature.js
+ * @require OpenLayers/BaseTypes/LonLat.js
+ */
 
 /** api: (define)
  *  module = GeoExt.plugins
  *  class = PrintExtent
  */
+Ext.namespace("GeoExt.plugins");
 
 /** api: example
  *  Sample code to create a MapPanel with a PrintExtent, and print it
@@ -256,9 +262,8 @@ GeoExt.plugins.PrintExtent = Ext.extend(Ext.util.Observable, {
         // We use obj.events to test whether an OpenLayers object is
         // destroyed or not.
 
-        var map = this.map;
+        var map = this.map, layer = this.layer, control = this.control;
 
-        var control = this.control;
         if(control && control.events) {
             control.deactivate();
             if(map && map.events && control.map) {
@@ -266,11 +271,7 @@ GeoExt.plugins.PrintExtent = Ext.extend(Ext.util.Observable, {
             }
         }
 
-        var layer = this.layer;
-
-        if(!this.initialConfig.layer &&
-           map && map.events &&
-           layer && layer.map) {
+        if(map && map.events && layer && layer.map) {
             map.removeLayer(layer);
         }
     },

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -172,13 +172,14 @@ GeoExt.plugins.PrintProviderField = Ext.extend(Ext.util.Observable, {
     /** private: method[onBeforeDestroy]
      */
     onBeforeDestroy: function() {
-        this.target.un("beforedestroy", this.onBeforeDestroy, this);
-        this.target.un("render", this.onRender, this);
-        this.target.un("select", this.onFieldChange, this);
-        this.target.un("valid", this.onFieldChange, this);
-        this.printProvider.un("layoutchange", this.onProviderChange, this);
-        this.printProvider.un("dpichange", this.onProviderChange,
-            this);
+        var target = this.target;
+        target.un("beforedestroy", this.onBeforeDestroy, this);
+        target.un("render", this.onRender, this);
+        target.un("select", this.onFieldChange, this);
+        target.un("valid", this.onFieldChange, this);
+        var printProvider = this.printProvider || target.ownerCt.printProvider;
+        printProvider.un("layoutchange", this.onProviderChange, this);
+        printProvider.un("dpichange", this.onProviderChange, this);
     }
 
 });

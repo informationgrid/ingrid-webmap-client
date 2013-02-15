@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -36,8 +36,8 @@ GeoExt.data.FeatureRecord.prototype.getFeature = function() {
     return this.get("feature");
 };
 
-/** api: method[setLayer]
- *  :param layer: ``OpenLayers.Feature.Vector``
+/** api: method[setFeature]
+ *  :param feature: ``OpenLayers.Feature.Vector``
  *
  *  Sets the feature for this record.
  */

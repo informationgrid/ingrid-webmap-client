@@ -34,13 +34,7 @@ Ext.namespace("GeoExt.plugins");
  *      );
  *      var tree = new Ext.tree.TreePanel({
  *          plugins: [
- *              new GeoExt.plugins.TreeNodeRadioButton({
- *                  listeners: {
- *                      "radiochange": function(node) {
- *                          alert(node.text + "'s radio button was clicked.");
- *                      }
- *                  }
- *              })
+ *              new GeoExt.plugins.TreeNodeComponent(),
  *          ],
  *          root: {
  *              nodeType: "node",
@@ -55,15 +49,6 @@ Ext.namespace("GeoExt.plugins");
  *              }
  *          }
  *      }
- *
- *  Sample code to create a layer node UI with a radio button:
- *
- *  .. code-block:: javascript
- *
- *      var uiClass = Ext.extend(
- *          GeoExt.tree.LayerNodeUI,
- *          new GeoExt.tree.TreeNodeUIEventMixin
- *      );
  */
 
 GeoExt.plugins.TreeNodeComponent = Ext.extend(Ext.util.Observable, {
@@ -84,6 +69,7 @@ GeoExt.plugins.TreeNodeComponent = Ext.extend(Ext.util.Observable, {
     init: function(tree) {
         tree.on({
             "rendernode": this.onRenderNode,
+            "beforedestroy": this.onBeforeDestroy,
             scope: this
         });
     },
@@ -118,13 +104,14 @@ GeoExt.plugins.TreeNodeComponent = Ext.extend(Ext.util.Observable, {
         }
     },
     
-    /** private: method[destroy]
+    /** private: method[onBeforeDestroy]
      */
-    destroy: function() {
+    onBeforeDestroy: function(tree) {
         tree.un("rendernode", this.onRenderNode, this);
+        tree.un("beforedestroy", this.onBeforeDestroy, this);
     }
 
 });
 
-/** api: ptype = gx_TreeNodeComponent */
-Ext.preg && Ext.preg("gx_treenodecomponent", GeoExt.plugins.TreeNodeComponent);
+/** api: ptype = gx_treenodecomponent */
+Ext.preg("gx_treenodecomponent", GeoExt.plugins.TreeNodeComponent);

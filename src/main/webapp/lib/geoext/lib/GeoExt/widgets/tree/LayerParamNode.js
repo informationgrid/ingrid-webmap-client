@@ -1,17 +1,22 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-Ext.namespace("GeoExt.tree");
+
+/*
+ * @include GeoExt/widgets/MapPanel.js
+ * @require OpenLayers/Layer.js
+ */
 
 /** api: (define)
  *  module = GeoExt.tree
  *  class = LayerParamNode
  *  base_link = `Ext.tree.TreeNode <http://dev.sencha.com/deploy/dev/docs/?class=Ext.tree.TreeNode>`_
  */
+Ext.namespace("GeoExt.tree");
 
 /** api: constructor
  *  .. class:: LayerParamNode

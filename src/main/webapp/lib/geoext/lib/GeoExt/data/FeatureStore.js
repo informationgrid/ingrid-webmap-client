@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -8,6 +8,7 @@
 
 /**
  * @include GeoExt/data/FeatureReader.js
+ * @require OpenLayers/Feature/Vector.js
  */
 
 /** api: (define)
@@ -188,10 +189,23 @@ GeoExt.data.FeatureStoreMixin = function() {
          *  :returns: :class:`GeoExt.data.FeatureRecord` The record corresponding
          *      to the given feature.  Returns null if no record matches.
          *
+         *  *Deprecated* Use getByFeature instead.
+         *
          *  Get the record corresponding to a feature.
          */
         getRecordFromFeature: function(feature) {
-            var record = null;
+            return this.getByFeature(feature) || null;
+        },
+        
+        /** api: method[getByFeature]
+         *  :arg feature: ``OpenLayers.Vector.Feature``
+         *  :returns: :class:`GeoExt.data.FeatureRecord` The record corresponding
+         *      to the given feature.  Returns undefined if no record matches.
+         *
+         *  Get the record corresponding to a feature.
+         */
+        getByFeature: function(feature) {
+            var record;
             if(feature.state !== OpenLayers.State.INSERT) {
                 record = this.getById(feature.id);
             } else {
@@ -238,7 +252,7 @@ GeoExt.data.FeatureStoreMixin = function() {
                 var features = evt.features, feature, record, i;
                 for(i=features.length - 1; i>=0; i--) {
                     feature = features[i];
-                    record = this.getRecordFromFeature(feature);
+                    record = this.getByFeature(feature);
                     if(record !== undefined) {
                         this._removing = true;
                         this.remove(record);
@@ -254,7 +268,7 @@ GeoExt.data.FeatureStoreMixin = function() {
         onFeatureModified: function(evt) {
             if(!this._updating) {
                 var feature = evt.feature;
-                var record = this.getRecordFromFeature(feature);
+                var record = this.getByFeature(feature);
                 if(record !== undefined) {
                     record.beginEdit();
                     var attributes = feature.attributes;
@@ -379,6 +393,9 @@ GeoExt.data.FeatureStoreMixin = function() {
                   */
                 var defaultFields = new GeoExt.data.FeatureRecord().fields;
                 var feature = record.getFeature();
+                if (feature.state !== OpenLayers.State.INSERT) {
+                    feature.state = OpenLayers.State.UPDATE;
+                }
                 if(record.fields) {
                     var cont = this.layer.events.triggerEvent(
                         "beforefeaturemodified", {feature: feature}
@@ -404,7 +421,15 @@ GeoExt.data.FeatureStoreMixin = function() {
                     }
                 }
             }
+        },
+
+        /** private: method[destroy]
+         */
+        destroy: function() {
+            this.unbind();
+            GeoExt.data.FeatureStore.superclass.destroy.call(this);
         }
+
     };
 };
 

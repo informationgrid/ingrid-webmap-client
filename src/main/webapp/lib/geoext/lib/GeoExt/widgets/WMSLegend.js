@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -9,6 +9,8 @@
 /**
  * @include GeoExt/widgets/LegendImage.js
  * @requires GeoExt/widgets/LayerLegend.js
+ * @require OpenLayers/Util.js
+ * @require OpenLayers/Layer/WMS.js
  */
 
 /** api: (define)
@@ -138,21 +140,27 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
                 STYLE: (styleName !== '') ? styleName: null,
                 STYLES: null,
                 SRS: null,
-                FORMAT: null
+                FORMAT: null,
+                TIME: null
             });
         }
-        // add scale parameter - also if we have the url from the record's
-        // styles data field and it is actually a GetLegendGraphic request.
-        if(this.useScaleParameter === true &&
-                url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
-            var scale = layer.map.getScale();
-            url = Ext.urlAppend(url, "SCALE=" + scale);
+        if (url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
+            if (url.toLowerCase().indexOf("format=") == -1) {
+                url = Ext.urlAppend(url, "FORMAT=image/gif");
+            }
+            // add scale parameter - also if we have the url from the record's
+            // styles data field and it is actually a GetLegendGraphic request.
+            if (this.useScaleParameter === true) {
+                var scale = layer.map.getScale();
+                url = Ext.urlAppend(url, "SCALE=" + scale);
+            }
         }
-        var params = this.baseParams || {};
-        Ext.applyIf(params, {FORMAT: 'image/gif'});
-        if(url.indexOf('?') > 0) {
-            url = Ext.urlEncode(params, url);
+        var params = Ext.apply({}, this.baseParams);
+        if (layer.params._OLSALT) {
+            // update legend after a forced layer redraw
+            params._OLSALT = layer.params._OLSALT;
         }
+        url = Ext.urlAppend(url, Ext.urlEncode(params));
         
         return url;
     },
@@ -214,7 +222,7 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
      */
     beforeDestroy: function() {
         if (this.useScaleParameter === true) {
-            var layer = this.layerRecord.getLayer()
+            var layer = this.layerRecord.getLayer();
             layer && layer.events &&
                 layer.events.unregister("moveend", this, this.onLayerMoveend);
         }
@@ -227,7 +235,7 @@ GeoExt.WMSLegend = Ext.extend(GeoExt.LayerLegend, {
  *  Private override
  */
 GeoExt.WMSLegend.supports = function(layerRecord) {
-    return layerRecord.getLayer() instanceof OpenLayers.Layer.WMS;
+    return layerRecord.getLayer() instanceof OpenLayers.Layer.WMS ? 1 : 0;
 };
 
 /** api: legendtype = gx_wmslegend */

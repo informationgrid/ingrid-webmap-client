@@ -1,17 +1,24 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
  */
-Ext.namespace("GeoExt.data");
+
+/**
+ * @require OpenLayers/Layer.js
+ * @require OpenLayers/Format/JSON.js
+ * @require OpenLayers/Format/GeoJSON.js
+ * @require OpenLayers/BaseTypes/Class.js
+ */
 
 /** api: (define)
  *  module = GeoExt.data
  *  class = PrintProvider
  *  base_link = `Ext.util.Observable <http://dev.sencha.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
+Ext.namespace("GeoExt.data");
 
 /** api: example
  *  Minimal code to print as much of the current map extent as possible as
@@ -106,11 +113,20 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
      */
     method: "POST",
 
-    /** api: config[customParams]
-     *  ``Object`` Key-value pairs of custom data to be sent to the print
-     *  service. Optional. This is e.g. useful for complex layout definitions
-     *  on the server side that require additional parameters.
+    /** api: config[encoding]
+     * ``String`` The encoding to set in the headers when requesting the print
+     * service. Prevent character encoding issues, especially when using IE.
+     * Default is retrieved from document charset or characterSet if existing
+     * or ``UTF-8`` if not.
      */
+    encoding: document.charset || document.characterSet || "UTF-8",
+
+    /** api: config[timeout]
+     *  ``Number`` Timeout of the POST Ajax request used for the print request
+     *  (in milliseconds). Default of 30 seconds. Has no effect if ``method``
+     *  is set to ``GET``.
+     */
+    timeout: 30000,
     
     /** api: property[customParams]
      *  ``Object`` Key-value pairs of custom data to be sent to the print
@@ -218,6 +234,7 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
             
             /** api: event[beforeprint]
              *  Triggered when the print method is called.
+             *  TODO: rename this event to beforeencode
              *  
              *  Listener arguments:
              *
@@ -281,7 +298,21 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
              *  * encodedLayer - ``Object`` the encoded layer that will be
              *    sent to the print service.
              */
-            "encodelayer"
+            "encodelayer",
+
+            /** api: events[beforedownload]
+             *  Triggered before the PDF is downloaded. By returning false from
+             *  a listener, the default handling of the PDF can be cancelled
+             *  and applications can take control over downloading the PDF.
+             *  TODO: rename to beforeprint after the current beforeprint event
+             *  has been renamed to beforeencode.
+             *
+             *  Listener arguments:
+             *  * printProvider - :class:`GeoExt.data.PrintProvider` this
+             *    PrintProvider
+             *  * url - ``String`` the url of the print document
+             */
+            "beforedownload"
 
         );
         
@@ -388,7 +419,13 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
 
         var pagesLayer = pages[0].feature.layer;
         var encodedLayers = [];
-        Ext.each(map.layers, function(layer){
+
+        // ensure that the baseLayer is the first one in the encoded list
+        var layers = map.layers.concat();
+        layers.remove(map.baseLayer);
+        layers.unshift(map.baseLayer);
+
+        Ext.each(layers, function(layer){
             if(layer !== pagesLayer && layer.getVisibility() === true) {
                 var enc = this.encodeLayer(layer);
                 enc && encodedLayers.push(enc);
@@ -425,11 +462,13 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                 });
             }
             var encodedLegends = [];
-            legend.items.each(function(cmp) {
+            legend.items && legend.items.each(function(cmp) {
                 if(!cmp.hidden) {
                     var encFn = this.encoders.legends[cmp.getXType()];
+                    // MapFish Print doesn't currently support per-page
+                    // legends, so we use the scale of the first page.
                     encodedLegends = encodedLegends.concat(
-                        encFn.call(this, cmp));
+                        encFn.call(this, cmp, jsonData.pages[0].scale));
                 }
             }, this);
             if (!rendered) {
@@ -441,27 +480,16 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
         if(this.method === "GET") {
             var url = Ext.urlAppend(this.capabilities.printURL,
                 "spec=" + encodeURIComponent(Ext.encode(jsonData)));
-            window.open(url);
-            this.fireEvent("print", this, url);
+            this.download(url);
         } else {
             Ext.Ajax.request({
                 url: this.capabilities.createURL,
+                timeout: this.timeout,
                 jsonData: jsonData,
+                headers: {"Content-Type": "application/json; charset=" + this.encoding},
                 success: function(response) {
-                    // In IE, using a Content-disposition: attachment header
-                    // may make it hard or impossible to download the pdf due
-                    // to security settings. So we'll display the pdf inline.
-                    var url = Ext.decode(response.responseText).getURL +
-                        (Ext.isIE ? "?inline=true" : "");
-                    if(Ext.isOpera || Ext.isIE) {
-                        // Make sure that Opera and IE don't replace the
-                        // content tab with the pdf
-                        window.open(url);
-                    } else {
-                        // This avoids popup blockers for all other browsers
-                        window.location.href = url;                        
-                    } 
-                    this.fireEvent("print", this, url);
+                    var url = Ext.decode(response.responseText).getURL;
+                    this.download(url);
                 },
                 failure: function(response) {
                     this.fireEvent("printexception", this, response);
@@ -470,6 +498,23 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                 scope: this
             });
         }
+    },
+    
+    /** private: method[download]
+     *  :param url: ``String``
+     */
+    download: function(url) {
+        if (this.fireEvent("beforedownload", this, url) !== false) {
+            if (Ext.isOpera) {
+                // Make sure that Opera don't replace the content tab with
+                // the pdf
+                window.open(url);
+            } else {
+                // This avoids popup blockers for all other browsers
+                window.location.href = url;                        
+            } 
+        }
+        this.fireEvent("print", this, url);
     },
     
     /** api: method[loadCapabilities]
@@ -540,7 +585,7 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
      */
     getAbsoluteUrl: function(url) {
         var a;
-        if(Ext.isIE) {
+        if(Ext.isIE6 || Ext.isIE7 || Ext.isIE8) {
             a = document.createElement("<a href='" + url + "'/>");
             a.style.display = "none";
             document.body.appendChild(a);
@@ -558,6 +603,16 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
      */
     encoders: {
         "layers": {
+            "Layer": function(layer) {
+                var enc = {};
+                if (layer.options && layer.options.maxScale) {
+                    enc.minScaleDenominator = layer.options.maxScale;
+                }
+                if (layer.options && layer.options.minScale) {
+                    enc.maxScaleDenominator = layer.options.minScale;
+                }
+                return enc;
+            },
             "WMS": function(layer) {
                 var enc = this.encoders.layers.HTTPRequest.call(this, layer);
                 Ext.apply(enc, {
@@ -605,6 +660,25 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                     resolutions: layer.serverResolutions || layer.resolutions
                 });
             },
+            "WMTS": function(layer) {
+                var enc = this.encoders.layers.HTTPRequest.call(this, layer);
+                return Ext.apply(enc, {
+                    type: 'WMTS',
+                    layer: layer.layer,
+                    version: layer.version,
+                    requestEncoding: layer.requestEncoding,
+                    tileOrigin: [layer.tileOrigin.lon, layer.tileOrigin.lat],
+                    tileSize: [layer.tileSize.w, layer.tileSize.h],
+                    style: layer.style,
+                    formatSuffix: layer.formatSuffix,
+                    dimensions: layer.dimensions,
+                    params: layer.params,
+                    maxExtent: (layer.tileFullExtent != null) ? layer.tileFullExtent.toArray() : layer.maxExtent.toArray(),
+                    matrixSet: layer.matrixSet,
+                    zoomOffset: layer.zoomOffset,
+                    resolutions: layer.serverResolutions || layer.resolutions
+                });
+            },
             "KaMapCache": function(layer) {
                 var enc = this.encoders.layers.KaMap.call(this, layer);
                 return Ext.apply(enc, {
@@ -629,22 +703,24 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                 });
             },
             "HTTPRequest": function(layer) {
-                return {
+                var enc = this.encoders.layers.Layer.call(this, layer);
+                return Ext.apply(enc, {
                     baseURL: this.getAbsoluteUrl(layer.url instanceof Array ?
                         layer.url[0] : layer.url),
                     opacity: (layer.opacity != null) ? layer.opacity : 1.0,
                     singleTile: layer.singleTile
-                };
+                });
             },
             "Image": function(layer) {
-                return {
+                var enc = this.encoders.layers.Layer.call(this, layer);
+                return Ext.apply(enc, {
                     type: 'Image',
                     baseURL: this.getAbsoluteUrl(layer.getURL(layer.extent)),
                     opacity: (layer.opacity != null) ? layer.opacity : 1.0,
                     extent: layer.extent.toArray(),
                     pixelSize: [layer.size.w, layer.size.h],
                     name: layer.name
-                };
+                });
             },
             "Vector": function(layer) {
                 if(!layer.features.length) {
@@ -689,8 +765,8 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                     
                     encFeatures.push(featureGeoJson);
                 }
-                
-                return {
+                var enc = this.encoders.layers.Layer.call(this, layer);                
+                return Ext.apply(enc, {
                     type: 'Vector',
                     styles: encStyles,
                     styleProperty: '_gx_style',
@@ -700,15 +776,41 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
                     },
                     name: layer.name,
                     opacity: (layer.opacity != null) ? layer.opacity : 1.0
-                };
+                });
+            },
+            "Markers": function(layer) {
+                var features = [];
+                for (var i=0, len=layer.markers.length; i<len; i++) {
+                    var marker = layer.markers[i];
+                    var geometry = new OpenLayers.Geometry.Point(marker.lonlat.lon, marker.lonlat.lat);
+                    var style = {externalGraphic: marker.icon.url,
+                        graphicWidth: marker.icon.size.w, graphicHeight: marker.icon.size.h,
+                        graphicXOffset: marker.icon.offset.x, graphicYOffset: marker.icon.offset.y};
+                    var feature = new OpenLayers.Feature.Vector(geometry, {}, style);
+                    features.push(feature);
+            }
+                var vector = new OpenLayers.Layer.Vector(layer.name);
+                vector.addFeatures(features);
+                var output = this.encoders.layers.Vector.call(this, vector);
+                vector.destroy();
+                return output;
             }
         },
         "legends": {
-            "gx_wmslegend": function(legend) {
+            "gx_wmslegend": function(legend, scale) {
                 var enc = this.encoders.legends.base.call(this, legend);
                 var icons = [];
                 for(var i=1, len=legend.items.getCount(); i<len; ++i) {
-                    icons.push(this.getAbsoluteUrl(legend.items.get(i).url));
+                    var url = legend.items.get(i).url;
+                    if(legend.useScaleParameter === true &&
+                       url.toLowerCase().indexOf(
+                           'request=getlegendgraphic') != -1) {
+                        var split = url.split("?");
+                        var params = Ext.urlDecode(split[1]);
+                        params['SCALE'] = scale;
+                        url = split[0] + "?" + Ext.urlEncode(params);
+                    }
+                    icons.push(this.getAbsoluteUrl(url));
                 }
                 enc[0].classes[0] = {
                     name: "",
@@ -726,7 +828,7 @@ GeoExt.data.PrintProvider = Ext.extend(Ext.util.Observable, {
             },
             "base": function(legend){
                 return [{
-                    name: legend.items.get(0).text,
+                    name: legend.getLabel(),
                     classes: []
                 }];
             }

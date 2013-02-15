@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -8,6 +8,12 @@
 
 /**
  * @include GeoExt/data/LayerRecord.js
+ * @require OpenLayers/Format/WFSCapabilities.js
+ * @require OpenLayers/Format/WFSCapabilities/v1_1_0.js
+ * @require OpenLayers/Protocol/WFS.js
+ * @require OpenLayers/Protocol/WFS/v1_0_0.js
+ * @require OpenLayers/Strategy/Fixed.js
+ * @require OpenLayers/Layer/Vector.js
  */
 
 /** api: (define)
@@ -20,7 +26,12 @@ Ext.namespace("GeoExt.data");
 /** api: constructor
  *  .. class:: WFSCapabilitiesReader(meta, recordType)
  *  
- *      :param meta: ``Object`` Reader configuration.
+ *      :param meta: ``Object`` Reader configuration from which:
+ *          ``layerOptions`` is an optional object (or function that returns
+ *          an object) passed as default options to the
+ *          ``OpenLayers.Layer.Vector`` constructor.
+ *          ``protocolOptions`` is an optional set of parameters to pass to the
+ *          ``OpenLayers.Protocol.WFS`` constructor.
  *      :param recordType: ``Array | Ext.data.Record`` An array of field
  *          configuration objects or a record object.  Default is
  *          :class:`GeoExt.data.LayerRecord`.
@@ -84,7 +95,7 @@ Ext.extend(GeoExt.data.WFSCapabilitiesReader, Ext.data.DataReader, {
         var featureTypes = data.featureTypeList.featureTypes;
         var fields = this.recordType.prototype.fields;
 
-        var featureType, values, field, v, parts, layer, values;
+        var featureType, values, field, v, parts, layer;
         var layerOptions, protocolOptions;
 
         var protocolDefaults = {
@@ -121,8 +132,10 @@ Ext.extend(GeoExt.data.WFSCapabilitiesReader, Ext.data.DataReader, {
                     protocol: new OpenLayers.Protocol.WFS(protocolOptions),
                     strategies: [new OpenLayers.Strategy.Fixed()]
                 };
-                if(this.meta.layerOptions) {
-                    Ext.apply(layerOptions, this.meta.layerOptions);
+                var metaLayerOptions = this.meta.layerOptions;
+                if (metaLayerOptions) {
+                    Ext.apply(layerOptions, Ext.isFunction(metaLayerOptions) ?
+                        metaLayerOptions() : metaLayerOptions);
                 }
 
                 values.layer = new OpenLayers.Layer.Vector(

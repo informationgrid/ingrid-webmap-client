@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  *
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -67,7 +67,7 @@ GeoExt.LayerOpacitySliderTip = Ext.extend(GeoExt.SliderTip, {
     },
 
     /** private: method[getText]
-     *  :param slider: ``Ext.Slider`` The slider this tip is attached to.
+     *  :param slider: ``Ext.slider.SingleSlider`` The slider this tip is attached to.
      */
     getText: function(thumb) {
         var data = {

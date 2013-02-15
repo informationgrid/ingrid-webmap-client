@@ -1,9 +1,21 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
  * of the license.
+ */
+
+/**
+ * @require OpenLayers/Feature/Vector.js
+ * @require OpenLayers/Geometry/Point.js
+ * @require OpenLayers/Geometry/LineString.js
+ * @require OpenLayers/Geometry/LinearRing.js
+ * @require OpenLayers/Geometry/Polygon.js
+ * @require OpenLayers/BaseTypes/Bounds.js
+ * @require OpenLayers/BaseTypes/Size.js
+ * @require OpenLayers/Renderer.js
+ * @require OpenLayers/Symbolizer.js
  */
 
 /** api: (define)

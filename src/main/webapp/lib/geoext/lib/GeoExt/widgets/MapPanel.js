@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -8,6 +8,9 @@
 
 /**
  * @include GeoExt/data/LayerStore.js
+ * @require OpenLayers/Map.js
+ * @require OpenLayers/BaseTypes/LonLat.js
+ * @require OpenLayers/BaseTypes/Bounds.js
  */
 
 /** api: (define)
@@ -46,7 +49,11 @@ Ext.namespace("GeoExt");
 /** api: constructor
  *  .. class:: MapPanel(config)
  *   
- *      Create a panel container for a map.
+ *      Create a panel container for a map. The map contained by this panel
+ *      will initially be zoomed to either the center and zoom level configured
+ *      by the ``center`` and ``zoom`` configuration options, or the configured
+ *      ``extent``, or - if neither are provided - the extent returned by the
+ *      map's ``getExtent()`` method.
  */
 GeoExt.MapPanel = Ext.extend(Ext.Panel, {
 
@@ -72,11 +79,11 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
      *  :class:`GeoExt.data.LayerRecord` objects.
      */
     layers: null,
-
     
     /** api: config[center]
-     *  ``OpenLayers.LonLat or Array(Number)``  A location for the map center.  If
-     *  an array is provided, the first two items should represent x & y coordinates.
+     *  ``OpenLayers.LonLat or Array(Number)``  A location for the initial map
+     *  center.  If an array is provided, the first two items should represent
+     *  x & y coordinates.
      */
     center: null,
 
@@ -85,6 +92,13 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
      */
     zoom: null,
 
+    /** api: config[extent]
+     *  ``OpenLayers.Bounds or Array(Number)``  An initial extent for the map (used
+     *  if center and zoom are not provided.  If an array, the first four items
+     *  should be minx, miny, maxx, maxy.
+     */
+    extent: null,
+    
     /** api: config[prettyStateKeys]
      *  ``Boolean`` Set this to true if you want pretty strings in the MapPanel's
      *  state keys. More specifically, layer.name instead of layer.id will be used
@@ -94,19 +108,16 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
      */
     prettyStateKeys: false,
 
-    /** api: config[extent]
-     *  ``OpenLayers.Bounds or Array(Number)``  An initial extent for the map (used
-     *  if center and zoom are not provided.  If an array, the first four items
-     *  should be minx, miny, maxx, maxy.
-     */
-    extent: null,
-
     /** private: property[stateEvents]
      *  ``Array(String)`` Array of state events
      */
     stateEvents: ["aftermapmove",
                   "afterlayervisibilitychange",
-                  "afterlayeropacitychange"],
+                  "afterlayeropacitychange",
+                  "afterlayerorderchange",
+                  "afterlayernamechange",
+                  "afterlayeradd",
+                  "afterlayerremove"],
 
     /** private: method[initComponent]
      *  Initializes the map panel. Creates an OpenLayers map if
@@ -154,11 +165,33 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
             /** private: event[afterlayeropacitychange]
              *  Fires after a layer changed opacity.
              */
-            "afterlayeropacitychange"
+            "afterlayeropacitychange",
+
+            /** private: event[afterlayerorderchange]
+             *  Fires after a layer order changed.
+             */
+            "afterlayerorderchange",
+
+            /** private: event[afterlayernamechange]
+             *  Fires after a layer name changed.
+             */
+            "afterlayernamechange",
+
+            /** private: event[afterlayeradd]
+             *  Fires after a layer added to the map.
+             */
+            "afterlayeradd",
+
+            /** private: event[afterlayerremove]
+             *  Fires after a layer removed from the map.
+             */
+            "afterlayerremove"
         );
         this.map.events.on({
             "moveend": this.onMoveend,
-            "changelayer": this.onLayerchange,
+            "changelayer": this.onChangelayer,
+            "addlayer": this.onAddlayer,
+            "removelayer": this.onRemovelayer,
             scope: this
         });
     },
@@ -171,19 +204,35 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
         this.fireEvent("aftermapmove");
     },
 
-    /** private: method[onLayerchange]
+    /** private: method[onChangelayer]
      *  :param e: ``Object``
      *
      * The "changelayer" listener.
      */
-    onLayerchange: function(e) {
+    onChangelayer: function(e) {
         if(e.property) {
             if(e.property === "visibility") {
                 this.fireEvent("afterlayervisibilitychange");
+            } else if(e.property === "order") {
+                this.fireEvent("afterlayerorderchange");
+            } else if(e.property === "name") {
+                this.fireEvent("afterlayernamechange");
             } else if(e.property === "opacity") {
                 this.fireEvent("afterlayeropacitychange");
             }
         }
+    },
+
+    /** private: method[onAddlayer]
+     */
+    onAddlayer: function() {
+        this.fireEvent("afterlayeradd");
+    },
+
+    /** private: method[onRemovelayer]
+     */
+    onRemovelayer: function() {
+        this.fireEvent("afterlayerremove");
     },
 
     /** private: method[applyState]
@@ -242,11 +291,13 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
 
         // record location and zoom level
         var center = this.map.getCenter();
-        state = {
+        // map may not be centered yet, because it may still have zero
+        // dimensions or no layers
+        state = center ? {
             x: center.lon,
             y: center.lat,
             zoom: this.map.getZoom()
-        };
+        } : {};
 
         // record layer visibility and opacity
         var i, l, layer, layerId, layers = this.map.layers;
@@ -280,15 +331,25 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
 
         this.layers.bind(map);
 
-        if(map.layers.length > 0) {
-            if(this.center || this.zoom != null) {
-                // both do not have to be defined
-                map.setCenter(this.center, this.zoom);
-            } else if(this.extent) {
-                map.zoomToExtent(this.extent);
-            } else {
-                map.zoomToMaxExtent();
-            }
+        if (map.layers.length > 0) {
+            this.setInitialExtent();
+        } else {
+            this.layers.on("add", this.setInitialExtent, this, {single: true});
+        }
+    },
+    
+    /** private: method[setInitialExtent]
+     *  Sets the initial extent of this panel's map
+     */
+    setInitialExtent: function() {
+        var map = this.map;
+        if(this.center || this.zoom != null) {
+            // both do not have to be defined
+            map.setCenter(this.center, this.zoom);
+        } else if(this.extent) {
+            map.zoomToExtent(this.extent);
+        } else {
+            map.zoomToMaxExtent();
         }
     },
     
@@ -302,12 +363,24 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
         } else {
             this.ownerCt.on("move", this.updateMapSize, this);
             this.ownerCt.on({
-                "afterlayout": {
-                    fn: this.renderMap,
-                    scope: this,
-                    single: true
-                }
+                "afterlayout": this.afterLayout,
+                scope: this
             });
+        }
+    },
+    
+    /** private: method[afterLayout]
+     *  Private method called after owner container has been laid out until
+     *  this panel has dimensions greater than zero.
+     */
+    afterLayout: function() {
+        var width = this.getInnerWidth() -
+                                this.body.getBorderWidth("lr");
+        var height = this.getInnerHeight() -
+                                this.body.getBorderWidth("tb");
+        if (width > 0 && height > 0) {
+            this.ownerCt.un("afterlayout", this.afterLayout, this);
+            this.renderMap();
         }
     },
 
@@ -349,7 +422,9 @@ GeoExt.MapPanel = Ext.extend(Ext.Panel, {
         if(this.map && this.map.events) {
             this.map.events.un({
                 "moveend": this.onMoveend,
-                "changelayer": this.onLayerchange,
+                "changelayer": this.onChangelayer,
+                "addlayer": this.onAddlayer,
+                "removelayer": this.onRemovelayer,
                 scope: this
             });
         }

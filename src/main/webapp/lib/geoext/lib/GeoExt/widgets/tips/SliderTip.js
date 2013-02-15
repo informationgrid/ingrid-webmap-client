@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2008-2010 The Open Source Geospatial Foundation
+ * Copyright (c) 2008-2011 The Open Source Geospatial Foundation
  * 
  * Published under the BSD license.
  * See http://svn.geoext.org/core/trunk/geoext/license.txt for the full text
@@ -18,7 +18,7 @@ Ext.namespace("GeoExt");
  * 
  *  .. code-block:: javascript
  *     
- *      var slider = new Ext.Slider({
+ *      var slider = new Ext.slider.SingleSlider({
  *          renderTo: document.body,
  *          width: 200,
  *          plugins: new GeoExt.SliderTip()
@@ -28,7 +28,7 @@ Ext.namespace("GeoExt");
 /** api: constructor
  *  .. class:: SliderTip(config)
  *   
- *      Create a slider tip displaying ``Ext.Slider`` values over slider thumbs.
+ *      Create a slider tip displaying ``Ext.slider.SingleSlider`` values over slider thumbs.
  */
 GeoExt.SliderTip = Ext.extend(Ext.slider.Tip, {
 
@@ -59,7 +59,7 @@ GeoExt.SliderTip = Ext.extend(Ext.slider.Tip, {
     dragging: false,
 
     /** private: method[init]
-     *  :param slider: ``Ext.Slider``
+     *  :param slider: ``Ext.slider.SingleSlider``
      *  
      *  Called when the plugin is initialized.
      */
@@ -97,7 +97,7 @@ GeoExt.SliderTip = Ext.extend(Ext.slider.Tip, {
     },
 
     /** private: method[onSlide]
-     *  :param slider: ``Ext.Slider``
+     *  :param slider: ``Ext.slider.SingleSlider``
      *
      *  Listener for dragstart and drag.
      */
