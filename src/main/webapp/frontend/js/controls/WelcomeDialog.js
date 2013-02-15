@@ -64,7 +64,8 @@ de.ingrid.mapclient.frontend.controls.WelcomeDialog.prototype.initComponent = fu
 
 
 de.ingrid.mapclient.frontend.controls.WelcomeDialog.prototype.handleDisableWelcomeDialog = function(element, isActive) {
-    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive);
+	// cookie is valid one year from now
+    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive, (new Date()).add(Date.YEAR, 1));
 }
 
 
