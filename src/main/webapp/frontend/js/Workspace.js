@@ -574,14 +574,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(
 					var isBaseLayer = (layer.name == baseLayerName)
 							? true
 							: false;
-					if (isBaseLayer) {
-						baseLayerSet = true;
-					}
 					layer.visibility = isDefaultLayer;
 					layer.isBaseLayer = isBaseLayer;
+					
+					if (isBaseLayer) {
+						baseLayerSet = true;
+						// bind the base layer to the map
+						// only bind the baseLayer to the map because since GeoExt 1.1
+						// the map is zoomed to extent on layer add. Without a base layer 
+						// set the extent cannot be derived.
+						// the other layer will be add in
+						// ActiveServicesPanel.addService()
+						self.map.addLayer(layer);
+					}
 
-					// bind the layer to the map
-					self.map.addLayer(layer);
 				}
 				
 				if (!baseLayerSet) {

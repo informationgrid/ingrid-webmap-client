@@ -59,6 +59,8 @@ public enum ConfigurationProvider {
 	private static final String OPENSEARCH_URL = "opensearch.searchurl";
 	private static final String DOWNLOAD_DIR = "mapdownload.dir";
 	private static final String SINGLE_TILE = "frontend.singleTile";
+    private static final String TRANSITION_EFFECT = "frontend.transitionEffect";
+	
 
 	private Properties properties = null;
 	private Configuration configuration = null;
@@ -192,9 +194,16 @@ public enum ConfigurationProvider {
 	public String getDownloadmapDir(){
 		return this.properties.getProperty(DOWNLOAD_DIR);
 	}	
+
 	public static String getSingleTile() {
 		return SINGLE_TILE;
 	}
+
+    public static String getTransitionEffect() {
+        return TRANSITION_EFFECT;
+    }
+	
+	
 	/**
 	 * Get the map client configuration
 	 * @return Configuration
