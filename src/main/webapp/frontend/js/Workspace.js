@@ -838,6 +838,32 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 	var self = this;
 	this.session.load(state, shortUrl, {
 		success : function(responseText) {
+			// restore map state
+			// do this first to make sure the map has it's base layer
+			// BEFORE any other layer (KML, AddWms via URL) is loaded
+			state.restoreMapState(function() {
+				// restore active services
+				for (var i = 0, count = state.activeServices.length; i < count; i++) {
+					self.activeServicesPanel
+							.addService(state.activeServices[i],false,true);
+				}
+	
+				// Load WMS by "Zeige Karte" from Session
+				if (wms != null) {
+					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
+							.createFromCapabilitiesUrl(wms);
+					var callback = Ext.util.Functions.createDelegate(
+							self.activeServicesPanel.addService,
+							self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
+									.getCapabilitiesUrl(), callback);
+				}
+	
+				self.finishInitMap();
+				if (safeStateAfterLoad) {
+					self.save(true);
+				}
+			});
 			if (!(typeof(state.kmlArray) === "undefined")
 					&& state.kmlArray.length > 0) {
 				// Add KML if session with added KML exist
@@ -923,30 +949,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					self.activeServicesPanel.addKml(self.kmlArray);
 				}
 			}
-			// restore map state
-			state.restoreMapState(function() {
-				// restore active services
-				for (var i = 0, count = state.activeServices.length; i < count; i++) {
-					self.activeServicesPanel
-							.addService(state.activeServices[i],false,true);
-				}
-
-				// Load WMS by "Zeige Karte" from Session
-				if (wms != null) {
-					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
-							.createFromCapabilitiesUrl(wms);
-					var callback = Ext.util.Functions.createDelegate(
-							self.activeServicesPanel.addService,
-							self.activeServicesPanel);
-					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-									.getCapabilitiesUrl(), callback);
-				}
-
-				self.finishInitMap();
-				if (safeStateAfterLoad) {
-					self.save(true);
-				}
-			});
 
 		},
 		failure : function(responseText) {
@@ -1107,8 +1109,10 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
     //TODO if OpenLayers is updated check if this still makes sense
     OpenLayers.Layer.prototype.setVisibility = function(visibility){
     	
-	    if(this.params['LAYERS'].indexOf('INGRID-') != -1)
+	    // check for NON WMS layers first (KML Layer)
+	    if (this.params && this.params['LAYERS'].indexOf('INGRID-') != -1) {
 			visibility = false;
+	    }
 	
         if (visibility != this.visibility) {
             this.visibility = visibility;

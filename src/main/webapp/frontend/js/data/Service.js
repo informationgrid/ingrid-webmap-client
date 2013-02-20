@@ -119,7 +119,12 @@ de.ingrid.mapclient.frontend.data.Service.compareLayers = function(a, b) {
  * @return String
  */
 de.ingrid.mapclient.frontend.data.Service.getLayerId = function(layer) {
-	return layer.url+':'+layer.params.LAYERS;
+	// compatibility code for non WMS layers (KML layers)
+	if (layer.params) {
+		return layer.url+':'+layer.params.LAYERS;
+	} else {
+		return layer.url+':'+layer.name;
+	}
 };
 
 /**

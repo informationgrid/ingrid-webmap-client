@@ -208,17 +208,24 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				if (node.layer.CLASS_NAME=="OpenLayers.Layer.GML") {
 					self.removeBtn.enable();
 					self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
+					self.metaDataBtn.disable();
 				} else {
 					self.removeBtn.disable();
 					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
 					self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
 				}
-			}else {
+			}else if (node.attributes.service) {
 				self.transparencyBtn.disable();
 				self.transparencyBtn.setTooltip(i18n('tFuerTransparenzErst'));
 				self.removeBtn.enable();
 				self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
 				self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
+				
+			} else {
+				// non service layers (i.e. kml folder layer)
+				self.zoomLayerBtn.disable();
+				self.transparencyBtn.disable();
+				self.metaDataBtn.disable();
 			}
 		}
 		self.activeNode = node;
@@ -608,13 +615,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 				   formatOptions: {
 					 extractStyles: true,
 				     extractAttributes: true,
-				     maxDepth: 2},
-				     styleMap: styleMap
-				     },
-				     displayOutsideMaxExtent = false
-				);
+				     maxDepth: 2
+				   },
+			       styleMap: styleMap,
+				   displayOutsideMaxExtent : false
+				}
+			);
 
-			// TODO: add rules so the layer will be displayed on legend
 			var rule = new OpenLayers.Rule({
 				  title: kmlTitle,
 				  symbolizer: {pointRadius: 3, fontSize: "11px", fontColor: "#000000",
@@ -674,7 +681,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addKml = fun
 	    layerStore: store,
 	    leaf: false,
 	    expanded: false
-
 	});
 
 	if(this.layerTree != null){
@@ -870,30 +876,48 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	var bbox = null;
 	var srs = this.map.projection;
 	var bounds=null;
-	//layerUrl
-	var url = attributes.layer.url;
-	//get the layerId, but the right one! our layer id doesnt help, no bbox in this object
-	var layerId = attributes.service.layers.get(url+':'+attributes.layer.params.LAYERS)
-	var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
-	//check if our layers upport the map projection
-//	if(layer.data.bbox[srs]){
-//		bbox = layer.data.bbox[srs].bbox
-//		bounds = new OpenLayers.Bounds.fromArray(bbox);
-//	}
-//	else{
-		for (var srsIn in layer.data.bbox){
-			if(srsIn != srs){
+	
+	// check for WMS Layers
+	if (attributes.service) {
+		//layerUrl
+		var url = attributes.layer.url;
+		//get the layerId, but the right one! our layer id doesnt help, no bbox in this object
+		var layerId;
+		if (attributes.layer.params) {
+			layerId = attributes.service.layers.get(url+':'+attributes.layer.params.LAYERS)
+		} else {
+			layerId = attributes.service.layers.get(url+':'+attributes.layer.name)
+		}
+		var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
+		//check if our layers upport the map projection
+		if(layer.data.bbox[srs]){
+			bbox = layer.data.bbox[srs].bbox
+			bounds = new OpenLayers.Bounds.fromArray(bbox);
+		} else {
+			for (var srsIn in layer.data.bbox){
 				bbox = layer.data.bbox[srsIn].bbox;
-				var projMap = new OpenLayers.Projection(srs);
-				var projLayer = new OpenLayers.Projection(srsIn);
 				bounds = new OpenLayers.Bounds.fromArray(bbox);
-				bounds.transform(projLayer, projMap);
-				return bounds;	
+				if(srsIn != srs){
+					var projMap = new OpenLayers.Projection(srs);
+					var projLayer = new OpenLayers.Projection(srsIn);
+					bounds.transform(projLayer, projMap);
+					break;	
+				} else {
+					break;
+				}
 			}
 		}
-//		}
+	} else {
+		// NON WMS Layer (KML Layer)
+		var srsIn = attributes.layer.projection.projCode;
+		bounds = attributes.layer.maxExtent;
+		if (srsIn != srs) {
+			var projMap = new OpenLayers.Projection(srs);
+			var projLayer = new OpenLayers.Projection(srsIn);
+			bounds.transform(projLayer, projMap);
+		}
+	}
 	return bounds;
-
 };
 /**
  * disable/enable layer nodes recursively, based on the fact if they support our current zoomlevel
