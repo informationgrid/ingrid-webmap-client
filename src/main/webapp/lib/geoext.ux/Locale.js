@@ -146,7 +146,7 @@ Local = {
         tTextOf: { en: 'of', de: 'von' },
         tTextHints: { en: 'Tip', de: 'Tipp' },
         tTipsAndTricks: { en: 'Tips and Tricks', de: 'Tipps und Tricks' },
-        tTitle: { en: 'Title', de: 'Titel' },
+        tTitle: { en: 'Layer Title', de: 'Layer Titel' },
         tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen: { en: '<p><strong>With the following actions you can pick a spatial reference to which the search results will be limited:</strong><br/><br/>' 
 				+'<strong>- "Move map"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconDefault"> : Move the map, while pressing the left mouse button.</span><br/><br/>' 
 				+'<strong>- "Gebiet ausw&auml;hlen"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconSelectCoordinates"> : Choose an area which limits the search results. Consider the options at the bottom of the map also.</span><br/><br/>' 
@@ -191,14 +191,14 @@ Local = {
         tWelcomeTextLink2: { en: 'Detailed help for the map viewer', de: 'Ausf&uuml;hrliche Hilfe zum Kartenviewer'},
         tWmsId: { en: 'WMS ID', de: 'WMS ID' },
         tWmsTitle: { en: 'WMS Title', de: 'WMS Titel' },
-        tWmsAbstract: { en: 'WMS Abstract', de: 'WMS Abstract' },
+        tWmsAbstract: { en: 'WMS Abstract', de: 'WMS Zusammenfassung' },
         tZeigePunktkoordinaten: { en: 'Show point coordinates', de: 'Zeige Punktkoordinaten' },
         tZoomeAufServiceOderLayer: { en: 'Zoom to service or layer extent', de: 'Zoome auf Service oder Layer' },
         tZugriffsbeschraenkung: { en: 'Access restriction', de: 'Zugriffsbeschr&auml;nkung' },
         tZumSpeichernErstEinloggen: { en: 'Login to save.', de: 'Zum Speichern erst einloggen.' },
         tZumEntfernenErstEinenDienstMarkieren: { en: 'To remove a service first select one.', de: 'Zum Entfernen erst einen Dienst markieren.' },
         tZurueck: { en: 'Back', de: 'Zur&uuml;ck' },
-        tZusammenfassung: { en: 'Abstract', de: 'Zusammenfassung' }
+        tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' }
     }
 }
 

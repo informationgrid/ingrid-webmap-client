@@ -501,39 +501,41 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
 	var self = this;
 	var layer = null;
+	var isService = false;
 	if(node.attributes.layer)
 		layer = node.attributes.layer;
 	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
-	if(!layer)
+	if(!layer) {
+		isService = true;
 		layer = node.childNodes[0].layer;
+	}		
 
-		var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
-		if (service) {
-			var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layer: layer,
-                listeners: {
-                    'show': function (c) {
-						self.metadataBtnActive = true;
-                    }
+	/*var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
+	if (service) {
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			capabilitiesUrl: service.getCapabilitiesUrl(),
+			layer: layer,
+            listeners: {
+                'show': function (c) {
+					self.metadataBtnActive = true;
                 }
-			});
-			metaDialog.on('close', function(){
-			self.metadataBtnActive = false;
-			});
-			metaDialog.show();
-		}else{
-			service = node.attributes.service;
-			if(service){
-				var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-					capabilitiesUrl: service.getCapabilitiesUrl(),
-					layer: layer
-				}).show();
-				metaDialog.on('close', function(){
-				self.metadataBtnActive = false;
-				});
-			}
-		}
+            }
+		});
+		metaDialog.on('close', function(){
+		self.metadataBtnActive = false;
+		});
+		metaDialog.show();
+	}else{*/
+	var service = node.attributes.service;
+	if(service){
+		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			capabilitiesUrl: service.getCapabilitiesUrl(),
+			layer: isService ? null : layer
+		}).show();
+		metaDialog.on('close', function(){
+		self.metadataBtnActive = false;
+		});
+	}
 
 };
 

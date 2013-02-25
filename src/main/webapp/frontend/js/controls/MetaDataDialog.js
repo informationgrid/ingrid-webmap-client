@@ -11,7 +11,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
 	closable: true,
 	draggable: true,
 	resizable: false,
-	width: 500,
+	width: 590,
 	height:400,
 	shadow: false,
 	initHidden: false,
@@ -198,14 +198,14 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 	var tplStr = '<table class="metaDataTable">'+
 
-		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
-		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
-		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
-		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
+		//'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
+		//'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
 		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
 		'<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>'+
+		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
+		//'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
 		'<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>'+
 		'<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>'+
 
@@ -236,11 +236,10 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 
 	var tplStr = '<table class="metaDataTable">'+
 
-
 		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		//'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
 		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
 		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
 		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
