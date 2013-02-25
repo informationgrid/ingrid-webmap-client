@@ -46,7 +46,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.initComponent = f
 	this.serviceInfoTpl.compile();
 
 	// create the template for layer meta data
-	this.layerInfoTpl = new Ext.Template(this.getLayerInfoHtml());
+	this.layerInfoTpl = new Ext.XTemplate(this.getLayerInfoHtml());
 	this.layerInfoTpl.compile();
 
 	// create the window layout
@@ -201,7 +201,9 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 		'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tpl if="date!=\'\'">'+
+			'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'</tpl>'+
 		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
 		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
 		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
@@ -240,7 +242,9 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
 		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
 		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
+		'<tpl if="date!=\'\'">'+
+			'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date} :(</td></tr>'+
+		'</tpl>'+
 		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
 		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
 		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
