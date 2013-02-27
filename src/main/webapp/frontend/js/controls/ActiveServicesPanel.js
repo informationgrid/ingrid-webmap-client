@@ -510,22 +510,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 		layer = node.childNodes[0].layer;
 	}		
 
-	/*var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(layer);
-	if (service) {
-		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layer: layer,
-            listeners: {
-                'show': function (c) {
-					self.metadataBtnActive = true;
-                }
-            }
-		});
-		metaDialog.on('close', function(){
-		self.metadataBtnActive = false;
-		});
-		metaDialog.show();
-	}else{*/
 	var service = node.attributes.service;
 	if(service){
 		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
@@ -533,8 +517,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 			layer: isService ? null : layer
 		}).show();
 		metaDialog.on('close', function(){
-		self.metadataBtnActive = false;
+			self.metadataBtnActive = false;
 		});
+	} else {
+		console.error("Service could not be found!");
 	}
 
 };

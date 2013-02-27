@@ -100,6 +100,10 @@ body {
 	overflow: hidden;
 }
 
+.metaDataTable {
+	width: 100%;
+}
+
 .metaDataTable td { 
 	font-weight: bold !important;
 	font-size:9px;

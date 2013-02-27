@@ -10,7 +10,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
 	title: i18n('tMetadaten'),
 	closable: true,
 	draggable: true,
-	resizable: false,
+	resizable: true,
 	width: 590,
 	height:400,
 	shadow: false,
