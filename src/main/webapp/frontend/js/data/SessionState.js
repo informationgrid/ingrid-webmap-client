@@ -145,8 +145,18 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 		var layer = layers[i];
 		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layer);
 		de.ingrid.mapclient.frontend.data.Service.fixLayerProperties(layer);
+		// add base layers first, because the map needs it to
+		// obtain the maxExtent
+		if (layer.isBaseLayer == true) {
+			this.map.addLayer(layer);
+		}
 	}
-	this.map.addLayers(layers);
+	// add other layers later
+	for (var i=0, count=layers.length; i<count; i++) {
+		if (!layer.isBaseLayer) {
+			this.map.addLayer(layers[i]);
+		}
+	}
 	de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(context.projection, function() {
 		self.changeProjection(context.projection);
 		self.map.zoomToExtent(context.bounds);

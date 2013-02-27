@@ -952,26 +952,28 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 
 		},
 		failure : function(responseText) {
-			var callback = Ext.util.Functions.createDelegate(
-					self.finishInitMap, self);
+			var callback = Ext.util.Functions.createDelegate( function() {
+				self.finishInitMap();
+				// Add WMS "Zeige Karte"
+				if (wms != null) {
+					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
+							.createFromCapabilitiesUrl(wms);
+					var callback = Ext.util.Functions.createDelegate(
+							self.activeServicesPanel.addService,
+							self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
+									.getCapabilitiesUrl(), callback);
+				}
+
+				// Add KML "Zeige Punktkoordinaten"
+				if (kml != null) {
+					self.kmlArray.push(kml);
+					self.activeServicesPanel.addKml(self.kmlArray);
+				}
+
+			}, self);
 			self.initDefaultMap(callback);
 
-			// Add WMS "Zeige Karte"
-			if (wms != null) {
-				var serviceWMS = de.ingrid.mapclient.frontend.data.Service
-						.createFromCapabilitiesUrl(wms);
-				var callback = Ext.util.Functions.createDelegate(
-						self.activeServicesPanel.addService,
-						self.activeServicesPanel);
-				de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-								.getCapabilitiesUrl(), callback);
-			}
-
-			// Add KML "Zeige Punktkoordinaten"
-			if (kml != null) {
-				self.kmlArray.push(kml);
-				self.activeServicesPanel.addKml(self.kmlArray);
-			}
 		}
 	});
 	de.ingrid.mapclient.frontend.Workspace.prototype.search = function(

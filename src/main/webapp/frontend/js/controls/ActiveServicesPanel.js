@@ -451,7 +451,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 	if (!this.containsService(service)) {
 		return;
 	}
-	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl && (typeof supressMsgs == 'undefined')) {
+	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl && (typeof supressMsgs == 'undefined' || !supressMsgs)) {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		de.ingrid.mapclient.Message.showInfo(i18n('tMsgCannotRemoveBaselayer'));
 	} else {
@@ -482,7 +482,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeAll = function(supressMsgs) {
 	var self = this;
 	this.services.each(function(service) {
-		self.removeService(service, supressMsgs);
+  		// find child node, remove it
+		var childNodes = self.layerTree.root.childNodes;
+		for (var i=0; i<childNodes.length; i++) {
+			childNode = childNodes[i];
+			if (childNode.attributes.service && childNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl) {
+				self.removeService(service, supressMsgs, childNode);
+			}
+		}
 	});
 };
 
