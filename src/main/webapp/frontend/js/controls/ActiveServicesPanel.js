@@ -161,17 +161,29 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				tooltip : i18n('tZoomeAufServiceOderLayer'),
 				disabled : true,
 				handler : function(btn) {
-					var bounds=null;
+					var bounds   = null;
+					var minScale = null;
 					if (self.activeNode) {
 						//check if we have a service(root) node 
 						if(self.activeNode instanceof GeoExt.tree.LayerContainer){
-							bounds = self.bboxOfServiceExtent(self.activeNode.attributes.service)		
+							bounds = self.bboxOfServiceExtent(self.activeNode.attributes.service)
+							//minScale = self.activeNode.layer.minScale;
 							
 						}else{
 							bounds = self.bboxOfLayerExtent(self.activeNode.attributes)
+							minScale = self.activeNode.layer.minScale;
+							
 						}
-						if(self.activeNode.layer.minScale)
-							self.map.zoomToScale((((self.activeNode.layer.minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
+						
+						self.map.zoomToExtent(bounds);
+						
+						// zoom in if the content cannot be shown at this level
+						if(self.activeNode.layer && minScale) {
+							var minResolution = OpenLayers.Util.getResolutionFromScale(minScale, self.map.baseLayer.units);
+							if (minResolution < self.map.resolution) {
+								self.map.zoomToScale((((minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
+							}
+						}
 						this.fireEvent('datachanged');
 					}
 				}
@@ -886,21 +898,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 		var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
 		//check if our layers upport the map projection
 		if(layer.data.bbox[srs]){
-			bbox = layer.data.bbox[srs].bbox
+			bbox = layer.data.bbox[srs].bbox;
 			bounds = new OpenLayers.Bounds.fromArray(bbox);
 		} else {
-			for (var srsIn in layer.data.bbox){
-				bbox = layer.data.bbox[srsIn].bbox;
-				bounds = new OpenLayers.Bounds.fromArray(bbox);
-				if(srsIn != srs){
-					var projMap = new OpenLayers.Projection(srs);
-					var projLayer = new OpenLayers.Projection(srsIn);
-					bounds.transform(projLayer, projMap);
-					break;	
-				} else {
-					break;
-				}
-			}
+			// try to get bounding box from LatLonBoundingBox property
+			var llbbox = layer.data.llbbox;
+			bounds = new OpenLayers.Bounds.fromArray(llbbox);
+			var projMap = new OpenLayers.Projection(srs);
+			var projLayer = new OpenLayers.Projection("EPSG:4326"); // WGS84
+			bounds.transform(projLayer, projMap);
 		}
 	} else {
 		// NON WMS Layer (KML Layer)
@@ -923,20 +929,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 		var self = this;
 		node.expand();
 		node.eachChild(function(n) {
-    	var layer = n.layer;
-    	if(layer){
-    		if(layer.maxScale > scale || layer.minScale < scale){
-    			//if we disable, they are not selectable anymore
-    			//this style class is set on disable, but doesnt reeally disable
-    			//n.disable();
-    			n.setCls('x-tree-node-disabled');
-    		}
-        	else
-        		n.enable();
-    	}
-        if(n.hasChildNodes){
-        self.checkScaleRecursively(n, scale);
-        }
+	    	var layer = n.layer;
+	    	if(layer){
+	    		if(layer.maxScale > scale || layer.minScale < scale){
+	    			//if we disable, they are not selectable anymore
+	    			//this style class is set on disable, but doesnt reeally disable
+	    			//n.disable();
+	    			n.setCls('x-tree-node-disabled');
+	    		}
+	        	else
+	        		n.enable();
+	    	}
+	        if(n.hasChildNodes){
+	        	self.checkScaleRecursively(n, scale);
+	        }
     	});
     	if(node instanceof GeoExt.tree.LayerNode){
     		var layer = node.layer;
