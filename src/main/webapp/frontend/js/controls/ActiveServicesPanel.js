@@ -168,9 +168,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						if(self.activeNode instanceof GeoExt.tree.LayerContainer){
 							bounds = self.bboxOfServiceExtent(self.activeNode.attributes.service)
 							//minScale = self.activeNode.layer.minScale;
-							
+							if (!bounds) bounds = self.getBoundsFromSubLayers(self.activeNode.attributes.service);
+							minScale = self.getMinScaleFromSubLayers(self.activeNode.attributes.service);
 						}else{
 							bounds = self.bboxOfLayerExtent(self.activeNode.attributes)
+							// every layer has a minScale, even if not found in getCapabilities-Document
+							// in that case the minScale is calculated by the resolution of the map (see Layer.js:940) 
 							minScale = self.activeNode.layer.minScale;
 							
 						}
@@ -178,10 +181,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						self.map.zoomToExtent(bounds);
 						
 						// zoom in if the content cannot be shown at this level
-						if(self.activeNode.layer && minScale) {
+						if(minScale) {
 							var minResolution = OpenLayers.Util.getResolutionFromScale(minScale, self.map.baseLayer.units);
 							if (minResolution < self.map.resolution) {
-								self.map.zoomToScale((((minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
+								//self.map.zoomToScale((((minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
+								self.map.zoomToScale(minScale * 0.95);
 							}
 						}
 						this.fireEvent('datachanged');
@@ -441,21 +445,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
  * @param {} node
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursively = function(layerName, node){
-					var self = this;
-					node.eachChild(function(n) {
-			    	if(layerName == n.layer.params.LAYERS)
-			        n.getUI().toggleCheck(true);
-			        if(n.hasChildNodes){
-			        n.expand();
-			        self.checkRecursively(layerName,n);
-			        }
-			    	});
+	var self = this;
+	node.eachChild(function(n) {
+		if (layerName == n.layer.params.LAYERS)
+			n.getUI().toggleCheck(true);
+		if (n.hasChildNodes) {
+			n.expand();
+			self.checkRecursively(layerName, n);
+		}
+	});
 			        
 }
 
 /**
  * Remove a service from the panel
- * @param service de.ingrid.mapclient.frontend.data.Service instance
+ * 
+ * @param service
+ *            de.ingrid.mapclient.frontend.data.Service instance
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
 		service, supressMsgs, activeNode) {
@@ -897,17 +903,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 		}
 		var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
 		//check if our layers upport the map projection
-		if(layer.data.bbox[srs]){
-			bbox = layer.data.bbox[srs].bbox;
-			bounds = new OpenLayers.Bounds.fromArray(bbox);
-		} else {
-			// try to get bounding box from LatLonBoundingBox property
-			var llbbox = layer.data.llbbox;
-			bounds = new OpenLayers.Bounds.fromArray(llbbox);
-			var projMap = new OpenLayers.Projection(srs);
-			var projLayer = new OpenLayers.Projection("EPSG:4326"); // WGS84
-			bounds.transform(projLayer, projMap);
-		}
+		bounds = this._getBoundingBoxFromLayer(layer, srs);
 	} else {
 		// NON WMS Layer (KML Layer)
 		var srsIn = attributes.layer.projection.projCode;
@@ -920,6 +916,60 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.bboxOfLayerE
 	}
 	return bounds;
 };
+
+/**
+ * Extract Bounding Box from Layer. Try to get it first from bbox and then from llbbox.
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype._getBoundingBoxFromLayer = function(layer, currentProjection) {
+	if(layer.data.bbox[currentProjection]){
+		bbox = layer.data.bbox[currentProjection].bbox;
+		return new OpenLayers.Bounds.fromArray(bbox);
+	} else {
+		// try to get bounding box from LatLonBoundingBox property
+		var llbbox = layer.data.llbbox;
+		if (llbbox) {
+			var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+			var projMap = new OpenLayers.Projection(currentProjection);
+			var projLayer = new OpenLayers.Projection("EPSG:4326"); // WGS84
+			bounds.transform(projLayer, projMap);
+			return bounds;
+		}
+	}
+	return null;
+};
+
+/**
+ * Check all layers of a service for the global bounding box
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getBoundsFromSubLayers = function(service) {
+	var srs    = this.map.projection;
+	var maxBounds = null;
+	var self = this;
+	var layers = service.capabilitiesStore.data.items;
+	
+	Ext.each(layers, function(layer) {
+		var bounds = self._getBoundingBoxFromLayer(layer, srs);
+		if (bounds && maxBounds === null) maxBounds = bounds;
+		else if (bounds) maxBounds.extend(bounds);
+	});
+	return maxBounds;
+};
+
+/**
+ * Check all layers of a service for the minScale attribute
+ */
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getMinScaleFromSubLayers = function(service) {
+	var minScale = null;
+	var layers = service.capabilitiesStore.data.items;
+	
+	Ext.each(layers, function(layer) {
+		if (minScale === null || minScale < layer.data.minScale) 
+			minScale = layer.data.minScale;
+		
+	});
+	return minScale;
+};
+
 /**
  * disable/enable layer nodes recursively, based on the fact if they support our current zoomlevel
  * @param {} node
