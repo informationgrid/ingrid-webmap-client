@@ -8,6 +8,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * The panels fires a 'datachanged' event, if the list of services changed.
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel, {
+	id: 'activeServices',
 	title: i18n('tAktiveDienste'),
 	autoScroll: true,
 
@@ -81,6 +82,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: false,
 		handler: function(btn) {
 			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
+				id: 'newServiceDialog',
 				activeServicesPanel: self,
 				ctrls: self.ctrls
 			}).show();
@@ -557,6 +559,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpacitySlider = function(layer) {
 	var self = this;
 	this.opacityDialog = new de.ingrid.mapclient.frontend.controls.OpacityDialog({
+		id: 'opacityDialog',
 		layer: layer
 	});
 	this.opacityDialog.on('close', function(){

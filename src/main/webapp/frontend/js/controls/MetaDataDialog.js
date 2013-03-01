@@ -7,6 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class MetaDataDialog is the dialog for displaying meta data about a wms or wms layer.
  */
 de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
+	cls: 'metadataDialog',
 	title: i18n('tMetadaten'),
 	closable: true,
 	draggable: true,

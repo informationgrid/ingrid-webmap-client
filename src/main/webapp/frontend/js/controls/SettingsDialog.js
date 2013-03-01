@@ -7,6 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class SettingsDialog is the dialog for configuring the map view.
  */
 de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
+	id: 'settingsDialog',
 	title: i18n('tErweiterteEinstellungen'),
 	closable: false,
 	draggable: true,

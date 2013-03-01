@@ -134,6 +134,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel(
 					{
+						id : "serviceCategory_" + mapServiceCategories[i].name,
 						mapServiceCategory : mapServiceCategories[i],
 						activeServicesPanel : this.activeServicesPanel
 					});
@@ -351,6 +352,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						
 						if(!printActive){
 						printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
+									id: 'printDialog',
 									mapPanel : mapPanel,
 									legendPanel : legendPanel
 								});
@@ -375,6 +377,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					handler : function(btn) {
 						var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog(
 								{
+									id: 'loadDialog',
 									session : self.session
 								});
 								self.ctrls.keyboardControl.deactivate();
@@ -396,7 +399,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen'),
 			disabled : !this.session.hasUserId(),
 			handler : function(btn) {
-				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({ctrls:self.ctrls});
+				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({id: 'saveDialog', ctrls: self.ctrls});
 				dlg.on('close', function(p) {
 							if (dlg.isSave()) {
 								self.save(false, dlg.getTitle(), dlg
@@ -413,7 +416,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			iconCls : 'iconDownload',
 			tooltip : i18n('tKarteHerunterladen'),
 			handler : function(btn) {
-				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({ctrls:self.ctrls});
+				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({id: 'downloadDialog', ctrls: self.ctrls});
 				dia.on('close', function(p) {
 							if (dia.isSave()) {
 								self.download(dia.getTitle());

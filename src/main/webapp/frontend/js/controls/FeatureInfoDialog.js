@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class FeatureInfoDialog is the dialog used for displaying WMS feature infos.
  */
 de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window, {
-	id:'featInfoDia',
+	id:'featureInfoDialog',
 	title: i18n('tFeatureInfo'),
 	closable: true,
 	draggable: true,
