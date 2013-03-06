@@ -198,7 +198,9 @@ Local = {
         tZumSpeichernErstEinloggen: { en: 'Login to save.', de: 'Zum Speichern erst einloggen.' },
         tZumEntfernenErstEinenDienstMarkieren: { en: 'To remove a service first select one.', de: 'Zum Entfernen erst einen Dienst markieren.' },
         tZurueck: { en: 'Back', de: 'Zur&uuml;ck' },
-        tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' }
+        tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' },
+        Themen: {en: 'Topics', de: 'Themen'},
+		Anbieter: {en: 'Provider', de: 'Anbieter'}
     }
 }
 

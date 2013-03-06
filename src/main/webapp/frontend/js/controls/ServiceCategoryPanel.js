@@ -87,7 +87,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	var node = this.transform(this.mapServiceCategory);
 
 	Ext.apply(this, {
-		title: node.text,
+		title: i18n(node.text),
         rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,
