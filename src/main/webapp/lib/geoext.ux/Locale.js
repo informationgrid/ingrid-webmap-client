@@ -149,7 +149,7 @@ Local = {
         tTitle: { en: 'Layer Title', de: 'Layer Titel' },
         tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen: { en: '<p><strong>With the following actions you can pick a spatial reference to which the search results will be limited:</strong><br/><br/>' 
 				+'<strong>- "Move map"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconDefault"> : Move the map, while pressing the left mouse button.</span><br/><br/>' 
-				+'<strong>- "Gebiet ausw&auml;hlen"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconSelectCoordinates"> : Choose an area which limits the search results. Consider the options at the bottom of the map also.</span><br/><br/>' 
+				+'<strong>- "Select area"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconSelectCoordinates"> : Choose an area which limits the search results. Consider the options at the bottom of the map also.</span><br/><br/>' 
 				+'<strong>- "Select an ID of an administrative unit"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconInfo"> : With this option you can click on any position in the map and receive the official are area identification as area-ID.</span> </p>', 
 				de: '<p><strong>Mit folgenden Aktionen k&ouml;nnen Sie einen Raumbezug ausw&auml;hlen, auf welchen dann die Suchergebnisse eingeschr&auml;nkt werden:</strong><br/><br/>' 
 				+'<strong>- "Karte verschieben"</strong> <span style="margin-bottom:-3px;border:0;padding-left:17px;" class="iconDefault"> : Verschieben Sie den Kartenausschnitt, indem Sie bei gedr&uuml;ckter linker Maustaste die Karte bewegen.</span><br/><br/>' 
