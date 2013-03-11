@@ -161,6 +161,46 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasZoomTool : true
 	    	
 		},
+		"baw_wsv-fullmap": {
+	    	hasServicesPanel: true,
+	    	hasInfoTool: true,
+	    	hasHistoryTool: true,
+	    	hasMeasureTool: true,
+	    	hasPrintTool: true,
+	    	hasLoadTool: true,
+	    	hasSaveTool: true,
+	    	hasHelpTool: true,
+	    	hasProjectionsList: true,
+	    	hasScaleList: true,
+	    	hasAreasList: true,
+	    	hasPermaLink: false,
+	    	isFullScreen: true,
+	    	spacerTop: 182,
+	    	hasSettings: true,
+	    	hasDownloadTool : true,
+	    	hasZoomTool : true
+	    	
+		},
+		"numis-fullmap": {
+	    	hasServicesPanel: true,
+	    	hasInfoTool: true,
+	    	hasHistoryTool: true,
+	    	hasMeasureTool: true,
+	    	hasPrintTool: true,
+	    	hasLoadTool: true,
+	    	hasSaveTool: true,
+	    	hasHelpTool: true,
+	    	hasProjectionsList: true,
+	    	hasScaleList: true,
+	    	hasAreasList: true,
+	    	hasPermaLink: false,
+	    	isFullScreen: true,
+	    	spacerTop: 142,
+	    	hasSettings: true,
+	    	hasDownloadTool : true,
+	    	hasZoomTool : true
+	    	
+		},
 		"portalu-facete-search": {
 	    	hasServicesPanel: false,
 	    	hasAreaTool:true,
