@@ -186,8 +186,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						if(minScale) {
 							var minResolution = OpenLayers.Util.getResolutionFromScale(minScale, self.map.baseLayer.units);
 							if (minResolution < self.map.resolution) {
-								//self.map.zoomToScale((((minScale - self.activeNode.layer.maxScale) * 0.9) + self.activeNode.layer.maxScale ));
-								self.map.zoomToScale(minScale * 0.95);
+								// probably due to a not so exact conversion of the scale
+								// we have to decrease the scale, so that the layer is actually seen (INGRID-2235)
+								self.map.zoomToScale(minScale * 0.9);
 							}
 						}
 						this.fireEvent('datachanged');
