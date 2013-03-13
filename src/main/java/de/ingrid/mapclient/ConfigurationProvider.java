@@ -60,6 +60,7 @@ public enum ConfigurationProvider {
 	private static final String DOWNLOAD_DIR = "mapdownload.dir";
 	private static final String SINGLE_TILE = "frontend.singleTile";
     private static final String TRANSITION_EFFECT = "frontend.transitionEffect";
+    private static final String WMS_DIR = "wms.dir";
 	
 
 	private Properties properties = null;
@@ -203,6 +204,9 @@ public enum ConfigurationProvider {
         return TRANSITION_EFFECT;
     }
 	
+    public String getWMSDir(){
+    	return this.properties.getProperty(WMS_DIR);
+    }
 	
 	/**
 	 * Get the map client configuration

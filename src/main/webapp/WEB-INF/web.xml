@@ -43,6 +43,17 @@
 		<url-pattern>/pdf/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+        <servlet-name>wms</servlet-name>
+        <servlet-class>de.ingrid.mapclient.servlet.WMSServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>wms</servlet-name>
+        <url-pattern>/wms/*</url-pattern>
+    </servlet-mapping>
+	
 	<!-- which resources should be protected -->
 	<security-constraint>
 		<web-resource-collection>

@@ -615,33 +615,38 @@ public class ConfigurationResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void addServiceOrgCopy(String service, @Context HttpServletRequest req) throws IOException {
 		try {
-				JSONObject json = new JSONObject(service);
-				HashMap<String, String> url = makeOrgCopyOfService(json, req);
-				if(url != null){
-					WmsService wmsService = findService(json);
-					wmsService.setCapabilitiesUrlOrg(url.get("urlOrg"));
-					ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
-				}else{
-					Exception ex = new Exception();
-					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
-				}
+			JSONObject json = new JSONObject(service);
+			HashMap<String, String> url = makeOrgCopyOfService(json, req);
+			if(url != null){
+				WmsService wmsService = findService(json);
+				wmsService.setCapabilitiesUrlOrg(url.get("urlOrg"));
+				ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
+			}else{
+				Exception ex = new Exception();
+				throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			}
 		}
 		catch (Exception ex) {
 			log.error("some error", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
-	}	
+	}
 	
 	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req){
 		HashMap<String, String> urls = null;
 		String urlOrg = null;
 		String urlPrefix = null;
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		String path = p.getWMSDir();
 		try {
 			String capUrl = json.getString("originalCapUrl");			
 			String capabilitiesUrl = json.getString("capabilitiesUrl");
 			
 			// Create WMS original Copy
-			String path = req.getSession().getServletContext().getRealPath("wms");
+			File wmsDir = new File(path);
+			if(!wmsDir.exists()){
+				wmsDir.mkdir();
+			}
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
@@ -669,20 +674,9 @@ public class ConfigurationResource {
 			if(urls == null){
 				urls = new HashMap<String, String>();
 			}
-			urls.put("url", json.getString("capabilitiesUrl"));
 			urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
 			
-			// Write WMS copy
-			HashMap<String, String> fileNames = new HashMap<String, String>();
-			
-			String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
-			String [] splitFileName = fileName.split("\\?");
-			fileNames.put("url", path + "" + splitFileName[0]);
-			fileNames.put("urlOrg", path + "/" + urlOrg);
-			writeWmsCopyToFile(doc, req, title, urlPrefix+urlOrg+"?REQUEST=GetCapabilities", fileNames);
-			
 		} catch (JSONException e) {
-			
 			log.error("Unable to decode json object: "+e);
 		} catch (Exception e) {
 			log.error("Error on doing request: "+e);
@@ -761,11 +755,10 @@ public class ConfigurationResource {
 	@Consumes(MediaType.TEXT_PLAIN)
 	public void removeService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
-				JSONObject jsonService = new JSONObject(service);
-				removeFromConfig(jsonService);
-				deleteWmsFile(jsonService, req);				
-		}
-		catch (Exception ex) {
+			JSONObject jsonService = new JSONObject(service);
+			removeFromConfig(jsonService);
+			deleteWmsFile(jsonService, req);				
+		}catch (Exception ex) {
 			log.error("some error", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
@@ -823,10 +816,11 @@ public class ConfigurationResource {
 		String originalCapUrl = jsonService.getString("originalCapUrl"); 
 		String title = jsonService.getString("title"); 
 		HashMap<String, String> fileNames = new HashMap<String, String>();
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		String path = p.getWMSDir();
 		
 		String fileName = capabilitiesUrl.substring(capabilitiesUrl.lastIndexOf("/"), capabilitiesUrl.length());			
 		String [] splitFileName = fileName.split("\\?");
-		String path = req.getSession().getServletContext().getRealPath("wms");
 		fileNames.put("url", path + "" + splitFileName[0]);
 		fileName = capabilitiesUrlOrg.substring(capabilitiesUrlOrg.lastIndexOf("/"), capabilitiesUrlOrg.length());			
 		splitFileName = fileName.split("\\?");
@@ -991,8 +985,14 @@ public class ConfigurationResource {
 		String url = null;
 		String urlOrg = null;
 		String urlPrefix = null;
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		String path = p.getWMSDir();
 		try {
-			String path = req.getSession().getServletContext().getRealPath("wms");
+			File wmsDir = new File(path);
+			if(!wmsDir.exists()){
+				wmsDir.mkdir();
+			}
+			
 			urlPrefix = req.getRequestURL().toString();
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
@@ -1165,11 +1165,13 @@ public class ConfigurationResource {
 	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
 
 			String url;
+			ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+			String path = p.getWMSDir();
+			
 			try {
 				url = json.getString("capabilitiesUrl");
 				String fileName = url.substring(url.lastIndexOf("/"), url.length());			
 				String [] splitFileName = fileName.split("\\?");
-				String path = req.getSession().getServletContext().getRealPath("wms");
 				File f = new File(path+splitFileName[0]);
 				boolean deleted = false;
 				if(f.exists())
@@ -1191,8 +1193,8 @@ public class ConfigurationResource {
 			List<WmsService> services = pConf.getWmsServices();
 			WmsService service = findService(jsonService);
 			if(service != null){
-			services.remove(service);
-			p.write(pConf);
+				services.remove(service);
+				p.write(pConf);
 			}else{
 				log.error("could not find requested service");
 			}
@@ -1286,13 +1288,15 @@ public class ConfigurationResource {
 
 	private void updateServiceFile(JSONObject jsonService, HttpServletRequest req) {
 		String url;
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		String path = p.getWMSDir();
+		
 		try {
 			// Get original copy xml file
 			url = jsonService.getString("capabilitiesUrlOrg");
 			String fileName = url.substring(url.lastIndexOf("/"), url.length());
 			String [] splitFileName = fileName.split("\\?");
-			String path = req.getSession().getServletContext().getRealPath("wms");
-			File f = new File(path+splitFileName[0]);	
+			File f = new File(path+splitFileName[0]);
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -1310,8 +1314,7 @@ public class ConfigurationResource {
 			url = jsonService.getString("capabilitiesUrl");
 			fileName = url.substring(url.lastIndexOf("/"), url.length());
 			splitFileName = fileName.split("\\?");
-			path = req.getSession().getServletContext().getRealPath("wms");
-			f = new File(path+splitFileName[0]);	
+			f = new File(path+splitFileName[0]);
 			
 			//change the xml structure for copy
 			doc = changeXml(doc, jsonService);
@@ -1340,7 +1343,9 @@ public class ConfigurationResource {
 		String name = "";
 		try {
 			Node n = (Node) xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);
-			name = n.getTextContent();
+			if(n != null){
+				name = n.getTextContent();
+			}
 		} catch (XPathExpressionException e) {
 			log.error("XPathExpressionException on get xm name: ",e);
 		}
