@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><!--INSPIRE-Capabilities automatisch erzeugt: Tue Jul 10 23:45:58 CEST 2012
-091dca89-514f-3db8-bf9c-b60a5c405230 Dienste-Metadaten über CSW erreichbar!
-bauensembleO e41e5c80-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
-bodendenkmalO e40185b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
-einzeldenkmalO e437ff00-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
-einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
+<?xml version="1.0" encoding="UTF-8"?><!--INSPIRE-Capabilities automatisch erzeugt: Wed Mar 20 02:53:54 CET 2013
+2377175b-7cd0-339f-8027-a713e2445734 Dienste-Metadaten über CSW NICHT erreichbar!
+bauensembleO Keine Metadaten-Referenz in Registry gefunden!
+bodendenkmalO Keine Metadaten-Referenz in Registry gefunden!
+einzeldenkmalO Keine Metadaten-Referenz in Registry gefunden!
+landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
 --><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
-  <!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=PDF OUTPUT=SWF OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=CAIRO SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=GEOS INPUT=TIFF INPUT=EPPL7 INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+  <!-- MapServer version 6.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=GD SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
   <Service>
     <Name>OGC:WMS</Name>
     <Title>Denkmäler Bayern</Title>
-    <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt.</Abstract>
+    <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt. Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
     <KeywordList>
       <Keyword>infoMapAccessService</Keyword>
       <Keyword>Bayerisches Landesamt für Denkmalpflege</Keyword>
@@ -22,9 +22,10 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
       <Keyword>Archäologie</Keyword>
       <Keyword>Baudenkmal</Keyword>
       <Keyword>Ensemble</Keyword>
+      <Keyword>Landschaftsprägendes Denkmal</Keyword>
       <Keyword>Schutzgebiet</Keyword>
     </KeywordList>
-    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
     <ContactInformation>
       <ContactPersonPrimary>
         <ContactPerson>Roland Wanninger</ContactPerson>
@@ -51,10 +52,10 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -63,32 +64,34 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <Format>image/png</Format>
         <Format>image/jpeg</Format>
         <Format>image/gif</Format>
-        <Format>image/png; mode=24bit</Format>
-        <Format>image/vnd.wap.wbmp</Format>
-        <Format>image/tiff</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>application/x-pdf</Format>
         <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
       </GetMap>
       <GetFeatureInfo>
-        <Format>text/plain</Format>
         <Format>text/html</Format>
         <Format>application/vnd.ogc.gml</Format>
+        <Format>text/plain</Format>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -98,10 +101,10 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -110,15 +113,14 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <Format>image/png</Format>
         <Format>image/jpeg</Format>
         <Format>image/gif</Format>
-        <Format>image/png; mode=24bit</Format>
-        <Format>image/vnd.wap.wbmp</Format>
+        <Format>image/png; mode=8bit</Format>
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -128,10 +130,10 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -145,7 +147,7 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
     <VendorSpecificCapabilities>
       <inspire_vs:ExtendedCapabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0">
         <inspire_common:MetadataUrl xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="inspire_common:resourceLocatorType">
-          <inspire_common:URL xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">http://geoportal.bayern.de/csw/bvv?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=091dca89-514f-3db8-bf9c-b60a5c405230</inspire_common:URL>
+          <inspire_common:URL xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">http://geoportal.bayern.de/csw/bvv?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=2377175b-7cd0-339f-8027-a713e2445734</inspire_common:URL>
           <inspire_common:MediaType xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
         </inspire_common:MetadataUrl>
         <inspire_common:SupportedLanguages xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
@@ -162,7 +164,7 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
     <Layer noSubsets="0" opaque="0" queryable="0">
       <Name>OGC:WMS</Name>
       <Title>Denkmal-Daten (BLfD)</Title>
-      <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt.</Abstract>
+      <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt. Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
       <KeywordList>
         <Keyword>Bayerisches Landesamt für Denkmalpflege</Keyword>
         <Keyword>BLfD</Keyword>
@@ -174,6 +176,7 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <Keyword>Archäologie</Keyword>
         <Keyword>Baudenkmal</Keyword>
         <Keyword>Ensemble</Keyword>
+        <Keyword>Landschaftsprägendes Denkmal</Keyword>
         <Keyword>Schutzgebiet</Keyword>
       </KeywordList>
       <SRS>EPSG:31468</SRS>
@@ -232,20 +235,12 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
-        <AuthorityURL name="BVV">
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
-        </AuthorityURL>
-        <Identifier authority="BVV">DE-BY-df60cccc-6dcb-4214-a8d0-685a2938884f</Identifier>
-        <MetadataURL type="TC211">
-          <Format>text/xml</Format>
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e41e5c80-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
-        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="23" width="83">
+          <LegendURL height="21" width="75">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bauensembleO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bauensembleO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
@@ -270,26 +265,18 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
-        <AuthorityURL name="BVV">
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
-        </AuthorityURL>
-        <Identifier authority="BVV">DE-BY-90b82dfe-f14b-4309-bf4f-62ead156d02c</Identifier>
-        <MetadataURL type="TC211">
-          <Format>text/xml</Format>
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e40185b0-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
-        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="41" width="281">
+          <LegendURL height="37" width="240">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bodendenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bodendenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>einzeldenkmalO</Name>
-        <Title>nachqualifiziertes Baudenkmal</Title>
+        <Title>Baudenkmal</Title>
         <Abstract>Kartierung der bekannten Baudenkmäler nach Art.1 Abs.2 und Art.2 BayDSchG (Denkmalliste). Die Denkmaleigenschaft hängt nicht von der Kartierung und der Eintragung in die Bayerische Denkmalliste ab. Auch Objekte, die nicht in der Bayerischen Denkmalliste verzeichnet sind, können Denkmäler sein, wenn sie die Kriterien nach Art.1 BayDSchG erfüllen. Bei allen Vorhaben ist eine frühzeitige Beteiligung des Bayerischen Landesamtes für Denkmalpflege nach Art.6 BayDSchG notwendig.</Abstract>
         <KeywordList>
           <Keyword>Baudenkmal</Keyword>
@@ -306,30 +293,21 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
-        <AuthorityURL name="BVV">
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
-        </AuthorityURL>
-        <Identifier authority="BVV">DE-BY-92af4b9e-ef75-45b8-8390-a895062153e6</Identifier>
-        <MetadataURL type="TC211">
-          <Format>text/xml</Format>
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e437ff00-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
-        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="41" width="383">
+          <LegendURL height="37" width="230">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
-        <Name>einzeldenkmalNQO</Name>
-        <Title>nicht nachqualifiziertes Baudenkmal</Title>
-        <Abstract>Kartierung der bekannten Baudenkmäler nach Art.1 Abs.2 und Art.2 BayDSchG (Denkmalliste). Die Denkmaleigenschaft hängt nicht von der Kartierung und der Eintragung in die Bayerische Denkmalliste ab. Auch Objekte, die nicht in der Bayerischen Denkmalliste verzeichnet sind, können Denkmäler sein, wenn sie die Kriterien nach Art.1 BayDSchG erfüllen. Bei den nicht nachqualifizierten Baudenkmälern handelt es sich um geocodierte Adressen, d.h. es wird um die Hausnummernkoordinate des Baudenkmals kartiert. In diesem Fall können zusätzlich weitere Neben- oder Rückgebäude auch Bestandteil des Baudenkmals sein. Bei allen Vorhaben ist eine frühzeitige Beteiligung des Bayerischen Landesamtes für Denkmalpflege nach Art.6 BayDSchG notwendig</Abstract>
+        <Name>landschaftsdenkmalO</Name>
+        <Title>Landschaftsprägendes Denkmal</Title>
+        <Abstract>Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
         <KeywordList>
-          <Keyword>Baudenkmal</Keyword>
-          <Keyword>Einzeldenkmal</Keyword>
+          <Keyword>Landschaftsprägendes Denkmal</Keyword>
         </KeywordList>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31467</SRS>
@@ -342,20 +320,12 @@ einzeldenkmalNQO e44fa5b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW 
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
-        <AuthorityURL name="BVV">
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
-        </AuthorityURL>
-        <Identifier authority="BVV">DE-BY-02e6bfaf-7a20-4e6f-94a4-d665aa3111ee</Identifier>
-        <MetadataURL type="TC211">
-          <Format>text/xml</Format>
-          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e44fa5b0-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
-        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="41" width="419">
+          <LegendURL height="21" width="180">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalNQO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=landschaftsdenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>

@@ -113,7 +113,7 @@
     <SRS>EPSG:4258</SRS>
     <LatLonBoundingBox maxx="14.2483" maxy="53.1844" minx="6.02754" miny="48.4825"/>
     <BoundingBox SRS="EPSG:4326" maxx="14.2483" maxy="53.1844" minx="6.02754" miny="48.4825"/>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-b7ce93fc374512edc259ce54c3dd1469</Name>
     <Title>Blattschnitte</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>Blattschnitte</Name>

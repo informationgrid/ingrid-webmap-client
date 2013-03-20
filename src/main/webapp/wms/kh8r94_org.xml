@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Wasserschutzgebiete NRW</Title>
+  <Abstract>WMS-Dienst mit den Wasserschutzgebieten des Landes Nordrhein-Westfalen</Abstract>
+        <KeywordList>
+          <Keyword>Wasserschutzgebiete</Keyword>
+          <Keyword> Schutzgebiete</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Stephanie Kempkes</ContactPerson>
+      <ContactOrganization>Landesamt für Natur, Umwelt und Verbraucherschutz NRW</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition/>
+    <ContactAddress>
+        <AddressType>postalisch</AddressType>
+        <Address>Postfach 10 23 63</Address>
+        <City>Essen</City>
+        <StateOrProvince>DE-NW</StateOrProvince>
+        <PostCode>45023</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49 (0)211 - 1590 2202</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49 (0)211 - 1590 2202</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>Stephanie.Kempkes@lanuv.nrw.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>siehe http://www.geocatalog.de</Fees>
+  <AccessConstraints>siehe http://www.geocatalog.de</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/gif</Format>
+      <Format>image/png</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/gif</Format>
+      <Format>image/png</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/umwelt/wasser/wsg?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>wsg</Name>
+    <Title>Wasserschutzgebiete NRW</Title>
+    <Abstract>WMS-Dienst mit den Wasserschutzgebieten des Landes Nordrhein-Westfalen</Abstract>
+    <KeywordList>
+     <Keyword>Wasserschutzgebiete</Keyword>
+     <Keyword> Schutzgebiete</Keyword>
+    </KeywordList>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25831</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:28992</SRS>
+    <SRS>EPSG:31467</SRS>
+    <LatLonBoundingBox maxx="9.53154" maxy="52.602" minx="5.72499" miny="50.1506"/>
+    <BoundingBox SRS="EPSG:25832" maxx="536000" maxy="5.828e+06" minx="278000" miny="5.56e+06"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>heilquellenschutzgebiete</Name>
+        <Title>Heilquellenschutzgebiete</Title>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.54523" maxy="52.4747" minx="5.70088" miny="50.3472"/>
+        <BoundingBox SRS="EPSG:25832" maxx="537034" maxy="5.81384e+06" minx="275715" miny="5.58199e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="329" width="189">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/wasserschutzgebiete/wsg_legende_heilquellenschutzgebiete.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>trinkwasserschutzgebiete</Name>
+        <Title>Trinkwasserschutzgebiete</Title>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.54523" maxy="52.4747" minx="5.70088" miny="50.3472"/>
+        <BoundingBox SRS="EPSG:25832" maxx="537034" maxy="5.81384e+06" minx="275715" miny="5.58199e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="527" width="238">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/wasserschutzgebiete/wsg_legende_trinkwasserschutzgebiete.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>trinkwasser</Name>
+        <Title>Trinkwasser, Zone I, punktfoermig</Title>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.41471" maxy="52.4633" minx="5.92893" miny="50.3575"/>
+        <BoundingBox SRS="EPSG:25832" maxx="528176" maxy="5.81257e+06" minx="291190" miny="5.5825e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="23" width="266">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/wasserschutzgebiete/wsg_legende_trinkwasser.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>heilquellen</Name>
+        <Title>Heilquellen, Zone I, punktfoermig</Title>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.41471" maxy="52.4633" minx="5.92893" miny="50.3575"/>
+        <BoundingBox SRS="EPSG:25832" maxx="528176" maxy="5.81257e+06" minx="291190" miny="5.5825e+06"/>
+        <Style>
+          <Name/>
+          <Title/>
+          <LegendURL height="23" width="266">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/legenden/wasserschutzgebiete/wsg_legende_heilquellen.png" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

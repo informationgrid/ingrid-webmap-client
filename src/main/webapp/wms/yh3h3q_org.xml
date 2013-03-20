@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name><![CDATA[WMS]]></Name>
+		<Title><![CDATA[BK50]]></Title>
+		<Abstract>Dieser WMS gibt dem Informationssystem entsprechend die Inhalte der Bodenkarte von Nordrhein-Westfalen im Maßstab 1 : 50 000 blattschnittfrei wieder. Es liegt bis auf kleine Restflächen im Grenzgebiet zum Nachbarland Niedersachsen für ganz Nordrhein-Westfalen vor. Die Inhalte werden durch neue Erkenntnisse ergänzt und aktualisiert.</Abstract>
+		<KeywordList>
+			<Keyword><![CDATA[Bestandsaufnahme]]></Keyword>
+			<Keyword><![CDATA[Bodenart]]></Keyword>
+			<Keyword><![CDATA[Bodenartenschichtung]]></Keyword>
+			<Keyword><![CDATA[Bodenbeschaffenheit]]></Keyword>
+			<Keyword><![CDATA[Bodenbewertung]]></Keyword>
+			<Keyword><![CDATA[Bodenbonitierung]]></Keyword>
+			<Keyword><![CDATA[Bodeneigenschaft]]></Keyword>
+			<Keyword><![CDATA[Bodeneinheit]]></Keyword>
+			<Keyword><![CDATA[Bodenfunktion]]></Keyword>
+			<Keyword><![CDATA[Bodeninformationssystem]]></Keyword>
+			<Keyword><![CDATA[Bodeninventur]]></Keyword>
+			<Keyword><![CDATA[Bodenkarte]]></Keyword>
+			<Keyword><![CDATA[Bodenkunde]]></Keyword>
+			<Keyword><![CDATA[Bodennutzung]]></Keyword>
+			<Keyword><![CDATA[Bodenschutz]]></Keyword>
+			<Keyword><![CDATA[Bodentyp]]></Keyword>
+			<Keyword><![CDATA[Bodenverbreitung]]></Keyword>
+			<Keyword><![CDATA[Bodenvergesellschaftung]]></Keyword>
+			<Keyword><![CDATA[Datenbank]]></Keyword>
+			<Keyword><![CDATA[Effektiver Wurzelraum]]></Keyword>
+			<Keyword><![CDATA[Effektive Wurzeltiefe]]></Keyword>
+			<Keyword><![CDATA[Erodierbarkeit]]></Keyword>
+			<Keyword><![CDATA[Feldkapazität]]></Keyword>
+			<Keyword><![CDATA[Flächendaten]]></Keyword>
+			<Keyword><![CDATA[Flächendatenbank]]></Keyword>
+			<Keyword><![CDATA[Geographisches Informationssystem]]></Keyword>
+			<Keyword><![CDATA[Geologisches Ausgangsgestein]]></Keyword>
+			<Keyword><![CDATA[Grundwasser]]></Keyword>
+			<Keyword><![CDATA[Grundwasserschutz]]></Keyword>
+			<Keyword><![CDATA[Informationssystem]]></Keyword>
+			<Keyword><![CDATA[Ionenaustausch]]></Keyword>
+			<Keyword><![CDATA[Kapillare Aufstiegsrate]]></Keyword>
+			<Keyword><![CDATA[Karte]]></Keyword>
+			<Keyword><![CDATA[Kartieranleitung]]></Keyword>
+			<Keyword><![CDATA[Kartierung]]></Keyword>
+			<Keyword><![CDATA[Kationen]]></Keyword>
+			<Keyword><![CDATA[Kationenaustauschkapazität]]></Keyword>
+			<Keyword><![CDATA[Landesaufnahme]]></Keyword>
+			<Keyword><![CDATA[Landesvermessung]]></Keyword>
+			<Keyword><![CDATA[Landschaftsplanung]]></Keyword>
+			<Keyword><![CDATA[Luftaustauschkapazität]]></Keyword>
+			<Keyword><![CDATA[Nährstoffhaushalt]]></Keyword>
+			<Keyword><![CDATA[Naturschutz]]></Keyword>
+			<Keyword><![CDATA[Nutzbare Feldkapazität]]></Keyword>
+			<Keyword><![CDATA[Ökologische Feuchtestufe]]></Keyword>
+			<Keyword><![CDATA[Regionale Verteilung]]></Keyword>
+			<Keyword><![CDATA[Schutzbedürftigkeit]]></Keyword>
+			<Keyword><![CDATA[Schutzwürdigkeit]]></Keyword>
+			<Keyword><![CDATA[Sickerwasser]]></Keyword>
+			<Keyword><![CDATA[Sickerwasserrate]]></Keyword>
+			<Keyword><![CDATA[Standorteigenschaften]]></Keyword>
+			<Keyword><![CDATA[Staunässe]]></Keyword>
+			<Keyword><![CDATA[Versickerungseignung]]></Keyword>
+			<Keyword><![CDATA[Wasserhaushalt]]></Keyword>
+			<Keyword><![CDATA[Wasserleitfähigkeit]]></Keyword>
+			<Keyword><![CDATA[Wasserverhältnisse]]></Keyword>
+			<Keyword><![CDATA[Wertzahl]]></Keyword>
+			<Keyword><![CDATA[Wertzahlen der Bodenschätzung]]></Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/bk050" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson><![CDATA[Herr Dipl. Min. Siegfried Schneider]]></ContactPerson>
+				<ContactOrganization><![CDATA[Geologischer Dienst Nordrhein-Westfalen]]></ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition><![CDATA[Fachbereich 22 - Fachinformationssystem Bodenkunde]]></ContactPosition>
+			<ContactAddress>
+				<AddressType><![CDATA[postalisch]]></AddressType>
+				<Address><![CDATA[De-Greiff-Straße 195]]></Address>
+				<City><![CDATA[Krefeld]]></City>
+				<StateOrProvince><![CDATA[Nordrhein-Westfalen]]></StateOrProvince>
+				<PostCode><![CDATA[47803]]></PostCode>
+				<Country><![CDATA[Deutschland]]></Country>
+			</ContactAddress>
+			<ContactVoiceTelephone><![CDATA[+49 (0) 2151 897-377]]></ContactVoiceTelephone>
+			<ContactFacsimileTelephone><![CDATA[+49 (0) 2151 897-222]]></ContactFacsimileTelephone>
+			<ContactElectronicMailAddress><![CDATA[siegfried.schneider@gd.nrw.de]]></ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees/>
+		<AccessConstraints/>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/bk050" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/bk050" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis4.nrw.de/Geologischer_Dienst/BK50_Servlet" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.wms.nrw.de/gd/bk050" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a367486925950521dd28bff0eae9e183</Name>
+			<Title><![CDATA[Bodenkarte 1:50000]]></Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:25831</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:3034</SRS>
+			<SRS>EPSG:3035</SRS>
+			<SRS>EPSG:3043</SRS>
+			<SRS>EPSG:3044</SRS>
+			<SRS>EPSG:3045</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:28992</SRS>
+			<LatLonBoundingBox maxx="9.706149" maxy="52.675637" minx="5.678295" miny="50.141103"/>
+			<BoundingBox SRS="EPSG:4326" maxx="9.706149" maxy="52.675637" minx="5.678295" miny="50.141103"/>
+			<BoundingBox SRS="EPSG:31466" maxx="2750936.433500" maxy="5837922.679640" minx="2478242.574700" miny="5561878.173760"/>
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-bb5bf1d1f45ff5bb8b29fd923d998dfd</Name>
+				<Title><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Title>
+				<Abstract><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>1</Name>
+					<Title><![CDATA[Grabbarkeit]]></Title>
+					<Abstract><![CDATA[Grabbarkeit]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>1</Title>
+						<LegendURL height="405" width="350">
+							<Format>image/jpeg</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/grabbarkeit.jpg" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="59.396970" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>2</Name>
+					<Title><![CDATA[Bodenwasserverhältnisse]]></Title>
+					<Abstract><![CDATA[Bodenwasserverhältnisse]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>2</Title>
+						<LegendURL height="105" width="173">
+							<Format>image/jpeg</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/bodenwasserverhaeltnisse.jpg" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="59.396970" min="0.0"/>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>3</Name>
+				<Title><![CDATA[Wasserhaushalt]]></Title>
+				<Abstract><![CDATA[Wasserhaushalt]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>3</Title>
+					<LegendURL height="581" width="282">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/wasserhaushalt_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>4</Name>
+				<Title><![CDATA[Wertzahlen der Bodenschätzung]]></Title>
+				<Abstract><![CDATA[Wertzahlen der Bodenschätzung]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>4</Title>
+					<LegendURL height="133" width="202">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/wertzahlen_der_bodenschaetzung_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>5</Name>
+				<Title><![CDATA[Schutzwürdige_Böden]]></Title>
+				<Abstract><![CDATA[Schutzwürdige_Böden]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>5</Title>
+					<LegendURL height="845" width="722">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/schutzwuerdige_boeden.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>6</Name>
+				<Title><![CDATA[Gesamtfilterwirkung]]></Title>
+				<Abstract><![CDATA[Gesamtfilterwirkung]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>6</Title>
+					<LegendURL height="133" width="146">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/gesamtfilterwirkung_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>7</Name>
+				<Title><![CDATA[Ökologische_Feuchtestufe]]></Title>
+				<Abstract><![CDATA[Ökologische_Feuchtestufe]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>7</Title>
+					<LegendURL height="305" width="170">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/oekologische_feuchtestufe_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>8</Name>
+				<Title><![CDATA[Versickerungseignung]]></Title>
+				<Abstract><![CDATA[Versickerungseignung]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>8</Title>
+					<LegendURL height="116" width="146">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/versickerungseignung_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-d20bab3ec5e5443c270231926670853a</Name>
+				<Title><![CDATA[Flurabstand]]></Title>
+				<Abstract><![CDATA[Flurabstand]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>10</Name>
+					<Title><![CDATA[Grenzflurabstand]]></Title>
+					<Abstract><![CDATA[Grenzflurabstand]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>10</Title>
+						<LegendURL height="133" width="171">
+							<Format>image/jpeg</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/grenzflurabstand_klein.jpg" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="59.396970" min="0.0"/>
+				</Layer>
+				<Layer noSubsets="0" opaque="0" queryable="1">
+					<Name>11</Name>
+					<Title><![CDATA[Abstand zum optimalen Flurabstand]]></Title>
+					<Abstract><![CDATA[Abstand zum optimalen Flurabstand]]></Abstract>
+					<SRS>EPSG:4326</SRS>
+					<SRS>EPSG:31466</SRS>
+					<SRS>EPSG:31467</SRS>
+					<SRS>EPSG:25831</SRS>
+					<SRS>EPSG:25832</SRS>
+					<SRS>EPSG:25833</SRS>
+					<SRS>EPSG:3034</SRS>
+					<SRS>EPSG:3035</SRS>
+					<SRS>EPSG:3043</SRS>
+					<SRS>EPSG:3044</SRS>
+					<SRS>EPSG:3045</SRS>
+					<SRS>EPSG:4258</SRS>
+					<SRS>EPSG:28992</SRS>
+					<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+					<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+					<Style>
+						<Name>default</Name>
+						<Title>11</Title>
+						<LegendURL height="171" width="243">
+							<Format>image/jpeg</Format>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/abstand_zum_optimalen_flurabstand_klein.jpg" xlink:type="simple"/>
+						</LegendURL>
+					</Style>
+					<ScaleHint max="59.396970" min="0.0"/>
+				</Layer>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>12</Name>
+				<Title><![CDATA[Erodierbarkeit des Oberbodens]]></Title>
+				<Abstract><![CDATA[Erodierbarkeit des Oberbodens]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>12</Title>
+					<LegendURL height="133" width="193">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/erodierbarkeit_des_oberbodens_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>13</Name>
+				<Title><![CDATA[Kapillaraufstieg von Grundwasser]]></Title>
+				<Abstract><![CDATA[Kapillaraufstieg von Grundwasser]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>13</Title>
+					<LegendURL height="188" width="212">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/kapillaraufstieg_von_grundwasser_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>14</Name>
+				<Title><![CDATA[Gesättigte Wasserleitfähigkeit]]></Title>
+				<Abstract><![CDATA[Gesättigte Wasserleitfähigkeit]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>14</Title>
+					<LegendURL height="150" width="204">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/gesaettigte_wasserleitfaehigkeit_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>15</Name>
+				<Title><![CDATA[Kationenaustauschkapazität]]></Title>
+				<Abstract><![CDATA[Kationenaustauschkapazität]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>15</Title>
+					<LegendURL height="170" width="223">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/kationenaustauschkapazitaet_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>16</Name>
+				<Title><![CDATA[Luftkapazität]]></Title>
+				<Abstract><![CDATA[Luftkapazität]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>16</Title>
+					<LegendURL height="169" width="194">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/luftkapazitaet_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>17</Name>
+				<Title><![CDATA[Feldkapazität]]></Title>
+				<Abstract><![CDATA[Feldkapazität]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>17</Title>
+					<LegendURL height="150" width="196">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/feldkapazitaet_klein.JPG" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>18</Name>
+				<Title><![CDATA[Nutzbare Feldkapazität]]></Title>
+				<Abstract><![CDATA[Nutzbare Feldkapazität]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>18</Title>
+					<LegendURL height="170" width="189">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/nutzbare_feldkapazitaet_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>19</Name>
+				<Title><![CDATA[Bezugstiefe]]></Title>
+				<Abstract><![CDATA[Bezugstiefe]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>19</Title>
+					<LegendURL height="133" width="174">
+						<Format>image/jpeg</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/legende/bezugstiefe_klein.jpg" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>20</Name>
+				<Title><![CDATA[Bodenkarte]]></Title>
+				<Abstract><![CDATA[Bodenkarte]]></Abstract>
+				<SRS>EPSG:4326</SRS>
+				<SRS>EPSG:31466</SRS>
+				<SRS>EPSG:31467</SRS>
+				<SRS>EPSG:25831</SRS>
+				<SRS>EPSG:25832</SRS>
+				<SRS>EPSG:25833</SRS>
+				<SRS>EPSG:3034</SRS>
+				<SRS>EPSG:3035</SRS>
+				<SRS>EPSG:3043</SRS>
+				<SRS>EPSG:3044</SRS>
+				<SRS>EPSG:3045</SRS>
+				<SRS>EPSG:4258</SRS>
+				<SRS>EPSG:28992</SRS>
+				<LatLonBoundingBox maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:4326" maxx="9.514447" maxy="52.562867" minx="5.861924" miny="50.258838"/>
+				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
+				<Style>
+					<Name>default</Name>
+					<Title>20</Title>
+					<LegendURL height="18408" width="100">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gis10.nrw.de/capabilities/Geologischer_Dienst_BK50_MapServer/wms/default20.png" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+				<ScaleHint max="59.396970" min="0.0"/>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

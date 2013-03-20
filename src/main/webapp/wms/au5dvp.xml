@@ -130,7 +130,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a367486925950521dd28bff0eae9e183</Name>
 			<Title><![CDATA[Bodenkarte 1:50000]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
@@ -148,7 +148,7 @@
 			<LatLonBoundingBox maxx="9.706149" maxy="52.675637" minx="5.678295" miny="50.141103"/>
 			<BoundingBox SRS="EPSG:4326" maxx="9.706149" maxy="52.675637" minx="5.678295" miny="50.141103"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2750936.433500" maxy="5837922.679640" minx="2478242.574700" miny="5561878.173760"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-bb5bf1d1f45ff5bb8b29fd923d998dfd</Name>
 				<Title><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Title>
 				<Abstract><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -408,7 +408,7 @@
 				</Style>
 				<ScaleHint max="59.396970" min="0.0"/>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-d20bab3ec5e5443c270231926670853a</Name>
 				<Title><![CDATA[Flurabstand]]></Title>
 				<Abstract><![CDATA[Flurabstand]]></Abstract>
 				<SRS>EPSG:4326</SRS>

@@ -71,14 +71,14 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e736380e35e6c86cd76ca5b30ace77db</Name>
 			<Title><![CDATA[UEK_BK5_NRW]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<LatLonBoundingBox maxx="9.765066" maxy="52.646916" minx="5.653788" miny="50.145590"/>
 			<BoundingBox SRS="EPSG:4326" maxx="9.765066" maxy="52.646916" minx="5.653788" miny="50.145590"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2755102.000000" maxy="5834727.000000" minx="2476569.750000" miny="5562576.000000"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-fab820fa5d5bf17aeeb021ad19896d4a</Name>
 				<Title><![CDATA[BK5_Uebersichtskarte]]></Title>
 				<Abstract><![CDATA[BK5_Uebersichtskarte]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -124,7 +124,7 @@
 					</Style>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-06326e6d5e037de1c217480bcb18b1c2</Name>
 				<Title><![CDATA[Schutzgebiete NSG und WSG]]></Title>
 				<Abstract><![CDATA[Schutzgebiete NSG und WSG]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -188,7 +188,7 @@
 					</Style>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-6a6a9f8c3cdd1f1b2a811a2aa35f6e9e</Name>
 				<Title><![CDATA[Verwaltungsgrenzen]]></Title>
 				<Abstract><![CDATA[Verwaltungsgrenzen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -251,7 +251,7 @@
 					</Style>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-ba427feb819c21e16a3bb92188508c1d</Name>
 				<Title><![CDATA[Blattschnitte]]></Title>
 				<Abstract><![CDATA[Blattschnitte]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -334,7 +334,7 @@
 				</Style>
 				<ScaleHint max="59.396970" min="0.0"/>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-34c7e0d14629486b2e6d6d6d8c85bdb9</Name>
 				<Title><![CDATA[raster]]></Title>
 				<Abstract><![CDATA[raster]]></Abstract>
 				<SRS>EPSG:4326</SRS>

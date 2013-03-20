@@ -106,24 +106,73 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>lungwms</Name>
     <Title>LUNG WMS Server</Title>
+    <SRS>EPSG:4647</SRS>
+    <SRS>EPSG:5650</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:35832</SRS>
+    <SRS>EPSG:35833</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3038</SRS>
+    <SRS>EPSG:3039</SRS>
+    <SRS>EPSG:3040</SRS>
+    <SRS>EPSG:3041</SRS>
+    <SRS>EPSG:3042</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:3046</SRS>
+    <SRS>EPSG:3047</SRS>
+    <SRS>EPSG:4839</SRS>
+    <SRS>EPSG:2176</SRS>
     <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
     <Layer noSubsets="0" opaque="0" queryable="0">
-    <Title>Sicherungswuerdigkeit</Title>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      <Name>Sicherungswuerdigkeit</Name>
+      <Title>Sicherungswuerdigkeit</Title>
+      <Abstract>Sicherungswuerdigkeit</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_l_v_ks_sa_qs</Name>
         <Title>Sicherungswuerdigkeit Lagerstaetten Kiessande und Sande</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4344" maxy="54.813" minx="10.4892" miny="53.1557"/>
         <Style>
           <Name>default</Name>
@@ -134,20 +183,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_l_v_to</Name>
         <Title>Sicherungswuerdigkeit Lagerstaetten Tonige Rohstoffe</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2763" maxy="54.6151" minx="11.0042" miny="53.1478"/>
         <Style>
           <Name>default</Name>
@@ -158,20 +226,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_h_ka</Name>
         <Title>Sicherungswuerdigkeit Hoeffigkeitsgebiete Kalke</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.8078" maxy="54.5644" minx="11.9627" miny="53.3264"/>
         <Style>
           <Name>default</Name>
@@ -182,20 +269,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_h_ks_sa_qs</Name>
         <Title>Sicherungswuerdigkeit Hoeffigkeitsgebiete Sande und Kiessande</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4358" maxy="54.8757" minx="10.4399" miny="53.0845"/>
         <Style>
           <Name>default</Name>
@@ -206,20 +312,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_h_to</Name>
         <Title>Sicherungswuerdigkeit Hoeffigkeitsgebiete Tonige Rohstoffe</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3958" maxy="54.5821" minx="10.6101" miny="53.1706"/>
         <Style>
           <Name>default</Name>
@@ -230,20 +355,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_l_tf</Name>
         <Title>Sicherungswuerdigkeit Abbauflaechen Torf</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.5921" maxy="54.1678" minx="10.9421" miny="53.5735"/>
         <Style>
           <Name>default</Name>
@@ -254,20 +398,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_d_l_v_ka</Name>
         <Title>Sicherungswuerdigkeit Lagerstaetten Kalk</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2604" maxy="54.5485" minx="10.8375" miny="53.3713"/>
         <Style>
           <Name>default</Name>
@@ -278,23 +441,44 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
+      </Layer>
     </Layer>
     <Layer noSubsets="0" opaque="0" queryable="0">
-    <Title>Rohstoffverbreitung</Title>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      <Name>Rohstoffverbreitung</Name>
+      <Title>Rohstoffverbreitung</Title>
+      <Abstract>Rohstoffverbreitung</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_l_tf</Name>
         <Title>Abbauflaechen Torf</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.5921" maxy="54.1678" minx="10.9421" miny="53.5735"/>
         <Style>
           <Name>default</Name>
@@ -305,20 +489,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_h_ka</Name>
         <Title>Hoeffigkeitsgebiete Kalke</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2618" maxy="54.5682" minx="10.8332" miny="53.2939"/>
         <Style>
           <Name>default</Name>
@@ -329,20 +532,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_h_ks_sa_qs</Name>
         <Title>Hoeffigkeitsgebiete Sande und Kiessande</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4358" maxy="54.8757" minx="10.4399" miny="53.0845"/>
         <Style>
           <Name>default</Name>
@@ -353,20 +575,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_h_re</Name>
         <Title>Hoeffigkeitsgebiete Raseneisenerz</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="11.7946" maxy="53.4238" minx="11.0701" miny="53.1324"/>
         <Style>
           <Name>default</Name>
@@ -377,20 +618,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_h_to</Name>
         <Title>Hoeffigkeitsgebiete Tonige Rohstoffe</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3963" maxy="54.6159" minx="10.6007" miny="53.1344"/>
         <Style>
           <Name>default</Name>
@@ -401,20 +661,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_l_v_ka</Name>
         <Title>Lagerstaetten Kalk</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2604" maxy="54.5488" minx="10.8352" miny="53.3712"/>
         <Style>
           <Name>default</Name>
@@ -425,20 +704,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_l_v_ks_sa_qs</Name>
         <Title>Lagerstaetten Sande und Kiessande</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4344" maxy="54.813" minx="10.4892" miny="53.1557"/>
         <Style>
           <Name>default</Name>
@@ -449,20 +747,39 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gk_a_l_v_to</Name>
         <Title>Lagerstaetten Tonige Rohstoffe</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2763" maxy="54.6151" minx="11.0038" miny="53.1478"/>
         <Style>
           <Name>default</Name>
@@ -473,7 +790,7 @@
           </LegendURL>
         </Style>
         <ScaleHint max="1247.25712107409" min="4.98902848429637"/>
-    </Layer>
+      </Layer>
     </Layer>
   </Layer>
 </Capability>

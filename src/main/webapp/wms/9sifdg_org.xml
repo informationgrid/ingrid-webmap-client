@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><!--INSPIRE-Capabilities automatisch erzeugt: Wed Mar 20 02:53:54 CET 2013
+2377175b-7cd0-339f-8027-a713e2445734 Dienste-Metadaten über CSW NICHT erreichbar!
+bauensembleO Keine Metadaten-Referenz in Registry gefunden!
+bodendenkmalO Keine Metadaten-Referenz in Registry gefunden!
+einzeldenkmalO Keine Metadaten-Referenz in Registry gefunden!
+landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
+--><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+  <!-- MapServer version 6.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=GD SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+  <Service>
+    <Name>OGC:WMS</Name>
+    <Title>Denkmal-Daten (BLfD)</Title>
+    <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt. Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
+    <KeywordList>
+      <Keyword>infoMapAccessService</Keyword>
+      <Keyword>Bayerisches Landesamt für Denkmalpflege</Keyword>
+      <Keyword>BLfD</Keyword>
+      <Keyword>Denkmal</Keyword>
+      <Keyword>Denkmalschutz</Keyword>
+      <Keyword>Denkmalpflege</Keyword>
+      <Keyword>Denkmalschutzgesetz(BayDSchG)</Keyword>
+      <Keyword>Bodendenkmal</Keyword>
+      <Keyword>Archäologie</Keyword>
+      <Keyword>Baudenkmal</Keyword>
+      <Keyword>Ensemble</Keyword>
+      <Keyword>Landschaftsprägendes Denkmal</Keyword>
+      <Keyword>Schutzgebiet</Keyword>
+    </KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>Roland Wanninger</ContactPerson>
+        <ContactOrganization>Bayerisches Landesamt für Denkmalpflege</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Hofgraben 4</Address>
+        <City>München</City>
+        <StateOrProvince>DE-BY</StateOrProvince>
+        <PostCode>80539</PostCode>
+        <Country>DE</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49-89-2114-271</ContactVoiceTelephone>
+      <ContactElectronicMailAddress>roland.wanninger@blfd.bayern.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>© BLfD</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/png</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/gif</Format>
+        <Format>image/png; mode=8bit</Format>
+        <Format>application/x-pdf</Format>
+        <Format>image/svg+xml</Format>
+        <Format>image/tiff</Format>
+        <Format>application/vnd.google-earth.kml+xml</Format>
+        <Format>application/vnd.google-earth.kmz</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/html</Format>
+        <Format>application/vnd.ogc.gml</Format>
+        <Format>text/plain</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+      <DescribeLayer>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </DescribeLayer>
+      <GetLegendGraphic>
+        <Format>image/png</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/gif</Format>
+        <Format>image/png; mode=8bit</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetLegendGraphic>
+      <GetStyles>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Get>
+            <Post>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+            </Post>
+          </HTTP>
+        </DCPType>
+      </GetStyles>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>application/vnd.ogc.se_inimage</Format>
+      <Format>application/vnd.ogc.se_blank</Format>
+    </Exception>
+    <VendorSpecificCapabilities>
+      <inspire_vs:ExtendedCapabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0">
+        <inspire_common:MetadataUrl xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="inspire_common:resourceLocatorType">
+          <inspire_common:URL xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">http://geoportal.bayern.de/csw/bvv?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=2377175b-7cd0-339f-8027-a713e2445734</inspire_common:URL>
+          <inspire_common:MediaType xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
+        </inspire_common:MetadataUrl>
+        <inspire_common:SupportedLanguages xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+          <inspire_common:DefaultLanguage xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+            <inspire_common:Language xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">ger</inspire_common:Language>
+          </inspire_common:DefaultLanguage>
+        </inspire_common:SupportedLanguages>
+        <inspire_common:ResponseLanguage xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+          <inspire_common:Language xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">ger</inspire_common:Language>
+        </inspire_common:ResponseLanguage>
+      </inspire_vs:ExtendedCapabilities>
+    </VendorSpecificCapabilities>
+    <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>OGC:WMS</Name>
+      <Title>Denkmal-Daten (BLfD)</Title>
+      <Abstract>Der Dienst liefert Kartierungen von Bau- und Bodendenkmälern sowie Ensembles die nach Art. 2 BayDSchG in die Denkmalliste eingetragen sind. Er wird täglich aktualisiert. Der abrufbare Kartenausschnitt pro WMS-Request ist auf eine Ausdehnung von maximal 2500x2500 Pixel begrenzt. Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
+      <KeywordList>
+        <Keyword>Bayerisches Landesamt für Denkmalpflege</Keyword>
+        <Keyword>BLfD</Keyword>
+        <Keyword>Denkmal</Keyword>
+        <Keyword>Denkmalschutz</Keyword>
+        <Keyword>Denkmalpflege</Keyword>
+        <Keyword>Denkmalschutzgesetz(BayDSchG)</Keyword>
+        <Keyword>Bodendenkmal</Keyword>
+        <Keyword>Archäologie</Keyword>
+        <Keyword>Baudenkmal</Keyword>
+        <Keyword>Ensemble</Keyword>
+        <Keyword>Landschaftsprägendes Denkmal</Keyword>
+        <Keyword>Schutzgebiet</Keyword>
+      </KeywordList>
+      <SRS>EPSG:31468</SRS>
+      <SRS>EPSG:31467</SRS>
+      <SRS>EPSG:4326</SRS>
+      <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:25833</SRS>
+      <SRS>EPSG:4258</SRS>
+      <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+      <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+      <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+      <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+      <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+      <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+      <BoundingBox SRS="EPSG:4258" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>copyright</Name>
+        <Title>Copyrightvermerk</Title>
+        <Abstract>Copyrightvermerk</Abstract>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+        <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+        <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>bauensembleO</Name>
+        <Title>Ensemble</Title>
+        <Abstract>Ensembles sind Mehrheiten von baulichen Anlagen nach Art.1 Abs.3 und Art.2 BayDSchG (Denkmalliste) deren Orts-, Platz- oder Straßenbild insgesamt erhaltungswürdig ist. Die Denkmaleigenschaft hängt nicht von der Kartierung und der Eintragung in die Bayerische Denkmalliste ab. Auch Objekte, die nicht in der Bayerischen Denkmalliste verzeichnet sind, können Denkmäler sein, wenn sie die Kriterien nach Art.1 BayDSchG erfüllen. Bei allen Vorhaben ist eine frühzeitige Beteiligung des Bayerischen Landesamtes für Denkmalpflege nach Art.6 und Art.7 BayDSchG notwendig.</Abstract>
+        <KeywordList>
+          <Keyword>Ensemble</Keyword>
+          <Keyword>Ortsbild</Keyword>
+          <Keyword>Stadtbild</Keyword>
+          <Keyword>Straßenbild</Keyword>
+          <Keyword>Platzbild</Keyword>
+          <Keyword>Historische Grünflächen</Keyword>
+          <Keyword>Historische Wasserflächen</Keyword>
+          <Keyword>Straßen- und Platzbilder besonderer Bedeutung</Keyword>
+        </KeywordList>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+        <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+        <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="21" width="75">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bauensembleO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>bodendenkmalO</Name>
+        <Title>Bodendenkmal</Title>
+        <Abstract>Kartierung der bekannten Bodendenkmäler nach Art.1 Abs.4 u. Art.2 BayDSchG (Denkmalliste). Die Zahl der tatsächlich vorhandenen Bodendenkmäler kann höher sein. Die Denkmaleigenschaft hängt nicht von der Kartierung und der Eintragung in die Bayerische Denkmalliste ab. Auch Objekte, die nicht in der Bayerischen Denkmalliste verzeichnet sind, können Denkmäler sein, wenn sie die Kriterien nach Art.1 BayDSchG erfüllen. Bei allen Vorhaben ist eine frühzeitige Beteiligung des Bayerischen Landesamtes für Denkmalpflege nach Art.7 BayDSchG notwendig.</Abstract>
+        <KeywordList>
+          <Keyword>Bodendenkmal</Keyword>
+          <Keyword>Archäologie</Keyword>
+          <Keyword>Geländedenkmal</Keyword>
+          <Keyword>Untertägige Denkmäler</Keyword>
+        </KeywordList>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+        <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+        <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="37" width="240">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bodendenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>einzeldenkmalO</Name>
+        <Title>Baudenkmal</Title>
+        <Abstract>Kartierung der bekannten Baudenkmäler nach Art.1 Abs.2 und Art.2 BayDSchG (Denkmalliste). Die Denkmaleigenschaft hängt nicht von der Kartierung und der Eintragung in die Bayerische Denkmalliste ab. Auch Objekte, die nicht in der Bayerischen Denkmalliste verzeichnet sind, können Denkmäler sein, wenn sie die Kriterien nach Art.1 BayDSchG erfüllen. Bei allen Vorhaben ist eine frühzeitige Beteiligung des Bayerischen Landesamtes für Denkmalpflege nach Art.6 BayDSchG notwendig.</Abstract>
+        <KeywordList>
+          <Keyword>Baudenkmal</Keyword>
+          <Keyword>Einzeldenkmal</Keyword>
+        </KeywordList>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+        <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+        <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="37" width="230">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>landschaftsdenkmalO</Name>
+        <Title>Landschaftsprägendes Denkmal</Title>
+        <Abstract>Landschaftsprägende Denkmale sind solche Bau- und Bodendenkmale oder Ensembles, deren optische und/oder funktionale Wirkung in einen größeren, als Landschaft zu beschreibenden Raum hinausgeht. Damit ist ihre Umgebung für ihr Erscheinungsbild, Wesen und Wirkung von hoher Bedeutung. Eine Veränderung ihrer Umgebung durch neue bauliche Anlagen berührt damit das Denkmal und ist so nach Art 6. (1) 2 und Art. 7 (4) BayDSchG erlaubnispflichtig. Raumwirksame Planungen, insbesondere im Energie-,  Gewerbe- und Verkehrssektor berühren häufig landschaftsprägende Denkmale. Die Stellungnahme der Denkmalpflege als Träger öffentlicher Belange ist in diesen Fällen einzuholen.</Abstract>
+        <KeywordList>
+          <Keyword>Landschaftsprägendes Denkmal</Keyword>
+        </KeywordList>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="13.9764" maxy="50.6257" minx="8.89189" miny="47.1"/>
+        <BoundingBox SRS="EPSG:31468" maxx="4.64e+06" maxy="5.61e+06" minx="4.28e+06" miny="5.222e+06"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3852246.5" maxy="5619971.8" minx="3507704.1" miny="5217926.9"/>
+        <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
+        <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
+        <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="21" width="180">
+            <Format>image/png</Format>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=landschaftsdenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

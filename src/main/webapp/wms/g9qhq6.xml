@@ -78,7 +78,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-9911cfc210dfb63742bdf14285d4d15a</Name>
 			<Title><![CDATA[Layers]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>

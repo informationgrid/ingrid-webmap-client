@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>LGRB-BW RÜK350: Rohstoffgeologische Übersichten 1 : 350 000</Title>
+  <Abstract>Baden-Württemberg ist reich an hochwertigen Rohstoffvorkommen besonders aus den Bereichen der Steine und Erden sowie der Industrieminerale. Mit demRohstoffsicherungskonzept wird dem LGRB der Auftrag erteilt, diese Rohstoffvorkommen zu erkunden, abzugrenzen, zu bewerten und zu beschreiben. Die vorliegenden Themen geben eine Übersicht über die im Land betriebenen Gewinnungsstellen (unterteilt nach Rohstoffgruppen und Fördermengenklassen) und eine Auswahl weiterverarbeitender Betriebe, über die oberflächennahen mineralischen Rohstoffe und die Steinsalzverbreitung im Mittleren Muschelkalk sowie über einige wichtige Nutzungskonflikte.</Abstract>
+        <KeywordList>
+          <Keyword>Rohstoffgeologie</Keyword>
+          <Keyword>Rohstoffverbreitung</Keyword>
+          <Keyword>Mineralischer</Keyword>
+          <Keyword>Rohstoff</Keyword>
+          <Keyword/>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Guenter Sokol</ContactPerson>
+      <ContactOrganization>Regierungspräsidium Freiburg - Abt. 9 LGRB</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>none</ContactPosition>
+    <ContactAddress>
+        <AddressType>POSTAL</AddressType>
+        <Address>Regierungspräsidium Freiburg - Abt. 9 LGRB Albertstrasse 5 79104 Freiburg</Address>
+        <City>Freiburg</City>
+        <StateOrProvince>BW</StateOrProvince>
+        <PostCode>79104</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>+49-761-208-3000</ContactVoiceTelephone>
+  <ContactElectronicMailAddress>abteilung9@rpf.bwl.de</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>http://www.lgrb.uni-freiburg.de/lgrb/Produkte/geschaeftsbedingungen</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lgrb_uek350_rohstoffe</Name>
+    <Title>LGRB-BW RÜK350: Rohstoffgeologische Übersichten 1 : 350 000</Title>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <LatLonBoundingBox maxx="10.4265" maxy="49.7756" minx="7.46042" miny="47.5324"/>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>nutzungskonflikte_wsg</Name>
+      <Title>RÜK350: Abbaubetriebe in Wasserschutzgebieten</Title>
+      <Abstract>Konflikt mit dem Grundwasserschutz: Abbaustellen in Wasserschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der Wasserschtuzgebiete.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>wsg</Name>
+        <Title>Nutzungskonflikte: Wasserschutzgebiete</Title>
+        <Abstract>Konflikt mit dem Grundwasserschutz: Abbaustellen in Wasserschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der Wasserschtuzgebiete.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>wsg_betriebe</Name>
+        <Title>Nutzungskonflikte: Abbaubetriebe in Wasserschutzgebieten</Title>
+        <Abstract>Konflikt mit dem Grundwasserschutz: Abbaustellen in Wasserschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der Wasserschtuzgebiete.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="149" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg_betriebe&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>nutzungskonflikte_ffh</Name>
+      <Title>RÜK350: Abbaubetriebe in NATURA 2000 - Gebieten</Title>
+      <Abstract>Konflikt mit der Ausweisung der NATURA 2000-Gebiete: Abbaustellen in FFH- und Vogelschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der FFH- und Vogelschutzgebiete.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ffh</Name>
+        <Title>Nutzungskonflikte: FFH-Gebiete</Title>
+        <Abstract>Konflikt mit der Ausweisung der NATURA 2000-Gebiete: Abbaustellen in FFH- und Vogelschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der FFH- und Vogelschutzgebiete.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ffh&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>vogelschutz</Name>
+        <Title>Nutzungskonflikte: Vogelschutzgebiete</Title>
+        <Abstract>Konflikt mit der Ausweisung der NATURA 2000-Gebiete: Abbaustellen in FFH- und Vogelschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der FFH- und Vogelschutzgebiete.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="161">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=vogelschutz&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ffh_betriebe</Name>
+        <Title>Nutzungskonflikte: Abbaubetriebe in NATURA 2000 - Gebieten</Title>
+        <Abstract>Konflikt mit der Ausweisung der NATURA 2000-Gebiete: Abbaustellen in FFH- und Vogelschutzgebieten, ermittelt im Geoinformationssystem durch eine Verschneidung der konzessionierten Flächen der derzeit (zeitweise) betriebenen übertägigen Gewinnungsstellen mit den Polygonen der FFH- und Vogelschutzgebiete.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="149" width="175">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ffh_betriebe&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ol350sf_m</Name>
+        <Title>RÜK350: Steinsalzverbreitung</Title>
+        <Abstract>Verbreitung des Steinsalzes in den Schichten des Mittleren Muschelkalks, untergliedert nach Aussagesicherheit: nachgewiesen/wahrscheinlich, vermutet oder fraglich.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="294">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ol350sf_m&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="59.8683418115564"/>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>ol350an_m</Name>
+      <Title>RÜK350: Oberflächennahe mineralische Rohstoffe</Title>
+      <Abstract>Bei dieser Karte handelt es sich um eine landesweit vereinheitlichte Darstellung aus drei verschiedenen rohstoffgeologischen Kartenwerken des LGRB. Die Gliederung nach Rohstoffgruppen erfolgt nach der Karte der Mineralischen Rohstoffe von Baden-Württemberg (KMR 50), dem neuesten, publizierten Kartenwerk. Die vorliegende Karte wird mit der Fortschreibung der KMR 50 fortlaufend aktualisiert. Kiese und Sande (gelbe Farben) treten vorwiegend im Oberrheingraben und im Alpenvorland auf, Kalksteinvorkommen (blaue Farben) in der Muschelkalklandschaft und auf der Schwäbischen Alb, Ziegeleirohstoffe (rote Farben) vor allem im Albvorland und Kraichgau und Grundgebirgsgesteine (violette Farben) in Schwarzwald und Odenwald.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ol350an_m_1</Name>
+        <Title>Rohstoffvorkommen: Oberflaechennahe mineralische Rohstoffe</Title>
+        <Abstract>Bei dieser Karte handelt es sich um eine landesweit vereinheitlichte Darstellung aus drei verschiedenen rohstoffgeologischen Kartenwerken des LGRB. Die Gliederung nach Rohstoffgruppen erfolgt nach der Karte der Mineralischen Rohstoffe von Baden-Württemberg (KMR 50), dem neuesten, publizierten Kartenwerk. Die vorliegende Karte wird mit der Fortschreibung der KMR 50 fortlaufend aktualisiert. Kiese und Sande (gelbe Farben) treten vorwiegend im Oberrheingraben und im Alpenvorland auf, Kalksteinvorkommen (blaue Farben) in der Muschelkalklandschaft und auf der Schwäbischen Alb, Ziegeleirohstoffe (rote Farben) vor allem im Albvorland und Kraichgau und Grundgebirgsgesteine (violette Farben) in Schwarzwald und Odenwald.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="509" width="476">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ol350an_m_1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="249.451424214819"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ol350an_m_2</Name>
+        <Title>Rohstoffvorkommen: Oberflaechennahe mineralische Rohstoffe</Title>
+        <Abstract>Bei dieser Karte handelt es sich um eine landesweit vereinheitlichte Darstellung aus drei verschiedenen rohstoffgeologischen Kartenwerken des LGRB. Die Gliederung nach Rohstoffgruppen erfolgt nach der Karte der Mineralischen Rohstoffe von Baden-Württemberg (KMR 50), dem neuesten, publizierten Kartenwerk. Die vorliegende Karte wird mit der Fortschreibung der KMR 50 fortlaufend aktualisiert. Kiese und Sande (gelbe Farben) treten vorwiegend im Oberrheingraben und im Alpenvorland auf, Kalksteinvorkommen (blaue Farben) in der Muschelkalklandschaft und auf der Schwäbischen Alb, Ziegeleirohstoffe (rote Farben) vor allem im Albvorland und Kraichgau und Grundgebirgsgesteine (violette Farben) in Schwarzwald und Odenwald.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="509" width="476">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ol350an_m_2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.45092531197" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_untind</Name>
+      <Title>RÜK350: Untertägige Gewinnung von Industriemineralen</Title>
+      <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_kohlensaeure</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: Kohlensaeure</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="112">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_kohlensaeure&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_sole</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: Sole/Steinsalz</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="98">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_sole&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_altbergbau_still</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: Fluss-/Schwerspat</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="336">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_altbergbau_still&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_spat</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: Fluss-/Schwerspat</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="161">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_spat&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_kalkprod</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: (Hochreine) Kalksteine</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="161">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_kalkprod&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_untind_sulf_tief</Name>
+        <Title>Untertaegige Gewinnung von Industriemineralen: Sulfatgesteine</Title>
+        <Abstract>Untertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Kohlensäure; im Kalksteinbergwerk Mähringer Berg bei Ulm zzt. keine Förderung).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="168">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_untind_sulf_tief&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_uebind</Name>
+      <Title>RÜK350: Übertägige Gewinnung von Industriemineralen</Title>
+      <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_torf</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: Torf</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="63">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_torf&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_fango</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: Posidonienschiefer für Naturfango</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="70">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_fango&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_trass</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: Trass (Phonolith)</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="70">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_trass&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_kalkprod</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: (hochreine) Kalksteine</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_kalkprod&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_sulf_oben</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: Sulfatgesteine</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="168">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_sulf_oben&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_uebind_quarz</Name>
+        <Title>Übertägige Gewinnung von Industriemineralen: Quarzsande</Title>
+        <Abstract>Übertägige Gewinnung von Industriemineralen in Baden-Württemberg 2005 (inklusive Torf und Posidonienschiefer für Fango). Zu den Quarzsanden gehören alle Gewinnungsstellen, in denen Goldshöfer Sande, Sande der Grimmelfinger Schichten und Sande des Grobsandzugs abgebaut werden, die für hochwertige Quarzsand-Produkte eingesetzt werden (können).</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="161">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_uebind_quarz&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_ziezrsers</Name>
+      <Title>RÜK350: Ziegelei- , Zement- und Energierohstoffe</Title>
+      <Abstract>Gewinnungsstellen von Ziegelei- und Zementrohstoffen sowie Ölschiefern in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Bei den Ziegeleirohstoffen werden in fünf der dargestellten Gruben die Ziegeleirohstoffe nur als beibrechender Rohstoff gewonnen.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_ziezrsers_1_oelschiefer</Name>
+        <Title>Abbaustellen und Foerdermengen von Ziegelei-, Zement- und Energierohstoffen: Oelschiefer</Title>
+        <Abstract>Gewinnungsstellen von Ziegelei- und Zementrohstoffen sowie Ölschiefern in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Bei den Ziegeleirohstoffen werden in fünf der dargestellten Gruben die Ziegeleirohstoffe nur als beibrechender Rohstoff gewonnen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_ziezrsers_1_oelschiefer&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_ziezrsers_zementrohstoffe</Name>
+        <Title>Abbaustellen und Foerdermengen von Ziegelei-, Zement- und Energierohstoffen: Zementrohstoffe</Title>
+        <Abstract>Gewinnungsstellen von Ziegelei- und Zementrohstoffen sowie Ölschiefern in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Bei den Ziegeleirohstoffen werden in fünf der dargestellten Gruben die Ziegeleirohstoffe nur als beibrechender Rohstoff gewonnen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="168">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_ziezrsers_zementrohstoffe&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_ziezrsers_ziegelrohstoffe</Name>
+        <Title>Abbaustellen und Foerdermengen von Ziegelei-, Zement- und Energierohstoffen: Ziegeleirohstoffe</Title>
+        <Abstract>Gewinnungsstellen von Ziegelei- und Zementrohstoffen sowie Ölschiefern in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Bei den Ziegeleirohstoffen werden in fünf der dargestellten Gruben die Ziegeleirohstoffe nur als beibrechender Rohstoff gewonnen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="168">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_ziezrsers_ziegelrohstoffe&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_nws</Name>
+      <Title>RÜK350: Naturwerksteine</Title>
+      <Abstract>Gewinnungsstellen von Naturwerksteinen in Baden-Württemberg 2005. Es wird unterschieden zwischen zur Zeit (2006) in Betrieb befindlichen und seit 1985 stillgelegten Werksteinbrüchen (Wiederaufnahme zumeist gut möglich). In vier der dargestellten in Betrieb befindlichen Steinbrüche werden Naturwerksteine nur als beibrechender Rohstoff gewonnen.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>nws_aktiv</Name>
+        <Title>Derzeit betriebene Naturwerksteinbrueche</Title>
+        <Abstract>Gewinnungsstellen von Naturwerksteinen in Baden-Württemberg 2005. Es wird unterschieden zwischen zur Zeit (2006) in Betrieb befindlichen und seit 1985 stillgelegten Werksteinbrüchen (Wiederaufnahme zumeist gut möglich). In vier der dargestellten in Betrieb befindlichen Steinbrüche werden Naturwerksteine nur als beibrechender Rohstoff gewonnen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="131" width="119">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=nws_aktiv&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>nws_still</Name>
+        <Title>Seit 1985 stillgelegte Naturwerksteinbrueche</Title>
+        <Abstract>Gewinnungsstellen von Naturwerksteinen in Baden-Württemberg 2005. Es wird unterschieden zwischen zur Zeit (2006) in Betrieb befindlichen und seit 1985 stillgelegten Werksteinbrüchen (Wiederaufnahme zumeist gut möglich). In vier der dargestellten in Betrieb befindlichen Steinbrüche werden Naturwerksteine nur als beibrechender Rohstoff gewonnen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="95" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=nws_still&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_nst</Name>
+      <Title>RÜK350: Natursteine</Title>
+      <Abstract>Gewinnungsstellen von Natursteinen für den Verkehrswegebau, für Baustoffe und als Betonzuschlag in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_nst_v</Name>
+        <Title>Abbaustellen und Foerdermengen von Natursteinen: Vulkanite</Title>
+        <Abstract>Gewinnungsstellen von Natursteinen für den Verkehrswegebau, für Baustoffe und als Betonzuschlag in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="196">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_nst_v&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_nst_p</Name>
+        <Title>Abbaustellen und Foerdermengen von Natursteinen: Plutonite</Title>
+        <Abstract>Gewinnungsstellen von Natursteinen für den Verkehrswegebau, für Baustoffe und als Betonzuschlag in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="196">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_nst_p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_nst_m</Name>
+        <Title>Abbaustellen und Foerdermengen von Natursteinen: Metamorphite</Title>
+        <Abstract>Gewinnungsstellen von Natursteinen für den Verkehrswegebau, für Baustoffe und als Betonzuschlag in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="196">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_nst_m&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_nst_k</Name>
+        <Title>Abbaustellen und Foerdermengen von Natursteinen: Karbonatgesteine</Title>
+        <Abstract>Gewinnungsstellen von Natursteinen für den Verkehrswegebau, für Baustoffe und als Betonzuschlag in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_nst_k&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer noSubsets="0" opaque="0" queryable="0">
+      <Name>foerdermengen_kus</Name>
+      <Title>RÜK350: Kiese und Sande</Title>
+      <Abstract>Gewinnungsstellen von Kiesen und Sanden in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Darin enthalten sind auch drei Gewinnungsstellen, in denen Kiese und Sande als beibrechende Rohstoffe gewonnen werden.</Abstract>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_kus_sande</Name>
+        <Title>Abbaustellen und Foerdermengen von Sanden</Title>
+        <Abstract>Gewinnungsstellen von Kiesen und Sanden in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Darin enthalten sind auch drei Gewinnungsstellen, in denen Kiese und Sande als beibrechende Rohstoffe gewonnen werden.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="196">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_kus_sande&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>foerdermengen_kus_kiese</Name>
+        <Title>Abbaustellen und Foerdermengen von Kiesen</Title>
+        <Abstract>Gewinnungsstellen von Kiesen und Sanden in Baden-Württemberg 2005 mit Angabe von Fördermengenklassen. Darin enthalten sind auch drei Gewinnungsstellen, in denen Kiese und Sande als beibrechende Rohstoffe gewonnen werden.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="203">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=foerdermengen_kus_kiese&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+      </Layer>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>iste_betriebe</Name>
+        <Title>RÜK350: Weiterverarbeitende Betriebe der Steine-Erden-Industrie</Title>
+        <Abstract>Die Förderung von Steinen und Erden sowie Industriemineralen (ohne i) wird in mehreren Hundert Betrieben weiterverarbeitet, wovon 381 im Industrieverband Steine und Erden Baden-Württemberg e. V. (ISTE) organisiert sind (nach ISTE-Datenbank, Stand Mai 2006). Nicht auf der Karte dargestellt sind Transportbetonwerke.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="131" width="238">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=iste_betriebe&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149670.854528891" min="0.000498902848429637"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>ol350bp_m</Name>
+        <Title>RÜK350: Gewinnungsstellen (LGRB-Datenbank)</Title>
+        <Abstract>Baden-Württemberg ist das Bundesland mit der drittgrößten Förderung und Produktion von Steine-Erden-Rohstoffen. In 553 Gewinnungsstellen wurden im Jahr 2005 etwa 87 Mio. t Steine-Erden-Rohstoffe und Industrieminerale abgebaut (Stand September 2006). Das langjährige Mittel der Rohstoffförderung (seit 1992) beläuft sich auf 105 Mio. t pro Jahr. Die Daten zu den Gewinnungsstellen werden in einer Datenbank gehalten und mittels Betriebserhebungen ständig aktualisiert.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="293" width="476">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=ol350bp_m&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>rohfoerderung_region</Name>
+        <Title>RÜK350: Rohstoffförderung der Regionen</Title>
+        <Abstract>Fördermengen an mineralischen Rohstoffen in den Regionen des Landes Baden-Württemberg im Jahr 2005.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="95" width="224">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=rohfoerderung_region&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="37.4177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>lgrb_uek350_rohstoffe_ov</Name>
+        <Title>LGRB-BW RÜK350: Rohstoffgeologische Übersichten 1 : 350 000</Title>
+        <Abstract>Baden-Württemberg ist reich an hochwertigen Rohstoffvorkommen besonders aus den Bereichen der Steine und Erden sowie der Industrieminerale. Mit demRohstoffsicherungskonzept wird dem LGRB der Auftrag erteilt, diese Rohstoffvorkommen zu erkunden, abzugrenzen, zu bewerten und zu beschreiben. Die vorliegenden Themen geben eine Übersicht über die im Land betriebenen Gewinnungsstellen (unterteilt nach Rohstoffgruppen und Fördermengenklassen) und eine Auswahl weiterverarbeitender Betriebe, über die oberflächennahen mineralischen Rohstoffe und die Steinsalzverbreitung im Mittleren Muschelkalk sowie über einige wichtige Nutzungskonflikte.</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="126">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_uek350_rohstoffe&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=lgrb_uek350_rohstoffe_ov&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149670.854528891" min="249.451424214819"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

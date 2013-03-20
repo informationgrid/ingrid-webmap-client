@@ -75,7 +75,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-38757e4678536420e761376a41d42e66</Name>
 			<Title><![CDATA[Bohrungen NRW]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>

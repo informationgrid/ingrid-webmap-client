@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+  <Service>
+    <Name>WMS</Name>
+    <Title>Schutzgebiete Natur (Land Brandenburg)</Title>
+    <Abstract>Kartendienst Brandenburgischer und Europäischer Schutzgebiete im Land Brandenburg. Bitte beachten Sie die Links zu den Nutzungsbedingungen (siehe AccessConstraints) sowie zu Metainformationen und Download (http://www.mugv.brandenburg.de/cms/detail.php/bb2.c.515599.de).</Abstract>
+    <KeywordList><Keyword>Schutzgebiet</Keyword><Keyword>Natur</Keyword><Keyword>Brandenburg</Keyword></KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson/>
+        <ContactOrganization>Landesvermessung und  Geobasisinformation Brandenburg</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Dezernat 44 (GIS-Zentrale)</ContactPosition>
+      <ContactAddress>
+        <AddressType/>
+        <Address>Heinrich-Mann-Allee 103</Address>
+        <City>Potsdam</City>
+        <StateOrProvince>Brandenburg</StateOrProvince>
+        <PostCode>D-14473</PostCode>
+        <Country>DE</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49 335 5582-500</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49 331 8844-16437</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>gis-zentrale@geobasis-bb.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>Allgemeine Nutzungsbedingungen: http://www.mluv.brandenburg.de/cms/detail.php/bb2.c.515655.de</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/bmp</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/tiff</Format>
+        <Format>image/png</Format>
+        <Format>image/png8</Format>
+        <Format>image/png24</Format>
+        <Format>image/png32</Format>
+        <Format>image/gif</Format>
+        <Format>image/svg+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>text/xml</Format>
+        <Format>text/html</Format>
+        <Format>text/plain</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>application/vnd.ogc.se_inimage</Format>
+      <Format>application/vnd.ogc.se_blank</Format>
+    </Exception>
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e58959ee3205ae1bdbc8c3709e2f8e1e</Name>
+    <Title>Schutzgebiete Natur (Land Brandenburg)</Title>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:3068</SRS>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:32632</SRS>
+    <SRS>EPSG:32633</SRS>
+    <LatLonBoundingBox maxx="14.935072" maxy="53.675067" minx="11.045681" miny="51.195640"/>
+    <BoundingBox SRS="EPSG:4326" maxx="14.935072" maxy="53.675067" minx="11.045681" miny="51.195640"/>
+    <BoundingBox SRS="EPSG:25833" maxx="495469.103809" maxy="5947372.586615" minx="238439.328401" miny="5678244.868085"/>
+    <BoundingBox SRS="EPSG:25832" maxx="890000" maxy="5950000" minx="660000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3034" maxx="4310000" maxy="2970000" minx="4110000" miny="2700000"/>
+    <BoundingBox SRS="EPSG:3035" maxx="4640000" maxy="3390000" minx="4440000" miny="3130000"/>
+    <BoundingBox SRS="EPSG:3044" maxx="890000" maxy="5950000" minx="660000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3045" maxx="490000" maxy="5930000" minx="240000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3068" maxx="130000" maxy="140000" minx="-120000" miny="-110000"/>
+    <BoundingBox SRS="EPSG:4258" maxx="14.8" maxy="53.5" minx="11.2" miny="51.3"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3884648" maxy="5945263" minx="3653411" miny="5687111"/>
+    <BoundingBox SRS="EPSG:31468" maxx="4692086" maxy="5938476" minx="4450510" miny="5690323"/>
+    <BoundingBox SRS="EPSG:32632" maxx="884536" maxy="5943562" minx="653367" miny="5685485"/>
+    <BoundingBox SRS="EPSG:32633" maxx="486734" maxy="5927912" minx="235121" miny="5690047"/>
+    <BoundingBox SRS="EPSG:31469" maxx="5493862" maxy="5936839" minx="5235151" miny="5691876"/>
+      <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-535a95e012592fca2c51f6b0e79c1722</Name>
+        <Title>Brandenburgisches Schutzgebiet</Title>
+        <Abstract>Brandenburgisches Schutzgebiet</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.766952" maxy="53.564879" minx="11.231656" miny="51.310653"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483775.866900" maxy="5935139.508500" minx="250122.603610" miny="5690477.946200"/>
+        <ScaleHint max="7483.54677" min="3.74"/>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>1</Name>
+        <Title>Landschaftsschutzgebiet</Title>
+        <Abstract>Landschaftsschutzgebiete im Land Brandenburg / Darstellung im Maßstabsbereich 1:1.000.000 bis 1:10.000</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.766952" maxy="53.564879" minx="11.231656" miny="51.310653"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483775.866900" maxy="5935139.508500" minx="250122.603610" miny="5690477.946200"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Landschaftsschutzgebiet</Title>
+	  <LegendURL height="20" width="30">
+	    <Format>image/png</Format> 
+	    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/Natur_Schutzgebiete_MapServer/legenden/default/LSG.PNG" xlink:type="simple"/> 
+	  </LegendURL>
+        </Style>
+        <ScaleHint max="374.1789" min="3.74"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>2</Name>
+        <Title>Naturschutzgebiet</Title>
+        <Abstract>Naturschutzgebiete im Land Brandenburg / Darstellung im Maßstabsbereich 1:1.000.000 bis 1:10.000</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.762644" maxy="53.444948" minx="11.245059" miny="51.325021"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483481.106800" maxy="5921797.943600" minx="250310.083110" miny="5692069.758000"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Naturschutzgebiet</Title>
+	  <LegendURL height="20" width="30">
+	    <Format>image/png</Format> 
+	    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/Natur_Schutzgebiete_MapServer/legenden/default/NSG.PNG" xlink:type="simple"/> 
+	  </LegendURL>
+        </Style>
+        <ScaleHint max="374.1789" min="3.74"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>3</Name>
+        <Title>Großschutzgebiet</Title>
+        <Abstract>Großschutzgebiete im Land Brandenburg / Darstellung im Maßstabsbereich 1:20.000.000 bis 1:10.000</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.643203" maxy="53.421391" minx="11.244290" miny="51.393715"/>
+        <BoundingBox SRS="EPSG:25833" maxx="475205.752100" maxy="5919213.348400" minx="250122.603610" miny="5699733.510200"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Großschutzgebiet</Title>
+	  <LegendURL height="20" width="30">
+	    <Format>image/png</Format> 
+	    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/Natur_Schutzgebiete_MapServer/legenden/default/GSG.PNG" xlink:type="simple"/> 
+	  </LegendURL>
+        </Style>
+        <ScaleHint max="7483.54677" min="3.74"/>
+      </Layer>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-d81e1954dc12d1fd7cebd63e8ad0f276</Name>
+        <Title>Europäisches Schutzgebiet</Title>
+        <Abstract>Europäisches Schutzgebiet</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.767024" maxy="53.505378" minx="11.236919" miny="51.324811"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483785.932200" maxy="5928519.914900" minx="250122.500010" miny="5692055.605400"/>
+        <ScaleHint max="7483.54677" min="3.74"/>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>5</Name>
+        <Title>Schutzgeiet SPA-Vogelschutzrichtlinie</Title>
+        <Abstract>Europäische Schutzgeiete nach SPA-Vogelschutzrichtlinie im Land Brandenburg / Darstellung im Maßstabsbereich 1:20.000.000 bis 1:10.000</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.762042" maxy="53.489505" minx="11.238319" miny="51.440313"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483481.000000" maxy="5926755.000000" minx="250122.500010" miny="5704926.000000"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Schutzgeiet SPA-Vogelschutzrichtlinie</Title>
+	  <LegendURL height="20" width="30">
+	    <Format>image/png</Format> 
+	    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/Natur_Schutzgebiete_MapServer/legenden/default/SPA.PNG" xlink:type="simple"/> 
+	  </LegendURL>
+        </Style>
+        <ScaleHint max="7483.54677" min="3.74"/>
+      </Layer>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>6</Name>
+        <Title>Schutzgeiet FFH-Richtlinie</Title>
+        <Abstract>Europäische Schutzgeiete nach FFH-Richtlinie im Land Brandenburg / Darstellung im Maßstabsbereich 1:1.000.000 bis 1:10.000</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.767024" maxy="53.505378" minx="11.236920" miny="51.324811"/>
+        <BoundingBox SRS="EPSG:25833" maxx="483785.932200" maxy="5928519.914900" minx="250122.603610" miny="5692055.605400"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Schutzgeiet FFH-Richtlinie</Title>
+	  <LegendURL height="20" width="30">
+	    <Format>image/png</Format> 
+	    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/Natur_Schutzgebiete_MapServer/legenden/default/FFH.PNG" xlink:type="simple"/> 
+	  </LegendURL>
+        </Style>
+        <ScaleHint max="374.1789" min="3.74"/>
+      </Layer>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

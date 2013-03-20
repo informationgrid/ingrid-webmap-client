@@ -158,11 +158,11 @@
     <Layer noSubsets="0" opaque="0" queryable="0">
       <Name>isong_wsg_light</Name>
       <Title>ISONG: Wasser- und Heilquellenschutzgebiete</Title>
-      <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+      <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW vom November 2011, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>wsg_light_1</Name>
         <Title>Wasser- und Heilquellenschutzgebiete</Title>
-        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW vom November 2011, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:4326</SRS>
         <SRS>EPSG:25832</SRS>
@@ -181,7 +181,7 @@
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>wsg_light_2</Name>
         <Title>Wasser- und Heilquellenschutzgebiete</Title>
-        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW von Juli 2008, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW vom November 2011, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:4326</SRS>
         <SRS>EPSG:25832</SRS>
@@ -196,6 +196,25 @@
           </LegendURL>
         </Style>
         <ScaleHint max="74.8349283615971" min="4.98902848429637"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>wsg_light_3</Name>
+        <Title>FALSE</Title>
+        <Abstract>Wasser- und Heilquellenschutzgebiete (Datensatz der LUBW vom November 2011, ergänzt um die vom RPF/LGRB hydrogeologisch abgegrenzten Wasser- und Heilquellenschutzgebiete, die Nahbereiche von Heilquellen ohne abgegrenztes Schutzgebiet sowie die Nahbereiche von Wasserfassungen mit hydrogeologischer Sondersituation)</Abstract>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <LatLonBoundingBox maxx="11.0219" maxy="49.9975" minx="6.83875" miny="47.2811"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.645e+06" maxy="5.54e+06" minx="3.345e+06" miny="5.24e+06"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="154">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www1.lgrb.uni-freiburg.de/ws/application/wms.phtml?SERVICE_NAME=lgrb_isong_light&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=wsg_light_3&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="1496.70854528891" min="4.98902848429637"/>
       </Layer>
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">

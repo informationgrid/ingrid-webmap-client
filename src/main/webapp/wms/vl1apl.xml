@@ -5,7 +5,7 @@
 <Service>
   <Name>OGC:WMS</Name>
   <Title>Hintergrundkarte_Relief</Title>
-  <Abstract>Die Hintergrundkarte enthaelt versch. WMS_Dienste ... TOBEDONE</Abstract>
+  <Abstract>Die Hintergrund- bzw. Basiskarte enthält verschiedene Online-Dienste (WMS). Als amtliche Topographische Karten wurden die DTK200, DTK500 und DTK1000 des BKG eingebunden. Die vektorisierten Siedlungen und Städtenamen stammen aus dem Digitalen Landschaftsmodell (DLM1000) des BKG. Die Reliefkarte Mitteleuropa stellt die Höhenstufen als farbige Schummerung auf Basis eines mittelauflösenden (90m) digitalen Oberflächenmodells dar.</Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/relief?" xlink:type="simple"/>
   <ContactInformation>
     <ContactPersonPrimary>
@@ -16,15 +16,15 @@
         <AddressType>POSTAL</AddressType>
         <Address>Archivstr. 2</Address>
         <City>Hannover</City>
-        <StateOrProvince>Lower Saxony</StateOrProvince>
+        <StateOrProvince>Niedersachsen</StateOrProvince>
         <PostCode>30144</PostCode>
         <Country>Germany</Country>
     </ContactAddress>
       <ContactVoiceTelephone>0511.120 3626</ContactVoiceTelephone>
   <ContactElectronicMailAddress>kst@portalu.de</ContactElectronicMailAddress>
   </ContactInformation>
-  <Fees>none</Fees>
-  <AccessConstraints>Hintergrundkarte: Public Domain Jarvis, A., H.I. Reuter, A. Nelson, E. Guevara, 2008, Hole-filled SRTM for the globe Version 4, available from the CGIAR-CSI SRTM 90m Database (http://srtm.csi.cgiar.org). BKG-Karten: TOBEDONE</AccessConstraints>
+  <Fees>Für die Dienste des BKG (DLM1000, DTK200, DTK500,VG250, DTK1000) wenden Sie sich bitte an das GeoDatenZentrum des Bundesamtes für Kartographie und Geodäsie:  http://www.geodatenzentrum.de/geodaten/gdz?l=kontakt</Fees>
+  <AccessConstraints>WMS Reliefkarte: Public Domain Jarvis, A., H.I. Reuter, A. Nelson, E. Guevara, 2008, Hole-filled SRTM for the globe Version 4, available from the CGIAR-CSI SRTM 90m Data-base (http://srtm.csi.cgiar.org). Die Online-Dienste des BKG (DLM1000, DTK200, DTK500,VG250, DTK1000) BKG sind mit seinen Inhalten urheberrechtlich geschützt. Für den Erwerb von Nutzungsrechten wenden Sie sich bitte an das GeoDatenZentrum des Bundesamtes für Kartographie und Geodäsie: http://www.geodatenzentrum.de/</AccessConstraints>
 </Service>
 
 <Capability>
@@ -105,8 +105,8 @@
   <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>Hintergrundkarte</Name>
-    <Title>Hintergrundkarte (wms_title)</Title>
-    <Abstract>Die Hintergrundkarte enthaelt versch. WMS_Dienste ... TOBEDONE</Abstract>
+    <Title>Hintergrundkarte PortalU</Title>
+    <Abstract>Die Hintergrund- bzw. Basiskarte enthält verschiedene Online-Dienste (WMS). Als amtliche Topographische Karten wurden die DTK200, DTK500 und DTK1000 des BKG eingebunden. Die vektorisierten Siedlungen und Städtenamen stammen aus dem Digitalen Landschaftsmodell (DLM1000) des BKG. Die Reliefkarte Mitteleuropa stellt die Höhenstufen als farbige Schummerung auf Basis eines mittelauflösenden (90m) digitalen Oberflächenmodells dar.</Abstract>
     <SRS>EPSG:4326</SRS>
     <SRS>EPSG:4258</SRS>
     <SRS>EPSG:31466</SRS>
@@ -115,87 +115,91 @@
     <SRS>EPSG:31469</SRS>
     <SRS>EPSG:25832</SRS>
     <SRS>EPSG:25833</SRS>
-    <LatLonBoundingBox maxx="20" maxy="60" minx="0" miny="44.9"/>
-    <BoundingBox SRS="EPSG:4326" maxx="20" maxy="60" minx="0" miny="44.9"/>
-    <ScaleHint max="24945.1424214819" min="4.98902848429637e-05"/>
+    <LatLonBoundingBox maxx="20" maxy="60.0004" minx="-0.0004166" miny="44.9999"/>
+    <BoundingBox SRS="EPSG:4326" maxx="20" maxy="60.0004" minx="-0.0004166" miny="44.9999"/>
+    <ScaleHint max="2494.51424214819" min="2.49451424214819"/>
     <Layer noSubsets="0" opaque="0" queryable="0">
-      <Name>basis</Name>
+      <Name>Basiskarte</Name>
 <!-- WARNING: Mandatory metadata '..._GROUP_TITLE' was missing in this context. -->
-      <Title>basis</Title>
-      <Abstract>basis</Abstract>
+      <Title>Basiskarte</Title>
+      <Abstract>Basiskarte</Abstract>
       <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>DTK1000</Name>
 <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
         <Title>DTK1000</Title>
-        <SRS>EPSG:4326</SRS>
-        <LatLonBoundingBox maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <ScaleHint max="498.902848429637" min="187.088568161114"/>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="16.8295" maxy="55.2983" minx="1.16826" miny="46.7512"/>
+        <BoundingBox SRS="EPSG:31467" maxx="4e+06" maxy="6.13e+06" minx="3e+06" miny="5.2e+06"/>
+        <ScaleHint max="349.231993900746" min="187.088568161114"/>
       </Layer>
       <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>VG250</Name>
 <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
         <Title>VG250</Title>
-        <SRS>EPSG:4326</SRS>
-        <LatLonBoundingBox maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <ScaleHint max="2494.51424214819" min="249.451424214819"/>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="16.8295" maxy="55.2983" minx="1.16826" miny="46.7512"/>
+        <BoundingBox SRS="EPSG:31467" maxx="4e+06" maxy="6.13e+06" minx="3e+06" miny="5.2e+06"/>
+        <ScaleHint max="898.025127173347" min="349.231993900746"/>
       </Layer>
       <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>DTK500</Name>
 <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
         <Title>DTK500</Title>
-        <SRS>EPSG:4326</SRS>
-        <LatLonBoundingBox maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="16.8295" maxy="55.2983" minx="1.16826" miny="46.7512"/>
+        <BoundingBox SRS="EPSG:31467" maxx="4e+06" maxy="6.13e+06" minx="3e+06" miny="5.2e+06"/>
         <ScaleHint max="187.090064869659" min="56.1270693511826"/>
       </Layer>
       <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>DTK200</Name>
 <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
         <Title>DTK200</Title>
-        <SRS>EPSG:4326</SRS>
-        <LatLonBoundingBox maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <ScaleHint max="56.1270693511826" min="0.0997805696859274"/>
-      </Layer>
-      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
-        <Name>Hauptstadt</Name>
-        <Title>Hauptstädte</Title>
-        <LatLonBoundingBox maxx="22" maxy="60" minx="0.5" miny="44"/>
-        <Style>
-          <Name>default</Name>
-          <Title>default</Title>
-          <LegendURL height="23" width="103">
-             <Format>image/png</Format>
-             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/relief?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Hauptstadt&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
-          </LegendURL>
-        </Style>
-        <ScaleHint max="0" min="498.902848429637"/>
-        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
-      </Layer>
-      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
-        <Name>Landeshauptstaedte</Name>
-        <Title>Städte</Title>
-        <LatLonBoundingBox maxx="15.2713" maxy="55.3016" minx="5.63732" miny="47.0258"/>
-        <Style>
-          <Name>default</Name>
-          <Title>default</Title>
-          <LegendURL height="23" width="194">
-             <Format>image/png</Format>
-             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/relief?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Landeshauptstaedte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
-          </LegendURL>
-        </Style>
-        <ScaleHint max="0" min="498.902848429637"/>
-        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="16.8295" maxy="55.2983" minx="1.16826" miny="46.7512"/>
+        <BoundingBox SRS="EPSG:31467" maxx="4e+06" maxy="6.13e+06" minx="3e+06" miny="5.2e+06"/>
+        <ScaleHint max="56.1270693511826" min="2.49451424214819"/>
       </Layer>
       <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>DLM1000</Name>
 <!-- WARNING: Mandatory metadata '..._title' was missing in this context. -->
         <Title>DLM1000</Title>
-        <SRS>EPSG:4326,EPSG:25832,EPSG:25833,EPSG:31466,EPSG:31467,EPSG:31468,EPSG:31469</SRS>
-        <LatLonBoundingBox maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5715" maxy="55.0587" minx="5.56507" miny="47.1412"/>
+        <SRS>EPSG:31467</SRS>
+        <LatLonBoundingBox maxx="16.8295" maxy="55.2983" minx="1.16826" miny="46.7512"/>
+        <BoundingBox SRS="EPSG:31467" maxx="4e+06" maxy="6.13e+06" minx="3e+06" miny="5.2e+06"/>
+        <ScaleHint max="898.025127173347" min="349.231993900746"/>
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Reliefkarte_Mitteleuropa</Name>
+        <Title>Reliefkarte Mitteleuropa</Title>
+        <Abstract>Die Hintergrundkarte stellt die Hoehenstufen als farbige Schummerung auf Basis eines mittelauflösenden (90m) digitalen Oberflächenmodell dar. Die Höhendaten stammen aus dem SRTM Modell der NASA und wurden vom International Centre for Tropical Agriculture (CIAT) prozessiert (SRTM data V4), um Datenlücken zu schließen. Die Weiterverarbeitung erfolgte durch die Koordinierungsstelle PortalU. </Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="20" maxy="60.0004" minx="-0.0004166" miny="44.9999"/>
+        <BoundingBox SRS="EPSG:4326" maxx="20" maxy="60.0004" minx="-0.0004166" miny="44.9999"/>
+        <ScaleHint max="0" min="898.025626076195"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Bundesgrenze</Name>
+        <Title>Bundesgrenze</Title>
+        <Abstract>Die Daten stammen aus der GADM Datenbank (www.gadm.org), version 2.0, December 2011</Abstract>
+        <LatLonBoundingBox maxx="15.2673" maxy="55.3143" minx="5.64246" miny="47.0121"/>
+        <ScaleHint max="0" min="898.025626076195"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
+      </Layer>
+      <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Bundeslandgrenzen</Name>
+        <Title>Bundeslandgrenzen</Title>
+        <LatLonBoundingBox maxx="15.2673" maxy="55.3143" minx="5.64246" miny="47.0121"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="23" width="152">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/relief?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Bundeslandgrenzen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="0" min="898.025626076195"/>
+        <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
       </Layer>
     </Layer>
   </Layer>

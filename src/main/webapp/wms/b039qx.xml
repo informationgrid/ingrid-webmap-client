@@ -23,7 +23,7 @@
       </ContactAddress>
       <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
       <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
-      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+      <ContactElectronicMailAddress>fisbroker@senstadtum.berlin.de</ContactElectronicMailAddress>
     </ContactInformation>
     <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
     <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
@@ -77,7 +77,7 @@
     </Exception>
     <VendorSpecificCapabilities/>
     <!-- Layers -->
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-24ee00dfaaf3ccf1c2c02a498864fd01</Name>
       <Title>Ingenieurgeologische Karte (Umweltatlas)</Title>
       <Abstract>Geologischer Aufbau Berlins, Schichten und Mächtigkeiten, Schichtfolge über Sachdatenanzeige</Abstract>
       <KeywordList>
@@ -106,12 +106,14 @@
       <SRS>EPSG:25833</SRS>
       <SRS>EPSG:31467</SRS>
       <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4258</SRS>
       <SRS>EPSG:4326</SRS>
       <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
       <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
       <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
       <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
       <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+      <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
       <AuthorityURL name="GDI-DE">
         <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
       </AuthorityURL>
@@ -131,7 +133,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>0</Name>
         <Title>Hintergrund 1:5.000</Title>
-        <Abstract>digitale Karte 1:5.000, Rasterkarte 1:5.000</Abstract>
+        <Abstract>In Abhängigkeit vom Maßstab des Kartenausschnitts: Darstellung der Blockkarte 1:5.000 (ISU5) oder der Karte von Berlin 1:5.000(K5)</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -158,12 +160,14 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
         <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
         <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
         <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
         <MetadataURL type="TC211">
@@ -183,6 +187,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>1</Name>
         <Title>Blattschnitt 1:5000</Title>
+        <Abstract>Blattschnitte aus der Karte "Blatteinteilung der Landeskartenwerke": hier die Amtliche Blattschnitteinteilung für das Kartenwerk 1:5.000 Berlin</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -209,12 +214,14 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <BoundingBox SRS="EPSG:3068" maxx="48701" maxy="37994" minx="19676" miny="2016"/>
         <BoundingBox SRS="EPSG:25833" maxx="415746.4392" maxy="5836151.8171" minx="386050.6642" miny="5800742.2736"/>
         <BoundingBox SRS="EPSG:31467" maxx="3821584.7082" maxy="5847938.3803" minx="3794893.8573" miny="5810130.2796"/>
         <BoundingBox SRS="EPSG:25832" maxx="821384.1929" maxy="5846035.7562" minx="794703.6514" miny="5808243.0673"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.754" maxy="52.6688" minx="13.3272" miny="52.3451"/>
         <Identifier authority="GDI-DE">6b1785f4-95cd-32fa-b568-4587dd302c9f</Identifier>
         <MetadataURL type="TC211">
@@ -234,7 +241,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>2</Name>
         <Title>Gewässer</Title>
-        <Abstract>Gewässer</Abstract>
+        <Abstract>Gewässer Berlins</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -288,7 +295,7 @@
       <Layer noSubsets="0" opaque="0" queryable="1">
         <Name>3</Name>
         <Title>Obere Schicht</Title>
-        <Abstract>Obere Schicht</Abstract>
+        <Abstract>Geologischer Aufbau Berlins, Schichten und Mächtigkeiten</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -342,7 +349,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>4</Name>
         <Title>Altwasser</Title>
-        <Abstract>Altwasser</Abstract>
+        <Abstract>ehemalige Wasserläufe, Gräben oder Stadtbefestigungen</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -396,7 +403,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>5</Name>
         <Title>Bauwerke</Title>
-        <Abstract>Bauwerke</Abstract>
+        <Abstract>ausgewählte Bauwerke mit einr Gründungstiefe &gt;10m</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -450,7 +457,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>6</Name>
         <Title>Aufschüttungen</Title>
-        <Abstract>Aufschüttungen</Abstract>
+        <Abstract>Aufschüttungen mit einer Mächtigkeit &gt;5m (qh//y)</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -504,7 +511,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>7</Name>
         <Title>Bohrpunkte</Title>
-        <Abstract>Bohrpunkte</Abstract>
+        <Abstract>Bohrpunkte differenziert nach unterschiedlicher Bohrtiefe</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -558,7 +565,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>8</Name>
         <Title>Bauwerke Nummern</Title>
-        <Abstract>Bauwerke Nummern</Abstract>
+        <Abstract>Hinweisnummer auf eine vorhandene oder geplante Tiefgründung</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>

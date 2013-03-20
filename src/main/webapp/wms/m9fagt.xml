@@ -81,7 +81,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-c2b890c8735370c61e85aac06ecb5487</Name>
 			<Title><![CDATA[Layers]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
@@ -99,7 +99,7 @@
 			<LatLonBoundingBox maxx="9.705507" maxy="52.674557" minx="5.678751" miny="50.159563"/>
 			<BoundingBox SRS="EPSG:4326" maxx="9.705507" maxy="52.674557" minx="5.678751" miny="50.159563"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2750899.100310" maxy="5837802.600645" minx="2478272.900090" miny="5563933.399655"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-166d02d3e1605b5ef1cbb84387b11198</Name>
 				<Title><![CDATA[Grundwasservorkommen]]></Title>
 				<Abstract><![CDATA[Grundwasservorkommen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -235,7 +235,7 @@
 					</Style>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e8115a93c57389e76b00284f8e54b77a</Name>
 				<Title><![CDATA[Schutzfunktion]]></Title>
 				<Abstract><![CDATA[Schutzfunktion]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -284,7 +284,7 @@
 					</Style>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-9974912b1c09b9529771d89496a90232</Name>
 				<Title><![CDATA[Petrographie]]></Title>
 				<Abstract><![CDATA[Petrographie]]></Abstract>
 				<SRS>EPSG:4326</SRS>

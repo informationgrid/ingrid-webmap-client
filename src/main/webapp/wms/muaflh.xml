@@ -106,24 +106,71 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>lungwms</Name>
     <Title>LUNG WMS Server</Title>
+    <SRS>EPSG:4647</SRS>
+    <SRS>EPSG:5650</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:35832</SRS>
+    <SRS>EPSG:35833</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3038</SRS>
+    <SRS>EPSG:3039</SRS>
+    <SRS>EPSG:3040</SRS>
+    <SRS>EPSG:3041</SRS>
+    <SRS>EPSG:3042</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:3046</SRS>
+    <SRS>EPSG:3047</SRS>
+    <SRS>EPSG:4839</SRS>
+    <SRS>EPSG:2176</SRS>
     <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e7de6f87b9afa533dc794bd49995fc3a</Name>
     <Title>Touren</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege03_pom</Name>
         <Title>[03] Radweg Berlin - Usedom (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -139,16 +186,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege06_pom</Name>
         <Title>[06] Ostseekuesten-Radweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -164,16 +230,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege08_pom</Name>
         <Title>[08] Haff-Tollense-Radfernweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -189,16 +274,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege02_pom</Name>
         <Title>[02] Uckermaerkischer Radrundweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -214,16 +318,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege30_pom</Name>
         <Title>[30] Radtour Rund um das Stettiner Haff (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -239,16 +362,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege19_pom</Name>
         <Title>[19] Rundweg Altwarper Binnenduenen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -264,16 +406,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege20_pom</Name>
         <Title>[20] Rundweg Ueckermuender Heide (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -289,16 +450,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege16_pom</Name>
         <Title>[16] Rundweg Bugewitz-Heidemuehl (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -314,16 +494,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege12_pom</Name>
         <Title>[12] Tollensesee-Rundweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -339,16 +538,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege17_pom</Name>
         <Title>[17] Naturlehrpfad August Bartelt (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -364,16 +582,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege05_pom</Name>
         <Title>[05] Randow-Radweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -389,16 +626,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege14_pom</Name>
         <Title>[14] Mecklenburgische Eiszeitstrasse (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -414,16 +670,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege10_pom</Name>
         <Title>[10] Neubrandenburg-Tollensetal-Radweg (Pomerania) </Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -439,16 +714,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege27_pom</Name>
         <Title>[27] Radtour Woliner Nationalpark (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -464,16 +758,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege22_pom</Name>
         <Title>[22] Rundweg Moenkebude - Meiersberg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -489,16 +802,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege23_pom</Name>
         <Title>[23] Rundweg Moenkebude - Ueckermuende (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -514,16 +846,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege24_pom</Name>
         <Title>[24] Friedlaender Grosse Wiese (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -539,16 +890,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege29_pom</Name>
         <Title>[29] Radtour von Wolin zum Meer (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -564,16 +934,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege13_pom</Name>
         <Title>[13] Mecklenburgischer Seen - Radweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -589,16 +978,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege18_pom</Name>
         <Title>[18] Rundweg Ahlbecker Seegrund (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -614,16 +1022,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege26_pom</Name>
         <Title>[26] Radtour Ueckermuender Heide (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -639,16 +1066,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege28_pom</Name>
         <Title>[28] Radtour Stettiner Landschaftspark (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -664,16 +1110,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege15_pom</Name>
         <Title>[15] Rundweg Haff - Eggesin (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -689,16 +1154,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege11_pom</Name>
         <Title>[11] Radfernweg Mecklenburgische Seenplatte (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -714,16 +1198,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege21_pom</Name>
         <Title>[21] Rundwe[21] Rundweg Bugewitz - Bargischow (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -739,16 +1242,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege25_pom</Name>
         <Title>[25] Rundweg Galenbecker See (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -764,16 +1286,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege01_pom</Name>
         <Title>[01] Ueberregionale Radwege (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -789,16 +1330,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege04_pom</Name>
         <Title>[04] Oder-Neisse-Radfernweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -814,16 +1374,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege09_pom</Name>
         <Title>[09] Stettiner Grenzweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -839,16 +1418,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_radwege07_pom</Name>
         <Title>[07] Haff-Radfernweg (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0008" maxy="54.2062" minx="12.9667" miny="53.3208"/>
         <Style>
           <Name>default</Name>
@@ -862,21 +1460,40 @@
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
     </Layer>
     </Layer>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e967ed8889e9de2741355591d989ff5c</Name>
     <Title>Geologie</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_geotour_geol_g</Name>
         <Title>Glaziale Bildungen (Geologie Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4056" maxy="54.2048" minx="12.9589" miny="53.3298"/>
         <Style>
           <Name>default</Name>
@@ -892,16 +1509,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_geotour_geol_s</Name>
         <Title>Schollen (Geologie Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4056" maxy="54.2048" minx="12.9589" miny="53.3298"/>
         <Style>
           <Name>default</Name>
@@ -917,16 +1553,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_geotour_geol_h</Name>
         <Title>Spaetglazial bis Holozaen (Geologie Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4056" maxy="54.2048" minx="12.9589" miny="53.3298"/>
         <Style>
           <Name>default</Name>
@@ -940,21 +1595,40 @@
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
     </Layer>
     </Layer>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-3b20aa171ce3c90303b8c1908f5913fe</Name>
     <Title>Geotope_Naturdenkmaeler</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_nehrungen_pom</Name>
         <Title>Randmarine Haken und Nehrungen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -970,16 +1644,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_findlingsgruppe_pom</Name>
         <Title>Findlingsgruppe (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -995,16 +1688,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_findlinge_pom</Name>
         <Title>Findlinge/Grossgeschiebe (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1020,16 +1732,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_schollen_pom</Name>
         <Title>Glaziale Schollen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1045,16 +1776,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_moore_pom</Name>
         <Title>Besondere Moore (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1070,16 +1820,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_klifflinien_pom</Name>
         <Title>Klifflinien (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0003" maxy="54.0802" minx="13.8509" miny="53.6675"/>
         <Style>
           <Name>default</Name>
@@ -1095,16 +1864,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_aufschluss_pom</Name>
         <Title>Geologische Aufschluesse/Gruben (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1120,16 +1908,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_tunneltal_pom</Name>
         <Title>Besonderes Tunneltal (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1145,16 +1952,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_oser_pom</Name>
         <Title>Oser (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1170,16 +1996,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_duenen_pom</Name>
         <Title>Besondere Duenen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1195,16 +2040,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_blockpackung_pom</Name>
         <Title>Blockpackungen der Endmoraene (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1220,16 +2084,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_kliffe_pom</Name>
         <Title>Kliffe (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9957" maxy="54.1755" minx="12.9844" miny="53.3243"/>
         <Style>
           <Name>default</Name>
@@ -1243,21 +2126,40 @@
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
     </Layer>
     </Layer>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-810e7a47e96f176140b665a3a6323f78</Name>
     <Title>Kulturhistorische_Sehenswuerdigkeiten</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_museum_pom</Name>
         <Title>Museen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9676" maxy="54.1444" minx="12.992" miny="53.3284"/>
         <Style>
           <Name>default</Name>
@@ -1273,16 +2175,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_aussichtspunkte_pom</Name>
         <Title>Aussichtspunkte (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9625" maxy="53.9792" minx="13.0719" miny="53.3378"/>
         <Style>
           <Name>default</Name>
@@ -1298,16 +2219,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_technik_pom</Name>
         <Title>Technische Denkmaeler (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9737" maxy="54.1871" minx="12.9637" miny="53.3706"/>
         <Style>
           <Name>default</Name>
@@ -1323,16 +2263,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_kstein_pom</Name>
         <Title>Kultuhistorische Steine (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9676" maxy="54.1444" minx="12.992" miny="53.3284"/>
         <Style>
           <Name>default</Name>
@@ -1348,16 +2307,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_muehlen_pom</Name>
         <Title>Muehlen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9737" maxy="54.1871" minx="12.9637" miny="53.3706"/>
         <Style>
           <Name>default</Name>
@@ -1373,16 +2351,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_ur_graeber_pom</Name>
         <Title>Urgeschichtliche Graeber (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9676" maxy="54.1444" minx="12.992" miny="53.3284"/>
         <Style>
           <Name>default</Name>
@@ -1398,16 +2395,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wehren_pom</Name>
         <Title>Wehranlagen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9676" maxy="54.1444" minx="12.992" miny="53.3284"/>
         <Style>
           <Name>default</Name>
@@ -1421,21 +2437,40 @@
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
     </Layer>
     </Layer>
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-228dba0de3aef30eddedd5a706c70f16</Name>
     <Title>Geologische_Sehenswuerdigkeiten</Title>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_eiszeitroute_pom</Name>
         <Title>Eiszeitroute (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.8104" maxy="53.9185" minx="12.9804" miny="53.3078"/>
         <Style>
           <Name>default</Name>
@@ -1451,16 +2486,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_mueritz_nlp_pom</Name>
         <Title>Mueritz-Nationalpark (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.6561" maxy="54.0151" minx="12.9682" miny="53.3651"/>
         <Style>
           <Name>default</Name>
@@ -1476,16 +2530,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_ggarten_pom</Name>
         <Title>Geschiebegaerten (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1501,16 +2574,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_gedenkstein_pom</Name>
         <Title>Gedenksteine (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1526,16 +2618,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_geoparkobj_pom</Name>
         <Title>Geoparkobjekte (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1551,16 +2662,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_flusstal_pom</Name>
         <Title>Besondere Flusstaeler (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1576,16 +2706,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_sprl_stein_pom</Name>
         <Title>Sprenglochsteine (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1601,16 +2750,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_quellen_pom</Name>
         <Title>Quellen (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.9663" maxy="54.1577" minx="12.9642" miny="53.3547"/>
         <Style>
           <Name>default</Name>
@@ -1626,16 +2794,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_geopark_pom</Name>
         <Title>Geopark Mecklenburgische Eiszeitlandschaft (Pomerania)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.9753" maxy="53.9112" minx="12.9731" miny="53.352"/>
         <Style>
           <Name>default</Name>
@@ -1652,16 +2839,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>t7_gebiet_pom</Name>
         <Title>Geotourismus-Karte Pomerania</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="15.0087" maxy="54.2063" minx="12.9589" miny="53.3161"/>
         <Style>
           <Name>default</Name>

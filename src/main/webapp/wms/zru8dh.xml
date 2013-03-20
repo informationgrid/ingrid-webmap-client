@@ -23,7 +23,7 @@
       </ContactAddress>
       <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
       <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
-      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+      <ContactElectronicMailAddress>fisbroker@senstadtum.berlin.de</ContactElectronicMailAddress>
     </ContactInformation>
     <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
     <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
@@ -77,11 +77,10 @@
     </Exception>
     <VendorSpecificCapabilities/>
     <!-- Layers -->
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a70c9a1198048079a051e3e1f1886095</Name>
       <Title>Biotoptypen: Lebensraumtypen FFH (Flora-Fauna-Habitat-Richtlinie)(Umweltatlas)</Title>
       <Abstract>FFH-Lebensraumtypen (LRT) oder -komplexe (Biotop hat nicht die erforderliche Ausprägung jedoch das Entwicklungspotential zu einem LRT)gemäß Flora-Fauna-Habitat-Richtlinie der EU, Flächendeckende Biotopkartierung Berlin</Abstract>
       <KeywordList>
-        <Keyword>inspireidentifiziert</Keyword>
         <Keyword>Karten</Keyword>
         <Keyword>Geodaten</Keyword>
         <Keyword>Berlin</Keyword>
@@ -133,7 +132,6 @@
         <Name>0</Name>
         <Title>Biotope</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -159,14 +157,12 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
-        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
         <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
         <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
         <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
-        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
         <MetadataURL type="TC211">
@@ -185,9 +181,8 @@
       </Layer>
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>1</Name>
-        <Title>Blockkarte 1:5000 (ISU5, Raumbezug Umweltatlas 2005)</Title>
+        <Title>Grenzen Biotoptypen</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -237,9 +232,9 @@
       </Layer>
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>2</Name>
-        <Title>Gleise</Title>
+        <Title>Blockkarte 1:5000 (ISU5, Raumbezug Umweltatlas 2010)</Title>
+        <Abstract>Hintergrundkarte ohne farbige Gewässer- und Bahnflächen, Stand 2010</Abstract>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -289,9 +284,8 @@
       </Layer>
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>3</Name>
-        <Title>LRT-Schlüssel</Title>
+        <Title>Gleise</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -317,14 +311,12 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
-        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
         <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
         <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
         <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
-        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
         <MetadataURL type="TC211">
@@ -343,9 +335,8 @@
       </Layer>
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>4</Name>
-        <Title>Grenzen Biotoptypen</Title>
+        <Title>LRT-Schlüssel</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -371,14 +362,12 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
-        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
         <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
         <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
         <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
-        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <Identifier authority="GDI-DE">97fb4f7a-b67f-3641-99e9-36fb8843f6c6</Identifier>
         <MetadataURL type="TC211">
@@ -399,7 +388,6 @@
         <Name>5</Name>
         <Title>K5</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>
@@ -451,7 +439,6 @@
         <Name>6</Name>
         <Title>ALK</Title>
         <KeywordList>
-          <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
           <Keyword>Geodaten</Keyword>
           <Keyword>Berlin</Keyword>

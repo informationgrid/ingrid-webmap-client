@@ -119,7 +119,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-16b20bfffc7b21a1ff797ad9ea1b20c3</Name>
 			<Title><![CDATA[Gewaesserstationierungskarte des Landes NRW]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
@@ -137,7 +137,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			<LatLonBoundingBox maxx="9.922450" maxy="52.837862" minx="4.498711" miny="49.767553"/>
 			<BoundingBox SRS="EPSG:4326" maxx="9.922450" maxy="52.837862" minx="4.498711" miny="49.767553"/>
 			<BoundingBox SRS="EPSG:25832" maxx="562141.982110" maxy="5854234.270020" minx="196275.179490" miny="5521329.497380"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-5071bc7cd2cf41346baa4e2b09e4a115</Name>
 				<Title><![CDATA[Einzugsgebiete]]></Title>
 				<Abstract><![CDATA[Einzugsgebiete]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -306,7 +306,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Style>
 				<ScaleHint max="Infinity" min="277.185858"/>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-2dff1eddeb0f9955f8ba3981907cf2d7</Name>
 				<Title><![CDATA[Fliessgewaesser]]></Title>
 				<Abstract><![CDATA[Fliessgewaesser]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -476,7 +476,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Style>
 				<ScaleHint max="39.597980" min="0.0"/>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-3176b23921847acc24a5a63b3d5eff2b</Name>
 				<Title><![CDATA[Stationierung]]></Title>
 				<Abstract><![CDATA[Stationierung]]></Abstract>
 				<SRS>EPSG:4326</SRS>

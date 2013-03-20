@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.0">
+	<Service>
+		<Name>WMS</Name>
+		<Title>VG250</Title>
+		<Abstract>Verwaltungsgrenzen 1:250.000, Stand 31.12.2009</Abstract>
+		<KeywordList><Keyword/></KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Dienstleistungszentrum</ContactPerson>
+				<ContactOrganization>Dienstleistungszentrum des Bundesamtes für Kartographie und Geodäsie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition>Technischer Administrator</ContactPosition>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Karl-Rothe-Str. 10-15</Address>
+				<City>Leipzig</City>
+				<StateOrProvince>DE-BKG</StateOrProvince>
+				<PostCode>04105</PostCode>
+				<Country>Deutschland</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 0 341 5634 333</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 0 341 5634 415</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>dlz.bkg.bund.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>Wenden Sie sich bitte an das Dienstleistungszentrum des Bundesamtes für Kartographie und Geodäsie: 
+http://www.geodatenzentrum.de/geodaten/gdz?l=kontakt</Fees>
+		<AccessConstraints>Der hier beschriebene Online-Dienst (Web Map Service) ist mit seinen Inhalten 
+urheberrechtlich geschützt. Für den Erwerb von Nutzungsrechten wenden Sie sich bitte an 
+das Dienstleistungszentrum des Bundesamtes für Kartographie und Geodäsie: 
+http://www.geodatenzentrum.de/geodaten/gdz?l=kontakt</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/bmp</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/tiff</Format>
+				<Format>image/png</Format>
+				<Format>image/png8</Format>
+				<Format>image/png24</Format>
+				<Format>image/png32</Format>
+				<Format>image/gif</Format>
+				<Format>image/svg+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.esri.wms_raw_xml</Format>
+				<Format>application/vnd.esri.wms_featureinfo_xml</Format>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>application/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+			<GetStyles>
+				<Format>application/vnd.ogc.sld+xml</Format>
+				<DCPType>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?" xlink:type="simple"/></Get></HTTP>
+				</DCPType>
+			</GetStyles>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-ae3ff0628872fd398fd7ada908c40ff9</Name>
+			<Title>VG250</Title>
+			<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+			<LatLonBoundingBox maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+			<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6106159.3513" minx="280387.7099" miny="5235854.9301"/>
+			<BoundingBox SRS="EPSG:4258" maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+			<BoundingBox SRS="EPSG:25833" maxx="537069.143480848" maxy="6141552.66345197" minx="-173513.176980569" miny="5220952.31034053"/>
+			<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6130236.36760472" minx="2471984.45497498" miny="5233335.63509781"/>
+			<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6107970.08867784" minx="3280326.50369244" miny="5237416.64452875"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4729350.69354495" maxy="6121531.74217981" minx="4053261.98099235" miny="5225587.06513263"/>
+			<BoundingBox SRS="EPSG:31469" maxx="5537079.42587989" maxy="6143373.18003729" minx="4826299.12418491" miny="5222509.87156641"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Gemeinde</Title>
+				<Abstract>Gemeinde</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>0</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=0" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title>Verw.gemeinschaft</Title>
+				<Abstract>Verw.gemeinschaft</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="293379.8017" miny="5249068.437"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6135714.01891328" minx="-159470.186300556" miny="5234098.20742932"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148297.61390223" maxy="6125512.32100848" minx="2485163.32820372" miny="5247035.67662549"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.77669278" maxy="6103253.11070509" minx="3293322.22081462" miny="5250633.95661363"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116252.66274166" minx="4066782.46800032" miny="5238771.91561272"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6137532.88927061" minx="4840346.04217703" miny="5235659.55530641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>1</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=1" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>2</Name>
+				<Title>Kreis</Title>
+				<Abstract>Kreis</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>2</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=2" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>3</Name>
+				<Title>Regierungsbezirk</Title>
+				<Abstract>Regierungsbezirk</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="5820206.2609" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="512997.576421727" maxy="5855477.18263698" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="5843738.78632213" minx="2484059.11579856" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="5821935.60931976" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4717280.50513258" maxy="5835312.55756816" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5513001.18732875" maxy="5857216.29011263" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>3</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=3" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>4</Name>
+				<Title>Bundesland</Title>
+				<Abstract>Bundesland</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>4</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=4" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>5</Name>
+				<Title>Staatsgrenze</Title>
+				<Abstract>Staatsgrenze</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6106159.3513" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5784003397738" maxy="55.10215615038" minx="5.56157717874952" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="537069.143480848" maxy="6141552.66345197" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6130236.36760472" minx="2471984.45497498" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6107970.08867784" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729350.69354495" maxy="6121531.74217981" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5537079.42587989" maxy="6143373.18003729" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>5</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=5" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>6</Name>
+				<Title>Name Gemeinde</Title>
+				<Abstract>Name Gemeinde</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>6</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=6" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>7</Name>
+				<Title>Name Verw.gemeinschaft</Title>
+				<Abstract>Name Verw.gemeinschaft</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="293379.8017" miny="5249068.437"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597799985606" minx="5.76802981169644" miny="47.2595551815067"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6135714.01891328" minx="-159470.186300556" miny="5234098.20742932"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148297.61390223" maxy="6125512.32100848" minx="2485163.32820372" miny="5247035.67662549"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.77669278" maxy="6103253.11070509" minx="3293322.22081462" miny="5250633.95661363"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116252.66274166" minx="4066782.46800032" miny="5238771.91561272"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6137532.88927061" minx="4840346.04217703" miny="5235659.55530641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>7</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=7" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>8</Name>
+				<Title>Name Kreis</Title>
+				<Abstract>Name Kreis</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>8</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=8" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>9</Name>
+				<Title>Name Reg.bezirk</Title>
+				<Abstract>Name Reg.bezirk</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="5820206.2609" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.1909059386532" maxy="52.5319533457122" minx="5.76530183593784" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="512997.576421727" maxy="5855477.18263698" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="5843738.78632213" minx="2484059.11579856" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="5821935.60931976" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4717280.50513258" maxy="5835312.55756816" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5513001.18732875" maxy="5857216.29011263" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>9</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=9" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>10</Name>
+				<Title>Name Bundesland</Title>
+				<Abstract>Name Bundesland</Abstract>
+				<SRS>EPSG:4326 EPSG:25832 EPSG:4258 EPSG:25833 EPSG:31466 EPSG:31467 EPSG:31468 EPSG:31469</SRS>
+				<LatLonBoundingBox maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25832" maxx="921290.3661" maxy="6101443.7125" minx="280387.7099" miny="5235854.9301"/>
+				<BoundingBox SRS="EPSG:4258" maxx="15.5715107331158" maxy="55.0597800000168" minx="5.56520135449741" miny="47.1412149197362"/>
+				<BoundingBox SRS="EPSG:25833" maxx="536665.832189685" maxy="6136836.40070987" minx="-173513.176980569" miny="5220952.31034053"/>
+				<BoundingBox SRS="EPSG:31466" maxx="3148810.4630369" maxy="6125512.32100848" minx="2472186.75984508" miny="5233335.63509781"/>
+				<BoundingBox SRS="EPSG:31467" maxx="3921407.78542425" maxy="6103253.11068387" minx="3280326.50369244" miny="5237416.64452875"/>
+				<BoundingBox SRS="EPSG:31468" maxx="4729148.45179085" maxy="6116812.14358298" minx="4053261.98099235" miny="5225587.06513263"/>
+				<BoundingBox SRS="EPSG:31469" maxx="5536676.00297245" maxy="6138655.57815075" minx="4826299.12418491" miny="5222509.87156641"/>
+				<Style>
+					<Name>default</Name>
+					<Title>10</Title>
+					<LegendURL height="16" width="32">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250?request=GetLegendGraphic&amp;version=1.1.0&amp;format=image/png&amp;layer=10" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

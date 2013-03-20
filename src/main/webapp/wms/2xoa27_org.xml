@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" version="1.1.1">
+  <Service>
+    <Name>WMS</Name>
+    <Title>Wasserschutzgebiete im Land Brandenburg</Title>
+    <Abstract>Darstellungsdienst Wasserschutzgebiete im Land Brandenburg zur Herstellung der Anfangsbetriebsfähigkeit von INSPIRE Darstellungsdiensten. Bitte beachten Sie die Links zu den Nutzungsbedingungen (siehe AccessConstraints) sowie zu Metainformationen und Download (http://www.mugv.brandenburg.de/cms/detail.php/bb2.c.515599.de).</Abstract>
+    <KeywordList><Keyword>Wasserschutzgebiet</Keyword><Keyword>Schutzzone</Keyword><Keyword>Wasser</Keyword><Keyword>Brandenburg</Keyword><Keyword>infoMapAccessService</Keyword></KeywordList>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/INSPIRE/wsg/MapServer/WMSServer" xlink:type="simple"/>
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson/>
+        <ContactOrganization>Landesvermessung und Geobasisinformation Brandenburg</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>Dezernat 44 (GeoServiceCenter - GIS-Zentrale)</ContactPosition>
+      <ContactAddress>
+        <AddressType/>
+        <Address>Heinrich-Mann-Allee 103</Address>
+        <City>Potsdam</City>
+        <StateOrProvince>Brandenburg</StateOrProvince>
+        <PostCode>D-14473</PostCode>
+        <Country>DE</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>+49 335 5582-500</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>+49 331 8844-16437</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>gis-zentrale@geobasis-bb.de</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>none</Fees>
+    <AccessConstraints>Allgemeine Nutzungsbedingungen: http://www.mluv.brandenburg.de/cms/detail.php/bb2.c.515655.de</AccessConstraints>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/INSPIRE/wsg/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/bmp</Format>
+        <Format>image/jpeg</Format>
+        <Format>image/tiff</Format>
+        <Format>image/png</Format>
+        <Format>image/png8</Format>
+        <Format>image/png24</Format>
+        <Format>image/png32</Format>
+        <Format>image/gif</Format>
+        <Format>image/svg+xml</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/INSPIRE/wsg/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>application/vnd.ogc.wms_xml</Format>
+        <Format>text/xml</Format>
+        <Format>text/html</Format>
+        <Format>text/plain</Format>
+        <DCPType>
+          <HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/INSPIRE/wsg/MapServer/WMSServer" xlink:type="simple"/></Get></HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>application/vnd.ogc.se_xml</Format>
+      <Format>application/vnd.ogc.se_inimage</Format>
+      <Format>application/vnd.ogc.se_blank</Format>
+    </Exception>
+    <inspire_vs:ExtendedCapabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0">
+...<inspire_common:SupportedLanguages xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+<inspire_common:DefaultLanguage>
+<inspire_common:Language xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">ger</inspire_common:Language>
+</inspire_common:DefaultLanguage>
+</inspire_common:SupportedLanguages>
+<inspire_common:ResponseLanguage xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
+<inspire_common:Language xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">ger</inspire_common:Language>
+</inspire_common:ResponseLanguage>
+</inspire_vs:ExtendedCapabilities>
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-08da4b43b876062a2029b6cd38c5670e</Name>
+    <Title>Wasserschutzgebiete</Title>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:3068</SRS>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:32632</SRS>
+    <SRS>EPSG:32633</SRS>
+    <LatLonBoundingBox maxx="14.901772" maxy="53.587619" minx="11.243691" miny="51.225514"/>
+    <BoundingBox SRS="EPSG:25833" maxx="493148.918060" maxy="5937646.552290" minx="251054.871147" miny="5680945.829110"/>
+    <BoundingBox SRS="EPSG:4326" maxx="14.901772" maxy="53.587619" minx="11.243691" miny="51.225514"/>
+   <BoundingBox SRS="EPSG:25832" maxx="890000" maxy="5950000" minx="660000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3034" maxx="4310000" maxy="2970000" minx="4110000" miny="2700000"/>
+    <BoundingBox SRS="EPSG:3035" maxx="4640000" maxy="3390000" minx="4440000" miny="3130000"/>
+    <BoundingBox SRS="EPSG:3044" maxx="890000" maxy="5950000" minx="660000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3045" maxx="490000" maxy="5930000" minx="240000" miny="5690000"/>
+    <BoundingBox SRS="EPSG:3068" maxx="130000" maxy="140000" minx="-120000" miny="-110000"/>
+    <BoundingBox SRS="EPSG:4258" maxx="14.8" maxy="53.5" minx="11.2" miny="51.3"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3884648" maxy="5945263" minx="3653411" miny="5687111"/>
+    <BoundingBox SRS="EPSG:31468" maxx="4692086" maxy="5938476" minx="4450510" miny="5690323"/>
+    <BoundingBox SRS="EPSG:32632" maxx="884536" maxy="5943562" minx="653367" miny="5685485"/>
+    <BoundingBox SRS="EPSG:32633" maxx="486734" maxy="5927912" minx="235121" miny="5690047"/>
+    <BoundingBox SRS="EPSG:31469" maxx="5493862" maxy="5936839" minx="5235151" miny="5691876"/>
+      <Layer noSubsets="0" opaque="0" queryable="1">
+        <Name>0</Name>
+        <Title>Wasserschutzgebiete im Land Brandenburg</Title>
+        <Abstract>Wasserschutzgebiete im Land Brandenburg</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25833</SRS>
+        <LatLonBoundingBox maxx="14.743413" maxy="53.482480" minx="11.418206" miny="51.334941"/>
+        <BoundingBox SRS="EPSG:25833" maxx="482144.643200" maxy="5925978.337600" minx="262059.146007" miny="5692614.043800"/>
+        <Style>
+          <Name>default</Name>
+          <Title>Wasserschutzgebiete im Land Brandenburg</Title>
+           <LegendURL height="260" width="300">
+            <Format>image/png</Format> 
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/Wms/INSPIRE/wsg/legenden/default/wsg_bb.PNG" xlink:type="simple"/> 
+         </LegendURL>
+        </Style>
+        <ScaleHint max="1188.000000" min="0.198000"/>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMT_MS_Capabilities>

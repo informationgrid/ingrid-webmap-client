@@ -23,7 +23,7 @@
       </ContactAddress>
       <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
       <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
-      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+      <ContactElectronicMailAddress>fisbroker@senstadtum.berlin.de</ContactElectronicMailAddress>
     </ContactInformation>
     <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
     <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
@@ -77,7 +77,7 @@
     </Exception>
     <VendorSpecificCapabilities/>
     <!-- Layers -->
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-c212b782e27c44a7d97e174fa0c778f9</Name>
       <Title>Versiegelung 2005 (Umweltatlas)</Title>
       <Abstract>Versiegelung von Block-,Blockteilflächen in 10% Stufen, ermittelt aus Satellitenbilddaten (unbebauter Anteil) und ALK (bebauter Anteil)auf Grundlage der Blockkarte 1:5000 (ISU5), Sachstand 2005.</Abstract>
       <KeywordList>
@@ -94,12 +94,14 @@
       <SRS>EPSG:25833</SRS>
       <SRS>EPSG:31467</SRS>
       <SRS>EPSG:25832</SRS>
+      <SRS>EPSG:4258</SRS>
       <SRS>EPSG:4326</SRS>
       <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
       <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
       <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
       <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
       <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+      <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
       <AuthorityURL name="GDI-DE">
         <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.gdi-de.org" xlink:type="simple"/>
       </AuthorityURL>
@@ -119,7 +121,7 @@
       <Layer noSubsets="0" opaque="0" queryable="1">
         <Name>0</Name>
         <Title>Versiegelung 2005</Title>
-        <Abstract>Versiegelung 2005</Abstract>
+        <Abstract>Versiegelung von Block-,Blockteilflächen in 10% Stufen, ermittelt aus Satellitenbilddaten (unbebauter Anteil) und ALK (bebauter Anteil)auf Grundlage der Blockkarte 1:5000 (ISU5), Sachstand 2005.</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -161,6 +163,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>1</Name>
         <Title>Hintergrund 1:5000</Title>
+        <Abstract>Als Raumbezug für die Ausprägung der Daten des Umweltatlas genutzte grundrisstreue Abbildung der statistischen Blöcke des regionalen Bezugssystem (RBS) mit Teilblöcken, Stand 31.12.2005</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -175,12 +178,14 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
         <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
         <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
         <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <Identifier authority="GDI-DE">4d0a333c-7401-34e4-8818-941b994eac0c</Identifier>
         <MetadataURL type="TC211">
@@ -200,6 +205,7 @@
       <Layer noSubsets="0" opaque="0" queryable="0">
         <Name>2</Name>
         <Title>Gleise aus K5</Title>
+        <Abstract>Darstellung des Berliner Gleisnetzes.</Abstract>
         <KeywordList>
           <Keyword>inspireidentifiziert</Keyword>
           <Keyword>Karten</Keyword>
@@ -214,12 +220,14 @@
         <SRS>EPSG:25833</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:4326</SRS>
         <LatLonBoundingBox maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:3068" maxx="50350" maxy="40750" minx="850" miny="-150"/>
         <BoundingBox SRS="EPSG:25833" maxx="417447.1434" maxy="5838875.0218" minx="367190.9604" miny="5798934.3364"/>
         <BoundingBox SRS="EPSG:31467" maxx="3823055.1302" maxy="5850798.2584" minx="3776226.1513" miny="5806761.8979"/>
         <BoundingBox SRS="EPSG:25832" maxx="822854.0551" maxy="5848894.474" minx="776043.3892" miny="5804876.2202"/>
+        <BoundingBox SRS="EPSG:4258" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <BoundingBox SRS="EPSG:4326" maxx="13.7785" maxy="52.6935" minx="13.0512" miny="52.3246"/>
         <Identifier authority="GDI-DE">4d0a333c-7401-34e4-8818-941b994eac0c</Identifier>
         <MetadataURL type="TC211">

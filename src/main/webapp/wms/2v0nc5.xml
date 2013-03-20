@@ -23,7 +23,7 @@
       </ContactAddress>
       <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
       <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
-      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+      <ContactElectronicMailAddress>fisbroker@senstadtum.berlin.de</ContactElectronicMailAddress>
     </ContactInformation>
     <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
     <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
@@ -77,8 +77,8 @@
     </Exception>
     <VendorSpecificCapabilities/>
     <!-- Layers -->
-    <Layer noSubsets="0" opaque="0" queryable="0">
-      <Title>Strategische Lärmkarte Gesamtlärmindex LDEN Raster (Umweltatlas)</Title>
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-94bd2dd619d67b654ae27ae6c4d2f755</Name>
+      <Title>Strat. Lärmkarte Gesamtlärmindex L_DEN (Tag-Abend-Nacht) Raster 2007 (UA)</Title>
       <Abstract>Die Karte stellt über die Anforderungen der Umgebungslärmrichtlinie hinaus den Versuch dar, eine summarische Betrachtung der einzelnen untersuchten Lärmquellen zu ermöglichen.</Abstract>
       <KeywordList>
         <Keyword>Karten</Keyword>
@@ -107,7 +107,7 @@
       <Style>
         <Name>default</Name>
         <Title>Standard</Title>
-        <LegendURL height="580" width="296">
+        <LegendURL height="519" width="315">
           <Format>image/gif</Format>
           <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_05_14verkehr_gesDEN2008.gif" xlink:type="simple"/>
         </LegendURL>
@@ -140,8 +140,8 @@
         <Style>
           <Name>gdi_default</Name>
           <Title>Standard GDI Style</Title>
-          <LegendURL height="72" width="72">
-            <Format>image/gif</Format>
+          <LegendURL height="580" width="296">
+            <Format>gif</Format>
             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://fbinter.stadt-berlin.de/fb_daten/legenden/umweltatlas/leg_07_05_14verkehr_gesDEN2008.gif" xlink:type="simple"/>
           </LegendURL>
         </Style>

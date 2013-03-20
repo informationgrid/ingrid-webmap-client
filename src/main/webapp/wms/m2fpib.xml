@@ -71,7 +71,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-fa8643ced037b8ea56e1c556ab810e50</Name>
 			<Title><![CDATA[Überschwemmungsgebiete NRW]]></Title>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -88,7 +88,7 @@
 			<LatLonBoundingBox maxx="9.654904" maxy="52.626276" minx="5.571359" miny="50.231158"/>
 			<BoundingBox SRS="EPSG:4326" maxx="9.654904" maxy="52.626276" minx="5.571359" miny="50.231158"/>
 			<BoundingBox SRS="EPSG:25832" maxx="544330.970065" maxy="5830698.134480" minx="267694.349035" miny="5569410.668920"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-f0247027e66195cc70b9b7c68799da35</Name>
 				<Title><![CDATA[Sonstige Überschwemmungsgebiete]]></Title>
 				<Abstract><![CDATA[Sonstige Überschwemmungsgebiete]]></Abstract>
 				<SRS>EPSG:31466</SRS>
@@ -194,7 +194,7 @@
 					<ScaleHint max="Infinity" min="0.395980"/>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-2d19c7ca68f69aafc033b82b8896e2e9</Name>
 				<Title><![CDATA[Festgesetzte Überschwemmungsgebiete]]></Title>
 				<Abstract><![CDATA[Rechtsverbindlich festgesetzte Überschwemmungsgebiete. Die Regelungen und Restriktionen, die zu beachten sind, finden sich im Wasserhaushaltsgesetz (§ 78) und im Landeswassergesetz (§ 113 LWG) ]]></Abstract>
 				<SRS>EPSG:31466</SRS>

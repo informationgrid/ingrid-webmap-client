@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.4.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=FASTCGI INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>10k simplified AGG OpenStreetMap WMS</Title>
+  <Abstract>Dieser Dienst enthält Daten aus dem Projekt OpenStreetMap (http://openstreetmap.org), die als Karte aufbereitet wurden. Die Karte dient als Hintergrund für die Darstellung der betrieblichen Messwerte der Anwendung PRTR des Umweltbundesamtes und dient als Test zur Performancemessung im Maßstab 1:10.000 - 1:25.000 und die Grunddaten wurden durch simplify ausgedünnt.</Abstract>
+        <KeywordList>
+          <Keyword>OpenStreetMap</Keyword>
+          <Keyword> Straßenkarte</Keyword>
+          <Keyword> MapServer</Keyword>
+          <Keyword> OSGeo</Keyword>
+          <Keyword> OGC</Keyword>
+          <Keyword> UBA</Keyword>
+          <Keyword> BLE</Keyword>
+          <Keyword> WhereGroup</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Martin Hueben</ContactPerson>
+      <ContactOrganization>Wheregroup GmbH &amp; Co.KG</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>Service Maintenance</ContactPosition>
+    <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Siemensstrasse 8</Address>
+        <City>Bonn</City>
+        <StateOrProvince>NRW</StateOrProvince>
+        <PostCode>53121</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone>0049-2289090380</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>0049-22890903811</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>info@wheregroup.com</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>OSM_S_10K</Name>
+    <Title>10k simplified AGG OpenStreetMap WMS</Title>
+    <SRS>EPSG:25832</SRS>
+    <LatLonBoundingBox maxx="16.7058" maxy="55.5212" minx="4.21028" miny="46.6953"/>
+    <BoundingBox SRS="EPSG:25832" maxx="989000" maxy="6.15279e+06" minx="197000" miny="5.19121e+06"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Meer</Name>
+        <Title>Meer</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="4.51164" maxy="0.000668336" minx="4.51116" miny="0.000321992"/>
+        <BoundingBox SRS="EPSG:25832" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="66">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Meer&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Grenzen</Name>
+        <Title>Europa</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="66">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Grenzen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Staedte</Name>
+        <Title>Staedte</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="78">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Staedte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="3991.2227874371" min="249.501314499662"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'Flächen25000' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>Flächen25000</Name>
+        <Title>Flaechen25000</Title>
+        <KeywordList>
+          <Keyword>Flaechen OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="221" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Flächen25000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="12.5224614955839" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Fliessgewaesser25000</Name>
+        <Title>Fliessgewässer25000</Title>
+        <KeywordList>
+          <Keyword>Flüße</Keyword>
+          <Keyword> Wasser</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="86" width="79">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fliessgewaesser25000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="12.5224614955839" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen25000</Name>
+        <Title>Strassen25000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="194" width="149">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen25000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="12.5224614955839" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte25000</Name>
+        <Title>Orte25000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="140" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte25000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="12.5224614955839" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'Flächen100000' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>Flächen100000</Name>
+        <Title>Flaechen100000</Title>
+        <KeywordList>
+          <Keyword>Flaechen OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="221" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Flächen100000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.9401751278067" min="12.5224614955839"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Fliessgewaesser100000</Name>
+        <Title>Fliessgewässer100000</Title>
+        <KeywordList>
+          <Keyword>Flüße</Keyword>
+          <Keyword> Wasser</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="86" width="79">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fliessgewaesser100000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.9401751278067" min="12.5224614955839"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen100000</Name>
+        <Title>Strassen100000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="194" width="149">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen100000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.9401751278067" min="12.5224614955839"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte100000</Name>
+        <Title>Orte100000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="140" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte100000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49.9401751278067" min="12.5224614955839"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'Flächen300000' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>Flächen300000</Name>
+        <Title>Flaechen300000</Title>
+        <KeywordList>
+          <Keyword>Flaechen OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="221" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Flächen300000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149.720744813734" min="49.9401751278067"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Fliessgewaesser300000</Name>
+        <Title>Fliessgewässer300000</Title>
+        <KeywordList>
+          <Keyword>Flüße</Keyword>
+          <Keyword> Wasser</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="79">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fliessgewaesser300000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149.720744813734" min="49.9401751278067"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen300000</Name>
+        <Title>Strassen300000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="194" width="149">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen300000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149.720744813734" min="49.9401751278067"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte300000</Name>
+        <Title>Orte300000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="140" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte300000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="149.720744813734" min="49.9401751278067"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+<!-- WARNING: The layer name 'Flächen500000' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
+        <Name>Flächen500000</Name>
+        <Title>Flaechen500000</Title>
+        <KeywordList>
+          <Keyword>Flaechen OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="140" width="110">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Flächen500000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.501314499662" min="149.720744813734"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Fliessgewaesser500000</Name>
+        <Title>Fliessgewässer500000</Title>
+        <KeywordList>
+          <Keyword>Flüße</Keyword>
+          <Keyword> Wasser</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="79">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fliessgewaesser500000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.501314499662" min="149.720744813734"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen500000</Name>
+        <Title>Strassen500000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="113" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen500000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.501314499662" min="149.720744813734"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte500000</Name>
+        <Title>Orte500000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte500000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="249.501314499662" min="149.720744813734"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen1000000</Name>
+        <Title>Strassen1000000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="86" width="117">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen1000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.95273871448" min="249.501314499662"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte1000000</Name>
+        <Title>Orte1000000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="59" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte1000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="498.95273871448" min="249.501314499662"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen2000000</Name>
+        <Title>Strassen2000000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="88">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen2000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte2000000</Name>
+        <Title>Orte2000000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte2000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen5000000</Name>
+        <Title>Strassen5000000</Title>
+        <KeywordList>
+          <Keyword>Strassen</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="88">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen5000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Orte5000000</Name>
+        <Title>Orte5000000</Title>
+        <KeywordList>
+          <Keyword>Ortschaft</Keyword>
+          <Keyword> Orte</Keyword>
+          <Keyword> Staedte</Keyword>
+          <Keyword> OSM</Keyword>
+        </KeywordList>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:31492</SRS>
+        <SRS>EPSG:31493</SRS>
+        <SRS>EPSG:31494</SRS>
+        <SRS>EPSG:31495</SRS>
+        <SRS>EPSG:31462</SRS>
+        <SRS>EPSG:31463</SRS>
+        <SRS>EPSG:31464</SRS>
+        <SRS>EPSG:31465</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31257</SRS>
+        <SRS>EPSG:31258</SRS>
+        <SRS>EPSG:31259</SRS>
+        <SRS>EPSG:31284</SRS>
+        <SRS>EPSG:31285</SRS>
+        <SRS>EPSG:31286</SRS>
+        <SRS>EPSG:31287</SRS>
+        <SRS>EPSG:28992</SRS>
+        <LatLonBoundingBox maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <BoundingBox SRS="EPSG:4326" maxx="43" maxy="74.1" minx="-10.4" miny="35.7"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="32" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://osm.prtr.bund.de/cgi-bin/mapserv?map=/data/umn/osm/osm_s_10k_opt_agg.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Orte5000000&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

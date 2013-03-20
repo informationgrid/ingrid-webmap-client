@@ -4,10 +4,10 @@
 		<Title>Topographie</Title>
 		<Abstract>Digitale Topographische Karten</Abstract>
 		<KeywordList><Keyword/></KeywordList>
-		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_dtk_bkg" xlink:type="simple"/>
 		<ContactInformation>
 			<ContactPersonPrimary>
-				<ContactPerson/>
+				<ContactPerson>Dienstleistungszentrum</ContactPerson>
 				<ContactOrganization>Geodatenzentrum (GDZ) des Bundesamtes für Kartographie und Geodäsie (BKG)</ContactOrganization>
 			</ContactPersonPrimary>
 			<ContactPosition/>
@@ -19,9 +19,9 @@
 				<PostCode>04105</PostCode>
 				<Country>Deutschland</Country>
 			</ContactAddress>
-			<ContactVoiceTelephone>+49 341 5634 369</ContactVoiceTelephone>
-			<ContactFacsimileTelephone>+49 341 5634 415</ContactFacsimileTelephone>
-			<ContactElectronicMailAddress>geodatenzentrum@bkg.bund.de</ContactElectronicMailAddress>
+			<ContactVoiceTelephone>+49 0 341 5634 333</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 0 341 5634 415</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>dlz.bkg.bund.de</ContactElectronicMailAddress>
 		</ContactInformation>
 		<Fees/>
 		<AccessConstraints/>
@@ -31,7 +31,7 @@
 			<GetCapabilities>
 				<Format>application/vnd.ogc.wms_xml</Format>
 				<DCPType>
-					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
 				</DCPType>
 			</GetCapabilities>
 			<GetMap>
@@ -45,7 +45,7 @@
 				<Format>image/gif</Format>
 				<Format>image/svg+xml</Format>
 				<DCPType>
-					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
 				</DCPType>
 			</GetMap>
 			<GetFeatureInfo>
@@ -56,13 +56,13 @@
 				<Format>text/html</Format>
 				<Format>text/plain</Format>
 				<DCPType>
-					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
 				</DCPType>
 			</GetFeatureInfo>
 			<GetStyles>
 				<Format>application/vnd.ogc.sld+xml</Format>
 				<DCPType>
-					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://gdz.bkg.bund.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
+					<HTTP><Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_dtk_bkg" xlink:type="simple"/></Get></HTTP>
 				</DCPType>
 			</GetStyles>
 		</Request>
@@ -71,7 +71,7 @@
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-d04cea35be9b6d6b2e6b61a346d9cb92</Name>
 			<Title>DTK_BKG</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:25832</SRS>

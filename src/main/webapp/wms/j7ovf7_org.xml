@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/natur/24701.htm - WMS - LfULG - Schutzgebiete - Stand 01/2009</Title>
+		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/natur/24701.htm - Folgende Schutzgebiete nach Saechsischem Naturschutzgesetz werden dargestellt: Nationalpark (NLP) Saechsische Schweiz, Biosphaerenreservat (BR), Naturparke (NP), Naturschutzgebiete (NSG) und Landschaftsschutzgebiete (LSG), FFH, SPA.</Abstract>
+		<KeywordList>
+			<Keyword>ArcIMS</Keyword>
+			<Keyword>WMS</Keyword>
+			<Keyword>Dienst</Keyword>
+			<Keyword>Umwelt</Keyword>
+			<Keyword>Landwirtschaft</Keyword>
+			<Keyword>Geologie</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_schutzgebiete?" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Falk Strobach</ContactPerson>
+				<ContactOrganization>Saechsisches Landesamt fuer Umwelt, Landwirtschaft und Geologie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Pillnitzer Platz 3</Address>
+				<City>Dresden</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>01326</PostCode>
+				<Country>DE</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 (351) 8928-0</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 (351) 8928-225</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>falk.strobach@smul.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_schutzgebiete?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_schutzgebiete?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_schutzgebiete?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-3cc3479bf7dd89cb77bf81e7850bfc15</Name>
+			<Title>WMS - LfULG - Schutzgebiete - Stand 01/2009</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:4267</SRS>
+			<SRS>EPSG:4269</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:4314</SRS>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:32632</SRS>
+			<SRS>EPSG:32633</SRS>
+			<LatLonBoundingBox maxx="15.2338850816" maxy="51.7646726205" minx="11.71288247" miny="50.0552876907"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.2338850816" maxy="51.7646726205" minx="11.71288247" miny="50.0552876907"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4723422.44999833" maxy="5736608.94995408" minx="4480180.55000008" miny="5551095.05000175"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>7</Name>
+				<Title>SPA</Title>
+				<LatLonBoundingBox maxx="14.9452523425" maxy="51.6890950537" minx="12.1702829812" miny="50.3569685022"/>
+				<Style>
+					<Name>7Legend</Name>
+					<Title>SPA Legende</Title>
+					<LegendURL height="72" width="72">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_SPA_Vogelschutzgebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>6</Name>
+				<Title>FFH Gebiete</Title>
+				<LatLonBoundingBox maxx="15.0689764731" maxy="51.6891302228" minx="11.8732649598" miny="50.1352533824"/>
+				<Style>
+					<Name>6Legend</Name>
+					<Title>FFH Gebiete Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_FFH_Gebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>5</Name>
+				<Title>FFH Fledermausquartier</Title>
+				<LatLonBoundingBox maxx="15.0156319805" maxy="51.597086586" minx="12.1025234623" miny="50.2875744006"/>
+				<Style>
+					<Name>5Legend</Name>
+					<Title>FFH Fledermausquartier Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_FFH_Fledermaus.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>4</Name>
+				<Title>Biosphaerenreservat</Title>
+				<LatLonBoundingBox maxx="14.7618639287459" maxy="51.4349229616518" minx="14.304880316067" miny="51.2452849470907"/>
+				<Style>
+					<Name>4Legend</Name>
+					<Title>Biosphaerenreservat Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_Biosphaerenreservat.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>3</Name>
+				<Title>Landschaftsschutzgebiete</Title>
+				<LatLonBoundingBox maxx="15.0386901613843" maxy="51.6891843792035" minx="11.9246619639922" miny="50.135963062813"/>
+				<Style>
+					<Name>3Legend</Name>
+					<Title>Landschaftsschutzgebiete Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_Landschaftsschutzgebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>2</Name>
+				<Title>Nationalpark Saechsische Schweiz</Title>
+				<LatLonBoundingBox maxx="14.4075232841559" maxy="50.9997861277252" minx="14.0166213633196" miny="50.8831422695667"/>
+				<Style>
+					<Name>2Legend</Name>
+					<Title>Nationalpark Saechsische Schweiz Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_Nationalpark.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>1</Name>
+				<Title>Naturparke</Title>
+				<LatLonBoundingBox maxx="13.6869930803275" maxy="51.6792290919755" minx="12.095345899088" miny="50.1615792508436"/>
+				<Style>
+					<Name>1Legend</Name>
+					<Title>Naturparke Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_Naturparke.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Naturschutzgebiete</Title>
+				<LatLonBoundingBox maxx="14.9736884403604" maxy="51.6363225688549" minx="11.922274839734" miny="50.1541444406864"/>
+				<Style>
+					<Name>0Legend</Name>
+					<Title>Naturschutzgebiete Legende</Title>
+					<LegendURL height="16" width="23">
+						<Format>image/gif</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/schutzgebiete/WMS_Schutzgebiete_Naturschutzgebiete.gif" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

@@ -2,14 +2,13 @@
   <Service>
     <Name>OGC:WMS</Name>
     <Title>Badegewässer Hamburg</Title>
-    <Abstract>UmweltInfo.online - UIO - Includes environmental information of Freie und Hansestadt Hamburg</Abstract>
+    <Abstract>WMS-Badegewaesser - Enthaelt Information zu den Badegewaesssern der Freien und Hansestadt Hamburg</Abstract>
     <KeywordList>
-      <Keyword>UIO</Keyword>
+      <Keyword>Badegewaesser</Keyword>
       <Keyword>UmweltInfo.online</Keyword>
       <Keyword>Freie und Hansestadt Hamburg</Keyword>
       <Keyword>Behoerde fuer Stadtentwicklung und Umwelt der Freien und Hansestadt Hamburg</Keyword>
       <Keyword>BSU</Keyword>
-      <Keyword>Umweltinformationen</Keyword>
       <Keyword>deegree</Keyword>
       <Keyword>wms</Keyword>
       <Keyword>wfs</Keyword>
@@ -100,7 +99,7 @@
       <Format>application/vnd.ogc.se_inimage</Format>
       <Format>application/vnd.ogc.se_blank</Format>
     </Exception>
-    <Layer noSubsets="0" opaque="0" queryable="1">
+    <Layer noSubsets="0" opaque="0" queryable="1"><Name>INGRID-ead8886c896fc3e384846abe41f97207</Name>
       <Title>Badegewaesser-WMS</Title>
       <Abstract>Badegewaesser-WMS - Enthaelt Information zu den Badegewaesssern der Freien und Hansestadt Hamburg</Abstract>
       <SRS>EPSG:25832</SRS>

@@ -106,22 +106,69 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>lungwms</Name>
     <Title>LUNG WMS Server</Title>
+    <SRS>EPSG:4647</SRS>
+    <SRS>EPSG:5650</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:35832</SRS>
+    <SRS>EPSG:35833</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3038</SRS>
+    <SRS>EPSG:3039</SRS>
+    <SRS>EPSG:3040</SRS>
+    <SRS>EPSG:3041</SRS>
+    <SRS>EPSG:3042</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:3046</SRS>
+    <SRS>EPSG:3047</SRS>
+    <SRS>EPSG:4839</SRS>
+    <SRS>EPSG:2176</SRS>
     <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_spamv08f</Name>
         <Title>Europaeische Vogelschutzgebiete</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3242" maxy="54.7189" minx="10.4574" miny="53.0845"/>
         <Style>
           <Name>default</Name>
@@ -135,16 +182,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_nsg_f</Name>
         <Title>Naturschutzgebiete</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3224" maxy="54.6938" minx="10.4607" miny="53.092"/>
         <Style>
           <Name>default</Name>
@@ -158,16 +224,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_np_f</Name>
         <Title>Naturparke</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3203" maxy="54.2143" minx="10.5127" miny="53.0844"/>
         <Style>
           <Name>default</Name>
@@ -181,16 +266,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_spamv07p</Name>
         <Title>Horststandorte als Teil SPA</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2954" maxy="54.5298" minx="10.5454" miny="53.0974"/>
         <Style>
           <Name>default</Name>
@@ -204,16 +308,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_ffhmv_f</Name>
         <Title>FFH-Gebiete (Flaechen)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3721" maxy="54.725" minx="10.4572" miny="53.0845"/>
         <Style>
           <Name>default</Name>
@@ -227,16 +350,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_lpv_c</Name>
         <Title>Fertiggestellte und in Bearb. befindl. FFH-Managementplaene</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2814" maxy="54.6993" minx="10.6657" miny="53.1514"/>
         <Style>
           <Name>default</Name>
@@ -250,16 +392,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_lsg_f</Name>
         <Title>Landschaftsschutzgebiete</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3252" maxy="54.6938" minx="10.4602" miny="53.0844"/>
         <Style>
           <Name>default</Name>
@@ -273,16 +434,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_nlp_f</Name>
         <Title>Nationalparke</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.729" maxy="54.6172" minx="12.4146" miny="53.2711"/>
         <Style>
           <Name>default</Name>
@@ -296,16 +476,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_brn_f</Name>
         <Title>Biosphaerenreservate</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.8013" maxy="54.4118" minx="10.6972" miny="53.5167"/>
         <Style>
           <Name>default</Name>
@@ -319,16 +518,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_nat_wald</Name>
         <Title>Naturwaelder</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.2617" maxy="54.6116" minx="10.6956" miny="53.1084"/>
         <Style>
           <Name>default</Name>
@@ -342,16 +560,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_fnd_f</Name>
         <Title>Flaechennaturdenkmale (Flaechen)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3658" maxy="54.6108" minx="10.7089" miny="53.1253"/>
         <Style>
           <Name>default</Name>
@@ -365,16 +602,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_ffhmv_p</Name>
         <Title>FFH-Gebiete (Punkte)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.947" maxy="54.5208" minx="11.1255" miny="53.1423"/>
         <Style>
           <Name>default</Name>
@@ -388,16 +644,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_fnd_p</Name>
         <Title>Flaechennaturdenkmale (Punkte)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="13.8669" maxy="54.5666" minx="10.9053" miny="53.2357"/>
         <Style>
           <Name>default</Name>
@@ -405,6 +680,48 @@
           <LegendURL height="41" width="278">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=t2_fnd_p&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>t2_glb_f</Name>
+        <Title>geschuetzte Landschaftsbestandteile (Flaechen)</Title>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
+        <LatLonBoundingBox maxx="14.3342" maxy="54.3908" minx="11.8908" miny="53.2061"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="41" width="372">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a2_schutzgeb_wms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=t2_glb_f&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
     </Layer>

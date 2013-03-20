@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SWF OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS SUPPORTS=RGBA_PNG INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Germany</Title>
+  <Abstract>Germany</Abstract>
+        <KeywordList>
+          <Keyword>Germany</Keyword>
+          <Keyword> Deutschland</Keyword>
+          <Keyword>WebGIS</Keyword>
+          <Keyword>WMS</Keyword>
+          <Keyword>WFS</Keyword>
+          <Keyword>WhereGroup</Keyword>
+        </KeywordList>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/>
+  <ContactInformation>
+    <ContactPersonPrimary>
+      <ContactPerson>Mapbender</ContactPerson>
+      <ContactOrganization>WhereGroup</ContactOrganization>
+    </ContactPersonPrimary>
+      <ContactPosition>WhereGroup</ContactPosition>
+    <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Eifelstr. 7</Address>
+        <City>Bonn</City>
+        <StateOrProvince>NRW</StateOrProvince>
+        <PostCode>53119</PostCode>
+        <Country>Germany</Country>
+    </ContactAddress>
+      <ContactVoiceTelephone/>
+      <ContactFacsimileTelephone>02289090380</ContactFacsimileTelephone>
+  <ContactElectronicMailAddress>info@wheregroup.com</ContactElectronicMailAddress>
+  </ContactInformation>
+  <Fees>none</Fees>
+  <AccessConstraints>none</AccessConstraints>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>Germany</Name>
+    <Title>Germany</Title>
+    <Abstract>Germany</Abstract>
+    <KeywordList>
+     <Keyword>Germany</Keyword>
+     <Keyword> Deutschland</Keyword>
+     <Keyword>WebGIS</Keyword>
+     <Keyword>WMS</Keyword>
+     <Keyword>WFS</Keyword>
+     <Keyword>WhereGroup</Keyword>
+    </KeywordList>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:31492</SRS>
+    <SRS>EPSG:31493</SRS>
+    <SRS>EPSG:31494</SRS>
+    <SRS>EPSG:31495</SRS>
+    <SRS>EPSG:31462</SRS>
+    <SRS>EPSG:31463</SRS>
+    <SRS>EPSG:31464</SRS>
+    <SRS>EPSG:31465</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:31287</SRS>
+    <SRS>EPSG:32633</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:900913</SRS>
+    <LatLonBoundingBox maxx="15.4229" maxy="55.0299" minx="5.60019" miny="47.2433"/>
+    <BoundingBox SRS="EPSG:31467" maxx="3.91224e+06" maxy="6.10013e+06" minx="3.28245e+06" miny="5.24826e+06"/>
+    <ScaleHint max="49890284842963.7" min="0.000498902848429637"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Topographie</Name>
+        <Title>topography</Title>
+        <Abstract>Topographie,Landschaft</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15" maxy="55.0556" minx="5.86563" miny="47.2758"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15" maxy="55.0556" minx="5.86563" miny="47.2758"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="71" width="125">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Topographie&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Grenze</Name>
+        <Title>border</Title>
+        <Abstract>Grenzen, border</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15" maxy="55.0556" minx="5.86563" miny="47.2758"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15" maxy="55.0556" minx="5.86563" miny="47.2758"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="20" width="65">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Grenze&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="49890284842963.7" min="374.177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Bundeslaender</Name>
+        <Title>federal states</Title>
+        <Abstract>Laender</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.0389" maxy="55.0567" minx="5.86417" miny="47.2747"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.0389" maxy="55.0567" minx="5.86417" miny="47.2747"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="20" width="98">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Bundeslaender&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="449012.563586673" min="374.177136322228"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Staedte</Name>
+        <Title>places</Title>
+        <Abstract>Staedte in der BRD</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="14.9981" maxy="54.9405" minx="6.05223" miny="47.4825"/>
+        <BoundingBox SRS="EPSG:4326" maxx="14.9981" maxy="54.9405" minx="6.05223" miny="47.4825"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="66">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Staedte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="4490.12563586673" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Postleitzahlbereiche</Name>
+        <Title>postcode areas</Title>
+        <Abstract>Postleitzahl,PLZ,postcode</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.0486" maxy="55.0583" minx="5.86629" miny="47.2736"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.0486" maxy="55.0583" minx="5.86629" miny="47.2736"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="106">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Postleitzahlbereiche&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Bahnlinien</Name>
+        <Title>railroad lines</Title>
+        <Abstract>railroad,Bahn,DB</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15" maxy="54.9045" minx="5.98259" miny="47.4064"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15" maxy="54.9045" minx="5.98259" miny="47.4064"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="20" width="70">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Bahnlinien&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Fluesse</Name>
+        <Title>rivers</Title>
+        <Abstract>river</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="14.9759" maxy="54.9107" minx="5.95192" miny="47.2864"/>
+        <BoundingBox SRS="EPSG:4326" maxx="14.9759" maxy="54.9107" minx="5.95192" miny="47.2864"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="20" width="61">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Fluesse&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+        <ScaleHint max="623.628560537046" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Strassen</Name>
+        <Title>roads</Title>
+        <Abstract>road</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="14.9981" maxy="55.0157" minx="5.90508" miny="47.3136"/>
+        <BoundingBox SRS="EPSG:4326" maxx="14.9981" maxy="55.0157" minx="5.90508" miny="47.3136"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="69" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Strassen&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>Staedtepunkte</Name>
+        <Title>places as point</Title>
+        <Abstract>Stadt</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15" maxy="54.9" minx="6.01667" miny="47.4"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15" maxy="54.9" minx="6.01667" miny="47.4"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="54" width="85">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map&amp;version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Staedtepunkte&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Postleitzahlbereichname</Name>
+        <Title>postcode areas (names)</Title>
+        <Abstract>PLZ</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.0486" maxy="55.0583" minx="5.86629" miny="47.2736"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.0486" maxy="55.0583" minx="5.86629" miny="47.2736"/>
+        <ScaleHint max="174.615996950373" min="0"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Staedtenamen</Name>
+        <Title>places (names)</Title>
+        <Abstract>city</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15" maxy="54.9" minx="6.01667" miny="47.4"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15" maxy="54.9" minx="6.01667" miny="47.4"/>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
+        <Name>Bundeslaendernamen</Name>
+        <Title>federal states (names)</Title>
+        <Abstract>Bundesland</Abstract>
+        <SRS>EPSG:4326</SRS>
+        <LatLonBoundingBox maxx="15.0389" maxy="55.0567" minx="5.86417" miny="47.2747"/>
+        <BoundingBox SRS="EPSG:4326" maxx="15.0389" maxy="55.0567" minx="5.86417" miny="47.2747"/>
+        <ScaleHint max="39912.227874371" min="498.902848429637"/>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

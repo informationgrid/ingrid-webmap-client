@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
+	<Service>
+		<Name>OGC:WMS</Name>
+		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - WMS - LfULG - Festgesetzte Ueberschwemmungsgebiete</Title>
+		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - Durch die zustaendige Wasserbehoerde werden Ueberschwemmungsgebiete durch Rechtsverordnung festgesetzt. In einem festgesetzten Ueberschwemmungsgebiet gelten laut Saechsischem Wassergesetz (SaechsWG) bestimmte Auflagen, welche eine Verschaerfung der Hochwassergefahr durch bauliche Taetigkeiten oder anderes verhindern sollen.</Abstract>
+		<KeywordList>
+			<Keyword>ArcIMS</Keyword>
+			<Keyword>WMS</Keyword>
+			<Keyword>Dienst</Keyword>
+			<Keyword>Umwelt</Keyword>
+			<Keyword>Landwirtschaft</Keyword>
+			<Keyword>Geologie</Keyword>
+		</KeywordList>
+		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_ueberschwemmung?" xlink:type="simple"/>
+		<ContactInformation>
+			<ContactPersonPrimary>
+				<ContactPerson>Falk Strobach</ContactPerson>
+				<ContactOrganization>Saechsisches Landesamt fuer Umwelt, Landwirtschaft und Geologie</ContactOrganization>
+			</ContactPersonPrimary>
+			<ContactPosition/>
+			<ContactAddress>
+				<AddressType>postal</AddressType>
+				<Address>Pillnitzer Platz 3</Address>
+				<City>Dresden</City>
+				<StateOrProvince>Sachsen</StateOrProvince>
+				<PostCode>01326</PostCode>
+				<Country>DE</Country>
+			</ContactAddress>
+			<ContactVoiceTelephone>+49 (351) 8928-0</ContactVoiceTelephone>
+			<ContactFacsimileTelephone>+49 (351) 8928-225</ContactFacsimileTelephone>
+			<ContactElectronicMailAddress>falk.strobach@smul.sachsen.de</ContactElectronicMailAddress>
+		</ContactInformation>
+		<Fees>none</Fees>
+		<AccessConstraints>none</AccessConstraints>
+	</Service>
+	<Capability>
+		<Request>
+			<GetCapabilities>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_ueberschwemmung?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetCapabilities>
+			<GetMap>
+				<Format>image/png</Format>
+				<Format>image/jpeg</Format>
+				<Format>image/gif</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_ueberschwemmung?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetMap>
+			<GetFeatureInfo>
+				<Format>application/vnd.ogc.wms_xml</Format>
+				<Format>text/xml</Format>
+				<Format>text/html</Format>
+				<Format>text/plain</Format>
+				<DCPType>
+					<HTTP>
+						<Get>
+							<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/com.esri.wms.Esrimap/wms_hwsk_ueberschwemmung?" xlink:type="simple"/>
+						</Get>
+					</HTTP>
+				</DCPType>
+			</GetFeatureInfo>
+		</Request>
+		<Exception>
+			<Format>application/vnd.ogc.se_xml</Format>
+			<Format>application/vnd.ogc.se_inimage</Format>
+			<Format>application/vnd.ogc.se_blank</Format>
+		</Exception>
+		<UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-b1ee32d1b94140ffd9c1e4c071d8d516</Name>
+			<Title>WMS - LfULG - Festgesetzte Ueberschwemmungsgebiete</Title>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:4267</SRS>
+			<SRS>EPSG:4269</SRS>
+			<SRS>EPSG:4258</SRS>
+			<SRS>EPSG:4314</SRS>
+			<SRS>EPSG:4326</SRS>
+			<SRS>EPSG:31466</SRS>
+			<SRS>EPSG:31467</SRS>
+			<SRS>EPSG:31468</SRS>
+			<SRS>EPSG:31469</SRS>
+			<SRS>EPSG:25832</SRS>
+			<SRS>EPSG:25833</SRS>
+			<SRS>EPSG:32632</SRS>
+			<SRS>EPSG:32633</SRS>
+			<LatLonBoundingBox maxx="15.0689366665" maxy="51.6892311065" minx="12.001695484" miny="50.233484048"/>
+			<BoundingBox SRS="EPSG:4326" maxx="15.0689366665" maxy="51.6892311065" minx="12.001695484" miny="50.233484048"/>
+			<BoundingBox SRS="EPSG:31468" maxx="4712363.089" maxy="5728177.12" minx="4500120.858" miny="5570489.847"/>
+			<Layer noSubsets="0" opaque="0" queryable="1">
+				<Name>0</Name>
+				<Title>Ueberschwemmungsgebiete</Title>
+				<SRS>EPSG:4326</SRS>
+				<LatLonBoundingBox maxx="15.0757558344" maxy="51.7146830884" minx="11.8669856318" miny="50.0471766379"/>
+				<BoundingBox SRS="EPSG:4326" maxx="15.0757558344" maxy="51.7146830884" minx="11.8669856318" miny="50.0471766379"/>
+				<Style>
+					<Name>0Legend</Name>
+					<Title>Ueberschwemmungsgebiete</Title>
+					<LegendURL height="68" width="207">
+						<Format>image/png</Format>
+						<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umwelt.sachsen.de/umwelt/infosysteme/arcims/wmsconnector/wms/hwsk_ueberschwemmung/Legende_Ueberschwemmungsgebiete.png" xlink:type="simple"/>
+					</LegendURL>
+				</Style>
+			</Layer>				
+		</Layer>
+	</Capability>
+</WMT_MS_Capabilities>

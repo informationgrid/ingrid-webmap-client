@@ -78,7 +78,7 @@ Stand 22. August 2011]]></AccessConstraints>
 			<Format>application/vnd.ogc.se_inimage</Format>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
-		<Layer noSubsets="0" opaque="0" queryable="0">
+		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-f2f64a368aed68d1cc24f231070deed5</Name>
 			<Title><![CDATA[Klimaatlas NRW]]></Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
@@ -98,7 +98,7 @@ Stand 22. August 2011]]></AccessConstraints>
 			<LatLonBoundingBox maxx="11.222485" maxy="53.130994" minx="4.145771" miny="49.693718"/>
 			<BoundingBox SRS="EPSG:4326" maxx="11.222485" maxy="53.130994" minx="4.145771" miny="49.693718"/>
 			<BoundingBox SRS="EPSG:25832" maxx="648761.192567" maxy="5886842.644577" minx="174578.793405" miny="5514360.417367"/>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-145d861ae1d4d2b52b960e1c5486b0d2</Name>
 				<Title><![CDATA[Klima]]></Title>
 				<Abstract><![CDATA[Klima]]></Abstract>
 				<SRS>EPSG:4326</SRS>
@@ -119,7 +119,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				<LatLonBoundingBox maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
 				<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
 				<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
-				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-682379ec7dc7dca6ff4f5dd725f8772f</Name>
 					<Title><![CDATA[Abgeleitete Groessen]]></Title>
 					<Abstract><![CDATA[Abgeleitete Groessen]]></Abstract>
 					<SRS>EPSG:4326</SRS>
@@ -172,7 +172,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Style>
 					</Layer>
 				</Layer>
-				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e495678c0088a1af5a9643b1b629cd4c</Name>
 					<Title><![CDATA[Wind]]></Title>
 					<Abstract><![CDATA[Wind]]></Abstract>
 					<SRS>EPSG:4326</SRS>
@@ -256,7 +256,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Style>
 					</Layer>
 				</Layer>
-				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a5d49e1bab9d12ed402a4b3db22dbfff</Name>
 					<Title><![CDATA[Strahlung]]></Title>
 					<Abstract><![CDATA[Strahlung]]></Abstract>
 					<SRS>EPSG:4326</SRS>
@@ -277,7 +277,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
-					<Layer noSubsets="0" opaque="0" queryable="0">
+					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-8b133b12ed5a4da3eabbb018c5238367</Name>
 						<Title><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Title>
 						<Abstract><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
@@ -827,7 +827,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 					</Layer>
 				</Layer>
-				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-fa5a722dce4612fcdf3be2287c5dc99f</Name>
 					<Title><![CDATA[Niederschlag]]></Title>
 					<Abstract><![CDATA[Niederschlag]]></Abstract>
 					<SRS>EPSG:4326</SRS>
@@ -848,7 +848,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<LatLonBoundingBox maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
-					<Layer noSubsets="0" opaque="0" queryable="0">
+					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e37bbc5b77c8ce25f20a6c6c872ab14e</Name>
 						<Title><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Title>
 						<Abstract><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
@@ -1398,7 +1398,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 					</Layer>
 				</Layer>
-				<Layer noSubsets="0" opaque="0" queryable="0">
+				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-458b08baf925c4369d3d5f38a2919cda</Name>
 					<Title><![CDATA[Lufttemperatur]]></Title>
 					<Abstract><![CDATA[Lufttemperatur]]></Abstract>
 					<SRS>EPSG:4326</SRS>
@@ -1543,7 +1543,7 @@ Stand 22. August 2011]]></AccessConstraints>
 							</LegendURL>
 						</Style>
 					</Layer>
-					<Layer noSubsets="0" opaque="0" queryable="0">
+					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-08e608efe54cc5c718368938c1d64934</Name>
 						<Title><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Title>
 						<Abstract><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
@@ -2092,7 +2092,7 @@ Stand 22. August 2011]]></AccessConstraints>
 							</Style>
 						</Layer>
 					</Layer>
-					<Layer noSubsets="0" opaque="0" queryable="0">
+					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-50c2155ab0f5471fed6eec12ea8a5e42</Name>
 						<Title><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Title>
 						<Abstract><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
@@ -2641,7 +2641,7 @@ Stand 22. August 2011]]></AccessConstraints>
 							</Style>
 						</Layer>
 					</Layer>
-					<Layer noSubsets="0" opaque="0" queryable="0">
+					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-eb378218067fe5cf17d8baed0ef7a1e4</Name>
 						<Title><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Title>
 						<Abstract><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
@@ -3192,7 +3192,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 				</Layer>
 			</Layer>
-			<Layer noSubsets="0" opaque="0" queryable="0">
+			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a35f66f9101d4ec7f31e9eb71f31479e</Name>
 				<Title><![CDATA[Kartographie]]></Title>
 				<Abstract><![CDATA[Kartographie]]></Abstract>
 				<SRS>EPSG:4326</SRS>

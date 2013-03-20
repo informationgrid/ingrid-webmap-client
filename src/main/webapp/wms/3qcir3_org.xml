@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
+
+<!-- MapServer version 5.4.2 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=THREADS INPUT=EPPL7 INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+
+<Service>
+  <Name>OGC:WMS</Name>
+  <Title>Schutzgebiete M-V WMS</Title>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/>
+  <ContactInformation>
+  </ContactInformation>
+</Service>
+
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <Format>application/vnd.ogc.wms_xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <GetMap>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <Format>image/tiff</Format>
+      <Format>image/svg+xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetMap>
+    <GetFeatureInfo>
+      <Format>text/plain</Format>
+      <Format>text/html</Format>
+      <Format>application/vnd.ogc.gml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    <Format>text/xml</Format></GetFeatureInfo>
+    <DescribeLayer>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeLayer>
+    <GetLegendGraphic>
+      <Format>image/png</Format>
+      <Format>image/gif</Format>
+      <Format>image/jpeg</Format>
+      <Format>image/png; mode=24bit</Format>
+      <Format>image/vnd.wap.wbmp</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetLegendGraphic>
+    <GetStyles>
+      <Format>text/xml</Format>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?" xlink:type="simple"/></Post>
+        </HTTP>
+      </DCPType>
+    </GetStyles>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+    <Format>application/vnd.ogc.se_inimage</Format>
+    <Format>application/vnd.ogc.se_blank</Format>
+  </Exception>
+  <VendorSpecificCapabilities/>
+  <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
+  <Layer noSubsets="0" opaque="0" queryable="0">
+    <Name>lung_wms_sg</Name>
+    <Title>Schutzgebiete M-V WMS</Title>
+    <SRS>EPSG:35833</SRS>
+    <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
+    <ScaleHint max="748.354272644456" min="0.249451424214819"/>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_wsg</Name>
+        <Title>Wasserschutzgebiet</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3617" maxy="54.6851" minx="10.584" miny="53.1657"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="147">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_wsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_nsg</Name>
+        <Title>Naturschutzgebiet</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3224" maxy="54.6938" minx="10.4607" miny="53.092"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="137">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_nsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_ffh</Name>
+        <Title>Fauna-Flora-Habitat - Gebiet</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3721" maxy="54.725" minx="10.4572" miny="53.0845"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="105">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_ffh&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_spa</Name>
+        <Title>Vogelschutzgebiet</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3242" maxy="54.7189" minx="10.4574" miny="53.0845"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="159">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_spa&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_nlp</Name>
+        <Title>Nationalpark</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="13.729" maxy="54.6172" minx="12.4146" miny="53.2711"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="108">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_nlp&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_brn</Name>
+        <Title>Biosphaerenreservat</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="13.8013" maxy="54.4118" minx="10.6972" miny="53.5167"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="144">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_brn&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_np</Name>
+        <Title>Naturpark</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3203" maxy="54.2143" minx="10.5127" miny="53.0844"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="94">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_np&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>mv_lsg</Name>
+        <Title>Landschaftsschutzgebiet</Title>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <LatLonBoundingBox maxx="14.3252" maxy="54.6938" minx="10.4602" miny="53.0844"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="22" width="171">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/atlas/mvwmssg.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=mv_lsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+  </Layer>
+</Capability>
+</WMT_MS_Capabilities>

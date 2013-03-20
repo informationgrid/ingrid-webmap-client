@@ -23,7 +23,7 @@
       </ContactAddress>
       <ContactVoiceTelephone>+49-30-90139-5257</ContactVoiceTelephone>
       <ContactFacsimileTelephone>+49-30-90139-5251</ContactFacsimileTelephone>
-      <ContactElectronicMailAddress>fisbroker@senstadt.berlin.de</ContactElectronicMailAddress>
+      <ContactElectronicMailAddress>fisbroker@senstadtum.berlin.de</ContactElectronicMailAddress>
     </ContactInformation>
     <Fees>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</Fees>
     <AccessConstraints>kosten- und lizenzfreie Nutzung des Dienstes für private Zwecke, andere Nutzung nach Absprache</AccessConstraints>
@@ -77,7 +77,7 @@
     </Exception>
     <VendorSpecificCapabilities/>
     <!-- Layers -->
-    <Layer noSubsets="0" opaque="0" queryable="0">
+    <Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e408a48696c718729f7ebc6864b3cf60</Name>
       <Title>Einzugsgebiete der Regenwasserkanalisation 2006 (Umweltatlas)</Title>
       <Abstract>Die Karte zeigt die zu Gewässerabschnitten aggregierten Einzugsgebiete der Regenwasserkanalisation in Berlin</Abstract>
       <KeywordList>
