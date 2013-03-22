@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LUNG WMS Server</Title>
+  <Title>Geothermie, Erdwärmeauskunft Mecklenburg-Vorpommern</Title>
   <Abstract>Informationen der staatlichen Umweltverwaltung Mecklenburg-Vorpommern</Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a7_geothermie_erdwaerme_wms.php?" xlink:type="simple"/>
   <ContactInformation>

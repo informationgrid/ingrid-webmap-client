@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>10k simplified AGG OpenStreetMap WMS</Title>
+  <Title>OpenStreetMap WMS</Title>
   <Abstract>Dieser Dienst enthält Daten aus dem Projekt OpenStreetMap (http://openstreetmap.org), die als Karte aufbereitet wurden. Die Karte dient als Hintergrund für die Darstellung der betrieblichen Messwerte der Anwendung PRTR des Umweltbundesamtes und dient als Test zur Performancemessung im Maßstab 1:10.000 - 1:25.000 und die Grunddaten wurden durch simplify ausgedünnt.</Abstract>
         <KeywordList>
           <Keyword>OpenStreetMap</Keyword>

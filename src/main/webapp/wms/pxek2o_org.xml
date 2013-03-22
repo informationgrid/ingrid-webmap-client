@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW ISONG: Informationssystem Oberflächennahe Geothermie (Standardversion)</Title>
+  <Title>Geothermie (oberflächennah) 1:50.000 Baden-Württemberg </Title>
   <Abstract>Mit dem Informationssystem Oberflächennahe Geothermie für Baden-Württemberg (ISONG) können Nutzungsmöglichkeiten und Risiken, die beim Bau einer Erdwärmesondenanlage zu beachten sind, interaktiv im Internet abgerufen werden. ISONG ist eine Internet-Anwendung des LGRB (siehe www.geothermie-bw.de) und wird auch als WMS-Dienst angeboten. Die Standardversion liefert Aussagen zur Geothermischen Effizienz und zu den Einschränkungen am jeweiligen Standort (siehe auch erweiterte Version von ISONG)</Abstract>
         <KeywordList>
           <Keyword>Erdwärmesonde</Keyword>

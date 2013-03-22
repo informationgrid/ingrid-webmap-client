@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>WMS des Landwirtschaft- und Umweltatlas Schleswig-Holstein</Title>
+  <Title>Landwirtschaft- und Umweltatlas Schleswig-Holstein</Title>
   <Abstract/>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?" xlink:type="simple"/>
   <ContactInformation>

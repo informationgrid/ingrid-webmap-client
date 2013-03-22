@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/26631.htm - WMS - LfULG - GTK 50 Geothermische Potenzialkarte 1:50.000</Title>
+		<Title>Geothermische Potenzialkarte [W/m] 1:50.000 Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/26631.htm - Die GTK 50 ermoeglicht es, fuer verschiedene Tiefenstufen (40, 70, 100 und 130 m) die geothermisch verfuegbaren spezifischen Entzugsleistungen in Watt pro Meter Sondenlaenge [W/m] bezogen auf einen Standardtyp "Einfamilienhaus" in Sachsen abzulesen.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

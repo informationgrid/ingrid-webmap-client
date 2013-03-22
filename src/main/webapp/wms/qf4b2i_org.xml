@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities xmlns="http://www.opengis.net/wms" xmlns:esri_wms="http://www.esri.com/wms" xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" xmlns:sld="http://www.opengis.net/sld" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.1" xsi:schemaLocation="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0 http://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd">
 	<Service>
 		<Name>WMS</Name>
-		<Title>DLM1000</Title>
+		<Title>DLM1000-1270</Title>
 		<Abstract>OGC:WMS</Abstract>
 		<KeywordList>
 			<Keyword/>

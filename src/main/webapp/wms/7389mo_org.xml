@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>BGR Bodenkunde: BUEK1000 v1.0</Title>
+  <Title>Bodenübersichtskarte 1:1 Mio. (BÜK 1000 N) Deutschland</Title>
   <Abstract>Die Bodenübersichtskarte der Bundesrepublik Deutschland 1: 1.000.000 (BÜK1000) stellt bundesweit die Verbreitung der Böden und deren Vergesellschaftung in einheitlicher Form auf dem Aggregierungsniveau der Leitbodenassoziation dar. In der Textlegende, die 71 bodenkundliche Legendeneinheiten umfasst, sind Angaben zu Gründigkeit, Bodenarten, Wasserverhältnissen, Ausgangsgestein sowie Leit- und Begleitböden enthalten. Die Parameter der Legendenbeschreibung und der Referenzprofile sind in einer relationalen Datenbank abgelegt.</Abstract>
         <KeywordList>
           <Keyword>Boden</Keyword>

@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>Digitale Karte der hochwassergefaehrdeten Bereiche des Rheins in NRW</Title>
+  <Title>Hochwassergefährdete Bereiche des Rheins in NRW</Title>
   <Abstract>WMS-Dienst Hochwasser Rhein</Abstract>
         <KeywordList>
           <Keyword>Hochwasser</Keyword>

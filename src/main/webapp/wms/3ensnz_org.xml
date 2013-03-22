@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>FIS Stobo NRW</Title>
+  <Title>Schadstoffbelastung in Oberböden NRW</Title>
   <Abstract>WMS-Dienst FIS Stobo NRW</Abstract>
         <KeywordList>
           <Keyword>WMS</Keyword>

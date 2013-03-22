@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/boden/26191.htm - WMS - LfULG - Bodenuebersichtskarte Sachsen 1:400 000</Title>
+		<Title>Bodenübersichtskarte 1:400.000 Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/boden/26191.htm - Die BUEK 400 gibt Einblicke in die landesweite Bodenausstattung und erlaubt einfuehrende Informationen ueber Bodenbeschaffenheit, Nutzungsmoeglichkeiten, Bodenbewertung und Bodenschutzerfordernisse. Bei 20 Kartiereinheiten handelt es sich um Pedochoren.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

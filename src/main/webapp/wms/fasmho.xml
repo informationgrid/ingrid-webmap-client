@@ -193,8 +193,7 @@
         <SRS>EPSG:102013</SRS>
         <SRS>EPSG:102014</SRS>
         <SRS>EPSG:54030</SRS>
-        <LatLonBoundingBox maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -235,8 +234,7 @@
         <SRS>EPSG:102013</SRS>
         <SRS>EPSG:102014</SRS>
         <SRS>EPSG:54030</SRS>
-        <LatLonBoundingBox maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -277,8 +275,7 @@
         <SRS>EPSG:102013</SRS>
         <SRS>EPSG:102014</SRS>
         <SRS>EPSG:54030</SRS>
-        <LatLonBoundingBox maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
-        <BoundingBox SRS="EPSG:4326" maxx="15.5749" maxy="55.0518" minx="5.56597" miny="47.1443"/>
+        <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
         <Style>
           <Name>default</Name>
           <Title>default</Title>

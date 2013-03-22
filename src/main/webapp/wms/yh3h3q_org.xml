@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name><![CDATA[WMS]]></Name>
-		<Title><![CDATA[BK50]]></Title>
+		<Title>Bodenkarte 1:50 000 NRW</Title>
 		<Abstract>Dieser WMS gibt dem Informationssystem entsprechend die Inhalte der Bodenkarte von Nordrhein-Westfalen im Maßstab 1 : 50 000 blattschnittfrei wieder. Es liegt bis auf kleine Restflächen im Grenzgebiet zum Nachbarland Niedersachsen für ganz Nordrhein-Westfalen vor. Die Inhalte werden durch neue Erkenntnisse ergänzt und aktualisiert.</Abstract>
 		<KeywordList>
 			<Keyword><![CDATA[Bestandsaufnahme]]></Keyword>
@@ -131,7 +131,7 @@
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a367486925950521dd28bff0eae9e183</Name>
-			<Title><![CDATA[Bodenkarte 1:50000]]></Title>
+			<Title>Bodenkarte 1:50000</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -149,7 +149,7 @@
 			<BoundingBox SRS="EPSG:4326" maxx="9.706149" maxy="52.675637" minx="5.678295" miny="50.141103"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2750936.433500" maxy="5837922.679640" minx="2478242.574700" miny="5561878.173760"/>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-bb5bf1d1f45ff5bb8b29fd923d998dfd</Name>
-				<Title><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Title>
+				<Title>Grabbarkeit von Boden und Gesteinsschichten</Title>
 				<Abstract><![CDATA[Grabbarkeit von Boden und Gesteinsschichten]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -169,7 +169,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>1</Name>
-					<Title><![CDATA[Grabbarkeit]]></Title>
+					<Title>Grabbarkeit</Title>
 					<Abstract><![CDATA[Grabbarkeit]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -199,7 +199,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>2</Name>
-					<Title><![CDATA[Bodenwasserverhältnisse]]></Title>
+					<Title>Bodenwasserverhältnisse</Title>
 					<Abstract><![CDATA[Bodenwasserverhältnisse]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -230,7 +230,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>3</Name>
-				<Title><![CDATA[Wasserhaushalt]]></Title>
+				<Title>Wasserhaushalt</Title>
 				<Abstract><![CDATA[Wasserhaushalt]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -260,7 +260,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>4</Name>
-				<Title><![CDATA[Wertzahlen der Bodenschätzung]]></Title>
+				<Title>Wertzahlen der Bodenschätzung</Title>
 				<Abstract><![CDATA[Wertzahlen der Bodenschätzung]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -290,7 +290,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>5</Name>
-				<Title><![CDATA[Schutzwürdige_Böden]]></Title>
+				<Title>Schutzwürdige_Böden</Title>
 				<Abstract><![CDATA[Schutzwürdige_Böden]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -320,7 +320,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>6</Name>
-				<Title><![CDATA[Gesamtfilterwirkung]]></Title>
+				<Title>Gesamtfilterwirkung</Title>
 				<Abstract><![CDATA[Gesamtfilterwirkung]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -350,7 +350,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>7</Name>
-				<Title><![CDATA[Ökologische_Feuchtestufe]]></Title>
+				<Title>Ökologische_Feuchtestufe</Title>
 				<Abstract><![CDATA[Ökologische_Feuchtestufe]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -380,7 +380,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>8</Name>
-				<Title><![CDATA[Versickerungseignung]]></Title>
+				<Title>Versickerungseignung</Title>
 				<Abstract><![CDATA[Versickerungseignung]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -409,7 +409,7 @@
 				<ScaleHint max="59.396970" min="0.0"/>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-d20bab3ec5e5443c270231926670853a</Name>
-				<Title><![CDATA[Flurabstand]]></Title>
+				<Title>Flurabstand</Title>
 				<Abstract><![CDATA[Flurabstand]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -429,7 +429,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738541.258100" maxy="5825375.202100" minx="2490637.750100" miny="5574425.651300"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>10</Name>
-					<Title><![CDATA[Grenzflurabstand]]></Title>
+					<Title>Grenzflurabstand</Title>
 					<Abstract><![CDATA[Grenzflurabstand]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -459,7 +459,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>11</Name>
-					<Title><![CDATA[Abstand zum optimalen Flurabstand]]></Title>
+					<Title>Abstand zum optimalen Flurabstand</Title>
 					<Abstract><![CDATA[Abstand zum optimalen Flurabstand]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -490,7 +490,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>12</Name>
-				<Title><![CDATA[Erodierbarkeit des Oberbodens]]></Title>
+				<Title>Erodierbarkeit des Oberbodens</Title>
 				<Abstract><![CDATA[Erodierbarkeit des Oberbodens]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -520,7 +520,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>13</Name>
-				<Title><![CDATA[Kapillaraufstieg von Grundwasser]]></Title>
+				<Title>Kapillaraufstieg von Grundwasser</Title>
 				<Abstract><![CDATA[Kapillaraufstieg von Grundwasser]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -550,7 +550,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>14</Name>
-				<Title><![CDATA[Gesättigte Wasserleitfähigkeit]]></Title>
+				<Title>Gesättigte Wasserleitfähigkeit</Title>
 				<Abstract><![CDATA[Gesättigte Wasserleitfähigkeit]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -580,7 +580,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>15</Name>
-				<Title><![CDATA[Kationenaustauschkapazität]]></Title>
+				<Title>Kationenaustauschkapazität</Title>
 				<Abstract><![CDATA[Kationenaustauschkapazität]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -610,7 +610,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>16</Name>
-				<Title><![CDATA[Luftkapazität]]></Title>
+				<Title>Luftkapazität</Title>
 				<Abstract><![CDATA[Luftkapazität]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -640,7 +640,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>17</Name>
-				<Title><![CDATA[Feldkapazität]]></Title>
+				<Title>Feldkapazität</Title>
 				<Abstract><![CDATA[Feldkapazität]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -670,7 +670,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>18</Name>
-				<Title><![CDATA[Nutzbare Feldkapazität]]></Title>
+				<Title>Nutzbare Feldkapazität</Title>
 				<Abstract><![CDATA[Nutzbare Feldkapazität]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -700,7 +700,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>19</Name>
-				<Title><![CDATA[Bezugstiefe]]></Title>
+				<Title>Bezugstiefe</Title>
 				<Abstract><![CDATA[Bezugstiefe]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -730,7 +730,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>20</Name>
-				<Title><![CDATA[Bodenkarte]]></Title>
+				<Title>Bodenkarte</Title>
 				<Abstract><![CDATA[Bodenkarte]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>

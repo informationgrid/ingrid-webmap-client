@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!--System: cardo3, username:SYSTEM_ANONYMOUS_USER, internal user-ids:1--><WMT_MS_Capabilities updateSequence="0" version="1.1.1"><Service><Name>OGC:WMS</Name><Title>Bohrungen WMS - Dienst LBEG</Title><Abstract>Die Bohrdatenbank von Niedersachsen enthält Informationen zu Bohrungen aus folgenden Fachbereichen:
+<?xml version="1.0" encoding="UTF-8"?><!--System: cardo3, username:SYSTEM_ANONYMOUS_USER, internal user-ids:1--><WMT_MS_Capabilities updateSequence="0" version="1.1.1"><Service><Name>OGC:WMS</Name><Title>Bohrungen in Niedersachsen</Title><Abstract>Die Bohrdatenbank von Niedersachsen enthält Informationen zu Bohrungen aus folgenden Fachbereichen:
 
 BD -- Bodenkundliche Kartierung des Küstenraumes
 GE -- Geologische Erkundung (Maschinenbohrungen)

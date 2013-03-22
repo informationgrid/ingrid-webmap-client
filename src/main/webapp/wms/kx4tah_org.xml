@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>WMS - LfULG - Karte oberflaechennaher Rohstoffe 1 : 50.000 (KOR 50)</Title>
+		<Title>Oberflächennahe Rohstoffe 1:50.000 Sachsen</Title>
 		<Abstract>Karte der Verbreitung oberflaechennahen Rohstoffe gegliedert nach Erkundungsgrad. Vermutet = aus geolog. Karte abgeleitet, gefolgert = Verkommen durch lokale Aufschluesse/Bohrungen annaehernd bekannt, erkundet = Lagerstaettenerkundung wurde durchgefuehrt.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

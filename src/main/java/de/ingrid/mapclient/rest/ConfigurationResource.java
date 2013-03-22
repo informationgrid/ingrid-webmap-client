@@ -828,7 +828,7 @@ public class ConfigurationResource {
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		writeWmsCopyToFile(doc, req, title, capabilitiesUrlOrg, fileNames);
+		writeWmsCopyToFile(doc, req, title, fileNames);
 		
 		WmsService service = findService(jsonService);
 		updateLayers(service, jsonService);
@@ -841,13 +841,12 @@ public class ConfigurationResource {
 	public void refreshService(String serviceString, @Context HttpServletRequest req) throws Exception {
 		JSONObject jsonService = new JSONObject(serviceString);
 		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
-		String capabilitiesUrlOrg = jsonService.getString("capabilitiesUrlOrg"); 
 		String originalCapUrl = capabilitiesUrl; 
 		String title = jsonService.getString("title"); 
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		HashMap<String, String> url = writeWmsCopy(doc, req, title, capabilitiesUrlOrg);
+		HashMap<String, String> url = writeWmsCopy(doc, req, title);
 		
 		WmsService service = findService(jsonService);
 		service.setCapabilitiesUrl(url.get("url"));
@@ -957,11 +956,7 @@ public class ConfigurationResource {
 			if(!isCopy){
 				doc = changeXml(doc, json);
 			}
-			if(json.get("capabilitiesUrlOrg") != JSONObject.NULL && json.getString("capabilitiesUrlOrg") != ""){
-				urls = writeWmsCopy(doc, req, title, json.getString("capabilitiesUrlOrg"));
-			}else{
-				urls = writeWmsCopy(doc, req, title, null);
-			}
+			urls = writeWmsCopy(doc, req, title);
 			
 		} catch (JSONException e) {
 			
@@ -974,12 +969,12 @@ public class ConfigurationResource {
 		
 	}
 
-	private HashMap<String, String> writeWmsCopy(Document doc, HttpServletRequest req, String title, String copyCapOrg) {
+	private HashMap<String, String> writeWmsCopy(Document doc, HttpServletRequest req, String title) {
 
-		return writeWmsCopyToFile(doc, req, title, copyCapOrg, null);
+		return writeWmsCopyToFile(doc, req, title, null);
 	}
 	
-	private HashMap<String, String> writeWmsCopyToFile(Document doc, HttpServletRequest req, String title, String copyCapOrg, HashMap<String, String> fileNames) {
+	private HashMap<String, String> writeWmsCopyToFile(Document doc, HttpServletRequest req, String title, HashMap<String, String> fileNames) {
 
 		HashMap<String, String> urls = null;
 		String url = null;
@@ -1007,36 +1002,31 @@ public class ConfigurationResource {
 			if (fileNames == null){
 				do {
 					url = new DbUrlMapper().createShortUrl(title);
-					if(copyCapOrg == null || copyCapOrg.equals("")){
-						urlOrg = url + "_org.xml";
-						fOrg = new File(path + "/" + urlOrg);
-					}
 					url = url + ".xml";
 					f = new File(path + "/" + url);
+					urlOrg = url + "_org.xml";
+					fOrg = new File(path + "/" + urlOrg);
 				} while (f.exists());
 			}else{
 				f = new File(fileNames.get("url"));
 				fOrg = new File(fileNames.get("urlOrg"));
 			}
 			// Create original copy file
-			if(copyCapOrg == null || copyCapOrg.equals("") || fileNames != null){
-				StreamResult resultOrg = new StreamResult(fOrg);
-				transformer.transform(source, resultOrg);
-			}
-			// Create copy file
-			if(copyCapOrg != null){
-				if(title != null){
-					// change title
-					Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
-					if(titleNode != null){
-						titleNode.setTextContent(title);
-					}
-				}
-				source = new DOMSource(doc);
-				StreamResult result = new StreamResult(f);
-				transformer.transform(source, result);
-			}
+			StreamResult resultOrg = new StreamResult(fOrg);
+			transformer.transform(source, resultOrg);
 
+			// Create copy file
+			if(title != null){
+				// change title
+				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
+				if(titleNode != null){
+					titleNode.setTextContent(title);
+				}
+			}
+			source = new DOMSource(doc);
+			StreamResult result = new StreamResult(f);
+			transformer.transform(source, result);
+		
 		} catch (TransformerException e) {
 			log.error("problems on creating xml file: " + e.getMessage());
 		} catch (Exception e) {
@@ -1047,11 +1037,7 @@ public class ConfigurationResource {
 			urls = new HashMap<String, String>();
 		}
 		urls.put("url", urlPrefix+url+"?REQUEST=GetCapabilities");
-		if(!copyCapOrg.equals("")){
-			urls.put("urlOrg", copyCapOrg.toString());
-		}else{
-			urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
-		}
+		urls.put("urlOrg", urlPrefix+urlOrg+"?REQUEST=GetCapabilities");
 		
 		return urls;
 
@@ -1093,11 +1079,19 @@ public class ConfigurationResource {
 								if(layers.getJSONObject(i).getBoolean("featureInfo")){
 									nameNode.getParentNode().getAttributes().getNamedItem("queryable").setNodeValue("1");	
 								}else{
-									nameNode.getParentNode().getAttributes().getNamedItem("queryable").setNodeValue("0");
+									if(nameNode.getParentNode().getAttributes().getNamedItem("queryable") != null){
+										nameNode.getParentNode().getAttributes().getNamedItem("queryable").setNodeValue("0");
+									}
 								}								
 							}
 						}
 					}
+				}
+			}
+			if(json.get("title") != JSONObject.NULL){
+				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
+				if(titleNode != null){
+					titleNode.setTextContent(json.getString("title"));
 				}
 			}
 		} catch (JSONException e) {
@@ -1126,6 +1120,12 @@ public class ConfigurationResource {
 					}
 				}
 			}
+			if(json.get("title") != JSONObject.NULL){
+				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
+				if(titleNode != null){
+					titleNode.setTextContent(json.getString("title"));
+				}
+			}			
 		} catch (JSONException e) {
 			log.error("error on retrieving data from json document: "
 					+ e.getMessage());
@@ -1164,22 +1164,35 @@ public class ConfigurationResource {
     }
 	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
 
-			String url;
-			ConfigurationProvider p = ConfigurationProvider.INSTANCE;
-			String path = p.getWMSDir();
-			
 			try {
-				url = json.getString("capabilitiesUrl");
-				String fileName = url.substring(url.lastIndexOf("/"), url.length());			
-				String [] splitFileName = fileName.split("\\?");
-				File f = new File(path+splitFileName[0]);
-				boolean deleted = false;
-				if(f.exists())
-					deleted = f.delete();
-				if(deleted)
-					log.debug("File: "+splitFileName[0]+" deleted");
-				else
-					log.debug("could not delete file: "+splitFileName[0]);
+				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+				String path = p.getWMSDir();
+				String url = json.getString("capabilitiesUrl");
+				if(url != null && url.length() > 0){
+					String fileName = url.substring(url.lastIndexOf("/"), url.length());			
+					String [] splitFileName = fileName.split("\\?");
+					File f = new File(path+splitFileName[0]);
+					boolean deleted = false;
+					if(f.exists())
+						deleted = f.delete();
+					if(deleted)
+						log.debug("File: "+splitFileName[0]+" deleted");
+					else
+						log.debug("could not delete file: "+splitFileName[0]);
+				}
+				String urlCopy = json.getString("capabilitiesUrlOrg");
+				if(urlCopy != null && urlCopy.length() > 0){
+					String fileName = urlCopy.substring(urlCopy.lastIndexOf("/"), urlCopy.length());			
+					String [] splitFileName = fileName.split("\\?");
+					File f = new File(path+splitFileName[0]);
+					boolean deleted = false;
+					if(f.exists())
+						deleted = f.delete();
+					if(deleted)
+						log.debug("File: "+splitFileName[0]+" deleted");
+					else
+						log.debug("could not delete file: "+splitFileName[0]);
+				}
 			
 			} catch (JSONException e) {
 				log.error("on file deletion json exception occured: ",e);

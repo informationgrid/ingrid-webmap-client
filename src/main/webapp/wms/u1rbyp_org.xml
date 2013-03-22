@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW HÜK350: Hydrogeologische Übersichtskarten 1 : 350 000</Title>
+  <Title>Hydrogeologische Übersichtskarten 1:350.000 Baden-Württemberg</Title>
   <Abstract>Grundwasser ist die unterirdische Abflusskomponente des Wasserkreislaufs und wesentlicher Bestandteil des Naturhaushalts. Bei der Infiltration und Untergrundpassage kommt es zu vielfältigen physikalischen und chemischen Wechselwirkungen mit dem Untergrund. Die Aufenthaltszeit im Untergrund variiert zwischen Tagen und Jahrtausenden. In Fachbereich Hydrogeologie werden die Themen Grundwasserergiebigkeit, Hydrogeologische Einheiten, Mineral-/Thermalwässer und Geogene Grundwassertypen gezeigt.</Abstract>
         <KeywordList>
           <Keyword>Grundwasser</Keyword>

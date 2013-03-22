@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>InlandENCs der WSV</Title>
+  <Title>Navigationskarte (Inland) Deutschland</Title>
   <Abstract>Der Geodatendienst visualisiert die Inland ENC-Daten (Elektronische Navigationskarten - Electronic Navigational Charts) der Wasserschifffahrtsverwaltung des Bundes (www.WSV.de) und entfaltet nicht deren volle Funktionalitaet. Der Geodatendienst ist daher nicht fuer die Navigation geeignet und sollte auch nicht fuer diesen Zweck verwendet werden. Weitergehende Informationen zu den verfuegbaren elektronischen Karten und deren Vertrieb finden Sie im Elektronischen Wasserstrassensystem der WSV www.elwis.de unter dem Stichwort RIS-Telematikprojekte / Inland-ENC.</Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wms_ienc?" xlink:type="simple"/>
   <ContactInformation>

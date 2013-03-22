@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.0">
 	<Service>
 		<Name>WMS</Name>
-		<Title>VG250</Title>
+		<Title>Verwaltungsgrenzen</Title>
 		<Abstract>Verwaltungsgrenzen 1:250.000, Stand 31.12.2009</Abstract>
 		<KeywordList><Keyword/></KeywordList>
 		<OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://sg.geodatenzentrum.de/wms_vg250" xlink:type="simple"/>

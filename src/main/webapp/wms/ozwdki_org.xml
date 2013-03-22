@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>PEGELONLINE WMS Aktuell (MNW/MHW)</Title>
+  <Title>Pegelonlinekarte Deutschland</Title>
   <Abstract>PEGELONLINE WMS Aktuell stellt kostenfrei tagesaktuelle Messwerte verschiedener gewässerkundlicher Parameter (z.B. Wasserstände) der Binnen- und Küstenpegel der Wasserstraßen des Bundes zur Ansicht. PEGELONLINE WMS Aktuell wird von der Wasser- und Schifffahrtsverwaltung des Bundes betrieben. Die Wasserstände werden mit dem mittleren niedrigsten (MNW) und mittleren höchsten Wert (MHW) einer Zeitspanne in Beziehung gesetzt. Alle Zeitangaben liegen in mitteleuropäischer Zeit (MEZ) vor.</Abstract>
         <KeywordList>
           <Keyword>PEGELONLINE</Keyword>
@@ -110,7 +110,7 @@
   <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>PegelonlineWMS</Name>
-    <Title>PEGELONLINE WMS Aktuell (MNW/MHW)</Title>
+    <Title>PEGELONLINE WMS Aktuell</Title>
     <SRS>EPSG:31466</SRS>
     <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
 
-<!-- MapServer version 5.6.5 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+<!-- MapServer version 5.6.7 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=WBMP OUTPUT=SVG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=GEOS INPUT=EPPL7 INPUT=POSTGIS INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
 
 <Service>
   <Name>OGC:WMS</Name>
@@ -130,14 +130,14 @@
     <SRS>EPSG:25833</SRS>
     <SRS>EPSG:28992</SRS>
     <SRS>EPSG:31467</SRS>
-    <LatLonBoundingBox maxx="9.53059" maxy="52.6929" minx="5.70359" miny="50.2178"/>
-    <BoundingBox SRS="EPSG:31466" maxx="2.739e+06" maxy="5.84e+06" minx="2.48e+06" miny="5.57e+06"/>
+    <LatLonBoundingBox maxx="9.53154" maxy="52.602" minx="5.72499" miny="50.1506"/>
+    <BoundingBox SRS="EPSG:25832" maxx="536000" maxy="5.828e+06" minx="278000" miny="5.56e+06"/>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>heilquellenschutzgebiete</Name>
         <Title>Heilquellenschutzgebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <LatLonBoundingBox maxx="9.57213" maxy="52.4041" minx="7.1062" miny="50.6116"/>
-        <BoundingBox SRS="EPSG:31466" maxx="2.74338e+06" maxy="5.80848e+06" minx="2.57827e+06" miny="5.61409e+06"/>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.54523" maxy="52.4747" minx="5.70088" miny="50.3472"/>
+        <BoundingBox SRS="EPSG:25832" maxx="537034" maxy="5.81384e+06" minx="275715" miny="5.58199e+06"/>
         <Style>
           <Name/>
           <Title/>
@@ -150,9 +150,9 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>trinkwasserschutzgebiete</Name>
         <Title>Trinkwasserschutzgebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <LatLonBoundingBox maxx="9.49916" maxy="52.505" minx="5.79084" miny="50.3192"/>
-        <BoundingBox SRS="EPSG:31466" maxx="2.73788e+06" maxy="5.81909e+06" minx="2.48584e+06" miny="5.58126e+06"/>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.54523" maxy="52.4747" minx="5.70088" miny="50.3472"/>
+        <BoundingBox SRS="EPSG:25832" maxx="537034" maxy="5.81384e+06" minx="275715" miny="5.58199e+06"/>
         <Style>
           <Name/>
           <Title/>
@@ -165,9 +165,9 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>trinkwasser</Name>
         <Title>Trinkwasser, Zone I, punktfoermig</Title>
-        <SRS>epsg:31466</SRS>
-        <LatLonBoundingBox maxx="9.46776" maxy="52.489" minx="6.00113" miny="50.3251"/>
-        <BoundingBox SRS="EPSG:31466" maxx="2.73583e+06" maxy="5.81732e+06" minx="2.50012e+06" miny="5.58182e+06"/>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.41471" maxy="52.4633" minx="5.92893" miny="50.3575"/>
+        <BoundingBox SRS="EPSG:25832" maxx="528176" maxy="5.81257e+06" minx="291190" miny="5.5825e+06"/>
         <Style>
           <Name/>
           <Title/>
@@ -180,9 +180,9 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>heilquellen</Name>
         <Title>Heilquellen, Zone I, punktfoermig</Title>
-        <SRS>epsg:31466</SRS>
-        <LatLonBoundingBox maxx="9.33272" maxy="52.3972" minx="7.14919" miny="50.6419"/>
-        <BoundingBox SRS="EPSG:31466" maxx="2.72707e+06" maxy="5.80777e+06" minx="2.58127e+06" miny="5.61673e+06"/>
+        <SRS>epsg:25832</SRS>
+        <LatLonBoundingBox maxx="9.41471" maxy="52.4633" minx="5.92893" miny="50.3575"/>
+        <BoundingBox SRS="EPSG:25832" maxx="528176" maxy="5.81257e+06" minx="291190" miny="5.5825e+06"/>
         <Style>
           <Name/>
           <Title/>

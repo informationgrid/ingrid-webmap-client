@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - WMS - LfULG - Festgesetzte Ueberschwemmungsgebiete</Title>
+		<Title>Überschwemmungsgebiete (festgesetzt) Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - Durch die zustaendige Wasserbehoerde werden Ueberschwemmungsgebiete durch Rechtsverordnung festgesetzt. In einem festgesetzten Ueberschwemmungsgebiet gelten laut Saechsischem Wassergesetz (SaechsWG) bestimmte Auflagen, welche eine Verschaerfung der Hochwassergefahr durch bauliche Taetigkeiten oder anderes verhindern sollen.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW ERD: Geodaten des Landeserdbebendienstes</Title>
+  <Title>Erdbebendienst Baden-Württemberg</Title>
   <Abstract>Das LGRB betreibt den Landeserdbebendienst für Baden-Württemberg (LED). Der LED erfüllt die folgenden Aufgaben: Erdbebenmessung, Bereitstellung von Erdbebeninformationen und seismischen Messdaten, Erfassung von Wahrnehmungen und Schäden bei Erdbeben und Fachberatung in seismologischen Fragen. Gezeigt werden ausgewählte Themen des LED.</Abstract>
         <KeywordList>
           <Keyword>Erdbeben</Keyword>

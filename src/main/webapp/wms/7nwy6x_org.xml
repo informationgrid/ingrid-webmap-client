@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - WMS - LfULG - Ueberschwemmte Flaechen bei hundertjaehrlichem Hochwasser</Title>
+		<Title>Überschwemmte Flächen bei 100-jährlichem Hochwasser in Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - Fuer die Planung von Hochwasserschutzmassnahmen ist das Hochwasserereignis, das statistisch einmal in 100 Jahren auftritt (HQ 100) von besonderer Bedeutung. Beispielsweise wird das Schutzniveau von Siedlungen, Infrastruktur und Industrie haeufig auf dieses Ereignis aus­gerichtet. Die Kartendarstellung zeigt die ueberschwemmte Flaeche bei HQ 100 an den Gewaessern I. Ordnung und der Elbe, wobei die Wassertiefe durch Farbabstufung abgebildet wird. Diese Karte ist als "Intensitaetskarte IST-Zustand" in den saechsischen Hochwasserschutzkon­zepten enthalten. 
 		</Abstract>
 		<KeywordList>

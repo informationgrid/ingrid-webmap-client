@@ -106,22 +106,69 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>lungwms</Name>
     <Title>LUNG WMS Server</Title>
+    <SRS>EPSG:4647</SRS>
+    <SRS>EPSG:5650</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:35832</SRS>
+    <SRS>EPSG:35833</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3038</SRS>
+    <SRS>EPSG:3039</SRS>
+    <SRS>EPSG:3040</SRS>
+    <SRS>EPSG:3041</SRS>
+    <SRS>EPSG:3042</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:3046</SRS>
+    <SRS>EPSG:3047</SRS>
+    <SRS>EPSG:4839</SRS>
+    <SRS>EPSG:2176</SRS>
     <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel100_18</Name>
         <Title>Geothermie-Potenzial(7) 0 bis 100 m (1800 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -137,16 +184,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel40_18</Name>
         <Title>Geothermie-Potenzial(1) 0 bis 40 m (1800 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -162,16 +228,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel100_24</Name>
         <Title>Geothermie-Potenzial(8) 0 bis 100 m (2400 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -187,16 +272,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel40_24</Name>
         <Title>Geothermie-Potenzial(2) 0 bis 40 m (2400 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -212,16 +316,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel60_18</Name>
         <Title>Geothermie-Potenzial(3) 0 bis 60 m (1800 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -237,16 +360,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel80_24</Name>
         <Title>Geothermie-Potenzial(6) 0 bis 80 m (2400 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6882" minx="10.4607" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -262,16 +404,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel60_24</Name>
         <Title>Geothermie-Potenzial(4) 0 bis 60 m (2400 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6938" minx="10.4601" miny="53.0842"/>
         <Style>
           <Name>default</Name>
@@ -287,16 +448,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t7_wel80_18</Name>
         <Title>Geothermie-Potenzial(5) 0 bis 80 m (1800 h/Jahr)</Title>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
         <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.4143" maxy="54.6882" minx="10.4607" miny="53.0842"/>
         <Style>
           <Name>default</Name>

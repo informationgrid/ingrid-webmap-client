@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW Geothermische Bestandsaufnahme des Oberrheingrabens (Nordteil) 1 : 250 000</Title>
+  <Title>Geothermie Oberrheingraben (Nordteil) 1:250.000 Baden-Württemberg</Title>
   <Abstract>Im elsässischen und badischen Teil des Oberrheingrabens bieten sich für die geothermische Nutzung vier Grundwasser führende hydrogeologische Einheiten an, nämlich der Oberjura (Rauracium u. Sequanium), der Hauptrogenstein, der Obere Muschelkalk und der Buntsandstein. Die Informationen zu diesen Aquiferen wurden unter Verwendung von Bohrungen, geophysikalischen Untersuchungen, geologischen Kartierungen und Veröffentlichungen im Bearbeitungsmaßstab 1 : 100 000 (Nordteil) bzw. 1 : 250 000 (Südteil) dargestellt. Karten und Bericht werden auch als digitales Produkt im LGRB-Shop angeboten.</Abstract>
         <KeywordList>
           <Keyword>Geothermie</Keyword>

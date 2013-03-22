@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW GTO: Geotouristische Übersichtskarten 1 : 200 000</Title>
+  <Title>Geotourismus 1:200.000 Baden-Württemberg</Title>
   <Abstract>Erleben und bestaunen Sie die Erdgeschichte von Baden-Württemberg. Im Thema Geotourismus wird ein Überblick über die bedeutendsten, geotouristischen Attraktionen, wie Geotope, Lehrpfade, Höhlen, Besucherbergwerke, Aussichtsspunkte und Naturschutzzentren in Baden-Württemberg gegeben. Zu jedem Geoobjekt können über die Attributanzeige zusätzliche Informationen (Fotos, Lage, Beschreibung, etc.) abgefragt werden.</Abstract>
         <KeywordList>
           <Keyword>Allgemeine</Keyword>

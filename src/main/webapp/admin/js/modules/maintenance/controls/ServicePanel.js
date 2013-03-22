@@ -178,7 +178,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	
 	self.serviceGrid.on('afteredit', function(store) {
 		if(store.field === "name"){
-			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.capabilitiesUrlOrg, store.record.data.originalCapUrl);			
+			var categories = [];
+			var mapServiceCategories = store.record.data.mapServiceCategories;
+			for ( var iCat = 0; iCat < mapServiceCategories.length; iCat++) {
+				var catId = mapServiceCategories[iCat].idx;
+				categories.push(catId);
+			}
+			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.capabilitiesUrlOrg, store.record.data.originalCapUrl, categories);			
 		}else{
 			store.record.reject();
 		}
@@ -410,7 +416,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteServi
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){
 		   if (btn == 'ok'){
-			   var service = { capabilitiesUrl: deleteService.data.capabilitiesUrl};
+			   var service = { capabilitiesUrl: deleteService.data.capabilitiesUrl, capabilitiesUrlOrg: deleteService.data.capabilitiesUrlOrg};
 			   // Remove service from config
 			   de.ingrid.mapclient.Configuration.setValue('removeservice', Ext.encode(service), de.ingrid.mapclient.admin.DefaultSaveHandler);
 			   // Remove service from store

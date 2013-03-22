@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
   <Service>
     <Name>OGC:WMS</Name>
-    <Title>FIS-Broker WMS-Service SenStadt Berlin : Klimawandel - Jahresmittel Tage mit Wärmebelastung 2071-2100 (Farbreihe 2) (UA)</Title>
+    <Title>Klimawandel - Tage mit Wärmebelastung 2071-2100 Berlin</Title>
     <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
     <KeywordList>
       <Keyword>GeoTools</Keyword>

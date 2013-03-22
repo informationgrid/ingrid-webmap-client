@@ -79,7 +79,7 @@ Stand 22. August 2011]]></AccessConstraints>
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-f2f64a368aed68d1cc24f231070deed5</Name>
-			<Title><![CDATA[Klimaatlas NRW]]></Title>
+			<Title>Klimaatlas NRW</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -99,7 +99,7 @@ Stand 22. August 2011]]></AccessConstraints>
 			<BoundingBox SRS="EPSG:4326" maxx="11.222485" maxy="53.130994" minx="4.145771" miny="49.693718"/>
 			<BoundingBox SRS="EPSG:25832" maxx="648761.192567" maxy="5886842.644577" minx="174578.793405" miny="5514360.417367"/>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-145d861ae1d4d2b52b960e1c5486b0d2</Name>
-				<Title><![CDATA[Klima]]></Title>
+				<Title>Klima</Title>
 				<Abstract><![CDATA[Klima]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -120,7 +120,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				<BoundingBox SRS="EPSG:4326" maxx="9.843605" maxy="52.734587" minx="5.682069" miny="50.077437"/>
 				<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
 				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-682379ec7dc7dca6ff4f5dd725f8772f</Name>
-					<Title><![CDATA[Abgeleitete Groessen]]></Title>
+					<Title>Abgeleitete Groessen</Title>
 					<Abstract><![CDATA[Abgeleitete Groessen]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -142,7 +142,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>2</Name>
-						<Title><![CDATA[Gradtage pro Jahr 1971-2000]]></Title>
+						<Title>Gradtage pro Jahr 1971-2000</Title>
 						<Abstract><![CDATA[Gradtage pro Jahr 1971-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -173,7 +173,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e495678c0088a1af5a9643b1b629cd4c</Name>
-					<Title><![CDATA[Wind]]></Title>
+					<Title>Wind</Title>
 					<Abstract><![CDATA[Wind]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -195,7 +195,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<BoundingBox SRS="EPSG:25832" maxx="556964.553550" maxy="5842746.203835" minx="275764.553550" miny="5551946.203835"/>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>7</Name>
-						<Title><![CDATA[Windgeschwindigkeit 80m 1981-2000]]></Title>
+						<Title>Windgeschwindigkeit 80m 1981-2000</Title>
 						<Abstract><![CDATA[Windgeschwindigkeit 80m 1981-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -226,7 +226,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>8</Name>
-						<Title><![CDATA[Windgeschwindigkeit 10m 1981-2000]]></Title>
+						<Title>Windgeschwindigkeit 10m 1981-2000</Title>
 						<Abstract><![CDATA[Windgeschwindigkeit 10m 1981-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -257,7 +257,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a5d49e1bab9d12ed402a4b3db22dbfff</Name>
-					<Title><![CDATA[Strahlung]]></Title>
+					<Title>Strahlung</Title>
 					<Abstract><![CDATA[Strahlung]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -278,7 +278,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-8b133b12ed5a4da3eabbb018c5238367</Name>
-						<Title><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Title>
+						<Title>SD - Sonnenscheindauer 1971 - 2000</Title>
 						<Abstract><![CDATA[SD - Sonnenscheindauer 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -300,7 +300,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>11</Name>
-							<Title><![CDATA[SD Jahr 1971-2000]]></Title>
+							<Title>SD Jahr 1971-2000</Title>
 							<Abstract><![CDATA[SD Jahr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -331,7 +331,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>12</Name>
-							<Title><![CDATA[SD Win 1971-2000]]></Title>
+							<Title>SD Win 1971-2000</Title>
 							<Abstract><![CDATA[SD Win 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -362,7 +362,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>13</Name>
-							<Title><![CDATA[SD Her 1971-2000]]></Title>
+							<Title>SD Her 1971-2000</Title>
 							<Abstract><![CDATA[SD Her 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -393,7 +393,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>14</Name>
-							<Title><![CDATA[SD Som 1971-2000]]></Title>
+							<Title>SD Som 1971-2000</Title>
 							<Abstract><![CDATA[SD Som 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -424,7 +424,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>15</Name>
-							<Title><![CDATA[SD Fru 1971-2000]]></Title>
+							<Title>SD Fru 1971-2000</Title>
 							<Abstract><![CDATA[SD Fru 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -455,7 +455,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>16</Name>
-							<Title><![CDATA[SD Dez 1971-2000]]></Title>
+							<Title>SD Dez 1971-2000</Title>
 							<Abstract><![CDATA[SD Dez 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -486,7 +486,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>17</Name>
-							<Title><![CDATA[SD Nov 1971-2000]]></Title>
+							<Title>SD Nov 1971-2000</Title>
 							<Abstract><![CDATA[SD Nov 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -517,7 +517,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>18</Name>
-							<Title><![CDATA[SD Okt 1971-2000]]></Title>
+							<Title>SD Okt 1971-2000</Title>
 							<Abstract><![CDATA[SD Okt 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -548,7 +548,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>19</Name>
-							<Title><![CDATA[SD Sep 1971-2000]]></Title>
+							<Title>SD Sep 1971-2000</Title>
 							<Abstract><![CDATA[SD Sep 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -579,7 +579,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>20</Name>
-							<Title><![CDATA[SD Aug 1971-2000]]></Title>
+							<Title>SD Aug 1971-2000</Title>
 							<Abstract><![CDATA[SD Aug 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -610,7 +610,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>21</Name>
-							<Title><![CDATA[SD Jul 1971-2000]]></Title>
+							<Title>SD Jul 1971-2000</Title>
 							<Abstract><![CDATA[SD Jul 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -641,7 +641,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>22</Name>
-							<Title><![CDATA[SD Jun 1971-2000]]></Title>
+							<Title>SD Jun 1971-2000</Title>
 							<Abstract><![CDATA[SD Jun 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -672,7 +672,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>23</Name>
-							<Title><![CDATA[SD Mai 1971-2000]]></Title>
+							<Title>SD Mai 1971-2000</Title>
 							<Abstract><![CDATA[SD Mai 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -703,7 +703,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>24</Name>
-							<Title><![CDATA[SD Apr 1971-2000]]></Title>
+							<Title>SD Apr 1971-2000</Title>
 							<Abstract><![CDATA[SD Apr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -734,7 +734,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>25</Name>
-							<Title><![CDATA[SD Mar 1971-2000]]></Title>
+							<Title>SD Mar 1971-2000</Title>
 							<Abstract><![CDATA[SD Mar 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -765,7 +765,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>26</Name>
-							<Title><![CDATA[SD Feb 1971-2000]]></Title>
+							<Title>SD Feb 1971-2000</Title>
 							<Abstract><![CDATA[SD Feb 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -796,7 +796,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>27</Name>
-							<Title><![CDATA[SD Jan 1971-2000]]></Title>
+							<Title>SD Jan 1971-2000</Title>
 							<Abstract><![CDATA[SD Jan 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -828,7 +828,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-fa5a722dce4612fcdf3be2287c5dc99f</Name>
-					<Title><![CDATA[Niederschlag]]></Title>
+					<Title>Niederschlag</Title>
 					<Abstract><![CDATA[Niederschlag]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -849,7 +849,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<BoundingBox SRS="EPSG:4326" maxx="9.448583" maxy="52.535627" minx="5.765611" miny="50.318683"/>
 					<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e37bbc5b77c8ce25f20a6c6c872ab14e</Name>
-						<Title><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Title>
+						<Title>NS - Niederschlagssummen 1971 - 2000</Title>
 						<Abstract><![CDATA[NS - Niederschlagssummen 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -871,7 +871,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>30</Name>
-							<Title><![CDATA[NS Jahr 1971-2000]]></Title>
+							<Title>NS Jahr 1971-2000</Title>
 							<Abstract><![CDATA[NS Jahr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -902,7 +902,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>31</Name>
-							<Title><![CDATA[NS Win 1971-2000]]></Title>
+							<Title>NS Win 1971-2000</Title>
 							<Abstract><![CDATA[NS Win 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -933,7 +933,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>32</Name>
-							<Title><![CDATA[NS Her 1971-2000]]></Title>
+							<Title>NS Her 1971-2000</Title>
 							<Abstract><![CDATA[NS Her 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -964,7 +964,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>33</Name>
-							<Title><![CDATA[NS Som 1971-2000]]></Title>
+							<Title>NS Som 1971-2000</Title>
 							<Abstract><![CDATA[NS Som 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -995,7 +995,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>34</Name>
-							<Title><![CDATA[NS Fru 1971-2000]]></Title>
+							<Title>NS Fru 1971-2000</Title>
 							<Abstract><![CDATA[NS Fru 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1026,7 +1026,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>35</Name>
-							<Title><![CDATA[NS Dez 1971-2000]]></Title>
+							<Title>NS Dez 1971-2000</Title>
 							<Abstract><![CDATA[NS Dez 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1057,7 +1057,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>36</Name>
-							<Title><![CDATA[NS Nov 1971-2000]]></Title>
+							<Title>NS Nov 1971-2000</Title>
 							<Abstract><![CDATA[NS Nov 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1088,7 +1088,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>37</Name>
-							<Title><![CDATA[NS Okt 1971-2000]]></Title>
+							<Title>NS Okt 1971-2000</Title>
 							<Abstract><![CDATA[NS Okt 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1119,7 +1119,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>38</Name>
-							<Title><![CDATA[NS Sep 1971-2000]]></Title>
+							<Title>NS Sep 1971-2000</Title>
 							<Abstract><![CDATA[NS Sep 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1150,7 +1150,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>39</Name>
-							<Title><![CDATA[NS Aug 1971-2000]]></Title>
+							<Title>NS Aug 1971-2000</Title>
 							<Abstract><![CDATA[NS Aug 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1181,7 +1181,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>40</Name>
-							<Title><![CDATA[NS Jul 1971-2000]]></Title>
+							<Title>NS Jul 1971-2000</Title>
 							<Abstract><![CDATA[NS Jul 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1212,7 +1212,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>41</Name>
-							<Title><![CDATA[NS Jun 1971-2000]]></Title>
+							<Title>NS Jun 1971-2000</Title>
 							<Abstract><![CDATA[NS Jun 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1243,7 +1243,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>42</Name>
-							<Title><![CDATA[NS Mai 1971-2000]]></Title>
+							<Title>NS Mai 1971-2000</Title>
 							<Abstract><![CDATA[NS Mai 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1274,7 +1274,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>43</Name>
-							<Title><![CDATA[NS Apr 1971-2000]]></Title>
+							<Title>NS Apr 1971-2000</Title>
 							<Abstract><![CDATA[NS Apr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1305,7 +1305,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>44</Name>
-							<Title><![CDATA[NS Mar 1971-2000]]></Title>
+							<Title>NS Mar 1971-2000</Title>
 							<Abstract><![CDATA[NS Mar 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1336,7 +1336,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>45</Name>
-							<Title><![CDATA[NS Feb 1971-2000]]></Title>
+							<Title>NS Feb 1971-2000</Title>
 							<Abstract><![CDATA[NS Feb 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1367,7 +1367,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>46</Name>
-							<Title><![CDATA[NS Jan 1971-2000]]></Title>
+							<Title>NS Jan 1971-2000</Title>
 							<Abstract><![CDATA[NS Jan 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1399,7 +1399,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-458b08baf925c4369d3d5f38a2919cda</Name>
-					<Title><![CDATA[Lufttemperatur]]></Title>
+					<Title>Lufttemperatur</Title>
 					<Abstract><![CDATA[Lufttemperatur]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -1421,7 +1421,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					<BoundingBox SRS="EPSG:25832" maxx="538408.946426" maxy="5830754.721466" minx="276408.946426" miny="5568754.721466"/>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>48</Name>
-						<Title><![CDATA[Eistage pro Jahr 1971-2000]]></Title>
+						<Title>Eistage pro Jahr 1971-2000</Title>
 						<Abstract><![CDATA[Eistage pro Jahr 1971-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -1452,7 +1452,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>49</Name>
-						<Title><![CDATA[Frosttage pro Jahr 1971-2000]]></Title>
+						<Title>Frosttage pro Jahr 1971-2000</Title>
 						<Abstract><![CDATA[Frosttage pro Jahr 1971-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -1483,7 +1483,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>50</Name>
-						<Title><![CDATA[Sommertage pro Jahr 1971-2000]]></Title>
+						<Title>Sommertage pro Jahr 1971-2000</Title>
 						<Abstract><![CDATA[Sommertage pro Jahr 1971-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -1514,7 +1514,7 @@ Stand 22. August 2011]]></AccessConstraints>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0">
 						<Name>51</Name>
-						<Title><![CDATA[heiße Tage pro Jahr 1971-2000]]></Title>
+						<Title>heiße Tage pro Jahr 1971-2000</Title>
 						<Abstract><![CDATA[heiße Tage pro Jahr 1971-2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -1544,7 +1544,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Style>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-08e608efe54cc5c718368938c1d64934</Name>
-						<Title><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Title>
+						<Title>Tmax - maximale Temperatur 1971 - 2000</Title>
 						<Abstract><![CDATA[Tmax - maximale Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -1566,7 +1566,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						<BoundingBox SRS="EPSG:25832" maxx="530475.981894" maxy="5820771.527153" minx="280475.981894" miny="5578771.527153"/>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>53</Name>
-							<Title><![CDATA[Tmax Jahr 1971-2000]]></Title>
+							<Title>Tmax Jahr 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Jahr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1597,7 +1597,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>54</Name>
-							<Title><![CDATA[Tmax Win 1971-2000]]></Title>
+							<Title>Tmax Win 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Win 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1628,7 +1628,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>55</Name>
-							<Title><![CDATA[Tmax Her 1971-2000]]></Title>
+							<Title>Tmax Her 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Her 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1659,7 +1659,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>56</Name>
-							<Title><![CDATA[Tmax Som 1971-2000]]></Title>
+							<Title>Tmax Som 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Som 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1690,7 +1690,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>57</Name>
-							<Title><![CDATA[Tmax Fru 1971-2000]]></Title>
+							<Title>Tmax Fru 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Fru 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1721,7 +1721,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>58</Name>
-							<Title><![CDATA[Tmax Dez 1971-2000]]></Title>
+							<Title>Tmax Dez 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Dez 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1752,7 +1752,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>59</Name>
-							<Title><![CDATA[Tmax Nov 1971-2000]]></Title>
+							<Title>Tmax Nov 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Nov 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1783,7 +1783,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>60</Name>
-							<Title><![CDATA[Tmax Okt 1971-2000]]></Title>
+							<Title>Tmax Okt 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Okt 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1814,7 +1814,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>61</Name>
-							<Title><![CDATA[Tmax Sep 1971-2000]]></Title>
+							<Title>Tmax Sep 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Sep 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1845,7 +1845,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>62</Name>
-							<Title><![CDATA[Tmax Aug 1971-2000]]></Title>
+							<Title>Tmax Aug 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Aug 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1876,7 +1876,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>63</Name>
-							<Title><![CDATA[Tmax Jul 1971-2000]]></Title>
+							<Title>Tmax Jul 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Jul 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1907,7 +1907,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>64</Name>
-							<Title><![CDATA[Tmax Jun 1971-2000]]></Title>
+							<Title>Tmax Jun 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Jun 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1938,7 +1938,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>65</Name>
-							<Title><![CDATA[Tmax Mai 1971-2000]]></Title>
+							<Title>Tmax Mai 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Mai 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -1969,7 +1969,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>66</Name>
-							<Title><![CDATA[Tmax Apr 1971-2000]]></Title>
+							<Title>Tmax Apr 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Apr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2000,7 +2000,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>67</Name>
-							<Title><![CDATA[Tmax Mar 1971-2000]]></Title>
+							<Title>Tmax Mar 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Mar 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2031,7 +2031,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>68</Name>
-							<Title><![CDATA[Tmax Feb 1971-2000]]></Title>
+							<Title>Tmax Feb 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Feb 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2062,7 +2062,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>69</Name>
-							<Title><![CDATA[Tmax Jan 1971-2000]]></Title>
+							<Title>Tmax Jan 1971-2000</Title>
 							<Abstract><![CDATA[Tmax Jan 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2093,7 +2093,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-50c2155ab0f5471fed6eec12ea8a5e42</Name>
-						<Title><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Title>
+						<Title>Tmittel - mittlere Temperatur 1971 - 2000</Title>
 						<Abstract><![CDATA[Tmittel - mittlere Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -2115,7 +2115,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>71</Name>
-							<Title><![CDATA[Tmittel Jahr 1971-2000]]></Title>
+							<Title>Tmittel Jahr 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Jahr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2146,7 +2146,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>72</Name>
-							<Title><![CDATA[Tmittel Win 1971-2000]]></Title>
+							<Title>Tmittel Win 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Win 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2177,7 +2177,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>73</Name>
-							<Title><![CDATA[Tmittel Her 1971-2000]]></Title>
+							<Title>Tmittel Her 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Her 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2208,7 +2208,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>74</Name>
-							<Title><![CDATA[Tmittel Som 1971-2000]]></Title>
+							<Title>Tmittel Som 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Som 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2239,7 +2239,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>75</Name>
-							<Title><![CDATA[Tmittel Fru 1971-2000]]></Title>
+							<Title>Tmittel Fru 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Fru 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2270,7 +2270,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>76</Name>
-							<Title><![CDATA[Tmittel Dez 1971-2000]]></Title>
+							<Title>Tmittel Dez 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Dez 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2301,7 +2301,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>77</Name>
-							<Title><![CDATA[Tmittel Nov 1971-2000]]></Title>
+							<Title>Tmittel Nov 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Nov 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2332,7 +2332,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>78</Name>
-							<Title><![CDATA[Tmittel Okt 1971-2000]]></Title>
+							<Title>Tmittel Okt 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Okt 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2363,7 +2363,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>79</Name>
-							<Title><![CDATA[Tmittel Sep 1971-2000]]></Title>
+							<Title>Tmittel Sep 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Sep 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2394,7 +2394,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>80</Name>
-							<Title><![CDATA[Tmittel Aug 1971-2000]]></Title>
+							<Title>Tmittel Aug 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Aug 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2425,7 +2425,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>81</Name>
-							<Title><![CDATA[Tmittel Jul 1971-2000]]></Title>
+							<Title>Tmittel Jul 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Jul 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2456,7 +2456,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>82</Name>
-							<Title><![CDATA[Tmittel Jun 1971-2000]]></Title>
+							<Title>Tmittel Jun 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Jun 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2487,7 +2487,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>83</Name>
-							<Title><![CDATA[Tmittel Mai 1971-2000]]></Title>
+							<Title>Tmittel Mai 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Mai 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2518,7 +2518,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>84</Name>
-							<Title><![CDATA[Tmittel Apr 1971-2000]]></Title>
+							<Title>Tmittel Apr 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Apr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2549,7 +2549,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>85</Name>
-							<Title><![CDATA[Tmittel Mar 1971-2000]]></Title>
+							<Title>Tmittel Mar 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Mar 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2580,7 +2580,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>86</Name>
-							<Title><![CDATA[Tmittel Feb 1971-2000]]></Title>
+							<Title>Tmittel Feb 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Feb 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2611,7 +2611,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>87</Name>
-							<Title><![CDATA[Tmittel Jan 1971-2000]]></Title>
+							<Title>Tmittel Jan 1971-2000</Title>
 							<Abstract><![CDATA[Tmittel Jan 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2642,7 +2642,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 					</Layer>
 					<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-eb378218067fe5cf17d8baed0ef7a1e4</Name>
-						<Title><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Title>
+						<Title>Tmin - minimale Temperatur 1971 - 2000</Title>
 						<Abstract><![CDATA[Tmin - minimale Temperatur 1971 - 2000]]></Abstract>
 						<SRS>EPSG:4326</SRS>
 						<SRS>EPSG:31466</SRS>
@@ -2664,7 +2664,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						<BoundingBox SRS="EPSG:25832" maxx="530427.054627" maxy="5820614.917113" minx="280427.054627" miny="5578614.917113"/>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>89</Name>
-							<Title><![CDATA[Tmin Jahr 1971-2000]]></Title>
+							<Title>Tmin Jahr 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Jahr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2695,7 +2695,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>90</Name>
-							<Title><![CDATA[Tmin Win 1971-2000]]></Title>
+							<Title>Tmin Win 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Win 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2726,7 +2726,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>91</Name>
-							<Title><![CDATA[Tmin Her 1971-2000]]></Title>
+							<Title>Tmin Her 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Her 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2757,7 +2757,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>92</Name>
-							<Title><![CDATA[Tmin Som 1971-2000]]></Title>
+							<Title>Tmin Som 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Som 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2788,7 +2788,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>93</Name>
-							<Title><![CDATA[Tmin Fru 1971-2000]]></Title>
+							<Title>Tmin Fru 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Fru 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2819,7 +2819,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>94</Name>
-							<Title><![CDATA[Tmin Dez 1971-2000]]></Title>
+							<Title>Tmin Dez 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Dez 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2850,7 +2850,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>95</Name>
-							<Title><![CDATA[Tmin Nov 1971-2000]]></Title>
+							<Title>Tmin Nov 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Nov 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2881,7 +2881,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>96</Name>
-							<Title><![CDATA[Tmin Okt 1971-2000]]></Title>
+							<Title>Tmin Okt 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Okt 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2912,7 +2912,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>97</Name>
-							<Title><![CDATA[Tmin Sep 1971-2000]]></Title>
+							<Title>Tmin Sep 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Sep 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2943,7 +2943,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>98</Name>
-							<Title><![CDATA[Tmin Aug 1971-2000]]></Title>
+							<Title>Tmin Aug 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Aug 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -2974,7 +2974,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>99</Name>
-							<Title><![CDATA[Tmin Jul 1971-2000]]></Title>
+							<Title>Tmin Jul 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Jul 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3005,7 +3005,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>100</Name>
-							<Title><![CDATA[Tmin Jun 1971-2000]]></Title>
+							<Title>Tmin Jun 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Jun 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3036,7 +3036,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>101</Name>
-							<Title><![CDATA[Tmin Mai 1971-2000]]></Title>
+							<Title>Tmin Mai 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Mai 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3067,7 +3067,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>102</Name>
-							<Title><![CDATA[Tmin Apr 1971-2000]]></Title>
+							<Title>Tmin Apr 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Apr 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3098,7 +3098,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>103</Name>
-							<Title><![CDATA[Tmin Mar 1971-2000]]></Title>
+							<Title>Tmin Mar 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Mar 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3129,7 +3129,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>104</Name>
-							<Title><![CDATA[Tmin Feb 1971-2000]]></Title>
+							<Title>Tmin Feb 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Feb 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3160,7 +3160,7 @@ Stand 22. August 2011]]></AccessConstraints>
 						</Layer>
 						<Layer noSubsets="0" opaque="0" queryable="0">
 							<Name>105</Name>
-							<Title><![CDATA[Tmin Jan 1971-2000]]></Title>
+							<Title>Tmin Jan 1971-2000</Title>
 							<Abstract><![CDATA[Tmin Jan 1971-2000]]></Abstract>
 							<SRS>EPSG:4326</SRS>
 							<SRS>EPSG:31466</SRS>
@@ -3193,7 +3193,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-a35f66f9101d4ec7f31e9eb71f31479e</Name>
-				<Title><![CDATA[Kartographie]]></Title>
+				<Title>Kartographie</Title>
 				<Abstract><![CDATA[Kartographie]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -3215,7 +3215,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				<BoundingBox SRS="EPSG:25832" maxx="627207.447151" maxy="5869911.634250" minx="196132.538821" miny="5531291.427694"/>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>107</Name>
-					<Title><![CDATA[NRW Schablone]]></Title>
+					<Title>NRW Schablone</Title>
 					<Abstract><![CDATA[NRW Schablone]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3246,7 +3246,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>108</Name>
-					<Title><![CDATA[Beschriftung Gewaesser]]></Title>
+					<Title>Beschriftung Gewaesser</Title>
 					<Abstract><![CDATA[Beschriftung Gewaesser]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3277,7 +3277,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>109</Name>
-					<Title><![CDATA[Gewässer]]></Title>
+					<Title>Gewässer</Title>
 					<Abstract><![CDATA[Gewässer]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3308,7 +3308,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>110</Name>
-					<Title><![CDATA[Städte]]></Title>
+					<Title>Städte</Title>
 					<Abstract><![CDATA[Städte]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3339,7 +3339,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>111</Name>
-					<Title><![CDATA[Beschriftung Gemeinden]]></Title>
+					<Title>Beschriftung Gemeinden</Title>
 					<Abstract><![CDATA[Beschriftung Gemeinden]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3371,7 +3371,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>112</Name>
-					<Title><![CDATA[Gemeinden]]></Title>
+					<Title>Gemeinden</Title>
 					<Abstract><![CDATA[Gemeinden]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3402,7 +3402,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>113</Name>
-					<Title><![CDATA[Beschriftung Kreise]]></Title>
+					<Title>Beschriftung Kreise</Title>
 					<Abstract><![CDATA[Beschriftung Kreise]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3434,7 +3434,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>114</Name>
-					<Title><![CDATA[Kreise]]></Title>
+					<Title>Kreise</Title>
 					<Abstract><![CDATA[Kreise]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3465,7 +3465,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>115</Name>
-					<Title><![CDATA[Beschriftung Regierungsbezirke ]]></Title>
+					<Title>Beschriftung Regierungsbezirke </Title>
 					<Abstract><![CDATA[Beschriftung Regierungsbezirke ]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3497,7 +3497,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>116</Name>
-					<Title><![CDATA[Regierungsbezirke]]></Title>
+					<Title>Regierungsbezirke</Title>
 					<Abstract><![CDATA[Regierungsbezirke]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3528,7 +3528,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>117</Name>
-					<Title><![CDATA[Beschriftung Großlandschaften]]></Title>
+					<Title>Beschriftung Großlandschaften</Title>
 					<Abstract><![CDATA[Beschriftung Großlandschaften]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3560,7 +3560,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>118</Name>
-					<Title><![CDATA[Großlandschaften]]></Title>
+					<Title>Großlandschaften</Title>
 					<Abstract><![CDATA[Großlandschaften]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -3591,7 +3591,7 @@ Stand 22. August 2011]]></AccessConstraints>
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="0">
 					<Name>119</Name>
-					<Title><![CDATA[NRW]]></Title>
+					<Title>NRW</Title>
 					<Abstract><![CDATA[NRW]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>

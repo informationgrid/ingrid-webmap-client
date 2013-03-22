@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>WaldNRW</Title>
+  <Title>Wald NRW</Title>
   <Abstract>WMS-Dienst Wald NRW mit Waldfunktions-, Waldtypen-, und Waldstandortkarte, Wuchsgebiete u.-bezirke, Kyrill-Schadflächen</Abstract>
         <KeywordList>
           <Keyword>Wald</Keyword>

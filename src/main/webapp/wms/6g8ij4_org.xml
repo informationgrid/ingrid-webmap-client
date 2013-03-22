@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!--System: cardo3, username:SYSTEM_ANONYMOUS_USER, internal user-ids:1--><WMT_MS_Capabilities updateSequence="0" version="1.1.1"><Service><Name>OGC:WMS</Name><Title>GSE - Land Satellitendaten WMS - Dienst LBEG</Title><Abstract>Im Rahmen des Projektes ESA GSE Stage 2 GSE Land, gefördert durch die Europäische Raumfahrtagentur ESA, wurden Satellitenbilder aus den Jahren 2000 und 2005 
+<?xml version="1.0" encoding="UTF-8"?><!--System: cardo3, username:SYSTEM_ANONYMOUS_USER, internal user-ids:1--><WMT_MS_Capabilities updateSequence="0" version="1.1.1"><Service><Name>OGC:WMS</Name><Title>Flächenverbrauch und Bodenversiegelung Niedersachsen</Title><Abstract>Im Rahmen des Projektes ESA GSE Stage 2 GSE Land, gefördert durch die Europäische Raumfahrtagentur ESA, wurden Satellitenbilder aus den Jahren 2000 und 2005 
 ausgewertet. Für Niedersachsen konnten so in einer 
 Auflösung von 10 x 10 m Informationen zur 
 Landbedeckung und Bodenversiegelung 

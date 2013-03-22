@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/26715.htm - WMS - LfULG - Hydrogeologische Uebersichtskarte 1 : 200 000</Title>
+		<Title>Hydrogeologische Übersichtskarte 1:200.000 Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/26715.htm - Die Inhalte der Hydrogeologischen Uebersichtskarte 1:200.000 sind Ergebnis der intensiven Abstimmung unter den beteiligten Bundeslaendern. Ziel war ein bundesweit einheitliches und in sich konsistentes hydrogeologisches Informationssystem zu schaffen.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

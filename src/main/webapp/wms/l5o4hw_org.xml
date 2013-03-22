@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW GTP: Geotop-Kataster</Title>
+  <Title>Geotop-Kataster 1:250.000 Baden-Württemberg</Title>
   <Abstract>Geotope sind erdgeschichtliche Bildungen der unbelebten Natur, die Erkenntnisse über die Entwicklungen der Erde und des Lebens vermitteln. Sie umfassen Aufschlüsse von Gesteinen, Böden, Mineralien und Fossilien sowie besondere Landschaftsteile. Das Thema zeigt die mehr als 5000 Einträge des Geotop-Kataster. Über die Attributabfrage können zusätzliche Informationen (Fotos, Lage, Beschreibung, etc.) abgerufen werden.</Abstract>
         <KeywordList>
           <Keyword>Allgemeine</Keyword>

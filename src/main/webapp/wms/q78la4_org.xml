@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGB: Erdbeben</Title>
+  <Title>Erdbeben Rheinland-Pfalz</Title>
   <Abstract>Die Online Karte Erdbebenereignisse stellt die vom Landeserdbebendienst Rheinland-Pfalz registrierten Erdbeben seit dem Jahr 2000 dar. Wie in der Beschreibung des Stationsnetzes (http://www.lgb-rlp.de/stationsnetz.html) dargestellt, ist der LER ein lokal ausgerichtetes Messnetz, es werden ausschliesslich Beben im Umfeld von Rheinland-Pfalz dargestellt. Eine tabellarische Auflistung der registrierten Erdbeben finden sie auf der Webseite http://www.lgb-rlp.de/erdbeben.html</Abstract>
         <KeywordList>
           <Keyword>Erdbeben</Keyword>

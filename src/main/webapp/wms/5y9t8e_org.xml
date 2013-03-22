@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/16833.htm - WMS - LfULG - Internetdienst geologischer Aufschluesse Sachsens</Title>
+		<Title>Geologische Aufschlüsse Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/geologie/16833.htm - Geologische Aufschluesse Sachsens (punktbezogen); Aktualisierung alle 1-5 Tage.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name><![CDATA[WMS]]></Name>
-		<Title><![CDATA[bohrungen]]></Title>
+		<Title>Bohrungen NRW</Title>
 		<Abstract>OGC:WMS</Abstract>
 		<KeywordList>
 			<Keyword><![CDATA[Bohrung]]></Keyword>
@@ -76,7 +76,7 @@
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-38757e4678536420e761376a41d42e66</Name>
-			<Title><![CDATA[Bohrungen NRW]]></Title>
+			<Title>Bohrungen NRW</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<LatLonBoundingBox maxx="9.751772" maxy="52.674685" minx="5.683820" miny="50.160929"/>
@@ -84,7 +84,7 @@
 			<BoundingBox SRS="EPSG:31466" maxx="2754038.173225" maxy="5837816.821005" minx="2478615.801275" miny="5564234.437095"/>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>0</Name>
-				<Title><![CDATA[Bohrungen]]></Title>
+				<Title>Bohrungen</Title>
 				<Abstract><![CDATA[Bohrungen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>

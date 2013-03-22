@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
   <Service>
     <Name>OGC:WMS</Name>
-    <Title>FIS-Broker WMS-Service SenStadt Berlin : Versorgungsanteile der einzelnen Energieträger 2005 (Umweltatlas)</Title>
+    <Title>Heizungsarten nach Energieträgern Berlin</Title>
     <Abstract>Map Service des FIS-Broker der Senatsverwaltung für Stadtentwicklung und Umwelt Berlin</Abstract>
     <KeywordList>
       <Keyword>GeoTools</Keyword>

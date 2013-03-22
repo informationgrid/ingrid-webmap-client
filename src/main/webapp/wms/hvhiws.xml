@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?><!--INSPIRE-Capabilities automatisch erzeugt: Wed Mar 20 02:53:54 CET 2013
-2377175b-7cd0-339f-8027-a713e2445734 Dienste-Metadaten über CSW NICHT erreichbar!
-bauensembleO Keine Metadaten-Referenz in Registry gefunden!
-bodendenkmalO Keine Metadaten-Referenz in Registry gefunden!
-einzeldenkmalO Keine Metadaten-Referenz in Registry gefunden!
+<?xml version="1.0" encoding="UTF-8"?><!--INSPIRE-Capabilities automatisch erzeugt: Thu Mar 21 23:47:28 CET 2013
+091dca89-514f-3db8-bf9c-b60a5c405230 Dienste-Metadaten über CSW erreichbar!
+bauensembleO e41e5c80-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
+bodendenkmalO e40185b0-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
+einzeldenkmalO e437ff00-007a-11e0-be74-0000779eba3a Daten-Metadaten über CSW erreichbar!
 landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
 --><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
   <!-- MapServer version 6.2.0 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=GD SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=CAIRO SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
@@ -25,7 +25,7 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
       <Keyword>Landschaftsprägendes Denkmal</Keyword>
       <Keyword>Schutzgebiet</Keyword>
     </KeywordList>
-    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+    <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
     <ContactInformation>
       <ContactPersonPrimary>
         <ContactPerson>Roland Wanninger</ContactPerson>
@@ -52,10 +52,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -73,10 +73,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -88,10 +88,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -101,10 +101,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -117,10 +117,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -130,10 +130,10 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <DCPType>
           <HTTP>
             <Get>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Get>
             <Post>
-              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?" xlink:type="simple"/>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?" xlink:type="simple"/>
             </Post>
           </HTTP>
         </DCPType>
@@ -147,7 +147,7 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
     <VendorSpecificCapabilities>
       <inspire_vs:ExtendedCapabilities xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0">
         <inspire_common:MetadataUrl xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="inspire_common:resourceLocatorType">
-          <inspire_common:URL xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">http://geoportal.bayern.de/csw/bvv?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=2377175b-7cd0-339f-8027-a713e2445734</inspire_common:URL>
+          <inspire_common:URL xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">http://geoportal.bayern.de/csw/bvv?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=091dca89-514f-3db8-bf9c-b60a5c405230</inspire_common:URL>
           <inspire_common:MediaType xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
         </inspire_common:MetadataUrl>
         <inspire_common:SupportedLanguages xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
@@ -235,12 +235,20 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <AuthorityURL name="BVV">
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
+        </AuthorityURL>
+        <Identifier authority="BVV">DE-BY-df60cccc-6dcb-4214-a8d0-685a2938884f</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e41e5c80-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
+        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
           <LegendURL height="21" width="75">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bauensembleO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bauensembleO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
@@ -265,12 +273,20 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <AuthorityURL name="BVV">
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
+        </AuthorityURL>
+        <Identifier authority="BVV">DE-BY-90b82dfe-f14b-4309-bf4f-62ead156d02c</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e40185b0-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
+        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
           <LegendURL height="37" width="240">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bodendenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=bodendenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
@@ -293,12 +309,20 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
         <BoundingBox SRS="EPSG:4326" maxx="13.976358303701087" maxy="50.60888141514482" minx="9.100492175325552" miny="47.09997917379404"/>
         <BoundingBox SRS="EPSG:25832" maxx="852030.4" maxy="5618160.7" minx="507625.7" miny="5216279.4"/>
         <BoundingBox SRS="EPSG:25833" maxx="427570.03" maxy="5606832.55" minx="52304.96" miny="5231183.24"/>
+        <AuthorityURL name="BVV">
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.geodaten.bayern.de" xlink:type="simple"/>
+        </AuthorityURL>
+        <Identifier authority="BVV">DE-BY-92af4b9e-ef75-45b8-8390-a895062153e6</Identifier>
+        <MetadataURL type="TC211">
+          <Format>text/xml</Format>
+          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.uok.bayern.de/fsystem/open/csw202/Inspire?REQUEST=GetRecordById&amp;VERSION=2.0.2&amp;service=CSW&amp;outputschema=csw:IsoRecord&amp;elementsetname=full&amp;ID=e437ff00-007a-11e0-be74-0000779eba3a" xlink:type="simple"/>
+        </MetadataURL>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
           <LegendURL height="37" width="230">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=einzeldenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
@@ -325,7 +349,7 @@ landschaftsdenkmalO Keine Metadaten-Referenz in Registry gefunden!
           <Title>default</Title>
           <LegendURL height="21" width="180">
             <Format>image/png</Format>
-            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal_zins.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=landschaftsdenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+            <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://geodaten.bayern.de/ogc/ogc_denkmal.cgi?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=landschaftsdenkmalO&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>

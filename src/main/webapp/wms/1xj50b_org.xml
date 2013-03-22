@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
   <Service>
     <Name>WMS</Name>
-    <Title>Schutzgebiete Natur (Land Brandenburg)</Title>
+    <Title>Naturschutzgebiete im Land Brandenburg</Title>
     <Abstract>Kartendienst Brandenburgischer und Europäischer Schutzgebiete im Land Brandenburg. Bitte beachten Sie die Links zu den Nutzungsbedingungen (siehe AccessConstraints) sowie zu Metainformationen und Download (http://www.mugv.brandenburg.de/cms/detail.php/bb2.c.515599.de).</Abstract>
     <KeywordList><Keyword>Schutzgebiet</Keyword><Keyword>Natur</Keyword><Keyword>Brandenburg</Keyword></KeywordList>
     <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://luaplims01.brandenburg.de/ArcGIS/services/Natur/Schutzgebiete/MapServer/WMSServer" xlink:type="simple"/>

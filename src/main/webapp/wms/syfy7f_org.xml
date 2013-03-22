@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LUNG WMS Server</Title>
+  <Title>Tierarten Mecklenburg-Vorpommern</Title>
   <Abstract>Informationen der staatlichen Umweltverwaltung Mecklenburg-Vorpommern</Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a2_arten_wms.php?" xlink:type="simple"/>
   <ContactInformation>
@@ -139,7 +139,7 @@
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_wst_r</Name>
-        <Title>Weissstorch 2009 (Raster)</Title>
+        <Title>Weissstorch 2009 (Rasterdarstellung)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -181,7 +181,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_kamm03_r</Name>
-        <Title>Kammmolch (Raster)</Title>
+        <Title>Kammmolch (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -265,7 +265,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_runk03_r</Name>
-        <Title>Rotbauchunke (Raster)</Title>
+        <Title>Rotbauchunke (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -307,7 +307,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_sst_r</Name>
-        <Title>Schwarzstorch 2011 (Raster)</Title>
+        <Title>Schwarzstorch (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -349,7 +349,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_sead_r</Name>
-        <Title>Seeadler 2011 (Raster)</Title>
+        <Title>Seeadler (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -391,7 +391,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_fiad_r</Name>
-        <Title>Fischadler 2011 (Raster)</Title>
+        <Title>Fischadler (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -433,7 +433,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_srad_r</Name>
-        <Title>Schreiadler 2003-2010 (Raster)</Title>
+        <Title>Schreiadler (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -475,7 +475,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_kormoran</Name>
-        <Title>Kormorankolonien 2012</Title>
+        <Title>Kormorankolonien</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -559,7 +559,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_wafa_r</Name>
-        <Title>Wanderfalke 2011 (Raster)</Title>
+        <Title>Wanderfalke (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>
@@ -601,7 +601,7 @@
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t2_krani_r</Name>
-        <Title>Kranich 2008 (Raster)</Title>
+        <Title>Kranich 2008 (Rasterdaten)</Title>
         <SRS>EPSG:4647</SRS>
         <SRS>EPSG:5650</SRS>
         <SRS>EPSG:25832</SRS>

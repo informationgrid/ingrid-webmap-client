@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
 
-<!-- MapServer version 6.0.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+<!-- MapServer version 6.0.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
 
 <Service>
   <Name>OGC:WMS</Name>
   <Title>Geologische Übersichtskarte 1:300.000 Rheinland-Pfalz</Title>
-  <Abstract>WMS-Dienst LGB: Geologische Übersichtskarte von Rheinland Pfalz 1:300.000 (GÜK 300) Die GÜK 300 wurde auf der Basis veröffentlichter geologischer Karten unterschiedlicher Maßstäbe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Übersichtskarte von Rheinland-Pfalz im Maßstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt für Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Länder herausgegebenen geologischen Übersichtskarten im Maßstab 1 : 200 000 (CC 5502 Köln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbrücken und CC 7110 Mannheim), die vom Landesamt für Geologie und Bergbau Rheinland-Pfalz veröffentlichten geologischen Karten in den Maßstäben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Maßstabsbedingt wurden stratigraphische Formationen zu größeren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Störungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Störungen reduziert.</Abstract>
+  <Abstract>Geologische Uebersichtskarte von Rheinland Pfalz 1:300.000 (GUEK 300) Die GUEK 300 wurde auf der Basis veroeffentlichter geologischer Karten unterschiedlicher Massstaebe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Uebersichtskarte von Rheinland-Pfalz im Massstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt fuer Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Laender herausgegebenen geologischen Uebersichtskarten im Massstab 1 : 200 000 (CC 5502 Koeln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbruecken und CC 7110 Mannheim), die vom Landesamt fuer Geologie und Bergbau Rheinland-Pfalz veroeffentlichten geologischen Karten in den Massstaeben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Massstabsbedingt wurden stratigraphische Formationen zu groesseren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Stoerungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Stoerungen reduziert.</Abstract>
         <KeywordList>
-          <Keyword>geodaten</Keyword>
-          <Keyword>geology</Keyword>
-          <Keyword>stratigraphy</Keyword>
-          <Keyword>Geologie</Keyword>
-          <Keyword>Stratigraphie</Keyword>
-          <Keyword>Gestein</Keyword>
-          <Keyword>Übersichtskarte</Keyword>
-          <Keyword>Vulkanismus</Keyword>
-          <Keyword>Tektonik</Keyword>
-          <Keyword>Formation</Keyword>
-          <Keyword>Störung</Keyword>
+          <Keyword>Geodaten</Keyword>
+          <Keyword> Geology</Keyword>
+          <Keyword> Stratigraphy</Keyword>
+          <Keyword> Geologie</Keyword>
+          <Keyword> Stratigraphie</Keyword>
+          <Keyword> Gestein</Keyword>
+          <Keyword> Uebersichtskarte</Keyword>
+          <Keyword> Vulkanismus</Keyword>
+          <Keyword> Tektonik</Keyword>
+          <Keyword> Formation</Keyword>
+          <Keyword> Stoerung</Keyword>
         </KeywordList>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://mapserver.lgb-rlp.de/cgi-bin/geologische_uebersichtskarte300?" xlink:type="simple"/>
   <ContactInformation>
     <ContactPersonPrimary>
       <ContactPerson>Dr. Jost Haneke</ContactPerson>
-      <ContactOrganization>Landesamt für Geologie und Bergbau, Rheinland-Pfalz</ContactOrganization>
+      <ContactOrganization>Landesamt fuer Geologie und Bergbau, Rheinland-Pfalz</ContactOrganization>
     </ContactPersonPrimary>
       <ContactPosition>Abteilung Geologie/Rohstoffe</ContactPosition>
     <ContactAddress>
@@ -38,7 +38,7 @@
       <ContactFacsimileTelephone>06131/9254-123</ContactFacsimileTelephone>
   <ContactElectronicMailAddress>webmaster@lgb-rlp.de</ContactElectronicMailAddress>
   </ContactInformation>
-  <Fees>none</Fees>
+  <Fees>siehe folgende Lizenzbedingungen: http://www.lgb-rlp.de/nutzung_online_karten.html</Fees>
   <AccessConstraints>none</AccessConstraints>
 </Service>
 
@@ -118,19 +118,19 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>guek300_uebersichtskarte</Name>
     <Title>LGB: Geologische Übersichtskarte 1:300.000</Title>
-    <Abstract>WMS-Dienst LGB: Geologische Übersichtskarte von Rheinland Pfalz 1:300.000 (GÜK 300) Die GÜK 300 wurde auf der Basis veröffentlichter geologischer Karten unterschiedlicher Maßstäbe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Übersichtskarte von Rheinland-Pfalz im Maßstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt für Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Länder herausgegebenen geologischen Übersichtskarten im Maßstab 1 : 200 000 (CC 5502 Köln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbrücken und CC 7110 Mannheim), die vom Landesamt für Geologie und Bergbau Rheinland-Pfalz veröffentlichten geologischen Karten in den Maßstäben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Maßstabsbedingt wurden stratigraphische Formationen zu größeren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Störungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Störungen reduziert.</Abstract>
+    <Abstract>Geologische Uebersichtskarte von Rheinland Pfalz 1:300.000 (GUEK 300) Die GUEK 300 wurde auf der Basis veroeffentlichter geologischer Karten unterschiedlicher Massstaebe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Uebersichtskarte von Rheinland-Pfalz im Massstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt fuer Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Laender herausgegebenen geologischen Uebersichtskarten im Massstab 1 : 200 000 (CC 5502 Koeln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbruecken und CC 7110 Mannheim), die vom Landesamt fuer Geologie und Bergbau Rheinland-Pfalz veroeffentlichten geologischen Karten in den Massstaeben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Massstabsbedingt wurden stratigraphische Formationen zu groesseren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Stoerungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Stoerungen reduziert.</Abstract>
     <KeywordList>
-     <Keyword>geodaten</Keyword>
-     <Keyword>geology</Keyword>
-     <Keyword>stratigraphy</Keyword>
-     <Keyword>Geologie</Keyword>
-     <Keyword>Stratigraphie</Keyword>
-     <Keyword>Gestein</Keyword>
-     <Keyword>Übersichtskarte</Keyword>
-     <Keyword>Vulkanismus</Keyword>
-     <Keyword>Tektonik</Keyword>
-     <Keyword>Formation</Keyword>
-     <Keyword>Störung</Keyword>
+     <Keyword>Geodaten</Keyword>
+     <Keyword> Geology</Keyword>
+     <Keyword> Stratigraphy</Keyword>
+     <Keyword> Geologie</Keyword>
+     <Keyword> Stratigraphie</Keyword>
+     <Keyword> Gestein</Keyword>
+     <Keyword> Uebersichtskarte</Keyword>
+     <Keyword> Vulkanismus</Keyword>
+     <Keyword> Tektonik</Keyword>
+     <Keyword> Formation</Keyword>
+     <Keyword> Stoerung</Keyword>
     </KeywordList>
     <SRS>epsg:31467</SRS>
     <SRS>epsg:31466</SRS>
@@ -152,6 +152,7 @@
     <Layer cascaded="0" noSubsets="0" opaque="1" queryable="1">
         <Name>geologische_uebersichtskarte300</Name>
         <Title>Geologische Übersichtskarte von Rheinland-Pfalz 1:300000</Title>
+        <Abstract>Die Grundwasserkörper wurden vom Landesamt für Wasserwirtschaft Rheinland-Pfalz auf der Grundlage des Artikels 3 (1) der EU-WRRL und der LAWA-Arbeitshilfe (1.2.1.1.) streng nach oberirdischen Wasserscheiden und möglichst unter Berücksichtigung der hydrogeologischen Teilräume abgegrenzt. Es wurden Einzugsgebietsflächen von 50 bis 500 km² Größe aggregiert.</Abstract>
         <SRS>epsg:31467</SRS>
         <SRS>epsg:31466</SRS>
         <SRS>epsg:25832</SRS>

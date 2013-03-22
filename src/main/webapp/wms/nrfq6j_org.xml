@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>Dig. Bundeswasserstr.Karte 1:1Mio - DBWK1000 (DLZ-IT BMVBS)</Title>
+  <Title>Digitale Bundeswasserstrassenkarte 1:1 Mio. Deutschland</Title>
   <Abstract>Dieser WMS zeigt die DBWK1000, die Digitale Bundeswasserstraßenkarte mit der Gliederung der WSV, die im Maßstab 1:1.000.000 als gedruckte Wandkarte produziert wurde. Inhalt sind Bundeswasserstraßen, Organisation der WSV mit Sitz der Ober-, Mittel- und Unterbehörden, Wasserstraßen-Klassifizierung, Angaben über Kilometrierung, wasserstraßenbezogene Angaben (z.B. freie oder staugeregelte Flussstrecken), schifffahrtsbezogene Bauwerke (z.B. Schleusen, Schiffshebewerke, Sperrwerke), Ortslagen, sonstige Gewässer und Landesgrenzen. Legende: http://www.wsv.de/service/karten_geoinformationen/images/dbwk1000legend.jpg </Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wmsdbwk1000?" xlink:type="simple"/>
   <ContactInformation>

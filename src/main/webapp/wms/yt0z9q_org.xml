@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW LBD: Bergbau, Besucherbergwerke, Besucherhöhlen, Seilbahnen</Title>
+  <Title>Bergbau, Besucherbergwerke, Seilbahnen Baden-Württemberg</Title>
   <Abstract>Der Bergbau und alle mit dem Bergwerksbetrieb zusammenhängenden Tätigkeiten, Einrichtungen und Anlagen unterliegen der staatlichen Bergaufsicht des Wirtschaftsministeriums in Stuttgart sowie des LGRB, Ref. 97 Landesbergdirektion in Freiburg. Die Karte zeigt ausgewählte Themen aus dem Fachbereich. Aktuell sind dies die Themen (Alt-)Bergbau, Seilbahnen und Besucherbergwerke.</Abstract>
         <KeywordList>
           <Keyword>Bergbau</Keyword>

@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW ADB: Aufschlussdatenbank/Bohrdatenbank</Title>
+  <Title>Geologische Aufschlüsse 1:25.000 Baden-Württemberg</Title>
   <Abstract>Das LGRB-Aufschlussarchiv enthält Bohrungsdokumentationen, die auf Grund von gesetzlichen Bestimmungen dem LGRB übergeben werden. Diese Unterlagen sind zum Großteil analog, z.T. auch digital beim LGRB in Freiburg vorhanden. Es sind Lagepläne, Schichtenverzeichnisse, Ausbaupläne, Bohrlochmessungen und Messdaten. Über die LGRB-Aufschlussdatenbank (ADB) wird das LGRB-Aufschlussarchiv erschlossen. Die ADB enthält zu jedem Bohrpunkt Stammdaten wie Angaben zur Identifizierung, Lage, Art und Herstellung der Bohrung sowie Fachinformationen wie Schichtdaten. Der ADB-WMS-Dienst zeigt die Bohrpunkte der ADB und erlaubt es, die wichtigsten Stammdaten abzufragen.</Abstract>
         <KeywordList>
           <Keyword>Bohrung</Keyword>

@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGB: Geologische Uebersichtskarte 1:300.000</Title>
+  <Title>Geologische Übersichtskarte 1:300.000 Rheinland-Pfalz</Title>
   <Abstract>Geologische Uebersichtskarte von Rheinland Pfalz 1:300.000 (GUEK 300) Die GUEK 300 wurde auf der Basis veroeffentlichter geologischer Karten unterschiedlicher Massstaebe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Uebersichtskarte von Rheinland-Pfalz im Massstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt fuer Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Laender herausgegebenen geologischen Uebersichtskarten im Massstab 1 : 200 000 (CC 5502 Koeln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbruecken und CC 7110 Mannheim), die vom Landesamt fuer Geologie und Bergbau Rheinland-Pfalz veroeffentlichten geologischen Karten in den Massstaeben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Massstabsbedingt wurden stratigraphische Formationen zu groesseren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Stoerungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Stoerungen reduziert.</Abstract>
         <KeywordList>
           <Keyword>Geodaten</Keyword>
@@ -117,7 +117,7 @@
   <UserDefinedSymbolization RemoteWFS="0" SupportSLD="1" UserLayer="0" UserStyle="1"/>
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>guek300_uebersichtskarte</Name>
-    <Title>LGB: Geologische Uebersichtskarte 1:300.000</Title>
+    <Title>LGB: Geologische Übersichtskarte 1:300.000</Title>
     <Abstract>Geologische Uebersichtskarte von Rheinland Pfalz 1:300.000 (GUEK 300) Die GUEK 300 wurde auf der Basis veroeffentlichter geologischer Karten unterschiedlicher Massstaebe neu zusammengestellt. Sie ersetzt die bisherige amtliche Geologische Uebersichtskarte von Rheinland-Pfalz im Massstab 1 : 500 000. Grundlage der neuen Karte sind die von der Bundesanstalt fuer Geowissenschaften und Rohstoffe in Hannover in Zusammenarbeit mit den Staatlichen Geologischen Diensten der Laender herausgegebenen geologischen Uebersichtskarten im Massstab 1 : 200 000 (CC 5502 Koeln, CC 5510 Siegen, CC 6302 Trier, CC 6310 Frankfurt a.M. West, CC 7102 Saarbruecken und CC 7110 Mannheim), die vom Landesamt fuer Geologie und Bergbau Rheinland-Pfalz veroeffentlichten geologischen Karten in den Massstaeben 1 : 100 000, 1 : 50 000 und 1 : 25 000 sowie die geologischen (und vulkanologischen) Karten externer Bearbeiter. Massstabsbedingt wurden stratigraphische Formationen zu groesseren Einheiten zusammengefasst und Grenzlinien generalisiert. Das gebietsweise sehr komplexe Stoerungsmuster wurde (stark generalisiert und) auf die Darstellung bedeutender Stoerungen reduziert.</Abstract>
     <KeywordList>
      <Keyword>Geodaten</Keyword>

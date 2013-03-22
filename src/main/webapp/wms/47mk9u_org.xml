@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>laerm</Title>
+  <Title>Lärm NRW</Title>
   <Abstract>Veröffentlichung der Lärmkarten gemäß Lärmkartierung nach Richtlinie 2002/49/EG - EU-Umgebungslärmrichtlinie</Abstract>
         <KeywordList>
           <Keyword>Lärmkarten</Keyword>

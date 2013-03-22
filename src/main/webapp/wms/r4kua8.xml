@@ -120,7 +120,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-16b20bfffc7b21a1ff797ad9ea1b20c3</Name>
-			<Title><![CDATA[Gewaesserstationierungskarte des Landes NRW]]></Title>
+			<Title>Gewaesserstationierungskarte des Landes NRW</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -138,7 +138,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			<BoundingBox SRS="EPSG:4326" maxx="9.922450" maxy="52.837862" minx="4.498711" miny="49.767553"/>
 			<BoundingBox SRS="EPSG:25832" maxx="562141.982110" maxy="5854234.270020" minx="196275.179490" miny="5521329.497380"/>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-5071bc7cd2cf41346baa4e2b09e4a115</Name>
-				<Title><![CDATA[Einzugsgebiete]]></Title>
+				<Title>Einzugsgebiete</Title>
 				<Abstract><![CDATA[Einzugsgebiete]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -158,7 +158,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				<BoundingBox SRS="EPSG:25832" maxx="545511.672900" maxy="5839102.234900" minx="260298.711200" miny="5573353.092400"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>1</Name>
-					<Title><![CDATA[Übergeordnete Ebene]]></Title>
+					<Title>Übergeordnete Ebene</Title>
 					<Abstract><![CDATA[Übergeordnete Ebene]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -188,7 +188,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>2</Name>
-					<Title><![CDATA[Mittlere Ebene]]></Title>
+					<Title>Mittlere Ebene</Title>
 					<Abstract><![CDATA[Mittlere Ebene]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -218,7 +218,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>3</Name>
-					<Title><![CDATA[Unterste Ebene]]></Title>
+					<Title>Unterste Ebene</Title>
 					<Abstract><![CDATA[Unterste Ebene]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -249,7 +249,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>4</Name>
-				<Title><![CDATA[Schifffahrtskanal]]></Title>
+				<Title>Schifffahrtskanal</Title>
 				<Abstract><![CDATA[Schifffahrtskanal]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -278,7 +278,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>5</Name>
-				<Title><![CDATA[groessere Fliessgewaesser -generalisiert-]]></Title>
+				<Title>groessere Fliessgewaesser -generalisiert-</Title>
 				<Abstract><![CDATA[groessere Fliessgewaesser -generalisiert-]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -307,7 +307,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				<ScaleHint max="Infinity" min="277.185858"/>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-2dff1eddeb0f9955f8ba3981907cf2d7</Name>
-				<Title><![CDATA[Fliessgewaesser]]></Title>
+				<Title>Fliessgewaesser</Title>
 				<Abstract><![CDATA[Fliessgewaesser]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -327,7 +327,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				<BoundingBox SRS="EPSG:25832" maxx="541128.383400" maxy="5830582.833200" minx="212905.488700" miny="5536461.532500"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>7</Name>
-					<Title><![CDATA[kleinere]]></Title>
+					<Title>kleinere</Title>
 					<Abstract><![CDATA[kleinere]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -357,7 +357,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>8</Name>
-					<Title><![CDATA[mittlere]]></Title>
+					<Title>mittlere</Title>
 					<Abstract><![CDATA[mittlere]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -387,7 +387,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>9</Name>
-					<Title><![CDATA[groessere]]></Title>
+					<Title>groessere</Title>
 					<Abstract><![CDATA[groessere]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -418,7 +418,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>10</Name>
-				<Title><![CDATA[Gewaesserflaeche]]></Title>
+				<Title>Gewaesserflaeche</Title>
 				<Abstract><![CDATA[Gewaesserflaeche]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -448,7 +448,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>11</Name>
-				<Title><![CDATA[Stationierungslinie]]></Title>
+				<Title>Stationierungslinie</Title>
 				<Abstract><![CDATA[Stationierungslinie]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -477,7 +477,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				<ScaleHint max="39.597980" min="0.0"/>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-3176b23921847acc24a5a63b3d5eff2b</Name>
-				<Title><![CDATA[Stationierung]]></Title>
+				<Title>Stationierung</Title>
 				<Abstract><![CDATA[Stationierung]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -497,7 +497,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				<BoundingBox SRS="EPSG:25832" maxx="538489.933500" maxy="5830582.379500" minx="212913.336000" miny="5536504.120800"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>13</Name>
-					<Title><![CDATA[Kanäle -HP-]]></Title>
+					<Title>Kanäle -HP-</Title>
 					<Abstract><![CDATA[Kanäle -HP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -527,7 +527,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>14</Name>
-					<Title><![CDATA[Kanäle -FP-]]></Title>
+					<Title>Kanäle -FP-</Title>
 					<Abstract><![CDATA[Kanäle -FP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -557,7 +557,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>15</Name>
-					<Title><![CDATA[Kanäle -KP-]]></Title>
+					<Title>Kanäle -KP-</Title>
 					<Abstract><![CDATA[Kanäle -KP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -587,7 +587,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>16</Name>
-					<Title><![CDATA[Stationierung -HP-]]></Title>
+					<Title>Stationierung -HP-</Title>
 					<Abstract><![CDATA[Stationierung -HP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -617,7 +617,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>17</Name>
-					<Title><![CDATA[Stationierung -FP-]]></Title>
+					<Title>Stationierung -FP-</Title>
 					<Abstract><![CDATA[Stationierung -FP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -647,7 +647,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>18</Name>
-					<Title><![CDATA[Stationierung -KP-]]></Title>
+					<Title>Stationierung -KP-</Title>
 					<Abstract><![CDATA[Stationierung -KP-]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -678,7 +678,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>19</Name>
-				<Title><![CDATA[Beschriftung Schifffahrtskanal]]></Title>
+				<Title>Beschriftung Schifffahrtskanal</Title>
 				<Abstract><![CDATA[Beschriftung Schifffahrtskanal]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -703,7 +703,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>20</Name>
-				<Title><![CDATA[Beschriftung Fliessgewaesser]]></Title>
+				<Title>Beschriftung Fliessgewaesser</Title>
 				<Abstract><![CDATA[Beschriftung Fliessgewaesser]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -728,7 +728,7 @@ Bei der Verwendung der Daten des LANUV ist in folgenden Fällen ein Genehmigungs
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>21</Name>
-				<Title><![CDATA[Beschriftung Einzugsgebiete]]></Title>
+				<Title>Beschriftung Einzugsgebiete</Title>
 				<Abstract><![CDATA[Beschriftung Einzugsgebiete]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>

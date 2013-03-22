@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name><![CDATA[WMS]]></Name>
-		<Title><![CDATA[ruek500]]></Title>
+		<Title>Rohstoffe NRW</Title>
 		<Abstract>öffentlicher WMS Dienst des Informationssystem Rostoffkundliche Übersichtskarte von Nordrhein-Westfalen 1:500 000.</Abstract>
 		<KeywordList>
 			<Keyword><![CDATA[Braunkohle]]></Keyword>
@@ -85,7 +85,7 @@
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-68f21c303f1da039f2a014ec17d4f5ee</Name>
-			<Title><![CDATA[Layers]]></Title>
+			<Title>Layers</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -103,7 +103,7 @@
 			<BoundingBox SRS="EPSG:4326" maxx="9.513928" maxy="52.562676" minx="5.862327" miny="50.290907"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2738507.000000" maxy="5825354.000400" minx="2490665.000000" miny="5577996.999600"/>
 			<Layer noSubsets="0" opaque="0" queryable="1"><Name>INGRID-18a64392ab461612c472032d124e36b9</Name>
-				<Title><![CDATA[Vorkomen von Salzen, Erzen, Mineralen]]></Title>
+				<Title>Vorkomen von Salzen, Erzen, Mineralen</Title>
 				<Abstract><![CDATA[Vorkomen von Salzen, Erzen, Mineralen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -123,7 +123,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738507.000000" maxy="5825354.000400" minx="2502399.000100" miny="5577996.999600"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>1</Name>
-					<Title><![CDATA[Steinsalz]]></Title>
+					<Title>Steinsalz</Title>
 					<Abstract><![CDATA[Steinsalz]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -152,7 +152,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>2</Name>
-					<Title><![CDATA[Erze und Minerale]]></Title>
+					<Title>Erze und Minerale</Title>
 					<Abstract><![CDATA[Erze und Minerale]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -181,7 +181,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>3</Name>
-					<Title><![CDATA[Schwerspat]]></Title>
+					<Title>Schwerspat</Title>
 					<Abstract><![CDATA[Schwerspat]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -210,7 +210,7 @@
 				</Layer>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1"><Name>INGRID-2fa4ab441ae282386adfbfa760dbab8e</Name>
-				<Title><![CDATA[Vorkommen von Steine und Erden]]></Title>
+				<Title>Vorkommen von Steine und Erden</Title>
 				<Abstract><![CDATA[Vorkommen von Steine und Erden]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -230,7 +230,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738173.000000" maxy="5823005.000000" minx="2490665.000000" miny="5579028.000000"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>5</Name>
-					<Title><![CDATA[Rohstoffart Steine und Erden]]></Title>
+					<Title>Rohstoffart Steine und Erden</Title>
 					<Abstract><![CDATA[Rohstoffart Steine und Erden]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -259,7 +259,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>6</Name>
-					<Title><![CDATA[Rohstoffart Dachschiefer]]></Title>
+					<Title>Rohstoffart Dachschiefer</Title>
 					<Abstract><![CDATA[Rohstoffart Dachschiefer]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -288,7 +288,7 @@
 				</Layer>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1"><Name>INGRID-361c15a316af4436ad0c2d9dbf4e3745</Name>
-				<Title><![CDATA[Vorkommen von Kohle und Gas]]></Title>
+				<Title>Vorkommen von Kohle und Gas</Title>
 				<Abstract><![CDATA[Vorkommen von Kohle und Gas]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -308,7 +308,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2730098.999900" maxy="5806965.999900" minx="2490698.542300" miny="5613784.264700"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>8</Name>
-					<Title><![CDATA[ Steinkohle (bis 200m Tiefe)]]></Title>
+					<Title> Steinkohle (bis 200m Tiefe)</Title>
 					<Abstract><![CDATA[ Steinkohle (bis 200m Tiefe)]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -337,7 +337,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>9</Name>
-					<Title><![CDATA[ Braunkohle]]></Title>
+					<Title> Braunkohle</Title>
 					<Abstract><![CDATA[ Braunkohle]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -366,7 +366,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>10</Name>
-					<Title><![CDATA[ Erd- und Grubengas]]></Title>
+					<Title> Erd- und Grubengas</Title>
 					<Abstract><![CDATA[ Erd- und Grubengas]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>

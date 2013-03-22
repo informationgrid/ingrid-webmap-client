@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW BÜK200: Bodenübersichtskarte 1 : 200 000</Title>
+  <Title>Bodenübersichtskarte 1:200.000 Baden-Württemberg</Title>
   <Abstract>In den letzten Jahrzehnten hat die Gefährdung des Bodens durch die Nutzung von Flächen für Siedlung und Verkehr, durch Schadstoffeinträge und moderne Landbewirtschaftungsformen rasant zugenommen. Die Erhaltung der vorhandenen natürlichen Bodenreserven muss daher ein grundlegendes Anliegen der Planung sein. Die Bodenübersichtskarte von Baden-Württemberg liefert mit den dazugehörigen Auswertungsthemen wichtige Informationen für die Landes- und Regionalplanung sowie für Lehre und Forschung.</Abstract>
         <KeywordList>
           <Keyword>Bodenkunde</Keyword>

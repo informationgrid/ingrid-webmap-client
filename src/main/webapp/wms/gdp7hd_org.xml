@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>Hintergrundkarte PortalU</Title>
+  <Title>Hintergrundkarte_Relief</Title>
   <Abstract>Die Hintergrund- bzw. Basiskarte enthält verschiedene Online-Dienste (WMS). Als amtliche Topographische Karten wurden die DTK200, DTK500 und DTK1000 des BKG eingebunden. Die vektorisierten Siedlungen und Städtenamen stammen aus dem Digitalen Landschaftsmodell (DLM1000) des BKG. Die Reliefkarte Mitteleuropa stellt die Höhenstufen als farbige Schummerung auf Basis eines mittelauflösenden (90m) digitalen Oberflächenmodells dar.</Abstract>
   <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://harrison.its-technidata.de/wms/relief?" xlink:type="simple"/>
   <ContactInformation>

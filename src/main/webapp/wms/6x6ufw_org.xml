@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW RÜK350: Rohstoffgeologische Übersichten 1 : 350 000</Title>
+  <Title>Rohstoffe 1:350.000 Baden-Württemberg</Title>
   <Abstract>Baden-Württemberg ist reich an hochwertigen Rohstoffvorkommen besonders aus den Bereichen der Steine und Erden sowie der Industrieminerale. Mit demRohstoffsicherungskonzept wird dem LGRB der Auftrag erteilt, diese Rohstoffvorkommen zu erkunden, abzugrenzen, zu bewerten und zu beschreiben. Die vorliegenden Themen geben eine Übersicht über die im Land betriebenen Gewinnungsstellen (unterteilt nach Rohstoffgruppen und Fördermengenklassen) und eine Auswahl weiterverarbeitender Betriebe, über die oberflächennahen mineralischen Rohstoffe und die Steinsalzverbreitung im Mittleren Muschelkalk sowie über einige wichtige Nutzungskonflikte.</Abstract>
         <KeywordList>
           <Keyword>Rohstoffgeologie</Keyword>

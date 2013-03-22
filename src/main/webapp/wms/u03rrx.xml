@@ -106,55 +106,69 @@
   <Layer noSubsets="0" opaque="0" queryable="0">
     <Name>lungwms</Name>
     <Title>LUNG WMS Server</Title>
+    <SRS>EPSG:4647</SRS>
+    <SRS>EPSG:5650</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:25833</SRS>
+    <SRS>EPSG:35832</SRS>
+    <SRS>EPSG:35833</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:4258</SRS>
+    <SRS>EPSG:2397</SRS>
+    <SRS>EPSG:2398</SRS>
+    <SRS>EPSG:2399</SRS>
+    <SRS>EPSG:31466</SRS>
+    <SRS>EPSG:31467</SRS>
     <SRS>EPSG:31468</SRS>
+    <SRS>EPSG:31469</SRS>
+    <SRS>EPSG:3034</SRS>
+    <SRS>EPSG:3035</SRS>
+    <SRS>EPSG:3038</SRS>
+    <SRS>EPSG:3039</SRS>
+    <SRS>EPSG:3040</SRS>
+    <SRS>EPSG:3041</SRS>
+    <SRS>EPSG:3042</SRS>
+    <SRS>EPSG:3043</SRS>
+    <SRS>EPSG:3044</SRS>
+    <SRS>EPSG:3045</SRS>
+    <SRS>EPSG:3046</SRS>
+    <SRS>EPSG:3047</SRS>
+    <SRS>EPSG:4839</SRS>
+    <SRS>EPSG:2176</SRS>
     <LatLonBoundingBox maxx="14.5069" maxy="54.7222" minx="10.397" miny="53.0409"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
-        <Name>t3_ksg</Name>
-        <Title>Kuestenschutzgebiete</Title>
-        <SRS>EPSG:2397</SRS>
-        <SRS>EPSG:2398</SRS>
-        <SRS>EPSG:2399</SRS>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
-        <SRS>EPSG:25832</SRS>
-        <SRS>EPSG:25833</SRS>
-        <SRS>EPSG:31466</SRS>
-        <SRS>EPSG:31467</SRS>
-        <SRS>EPSG:31468</SRS>
-        <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
-        <SRS>EPSG:5650</SRS>
-        <SRS>EPSG:4647</SRS>
-        <LatLonBoundingBox maxx="14.1588" maxy="54.6487" minx="11.1245" miny="53.9059"/>
-        <Style>
-          <Name>default</Name>
-          <Title>default</Title>
-          <LegendURL height="39" width="169">
-             <Format>image/png</Format>
-             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=t3_ksg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
-          </LegendURL>
-        </Style>
-    </Layer>
-    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t3_uesg</Name>
         <Title>Ueberschwemmungsgebiete</Title>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:2397</SRS>
         <SRS>EPSG:2398</SRS>
         <SRS>EPSG:2399</SRS>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
-        <SRS>EPSG:25832</SRS>
-        <SRS>EPSG:25833</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
-        <SRS>EPSG:5650</SRS>
-        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="12.253" maxy="54.0878" minx="10.4854" miny="53.0226"/>
         <Style>
           <Name>default</Name>
@@ -168,21 +182,35 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>t3_wsg</Name>
         <Title>Wasserschutzgebiete</Title>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
         <SRS>EPSG:2397</SRS>
         <SRS>EPSG:2398</SRS>
         <SRS>EPSG:2399</SRS>
-        <SRS>EPSG:4326</SRS>
-        <SRS>EPSG:2176</SRS>
-        <SRS>EPSG:25832</SRS>
-        <SRS>EPSG:25833</SRS>
         <SRS>EPSG:31466</SRS>
         <SRS>EPSG:31467</SRS>
         <SRS>EPSG:31468</SRS>
         <SRS>EPSG:31469</SRS>
-        <SRS>EPSG:35832</SRS>
-        <SRS>EPSG:35833</SRS>
-        <SRS>EPSG:5650</SRS>
-        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
         <LatLonBoundingBox maxx="14.3617" maxy="54.6851" minx="10.584" miny="53.1657"/>
         <Style>
           <Name>default</Name>
@@ -190,6 +218,48 @@
           <LegendURL height="192" width="169">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=t3_wsg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
+          </LegendURL>
+        </Style>
+    </Layer>
+    <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
+        <Name>t3_ksg</Name>
+        <Title>Kuestenschutzgebiete</Title>
+        <SRS>EPSG:4647</SRS>
+        <SRS>EPSG:5650</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
+        <SRS>EPSG:35832</SRS>
+        <SRS>EPSG:35833</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:4258</SRS>
+        <SRS>EPSG:2397</SRS>
+        <SRS>EPSG:2398</SRS>
+        <SRS>EPSG:2399</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:3034</SRS>
+        <SRS>EPSG:3035</SRS>
+        <SRS>EPSG:3038</SRS>
+        <SRS>EPSG:3039</SRS>
+        <SRS>EPSG:3040</SRS>
+        <SRS>EPSG:3041</SRS>
+        <SRS>EPSG:3042</SRS>
+        <SRS>EPSG:3043</SRS>
+        <SRS>EPSG:3044</SRS>
+        <SRS>EPSG:3045</SRS>
+        <SRS>EPSG:3046</SRS>
+        <SRS>EPSG:3047</SRS>
+        <SRS>EPSG:4839</SRS>
+        <SRS>EPSG:2176</SRS>
+        <LatLonBoundingBox maxx="14.1588" maxy="54.6487" minx="11.1245" miny="53.9059"/>
+        <Style>
+          <Name>default</Name>
+          <Title>default</Title>
+          <LegendURL height="39" width="169">
+             <Format>image/png</Format>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltkarten.mv-regierung.de/script/mv_a3_wasserschutz_wms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=t3_ksg&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
     </Layer>

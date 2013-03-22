@@ -82,7 +82,7 @@
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-c2b890c8735370c61e85aac06ecb5487</Name>
-			<Title><![CDATA[Layers]]></Title>
+			<Title>Layers</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -100,7 +100,7 @@
 			<BoundingBox SRS="EPSG:4326" maxx="9.705507" maxy="52.674557" minx="5.678751" miny="50.159563"/>
 			<BoundingBox SRS="EPSG:31466" maxx="2750899.100310" maxy="5837802.600645" minx="2478272.900090" miny="5563933.399655"/>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-166d02d3e1605b5ef1cbb84387b11198</Name>
-				<Title><![CDATA[Grundwasservorkommen]]></Title>
+				<Title>Grundwasservorkommen</Title>
 				<Abstract><![CDATA[Grundwasservorkommen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -120,7 +120,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738507.000300" maxy="5825354.000000" minx="2490665.000100" miny="5576381.999700"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>1</Name>
-					<Title><![CDATA[Grundwasservorkommen]]></Title>
+					<Title>Grundwasservorkommen</Title>
 					<Abstract><![CDATA[Grundwasservorkommen]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -149,7 +149,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>2</Name>
-					<Title><![CDATA[Bergbaugebiete]]></Title>
+					<Title>Bergbaugebiete</Title>
 					<Abstract><![CDATA[Bergbaugebiete]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -178,7 +178,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>3</Name>
-					<Title><![CDATA[Tektonische Verwerfungen]]></Title>
+					<Title>Tektonische Verwerfungen</Title>
 					<Abstract><![CDATA[Tektonische Verwerfungen]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -207,7 +207,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>4</Name>
-					<Title><![CDATA[Hydrogeologische Teilräume]]></Title>
+					<Title>Hydrogeologische Teilräume</Title>
 					<Abstract><![CDATA[Hydrogeologische Teilräume]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -236,7 +236,7 @@
 				</Layer>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-e8115a93c57389e76b00284f8e54b77a</Name>
-				<Title><![CDATA[Schutzfunktion]]></Title>
+				<Title>Schutzfunktion</Title>
 				<Abstract><![CDATA[Schutzfunktion]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -256,7 +256,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738506.999700" maxy="5825354.000600" minx="2490665.001200" miny="5576382.000200"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>6</Name>
-					<Title><![CDATA[Schutzfunktion der Deckschichten]]></Title>
+					<Title>Schutzfunktion der Deckschichten</Title>
 					<Abstract><![CDATA[Schutzfunktion der Deckschichten]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -285,7 +285,7 @@
 				</Layer>
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-9974912b1c09b9529771d89496a90232</Name>
-				<Title><![CDATA[Petrographie]]></Title>
+				<Title>Petrographie</Title>
 				<Abstract><![CDATA[Petrographie]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -305,7 +305,7 @@
 				<BoundingBox SRS="EPSG:31466" maxx="2738506.999700" maxy="5825354.000000" minx="2490665.000100" miny="5576381.999700"/>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>8</Name>
-					<Title><![CDATA[Grundwasser prägende Gesteinstypen]]></Title>
+					<Title>Grundwasser prägende Gesteinstypen</Title>
 					<Abstract><![CDATA[Grundwasser prägende Gesteinstypen]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>
@@ -334,7 +334,7 @@
 				</Layer>
 				<Layer noSubsets="0" opaque="0" queryable="1">
 					<Name>9</Name>
-					<Title><![CDATA[Vorkommen von Mineral- und Heilquellen mit Typisierung]]></Title>
+					<Title>Vorkommen von Mineral- und Heilquellen mit Typisierung</Title>
 					<Abstract><![CDATA[Vorkommen von Mineral- und Heilquellen mit Typisierung]]></Abstract>
 					<SRS>EPSG:4326</SRS>
 					<SRS>EPSG:31466</SRS>

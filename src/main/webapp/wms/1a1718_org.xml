@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name><![CDATA[WMS]]></Name>
-		<Title><![CDATA[guek500]]></Title>
+		<Title>Geologische Übersichtskarte 1: 500 000 NRW</Title>
 		<Abstract>öffentlicher WMS Dienst des Informationssystem Geologische Übersichtskarte Karte von Nordrhein-Westfalen 1:500 000.</Abstract>
 		<KeywordList>
 			<Keyword><![CDATA[Erdgeschichte]]></Keyword>
@@ -79,7 +79,7 @@
 			<Format>application/vnd.ogc.se_blank</Format>
 		</Exception>
 		<Layer noSubsets="0" opaque="0" queryable="0"><Name>INGRID-9911cfc210dfb63742bdf14285d4d15a</Name>
-			<Title><![CDATA[Layers]]></Title>
+			<Title>Layers</Title>
 			<SRS>EPSG:4326</SRS>
 			<SRS>EPSG:31466</SRS>
 			<SRS>EPSG:31467</SRS>
@@ -98,7 +98,7 @@
 			<BoundingBox SRS="EPSG:31466" maxx="2751870.000100" maxy="5838007.800005" minx="2477530.000100" miny="5561428.199895"/>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>0</Name>
-				<Title><![CDATA[Geologische Schichten]]></Title>
+				<Title>Geologische Schichten</Title>
 				<Abstract><![CDATA[Geologische Schichten]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>
@@ -127,7 +127,7 @@
 			</Layer>
 			<Layer noSubsets="0" opaque="0" queryable="1">
 				<Name>1</Name>
-				<Title><![CDATA[Tektonische Verwerfungen]]></Title>
+				<Title>Tektonische Verwerfungen</Title>
 				<Abstract><![CDATA[Tektonische Verwerfungen]]></Abstract>
 				<SRS>EPSG:4326</SRS>
 				<SRS>EPSG:31466</SRS>

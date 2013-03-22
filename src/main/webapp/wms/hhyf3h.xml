@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities version="1.1.1">
 
-<!-- MapServer version 6.0.2 (MS4W 3.0.4) OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=CAIRO SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
+<!-- MapServer version 6.0.1 OUTPUT=GIF OUTPUT=PNG OUTPUT=JPEG OUTPUT=KML SUPPORTS=PROJ SUPPORTS=AGG SUPPORTS=CAIRO SUPPORTS=FREETYPE SUPPORTS=ICONV SUPPORTS=FRIBIDI SUPPORTS=WMS_SERVER SUPPORTS=WMS_CLIENT SUPPORTS=WFS_SERVER SUPPORTS=WFS_CLIENT SUPPORTS=WCS_SERVER SUPPORTS=SOS_SERVER SUPPORTS=FASTCGI SUPPORTS=THREADS SUPPORTS=GEOS INPUT=JPEG INPUT=POSTGIS INPUT=ORACLESPATIAL INPUT=OGR INPUT=GDAL INPUT=SHAPEFILE -->
 
 <Service>
   <Name>OGC:WMS</Name>
@@ -110,9 +110,10 @@
     <Name>lanuwms</Name>
     <Title>WMS des Landwirtschaft- und Umweltatlas Schleswig-Holstein</Title>
     <Abstract/>
-    <SRS>epsg:31467</SRS>
-    <SRS>epsg:4326</SRS>
-    <SRS>epsg:25832</SRS>
+    <SRS>EPSG:31467</SRS>
+    <SRS>EPSG:4326</SRS>
+    <SRS>EPSG:25832</SRS>
+    <SRS>EPSG:4647</SRS>
     <LatLonBoundingBox maxx="12.0886" maxy="55.0993" minx="7.53218" miny="53.3036"/>
     <BoundingBox SRS="EPSG:31467" maxx="3.6974e+006" maxy="6.10785e+006" minx="3.40636e+006" miny="5.91205e+006"/>
     <ScaleHint max="748.354272644456" min="0.249451424214819"/>
@@ -165,8 +166,8 @@
         <Name>fisch_fln</Name>
         <Title>Flussneunauge</Title>
         <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="10.3163" maxy="54.818" minx="8.82448" miny="53.6542"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.5847e+006" maxy="6.07653e+006" minx="3.48879e+006" miny="5.94775e+006"/>
+        <LatLonBoundingBox maxx="10.0919" maxy="54.818" minx="8.82448" miny="53.6563"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.57027e+006" maxy="6.07653e+006" minx="3.48879e+006" miny="5.94775e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -195,8 +196,8 @@
         <Name>fisch_slp</Name>
         <Title>Schlammpeitzger</Title>
         <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="10.6694" maxy="54.6074" minx="8.93217" miny="53.3983"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.60797e+006" maxy="6.05309e+006" minx="3.49569e+006" miny="5.91973e+006"/>
+        <LatLonBoundingBox maxx="10.6697" maxy="54.6074" minx="8.89453" miny="53.3977"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.60799e+006" maxy="6.05309e+006" minx="3.49326e+006" miny="5.91967e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -210,8 +211,8 @@
         <Name>fisch_stb</Name>
         <Title>Steinbeisser</Title>
         <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="10.8514" maxy="54.7427" minx="8.95958" miny="53.3727"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.61934e+006" maxy="6.06815e+006" minx="3.49747e+006" miny="5.91716e+006"/>
+        <LatLonBoundingBox maxx="11.001" maxy="54.7427" minx="8.95958" miny="53.3704"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.62899e+006" maxy="6.06815e+006" minx="3.49747e+006" miny="5.91716e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -280,7 +281,7 @@
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=feldlerche&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
         </Style>
-        <ScaleHint max="0" min="0.498902848429637"/>
+        <ScaleHint max="0" min="0.374177136322228"/>
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
     </Layer>
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
@@ -424,15 +425,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>ffh</Name>
         <Title>FFH-Gebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.4025" maxy="55.1035" minx="7.77346" miny="53.3479"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.85312e+006" maxy="6.11903e+006" minx="2.61325e+006" miny="5.91628e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.85312e+006" maxy="6.11903e+006" minx="2.61325e+006" miny="5.91628e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -445,15 +446,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>helcom</Name>
         <Title>Helcom-Gebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.1216" maxy="54.8291" minx="9.85813" miny="54.299"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.83161e+006" maxy="6.08809e+006" minx="2.74862e+006" miny="6.02732e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.83161e+006" maxy="6.08809e+006" minx="2.74862e+006" miny="6.02732e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -483,15 +484,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>naturpark</Name>
         <Title>Naturpark</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.0049" maxy="54.7206" minx="9.4677" miny="53.4513"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.82846e+006" maxy="6.07546e+006" minx="2.72437e+006" miny="5.93168e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.82846e+006" maxy="6.07546e+006" minx="2.72437e+006" miny="5.93168e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -506,15 +507,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>biores</Name>
         <Title>Biosphaerenreservate</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="10.6627" maxy="55.1029" minx="7.92149" miny="53.3605"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.80583e+006" maxy="6.11692e+006" minx="2.6227e+006" miny="5.91679e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.80583e+006" maxy="6.11692e+006" minx="2.6227e+006" miny="5.91679e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -529,15 +530,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>nationalpark</Name>
         <Title>Nationalpark</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="9.01763" maxy="55.1035" minx="7.92149" miny="53.8629"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.69849e+006" maxy="6.11248e+006" minx="2.62269e+006" miny="5.972e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.69849e+006" maxy="6.11248e+006" minx="2.62269e+006" miny="5.972e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -585,7 +586,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="160" width="500">
+          <LegendURL height="158" width="500">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swereg2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -635,7 +636,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="160" width="407">
+          <LegendURL height="158" width="407">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_swesh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -656,7 +657,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="481" width="290">
+          <LegendURL height="482" width="290">
              <Format>image/png; mode=24bit</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -670,7 +671,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="243" width="290">
+          <LegendURL height="244" width="290">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -686,7 +687,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="244" width="290">
+          <LegendURL height="243" width="290">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_bkfsh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -736,7 +737,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="160" width="500">
+          <LegendURL height="158" width="500">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fkreg2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -757,7 +758,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="311" width="405">
+          <LegendURL height="315" width="405">
              <Format>image/png; mode=24bit</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh&amp;format=image/png; mode=24bit&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -771,7 +772,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="158" width="405">
+          <LegendURL height="160" width="405">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh1&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -787,7 +788,7 @@
         <Style>
           <Name>default</Name>
           <Title>default</Title>
-          <LegendURL height="160" width="405">
+          <LegendURL height="158" width="405">
              <Format>image/png</Format>
              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.umweltdaten.landsh.de/atlas/script/lanuwms.php?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=boden_fksh2&amp;format=image/png&amp;STYLE=default" xlink:type="simple"/>
           </LegendURL>
@@ -849,9 +850,9 @@
     <Layer cascaded="1" noSubsets="0" opaque="0" queryable="0">
         <Name>tk100c</Name>
         <Title>SH_WMS_WebAtlasDE</Title>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
         <!-- WARNING: Optional LatLonBoundingBox could not be established for this layer.  Consider setting the EXTENT in the LAYER object, or wms_extent metadata. Also check that your data exists in the DATA statement -->
         <ScaleHint max="0" min="1.99561139371855"/>
         <!-- WARNING: Only MINSCALEDENOM and no MAXSCALEDENOM specified in the mapfile. A default value of 0 has been returned for the Max ScaleHint but this is probably not what you want. -->
@@ -990,15 +991,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>egv</Name>
         <Title>EU-Vogelschutzgebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.408" maxy="55.1035" minx="7.77346" miny="53.4207"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.85313e+006" maxy="6.11904e+006" minx="2.61325e+006" miny="5.9244e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.85313e+006" maxy="6.11904e+006" minx="2.61325e+006" miny="5.9244e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -1026,15 +1027,15 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>nsg</Name>
         <Title>Naturschutzgebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.224" maxy="55.0708" minx="7.77445" miny="53.3521"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.84182e+006" maxy="6.1149e+006" minx="2.61341e+006" miny="5.9164e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.84182e+006" maxy="6.1149e+006" minx="2.61341e+006" miny="5.9164e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -1082,8 +1083,8 @@
         <Name>pegel</Name>
         <Title>pegel</Title>
         <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="11.1241" maxy="55.0629" minx="8.11888" miny="53.4265"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.63584e+006" maxy="6.1038e+006" minx="3.44377e+006" miny="5.9236e+006"/>
+        <LatLonBoundingBox maxx="2.2e+007" maxy="1.1e+007" minx="-2.2e+007" miny="-1.1e+007"/>
+        <BoundingBox SRS="EPSG:31467" maxx="2.2e+007" maxy="1.1e+007" minx="-2.2e+007" miny="-1.1e+007"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -1156,15 +1157,15 @@
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>wsg1</Name>
         <Title>Wasserschutzgebiete</Title>
-        <SRS>epsg:31466</SRS>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:31468</SRS>
-        <SRS>epsg:31469</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
-        <SRS>epsg:25833</SRS>
+        <SRS>EPSG:31466</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:31468</SRS>
+        <SRS>EPSG:31469</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
+        <SRS>EPSG:25833</SRS>
         <LatLonBoundingBox maxx="11.1016" maxy="55.0384" minx="8.31084" miny="53.3666"/>
-        <BoundingBox SRS="epsg:31466" maxx="2.83404e+006" maxy="6.11096e+006" minx="2.64777e+006" miny="5.91923e+006"/>
+        <BoundingBox SRS="EPSG:31466" maxx="2.83404e+006" maxy="6.11096e+006" minx="2.64777e+006" miny="5.91923e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -1314,9 +1315,9 @@
 <!-- WARNING: The layer name 'DAV Linien gesamt' might contain spaces or invalid characters or may start with a number. This could lead to potential problems. -->
         <Name>DAV Linien gesamt</Name>
         <Title>DAV Linien gesamt</Title>
-        <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="11.3325" maxy="54.9107" minx="8.29619" miny="53.3488"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.64974e+006" maxy="6.08685e+006" minx="3.45493e+006" miny="5.91535e+006"/>
+        <SRS>EPSG:4647</SRS>
+        <LatLonBoundingBox maxx="11.3326" maxy="54.9107" minx="8.29626" miny="53.3488"/>
+        <BoundingBox SRS="EPSG:4647" maxx="3.26496e+007" maxy="6.08486e+006" minx="3.24549e+007" miny="5.91342e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>
@@ -1329,11 +1330,11 @@
     <Layer cascaded="0" noSubsets="0" opaque="0" queryable="0">
         <Name>dav_tk5</Name>
         <Title>DAV/DDV-Karten (TK5)</Title>
-        <SRS>epsg:31467</SRS>
-        <SRS>epsg:4326</SRS>
-        <SRS>epsg:25832</SRS>
+        <SRS>EPSG:31467</SRS>
+        <SRS>EPSG:4326</SRS>
+        <SRS>EPSG:25832</SRS>
         <LatLonBoundingBox maxx="11.1433" maxy="54.939" minx="8.28113" miny="53.3414"/>
-        <BoundingBox SRS="epsg:31467" maxx="3.63749e+006" maxy="6.09e+006" minx="3.454e+006" miny="5.91416e+006"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.63749e+006" maxy="6.09e+006" minx="3.454e+006" miny="5.91416e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>

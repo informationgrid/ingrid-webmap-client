@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW GEOTH: Geothermische Übersichtskarten 1 : 1 000 000</Title>
+  <Title>Geothermieübersichtskarte 1:1 Mio. Baden-Württemberg</Title>
   <Abstract>Im Rahmen der Nutzung der Geothermie (Erdwärme) ist das LGRB als Genehmigungs- und Beratungsbehörde tätig und liefert wichtige, geowissenschaftliche Grundlageninformationen. Im Thema Geothermie werden eine Übersicht über die aktuell gemeldeten Erdwärmesonden und Wärmepumpen gegeben, die derzeitigen Geothermiekonzessionen gezeigt sowie Übersichtsdarstellungen der Temparaturverteilung in unterschiedlichen Tiefen gegeben.</Abstract>
         <KeywordList>
           <Keyword>Erdwärme</Keyword>

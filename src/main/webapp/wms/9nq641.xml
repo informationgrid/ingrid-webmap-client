@@ -178,8 +178,8 @@
         <Name>linien</Name>
         <Title>Topographie</Title>
         <SRS>EPSG:31467</SRS>
-        <LatLonBoundingBox maxx="7.80566" maxy="52.0636" minx="7.47065" miny="51.8398"/>
-        <BoundingBox SRS="EPSG:31467" maxx="3.4177e+006" maxy="5.77051e+006" minx="3.39512e+006" miny="5.74603e+006"/>
+        <LatLonBoundingBox maxx="7.77743" maxy="52.0633" minx="7.47065" miny="51.8398"/>
+        <BoundingBox SRS="EPSG:31467" maxx="3.41576e+006" maxy="5.77051e+006" minx="3.39512e+006" miny="5.74603e+006"/>
         <Style>
           <Name>default</Name>
           <Title>default</Title>

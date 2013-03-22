@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- end of DOCTYPE declaration --><WMT_MS_Capabilities xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0" xmlns:ms="http://mapserver.gis.umn.edu/mapserver" xmlns:sld="http://www.opengis.net/sld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1.1" xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.1.0/sld_capabilities.xsd  http://inspire.ec.europa.eu/schemas/inspire_vs/1.0  http://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd http://mapserver.gis.umn.edu/mapserver">
      <Service>
          <Name>OGC:WMS</Name>
-         <Title>Bundeswasserstrassen WMS (DLZ-IT BMVBS)</Title>
+         <Title>Bundeswasserstrassen WMS (DLZ-IT BVBS)</Title>
          <Abstract>Bundeswasserstraßen-WMS der Wasser- und Schifffahrtsverwaltung des Bundes (WSV). Dieser Geodatendienst visualisiert das topologisch verknüpfte Netz der Bundeswasserstraßen - Verkehrsnetz der Bundeswasserstraßen (VerkNet-BWaStr). Die Daten umfassen die Bezeichnung der Bundeswasserstraßen (einschließlich der Ident-Nummern) und Kilometerangaben, die Fließrichtung, die Wasserstraßenklassen sowie Layer zur Organisation der WSV - Verwaltungsbezirke der Wasser- und Schifffahrtsdirektionen (WSD), Verwaltungsbereiche der Wasser- und Schifffahrtsämter (WSA) und die Zuständigkeitsbereiche der Außenbezirke.</Abstract>
          <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wsvmapserv.wsv.bund.de/wms_bwastr?" xlink:type="simple"/>
          <KeywordList>

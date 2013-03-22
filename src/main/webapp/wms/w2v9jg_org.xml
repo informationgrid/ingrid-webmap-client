@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW GÜK300: Geologische Übersichtskarte 1 : 300 000</Title>
+  <Title>Geologische Übersichtskarte 1:300.000 Baden-Württemberg</Title>
   <Abstract>Baden-Württemberg ist ein geologisch und landschaftlich überaus abwechslungsreiches Land. Dies ist das Ergebnis einer hunderte von Millionen Jahre langen geologischen Entwicklung. Schichten und Gesteine aus fast allen Perioden der Erdgeschichte bilden den Untergrund, auf dem wir leben und den wir nutzen. Wesentliche Aufgabe des Fachbereichs Geologie des LGRB ist die geowissenschaftliche Landesaufnahme und Dokumentation dieses Untergrundes. Im Thema Geologie wird eine Übersicht über die geologischen Verhältnisse (Geologische Einheiten, Tektonik) in Baden-Württemberg gegeben.</Abstract>
         <KeywordList>
           <Keyword>Allgemeine</Keyword>

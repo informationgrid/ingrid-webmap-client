@@ -5,7 +5,7 @@
 <Service>
   <Name>OGC:WMS</Name>
   <Title>Pegelonlinekarte Deutschland</Title>
-  <Abstract>PEGELONLINE WMS Aktuell stellt kostenfrei tagesaktuelle Messwerte verschiedener gewässerkundlicher Parameter (z.B. Wasserstände) der Binnen- und Küstenpegel der Wasserstraßen des Bundes zur Ansicht. PEGELONLINE WMS Aktuell wird von der Wasser- und Schifffahrtsverwaltung des Bundes betrieben. Alle Zeitangaben liegen in mitteleuropäischer Zeit (MEZ) vor.</Abstract>
+  <Abstract>PEGELONLINE WMS Aktuell stellt kostenfrei tagesaktuelle Messwerte verschiedener gewässerkundlicher Parameter (z.B. Wasserstände) der Binnen- und Küstenpegel der Wasserstraßen des Bundes zur Ansicht. PEGELONLINE WMS Aktuell wird von der Wasser- und Schifffahrtsverwaltung des Bundes betrieben. Die Wasserstände werden mit dem mittleren niedrigsten (MNW) und mittleren höchsten Wert (MHW) einer Zeitspanne in Beziehung gesetzt. Alle Zeitangaben liegen in mitteleuropäischer Zeit (MEZ) vor.</Abstract>
         <KeywordList>
           <Keyword>PEGELONLINE</Keyword>
           <Keyword>Gewässerkunde</Keyword>
@@ -16,7 +16,7 @@
           <Keyword>BAW</Keyword>
           <Keyword>Bundesanstalt für Wasserbau</Keyword>
         </KeywordList>
-  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/>
+  <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/>
   <ContactInformation>
     <ContactAddress>
         <AddressType/>
@@ -39,8 +39,8 @@
       <Format>application/vnd.ogc.wms_xml</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </GetCapabilities>
@@ -53,8 +53,8 @@
       <Format>image/tiff</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </GetMap>
@@ -64,8 +64,8 @@
       <Format>application/vnd.ogc.gml</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </GetFeatureInfo>
@@ -73,8 +73,8 @@
       <Format>text/xml</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </DescribeLayer>
@@ -86,8 +86,8 @@
       <Format>image/wbmp</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </GetLegendGraphic>
@@ -95,8 +95,8 @@
       <Format>text/xml</Format>
       <DCPType>
         <HTTP>
-          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Get>
-          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?" xlink:type="simple"/></Post>
+          <Get><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Get>
+          <Post><OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?" xlink:type="simple"/></Post>
         </HTTP>
       </DCPType>
     </GetStyles>
@@ -139,7 +139,7 @@
       <Layer cascaded="0" noSubsets="0" opaque="0" queryable="1">
         <Name>Pegelpunkte</Name>
         <Title>Pegelmessstelle (WSV)</Title>
-        <Abstract>Jede Messstelle wird als kleiner Punkt dargestellt. Grüne Punkte weisen auf einen aktuellen Wasserstand hin, graue auf einen nicht aktuellen. Ein nicht aktueller Wasserstand ist standardmäßig älter als 25 Stunden.</Abstract>
+        <Abstract>Jede Messstelle wird als kleiner Punkt dargestellt. Grüne Punkte weisen auf einen aktuellen Wasserstand hin, blaue auf einen hohen, orange auf einen niedrigen und graue auf einen nicht aktuellen. Ein nicht aktueller Wasserstand ist standardmäßig älter als 25 Stunden.</Abstract>
         <SRS>EPSG:31467</SRS>
         <LatLonBoundingBox maxx="15.1469" maxy="55.0195" minx="6.02204" miny="47.549"/>
         <BoundingBox SRS="EPSG:31467" maxx="3.89439e+06" maxy="6.09878e+06" minx="3.3094e+06" miny="5.28108e+06"/>
@@ -148,7 +148,7 @@
           <Title>default</Title>
           <LegendURL height="105" width="247">
              <Format>image/png</Format>
-             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Pegelpunkte&amp;format=image/png" xlink:type="simple"/>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=Pegelpunkte&amp;format=image/png" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>
@@ -180,7 +180,7 @@
           <Title>default</Title>
           <LegendURL height="105" width="317">
              <Format>image/png</Format>
-             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TendenzWasserstand&amp;format=image/png" xlink:type="simple"/>
+             <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.pegelonline.wsv.de/webservices/gis/wms/aktuell/mnwmhw?version=1.1.1&amp;service=WMS&amp;request=GetLegendGraphic&amp;layer=TendenzWasserstand&amp;format=image/png" xlink:type="simple"/>
           </LegendURL>
         </Style>
       </Layer>

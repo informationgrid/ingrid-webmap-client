@@ -402,12 +402,20 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.updateService = function(service, layers){
 	var self = this;
 	if(service.capabilitiesUrl){
+		
+		var categories = [];
+		var mapServiceCategories = service.mapServiceCategories;
+		for ( var iCat = 0; iCat < mapServiceCategories.length; iCat++) {
+			var catId = mapServiceCategories[iCat].idx;
+			categories.push(catId);
+		}
+		
 		var service = {
 				   title: service.name,
 				   capabilitiesUrl: service.capabilitiesUrl,
 				   capabilitiesUrlOrg: service.capabilitiesUrlOrg,
 				   originalCapUrl: service.originalCapUrl,
-				   categories: null,
+				   categories: categories,
 				   layers: layers
 		   };
 		// Update service

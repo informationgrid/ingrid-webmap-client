@@ -4,7 +4,7 @@
 
 <Service>
   <Name>OGC:WMS</Name>
-  <Title>LGRB-BW ORG: Hydrogeologischer Bau und Aquifereigenschaften der Lockergesteine im Oberrheingraben 1 : 50 000</Title>
+  <Title>Hydrogeologie und Grundwassereigenschaften (Lockergesteine) im Oberrheingraben 1:50.000 Baden-Württemberg</Title>
   <Abstract>Mit der Überarbeitung und Fortschreibung der Aquiferstudie der Lockergesteine im baden-württembergischen Teil des Oberrheingrabens wird der derzeitige Kenntnisstand über die hydrogeologischen Grundlagen erstmals zusammenfassend in digitaler Form bereitgestellt. Das Arbeitsgebiet umfasst das Verbreitungsgebiet der pliozänen und quartären Kiese und Sande, die den bedeutendsten Grundwasserleiter Baden-Württembergs bilden. Die Darstellung der Einzelthemen ist maßstabsabhängig. Themen mit einem hohen Detaillierungsgrad und Datenmenge werden erst in größeren Maßstäben angezeigt.</Abstract>
         <KeywordList>
           <Keyword>Grundwasser</Keyword>

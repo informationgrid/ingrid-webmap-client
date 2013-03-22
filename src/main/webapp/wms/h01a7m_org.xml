@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><WMT_MS_Capabilities version="1.1.1">
 	<Service>
 		<Name>OGC:WMS</Name>
-		<Title>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - WMS - LfULG - Hochwassergefaehrdung - Gefahrenkarten fuer Ortslagen</Title>
+		<Title>Hochwassergefährdung - Gefahrenkarten für Ortslagen Sachsen</Title>
 		<Abstract>!!! HINWEIS: Dienst veraltet!!! siehe: http://www.umwelt.sachsen.de/umwelt/wasser/8838.htm - Die Hochwassergefaehrdung wird durch die auftretende Wassertiefe, gegebenenfalls auch Fliessgeschwindigkeit und durch die Jaehrlichkeit (statistisches Wiederkehrintervall in Jahren) bestimmt. Die Ausdehnung der ueberschwemmten Flaeche kann dabei neben dem Abfluss auch durch Rueckstau infolge Geschiebe- und Treibgutablagerungen beeinflusst sein. In der Kartendarstellung wird die Gefaehrdung fuer zusammenhaengende Siedlungsgebiete (Ortschaften) an den Gewaessern I. Ordnung und der Elbe dargestellt. Es kann alternativ zwischen den Jaehrlichkeiten 20, 50, 100 oder 200/300 Jahre gewaehlt werden. Eine Beschreibung der konkreten oertlichen Situation ist im Erlaeuterungsbericht fuer die jeweilige Gemeinde oder Ortschaft enthalten. Der detaillierte Erfassungsmassstab ermoeglicht die Nutzung der Karte für die Bauplanung und die operative Hochwasserabwehr.</Abstract>
 		<KeywordList>
 			<Keyword>ArcIMS</Keyword>
