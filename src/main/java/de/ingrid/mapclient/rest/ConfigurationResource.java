@@ -1002,9 +1002,9 @@ public class ConfigurationResource {
 			if (fileNames == null){
 				do {
 					url = new DbUrlMapper().createShortUrl(title);
+					urlOrg = url + "_org.xml";
 					url = url + ".xml";
 					f = new File(path + "/" + url);
-					urlOrg = url + "_org.xml";
 					fOrg = new File(path + "/" + urlOrg);
 				} while (f.exists());
 			}else{
