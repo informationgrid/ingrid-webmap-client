@@ -26,9 +26,12 @@ public class HttpProxy {
 		StringBuffer response = new StringBuffer();
 
 		// add protocol if missing
-		if (!urlStr.startsWith("http://")) {
-			urlStr = "http://"+urlStr;
+		if(!urlStr.startsWith("https://")){
+			if (!urlStr.startsWith("http://")) {
+				urlStr = "http://"+urlStr;
+			}
 		}
+		
 		// replace & and ?
 		// TODO this doesn't replace anything , String are immutable,
 		// so nothing happens here, which never seemed to be a problem though...
