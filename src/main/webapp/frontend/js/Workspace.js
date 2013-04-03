@@ -58,7 +58,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 				hasAreasList : true,
 				hasPermaLink : true,
 				hasDownloadTool : true,
-				hasZoomTool: true
+				hasZoomTool: true,
+				hasNominatimSearch: true
 			},
 
 			/**
@@ -339,6 +340,24 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					})]
 		}));
 	}
+	if (this.viewConfig.hasNominatimSearch) {
+		// Create Nominatim
+		var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
+	
+		toolbarItems.push({
+			xtype: "gx_geocodercombo",
+			hideTrigger: true,
+			// To restrict the search to a bounding box, uncomment the following
+			// line and change the viewboxlbrt parameter to a left,bottom,right,top
+			// bounds in EPSG:4326:
+			//url: "http://nominatim.openstreetmap.org/search?format=json&viewboxlbrt="+bbox.west+","+bbox.south+","+bbox.east+","+bbox.north,
+			width: 300,
+			map: this.map,
+			emptyText: i18n("tNominatimSearch"),
+			zoom: 5
+		});
+	}
+	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// d) print tool

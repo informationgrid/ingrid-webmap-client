@@ -158,7 +158,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	spacerTop: 142,
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
-	    	hasZoomTool : true
+	    	hasZoomTool : true,
+	    	hasNominatimSearch: true
 	    	
 		},
 		"baw_wsv-fullmap": {
@@ -178,7 +179,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	spacerTop: 182,
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
-	    	hasZoomTool : true
+	    	hasZoomTool : true,
+	    	hasNominatimSearch: true
 	    	
 		},
 		"numis-fullmap": {
@@ -198,7 +200,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	spacerTop: 142,
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
-	    	hasZoomTool : true
+	    	hasZoomTool : true,
+	    	hasNominatimSearch: true
 	    	
 		},
 		"portalu-facete-search": {
@@ -219,7 +222,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	panelHeight: 500,
 	    	hasBboxSelectTool: true,
 	    	hasSettings: false,
-	    	hasZoomTool : false
+	    	hasZoomTool : false,
+	    	hasNominatimSearch: true
 		},
 		"portalu-extended-search": {
 	    	hasServicesPanel: false,
@@ -239,7 +243,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	panelHeight: 676,
 	    	hasBboxSelectTool: true,
 	    	hasSettings: false,
-	    	hasZoomTool : false
+	    	hasZoomTool : false,
+	    	hasNominatimSearch: true
 		}		
 };
 

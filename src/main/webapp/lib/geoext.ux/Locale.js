@@ -200,7 +200,8 @@ Local = {
         tZurueck: { en: 'Back', de: 'Zur&uuml;ck' },
         tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' },
         Themen: {en: 'Topics', de: 'Themen'},
-		Anbieter: {en: 'Provider', de: 'Anbieter'}
+		Anbieter: {en: 'Provider', de: 'Anbieter'},
+		tNominatimSearch: {en: 'Nominatim search ...', de: 'Ortssuche ...'}
     }
 }
 
