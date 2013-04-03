@@ -138,8 +138,9 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	isFullScreen: true,
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
-	    	hasZoomTool : true
-	    	
+	    	hasZoomTool : true,
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "countrycodes=de"	    	
 		},
 		"portalu-fullmap": {
 	    	hasServicesPanel: true,
@@ -159,8 +160,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
 	    	hasZoomTool : true,
-	    	hasNominatimSearch: true
-	    	
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "countrycodes=de"
 		},
 		"baw_wsv-fullmap": {
 	    	hasServicesPanel: true,
@@ -180,7 +181,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
 	    	hasZoomTool : true,
-	    	hasNominatimSearch: true
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "viewbox=-31.266001,81.008797,39.869301,27.636311&bounded=1"
 	    	
 		},
 		"numis-fullmap": {
@@ -201,7 +203,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasSettings: true,
 	    	hasDownloadTool : true,
 	    	hasZoomTool : true,
-	    	hasNominatimSearch: true
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "countrycodes=de"
 	    	
 		},
 		"portalu-facete-search": {
@@ -223,7 +226,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasBboxSelectTool: true,
 	    	hasSettings: false,
 	    	hasZoomTool : false,
-	    	hasNominatimSearch: true
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "countrycodes=de"
 		},
 		"portalu-extended-search": {
 	    	hasServicesPanel: false,
@@ -244,7 +248,8 @@ de.ingrid.mapclient.VIEW_CONFIG = {
 	    	hasBboxSelectTool: true,
 	    	hasSettings: false,
 	    	hasZoomTool : false,
-	    	hasNominatimSearch: true
+	    	hasNominatimSearch: true,
+	    	nominatimSearchParams: "countrycodes=de"
 		}		
 };
 

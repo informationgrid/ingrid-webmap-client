@@ -42,7 +42,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 		hasScaleList: true,
 		hasAreasList: true,
 		hasPermaLink: true,
-		hasNominatimSearch: true
+		hasNominatimSearch: true,
+		nominatimSearchParams: "countrycodes=de"
 	},
 
 	/**
@@ -334,15 +335,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	
 	// Create Nominatim
 	if (this.viewConfig.hasNominatimSearch) {
-		var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
-		
 		toolbarItems.push({
 			xtype: "gx_geocodercombo",
 			hideTrigger: true,
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			//url: "http://nominatim.openstreetmap.org/search?format=json&viewboxlbrt="+bbox.west+","+bbox.south+","+bbox.east+","+bbox.north,
+			url: "http://nominatim.openstreetmap.org/search?format=json&" + this.viewConfig.nominatimSearchParams,
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),

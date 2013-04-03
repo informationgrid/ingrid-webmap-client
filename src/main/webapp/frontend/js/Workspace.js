@@ -59,7 +59,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 				hasPermaLink : true,
 				hasDownloadTool : true,
 				hasZoomTool: true,
-				hasNominatimSearch: true
+				hasNominatimSearch: true,
+				nominatimSearchParams: "countrycodes=de"
 			},
 
 			/**
@@ -340,17 +341,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					})]
 		}));
 	}
-	if (this.viewConfig.hasNominatimSearch) {
-		// Create Nominatim
-		var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
 	
+	// Create Nominatim
+	if (this.viewConfig.hasNominatimSearch) {
 		toolbarItems.push({
 			xtype: "gx_geocodercombo",
 			hideTrigger: true,
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			//url: "http://nominatim.openstreetmap.org/search?format=json&viewboxlbrt="+bbox.west+","+bbox.south+","+bbox.east+","+bbox.north,
+			url: "http://nominatim.openstreetmap.org/search?format=json&" + this.viewConfig.nominatimSearchParams,
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
