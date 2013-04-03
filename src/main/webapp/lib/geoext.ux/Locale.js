@@ -201,7 +201,8 @@ Local = {
         tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' },
         Themen: {en: 'Topics', de: 'Themen'},
 		Anbieter: {en: 'Provider', de: 'Anbieter'},
-		tNominatimSearch: {en: 'Nominatim search ...', de: 'Ortssuche ...'}
+		tNominatimSearch: {en: 'Nominatim search ...', de: 'Ortssuche ...'},
+		tNominatimLoading: {en: 'Loading ...', de: 'Laden ...'},
     }
 }
 

@@ -345,7 +345,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
-			zoom: 5
+			zoom: 5,
+			loadingText: i18n("tNominatimLoading")
 		});
 	}
 	
