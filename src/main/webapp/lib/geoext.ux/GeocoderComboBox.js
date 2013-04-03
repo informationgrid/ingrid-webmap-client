@@ -203,8 +203,10 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
                     OpenLayers.Bounds.fromArray(value)
                         .transform(this.srs, mapProj)
                 );
-                // Zoom to define zoom
-                this.map.zoomTo(this.zoom);
+                // Set zoom to 10
+                if(this.map.getZoom() == 15){
+                	this.map.zoomTo(10);
+                }
             } else {
                 this.map.setCenter(
                     OpenLayers.LonLat.fromArray(value)
