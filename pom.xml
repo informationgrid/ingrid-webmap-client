@@ -28,6 +28,7 @@
 						add class files to WEB-INF/classes also config files ->
 						CONFIG-FILES needed at runtime in classes-path
 					-->
+					<packagingExcludes>wms/*.xml</packagingExcludes>
 					<archiveClasses>false</archiveClasses>
 					<archive>
 						<manifestEntries>
