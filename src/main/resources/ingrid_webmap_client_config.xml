@@ -1806,26 +1806,5 @@
       <checkedLayers/>
     </wmsService>
   </wmsServices>
-  <areaCategories>
-    <areaCategory>
-      <name>Städte</name>
-      <areaCategories/>
-      <areas>
-        <area>
-          <north>50.188</north>
-          <south>50.072</south>
-          <west>8.611</west>
-          <east>8.759</east>
-          <name>Frankfurt</name>
-        </area>
-        <area>
-          <north>52.457</north>
-          <south>52.319</south>
-          <west>9.651</west>
-          <east>9.627</east>
-          <name>Hannover</name>
-        </area>
-      </areas>
-    </areaCategory>
-  </areaCategories>
+  <areaCategories/>
 </persistentConfiguration>
