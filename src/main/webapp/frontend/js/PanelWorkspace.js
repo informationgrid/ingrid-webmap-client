@@ -172,6 +172,11 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 						done : function(geometry) {
 							if (self.callbackHooks.bboxSelected) {
 								bounds = geometry.getBounds();
+								var oldProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(self.map);
+								if(oldProjection.projCode != "EPSG:4326"){
+									var newProjection = new OpenLayers.Projection("EPSG:4326");
+									bounds = geometry.getBounds().clone().transform(oldProjection, newProjection);
+								}
 								self.callbackHooks.bboxSelected(bounds.left.toFixed(2), bounds.right.toFixed(2), bounds.bottom.toFixed(2), bounds.top.toFixed(2));
 							} else {
 								// output message to js console
