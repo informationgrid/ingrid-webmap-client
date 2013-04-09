@@ -202,7 +202,8 @@ Local = {
         Themen: {en: 'Topics', de: 'Themen'},
 		Anbieter: {en: 'Provider', de: 'Anbieter'},
 		tNominatimSearch: {en: 'Nominatim search ...', de: 'Ortssuche ...'},
-		tNominatimLoading: {en: 'Loading ...', de: 'Laden ...'}
+		tNominatimLoading: {en: 'Loading ...', de: 'Laden ...'},
+		tStaedte: {en: 'Cities', de: 'St&auml;dte'}
     }
 }
 

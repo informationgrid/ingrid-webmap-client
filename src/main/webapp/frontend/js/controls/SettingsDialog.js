@@ -207,7 +207,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 				var category = areaCategories[i];
 
 				var combo = new Ext.form.ComboBox({
-					fieldLabel: category.name,
+					fieldLabel: i18n(category.name),
 					triggerAction: 'all',
 					mode: 'local',
 					store: new Ext.data.ArrayStore({
