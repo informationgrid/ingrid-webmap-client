@@ -142,6 +142,9 @@ padding: 1px 3px 1px 3px;
 .mapclientLegendPanel div div div label{
 	background-color: #D0DEF0;
 }
+.mapclientLegendPanel div div div img{
+    border: 1px solid #F0F0F0;
+}
 .mapclientLegendPanel{margin-top:15px;}
 /*
     Ext.ux.Notification
