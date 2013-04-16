@@ -175,4 +175,5 @@ padding: 1px 3px 1px 3px;
     height:16px;
     background: none repeat scroll 0 0 #D9E7F8 !important;
     border: 1px solid #8DB2E3 !important;
+    z-index: 1100;
 }
