@@ -259,6 +259,25 @@ public class ConfigurationResource {
 	}
 
 	/**
+	 * Set the copyright for the default WMS GetCapabilities url
+	 * @param String containing the copyright
+	 */
+	@POST
+	@Path(DYNAMIC_PATH+"/wmsCopyright")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void setWmsCopyright(String wmsCopyright, @Context HttpServletRequest req) throws IOException {
+		try {
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			config.setWmsCopyright(wmsCopyright);
+			ConfigurationProvider.INSTANCE.write(config);
+		}
+		catch (Exception ex) {
+			log.error("Error setting copyright for service", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
 	 * Set the default map layer names
 	 * @param String containing a JSON encoded array of layer objects
 	 */

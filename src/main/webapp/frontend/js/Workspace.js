@@ -685,9 +685,30 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
         );
 	var ov = new OpenLayers.Control.OverviewMap({
 		layers : [overviewLayer],
-		minRatio: 30, maxRatio: 30
-		
+		minRatio: 30, 
+		maxRatio: 30,
+		minimizeControl: function(e) {
+			this.element.style.display = 'none';
+			this.showToggle(true);
+			if (e != null) {
+			OpenLayers.Event.stop(e);
+			}
+			var copyright = $("copyright");
+			if(copyright)
+				copyright.style.right =  "25px";
+		},
+		maximizeControl: function(e) {
+			this.element.style.display = '';
+			this.showToggle(false);
+			if (e != null) {
+			OpenLayers.Event.stop(e);
+			}
+			var copyright = $("copyright");
+			if(copyright)
+				copyright.style.right =  "220px";
+		}
 	});
+	
 	this.map.addControl(ov);
 	
 	// listen to session changing events (addLayer and removeLayer are
@@ -972,7 +993,17 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					self.activeServicesPanel.addKml(self.kmlArray);
 				}
 			}
-
+			
+			// Copyright
+			var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
+			if(wmsCopyright){
+				var div = document.getElementsByClassName("olMapViewport");
+				var copyright = document.createElement('div');
+				copyright.setAttribute('id', 'copyright');
+				copyright.className = "olCopyrightPosition";
+				copyright.innerHTML = wmsCopyright;
+				div[0].appendChild(copyright);
+			}
 		},
 		failure : function(responseText) {
 			var callback = Ext.util.Functions.createDelegate( function() {
@@ -994,9 +1025,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					self.activeServicesPanel.addKml(self.kmlArray);
 				}
 
+				// Copyright
+				var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
+				if(wmsCopyright){
+					var div = document.getElementsByClassName("olMapViewport");
+					var copyright = document.createElement('div');
+					copyright.setAttribute('id', 'copyright');
+					copyright.className = "olCopyrightPosition";
+					copyright.innerHTML = wmsCopyright;
+					div[0].appendChild(copyright);
+				}
 			}, self);
 			self.initDefaultMap(callback);
-
 		}
 	});
 	de.ingrid.mapclient.frontend.Workspace.prototype.search = function(

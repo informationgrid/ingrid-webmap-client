@@ -161,3 +161,18 @@ padding: 1px 3px 1px 3px;
 .x-combo-list-item {
 	white-space: normal !important;
 }
+
+.olCopyrightPosition{
+    font-size: 12px !important;
+    text-align: right;
+    bottom: 0px;
+    display: block;
+    font-family: Arial;
+    font-size: smaller;
+    position: absolute;
+    right: 25px;
+    padding:0 5px;
+    height:16px;
+    background: none repeat scroll 0 0 #D9E7F8 !important;
+    border: 1px solid #8DB2E3 !important;
+}

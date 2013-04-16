@@ -25,7 +25,7 @@ public class PersistentConfiguration {
 
 	private String wmsCapUrl;
 	private String featureUrl;
-
+	private String wmsCopyright;
 
 	private List<Layer> layers;
 	private MapExtend mapExtend;
@@ -45,6 +45,7 @@ public class PersistentConfiguration {
 	 */
 	public PersistentConfiguration() {
 		this.wmsCapUrl = "";
+		this.wmsCopyright = "";
 		this.layers = new ArrayList<Layer>();
 		this.mapExtend = new MapExtend();
 		this.projections = new ArrayList<Projection>();
@@ -142,5 +143,13 @@ public class PersistentConfiguration {
 
 	public void setFeatureUrl(String featureUrl) {
 		this.featureUrl = featureUrl;
+	}
+
+	public String getWmsCopyright() {
+		return wmsCopyright;
+	}
+
+	public void setWmsCopyright(String wmsCopyright) {
+		this.wmsCopyright = wmsCopyright;
 	}
 }

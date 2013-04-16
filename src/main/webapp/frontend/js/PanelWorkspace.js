@@ -597,7 +597,28 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
         );
 	var ov = new OpenLayers.Control.OverviewMap({
 		layers : [overviewLayer],
-		minRatio: 2, maxRatio: 100
+		minRatio: 2,
+		maxRatio: 100,
+		minimizeControl: function(e) {
+			this.element.style.display = 'none';
+			this.showToggle(true);
+			if (e != null) {
+			OpenLayers.Event.stop(e);
+			}
+			var copyright = $("copyright");
+			if(copyright)
+				copyright.style.right =  "25px";
+		},
+		maximizeControl: function(e) {
+			this.element.style.display = '';
+			this.showToggle(false);
+			if (e != null) {
+			OpenLayers.Event.stop(e);
+			}
+			var copyright = $("copyright");
+			if(copyright)
+				copyright.style.right =  "220px";
+		}
 	});
 	this.map.addControl(ov);
 
@@ -726,6 +747,17 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 				for (var i = 0, count = state.activeServices.length; i < count; i++) {
 					self.activeServicesPanel.addService(state.activeServices[i], false, false, true);
 				}
+				
+				// Copyright
+				var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
+				if(wmsCopyright){
+					var div = document.getElementsByClassName("olMapViewport");
+					var copyright = document.createElement('div');
+					copyright.setAttribute('id', 'copyright');
+					copyright.className = "olCopyrightPosition";
+					copyright.innerHTML = wmsCopyright;
+					div[0].appendChild(copyright);
+				}
 				self.finishInitMap();
 				if (safeStateAfterLoad) {
 					self.save(true);
@@ -733,7 +765,20 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 			});
 		},
 		failure: function(responseText) {
-			var callback = Ext.util.Functions.createDelegate(self.finishInitMap, self);
+			var callback = Ext.util.Functions.createDelegate(function(){
+			self.finishInitMap();
+			// Copyright
+			var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
+			if(wmsCopyright){
+				var div = document.getElementsByClassName("olMapViewport");
+				var copyright = document.createElement('div');
+				copyright.setAttribute('id', 'copyright');
+				copyright.className = "olCopyrightPosition";
+				copyright.innerHTML = wmsCopyright;
+				div[0].appendChild(copyright);
+				}
+			}
+			, self);
 			self.initDefaultMap(callback);
 		}
 	});

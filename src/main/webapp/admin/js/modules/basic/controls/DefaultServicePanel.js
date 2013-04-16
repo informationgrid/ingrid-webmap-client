@@ -44,7 +44,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel = Ext.extend(Ext.Pan
 	/**
 	 * The field that contains the base layer name
 	 */
-	baseLayerCombo: null
+	baseLayerCombo: null,
+	
+	/**
+	 * The copyright field
+	 */
+	baseLayerCopyrightTextField: null
 });
 
 /**
@@ -63,6 +68,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 		allowBlank: false
 	});
 
+	this.baseLayerCopyrightTextField = new Ext.form.TextField({
+		fieldLabel: 'Copyright',
+		allowBlank: true,
+		anchor: '99%'
+	});
+	
 	var selectionModel = new Ext.grid.CheckboxSelectionModel();
 	this.layerGrid = new Ext.grid.GridPanel({
 		store: this.layerStore,
@@ -116,6 +127,33 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 		    // spacer
 			xtype: 'container',
 			height: 20
+	    }, this.baseLayerCopyrightTextField, {
+			xtype: 'container',
+			layout: 'column',
+			anchor: '100%',
+		    items: [{
+				xtype: 'container',
+				columnWidth: 1,
+				height: 50
+			}, {
+				xtype: 'container',
+				layout: 'form',
+				height: 50,
+				items: {
+					xtype: 'button',
+					id: 'copyrightBtn',
+					text: 'Copyright Speichern',
+					anchor: '100%',
+					style: {
+		                paddingTop: '10px'
+		            },
+					handler: function() {
+						if (self.baseLayerCopyrightTextField.validate()) {
+							self.saveCopyright();
+						}
+					}
+				}
+			}]
 	    }, this.baseLayerCombo, {
 			xtype: 'container',
 			layout: 'column',
@@ -159,6 +197,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.onRender =
 	var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
 	this.wmsCapUrlField.setValue(capUrl);
 	this.loadLayers();
+	var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright");
+	this.baseLayerCopyrightTextField.setValue(wmsCopyright);
+	
 };
 
 /**
@@ -225,6 +266,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveLayers
 	}
 
 	de.ingrid.mapclient.Configuration.setValue('layers', Ext.encode(selectedLayers), de.ingrid.mapclient.admin.DefaultSaveHandler);
+};
+
+de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveCopyright = function() {
+	
+	var copyrightValue = this.baseLayerCopyrightTextField.getValue();
+	de.ingrid.mapclient.Configuration.setValue('wmsCopyright', copyrightValue, de.ingrid.mapclient.admin.DefaultSaveHandler);
 };
 
 /**
