@@ -127,33 +127,6 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 		    // spacer
 			xtype: 'container',
 			height: 20
-	    }, this.baseLayerCopyrightTextField, {
-			xtype: 'container',
-			layout: 'column',
-			anchor: '100%',
-		    items: [{
-				xtype: 'container',
-				columnWidth: 1,
-				height: 50
-			}, {
-				xtype: 'container',
-				layout: 'form',
-				height: 50,
-				items: {
-					xtype: 'button',
-					id: 'copyrightBtn',
-					text: 'Copyright Speichern',
-					anchor: '100%',
-					style: {
-		                paddingTop: '10px'
-		            },
-					handler: function() {
-						if (self.baseLayerCopyrightTextField.validate()) {
-							self.saveCopyright();
-						}
-					}
-				}
-			}]
 	    }, this.baseLayerCombo, {
 			xtype: 'container',
 			layout: 'column',
@@ -182,7 +155,34 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 					}
 				}
 			}]
-		}]
+		}, this.baseLayerCopyrightTextField, {
+			xtype: 'container',
+			layout: 'column',
+			anchor: '100%',
+		    items: [{
+				xtype: 'container',
+				columnWidth: 1,
+				height: 50
+			}, {
+				xtype: 'container',
+				layout: 'form',
+				height: 50,
+				items: {
+					xtype: 'button',
+					id: 'copyrightBtn',
+					text: 'Copyright Speichern',
+					anchor: '100%',
+					style: {
+		                paddingTop: '10px'
+		            },
+					handler: function() {
+						if (self.baseLayerCopyrightTextField.validate()) {
+							self.saveCopyright();
+						}
+					}
+				}
+			}]
+	    }]
 	});
 	de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.superclass.initComponent.call(this);
 };
