@@ -69,7 +69,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 	});
 
 	this.baseLayerCopyrightTextField = new Ext.form.TextField({
-		fieldLabel: 'Copyright',
+		fieldLabel: 'Auf der Karte eingeblendeter Copyrightvermerk',
 		allowBlank: true,
 		anchor: '99%'
 	});
