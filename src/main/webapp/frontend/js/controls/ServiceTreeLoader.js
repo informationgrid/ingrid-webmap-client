@@ -133,12 +133,11 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode =
 		isLeaf: isLeaf,
 		service: service
 	});
-	var sibling = node.item(index);
-	if(sibling) {
-		node.insertBefore(child, sibling);
-	} else {
+	
+	if(child){
 		node.appendChild(child);
 	}
+	
 	child.on("move", this.onChildMove, this);
 	//on checkchange(we check the service) we expand the nodes of the service and check all layers
 	if (this.onCheckChangeCallback) {
