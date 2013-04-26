@@ -52,7 +52,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transpBtnActive: false,
 	metadataBtnActive: false,
 	serviceCategoryPanel:null,
-	parentCheckChangeActive:false
+	parentCheckChangeActive:false,
+	isCheckedByCheckedLayers:false
 });
 
 /**
@@ -361,21 +362,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				onCheckChangeCallback : function (node, checked) {
 					this.expand(true);
 					var checkedOnce = false;
-					var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
-					node.eachChild(function(n) {
-				    	// check everything but the first layer, which is our baselayer
-				    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
-				    		checkedOnce = true;
-				    		// we dont check/uncheck our base layer but we have to pass the checked command to its child nodes
-				    		if(n.hasChildNodes){
-				    			n.eachChild(function(n){
-				    			n.getUI().toggleCheck(checked);
-				    			});
-				    		}
-				    	} else {
-				    		n.getUI().toggleCheck(checked);
-				    	}
-				    });
+					if(self.isCheckedByCheckedLayers){
+						// Single layer selection by checkedLayer (read from config) 
+						self.isCheckedByCheckedLayers = false;
+					}else{
+						// Layer selection checked child layers too (by mouse click)
+						node.eachChild(function(n) {
+					    	// check everything but the first layer, which is our baselayer
+					    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
+					    		checkedOnce = true;
+					    		// we dont check/uncheck our base layer but we have to pass the checked command to its child nodes
+					    		if(n.hasChildNodes){
+					    			n.eachChild(function(n){
+					    			n.getUI().toggleCheck(checked);
+					    			});
+					    		}
+					    	} else {
+					    		n.getUI().toggleCheck(checked);
+					    	}
+					    });
+					}
 				}
 			})
 		});
@@ -384,7 +390,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		node.on('checkchange', function(node, checked) {
 			this.expand(true);
 			var checkedOnce = false;
-			var wmsUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl")
 			node.eachChild(function(n) {
 		    	// check everything but the first layer, which is our baselayer
 		    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
@@ -422,21 +427,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		if(typeof expandNode === 'undefined' || expandNode == false)
 			node.expand(true);
 
-		//we check the services which are meant to be checked by default
-		var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-		for(var i = 0; i < wmsServices.length; i++){
-			if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-				var cl = wmsServices[i].checkedLayers;
-				if(cl){
-					for(var j = 0; j < cl.length; j++){
-						var k = 0;
-						self.checkRecursively(cl[j],node);
+		// Select layer by checkedLayers only on add service.
+		// After mapclient reload load don't select layers by checkedLayers
+		if(!initialAdd){
+			//we check the services which are meant to be checked by default
+			var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+			for(var i = 0; i < wmsServices.length; i++){
+				if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+					var cl = wmsServices[i].checkedLayers;
+					if(cl){
+						for(var j = 0; j < cl.length; j++){
+							var k = 0;
+							// Set boolean to note checkedLayers selection (single selection)
+							self.isCheckedByCheckedLayers = true;
+							self.checkRecursively(cl[j],node);
+						}
 					}
+					break;
 				}
-				break;
 			}
 		}
-		
 	}
 };
 
