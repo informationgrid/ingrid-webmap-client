@@ -277,7 +277,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					tooltip : i18n('tKarteZoomen'),
 					enableToggle : false, 
 					handler : function(btn) {
-						self.map.zoomToMaxExtent();
+						var newProjection = new OpenLayers.Projection(self.map.projection);
+						var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
+						self.map.zoomToExtent(newMaxExtent);
 					}
 				}));
 

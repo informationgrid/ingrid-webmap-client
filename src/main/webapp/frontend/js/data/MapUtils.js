@@ -27,17 +27,14 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	var newProjection = new OpenLayers.Projection(newProjCode);
 	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	var newExtent;
-	var mapExtent = map.getExtent();
+	var mapExtent = container.bounds;
 	if (mapExtent) {
-		newExtent = map.getExtent().clone().transform(oldProjection, newProjection);
-		if (!newMaxExtent.containsBounds(newExtent, false, false)) {
-			newExtent = newMaxExtent;
-		}
+		newExtent = mapExtent.clone().transform(oldProjection, newProjection);
 	} else {
-		newExtent = newMaxExtent;
+		newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
 	}
 	var options = {
-		maxExtent: newMaxExtent,
+		maxExtent: newExtent,
 		projection: newProjection.getCode(),
 		units: newProjection.getUnits(),
 		maxResolution: 'auto'
@@ -58,7 +55,7 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	
 	// only zoom into extent if the map initially had an extent
 	if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
-		map.zoomToExtent(newExtent);
+		map.zoomToExtent(newMaxExtent);
 	}
 	
     map.displayProjection = newProjection;
