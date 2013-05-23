@@ -34,8 +34,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 		if(container.map){
 			if(container.map.baseLayer){
 				if(container.map.baseLayer.maxExtent){
-					if(oldProjection != "EPSG:4326")
-					newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
+					if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
+						newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
+					}
 				}
 			}
 		}
