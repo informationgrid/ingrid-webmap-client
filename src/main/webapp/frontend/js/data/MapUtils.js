@@ -31,7 +31,19 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	if (mapExtent) {
 		newExtent = mapExtent.clone().transform(oldProjection, newProjection);
 	} else {
-		newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
+		if(container.map){
+			if(container.map.baseLayer){
+				if(container.map.baseLayer.maxExtent){
+					newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
+				}else{
+					newExtent = newMaxExtent;
+				}
+			}else{
+				newExtent = newMaxExtent;
+			}
+		}else{
+			newExtent = newMaxExtent;
+		}
 	}
 	var options = {
 		maxExtent: newExtent,
