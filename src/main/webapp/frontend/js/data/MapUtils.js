@@ -27,7 +27,11 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	var newProjection = new OpenLayers.Projection(newProjCode);
 	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	var newExtent;
-	var mapExtent = container.bounds;
+	var mapExtent;
+	
+	if(oldProjection.projCode != newProjection.projCode){
+		mapExtent = container.bounds;
+	}
 	if (mapExtent) {
 		newExtent = mapExtent.clone().transform(oldProjection, newProjection);
 	} else {
