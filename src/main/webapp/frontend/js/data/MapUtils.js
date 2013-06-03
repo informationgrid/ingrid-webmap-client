@@ -41,6 +41,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 					if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
 						newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
 					}
+					if(newExtent === undefined){
+						newExtent = container.map.baseLayer.maxExtent;
+					}
 				}
 			}
 		}
