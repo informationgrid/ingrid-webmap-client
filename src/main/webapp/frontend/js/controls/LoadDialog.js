@@ -17,7 +17,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog = Ext.extend(Ext.Window, {
 	shadow: false,
 	initHidden: false,
 	modal: true,
-
+	constrain: true,
+	
 	/**
 	 * @cfg de.ingrid.mapclient.frontend.data.Session instance
 	 */

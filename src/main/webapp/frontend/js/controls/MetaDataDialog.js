@@ -17,6 +17,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
 	shadow: false,
 	initHidden: false,
 	autoScroll:true,
+	constrain: true,
 
 	windowContent: null,
 

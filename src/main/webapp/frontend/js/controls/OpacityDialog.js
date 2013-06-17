@@ -13,6 +13,7 @@ de.ingrid.mapclient.frontend.controls.OpacityDialog = Ext.extend(Ext.Window, {
 	width: 300,
 	height: 70,
 	border: false,
+	constrain: true,
 
 	/**
 	 * @cfg layer The OpenLayers.Layer instance to adjust the transparency for

@@ -18,6 +18,8 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog = Ext.extend(Ext.Window, 
 	initHidden: false,
 	modal: true,
 	ctrls:null,
+	constrain: true,
+
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
      */

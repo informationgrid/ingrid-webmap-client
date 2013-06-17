@@ -12,13 +12,13 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog = Ext.extend(Ext.Window,
 	closable: true,
 	draggable: true,
 	resizable: true,
-	width: 300,
-	autoHeight: true,
 	shadow: false,
+	width: 800,
+	height:600,
 	hidden: true,
 	closeAction: 'hide',
-    autoScroll: true,
     layout: 'fit',
+    constrain: true,
 
 	/**
 	 * @cfg The OpenLayers.Map instance to query feature infos for
@@ -71,34 +71,36 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 			"getfeatureinfo": function(e) {
 				// create a panel for each response
 				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
+				var tab;
+				var tabPanel;
+				
 				if(service){
-					var p = new Ext.Panel({
-					title: service.getDefinition().title,
-					collapsible: true,
-					border: false,
-					autoScroll: true,
-					boxMaxHeight:400,
-					bodyStyle: 'padding: 10px; font-size:16px;',
-					defaults: {
-						anchor: '100%'
-					},
-					html: e.text
-				});
+					tab = {
+				        title : service.getDefinition().title,
+				        html  : e.text,
+				        autoScroll: true,
+				        bodyStyle: 'font-size:16px;',
+				        closeable: true
+				    };
 				}else{
-					var p = new Ext.Panel({
-					title:'no title from service available',
-					collapsible: true,
-					border: false,
-					autoScroll: true,
-					boxMaxHeight:400,
-					bodyStyle: 'padding: 10px; font-size:16px;',
-					defaults: {
-						anchor: '100%'
-					},					
-					html: e.text
-				});
+					tab = {
+				        title : i18n('tNoTitle'),
+				        html  : e.text,
+				        autoScroll: true,
+				        bodyStyle: 'font-size:16px;',
+				        closeable: true
+				    };
 				}
-				self.add(p);
+				if(self.items.length == 0){
+					tabPanel = new Ext.TabPanel({
+				        activeTab         : 0,
+				        enableTabScroll   : true
+				    });
+				}else{
+					tabPanel = self.items.items[0];
+				}
+				tabPanel.add(tab);
+				self.add(tabPanel);
 				self.doLayout();							
 				
 			}

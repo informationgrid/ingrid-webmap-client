@@ -206,7 +206,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			children: []
 		},
 		rootVisible: false,
-		enableDD: true,
+		enableDD: false,
 		border: false
 	});
 

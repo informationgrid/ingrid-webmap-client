@@ -17,7 +17,8 @@ de.ingrid.mapclient.frontend.controls.DownloadDialog = Ext.extend(Ext.Window, {
 	initHidden: false,
 	modal: true,
 	ctrls:null,
-
+	constrain: true,
+	
 	/**
 	 * Signals if the save button was pressed
 	 */

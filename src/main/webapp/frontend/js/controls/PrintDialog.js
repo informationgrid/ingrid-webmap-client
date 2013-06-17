@@ -17,6 +17,7 @@ de.ingrid.mapclient.frontend.controls.PrintDialog = Ext.extend(Ext.Window, {
 	initHidden: false,
 	modal: false,
 	layout: "fit",
+	constrain: true,
 
 	/**
 	 * @cfg GeoExt.MapPanel instance
