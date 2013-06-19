@@ -34,8 +34,9 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	 */
 	viewConfig: {
 		hasProjectionsList: true,
-		hasScaleList: true,
-		hasAreasList: true
+		hasScaleList: true
+		//,
+		//hasAreasList: true
 	},
 
 	/**
@@ -200,6 +201,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	this.map.events.triggerEvent("zoomend");
 
 	// add areas
+	/*
 	if (this.viewConfig.hasAreasList) {
 		var areaCategories = de.ingrid.mapclient.Configuration.getValue('areaCategories');
 		if (areaCategories) {
@@ -255,6 +257,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 			}
 		}
 	}
+	*/
 };
 
 /**

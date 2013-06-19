@@ -25,28 +25,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace = Ext.extend(Ext.Panel, {
 	session: null,
 
 	/**
-	 * @cfg The view configuration. The default configuration lists all known
-	 *      properties:
-	 */
-	viewConfig: {
-		hasServicesPanel: true,
-		hasAreaTool:true,
-		hasInfoTool: true, 
-		hasHistoryTool: true,
-		hasMeasureTool: true, 
-		hasPrintTool: true,
-		hasLoadTool: true,
-		hasSaveTool: true,
-		hasHelpTool: true,
-		hasProjectionsList: true,
-		hasScaleList: true,
-		hasAreasList: true,
-		hasPermaLink: true,
-		hasNominatimSearch: true,
-		nominatimSearchParams: "countrycodes=de"
-	},
-
-	/**
 	 * The OpenLayers.Map instance
 	 */
 	map: null,
@@ -160,7 +138,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 	
 	// BBOX select tool
-	if (this.viewConfig.hasBboxSelectTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasBboxSelectTool")) {
 		var coordinatesCtrl = new OpenLayers.Control.Measure(
 				OpenLayers.Handler.RegularPolygon, {
 					handlerOptions : {
@@ -192,71 +170,69 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	
 
 	// b.1) area tool
-	if (this.viewConfig.hasAreaTool) {
-		var administrativeFeatureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
-			map: this.map,
-			title: i18n('tAdministrativeAuswahl'),
-			callbackAreaId:self.callbackAreaId
-		});
-		this.map.events.on({
-			'click': administrativeFeatureInfoControl.checkAdministrativeUnits,
-			scope: administrativeFeatureInfoControl
-		});
-	}
+	var administrativeFeatureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+		map: this.map,
+		title: i18n('tAdministrativeAuswahl'),
+		callbackAreaId:self.callbackAreaId
+	});
+	this.map.events.on({
+		'click': administrativeFeatureInfoControl.checkAdministrativeUnits,
+		scope: administrativeFeatureInfoControl
+	});
 	
-		toolbarItems.push(new Ext.ButtonGroup({
-					items : [{
-								xtype : 'button',
-								id : 'bboxButton',
-								iconCls : 'iconSelectCoordinates',
-								tooltip : i18n('tGebietAuswaehlen'),
-								toggleGroup : 'mygroup',
-								enableToggle : true,
-								pressed: true,
-								handler : function(btn) {
-									if (btn.pressed) {
-										coordinatesCtrl.activate();
-										administrativeFeatureInfoControl.deactivate();
-				
-									} else {
-										coordinatesCtrl.deactivate();
-			
-									}
-								}
-							}, {
-								xtype : 'button',
-								iconCls : 'iconInfo',
-								tooltip : i18n('tIdAuswaehlen'),
-								enableToggle : true,
-								toggleGroup : 'mygroup',
-								handler : function(btn) {
-									if (btn.pressed) {
-										coordinatesCtrl.deactivate();
-										administrativeFeatureInfoControl.activate();
-									} else {
-										administrativeFeatureInfoControl.deactivate();
-									}
-								}
-							}, {
-								xtype : 'button',
-								iconCls : 'iconDefault',
-								tooltip : i18n('tKarteVerschieben'),
-								enableToggle : true,
-								toggleGroup : 'mygroup',
-								handler : function(btn) {
-									if (btn.pressed) {
-										coordinatesCtrl.deactivate();
-										administrativeFeatureInfoControl.deactivate();
-									} else {
-										// console.debug("button active");
-									}
-								}
-							}]
-				}));	
+	toolbarItems.push(new Ext.ButtonGroup({
+			items : [{
+						xtype : 'button',
+						id : 'bboxButton',
+						iconCls : 'iconSelectCoordinates',
+						tooltip : i18n('tGebietAuswaehlen'),
+						toggleGroup : 'mygroup',
+						enableToggle : true,
+						pressed: true,
+						handler : function(btn) {
+							if (btn.pressed) {
+								coordinatesCtrl.activate();
+								administrativeFeatureInfoControl.deactivate();
+		
+							} else {
+								coordinatesCtrl.deactivate();
 	
+							}
+						}
+					}, {
+						xtype : 'button',
+						iconCls : 'iconInfo',
+						tooltip : i18n('tIdAuswaehlen'),
+						enableToggle : true,
+						toggleGroup : 'mygroup',
+						handler : function(btn) {
+							if (btn.pressed) {
+								coordinatesCtrl.deactivate();
+								administrativeFeatureInfoControl.activate();
+							} else {
+								administrativeFeatureInfoControl.deactivate();
+							}
+						}
+					}, {
+						xtype : 'button',
+						iconCls : 'iconDefault',
+						tooltip : i18n('tKarteVerschieben'),
+						enableToggle : true,
+						toggleGroup : 'mygroup',
+						handler : function(btn) {
+							if (btn.pressed) {
+								coordinatesCtrl.deactivate();
+								administrativeFeatureInfoControl.deactivate();
+							} else {
+								// console.debug("button active");
+							}
+						}
+					}]
+		}));	
+
 	
 	// b.2) history tool
-	if (this.viewConfig.hasHistoryTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasHistoryTool")) {
 		// create the OpenLayers control
 		var historyCtrl = new OpenLayers.Control.NavigationHistory();
 		this.map.addControl(historyCtrl);
@@ -276,7 +252,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 	
 	// c) measure tool
-	if (this.viewConfig.hasMeasureTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasMeasureTool")) {
 		// create the OpenLayers control
 		var measurePathCtrl = new OpenLayers.Control.Measure(OpenLayers.Handler.Path, {
 			persist: true
@@ -339,14 +315,14 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 	
 	// Create Nominatim
-	if (this.viewConfig.hasNominatimSearch) {
+	if (de.ingrid.mapclient.Configuration.getSettings("defaultNominatimEnable")) {
 		toolbarItems.push({
 			xtype: "gx_geocodercombo",
 			hideTrigger: true,
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + this.viewConfig.nominatimSearchParams,
+			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("defaultNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
@@ -358,7 +334,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// d) print tool
-	if (this.viewConfig.hasInfoTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasPrintTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconPrint',
 			tooltip: i18n('tDrucken'),
@@ -372,7 +348,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 
 	// e) load tool
-	if (this.viewConfig.hasLoadTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasLoadTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconLoad',
 			tooltip: i18n('tLaden'),
@@ -391,7 +367,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 
 	// f) save tool
-	if (this.viewConfig.hasSaveTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasSaveTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconSave',
 			tooltip: i18n('tSpeichern'),
@@ -408,7 +384,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 
 	// g) help tool
-	if (this.viewConfig.hasInfoTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasInfoTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconHelp',
 			tooltip: i18n('tHilfe'),
@@ -425,10 +401,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 	// create the settings dialog
 	var settingsDialog;
-	if (this.viewConfig.hasSettings) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasSettings")) {
 		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
 		map: this.map,
-		viewConfig: this.viewConfig
+		viewConfig: {
+			hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("searchHasProjectionsList"),
+			hasScaleList: de.ingrid.mapclient.Configuration.getSettings("searchHasScaleList")
+		}
 		});
 	}
 	this.on('afterrender', function(el) {
@@ -454,7 +433,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
 	var items = [ centerPanel ];
-	if (this.viewConfig.hasServicesPanel) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasServicesPanel")) {
 		items.push(westPanel);
 	}
 
@@ -581,7 +560,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	var controls = [new OpenLayers.Control.KeyboardDefaults(),
 		new OpenLayers.Control.LoadingPanel()
 	];
-	if (this.viewConfig.hasPermaLink) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasPermaLink")) {
 		controls.push(new OpenLayers.Control.Permalink());
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
 	}
@@ -632,8 +611,9 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
-	de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),{width:450, delay:900000});
-	
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasInfoDialog")) {
+		de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),{width:450, delay:900000});
+	}
 };
 
 /**

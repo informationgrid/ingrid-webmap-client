@@ -44,24 +44,7 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 			 * @cfg The view configuration. The default configuration lists all
 			 *      known properties:
 			 */
-			viewConfig : {
-				hasServicesPanel : true,
-				hasInfoTool : true, 
-				hasHistoryTool : true,
-				hasMeasureTool : true, 
-				hasPrintTool : true,
-				hasLoadTool : true,
-				hasSaveTool : true,
-				hasHelpTool : true,
-				hasProjectionsList : true,
-				hasScaleList : true,
-				hasAreasList : true,
-				hasPermaLink : true,
-				hasDownloadTool : true,
-				hasZoomTool: true,
-				hasNominatimSearch: true,
-				nominatimSearchParams: "countrycodes=de"
-			},
+			viewConfig : "default",
 
 			/**
 			 * The OpenLayers.Map instance
@@ -224,7 +207,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	this.ctrls['keyboardControl'] = keyboardControl;
 	// a) feature tool
 				
-	if (this.viewConfig.hasInfoTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool")) {
 
 		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog(
 				{
@@ -251,7 +234,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// b) history tool
-	if (this.viewConfig.hasHistoryTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasHistoryTool")) {
 		// create the OpenLayers control
 		var historyCtrl = new OpenLayers.Control.NavigationHistory();
 		this.map.addControl(historyCtrl);
@@ -269,7 +252,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					tooltip : i18n('tVor')
 				}));
 	}
- 	if (this.viewConfig.hasZoomTool) {
+ 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasZoomTool")) {
 
  
 		toolbarItems.push(new Ext.Button({
@@ -285,7 +268,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	}
 	// c) measure tool
-	if (this.viewConfig.hasMeasureTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasMeasureTool")) {
 		// create the OpenLayers control
 		var measurePathCtrl = new OpenLayers.Control.Measure(
 				OpenLayers.Handler.Path, {
@@ -345,14 +328,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 	
 	// Create Nominatim
-	if (this.viewConfig.hasNominatimSearch) {
+	if (de.ingrid.mapclient.Configuration.getSettings("defaultNominatimEnable")) {
 		toolbarItems.push({
 			xtype: "gx_geocodercombo",
 			hideTrigger: true,
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + this.viewConfig.nominatimSearchParams,
+			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("defaultNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
@@ -366,7 +349,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// d) print tool
 	var printActive = false;
 	var printDia = null;
-	if (this.viewConfig.hasInfoTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool")) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconPrint',
 					tooltip : i18n('tDrucken'),
@@ -391,7 +374,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// e) load tool
-	if (this.viewConfig.hasLoadTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasLoadTool")) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconLoad',
 					tooltip : i18n('tLaden'),
@@ -415,7 +398,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// f) save tool
-	if (this.viewConfig.hasSaveTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasSaveTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconSave',
 			tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen'),
@@ -433,7 +416,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// g) download tool
-	if (this.viewConfig.hasDownloadTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasDownloadTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconDownload',
 			tooltip : i18n('tKarteHerunterladen'),
@@ -450,7 +433,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		));
 	}
 	// h) help tool
-	if (this.viewConfig.hasInfoTool) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool")) {
 		toolbarItems.push(new Ext.Button({
 					iconCls : 'iconHelp',
 					tooltip : i18n('tHilfe'),
@@ -467,28 +450,34 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			});
 
 	// create the settings dialog
-	var settingsDialog;
-	if (this.viewConfig.hasSettings) {
+
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
+		var settingsDialog;
 		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog(
-				{
-					map : this.map,
-					viewConfig : this.viewConfig,
-					ctrls: self.ctrls
-				});
-
+			{
+				map : this.map,
+				viewConfig : {
+					hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("viewHasProjectionsList"),
+					hasScaleList: de.ingrid.mapclient.Configuration.getSettings("viewHasScaleList")
+				},
+				ctrls: self.ctrls
+			});
 	}
-	// welcome dialog
-	// show only if cookies do not prevent this
-	var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
-	if (showWelcomeDialog) {
-        welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
-                {
-                    map : this.map,
-                    viewConfig : this.viewConfig,
-                    ctrls: self.ctrls
-                });
 
-    }
+	// welcome dialog
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasWelcomeDialog")) {
+		// show only if cookies do not prevent this
+		var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
+		if (showWelcomeDialog) {
+	        welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
+	                {
+	                    map : this.map,
+	                    ctrls: self.ctrls
+	                });
+	
+		}
+	}
+	
 	var centerPanel = new Ext.Panel({
 				region : 'center',
 				id: 'centerPanel',
@@ -497,7 +486,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				tbar : toolbar
 			});
 	this.on('afterrender', function(el) {
-				if (settingsDialog && self.viewConfig.hasSettings) {
+				if (settingsDialog && de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
 					mapPanel.items.add(settingsDialog); // constrain to mapPanel
 					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
 				}
@@ -505,7 +494,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// create the panel for the center region
 
 		centerPanel.on('afterlayout', function(el) {
-					if (settingsDialog && self.viewConfig.hasSettings) {
+					if (settingsDialog && de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
 						settingsDialog.anchorTo(this.el, 'tr-tr', [-20, 50]);
 					}				
 			});		
@@ -514,20 +503,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var northPanel = new Ext.Panel({
 				region : 'north',
 				baseCls : '',
-				height : this.viewConfig.spacerTop
-						? this.viewConfig.spacerTop
+				height : de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
+						? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim())
 						: 0
 			});
 
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
 	var items;
-	if (this.viewConfig.spacerTop) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop")) {
 		items = [centerPanel, northPanel];
 	} else {
 		items = [centerPanel];
 	}
-	if (this.viewConfig.hasServicesPanel) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel")) {
 		items.push(westPanel);
 	}
 
@@ -672,7 +661,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 			new OpenLayers.Control.MousePosition(),
 			keyboardControl];
 
-	if (this.viewConfig.hasPermaLink) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasPermaLink")) {
 		controls.push(new OpenLayers.Control.Permalink());
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
 	}

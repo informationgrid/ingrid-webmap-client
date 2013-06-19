@@ -12,6 +12,7 @@ import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
+import de.ingrid.mapclient.model.Setting;
 
 /**
  * Configuration holds the dynamic configuration of the map client that
@@ -29,6 +30,7 @@ public class Configuration {
 	private MapExtend mapExtend;
 	private List<Projection> projections;
 	private List<Scale> scales;
+	private List<Setting> settings;
 	private String proxyUrl;
 	private List<ServiceCategory> serviceCategories;
 	private List<AreaCategory> areaCategories;
@@ -43,6 +45,7 @@ public class Configuration {
 		this.mapExtend = new MapExtend();
 		this.projections = new ArrayList<Projection>();
 		this.scales = new ArrayList<Scale>();
+		this.setSettings(new ArrayList<Setting>());
 		this.proxyUrl = "";
 	}
 
@@ -123,5 +126,13 @@ public class Configuration {
 
 	public void setWmsCopyright(String wmsCopyright) {
 		this.wmsCopyright = wmsCopyright;
+	}
+
+	public List<Setting> getSettings() {
+		return settings;
+	}
+
+	public void setSettings(List<Setting> settings) {
+		this.settings = settings;
 	}
 }

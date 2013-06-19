@@ -378,7 +378,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					    			});
 					    		}
 					    	} else {
-					    		n.getUI().toggleCheck(checked);
+					    		if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupSelection")){
+						    		n.getUI().toggleCheck(checked);
+					    		}
 					    	}
 					    });
 					}

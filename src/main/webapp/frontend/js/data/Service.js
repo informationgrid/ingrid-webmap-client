@@ -213,15 +213,15 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							// we explicitly set a layerAbstract param, since it somehow gets lost later
 							layer.addOptions({layerAbstract:record.data['abstract']},true);
 							//check if the config wants us to singleTile or not, but first we check if this property exists
-							if(de.ingrid.mapclient.Configuration.getProperty("frontend.singleTile")) {
-								if(de.ingrid.mapclient.Configuration.getProperty("frontend.singleTile").toLowerCase() == "true"){
-									layer.singleTile = true;
-									layer.ratio = 1;
-								}
+							var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
+							if(isSingleTile){
+								layer.singleTile = true;
+								layer.ratio = 1;
 							}
 							//check if the config wants us to transition or not, but first we check if this property exists
-							if(de.ingrid.mapclient.Configuration.getProperty("frontend.transitionEffect")) {
-								layer.transitionEffect = de.ingrid.mapclient.Configuration.getProperty("frontend.transitionEffect").toLowerCase();
+							var transitionEffect = de.ingrid.mapclient.Configuration.getSettings("defaultTransitionEffect").trim();
+							if(transitionEffect && transitionEffect.length > 0) {
+								layer.transitionEffect = transitionEffect;
 							}
 							layer.visibility = false;
 							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request

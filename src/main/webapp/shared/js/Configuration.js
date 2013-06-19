@@ -155,3 +155,24 @@ de.ingrid.mapclient.Configuration.checkLoaded = function() {
 		throw "The configuration is not loaded.";
 	}
 };
+
+
+/**
+ * Get Settings from Admin
+ */
+de.ingrid.mapclient.Configuration.getSettings = function(key) {
+	var settings = de.ingrid.mapclient.Configuration.getValue('settings');
+	for (var j=0, countJ=settings.length; j<countJ; j++) {
+		var setting = settings[j];
+		if(setting.key == key){
+			var value = setting.value;
+			// Check if boolean value
+			if (value.toLowerCase()=='false'){
+				value = false;
+			} else if (value.toLowerCase()=='true'){
+			    value =  true;
+			}
+			return value;
+		}
+	}
+};

@@ -32,7 +32,8 @@ de.ingrid.mapclient.admin.modules.basic.BaseModule.prototype.initComponent = fun
 	        new de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel(),
 	        new de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel(),
 	        new de.ingrid.mapclient.admin.modules.basic.ScalesPanel(),
-	        new de.ingrid.mapclient.admin.modules.basic.ProxyPanel()
+	        new de.ingrid.mapclient.admin.modules.basic.ProxyPanel(),
+	        new de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel()
 		]
 	});
 	de.ingrid.mapclient.admin.modules.basic.BaseModule.superclass.initComponent.call(this);

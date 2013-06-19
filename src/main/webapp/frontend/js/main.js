@@ -62,32 +62,37 @@ Ext.onReady(function() {
 			}
 
 			// build the gui with the given configuration
-			var configPrams = de.ingrid.mapclient.VIEW_CONFIG[viewConfig];
-			if (configPrams != undefined) {
-				
-				if(configPrams.isFullScreen){
-					new de.ingrid.mapclient.frontend.Workspace({
-						mapUrl: mapUrl,
-						session: session,
-						viewConfig: configPrams,
-						callbackHooks: callbackHooks
-				});			
-				}else {
+			if(viewConfig){
+				if(viewConfig  == "search"){
 					new de.ingrid.mapclient.frontend.PanelWorkspace({
-						height: configPrams.panelHeight,
+						height: parseInt(de.ingrid.mapclient.Configuration.getSettings("searchPanelHeight").trim()),
 						mapUrl: mapUrl,
 						session: session,
-						viewConfig: configPrams,
+						viewConfig: viewConfig,
 						callbackHooks: callbackHooks,
 						callbackAreaId: callbackAreaId
-				});						
-				}
-				if(typeof endLoadIcon !== 'undefined')
-				endLoadIcon();
+					});			
+				}else if(viewConfig  == "search-facets"){
+					new de.ingrid.mapclient.frontend.PanelWorkspace({
+						height: parseInt(de.ingrid.mapclient.Configuration.getSettings("searchPanelHeightFacets").trim()),
+						mapUrl: mapUrl,
+						session: session,
+						viewConfig: viewConfig,
+						callbackHooks: callbackHooks,
+						callbackAreaId: callbackAreaId
+					});			
+				}else {
+					new de.ingrid.mapclient.frontend.Workspace({
+						mapUrl: mapUrl,
+						viewConfig: viewConfig,
+						session: session,
+						callbackHooks: callbackHooks
+					});						
+				}	
 			}
-			else {
-				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_CONFIGURATION_FAILURE);
-			}
+			
+			if(typeof endLoadIcon !== 'undefined')
+			endLoadIcon();
 		},
 		failure: function() {
 			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);

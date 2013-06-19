@@ -31,6 +31,7 @@ import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
+import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsServer;
 import de.ingrid.mapclient.model.WmsService;
 
@@ -58,9 +59,7 @@ public enum ConfigurationProvider {
 	private static final String CONFIGURATION_FILE_KEY = "administration.file";
 	private static final String OPENSEARCH_URL = "opensearch.searchurl";
 	private static final String DOWNLOAD_DIR = "mapdownload.dir";
-	private static final String SINGLE_TILE = "frontend.singleTile";
-    private static final String TRANSITION_EFFECT = "frontend.transitionEffect";
-    private static final String WMS_DIR = "wms.dir";
+	private static final String WMS_DIR = "wms.dir";
 	
 
 	private Properties properties = null;
@@ -196,15 +195,7 @@ public enum ConfigurationProvider {
 		return this.properties.getProperty(DOWNLOAD_DIR);
 	}	
 
-	public static String getSingleTile() {
-		return SINGLE_TILE;
-	}
-
-    public static String getTransitionEffect() {
-        return TRANSITION_EFFECT;
-    }
-	
-    public String getWMSDir(){
+	public String getWMSDir(){
     	return this.properties.getProperty(WMS_DIR);
     }
 	
@@ -235,6 +226,7 @@ public enum ConfigurationProvider {
 		xstream.alias("mapExtend", MapExtend.class);
 		xstream.alias("projection", Projection.class);
 		xstream.alias("scale", Scale.class);
+		xstream.alias("setting", Setting.class);
 		xstream.alias("mapServiceCategory", MapServiceCategory.class);
 		xstream.alias("wmsService", WmsService.class);
 		xstream.alias("areaCategory", AreaCategory.class);
@@ -262,6 +254,7 @@ public enum ConfigurationProvider {
 		this.configuration.setMapExtend(this.persistentConfiguration.getMapExtend());
 		this.configuration.setProjections(this.persistentConfiguration.getProjections());
 		this.configuration.setScales(this.persistentConfiguration.getScales());
+		this.configuration.setSettings(this.persistentConfiguration.getSettings());
 		this.configuration.setProxyUrl(this.persistentConfiguration.getProxyUrl());
 		this.configuration.setAreaCategeories(this.persistentConfiguration.getAreaCategories());
 		
@@ -319,6 +312,7 @@ public enum ConfigurationProvider {
 		this.persistentConfiguration.setMapExtend(this.configuration.getMapExtend());
 		this.persistentConfiguration.setProjections(this.configuration.getProjections());
 		this.persistentConfiguration.setScales(this.configuration.getScales());
+		this.persistentConfiguration.setSettings(this.configuration.getSettings());
 		this.persistentConfiguration.setProxyUrl(this.configuration.getProxyUrl());
 		this.persistentConfiguration.setAreaCategeories(this.configuration.getAreaCategories());
 		//TODO at this point we set the old serviceCategories in the persistentConfiguration,

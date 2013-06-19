@@ -70,6 +70,7 @@ import de.ingrid.mapclient.model.MapExtend;
 import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
+import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.utils.tool.MD5Util;
@@ -381,6 +382,50 @@ public class ConfigurationResource {
 		}
 		catch (Exception ex) {
 			log.error("Error setting scales", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+	
+	/**
+	 * Set the possible settings
+	 * @param String containing a JSON encoded array of setting objects
+	 */
+	@POST
+	@Path(DYNAMIC_PATH+"/settings")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void setSettings(String settingStr, @Context HttpServletRequest req) {
+		try {
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			List<Setting> settings = config.getSettings();
+			
+			// convert json string to List<Setting>
+			JSONArray settingTmp = new JSONArray(settingStr);
+			HashMap<String, String> maps = new HashMap<String, String>();
+			for (int j=0, count=settingTmp.length(); j<count; j++) {
+				JSONObject settingsObj = settingTmp.getJSONObject(j);
+				Iterator<?> keys = settingsObj.keys();
+
+		        while( keys.hasNext() ){
+		            String key = (String)keys.next();
+		            maps.put(key, settingsObj.get(key).toString());
+		        }
+			}
+			List<Setting> editSettings = new ArrayList<Setting>();
+			for (int i=0, countI=settings.size(); i<countI; i++) {
+				
+				Setting setting = settings.get(i);
+				String key = setting.getKey();
+				String name = setting.getName();
+				
+				String value = (String) maps.get(key);
+				Setting editSetting = new Setting(key, name, value);
+				editSettings.add(editSetting);
+			}
+			config.setSettings(editSettings);
+			ConfigurationProvider.INSTANCE.write(config);
+		}
+		catch (Exception ex) {
+			log.error("Error setting Settings", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
