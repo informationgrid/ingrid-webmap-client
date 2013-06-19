@@ -90,7 +90,7 @@
     </setting>
     <setting>
       <key>defaultGroupSelection</key>
-      <name>Gruppierte Selektierung: Selektierung von Gruppenlayer wählen automatisch deren Unterlayer</name>
+      <name>Gruppierte Selektierung: Selektierung von Gruppenlayer w&auml;hlen automatisch deren Unterlayer</name>
       <value>true</value>
     </setting>
     <setting>
@@ -115,12 +115,12 @@
     </setting>
     <setting>
       <key>viewHasHistoryTool</key>
-      <name>History-Button: Einen Kartenausschnitt vor oder zurück gehen</name>
+      <name>History-Button: Einen Kartenausschnitt vor oder zur&uuml;ck gehen</name>
       <value>true</value>
     </setting>
     <setting>
       <key>viewHasMeasureTool</key>
-      <name>Messungs-Button: Strecken und Flächen messen</name>
+      <name>Messungs-Button: Strecken und Fl&auml;chen messen</name>
       <value>true</value>
     </setting>
     <setting>
@@ -140,7 +140,7 @@
     </setting>
     <setting>
       <key>viewHasHelpTool</key>
-      <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
+      <name>Hilfe-Button: Hilfe f&uuml;r die Kartenkomponente</name>
       <value>true</value>
     </setting>
     <setting>
@@ -150,7 +150,7 @@
     </setting>
     <setting>
       <key>viewHasScaleList</key>
-      <name>Maßstäbeliste: In der Admin-GUI definierte Maßstäbe aufrufen</name>
+      <name>Ma&szligst&auml;beliste: In der Admin-GUI definierte Ma&szligst&auml;be aufrufen</name>
       <value>true</value>
     </setting>
     <setting>
@@ -160,7 +160,7 @@
     </setting>
     <setting>
       <key>viewSpacerTop</key>
-      <name>Top-Abstand: Abstand zum oberen Browserrand (nötig für die Einbindung in das Portal)</name>
+      <name>Top-Abstand: Abstand zum oberen Browserrand (n&ouml;tig f&uuml;r die Einbindung in das Portal)</name>
       <value>142</value>
     </setting>
     <setting>
@@ -195,12 +195,12 @@
     </setting>
     <setting>
       <key>searchHasHistoryTool</key>
-      <name>History-Button: Einen Kartenausschnitt vor oder zurück gehen</name>
+      <name>History-Button: Einen Kartenausschnitt vor oder zur&uuml;ck gehen</name>
       <value>false</value>
     </setting>
     <setting>
       <key>searchHasMeasureTool</key>
-      <name>Messungs-Button: Strecken und Flächen messen</name>
+      <name>Messungs-Button: Strecken und Fl&auml;chen messen</name>
       <value>false</value>
     </setting>
     <setting>
@@ -220,7 +220,7 @@
     </setting>
     <setting>
       <key>searchHasHelpTool</key>
-      <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
+      <name>Hilfe-Button: Hilfe f&uuml;r die Kartenkomponente</name>
       <value>true</value>
     </setting>
     <setting>
@@ -230,7 +230,7 @@
     </setting>
     <setting>
       <key>searchHasScaleList</key>
-      <name>Maßstäbeliste: In der Admin-GUI definierte Maßstäbe aufrufen</name>
+      <name>Ma&szligst&auml;beliste: In der Admin-GUI definierte Ma&szligst&auml;be aufrufen</name>
       <value>true</value>
     </setting>
     <setting>
@@ -240,7 +240,7 @@
     </setting>
     <setting>
       <key>searchPanelHeight</key>
-      <name>Panel Höhe: Höhe der Kartenkomponente</name>
+      <name>Panel H&ouml;he: H&ouml;he der Kartenkomponente</name>
       <value>676</value>
     </setting>
     <setting>
@@ -260,7 +260,7 @@
     </setting>
     <setting>
       <key>searchPanelHeightFacets</key>
-      <name>Panel Höhe: Höhe der Kartenkomponente für die Facettierung</name>
+      <name>Panel H&ouml;he: H&ouml;he der Kartenkomponente f&uuml;r die Facettierung</name>
       <value>500</value>
     </setting>
     <setting>
