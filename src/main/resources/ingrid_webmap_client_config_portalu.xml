@@ -84,6 +84,11 @@
       <value>false</value>
     </setting>
     <setting>
+      <key>defaultGroupeLayerDepend</key>
+      <name>Gruppenlayerabhängigkeit: Darstellung eines Layers nur bei aktivieren von übergeordneten Gruppenlayern</name>
+      <value>true</value>
+    </setting>
+    <setting>
       <key>defaultTransitionEffect</key>
       <name>Transition Effekt</name>
       <value>resize</value>

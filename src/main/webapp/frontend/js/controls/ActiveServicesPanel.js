@@ -45,6 +45,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	transparencyBtn: null,
 	metaDataBtn: null,
 	expandBtn: null,
+	groupLayerBtn: null,
 	zoomLayerBtn : null,
 	allExpanded: false,
 	ctrls:null,
@@ -156,6 +157,29 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		}
 	});
 
+	this.groupLayerBtn = new Ext.Button({
+		iconCls: 'iconMap',
+		tooltip: 'Gruppenlayer anzeigen',
+		disabled: true,
+		handler: function(btn) {
+			var node = self.activeNode; 
+			if (node.attributes.checked) {
+				var layer = node.layer;
+				if(node.attributes.cls == "x-tree-node-select"){
+					layer.setVisibility(false);
+					node.setCls('x-tree-node-anchor');
+				}else{
+					var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
+					if(isParentsSelect){
+						layer.setVisibility(true);
+					}
+					node.setCls('x-tree-node-select');
+				}
+				node.getUI().toggleCheck(true);
+			}
+		}
+	});
+
 	// zoom to layer extent
 	var bbox = null;
 
@@ -197,6 +221,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 			});
 
+	
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
 		root: {
@@ -218,7 +243,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.transparencyBtn.disable();
 		self.metaDataBtn.enable();	
 		self.zoomLayerBtn.enable();
-		
+		self.groupLayerBtn.disable();
 
 		if (node) {
 			if (node.layer) {
@@ -233,6 +258,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					self.removeBtn.disable();
 					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
 					self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
+				}
+				
+				if(selModel.selNode.childNodes.length != 0){
+					self.groupLayerBtn.enable();
 				}
 			}else if (node.attributes.service) {
 				self.transparencyBtn.disable();
@@ -258,6 +287,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			this.expandBtn,
 			this.zoomLayerBtn
 		]
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")){
+		items.push(this.groupLayerBtn);
+	} 
 	
 	Ext.apply(this, {
 		items: this.layerTree,
@@ -349,10 +382,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			text: serviceTitle,
 			layerStore: this.layerStore,
 			leaf: false,
-			checked:false,
 			expanded: false,
 			service: service,
-			cls: 'x-tree-noicon',
 			loader: new de.ingrid.mapclient.frontend.controls.ServiceTreeLoader({
 				filter: function(record) {
 					var layer = record.get("layer");

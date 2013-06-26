@@ -85,11 +85,61 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 		        {
 		        	xtype: 'container',
 					height: 20
+			    },
+			    {
+					xtype: 'container',
+					layout: 'column',
+					anchor: '100%',
+				    items: [{
+						xtype: 'container',
+						columnWidth: 1,
+						height: 50
+					}, {
+						xtype: 'container',
+						layout: 'form',
+						height: 50,
+						items: {
+							xtype: 'button',
+							text: 'Einstellungen Speichern',
+							anchor: '100%',
+							style: {
+				                paddingTop: '10px'
+				            },
+							handler: function() {
+								self.saveSettings();
+							}
+						}
+					}]
 			    }, 
 			    this.grid,
 		        {
 		        	xtype: 'container',
 					height: 20
+			    },
+			    {
+					xtype: 'container',
+					layout: 'column',
+					anchor: '100%',
+				    items: [{
+						xtype: 'container',
+						columnWidth: 1,
+						height: 50
+					}, {
+						xtype: 'container',
+						layout: 'form',
+						height: 50,
+						items: {
+							xtype: 'button',
+							text: 'Einstellungen Speichern',
+							anchor: '100%',
+							style: {
+				                paddingTop: '10px'
+				            },
+							handler: function() {
+								self.saveSettings();
+							}
+						}
+					}]
 			    }, 
 			    this.gridSearch,
 			    {

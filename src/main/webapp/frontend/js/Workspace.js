@@ -1078,6 +1078,45 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 			}
 		});
 	}
+	
+	de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect = function(node) {
+    	var parentNode = node.parentNode;
+    	var isChecked = true;
+    	if(parentNode.layer){
+	    	if(parentNode.attributes.checked){
+	    		isChecked = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(parentNode);
+	    	}else{
+	    		isChecked = false;
+	    	}
+		}
+		return isChecked;
+    }
+	
+	de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection = function(node, select, isParentsSelect) {
+    	var childNodes = node.childNodes; 
+		for (var i = 0, count = childNodes.length; i < count; i++) {
+			var childNode = childNodes[i];
+			if(childNode.attributes.checked){
+				var layer = childNode.layer;
+				if(layer){
+					if(select){
+						if(((layer.getVisibility() == false) && (childNode.leaf == true) && isParentsSelect) == true){
+	    					layer.setVisibility(select);
+	    				}else if ((childNode.leaf == false) && (childNode.attributes.cls == "x-tree-node-select") ){
+	    					layer.setVisibility(select);
+	    				}
+					}else{
+						if(layer.getVisibility()){
+        					layer.setVisibility(select);
+        					childNode.getUI().toggleCheck(true);
+        				}
+					}
+				}
+			}
+			de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(childNode, select, isParentsSelect);
+		}
+	}
+	
 };
 /**
  * 
@@ -1183,3 +1222,46 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
             this.events.triggerEvent("visibilitychanged");
         }
     }
+    
+    GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
+    	if (de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")) {
+    		var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
+    		if(isParentsSelect){
+    			if(checked != this.layer.getVisibility()) {
+                    this._visibilityChanging = true;
+                    var layer = this.layer;
+                    if(checked && layer.isBaseLayer && layer.map) {
+                        layer.map.setBaseLayer(layer);
+                    } else {
+                   	 if(checked && this.childNodes.length > 0){
+                   		 layer.setVisibility(false);
+                   	 }else{
+                   		 if(isParentsSelect){
+                   			 layer.setVisibility(checked);
+                   		 }else{
+                   			 layer.setVisibility(false);
+                   		 }
+                   	 }
+                    }
+                    delete this._visibilityChanging;
+    			}
+	           	if(checked){
+	           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, true, isParentsSelect);
+	           	}else{
+	           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, false, isParentsSelect);
+	           	}
+    		}
+    	}else{
+    		if(checked != this.layer.getVisibility()) {
+                this._visibilityChanging = true;
+                var layer = this.layer;
+                if(checked && layer.isBaseLayer && layer.map) {
+                    layer.map.setBaseLayer(layer);
+                } else {
+                    layer.setVisibility(checked);
+                }
+                delete this._visibilityChanging;
+            }
+    	}
+    }
+

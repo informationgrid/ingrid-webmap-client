@@ -24,6 +24,10 @@ body {
 	background-image: url(../../shared/images/icon_meassure.png);
 }
 
+.iconMap {
+	background-image: url(../../shared/images/icon_map.png);
+}
+
 .iconPrint {
 	background-image: url(../../shared/images/icon_print.png);
 }
@@ -175,4 +179,8 @@ padding: 1px 3px 1px 3px;
     background: none repeat scroll 0 0 #D9E7F8 !important;
     border: 1px solid #8DB2E3 !important;
     z-index: 1100;
+}
+
+.x-tree-node .x-tree-node-select a span{
+	font-weight:bold !important;
 }
