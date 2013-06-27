@@ -164,7 +164,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: true,
 		handler: function(btn) {
 			var node = self.activeNode; 
-			if (node.attributes.checked) {
+			if (node.attributes.checked && node.attributes.cls != "x-tree-node-disabled") {
 				var layer = node.layer;
 				if(node.attributes.cls == "x-tree-node-select"){
 					layer.setVisibility(false);
@@ -1084,8 +1084,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    			//n.disable();
 	    			n.setCls('x-tree-node-disabled');
 	    		}
-	        	else
+	        	else{
 	        		n.enable();
+	        		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+	        			if(n.attributes.cls != "x-tree-node-select")
+		        			n.setCls('x-tree-node-anchor');
+		        		if(n.layer.visibility && !n.leaf){
+		        			n.setCls('x-tree-node-select');
+		        		}
+	        		}
+	        	}
 	    	}
 	        if(n.hasChildNodes){
 	        	self.checkScaleRecursively(n, scale);
@@ -1097,8 +1105,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    		if(layer.maxScale > scale || layer.minScale < scale){
 //	    			node.disable();
 	    			node.setCls('x-tree-node-disabled');
-	    		}else
+	    		}else{
 	    			node.enable();
+	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+		    			if(node.attributes.cls != "x-tree-node-select"){
+		    				node.setCls('x-tree-node-anchor');
+		    			}
+		    			if(node.layer.visibility && !node.leaf){
+		    				node.setCls('x-tree-node-select');
+		        		}
+	    			}
+	    		}
     		}
     	}			        
 }
@@ -1145,7 +1162,9 @@ GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
                 delete this._visibilityChanging;
 			}
 			if(checked == false){
-            	node.setCls('x-tree-node-anchor');
+				if(node.attributes.cls != "x-tree-node-disabled"){
+					node.setCls('x-tree-node-anchor');
+				}
             }
             
            	if(checked){
