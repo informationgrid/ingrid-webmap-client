@@ -870,7 +870,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				id : id,
 				map : this.map,
 				activeServices : [],
-				kmlArray : []
+				kmlArray : [],
+				selectedLayersByService: []
 			});
 	var self = this;
 	this.session.load(state, shortUrl, {
@@ -901,6 +902,40 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					self.save(true);
 				}
 			});
+			
+			if (!(typeof(state.selectedLayersByService) === "undefined") && state.selectedLayersByService.length > 0){
+				for (var i = 0, count = state.selectedLayersByService.length; i < count; i++) {
+					var selectedLayer = state.selectedLayersByService[i];
+					var id = null;
+					var capabilitiesUrl = null;
+					var checked = null;
+					var cls = null;
+					var leaf = null;
+					for (var j = 0, countJ = selectedLayer.length; j < countJ; j++) {
+						var entry = selectedLayer[j];
+						if(entry[0] == "id"){
+							id = entry[1];
+						}else if(entry[0] == "capabilitiesUrl"){
+							capabilitiesUrl = entry[1];
+						}else if(entry[0] == "checked"){
+							checked = entry[1];
+						}else if(entry[0] == "cls"){
+							cls = entry[1];
+						}else if(entry[0] == "leaf"){
+							leaf = entry[1];
+						}
+					}
+					self.activeServicesPanel.selectedLayersByService.push({
+						id:id,
+						capabilitiesUrl:capabilitiesUrl,
+						checked:checked,
+						cls:cls,
+						leaf:leaf
+					});
+				}
+			}
+					
+			
 			if (!(typeof(state.kmlArray) === "undefined")
 					&& state.kmlArray.length > 0) {
 				// Add KML if session with added KML exist
@@ -1225,48 +1260,3 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
         }
     }
     
-    GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
-    	if (de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")) {
-    		var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
-    		if(isParentsSelect){
-    			if(checked != this.layer.getVisibility()) {
-                    this._visibilityChanging = true;
-                    var layer = this.layer;
-                    if(checked && layer.isBaseLayer && layer.map) {
-                        layer.map.setBaseLayer(layer);
-                    } else {
-	                   	if(checked && this.childNodes.length > 0){
-	                   		 layer.setVisibility(false);
-	                   	}else{
-	                   		 if(isParentsSelect){
-	                   			 layer.setVisibility(checked);
-	                   		 }else{
-	                   			 layer.setVisibility(false);
-	                   		 }
-	                   	}
-                    }
-                    if(checked == false){
-                    	node.setCls('x-tree-node-anchor');
-                    }
-                    delete this._visibilityChanging;
-    			}
-	           	if(checked){
-	           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, true, isParentsSelect);
-	           	}else{
-	           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, false, isParentsSelect);
-	           	}
-    		}
-    	}else{
-    		if(checked != this.layer.getVisibility()) {
-                this._visibilityChanging = true;
-                var layer = this.layer;
-                if(checked && layer.isBaseLayer && layer.map) {
-                    layer.map.setBaseLayer(layer);
-                } else {
-                    layer.setVisibility(checked);
-                }
-                delete this._visibilityChanging;
-            }
-    	}
-    }
-

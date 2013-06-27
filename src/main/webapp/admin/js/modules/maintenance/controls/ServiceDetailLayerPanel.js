@@ -156,7 +156,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				    		var modified  = record.modified;
 							if(modified){
 								//check if record has children and/or is disabled
-								self.checkChildrenAndSelf(record);
+								if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")) {
+									self.checkChildrenAndSelf(record);
+								}
 								var modifiedDeactivated = modified.deactivated;
 					    		var modifiedChecked = modified.checked;
 					    		var modifiedFeatureInfo = modified.featureInfo;

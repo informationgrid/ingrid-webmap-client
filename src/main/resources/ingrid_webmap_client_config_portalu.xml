@@ -84,19 +84,14 @@
       <value>false</value>
     </setting>
     <setting>
-      <key>defaultGroupeLayerDepend</key>
-      <name>Gruppenlayerabhängigkeit: Darstellung eines Layers nur bei aktivieren von übergeordneten Gruppenlayern</name>
+      <key>defaultLayerSelection</key>
+      <name>Auswahl im Layer-Baum: Gruppenlayer wird dargestellt und automatische Selektierung von Unterlayer</name>
       <value>true</value>
     </setting>
     <setting>
       <key>defaultTransitionEffect</key>
       <name>Transition Effekt</name>
       <value>resize</value>
-    </setting>
-    <setting>
-      <key>defaultGroupSelection</key>
-      <name>Gruppierte Selektierung: Selektierung von Gruppenlayer wählen automatisch deren Unterlayer</name>
-      <value>true</value>
     </setting>
     <setting>
       <key>defaultNominatimParams</key>

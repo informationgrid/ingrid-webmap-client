@@ -280,6 +280,28 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		}
 		self.activeNode = node;
 	});
+	
+	
+	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
+		this.layerTree.on('beforeappend', function(tree, parent, node){
+			if(node.attributes.layer){
+				var id = node.attributes.layer.params.LAYERS;
+				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+				
+				for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
+				    var selectedLayer = self.selectedLayersByService[j];
+					if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+						node.attributes.checked=true;
+						if(selectedLayer.cls){
+							node.setCls(selectedLayer.cls);
+						}
+					}
+				}
+			}
+	
+		});
+	}
+	
 	var items = [
 			this.addBtn,
 			this.removeBtn,
@@ -289,7 +311,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			this.zoomLayerBtn
 		]
 	
-	if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")){
+	if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 		items.push(this.groupLayerBtn);
 	} 
 	
@@ -410,14 +432,14 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					    			});
 					    		}
 					    	} else {
-					    		if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupSelection")){
+					    		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
 						    		n.getUI().toggleCheck(checked);
 					    		}
 					    	}
 					    });
 					}
 					
-					if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")){
+					if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 						var id = node.layer.params.LAYERS;
 						var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
 						
@@ -460,7 +482,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    			});
 		    		}
 		    	} else {
-		    		if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupSelection")){
+		    		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
 		    			n.getUI().toggleCheck(checked);
 		    		}
 		    	}
@@ -1098,4 +1120,50 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.destroyLayer
 		
     	});		
  
+}
+
+GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
+	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
+		var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
+		if(isParentsSelect){
+			if(checked != this.layer.getVisibility()) {
+                this._visibilityChanging = true;
+                var layer = this.layer;
+                if(checked && layer.isBaseLayer && layer.map) {
+                    layer.map.setBaseLayer(layer);
+                } else {
+                   	if(checked && this.childNodes.length > 0){
+                   		 layer.setVisibility(false);
+                   	}else{
+                   		 if(isParentsSelect){
+                   			 layer.setVisibility(checked);
+                   		 }else{
+                   			 layer.setVisibility(false);
+                   		 }
+                   	}
+                }
+                delete this._visibilityChanging;
+			}
+			if(checked == false){
+            	node.setCls('x-tree-node-anchor');
+            }
+            
+           	if(checked){
+           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, true, isParentsSelect);
+           	}else{
+           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, false, isParentsSelect);
+           	}
+		}
+	}else{
+		if(checked != this.layer.getVisibility()) {
+            this._visibilityChanging = true;
+            var layer = this.layer;
+            if(checked && layer.isBaseLayer && layer.map) {
+                layer.map.setBaseLayer(layer);
+            } else {
+                layer.setVisibility(checked);
+            }
+            delete this._visibilityChanging;
+        }
+	}
 }
