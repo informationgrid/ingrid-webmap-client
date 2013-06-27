@@ -54,7 +54,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	metadataBtnActive: false,
 	serviceCategoryPanel:null,
 	parentCheckChangeActive:false,
-	isCheckedByCheckedLayers:false
+	isCheckedByCheckedLayers:false,
+	selectedLayersByService: []
 });
 
 /**
@@ -414,6 +415,31 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					    		}
 					    	}
 					    });
+					}
+					
+					if(de.ingrid.mapclient.Configuration.getSettings("defaultGroupeLayerDepend")){
+						var id = node.layer.params.LAYERS;
+						var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+						
+						for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
+							var selectedLayer = self.selectedLayersByService[j];
+							if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+								self.selectedLayersByService.remove(selectedLayer);
+								break;
+							}
+						}
+						
+						if(checked){
+							self.selectedLayersByService.push({
+								id:id,
+								capabilitiesUrl:capabilitiesUrl,
+								checked:checked,
+								cls:node.attributes.cls ? node.attributes.cls : "x-tree-node-anchor",
+								leaf:node.leaf
+								
+							});
+						}
+						self.fireEvent('datachanged');
 					}
 				}
 			})

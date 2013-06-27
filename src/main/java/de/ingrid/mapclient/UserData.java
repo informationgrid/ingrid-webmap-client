@@ -34,7 +34,8 @@ public class UserData {
 	private LocationKey locationKey;
 	private List<String> activeServices = new ArrayList<String>();
 	private List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
-
+	private List<Map<String, String>> selectedLayersByService= new ArrayList<Map<String, String>>();
+	
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -134,5 +135,13 @@ public class UserData {
 
 	public void setKml(List<Map<String, String>> kml) {
 		this.kmlArray = kml;
+	}
+
+	public List<Map<String, String>> getSelectedLayersByService() {
+		return selectedLayersByService;
+	}
+
+	public void setSelectedLayersByService(List<Map<String, String>> selectedLayersByService) {
+		this.selectedLayersByService = selectedLayersByService;
 	}
 }

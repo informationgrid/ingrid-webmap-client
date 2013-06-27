@@ -808,7 +808,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				description : description,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
-				kmlArray : this.kmlArray
+				kmlArray : this.kmlArray,
+				selectedLayersByService: this.activeServicesPanel.selectedLayersByService
+				
 			});
 	this.session.save(data, isTemporary, responseHandler);
 };
@@ -1233,15 +1235,18 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
                     if(checked && layer.isBaseLayer && layer.map) {
                         layer.map.setBaseLayer(layer);
                     } else {
-                   	 if(checked && this.childNodes.length > 0){
-                   		 layer.setVisibility(false);
-                   	 }else{
-                   		 if(isParentsSelect){
-                   			 layer.setVisibility(checked);
-                   		 }else{
-                   			 layer.setVisibility(false);
-                   		 }
-                   	 }
+	                   	if(checked && this.childNodes.length > 0){
+	                   		 layer.setVisibility(false);
+	                   	}else{
+	                   		 if(isParentsSelect){
+	                   			 layer.setVisibility(checked);
+	                   		 }else{
+	                   			 layer.setVisibility(false);
+	                   		 }
+	                   	}
+                    }
+                    if(checked == false){
+                    	node.setCls('x-tree-node-anchor');
                     }
                     delete this._visibilityChanging;
     			}
