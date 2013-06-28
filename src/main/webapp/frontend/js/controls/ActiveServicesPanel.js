@@ -164,7 +164,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		disabled: true,
 		handler: function(btn) {
 			var node = self.activeNode; 
-			if (node.attributes.checked && node.attributes.cls != "x-tree-node-disabled") {
+			if (node.attributes.checked && node.attributes.cls != "x-tree-node-disabled" && node.attributes.cls != "x-tree-node-select-disabled") {
 				var layer = node.layer;
 				if(node.attributes.cls == "x-tree-node-select"){
 					layer.setVisibility(false);
@@ -1083,13 +1083,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    			//this style class is set on disable, but doesnt reeally disable
 	    			//n.disable();
 	    			n.setCls('x-tree-node-disabled');
+	    			if(n.layer.visibility && !n.leaf){
+	    				n.setCls('x-tree-node-select-disabled');
+	    			}
 	    		}
 	        	else{
 	        		n.enable();
 	        		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 	        			if(n.attributes.cls != "x-tree-node-select")
 		        			n.setCls('x-tree-node-anchor');
-		        		if(n.layer.visibility && !n.leaf){
+		        		if((n.layer.visibility && !n.leaf) || n.attributes.cls == "x-tree-node-select-disabled"){
 		        			n.setCls('x-tree-node-select');
 		        		}
 	        		}
@@ -1105,13 +1108,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    		if(layer.maxScale > scale || layer.minScale < scale){
 //	    			node.disable();
 	    			node.setCls('x-tree-node-disabled');
+	    			if(node.layer.visibility && !node.leaf){
+	    				node.setCls('x-tree-node-select-disabled');
+	    			}
 	    		}else{
 	    			node.enable();
 	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 		    			if(node.attributes.cls != "x-tree-node-select"){
 		    				node.setCls('x-tree-node-anchor');
 		    			}
-		    			if(node.layer.visibility && !node.leaf){
+		    			if((node.layer.visibility && !node.leaf) || node.attributes.cls == "x-tree-node-select-disabled"){
 		    				node.setCls('x-tree-node-select');
 		        		}
 	    			}
