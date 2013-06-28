@@ -566,41 +566,43 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	}
 	this.map.addControls(controls);
 	
-	// create the overview layer
-	// (we cannot clone the baselayer here, because it would use wrong 
-	// settings form the main map (zoom levels, etc.).)
-	var overviewLayer = new OpenLayers.Layer.WMS(
-			this.map.baseLayer.name, 
-            this.map.baseLayer.url,
-            {layers: this.map.baseLayer.params.LAYERS}
-        );
-	var ov = new OpenLayers.Control.OverviewMap({
-		layers : [overviewLayer],
-		minRatio: 2,
-		maxRatio: 100,
-		minimizeControl: function(e) {
-			this.element.style.display = 'none';
-			this.showToggle(true);
-			if (e != null) {
-			OpenLayers.Event.stop(e);
+	if(de.ingrid.mapclient.Configuration.getSettings("defaultMinimapEnable")){
+		// create the overview layer
+		// (we cannot clone the baselayer here, because it would use wrong 
+		// settings form the main map (zoom levels, etc.).)
+		var overviewLayer = new OpenLayers.Layer.WMS(
+				this.map.baseLayer.name, 
+	            this.map.baseLayer.url,
+	            {layers: this.map.baseLayer.params.LAYERS}
+	        );
+		var ov = new OpenLayers.Control.OverviewMap({
+			layers : [overviewLayer],
+			minRatio: 2,
+			maxRatio: 100,
+			minimizeControl: function(e) {
+				this.element.style.display = 'none';
+				this.showToggle(true);
+				if (e != null) {
+				OpenLayers.Event.stop(e);
+				}
+				var copyright = $("copyright");
+				if(copyright)
+					copyright.style.right =  "25px";
+			},
+			maximizeControl: function(e) {
+				this.element.style.display = '';
+				this.showToggle(false);
+				if (e != null) {
+				OpenLayers.Event.stop(e);
+				}
+				var copyright = $("copyright");
+				if(copyright)
+					copyright.style.right =  "220px";
 			}
-			var copyright = $("copyright");
-			if(copyright)
-				copyright.style.right =  "25px";
-		},
-		maximizeControl: function(e) {
-			this.element.style.display = '';
-			this.showToggle(false);
-			if (e != null) {
-			OpenLayers.Event.stop(e);
-			}
-			var copyright = $("copyright");
-			if(copyright)
-				copyright.style.right =  "220px";
-		}
-	});
-	this.map.addControl(ov);
-
+		});
+		this.map.addControl(ov);
+	}
+	
 	// listen to session changing events (addLayer and removeLayer are
 	// signaled by datachange of activeServicesPanel)
 	this.map.events.register('moveend', self.map, function(evt) {

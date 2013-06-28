@@ -184,3 +184,8 @@ padding: 1px 3px 1px 3px;
 .x-tree-node .x-tree-node-select a span{
 	font-weight:bold !important;
 }
+
+.x-tree-node .x-tree-node-select-disabled a span{
+	font-weight:bold !important;
+	color:gray !important;
+}

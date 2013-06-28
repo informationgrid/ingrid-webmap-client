@@ -104,6 +104,11 @@
       <value>true</value>
     </setting>
     <setting>
+      <key>defaultMinimapEnable</key>
+      <name>Minimap: Anzeigen des Minimap-Controls</name>
+      <value>true</value>
+    </setting>
+    <setting>
       <key>viewHasServicesPanel</key>
       <name>Dienstebereich: Darstellung des Dienstebereiches</name>
       <value>true</value>
