@@ -170,7 +170,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					layer.setVisibility(false);
 					node.setCls('x-tree-node-anchor');
 				}else{
-					var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
+					var isParentsSelect = self.isParentsSelect(node);
 					if(isParentsSelect){
 						layer.setVisibility(true);
 					}
@@ -232,7 +232,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			children: []
 		},
 		rootVisible: false,
-		enableDD: false,
+		enableDD: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop"),
 		border: false
 	});
 
@@ -488,6 +488,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		    	}
 		    });
 		});
+		
+		if(de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop")){
+			node.on('move', function(tree, thisNode, oldParent, newParent, index, nextNode) {
+				if (oldParent == newParent) {
+					var serviceNodes = tree.root.childNodes;
+					var layers = [];
+					for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
+					 	var serviceNode = serviceNodes[i];
+					 	self.getLayersFromTree(serviceNode, layers);
+					}
+				
+					for (var j = 0, count = layers.length; j < count; j++) {
+						var layer = layers[j];
+						self.map.raiseLayer(layer, layers.length);
+					}
+             	}
+			});
+		}
+		
+		
 		this.layerTree.root.appendChild(node);
 
 		this.services.add(service.getCapabilitiesUrl(), service);
@@ -551,6 +571,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursi
 		}
 	});
 			        
+}
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayersFromTree = function(node, layers){
+	var layerNodes = node.childNodes;
+	for (var i = 0, countI = layerNodes.length; i < countI; i++) {
+		var layerNode = layerNodes[i];
+		var layer = layerNode.layer;
+		if(layer){
+			layers.push(layer);
+		}
+		this.getLayersFromTree(layerNode, layers);
+	}
 }
 
 /**
@@ -1145,9 +1177,49 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.destroyLayer
  
 }
 
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.isParentsSelect = function(node) {
+	var parentNode = node.parentNode;
+	var isChecked = true;
+	if(parentNode.layer){
+    	if(parentNode.attributes.checked){
+    		isChecked = this.isParentsSelect(parentNode);
+    	}else{
+    		isChecked = false;
+    	}
+	}
+	return isChecked;
+}
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSelection = function(node, select, isParentsSelect) {
+	var childNodes = node.childNodes; 
+	for (var i = 0, count = childNodes.length; i < count; i++) {
+		var childNode = childNodes[i];
+		var isParentSelectChildNode = this.isParentsSelect(childNode);
+		if(childNode.attributes.checked){
+			var layer = childNode.layer;
+			if(layer){
+				if(select){
+					if(((layer.getVisibility() == false) && (childNode.leaf == true) && isParentSelectChildNode) == true){
+    					layer.setVisibility(select);
+    				}else if ((childNode.leaf == false) && (childNode.attributes.cls == "x-tree-node-select") && isParentSelectChildNode){
+    					layer.setVisibility(select);
+    				}
+				}else{
+					if(layer.getVisibility()){
+    					layer.setVisibility(select);
+    					childNode.getUI().toggleCheck(true);
+    				}
+				}
+			}
+		}
+		this.checkboxSelection(childNode, select, isParentSelectChildNode);
+	}
+}
+
+
 GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
-		var isParentsSelect = de.ingrid.mapclient.frontend.Workspace.prototype.isParentsSelect(node);
+		var isParentsSelect = de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.isParentsSelect(node);
 		if(isParentsSelect){
 			if(checked != this.layer.getVisibility()) {
                 this._visibilityChanging = true;
@@ -1174,9 +1246,9 @@ GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
             }
             
            	if(checked){
-           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, true, isParentsSelect);
+           		de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSelection(node, true, isParentsSelect);
            	}else{
-           		de.ingrid.mapclient.frontend.Workspace.prototype.checkboxSelection(node, false, isParentsSelect);
+           		de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSelection(node, false, isParentsSelect);
            	}
 		}
 	}else{
