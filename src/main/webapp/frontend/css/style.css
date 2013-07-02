@@ -28,6 +28,10 @@ body {
 	background-image: url(../../shared/images/icon_map.png);
 }
 
+.iconLayer {
+	background-image: url(../../shared/images/icon_layer.png);
+}
+
 .iconPrint {
 	background-image: url(../../shared/images/icon_print.png);
 }

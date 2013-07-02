@@ -159,8 +159,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 
 	this.groupLayerBtn = new Ext.Button({
-		iconCls: 'iconMap',
-		tooltip: 'Gruppenlayer anzeigen',
+		iconCls: 'iconLayer',
+		tooltip: i18n('tGruppenLayerAnzeigen'),
 		disabled: true,
 		handler: function(btn) {
 			var node = self.activeNode; 
