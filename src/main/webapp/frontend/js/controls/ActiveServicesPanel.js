@@ -261,7 +261,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
 				}
 				
-				if(selModel.selNode.childNodes.length != 0){
+				if(selModel.selNode.childNodes.length != 0 && selModel.selNode.attributes.checked){
 					self.groupLayerBtn.enable();
 				}
 			}else if (node.attributes.service) {
@@ -440,6 +440,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					}
 					
 					if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+						self.enableGroupLayerButton(self.activeNode, self.activeNode.attributes.checked);
+						
 						var id = node.layer.params.LAYERS;
 						var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
 						
@@ -1216,6 +1218,19 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSele
 	}
 }
 
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.enableGroupLayerButton  = function(node, checked){
+	var self = this; 
+	
+	if(checked){
+		if(node.childNodes.length != 0){
+			self.groupLayerBtn.enable();
+		}
+	}else{
+		if(node.childNodes.length != 0){
+			this.groupLayerBtn.disable();
+		}
+	}
+}
 
 GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
