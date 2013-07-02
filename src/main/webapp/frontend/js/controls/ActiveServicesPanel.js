@@ -262,7 +262,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 				
 				if(selModel.selNode.childNodes.length != 0 && selModel.selNode.attributes.checked){
-					self.groupLayerBtn.enable();
+					if(selModel.selNode.layer.params.LAYERS){
+						self.groupLayerBtn.enable();
+						if(selModel.selNode.layer.params.LAYERS.indexOf("INGRID-") > -1){
+							self.groupLayerBtn.disable();
+						}
+					}
 				}
 			}else if (node.attributes.service) {
 				self.transparencyBtn.disable();
@@ -440,7 +445,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					}
 					
 					if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-						self.enableGroupLayerButton(self.activeNode, self.activeNode.attributes.checked);
+						if(self.activeNode){
+							var isEnable = self.activeNode.attributes.checked;
+							
+							if(self.activeNode.layer.params.LAYERS){
+								if(self.activeNode.layer.params.LAYERS.indexOf("INGRID-") > -1){
+									isEnable = false;
+								}
+							}else{
+								isEnable = false;
+							}
+							self.enableGroupLayerButton(self.activeNode, isEnable);
+						}
 						
 						var id = node.layer.params.LAYERS;
 						var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
@@ -1218,10 +1234,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSele
 	}
 }
 
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.enableGroupLayerButton  = function(node, checked){
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.enableGroupLayerButton  = function(node, isEnabled){
 	var self = this; 
 	
-	if(checked){
+	if(isEnabled){
 		if(node.childNodes.length != 0){
 			self.groupLayerBtn.enable();
 		}
