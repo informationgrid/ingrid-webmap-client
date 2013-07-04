@@ -662,7 +662,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeAll = 
  * @return Array of de.ingrid.mapclient.frontend.data.Service instances
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceList = function() {
-	return this.services.getRange();
+	var services = [];
+	var serviceNodes = this.layerTree.root.childNodes;
+	for (var i=0, count=serviceNodes.length; i<count; i++) {
+		var serviceNode = serviceNodes[i];
+		services.push(serviceNode.attributes.service);
+	}
+	return services;
 };
 
 /**

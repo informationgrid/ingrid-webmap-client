@@ -884,9 +884,23 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 			// BEFORE any other layer (KML, AddWms via URL) is loaded
 			state.restoreMapState(function() {
 				// restore active services
-				for (var i = 0, count = state.activeServices.length; i < count; i++) {
-					self.activeServicesPanel
-							.addService(state.activeServices[i],false,true);
+				if(state.capabilitiesUrlOrder){
+					for (var j = 0, countJ = state.capabilitiesUrlOrder.length; j < countJ; j++) {
+						var capabilitiesUrl = state.capabilitiesUrlOrder[j];
+						for (var i = 0, count = state.activeServices.length; i < count; i++) {
+							var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
+							if(capabilitiesUrl === serviceCapabilitiesUrl){
+								self.activeServicesPanel.addService(state.activeServices[i],false,true);
+								break;
+							}
+						}
+					}
+					
+				}else{
+					for (var i = 0, count = state.activeServices.length; i < count; i++) {
+						self.activeServicesPanel.addService(state.activeServices[i],false,true);
+					}
+					
 				}
 	
 				// Load WMS by "Zeige Karte" from Session

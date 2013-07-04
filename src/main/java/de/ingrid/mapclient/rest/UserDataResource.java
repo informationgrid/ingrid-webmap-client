@@ -339,19 +339,33 @@ public class UserDataResource {
 			String wmcDocument = rootObj.getString("wmcDocument");
 
 			List<String> activeServices = new ArrayList<String>();
-			JSONArray activeServicesTmp = rootObj
-					.getJSONArray("activeServices");
+			JSONArray activeServicesTmp = rootObj.getJSONArray("activeServices");
 			for (int i = 0, count = activeServicesTmp.length(); i < count; i++) {
 				String capabilitiesUrl = activeServicesTmp.getString(i);
 				activeServices.add(capabilitiesUrl);
 			}
 
+			List<Map<String,String>> selectedLayersByService = new ArrayList<Map<String,String>>();
+			JSONArray selectedLayersByServiceTmp = rootObj.getJSONArray("selectedLayersByService");
+			for (int i = 0, count = selectedLayersByServiceTmp.length(); i < count; i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				JSONObject obj = selectedLayersByServiceTmp.getJSONObject(i);
+				map.put("id", (String) obj.get("id"));
+				map.put("cls", (String) obj.get("cls"));
+				map.put("checked", (String) obj.get("checked").toString());
+				map.put("leaf", (String) obj.get("leaf").toString());
+				map.put("capabilitiesUrl", (String) obj.get("capabilitiesUrl"));
+				selectedLayersByService.add(map);
+			}
+			
+			
 			UserData userData = new UserData();
 			userData.setTitle(title);
 			userData.setDescription(description);
 			userData.setDate(Calendar.getInstance().getTime());
 			userData.setWmcDocument(wmcDocument);
 			userData.setActiveServices(activeServices);
+			userData.setSelectedLayersByService(selectedLayersByService);
 
 			// create a unique record id
 			String recordId = UUID.randomUUID().toString();
