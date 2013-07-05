@@ -1252,6 +1252,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkboxSele
     					childNode.getUI().toggleCheck(true);
     				}
 				}
+				if(layer.isBaseLayer){
+                	layer.setVisibility(true);
+                }
 			}
 		}
 		this.checkboxSelection(childNode, select, isParentSelectChildNode);
@@ -1291,6 +1294,9 @@ GeoExt.tree.LayerNode.prototype.onCheckChange = function(node, checked){
                    			 layer.setVisibility(false);
                    		 }
                    	}
+                }
+                if(layer.isBaseLayer){
+                	layer.setVisibility(true);
                 }
                 delete this._visibilityChanging;
 			}
