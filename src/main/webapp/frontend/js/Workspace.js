@@ -666,41 +666,44 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		controls.push(new OpenLayers.Control.Permalink('permalink'));
 	}
 	this.map.addControls(controls);
-	// create the overview layer
-	// (we cannot clone the baselayer here, because it would use wrong 
-	// settings form the main map (zoom levels, etc.).)
-	var overviewLayer = new OpenLayers.Layer.WMS(
-			this.map.baseLayer.name, 
-            this.map.baseLayer.url,
-            {layers: this.map.baseLayer.params.LAYERS}
-        );
-	var ov = new OpenLayers.Control.OverviewMap({
-		layers : [overviewLayer],
-		minRatio: 30, 
-		maxRatio: 30,
-		minimizeControl: function(e) {
-			this.element.style.display = 'none';
-			this.showToggle(true);
-			if (e != null) {
-			OpenLayers.Event.stop(e);
-			}
-			var copyright = $("copyright");
-			if(copyright)
-				copyright.style.right =  "25px";
-		},
-		maximizeControl: function(e) {
-			this.element.style.display = '';
-			this.showToggle(false);
-			if (e != null) {
-			OpenLayers.Event.stop(e);
-			}
-			var copyright = $("copyright");
-			if(copyright)
-				copyright.style.right =  "220px";
-		}
-	});
 	
-	this.map.addControl(ov);
+	if(de.ingrid.mapclient.Configuration.getSettings("defaultMinimapEnable")){
+		// create the overview layer
+		// (we cannot clone the baselayer here, because it would use wrong 
+		// settings form the main map (zoom levels, etc.).)
+		var overviewLayer = new OpenLayers.Layer.WMS(
+				this.map.baseLayer.name, 
+	            this.map.baseLayer.url,
+	            {layers: this.map.baseLayer.params.LAYERS}
+	        );
+		var ov = new OpenLayers.Control.OverviewMap({
+			layers : [overviewLayer],
+			minRatio: 30, 
+			maxRatio: 30,
+			minimizeControl: function(e) {
+				this.element.style.display = 'none';
+				this.showToggle(true);
+				if (e != null) {
+				OpenLayers.Event.stop(e);
+				}
+				var copyright = $("copyright");
+				if(copyright)
+					copyright.style.right =  "25px";
+			},
+			maximizeControl: function(e) {
+				this.element.style.display = '';
+				this.showToggle(false);
+				if (e != null) {
+				OpenLayers.Event.stop(e);
+				}
+				var copyright = $("copyright");
+				if(copyright)
+					copyright.style.right =  "220px";
+			}
+		});
+		
+		this.map.addControl(ov);
+	}
 	
 	// listen to session changing events (addLayer and removeLayer are
 	// signaled by datachange of activeServicesPanel)
@@ -808,7 +811,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				description : description,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
-				kmlArray : this.kmlArray
+				kmlArray : this.kmlArray,
+				selectedLayersByService: this.activeServicesPanel.selectedLayersByService
+				
 			});
 	this.session.save(data, isTemporary, responseHandler);
 };
@@ -868,7 +873,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				id : id,
 				map : this.map,
 				activeServices : [],
-				kmlArray : []
+				kmlArray : [],
+				selectedLayersByService: []
 			});
 	var self = this;
 	this.session.load(state, shortUrl, {
@@ -878,9 +884,23 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 			// BEFORE any other layer (KML, AddWms via URL) is loaded
 			state.restoreMapState(function() {
 				// restore active services
-				for (var i = 0, count = state.activeServices.length; i < count; i++) {
-					self.activeServicesPanel
-							.addService(state.activeServices[i],false,true);
+				if(state.capabilitiesUrlOrder){
+					for (var j = 0, countJ = state.capabilitiesUrlOrder.length; j < countJ; j++) {
+						var capabilitiesUrl = state.capabilitiesUrlOrder[j];
+						for (var i = 0, count = state.activeServices.length; i < count; i++) {
+							var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
+							if(capabilitiesUrl === serviceCapabilitiesUrl){
+								self.activeServicesPanel.addService(state.activeServices[i],false,true);
+								break;
+							}
+						}
+					}
+					
+				}else{
+					for (var i = 0, count = state.activeServices.length; i < count; i++) {
+						self.activeServicesPanel.addService(state.activeServices[i],false,true);
+					}
+					
 				}
 	
 				// Load WMS by "Zeige Karte" from Session
@@ -899,6 +919,40 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					self.save(true);
 				}
 			});
+			
+			if (!(typeof(state.selectedLayersByService) === "undefined") && state.selectedLayersByService.length > 0){
+				for (var i = 0, count = state.selectedLayersByService.length; i < count; i++) {
+					var selectedLayer = state.selectedLayersByService[i];
+					var id = null;
+					var capabilitiesUrl = null;
+					var checked = null;
+					var cls = null;
+					var leaf = null;
+					for (var j = 0, countJ = selectedLayer.length; j < countJ; j++) {
+						var entry = selectedLayer[j];
+						if(entry[0] == "id"){
+							id = entry[1];
+						}else if(entry[0] == "capabilitiesUrl"){
+							capabilitiesUrl = entry[1];
+						}else if(entry[0] == "checked"){
+							checked = entry[1];
+						}else if(entry[0] == "cls"){
+							cls = entry[1];
+						}else if(entry[0] == "leaf"){
+							leaf = entry[1];
+						}
+					}
+					self.activeServicesPanel.selectedLayersByService.push({
+						id:id,
+						capabilitiesUrl:capabilitiesUrl,
+						checked:checked,
+						cls:cls,
+						leaf:leaf
+					});
+				}
+			}
+					
+			
 			if (!(typeof(state.kmlArray) === "undefined")
 					&& state.kmlArray.length > 0) {
 				// Add KML if session with added KML exist
@@ -1183,3 +1237,4 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
             this.events.triggerEvent("visibilitychanged");
         }
     }
+    

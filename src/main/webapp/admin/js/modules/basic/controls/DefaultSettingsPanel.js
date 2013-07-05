@@ -85,11 +85,61 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 		        {
 		        	xtype: 'container',
 					height: 20
+			    },
+			    {
+					xtype: 'container',
+					layout: 'column',
+					anchor: '100%',
+				    items: [{
+						xtype: 'container',
+						columnWidth: 1,
+						height: 50
+					}, {
+						xtype: 'container',
+						layout: 'form',
+						height: 50,
+						items: {
+							xtype: 'button',
+							text: 'Einstellungen Speichern',
+							anchor: '100%',
+							style: {
+				                paddingTop: '10px'
+				            },
+							handler: function() {
+								self.saveSettings();
+							}
+						}
+					}]
 			    }, 
 			    this.grid,
 		        {
 		        	xtype: 'container',
 					height: 20
+			    },
+			    {
+					xtype: 'container',
+					layout: 'column',
+					anchor: '100%',
+				    items: [{
+						xtype: 'container',
+						columnWidth: 1,
+						height: 50
+					}, {
+						xtype: 'container',
+						layout: 'form',
+						height: 50,
+						items: {
+							xtype: 'button',
+							text: 'Einstellungen Speichern',
+							anchor: '100%',
+							style: {
+				                paddingTop: '10px'
+				            },
+							handler: function() {
+								self.saveSettings();
+							}
+						}
+					}]
 			    }, 
 			    this.gridSearch,
 			    {
@@ -137,27 +187,29 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.onRender 
 
 	// initialize the settings list
 	var settings = de.ingrid.mapclient.Configuration.getValue('settings');
-	for (var i=0, count=settings.length; i<count; i++) {
-		var setting = settings[i];
-		var key = setting.key;
-		var value = setting.value;
-		
-		// Check if boolean value
-		if (value.toLowerCase()=='false'){
-			value = false;
-		} else if (value.toLowerCase()=='true'){
-		    value =  true;
-		}
-		
-		if(key.indexOf("view") == 0){
-			this.settingsStore[key] = value;
-			this.propertyNames[key] = setting.name;
-		}else if (key.indexOf("search") == 0){
-			this.settingsStoreSearch[key] = value;
-			this.propertyNamesSearch[key] = setting.name;
-		}else if (key.indexOf("default") == 0){
-			this.settingsStoreDefault[key] = value;
-			this.propertyNamesDefault[key] = setting.name;
+	if(settings){
+		for (var i=0, count=settings.length; i<count; i++) {
+			var setting = settings[i];
+			var key = setting.key;
+			var value = setting.value;
+			
+			// Check if boolean value
+			if (value.toLowerCase()=='false'){
+				value = false;
+			} else if (value.toLowerCase()=='true'){
+			    value =  true;
+			}
+			
+			if(key.indexOf("view") == 0){
+				this.settingsStore[key] = value;
+				this.propertyNames[key] = setting.name;
+			}else if (key.indexOf("search") == 0){
+				this.settingsStoreSearch[key] = value;
+				this.propertyNamesSearch[key] = setting.name;
+			}else if (key.indexOf("default") == 0){
+				this.settingsStoreDefault[key] = value;
+				this.propertyNamesDefault[key] = setting.name;
+			}
 		}
 	}
 };

@@ -131,10 +131,13 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode =
 		layerStore: this.store,
 		loader: loader,
 		isLeaf: isLeaf,
-		service: service
+		service: service,
+		allowDrop:false,
+		allowDrag:false 
 	});
 	
 	if(child){
+		node.allowChildren=false;
 		node.appendChild(child);
 	}
 	
