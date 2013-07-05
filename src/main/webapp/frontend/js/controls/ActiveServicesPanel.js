@@ -568,6 +568,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 			}
 		}
+		
+		// 
+		var serviceNodes = this.layerTree.root.childNodes;
+		var layers = [];
+		for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
+		 	var serviceNode = serviceNodes[i];
+		 	self.getLayersFromTree(serviceNode, layers);
+		}
+	
+		for (var j = 0, count = layers.length; j < count; j++) {
+			var layer = layers[j];
+			self.map.raiseLayer(layer, layers.length);
+		}
+		
 	}
 };
 
@@ -1139,8 +1153,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    			//this style class is set on disable, but doesnt reeally disable
 	    			//n.disable();
 	    			n.setCls('x-tree-node-disabled');
-	    			if(n.layer.visibility && !n.leaf){
-	    				n.setCls('x-tree-node-select-disabled');
+	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+		    			if(n.layer.visibility && !n.leaf){
+		    				n.setCls('x-tree-node-select-disabled');
+		    			}
 	    			}
 	    		}
 	        	else{
@@ -1164,8 +1180,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	    		if(layer.maxScale > scale || layer.minScale < scale){
 //	    			node.disable();
 	    			node.setCls('x-tree-node-disabled');
-	    			if(node.layer.visibility && !node.leaf){
-	    				node.setCls('x-tree-node-select-disabled');
+	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+	    				if(node.layer.visibility && !node.leaf){
+	    					node.setCls('x-tree-node-select-disabled');
+	    				}
 	    			}
 	    		}else{
 	    			node.enable();
