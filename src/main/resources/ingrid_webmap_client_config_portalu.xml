@@ -113,6 +113,11 @@
       <name>Layer-Tree Drag/Drop: Verschieben von Diensten im Dienst Baum</name>
       <value>true</value>
     </setting>
+    <setting>
+      <key>viewActiveAccordionWestPanel</key>
+      <name>Aktives Akkordion: Default geöffnetes Akkordion im Dienstebereich</name>
+      <value>0</value>
+    </setting>
 	<setting>
       <key>viewHasServicesPanel</key>
       <name>Dienstebereich: Darstellung des Dienstebereiches</name>

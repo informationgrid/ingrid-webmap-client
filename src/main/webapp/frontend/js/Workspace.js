@@ -174,6 +174,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				cls: "mapclientLegendPanel"
 			});
 
+	var activeItem = 0;
+	var activeAccordion = accordionItems[activeItem];
+	if (de.ingrid.mapclient.Configuration.getSettings("viewActiveAccordionWestPanel")) {
+		activeItem = de.ingrid.mapclient.Configuration.getSettings("viewActiveAccordionWestPanel");
+		if(accordionItems[activeItem])
+			activeAccordion = accordionItems[activeItem];
+	}
+
 	// create the panel for the west region
 	var westPanel = new Ext.TabPanel({
 				id : 'west',
@@ -189,7 +197,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 							closable : false,
 							layout : 'accordion',
 							layoutConfig : {
-								animate : true
+								animate : true,
+								activeItem: activeAccordion
 							},
 							border : false,
 							items : accordionItems
