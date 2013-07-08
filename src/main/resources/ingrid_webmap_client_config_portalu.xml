@@ -204,11 +204,6 @@
       <value>false</value>
     </setting>
     <setting>
-      <key>searchHasInfoTool</key>
-      <name>Info-Button: Feature-Abfrage eines Dienstes</name>
-      <value>true</value>
-    </setting>
-    <setting>
       <key>searchHasHistoryTool</key>
       <name>History-Button: Einen Kartenausschnitt vor oder zurück gehen</name>
       <value>false</value>
@@ -267,11 +262,6 @@
       <key>searchHasBboxSelectTool</key>
       <name>Download-Button: Karte als WMC abspeichern</name>
       <value>true</value>
-    </setting>
-    <setting>
-      <key>searchHasZoomTool</key>
-      <name>Zoom-Button: Zoomen zur initiale Kartenausdehnung</name>
-      <value>false</value>
     </setting>
     <setting>
       <key>searchPanelHeightFacets</key>
