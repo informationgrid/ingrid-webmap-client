@@ -180,7 +180,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		scope: administrativeFeatureInfoControl
 	});
 	
-	toolbarItems.push(new Ext.ButtonGroup({
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasBboxSelectTool")) {
+		toolbarItems.push(new Ext.ButtonGroup({
 			items : [{
 						xtype : 'button',
 						id : 'bboxButton',
@@ -228,8 +229,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 							}
 						}
 					}]
-		}));	
-
+		}));
+	}
 	
 	// b.2) history tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasHistoryTool")) {
@@ -384,7 +385,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 
 	// g) help tool
-	if (de.ingrid.mapclient.Configuration.getSettings("searchHasInfoTool")) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasHelpTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls: 'iconHelp',
 			tooltip: i18n('tHilfe'),
