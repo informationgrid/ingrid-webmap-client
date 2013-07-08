@@ -260,7 +260,7 @@
     </setting>
     <setting>
       <key>searchHasBboxSelectTool</key>
-      <name>Download-Button: Karte als WMC abspeichern</name>
+      <name>Gebiet-Einheit-Button: Zur Auswahl des Gebietes oder einer ID einer Administrativen Einheit.</name>
       <value>true</value>
     </setting>
     <setting>
