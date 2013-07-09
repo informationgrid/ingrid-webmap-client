@@ -115,7 +115,7 @@
     </setting>
     <setting>
       <key>viewActiveAccordionWestPanel</key>
-      <name>Aktives Akkordion: Default geöffnetes Akkordion im Dienstebereich (0=Aktive Dienste, 1=Themen, 2=Anbieter, 3=Search)</name>
+      <name>Aktives Akkordeon: Default geöffnetes Akkordeon im Dienstebereich (0=1.Akkordeon, 1=2.Akkordeon, ...)</name>
       <value>0</value>
     </setting>
 	<setting>
