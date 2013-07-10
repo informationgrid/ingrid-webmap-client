@@ -318,6 +318,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// Create Nominatim
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultNominatimEnable")) {
 		toolbarItems.push({
+			id:'nominatim',
 			xtype: "gx_geocodercombo",
 			hideTrigger: true,
 			// To restrict the search to a bounding box, uncomment the following
