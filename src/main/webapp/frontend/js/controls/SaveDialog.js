@@ -119,7 +119,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 		    this.descriptionField
 		],
 		buttons: [{
-			id: "saveButtonDialog"
+			id: "saveButtonDialog",
 			text: i18n('tSpeichern'),
 			handler: function(btn) {
 	        	if (self.titleField.validate() && self.descriptionField.validate()) {
