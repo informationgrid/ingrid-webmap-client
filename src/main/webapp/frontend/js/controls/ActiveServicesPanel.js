@@ -225,6 +225,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
+		id:"layertree",
 		root: {
 			nodeType: 'async',
 			text: i18n('tLayers'),
