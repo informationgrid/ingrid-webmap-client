@@ -93,12 +93,14 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 	
 	
 	this.titleField = new Ext.form.TextField({
+		id:"saveTitleDialog",
 		fieldLabel: i18n('tTitle'),
 		hideLabel: false,
 		allowBlank: false
 	});
 
 	this.descriptionField = new Ext.form.TextArea({
+		id:"saveDescriptionDialog",
 		fieldLabel: i18n('tBeschreibung'),
 		hideLabel: false,
 		allowBlank: true
@@ -117,6 +119,7 @@ de.ingrid.mapclient.frontend.controls.SaveDialog.prototype.initComponent = funct
 		    this.descriptionField
 		],
 		buttons: [{
+			id: "saveButtonDialog"
 			text: i18n('tSpeichern'),
 			handler: function(btn) {
 	        	if (self.titleField.validate() && self.descriptionField.validate()) {
