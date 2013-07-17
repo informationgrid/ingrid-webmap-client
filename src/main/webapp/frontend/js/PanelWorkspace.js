@@ -735,7 +735,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 				// Copyright
 				var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
 				if(wmsCopyright){
-					var div = document.getElementsByClassName("olMapViewport");
+					var div = self.getElementsByClassName(document, "olMapViewport");
 					var copyright = document.createElement('div');
 					copyright.setAttribute('id', 'copyright');
 					copyright.className = "olCopyrightPosition";
@@ -754,7 +754,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 			// Copyright
 			var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
 			if(wmsCopyright){
-				var div = document.getElementsByClassName("olMapViewport");
+				var div = self.getElementsByClassName(document, "olMapViewport");
 				var copyright = document.createElement('div');
 				copyright.setAttribute('id', 'copyright');
 				copyright.className = "olCopyrightPosition";
@@ -768,6 +768,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 	});
 };
 
-                
+de.ingrid.mapclient.frontend.PanelWorkspace.prototype.getElementsByClassName = function (node, classname) {
+    var a = [];
+    var re = new RegExp('(^| )'+classname+'( |$)');
+    var els = node.getElementsByTagName("*");
+    for(var i=0,j=els.length; i<j; i++)
+        if(re.test(els[i].className))a.push(els[i]);
+    return a;
+};                
   
 
