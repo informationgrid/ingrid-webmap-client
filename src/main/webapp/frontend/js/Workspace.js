@@ -479,7 +479,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		// show only if cookies do not prevent this
 		var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
 		if (showWelcomeDialog) {
-	        welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
+	        var welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
 	                {
 	                    map : this.map,
 	                    ctrls: self.ctrls
