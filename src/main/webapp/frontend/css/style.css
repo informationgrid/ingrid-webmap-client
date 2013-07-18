@@ -193,3 +193,17 @@ padding: 1px 3px 1px 3px;
 	font-weight:bold !important;
 	color:gray !important;
 }
+
+#welcomePage {font: normal 100%/120% Verdana, Arial, sans-serif; }
+#welcomePage h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
+#welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
+#welcomePage .welcomeHeader { height: 85px; }
+#welcomePage .odd { background-color: #EEE;}
+#welcomePage .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
+#welcomePage .info_img {position: absolute;right: 12px !important;margin: 0px;top: 6px !important;}
+#welcomePage .info_link { margin-bottom: 0.5em !important; font-size: 12px; }
+#welcomePage .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
+#welcomePage .welcomeTable { width: 100%; }
+#welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
+#welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
+#welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
