@@ -42,7 +42,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
             scrollOffset: 2 // the grid will never have scrollbars
         },
         autoExpandColumn: {
-            forceFit: true,
+            forceFit: true
         }
 	});
 
@@ -57,7 +57,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
             scrollOffset: 2 // the grid will never have scrollbars
         },
         autoExpandColumn: {
-            forceFit: true,
+            forceFit: true
         }
 	});
 
@@ -72,7 +72,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
             scrollOffset: 2 // the grid will never have scrollbars
         },
         autoExpandColumn: {
-            forceFit: true,
+            forceFit: true
         }
 	});
 
