@@ -25,31 +25,11 @@ de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection = function(map) {
 de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCode, map, container, zoomToExtent) {
 	var oldProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(map);
 	var newProjection = new OpenLayers.Projection(newProjCode);
-	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
-	var newExtent;
-	var mapExtent;
+	var maxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	
-	if(oldProjection.projCode != newProjection.projCode){
-		mapExtent = container.bounds;
-	}
-	if (mapExtent) {
-		newExtent = mapExtent.clone().transform(oldProjection, newProjection);
-	} else {
-		if(container.map){
-			if(container.map.baseLayer){
-				if(container.map.baseLayer.maxExtent){
-					if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
-						newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
-					}
-					if(newExtent === undefined){
-						newExtent = container.map.baseLayer.maxExtent;
-					}
-				}
-			}
-		}
-	}
 	var options = {
-		maxExtent: newExtent,
+		maxExtent: maxExtent,
+		displayOutsideMaxExtent: true,
 		projection: newProjection.getCode(),
 		units: newProjection.getUnits(),
 		maxResolution: 'auto'
@@ -83,7 +63,7 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	
 	// only zoom into extent if the map initially had an extent
 	if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
-		map.zoomToExtent(newMaxExtent);
+		map.zoomToExtent(maxExtent);
 	}
 	
     map.displayProjection = newProjection;
