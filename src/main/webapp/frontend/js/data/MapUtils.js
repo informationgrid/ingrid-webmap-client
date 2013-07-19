@@ -59,16 +59,20 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	map.setOptions(options);
 	// reset layers
 	for(var i=0,len=map.layers.length; i<len; i++) {
-		var layerVersion = map.layers[i].params.VERSION;
-		map.layers[i].addOptions(options);
-		if(layerVersion == "1.3.0"){
-			map.layers[i].yx["EPSG:4326"] = true;
-			map.layers[i].yx["EPSG:31466"] = true;
-			map.layers[i].yx["EPSG:31467"] = true;
-			map.layers[i].yx["EPSG:31468"] = true;
-			map.layers[i].yx["EPSG:31469"] = true;
+		var layer = map.layers[i];
+		layer.addOptions(options);
+		if(layer){
+			if(layer.params){
+				var layerVersion = layer.params.VERSION;
+				if(layerVersion == "1.3.0"){
+					map.layers[i].yx["EPSG:4326"] = true;
+					map.layers[i].yx["EPSG:31466"] = true;
+					map.layers[i].yx["EPSG:31467"] = true;
+					map.layers[i].yx["EPSG:31468"] = true;
+					map.layers[i].yx["EPSG:31469"] = true;
+				}
+			}
 		}
-		
 	}
 	// reproject map.layerContainerOrigin, in case the next
 	// call to moveTo does not change the zoom level and
