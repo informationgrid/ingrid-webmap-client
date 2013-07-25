@@ -130,6 +130,8 @@ public class SniffedXmlInputStream extends BufferedInputStream {
                 return "UTF-16";
             else if ((result & 0xFFFFFF00) == 0xEFBBBF00)
                 return "UTF-8";
+            else if (result == 0x53746174)
+                return "ISO-8859-1";
             else
                 return null;
         } finally {

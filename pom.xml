@@ -37,6 +37,15 @@
 					</archive>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <wtpversion>1.5</wtpversion>
+                    <downloadSources>1.5</downloadSources>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>yuicompressor-maven-plugin</artifactId>
