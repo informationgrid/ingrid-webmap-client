@@ -27,26 +27,55 @@ import java.nio.charset.Charset;
 
 /**
  * Specialized input stream that sneaks at the input stream to detect the
- * encoding of the input stream.
- * 
+ * encoding of the input stream.<br/>
+ * <b>INPUT STREAM CAN BE XML (GetCapabilities) OR HTML (GetFeatureInfo)</b>
+ * <br/>
  * It uses the following strategies:
  * 
- * <li>use magic bytes</li> <li>use <xml> header</li> <li>presume UTF-8</li>
+ * <li>check {@code<html>} header</li>
+ * <li>use magic bytes</li>
+ * <li>check {@code<xml>} header</li>
+ * <li>presume UTF-8</li>
  * 
  */
-public class SniffedXmlInputStream extends BufferedInputStream {
+public class SniffedInputStream extends BufferedInputStream {
     // We don't sniff more than 192 bytes.
     public static int MAX_SNIFFED_BYTES = 192;
 
-    public SniffedXmlInputStream(InputStream stream) throws IOException {
+	/** Type of requested file */
+	private enum FileType {
+		XML, // GetCapabilities
+		HTML // GetFeatureInfo
+	}
+
+    private String _encoding;
+
+    public SniffedInputStream(InputStream stream) throws IOException {
         super(stream);
 
-        // read byte order marks and detect EBCDIC etc
-        _encoding = sniffFourBytes();
+        // First assume HTML (GetFeatureInfo) ! Sniff for encoding in HTML header.
+        // assuming we can read it as UTF-8.
+        _encoding = sniffForEncodingInfo("UTF-8", FileType.HTML);
+
+/*
+        // determine XML encoding from content first ?
+        // we comment to keep old order, but this may be better with added
+        // additional stuff to sniffFourBytes()
+        if (_encoding == null) {
+            // Haven't yet determined encoding: sniff for <?xml encoding="..."?>
+            // assuming we can read it as UTF-8.
+            _encoding = sniffForEncodingInfo("UTF-8", FileType.XML);
+        }
+*/
+
+        if (_encoding == null) {
+            // read byte order marks and detect EBCDIC etc
+            _encoding = sniffFourBytes();        	
+        }
 
         if (_encoding != null && _encoding.equals("IBM037")) {
             // First four bytes suggest EBCDIC with <?xm at start
-            String encoding = sniffForXmlDecl(_encoding);
+            String encoding = sniffForEncodingInfo(_encoding, FileType.XML);
             if (encoding != null)
                 _encoding = encoding;
         }
@@ -54,7 +83,7 @@ public class SniffedXmlInputStream extends BufferedInputStream {
         if (_encoding == null) {
             // Haven't yet determined encoding: sniff for <?xml encoding="..."?>
             // assuming we can read it as UTF-8.
-            _encoding = sniffForXmlDecl("UTF-8");
+            _encoding = sniffForEncodingInfo("UTF-8", FileType.XML);
         }
 
         if (_encoding == null) {
@@ -130,8 +159,13 @@ public class SniffedXmlInputStream extends BufferedInputStream {
                 return "UTF-16";
             else if ((result & 0xFFFFFF00) == 0xEFBBBF00)
                 return "UTF-8";
+/*
+			// was added to determine encoding of HTML (GetFeatureInfo), see
+			// Email "AW: GetFeatureInfo: Unterstützende Formate ?" 25.07.2013 10:54
+			// But now determined via explicit checking of html header, see sniffForEncodingInfo ...
             else if (result == 0x3C68746D ) //0x53746174)
                 return "ISO-8859-1";
+*/
             else
                 return null;
         } finally {
@@ -150,7 +184,21 @@ public class SniffedXmlInputStream extends BufferedInputStream {
     private static Charset dummy6 = Charset.forName("US-ASCII");
     private static Charset dummy7 = Charset.forName("Cp1252");
 
-    private String sniffForXmlDecl(String encoding) throws IOException {
+    /** Try to read encoding information from content of file, e.g.<br/>
+     * XML: <br/>
+     * {@code
+     * <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+     * }<br/>
+     * HTML:<br/>
+     * {@code
+     * <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+     * }
+     * @param encoding Encoding for decoding content
+     * @param fileType what kind of file, determines format of content.
+     * @return determined encoding or null
+     * @throws IOException
+     */
+    private String sniffForEncodingInfo(String encoding, FileType fileType) throws IOException {
         mark(MAX_SNIFFED_BYTES);
         try {
             byte[] bytebuf = new byte[MAX_SNIFFED_BYTES];
@@ -168,19 +216,32 @@ public class SniffedXmlInputStream extends BufferedInputStream {
                 limit += count;
             }
 
-            return extractXmlDeclEncoding(buf, 0, limit);
+            String myEncoding = null;
+            if (fileType == FileType.XML) {
+                myEncoding = extractXmlDeclEncoding(buf, 0, limit);
+            } else if (fileType == FileType.HTML) {
+                myEncoding = extractHtmlHeaderEncoding(buf, 0, limit);            	
+            }
+ 
+            return myEncoding;
         } finally {
             reset();
         }
     }
 
-    private String _encoding;
-
-    public String getXmlEncoding() {
+    /** Get Encoding of stream
+     * @return determined encoding of input stream
+     */
+    public String getEncoding() {
         return _encoding;
     }
 
-    /* package */static String extractXmlDeclEncoding(char[] buf, int offset, int size) {
+    /** Extracts encoding from something like:
+     * {@code
+     * <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+     * }
+     */
+    static String extractXmlDeclEncoding(char[] buf, int offset, int size) {
         int limit = offset + size;
         int xmlpi = firstIndexOf("<?xml", buf, offset, limit);
         if (xmlpi >= 0) {
@@ -192,6 +253,35 @@ public class SniffedXmlInputStream extends BufferedInputStream {
                     return null;
                 if (attr.name.equals("encoding"))
                     return attr.value;
+            }
+        }
+        return null;
+    }
+
+    /** Extracts encoding from something like:
+     * {@code
+     * <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+     * }
+     */
+    static String extractHtmlHeaderEncoding(char[] buf, int offset, int size) {
+        int limit = offset + size;
+//        int startIndex = firstIndexOf("http-equiv=\"content-type\"", buf, offset, limit);
+        // we just search for http-equiv cause "content-type" or "Content-Type" or ...
+        int startIndex = firstIndexOf("http-equiv=", buf, offset, limit);
+        if (startIndex >= 0) {
+        	// use offset 25 cause we assume http-equiv="content-type"
+            int i = startIndex + 25;
+            ScannedAttribute attr = new ScannedAttribute();
+            while (i < limit) {
+                i = scanAttribute(buf, i, limit, attr);
+                if (i < 0)
+                    return null;
+                if (attr.name.equals("content"))
+                	startIndex = attr.value.indexOf("charset=");
+                	if (startIndex >= 0) {
+                		startIndex += 8;
+                        return attr.value.substring(startIndex);                		
+                	}
             }
         }
         return null;
