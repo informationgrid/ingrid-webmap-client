@@ -38,7 +38,7 @@ import java.nio.charset.Charset;
  * <li>presume UTF-8</li>
  * 
  */
-public class SniffedXmlInputStream extends BufferedInputStream {
+public class SniffedInputStream extends BufferedInputStream {
     // We don't sniff more than 192 bytes.
     public static int MAX_SNIFFED_BYTES = 192;
 
@@ -50,7 +50,7 @@ public class SniffedXmlInputStream extends BufferedInputStream {
 
     private String _encoding;
 
-    public SniffedXmlInputStream(InputStream stream) throws IOException {
+    public SniffedInputStream(InputStream stream) throws IOException {
         super(stream);
 
         // First assume HTML (GetFeatureInfo) ! Sniff for encoding in HTML header.
@@ -229,10 +229,10 @@ public class SniffedXmlInputStream extends BufferedInputStream {
         }
     }
 
-    /** NOTICE: Can also be HTML if GetFeatureInfo Request !
+    /** Get Encoding of stream
      * @return determined encoding of input stream
      */
-    public String getXmlEncoding() {
+    public String getEncoding() {
         return _encoding;
     }
 

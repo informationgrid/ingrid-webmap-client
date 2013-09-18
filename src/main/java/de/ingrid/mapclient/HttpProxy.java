@@ -45,14 +45,14 @@ public class HttpProxy {
 			URL url = new URL(urlStr);
 			URLConnection conn = url.openConnection();
 			
-			SniffedXmlInputStream xmlInputStream = new SniffedXmlInputStream(conn.getInputStream());
+			SniffedInputStream responseInputStream = new SniffedInputStream(conn.getInputStream());
 			
 			// read the response into the string buffer
 			char[] buf = new char[1024];
 			int numRead = 0;
 			boolean firstRow = true;
 			
-			reader = new BufferedReader(new InputStreamReader(xmlInputStream, xmlInputStream.getXmlEncoding()));
+			reader = new BufferedReader(new InputStreamReader(responseInputStream, responseInputStream.getEncoding()));
 			while((numRead = reader.read(buf)) != -1) {
 				//in some case the first char is a blank which brings the parser to thrown an exception
 				
