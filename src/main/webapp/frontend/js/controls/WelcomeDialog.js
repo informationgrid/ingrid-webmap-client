@@ -22,7 +22,8 @@ de.ingrid.mapclient.frontend.controls.WelcomeDialog = Ext.extend(Ext.Window, {
     collapsed: false,
     expandOnShow: false,
     width: 650,
-    height: 560,
+    // height: 560, // do not set height, since content defines the height!
+    y: 100,
     shadow: false,
     initHidden: false,
     ctrls:null,

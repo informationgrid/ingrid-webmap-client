@@ -197,7 +197,6 @@ padding: 1px 3px 1px 3px;
 #welcomePage {font: normal 100%/120% Verdana, Arial, sans-serif; }
 #welcomePage h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
 #welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
-#welcomePage .welcomeHeader { height: 110px; }
 #welcomePage .odd { background-color: #EEE;}
 #welcomePage .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
 #welcomePage .info_img {position: absolute;right: 12px !important;margin: 0px;top: 6px !important;}
