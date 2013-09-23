@@ -230,6 +230,25 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 						}
 					}]
 		}));
+	}else{
+		toolbarItems.push(new Ext.ButtonGroup({
+			items : [{
+						xtype : 'button',
+						iconCls : 'iconDefault',
+						tooltip : i18n('tKarteVerschieben'),
+						enableToggle : true,
+						pressed:true,
+						toggleGroup : 'mygroup',
+						handler : function(btn) {
+							if (btn.pressed) {
+								coordinatesCtrl.deactivate();
+								administrativeFeatureInfoControl.deactivate();
+							} else {
+								// console.debug("button active");
+							}
+						}
+					}]
+		}));
 	}
 	
 	// b.2) history tool
