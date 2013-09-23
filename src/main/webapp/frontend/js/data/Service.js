@@ -197,18 +197,22 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 
 							// extract the layer from the record
 							var layer = record.get("layer");
-							if(format.name == "WMC")
-							layer.mergeNewParams({
-								format: "image/png",
-								transparent: true,
-								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
-							});
-							else
-							layer.mergeNewParams({
-								format: "image/png",
-								transparent: true,
-								INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
-							});
+							if(format.name == "WMC") {
+                                var myImageFormat = self.getPreferredImageFormat('',data.records[i]);								
+    							layer.mergeNewParams({
+                                    format: myImageFormat.format,
+                                    transparent: myImageFormat.transparent,
+    								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
+    							});
+							} else {
+								var myImageFormat = self.getPreferredImageFormat(capabilities.capability, null);
+                                layer.mergeNewParams({
+                                    format: myImageFormat.format,
+                                    transparent: myImageFormat.transparent,
+                                    INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
+                                });
+							}
+
 							// set layer parameters
 							// we explicitly set a layerAbstract param, since it somehow gets lost later
 							layer.addOptions({layerAbstract:record.data['abstract']},true);
@@ -328,6 +332,54 @@ de.ingrid.mapclient.frontend.data.Service.fixLayerProperties = function(layer) {
 	layer.options.maxScale = layer.options.maxScale == Infinity ? 0 : layer.options.maxScale;
 	layer.options.minScale = layer.options.minScale == Infinity ? 0 : layer.options.minScale;
 };
+
+/**
+ * Get the preferred image format for the GetMap request for the given capabilities.
+ * Always uses png if supported. Otherwise use first format ! If that one is jpeg transparency is false !
+ * This is a fix to OpenLayers which always delivers png (if opaque attribute in layer not set !?).
+ * @param capability The capability object created by OpenLayers
+ * @return { "format":string, "transparent":boolean }<br/>
+ *  default if no format set:<br/>
+ *  { format: "image/png", transparent: true }
+ */
+de.ingrid.mapclient.frontend.data.Service.getPreferredImageFormat = function(capability, wmcData) {
+	// default settings if NO format !
+	var myImageFormat = { format: "image/png", transparent: true };
+
+	var formats = [];
+	if (capability.request && capability.request.getmap) {
+		formats = capability.request.getmap.formats || [];
+	} else if(wmcData){
+        formats = wmcData.data.formats || [];
+    }
+
+    if (formats.length > 0) {
+        for (var i=0, count=formats.length; i<count; i++) {
+        	var formatValue = formats[i];
+        	if (wmcData)
+                formatValue = formats[i].value;
+
+            // always use first image format as default !
+            if (i==0) {
+                myImageFormat.format = formatValue;
+                if (formatValue.toLowerCase().match(/jpeg/)) {
+                    myImageFormat.transparent = false;
+                } else {
+                    myImageFormat.transparent = true;            	
+                }
+            }
+            
+            // check if format is png, then use that one !
+            if (formatValue.toLowerCase().match(/png/)) {
+                myImageFormat.format = formatValue;
+                myImageFormat.transparent = true;
+                break;
+            }
+        }
+    }
+	return myImageFormat;
+};
+
 
 /**
  * Get the preferred info format for the GetFeatureInfo request for the given capabilities.
