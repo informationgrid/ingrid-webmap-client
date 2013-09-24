@@ -40,7 +40,8 @@ import java.nio.charset.Charset;
  */
 public class SniffedInputStream extends BufferedInputStream {
     // We don't sniff more than 192 bytes.
-    public static int MAX_SNIFFED_BYTES = 192;
+	// We do ! Because we also extract encoding from HTML header ! 500 should be enough !
+    public static int MAX_SNIFFED_BYTES = 500;
 
 	/** Type of requested file */
 	private enum FileType {
