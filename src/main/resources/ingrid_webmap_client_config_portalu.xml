@@ -114,6 +114,11 @@
       <value>true</value>
     </setting>
     <setting>
+      <key>defaultMailToSaveMaps</key>
+      <name>Mailto Funktion: Versende Kartenausschnitte aus der Liste der gespeicherten Kartenlinks per Email.</name>
+      <value>true</value>
+    </setting>
+    <setting>
       <key>viewActiveAccordionWestPanel</key>
       <name>Aktives Akkordeon: Default geöffnetes Akkordeon im Dienstebereich (0=1.Akkordeon, 1=2.Akkordeon, ...)</name>
       <value>0</value>
