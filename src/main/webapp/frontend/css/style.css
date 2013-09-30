@@ -115,6 +115,8 @@ body {
 .metaDataTable td { 
 	font-weight: bold !important;
 	font-size:9px;
+	vertical-align:top;
+	min-width: 150px; 
 	/* width: 155px; */
 }
 p.load_icon_webmap{   background-color: transparent;

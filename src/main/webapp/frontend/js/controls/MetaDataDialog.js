@@ -122,6 +122,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactPhone = contactInformation ? data.contactInformation.phone:"";
 		htmlData.contactFax = contactInformation.fax ? data.contactInformation.fax:"";
 		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
+		htmlData.href =  data.href ? data.href:"";
+		htmlData.capabilities =  data.href ? this.getCapabilities(data.href):"";
 		htmlData.metadata = data.metadata;		
 		
 		html = tpl.apply(htmlData);
@@ -175,6 +177,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactFax = contactInformation.fax ? data.contactInformation.fax:"";
 		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
 		htmlData.metadata = data.metadata;
+		htmlData.href =  data.href ? data.href:"";
+		htmlData.capabilities =  data.href ? this.getCapabilities(data.href):"";
 		// TODO do more mapping if required
 		
 		
@@ -224,12 +228,33 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
 		'<tr><td>' + i18n('tEbenen') + '</td><td>{layers}</td></tr>'+
-
+		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
 	'</table>';
 
 	return tplStr;
 };
 
+de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getCapabilities = function(url) {
+	var capabilities = url.toLowerCase();
+	if(capabilities.indexOf("?") == -1){
+		capabilities = capabilities + "?";
+	}
+	if(capabilities.indexOf("request") == -1){
+		if(capabilities.indexOf("?", capabilities.length - 1) == -1){
+			capabilities = capabilities + "&";
+		}
+		capabilities = capabilities + "REQUEST=GetCapabilities";
+	}
+	
+	if(capabilities.indexOf("service") == -1){
+		if(capabilities.indexOf("?", capabilities.length - 1) == -1){
+			capabilities = capabilities + "&";
+		}
+		capabilities = capabilities + "SERVICE=WMS";		
+	}
+	return capabilities;
+};
+	
 /**
  * Get the html template string for the layer meta data table
  * @returns String
@@ -261,6 +286,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
 
 		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
+		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
 
 	'</table>';
 
