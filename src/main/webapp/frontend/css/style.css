@@ -83,6 +83,13 @@ body {
 .iconLink {
 	background-image: url(../../shared/images/link_go.png);
 }
+
+.iconMail {
+	background-image: url(../../shared/images/icon_mail.png);
+	width: 16px;
+	height: 16px;
+}
+
 .iconDownload {
 	background-image: url(../../shared/images/icon_download.png);
 }

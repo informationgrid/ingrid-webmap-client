@@ -71,7 +71,7 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		// reader configs
 		root: 'files',
 		idProperty: 'id',
-		fields: ['id', 'shortUrl', 'title', 'description',
+		fields: ['id', 'shortUrl', 'emailUrl', 'title', 'description',
 				 {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
 		],
 		sortInfo: {
@@ -102,6 +102,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		store: store,
 		multiSelect: false,
 		height: 300,
+		frame: true,
+		stripeRows: true,
 		viewConfig: {
 			forceFit: true,
 			emptyText: i18n('tKeineKartenVorhanden')
@@ -132,15 +134,28 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			id: 'shortUrl',
 			header: '',
 			width: 5,
+			align: 'center',
 			sortable: false,
 			renderer: function(val) {
 				return '<div class="icon iconLink" style="cursor:pointer;" title="link"></div>';
 			},
 			dataIndex: 'shortUrl'
 		}, {
+			id: 'emailUrl',
+			header: '',
+			width: 5,
+			align: 'center',
+			sortable: false,
+			hidden: de.ingrid.mapclient.Configuration.getSettings("defaultMailToSaveMaps") ? false : true,
+			renderer: function(val) {
+				return '<div class="icon iconMail" style="cursor:pointer;" title="mailto"></div>';
+			},
+			dataIndex: 'emailUrl'
+		}, {
 			id: 'delete',
 			header: '',
 			width: 5,
+			align: 'center',
 			sortable: false,
 			renderer: function(val) {
 				return '<div class="icon iconRemove" style="cursor:pointer;" title="' + i18n('tloeschen') + '"></div>';
@@ -154,6 +169,11 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 			var record = grid.getStore().getAt(rowIndex);
 			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
 			window.open(url);
+		}
+		if (columnIndex == grid.getColumnModel().getIndexById('emailUrl')) {
+			var record = grid.getStore().getAt(rowIndex);
+			var url = window.location.origin + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
+			window.location.href ='mailto:?body=' + url;
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
 			if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
