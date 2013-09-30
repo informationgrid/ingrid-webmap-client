@@ -230,8 +230,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtm
 
 		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
 		'<tr><td>' + i18n('tEbenen') + '</td><td>{layers}</td></tr>'+
-		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a><br>(<a target="_new" href="{orgCapabilities}">original</a>)</td></tr>'+
-		
+		'<tr><td>Quelle</td><td>{href}</td></tr>'+
+		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
 	'</table>';
 
 	return tplStr;
@@ -254,6 +254,10 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getCapabilities =
 			capabilities = capabilities + "&";
 		}
 		capabilities = capabilities + "SERVICE=WMS";		
+	}
+	
+	if(capabilities.indexOf("getcapabilities") > -1){
+		capabilities = capabilities.replace("getcapabilities", "GetCapabilities");		
 	}
 	return capabilities;
 };
@@ -289,8 +293,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
 
 		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
-		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a><br>(<a target="_new" href="{orgCapabilities}">original</a>)</td></tr>'+
-
+		'<tr><td>Quelle</td><td>{href}</td></tr>'+
+		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
 	'</table>';
 
 	return tplStr;
