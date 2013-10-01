@@ -172,8 +172,12 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('emailUrl')) {
 			var record = grid.getStore().getAt(rowIndex);
-			var url = window.location.origin + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
-			window.location.href ='mailto:?body=' + url;
+			var location = window.location.origin;
+			if(location === undefined){
+				location = window.location.protocol + "//" +window.location.host;
+			}
+			var url = location + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
+			window.location.href ='mailto:?body=' + url + '&subject=' +  i18n('tMailToMapLink');
 		}
 		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
 			if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
