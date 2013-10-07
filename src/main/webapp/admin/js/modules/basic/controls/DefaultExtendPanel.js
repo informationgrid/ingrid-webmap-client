@@ -78,6 +78,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel.prototype.saveMapExte
 
                 // get the selected layer names and base layer name from the configuration
             	var selectedLayers = de.ingrid.mapclient.Configuration.getValue("layers");
+            	if(typeof selectedLayers == "string"){
+            		selectedLayers = JSON.parse(de.ingrid.mapclient.Configuration.getValue("layers"));
+            	}
             	var baseLayerName = '';
             	var layerCheckBBOX; 
                 for (var i=0, count=selectedLayers.length; i<count; i++) {
