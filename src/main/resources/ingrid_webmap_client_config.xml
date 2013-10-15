@@ -95,17 +95,17 @@
     </setting>
     <setting>
       <key>defaultMailUpdateText</key>
-      <name>E-Mail Host: Host für das Senden von E-Mails</name>
+      <name>E-Mail Inhalt: Body der E-Mail (angehängt wird in einer neuen Zeile die betroffene Capabilities)</name>
       <value>Eine neues Update erhältlich für folgende Capabilities:</value>
     </setting>
     <setting>
       <key>defaultMailUpdateSubject</key>
-      <name>E-Mail Host: Host für das Senden von E-Mails</name>
+      <name>E-Mail Betreff: Text des E-Mail-Betreffs</name>
       <value>Capabilities-Update erhältlich!</value>
     </setting>
     <setting>
       <key>defaultCronPatternUpdateCapabilities</key>
-      <name>Cron-Pattern: Für die automatischen Aktualisierung der eingebundenen Diensten</name>
+      <name>Cron-Pattern: Für die automatischen Aktualisierung der eingebundenen Diensten (Bei Änderung ist ein Neustart notwendig!)</name>
       <value>*/30 * * * *</value>
     </setting>
     <setting>
