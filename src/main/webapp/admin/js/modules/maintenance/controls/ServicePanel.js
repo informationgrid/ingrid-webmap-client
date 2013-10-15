@@ -120,7 +120,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 			}
 			
 			if(record.data.capabilitiesUpdateFlag == "none"){
-				return '<div title="Kein Update-Status (M&ouml;glicherweise Update vorhanden. F&uuml;r Update Button \'Neu einlesen\' verwenden)" class="iconUpdateOff"></div>';		
+				return '<div title="Kein Update-Status vorhanden. (F&uuml;r Update: Button \'Neu einlesen\' verwenden)" class="iconUpdateOff"></div>';		
 			}else if(capabilitiesHashUpdate == "" || capabilitiesHashUpdate == undefined){
 				return '<div title="Capabilities Offline" class="iconUpdateOffline"></div>';				
 			}else if(capabilitiesHash == capabilitiesHashUpdate){
@@ -231,7 +231,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 					if(columnObj.id == "capabilities"){
 						window.open(de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(serviceRecord.data.capabilitiesUrl));
 					}else if(columnObj.id == "update"){
-						if(serviceRecord.data.capabilitiesHashUpdate != undefined && serviceRecord.data.capabilitiesHashUpdate != ""){
+						if(serviceRecord.data.capabilitiesUpdateFlag == "mail"){
 							if(serviceRecord.data.capabilitiesHash != serviceRecord.data.capabilitiesHashUpdate){
 								self.reloadService(serviceRecord, 'Soll der Dienst aktualisiert werden?');
 							}
