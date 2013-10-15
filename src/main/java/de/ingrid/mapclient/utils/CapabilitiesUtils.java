@@ -2,12 +2,18 @@ package de.ingrid.mapclient.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -16,17 +22,24 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.utils.tool.MD5Util;
 import de.ingrid.utils.xml.XPathUtils;
 
 public class CapabilitiesUtils { 
 
+	private static final Logger log = Logger.getLogger(CapabilitiesUtils.class);
+	
 	protected static final char ALPHABET[] = "0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
 	protected static final int LENGTH = 8;
 	
@@ -88,4 +101,85 @@ public class CapabilitiesUtils {
 	    }
 	    return new String(hexChars);
 	}
+	
+	public static String getCapabilitiesValue(String response, String xPathExpression){
+		Document doc = stringToDoc(response);
+		Node node = (Node) XPathUtils.getNode(doc, xPathExpression);
+		if(node != null){
+			return node.getNodeValue();
+		}
+		return "";
+	}
+	
+	public static void updateCapabilities(String response, WmsService service){
+		String url;
+		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
+		String path = p.getWMSDir();
+		
+		try {
+			// Get original copy xml file
+			url = service.getCapabilitiesUrlOrg();
+			String fileName = url.substring(url.lastIndexOf("/"), url.length());
+			String [] splitFileName = fileName.split("\\?");
+			File f = new File(path+splitFileName[0]);
+			
+			Document doc = stringToDoc(response);
+			
+			// Update new capabilities
+			Document newDoc = updateCapabilititesDocument(doc, service);
+			
+			TransformerFactory tFactory = TransformerFactory.newInstance();
+			Transformer transformer = tFactory.newTransformer();
+			
+			// Change the xml stucture for original copy
+			DOMSource source = new DOMSource(newDoc);
+			StreamResult result = new StreamResult(f);
+			transformer.transform(source, result);
+			
+			// Get copy xml file
+			url = service.getCapabilitiesUrl();
+			fileName = url.substring(url.lastIndexOf("/"), url.length());
+			splitFileName = fileName.split("\\?");
+			f = new File(path+splitFileName[0]);
+			
+			//change the xml structure for copy
+			source = new DOMSource(newDoc);
+			result = new StreamResult(f);
+			transformer.transform(source, result);
+		}  catch (TransformerException e) {
+			log.error("TransformerExceptionException on updating wms file: ",e);
+		}
+	}
+	
+	public static Document updateCapabilititesDocument(Document doc, WmsService service){
+			// Set actual service name to capabilities 
+			if(service.getName() != null){
+				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
+				if(titleNode != null){
+					titleNode.setTextContent(service.getName());
+				}
+			}
+		return doc;
+	}
+	
+	public static Document stringToDoc(String value) {
+
+		try {
+	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	        InputSource is = new InputSource();
+	        is.setCharacterStream(new StringReader(value));
+	        Document doc = db.parse(is);
+	        return doc;
+		} catch (ParserConfigurationException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		} catch (SAXException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			e.printStackTrace();
+		}
+        return null;
+    }
 }

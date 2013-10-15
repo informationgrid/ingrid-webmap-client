@@ -1,24 +1,9 @@
 package de.ingrid.mapclient.scheduler.tasks;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
@@ -27,7 +12,6 @@ import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.utils.CapabilitiesUtils;
 import de.ingrid.mapclient.utils.Utils;
-import de.ingrid.utils.xml.XPathUtils;
 
 public class CapabilitiesUpdateTask implements Runnable{
 	
@@ -37,7 +21,7 @@ public class CapabilitiesUpdateTask implements Runnable{
 		log.info("Update WebMapClient capabilitities ...");
 		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
 		PersistentConfiguration pc = p.getPersistentConfiguration();
-		
+		ArrayList<Setting> settings = (ArrayList<Setting>) pc.getSettings();
 		ArrayList<WmsService> services = (ArrayList<WmsService>) pc.getWmsServices();
 		for(int i=0; i < services.size(); i++){
 			boolean doServiceChange = false;
@@ -79,7 +63,6 @@ public class CapabilitiesUpdateTask implements Runnable{
 									String emailSubject = "";
 									
 									// Get mail configuration
-									ArrayList<Setting> settings = (ArrayList<Setting>) pc.getSettings();
 									for(int s=0; s < settings.size(); s++){
 										Setting setting = settings.get(s);
 										
@@ -111,13 +94,14 @@ public class CapabilitiesUpdateTask implements Runnable{
 							}else if(updateFlag.equals("auto")){
 								if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
 									doServiceChange = true;
-									log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 									// Update "capabilitiesHashUpdate" value
 									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
 									// Update "capabilitiesHash" value
 									service.setCapabilitiesHash(capabilitiesHashCode);
 									// Update capabilities copy and orgCopy
-									updateCapabilities(response, service);
+									CapabilitiesUtils.updateCapabilities(response, service);
+									
+									log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 								}
 							}
 						}
@@ -155,77 +139,4 @@ public class CapabilitiesUpdateTask implements Runnable{
 		}
 		log.info("Update WebMapClient capabilitities finished.");
 	}
-	
-	
-	private void updateCapabilities(String response, WmsService service){
-		String url;
-		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
-		String path = p.getWMSDir();
-		
-		try {
-			// Get original copy xml file
-			url = service.getCapabilitiesUrlOrg();
-			String fileName = url.substring(url.lastIndexOf("/"), url.length());
-			String [] splitFileName = fileName.split("\\?");
-			File f = new File(path+splitFileName[0]);
-			
-			Document doc = stringToDoc(response);
-			
-			// Update new capabilities
-			Document newDoc = updateCapabilititesDocument(doc, service);
-			
-			TransformerFactory tFactory = TransformerFactory.newInstance();
-			Transformer transformer = tFactory.newTransformer();
-			
-			// Change the xml stucture for original copy
-			DOMSource source = new DOMSource(newDoc);
-			StreamResult result = new StreamResult(f);
-			transformer.transform(source, result);
-			
-			// Get copy xml file
-			url = service.getCapabilitiesUrl();
-			fileName = url.substring(url.lastIndexOf("/"), url.length());
-			splitFileName = fileName.split("\\?");
-			f = new File(path+splitFileName[0]);
-			
-			//change the xml structure for copy
-			source = new DOMSource(newDoc);
-			result = new StreamResult(f);
-			transformer.transform(source, result);
-		}  catch (TransformerException e) {
-			log.error("TransformerExceptionException on updating wms file: ",e);
-		}
-	}
-	
-	private Document updateCapabilititesDocument(Document doc, WmsService service){
-			// Set actual service name to capabilities 
-			if(service.getName() != null){
-				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
-				if(titleNode != null){
-					titleNode.setTextContent(service.getName());
-				}
-			}
-		return doc;
-	}
-	
-	private Document stringToDoc(String value) {
-
-		try {
-	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	        InputSource is = new InputSource();
-	        is.setCharacterStream(new StringReader(value));
-	        Document doc = db.parse(is);
-	        return doc;
-		} catch (ParserConfigurationException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
-		} catch (SAXException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
-		} catch (IOException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
-		}
-        return null;
-    }
 }
