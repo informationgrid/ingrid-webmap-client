@@ -97,7 +97,7 @@ public class CapabilitiesUpdateTask implements Runnable{
 											emailSubject = setting.getValue();
 										}else if(setting.getKey().equals("defaultMailUpdateText")){
 											text = setting.getValue();
-											text.concat("\r\n" + service.getName() + " " + service.getOriginalCapUrl());
+											text = text.concat("\r\n" + service.getName() + " (" + service.getOriginalCapUrl() + ")");
 										}
 									}
 									
