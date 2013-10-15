@@ -73,6 +73,7 @@ import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
+import de.ingrid.mapclient.utils.CapabilitiesUtils;
 import de.ingrid.utils.tool.MD5Util;
 import de.ingrid.utils.xml.XPathUtils;
 
@@ -616,9 +617,9 @@ public class ConfigurationResource {
 	public void copyService(String serviceCopy, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject json = new JSONObject(serviceCopy);
-				HashMap<String, String> url = makeCopyOfService(json, true, req);
-				if(url != null){
-					insertCopyIntoConfig(url.get("url"), url.get("urlOrg"), json);
+				HashMap<String, String> map = makeCopyOfService(json, true, req);
+				if(map != null){
+					insertCopyIntoConfig(map, json);
 				}else{
 					Exception ex = new Exception();
 					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
@@ -648,9 +649,9 @@ public class ConfigurationResource {
 	public void addService(String service, @Context HttpServletRequest req) throws IOException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
-				HashMap<String, String> url = makeCopyOfService(jsonService, false, req);
-				if(url != null){
-					insertCopyIntoConfig(url.get("url"), url.get("urlOrg"), jsonService);
+				HashMap<String, String> map = makeCopyOfService(jsonService, false, req);
+				if(map != null){
+					insertCopyIntoConfig(map, jsonService);
 				}else{
 					Exception ex = new Exception();
 					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
@@ -779,6 +780,9 @@ public class ConfigurationResource {
 						doServiceUpdate = true;
 						service.setName(jsonService.getString("title"));
 					}
+					if(jsonService.get("updateFlag") != JSONObject.NULL){
+						service.setCapabilitiesUpdateFlag(jsonService.getString("updateFlag"));
+					}
 					if(jsonService.get("categories") != JSONObject.NULL){
 						//rewrite the categories of the service
 						updateCategories(service, jsonService);
@@ -895,6 +899,10 @@ public class ConfigurationResource {
 		writeWmsCopyToFile(doc, req, title, fileNames);
 		
 		WmsService service = findService(jsonService);
+		// Update hashCode
+		service.setCapabilitiesHash(CapabilitiesUtils.generateMD5String(response));
+		service.setCapabilitiesHashUpdate(CapabilitiesUtils.generateMD5String(response));
+		
 		updateLayers(service, jsonService);
 		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
 	}	
@@ -919,7 +927,7 @@ public class ConfigurationResource {
 	}	
 	
 	
-	private void insertCopyIntoConfig(String url, String urlOrg, JSONObject json) {
+	private void insertCopyIntoConfig(HashMap<String, String> map, JSONObject json) {
 			
 			try {
 				ConfigurationProvider p = ConfigurationProvider.INSTANCE;
@@ -941,7 +949,7 @@ public class ConfigurationResource {
 			
 				String title = json.getString("title");
 				String originalCapUrl = json.getString("originalCapUrl");
-				WmsService wmsService = new WmsService(title, url, urlOrg, new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers);
+				WmsService wmsService = new WmsService(title, map.get("url"), map.get("urlOrg"), new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers, map.get("capabilitiesHash"), map.get("capabilitiesHash"), json.getString("updateFlag"), false);
 				updateCategories(wmsService, json);
 				p.getPersistentConfiguration().getWmsServices().add(wmsService);
 				p.write(p.getPersistentConfiguration());
@@ -1022,6 +1030,9 @@ public class ConfigurationResource {
 			}
 			urls = writeWmsCopy(doc, req, title);
 			
+			// add hashCode for capabilities response
+			urls.put("capabilitiesHash", CapabilitiesUtils.generateMD5String(response));
+			urls.put("capabilitiesHashUpdate", CapabilitiesUtils.generateMD5String(response));
 		} catch (JSONException e) {
 			
 			log.error("Unable to decode json object: "+e);

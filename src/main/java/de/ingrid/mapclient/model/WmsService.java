@@ -22,6 +22,10 @@ public class WmsService {
 	private String originalCapUrl;
 	private List<String> checkedLayers = new ArrayList<String>();
 //	private List<Integer> deactivatedLayers = new ArrayList<Integer>();
+	private String capabilitiesHash;
+	private String capabilitiesHashUpdate;
+	private String capabilitiesUpdateFlag;
+	private Boolean capabilitiesUpdateMailStatus;
 
 	public WmsService()
 	{
@@ -29,7 +33,7 @@ public class WmsService {
 
 
 
-	public WmsService(String name, String capabilitiesUrl, String capabilitiesUrlOrg, List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<String> checkedLayers)//, List<Integer> deactivatedLayers)
+	public WmsService(String name, String capabilitiesUrl, String capabilitiesUrlOrg, List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<String> checkedLayers, String capabilitiesHash, String capabilitiesHashUpdate, String capabilitiesUpdateFlag, boolean capabilitiesUpdateMailStatus)//, List<Integer> deactivatedLayers)
 	{
 		this.name = name;
 		this.capabilitiesUrl = capabilitiesUrl;
@@ -37,6 +41,10 @@ public class WmsService {
 		this.mapServiceCategories = mapServiceCategories;
 		this.originalCapUrl = originalCapUrl;
 		this.checkedLayers = checkedLayers;
+		this.capabilitiesHash = capabilitiesHash;
+		this.capabilitiesHashUpdate = capabilitiesHashUpdate;
+		this.capabilitiesUpdateFlag = capabilitiesUpdateFlag;
+		this.capabilitiesUpdateMailStatus = capabilitiesUpdateMailStatus;
 //		this.deactivatedLayers = deactivatedLayers;
 	}
 
@@ -86,6 +94,53 @@ public class WmsService {
 
 	public void setCapabilitiesUrlOrg(String capabilitiesUrlOrg) {
 		this.capabilitiesUrlOrg = capabilitiesUrlOrg;
+	}
+
+
+
+	public String getCapabilitiesHash() {
+		return capabilitiesHash;
+	}
+
+
+
+	public void setCapabilitiesHash(String capabilitiesHash) {
+		this.capabilitiesHash = capabilitiesHash;
+	}
+
+	public String getCapabilitiesHashUpdate() {
+		return capabilitiesHashUpdate;
+	}
+
+
+
+	public void setCapabilitiesHashUpdate(String capabilitiesHashUpdate) {
+		this.capabilitiesHashUpdate = capabilitiesHashUpdate;
+	}
+
+
+
+	public Boolean getCapabilitiesUpdateMailStatus() {
+		return capabilitiesUpdateMailStatus;
+	}
+
+
+
+	public void setCapabilitiesUpdateMailStatus(
+			Boolean capabilitiesUpdateMailStatus) {
+		this.capabilitiesUpdateMailStatus = capabilitiesUpdateMailStatus;
+	}
+
+
+
+	public String getCapabilitiesUpdateFlag() {
+		return capabilitiesUpdateFlag;
+	}
+
+
+
+	public void setCapabilitiesUpdateFlag(String capabilitiesUpdateFlag) {
+		this.capabilitiesUpdateFlag = capabilitiesUpdateFlag;
 	}
 	
 //	public List<Integer> getDeactivatedLayers() {

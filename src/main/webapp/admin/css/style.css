@@ -25,6 +25,30 @@ body {
 	height: 16px;
 }
 
+.iconUpdate {
+	background-image: url(../../shared/images/icon_cap_update.png);
+	cursor: pointer;
+	width: 16px; 
+	height: 16px;
+}
+
+.iconUpdateNo {
+	background-image: url(../../shared/images/icon_cap_update_no.png);
+	width: 16px; 
+	height: 16px;
+}
+
+.iconUpdateOffline {
+	background-image: url(../../shared/images/icon_cap_update_offline.png);
+	width: 16px; 
+	height: 16px;
+}
+
+.iconUpdateOff {
+	background-image: url(../../shared/images/icon_cap_update_off.png);
+	width: 16px; 
+	height: 16px;
+}
 
 /*
     Ext.ux.Notification

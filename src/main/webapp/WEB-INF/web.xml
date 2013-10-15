@@ -81,4 +81,8 @@
 	<security-role>
 		<role-name>admin-gui</role-name>
 	</security-role>
+	
+	<listener>
+        <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
+	</listener>
 </web-app>

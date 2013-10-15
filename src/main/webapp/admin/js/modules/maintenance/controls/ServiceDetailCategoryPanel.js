@@ -129,7 +129,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.prototy
 						   capabilitiesUrlOrg: self.selectedService.data.capabilitiesUrlOrg,
 						   originalCapUrl: self.selectedService.data.originalCapUrl,
 						   categories: categories,
-						   layers: null
+						   layers: null,
+						   updateFlag: null
 				   };
 				self.mainPanel.isSave=true;
 				self.mainPanel.setValue('updateservice', service, 'Bitte warten! Kategorien-&Auml;nderungen werden &uuml;bernommen!');

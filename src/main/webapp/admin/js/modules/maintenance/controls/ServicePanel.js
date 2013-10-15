@@ -37,6 +37,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 			name: 'checkedLayers',
 			type: 'array'
 		}, {
+			name: 'capabilitiesHash',
+			type: 'string'
+		}, {
+			name: 'capabilitiesHashUpdate',
+			type: 'string'
+		}, {
+			name: 'capabilitiesUpdateFlag',
+			type: 'string'
+		}, {
 			name: 'jsonLayers',
 			type: 'string'
 		}]
@@ -45,7 +54,26 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	/**
 	 * The column configuration
 	 */
-	columns: [{
+	columns: null,
+	serviceGrid: null,
+	services: null,
+	selectedService: null,
+	selectedModel:null,
+	copyServiceBtn:null,
+	deleteServiceBtn:null,
+	reloadServiceBtn:null,
+	addServiceBtn:null,
+	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers', 'capabilitiesHash', 'capabilitiesHashUpdate', 'capabilitiesUpdateFlag' ],
+	isSave:false
+});
+
+/**
+ * Initialize the component (called by Ext)
+ */
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initComponent = function() {
+	var self = this;
+	
+	this.columns = [{
 		header: 'Name',
 		sortable: true,
 		dataIndex: 'name', 
@@ -72,26 +100,65 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 		id: 'capabilities',
 	    width: 10,
 	    renderer: function(v, p, record, rowIndex){
-	        return '<div class="iconInfo"></div>';
+	        return '<div title="Capabilities anzeigen" class="iconInfo"></div>';
 	    }
-	}],
-	serviceGrid: null,
-	services: null,
-	selectedService: null,
-	selectedModel:null,
-	copyServiceBtn:null,
-	deleteServiceBtn:null,
-	reloadServiceBtn:null,
-	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers'],
-	isSave:false
-});
-
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initComponent = function() {
-	var self = this;
+	}, {
+		header: 'Status',
+		sortable: true,
+		id: 'update', 
+		width: 10,
+		renderer: function(v, p, record, rowIndex){
+			var capabilitiesHash;
+			var capabilitiesHashUpdate;
+			
+			if(record.data.capabilitiesHash){
+				capabilitiesHash = record.data.capabilitiesHash;	
+			}
+			
+			if(record.data.capabilitiesHashUpdate){
+				capabilitiesHashUpdate = record.data.capabilitiesHashUpdate;
+			}
+			
+			if(record.data.capabilitiesUpdateFlag == "none"){
+				return '<div title="Kein Update-Status (M&ouml;glicherweise Update vorhanden. F&uuml;r Update Button \'Neu einlesen\' verwenden)" class="iconUpdateOff"></div>';		
+			}else if(capabilitiesHashUpdate == "" || capabilitiesHashUpdate == undefined){
+				return '<div title="Capabilities Offline" class="iconUpdateOffline"></div>';				
+			}else if(capabilitiesHash == capabilitiesHashUpdate){
+				return '<div title="Kein Update vorhanden" class="iconUpdateNo"></div>';		
+			}else if(capabilitiesHash != capabilitiesHashUpdate){
+				return '<div title="Update vorhanden (Bitte klicken f&uuml;r Update)" class="iconUpdate"></div>';		
+			}else{
+				return '<div title="Kein Update vorhanden" class="iconUpdateNo"></div>';
+			}        
+	    }
+	}, {
+		header: 'Update',
+		sortable: true,
+		dataIndex: 'capabilitiesUpdateFlag', 
+		width: 30,
+		editor:{
+        	xtype: 'combo',
+        	store: new Ext.data.SimpleStore({
+                fields: ['value', 'display'],
+                data: [['none', 'none'], ['mail', 'mail'], ['auto', 'auto']],
+                autoLoad: false
+            }),
+        	displayField: 'display',
+            valueField: 'value',
+            typeAhead: true,
+            forceSelection: true,
+            mode: 'local',
+            triggerAction: 'all',
+            selectOnFocus: true,
+            editable: false,
+        	listeners: { 
+        		select: function(combo, record, index) {
+        			var selectedRecord = self.selectedModel.record;
+        			self.updateService(null, selectedRecord.data.capabilitiesUrl, selectedRecord.data.capabilitiesUrlOrg, selectedRecord.data.originalCapUrl, null, null, combo.value);
+        		}
+        	}
+        }
+	}];
 	
 	var filters = new Ext.ux.grid.GridFilters({
         // encode and local configuration options defined previously for easier reuse
@@ -159,8 +226,17 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 						break;
 					}
 				}
-				if(column == selectedColumn){
-					window.open(de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(serviceRecord.data.capabilitiesUrl));
+				var columnObj = self.columns[column];
+				if(columnObj.id){
+					if(columnObj.id == "capabilities"){
+						window.open(de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(serviceRecord.data.capabilitiesUrl));
+					}else if(columnObj.id == "update"){
+						if(serviceRecord.data.capabilitiesHashUpdate != undefined && serviceRecord.data.capabilitiesHashUpdate != ""){
+							if(serviceRecord.data.capabilitiesHash != serviceRecord.data.capabilitiesHashUpdate){
+								self.reloadService(serviceRecord, 'Soll der Dienst aktualisiert werden?');
+							}
+						}
+					}
 				}else{
 					if(self.selectedService != serviceRecord){
 						self.selectedService = serviceRecord; 
@@ -178,13 +254,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 	
 	self.serviceGrid.on('afteredit', function(store) {
 		if(store.field === "name"){
-			var categories = [];
-			var mapServiceCategories = store.record.data.mapServiceCategories;
-			for ( var iCat = 0; iCat < mapServiceCategories.length; iCat++) {
-				var catId = mapServiceCategories[iCat].idx;
-				categories.push(catId);
-			}
-			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.capabilitiesUrlOrg, store.record.data.originalCapUrl, categories);			
+			self.updateService(store.value, store.record.data.capabilitiesUrl, store.record.data.capabilitiesUrlOrg, store.record.data.originalCapUrl, null, null, store.record.data.capabilitiesUpdateFlag);			
 		}else{
 			store.record.reject();
 		}
@@ -203,7 +273,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		text: 'Neu einlesen',
 		disabled: true,
 		handler: function(btn) {
-			self.reloadService();
+			self.reloadService(self.selectedService, 'Sind Sie sicher, das der ausgew&auml;hlte Dienst zur&uuml;ckgesetzt werden soll?');
 		}
 	});
 	self.deleteServiceBtn = new Ext.Button({
@@ -282,7 +352,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 /**
  * Update services changes to config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateService = function (title, capabilitiesUrl, capabilitiesUrlOrg, originalCapUrl, categories, layers) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateService = function (title, capabilitiesUrl, capabilitiesUrlOrg, originalCapUrl, categories, layers, updateFlag) {
 	var self = this;
 	if(capabilitiesUrl){
 		var service = {
@@ -291,7 +361,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.updateServi
 				   capabilitiesUrlOrg: capabilitiesUrlOrg,
 				   originalCapUrl: originalCapUrl,
 				   categories: (categories) ? categories : null,
-				   layers: (layers) ? layers : null
+				   layers: (layers) ? layers : null,
+				   updateFlag: (updateFlag) ? updateFlag : false
 		   };
 		// Update service
 		self.setValue('updateservice', service, 'Bitte warten! &Auml;nderungen werden gespeichert!');
@@ -323,22 +394,46 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
                 name: 'name',
                 id: 'name',
                 emptyText: 'Name des Dienstes (optional)'
+            },{
+            	xtype: 'combo',
+            	fieldLabel: '<i>Update<i>',
+                name: 'update',
+            	id: 'update',
+            	store: new Ext.data.SimpleStore({
+                    fields: ['value', 'display'],
+                    data: [['none', 'none'], ['mail', 'mail'], ['auto', 'auto']],
+                    autoLoad: false
+                }),
+            	displayField: 'display',
+                valueField: 'value',
+                typeAhead: true,
+                forceSelection: true,
+                mode: 'local',
+                triggerAction: 'all',
+                selectOnFocus: true,
+                editable: false,
+                value: 'none',
+            	listeners: { 
+            		select: function(combo, record, index) {
+            		}
+            	}
             }
-	],
+	 ],
 
         buttons: [{
             text: 'Speichern',
             handler: function(btn) {
             	var name = simple.items.get('name').el.dom.value;
             	var url = simple.items.get('url').el.dom.value;
-            	
+            	var update =  simple.items.get('update').el.dom.value;
             	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
             		var service = { 
             				title:name, 
             				originalCapUrl:url, 
             				capabilitiesUrlOrg:"",
             				categories:[],
-            				layers:[] 
+            				layers:[],
+            				updateFlag: update
             		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
@@ -349,7 +444,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             				originalCapUrl:url,
             				capabilitiesUrlOrg:"",
             				categories:[],
-            				layers:[]
+            				layers:[],
+            				updateFlag: update
             		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
@@ -378,12 +474,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 /**
  * Reload services
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function() {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(reloadService, msg) {
 	var self = this;
-	var reloadService = self.selectedService;
 	Ext.Msg.show({
 	   title:'Dienst neu einlesen',
-	   msg: 'Sind Sie sicher, das der ausgew&auml;hlte Dienst zur&uuml;ckgesetzt werden soll?',
+	   msg: msg,
 	   buttons: Ext.Msg.OKCANCEL,
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){

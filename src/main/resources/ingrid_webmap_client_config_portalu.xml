@@ -78,6 +78,36 @@
     </scale>
   </scales>
   <settings>
+  	<setting>
+      <key>defaultMailAddressTo</key>
+      <name>E-Mail Adresse: Kontaktadresse des Admin</name>
+      <value>webmaster@portalu.de</value>
+    </setting>
+    <setting>
+      <key>defaultMailAddressFrom</key>
+      <name>E-Mail Adresse: Sender einer E-Mail</name>
+      <value>portalu@portalu.de</value>
+    </setting>
+    <setting>
+      <key>defaultMailHost</key>
+      <name>E-Mail Host: Host für das Senden von E-Mails</name>
+      <value>localhost</value>
+    </setting>
+    <setting>
+      <key>defaultMailUpdateText</key>
+      <name>E-Mail Host: Host für das Senden von E-Mails</name>
+      <value>Eine neues Update erhältlich für folgende Capabilities:</value>
+    </setting>
+    <setting>
+      <key>defaultMailUpdateSubject</key>
+      <name>E-Mail Host: Host für das Senden von E-Mails</name>
+      <value>Capabilities-Update erhältlich!</value>
+    </setting>
+    <setting>
+      <key>defaultCronPatternUpdateCapabilities</key>
+      <name>Cron-Pattern: Für die automatischen Aktualisierung der eingebundenen Diensten</name>
+      <value>*/30 * * * *</value>
+    </setting>
     <setting>
       <key>defaultSingleTile</key>
       <name>Single Tile: Darstellung der Karte in einem Kachel</name>

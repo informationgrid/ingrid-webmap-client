@@ -418,7 +418,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				   capabilitiesUrlOrg: service.capabilitiesUrlOrg,
 				   originalCapUrl: service.originalCapUrl,
 				   categories: categories,
-				   layers: layers
+				   layers: layers,
+				   updateFlag: null
 		   };
 		// Update service
 		self.mainPanel.isSave = true;

@@ -4,6 +4,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -64,5 +67,25 @@ public class CapabilitiesUtils {
 			buf.append(ALPHABET[(int)(Math.random()*numChars)]);
 		}
 		return buf.toString();
-	}	
+	}
+	
+	public static String generateMD5String(String value) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		byte[] digest;
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(value.getBytes("UTF-8"), 0, value.getBytes("UTF-8").length - 1); 
+		digest = md.digest();
+		return bytesToHex(digest); 
+	}
+	
+	public static String bytesToHex(byte[] bytes) {
+		char[] hexArray = "0123456789ABCDEF".toCharArray();
+	    char[] hexChars = new char[bytes.length * 2];
+	    int v;
+	    for ( int j = 0; j < bytes.length; j++ ) {
+	        v = bytes[j] & 0xFF;
+	        hexChars[j * 2] = hexArray[v >>> 4];
+	        hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+	    }
+	    return new String(hexChars);
+	}
 }
