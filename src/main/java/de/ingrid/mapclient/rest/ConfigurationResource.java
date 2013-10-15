@@ -902,6 +902,7 @@ public class ConfigurationResource {
 		// Update hashCode
 		service.setCapabilitiesHash(CapabilitiesUtils.generateMD5String(response));
 		service.setCapabilitiesHashUpdate(CapabilitiesUtils.generateMD5String(response));
+		service.setCapabilitiesUpdateMailStatus(false);
 		
 		updateLayers(service, jsonService);
 		ConfigurationProvider.INSTANCE.write(ConfigurationProvider.INSTANCE.getPersistentConfiguration());
