@@ -275,7 +275,26 @@ public class ConfigurationResource {
 		}
 		catch (Exception ex) {
 			log.error("Error setting copyright for service", ex);
-			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			throw new WebApplicationException(ex, Response.Status.NOT_MODIFIED);
+		}
+	}
+	
+	/**
+	 * Set the copyright for the default WMS GetCapabilities url
+	 * @param String containing the copyright
+	 */
+	@POST
+	@Path(DYNAMIC_PATH+"/featureUrl")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void setFeatureUrl(String featureUrl, @Context HttpServletRequest req) throws IOException {
+		try {
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			config.setFeatureUrl(featureUrl);
+			ConfigurationProvider.INSTANCE.write(config);
+		}
+		catch (Exception ex) {
+			log.error("Error setting featureUrl", ex);
+			throw new WebApplicationException(ex, Response.Status.NOT_MODIFIED);
 		}
 	}
 	

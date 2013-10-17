@@ -49,7 +49,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel = Ext.extend(Ext.Pan
 	/**
 	 * The copyright field
 	 */
-	baseLayerCopyrightTextField: null
+	baseLayerCopyrightTextField: null,
+	
+	featureInfoTextField: null
 });
 
 /**
@@ -70,6 +72,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 
 	this.baseLayerCopyrightTextField = new Ext.form.TextField({
 		fieldLabel: 'Auf der Karte eingeblendeter Copyrightvermerk',
+		allowBlank: true,
+		anchor: '99%'
+	});
+	
+	this.featureInfoTextField = new Ext.form.TextField({
+		fieldLabel: 'Dienst f&uuml;r die FeatureInfo-Abfrage',
 		allowBlank: true,
 		anchor: '99%'
 	});
@@ -182,6 +190,33 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 					}
 				}
 			}]
+	    }, this.featureInfoTextField, {
+			xtype: 'container',
+			layout: 'column',
+			anchor: '100%',
+		    items: [{
+				xtype: 'container',
+				columnWidth: 1,
+				height: 50
+			}, {
+				xtype: 'container',
+				layout: 'form',
+				height: 50,
+				items: {
+					xtype: 'button',
+					id: 'featureInfoBtn',
+					text: 'FeatureInfo-Dienst Speichern',
+					anchor: '100%',
+					style: {
+		                paddingTop: '10px'
+		            },
+					handler: function() {
+						if (self.featureInfoTextField.validate()) {
+							self.saveFeatureInfoService();
+						}
+					}
+				}
+			}]
 	    }]
 	});
 	de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.superclass.initComponent.call(this);
@@ -199,7 +234,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.onRender =
 	this.loadLayers();
 	var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright");
 	this.baseLayerCopyrightTextField.setValue(wmsCopyright);
-	
+	var featureUrl = de.ingrid.mapclient.Configuration.getValue("featureUrl");
+	this.featureInfoTextField.setValue(featureUrl);
 };
 
 /**
@@ -273,6 +309,13 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveCopyri
 	var copyrightValue = this.baseLayerCopyrightTextField.getValue();
 	de.ingrid.mapclient.Configuration.setValue('wmsCopyright', copyrightValue, de.ingrid.mapclient.admin.DefaultSaveHandler);
 };
+
+de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveFeatureInfoService = function() {
+	
+	var featureUrl = this.featureInfoTextField.getValue();
+	de.ingrid.mapclient.Configuration.setValue('featureUrl', featureUrl, de.ingrid.mapclient.admin.DefaultSaveHandler);
+};
+
 
 /**
  * Load and display the layers contained in the configured capabilities url
