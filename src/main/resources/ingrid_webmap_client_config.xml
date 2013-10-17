@@ -1,6 +1,6 @@
 <persistentConfiguration>
   <wmsCapUrl>http://harrison.its-technidata.de/wms_webatlas?SERVICE=WMS&amp;amp;VERSION=1.1.1&amp;amp;REQUEST=GetCapabilities</wmsCapUrl>
-  <featureUrl>http://sg.geodatenzentrum.de/wms_vg250%3FSERVICE=WMS%26VERSION=1.1.1%26REQUEST=GetFeatureInfo%26LAYERS=8,9,10%26QUERY_LAYERS=8,9,10%26STYLES=,,%26BBOX=%LON%,%LAT%,%LON2%,%LAT2%%26FEATURE_COUNT=10%26HEIGHT=508%26WIDTH=1711%26FORMAT=image/png%26INFO_FORMAT=text/xml%26SRS=%EPSG%%26X=1020%26Y=173</featureUrl>
+  <featureUrl>http://sg.geodatenzentrum.de/wms_vg250?SERVICE=WMS%26VERSION=1.1.1%26REQUEST=GetFeatureInfo%26LAYERS=8,9,10%26QUERY_LAYERS=8,9,10%26STYLES=,,%26BBOX=%LON%,%LAT%,%LON2%,%LAT2%%26FEATURE_COUNT=10%26HEIGHT=508%26WIDTH=1711%26FORMAT=image/png%26INFO_FORMAT=text/xml%26SRS=%EPSG%%26X=1020%26Y=173</featureUrl>
   <layers>
     <layer>
       <name>WebAtlasDE</name>
