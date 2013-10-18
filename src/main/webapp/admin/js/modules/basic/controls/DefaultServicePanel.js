@@ -49,7 +49,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel = Ext.extend(Ext.Pan
 	/**
 	 * The copyright field
 	 */
-	baseLayerCopyrightTextField: null
+	baseLayerCopyrightTextField: null,
+	
+	featureInfoTextField: null
 });
 
 /**
@@ -70,6 +72,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 
 	this.baseLayerCopyrightTextField = new Ext.form.TextField({
 		fieldLabel: 'Auf der Karte eingeblendeter Copyrightvermerk',
+		allowBlank: true,
+		anchor: '99%'
+	});
+	
+	this.featureInfoTextField = new Ext.form.TextField({
+		fieldLabel: 'Dienst f&uuml;r die FeatureInfo-Abfrage',
 		allowBlank: true,
 		anchor: '99%'
 	});
@@ -113,12 +121,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 				height: 50,
 				items: {
 					xtype: 'button',
-					text: '&Uuml;bernehmen',
+					text: 'Laden',
 					fieldLabel: '&nbsp;',
 					anchor: '100%',
 					handler: function() {
 						if (self.wmsCapUrlField.validate()) {
-							self.saveWmsCapUrl();
+							self.loadCapUrl();
 						}
 					}
 				}
@@ -127,35 +135,10 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 		    // spacer
 			xtype: 'container',
 			height: 20
-	    }, this.baseLayerCombo, {
-			xtype: 'container',
-			layout: 'column',
-			anchor: '100%',
-		    items: [{
-				xtype: 'container',
-				columnWidth: 1,
-				height: 50
-			}, {
-				xtype: 'container',
-				width: 160,
-				layout: 'form',
-				height: 50,
-				items: {
-					xtype: 'button',
-					id: 'layerBtn',
-					text: 'Layerkonfiguration Speichern',
-					anchor: '100%',
-					style: {
-		                paddingTop: '10px'
-		            },
-					handler: function() {
-						if (self.baseLayerCombo.validate()) {
-							self.saveLayers();
-						}
-					}
-				}
-			}]
-		}, this.baseLayerCopyrightTextField, {
+	    }, this.baseLayerCombo
+	    , this.baseLayerCopyrightTextField
+	    , this.featureInfoTextField
+	    , {
 			xtype: 'container',
 			layout: 'column',
 			anchor: '100%',
@@ -167,17 +150,18 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 				xtype: 'container',
 				layout: 'form',
 				height: 50,
+				width: 100,
 				items: {
 					xtype: 'button',
-					id: 'copyrightBtn',
-					text: 'Copyright Speichern',
+					id: 'featureInfoBtn',
+					text: 'Speichern',
 					anchor: '100%',
 					style: {
 		                paddingTop: '10px'
 		            },
 					handler: function() {
-						if (self.baseLayerCopyrightTextField.validate()) {
-							self.saveCopyright();
+						if (self.baseLayerCombo.validate() && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
+							self.save();
 						}
 					}
 				}
@@ -199,7 +183,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.onRender =
 	this.loadLayers();
 	var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright");
 	this.baseLayerCopyrightTextField.setValue(wmsCopyright);
-	
+	var featureUrl = de.ingrid.mapclient.Configuration.getValue("featureUrl");
+	this.featureInfoTextField.setValue(featureUrl);
 };
 
 /**
@@ -213,24 +198,21 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.getCapabil
 /**
  * Save the capabilities url on the server
  */
-de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveWmsCapUrl = function() {
+de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadCapUrl = function() {
 	var capUrl = this.getCapabilitiesUrl();
 	var self = this;
 	self.loadLayers(function(success) {
-		if (success) {
-			de.ingrid.mapclient.Configuration.setValue('wmsCapUrl', capUrl, de.ingrid.mapclient.admin.DefaultSaveHandler);
-		}
-		else {
+		if (!success) {
 			self.wmsCapUrlField.markInvalid();
 		}
 	});
 };
 
-/**
- * Save the layers on the server
- */
-de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveLayers = function() {
-
+de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.save = function() {
+	var copyrightValue = this.baseLayerCopyrightTextField.getValue();
+	var featureUrl = this.featureInfoTextField.getValue();
+	var capUrl = this.getCapabilitiesUrl();
+	
 	var selectedLayerRecords = this.layerGrid.getSelectionModel().getSelections();
 
 	// aggregate layer configuration
@@ -264,16 +246,17 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveLayers
 		// select the layer in the grid
 		this.layerGrid.getSelectionModel().selectRecords([baseLayerRecord], true);
 	}
-
-	de.ingrid.mapclient.Configuration.setValue('layers', Ext.encode(selectedLayers), de.ingrid.mapclient.admin.DefaultSaveHandler);
-};
-
-de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.saveCopyright = function() {
 	
-	var copyrightValue = this.baseLayerCopyrightTextField.getValue();
-	de.ingrid.mapclient.Configuration.setValue('wmsCopyright', copyrightValue, de.ingrid.mapclient.admin.DefaultSaveHandler);
+	var saveDefaultSettings = { 
+			copyrightValue:copyrightValue, 
+			featureUrl:featureUrl, 
+			selectedLayers: selectedLayers,
+			capUrl:capUrl
+	};
+	
+	de.ingrid.mapclient.Configuration.setValue('saveDefaultSettings', Ext.encode(saveDefaultSettings), de.ingrid.mapclient.admin.DefaultSaveHandler);
 };
-
+	
 /**
  * Load and display the layers contained in the configured capabilities url
  * @param callback Function to be called after the data are loaded. The callback is called with a boolean

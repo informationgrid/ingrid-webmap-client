@@ -1,6 +1,6 @@
 <persistentConfiguration>
   <wmsCapUrl>http://sg.geodatenzentrum.de/wms_webatlasde.light?SERVICE=WMS&amp;VERSION=1.3.0&amp;REQUEST=GetCapabilities</wmsCapUrl>
-  <featureUrl>http%3A%2F%2Fgdz.bkg.bund.de%2Fwms_vg250%3FSERVICE%3DWMS%26VERSION%3D1.1.1</featureUrl>
+  <featureUrl>http://sg.geodatenzentrum.de/wms_vg250?SERVICE=WMS%26VERSION=1.1.1%26REQUEST=GetFeatureInfo%26LAYERS=8,9,10%26QUERY_LAYERS=8,9,10%26STYLES=,,%26BBOX=%LON%,%LAT%,%LON2%,%LAT2%%26FEATURE_COUNT=10%26HEIGHT=508%26WIDTH=1711%26FORMAT=image/png%26INFO_FORMAT=text/xml%26SRS=%EPSG%%26X=1020%26Y=173</featureUrl>
   <layers>
     <layer>
       <name>WebAtlasDE</name>
@@ -265,7 +265,12 @@
     </setting>
     <setting>
       <key>searchHasBboxSelectTool</key>
-      <name>Gebiet-Einheit-Button: Zur Auswahl des Gebietes oder einer ID einer Administrativen Einheit.</name>
+      <name>Gebiet-Auswahl Button: Zur Auswahl des Gebietes </name>
+      <value>true</value>
+    </setting>
+    <setting>
+      <key>searchHasFeatureInfoTool</key>
+      <name>ID einer Administrativen Einheit Button: Zur Auswahl einer ID einer Administrativen Einheit</name>
       <value>true</value>
     </setting>
     <setting>

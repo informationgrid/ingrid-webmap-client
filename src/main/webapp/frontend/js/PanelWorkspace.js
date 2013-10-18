@@ -180,76 +180,57 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		scope: administrativeFeatureInfoControl
 	});
 	
-	if (de.ingrid.mapclient.Configuration.getSettings("searchHasBboxSelectTool")) {
-		toolbarItems.push(new Ext.ButtonGroup({
-			items : [{
-						xtype : 'button',
-						id : 'bboxButton',
-						iconCls : 'iconSelectCoordinates',
-						tooltip : i18n('tGebietAuswaehlen'),
-						toggleGroup : 'mygroup',
-						enableToggle : true,
-						pressed: true,
-						handler : function(btn) {
-							if (btn.pressed) {
-								coordinatesCtrl.activate();
-								administrativeFeatureInfoControl.deactivate();
-		
-							} else {
-								coordinatesCtrl.deactivate();
+	toolbarItems.push(new Ext.ButtonGroup({
+		items : [{
+					xtype : 'button',
+					id : 'bboxButton',
+					iconCls : 'iconSelectCoordinates',
+					tooltip : i18n('tGebietAuswaehlen'),
+					toggleGroup : 'mygroup',
+					enableToggle : true,
+					pressed: true,
+					hidden: de.ingrid.mapclient.Configuration.getSettings("searchHasBboxSelectTool") ? false : true,
+					handler : function(btn) {
+						if (btn.pressed) {
+							coordinatesCtrl.activate();
+							administrativeFeatureInfoControl.deactivate();
 	
-							}
+						} else {
+							coordinatesCtrl.deactivate();
+
 						}
-					}, {
-						xtype : 'button',
-						iconCls : 'iconInfo',
-						tooltip : i18n('tIdAuswaehlen'),
-						enableToggle : true,
-						toggleGroup : 'mygroup',
-						handler : function(btn) {
-							if (btn.pressed) {
-								coordinatesCtrl.deactivate();
-								administrativeFeatureInfoControl.activate();
-							} else {
-								administrativeFeatureInfoControl.deactivate();
-							}
+					}
+				}, {
+					xtype : 'button',
+					iconCls : 'iconInfo',
+					tooltip : i18n('tIdAuswaehlen'),
+					enableToggle : true,
+					hidden: de.ingrid.mapclient.Configuration.getSettings("searchHasFeatureInfoTool") ? false : true,
+					toggleGroup : 'mygroup',
+					handler : function(btn) {
+						if (btn.pressed) {
+							coordinatesCtrl.deactivate();
+							administrativeFeatureInfoControl.activate();
+						} else {
+							administrativeFeatureInfoControl.deactivate();
 						}
-					}, {
-						xtype : 'button',
-						iconCls : 'iconDefault',
-						tooltip : i18n('tKarteVerschieben'),
-						enableToggle : true,
-						toggleGroup : 'mygroup',
-						handler : function(btn) {
-							if (btn.pressed) {
-								coordinatesCtrl.deactivate();
-								administrativeFeatureInfoControl.deactivate();
-							} else {
-								// console.debug("button active");
-							}
+					}
+				}, {
+					xtype : 'button',
+					iconCls : 'iconDefault',
+					tooltip : i18n('tKarteVerschieben'),
+					enableToggle : true,
+					toggleGroup : 'mygroup',
+					handler : function(btn) {
+						if (btn.pressed) {
+							coordinatesCtrl.deactivate();
+							administrativeFeatureInfoControl.deactivate();
+						} else {
+							// console.debug("button active");
 						}
-					}]
-		}));
-	}else{
-		toolbarItems.push(new Ext.ButtonGroup({
-			items : [{
-						xtype : 'button',
-						iconCls : 'iconDefault',
-						tooltip : i18n('tKarteVerschieben'),
-						enableToggle : true,
-						pressed:true,
-						toggleGroup : 'mygroup',
-						handler : function(btn) {
-							if (btn.pressed) {
-								coordinatesCtrl.deactivate();
-								administrativeFeatureInfoControl.deactivate();
-							} else {
-								// console.debug("button active");
-							}
-						}
-					}]
-		}));
-	}
+					}
+				}]
+	}));
 	
 	// b.2) history tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasHistoryTool")) {
