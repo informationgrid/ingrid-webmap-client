@@ -241,83 +241,49 @@ public class ConfigurationResource {
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
-	/**
-	 * Set the default WMS GetCapabilities url
-	 * @param String containing the url
-	 */
-	@POST
-	@Path(DYNAMIC_PATH+"/wmsCapUrl")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void setWmsCapUrl(String wmsCapUrl, @Context HttpServletRequest req) throws IOException {
-		try {
-			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
-			config.setWmsCapUrl(wmsCapUrl);
-			ConfigurationProvider.INSTANCE.write(config);
-		}
-		catch (Exception ex) {
-			log.error("Error setting default capabilities url", ex);
-			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
-		}
-	}
-
-	/**
-	 * Set the copyright for the default WMS GetCapabilities url
-	 * @param String containing the copyright
-	 */
-	@POST
-	@Path(DYNAMIC_PATH+"/wmsCopyright")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void setWmsCopyright(String wmsCopyright, @Context HttpServletRequest req) throws IOException {
-		try {
-			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
-			config.setWmsCopyright(wmsCopyright);
-			ConfigurationProvider.INSTANCE.write(config);
-		}
-		catch (Exception ex) {
-			log.error("Error setting copyright for service", ex);
-			throw new WebApplicationException(ex, Response.Status.NOT_MODIFIED);
-		}
-	}
-	
-	/**
-	 * Set the copyright for the default WMS GetCapabilities url
-	 * @param String containing the copyright
-	 */
-	@POST
-	@Path(DYNAMIC_PATH+"/featureUrl")
-	@Consumes(MediaType.TEXT_PLAIN)
-	public void setFeatureUrl(String featureUrl, @Context HttpServletRequest req) throws IOException {
-		try {
-			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
-			config.setFeatureUrl(featureUrl);
-			ConfigurationProvider.INSTANCE.write(config);
-		}
-		catch (Exception ex) {
-			log.error("Error setting featureUrl", ex);
-			throw new WebApplicationException(ex, Response.Status.NOT_MODIFIED);
-		}
-	}
 	
 	/**
 	 * Set the default map layer names
 	 * @param String containing a JSON encoded array of layer objects
 	 */
 	@POST
-	@Path(DYNAMIC_PATH+"/layers")
+	@Path(DYNAMIC_PATH+"/saveDefaultSettings")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void setLayers(String layersStr, @Context HttpServletRequest req) {
+	public void saveDefaultSettings(String settings, @Context HttpServletRequest req) {
+		
 		try {
-			// convert json string to List<String>
-			JSONArray layersTmp = new JSONArray(layersStr);
-			List<Layer> layers = new ArrayList<Layer>();
-			for (int i=0, count=layersTmp.length(); i<count; i++) {
-				JSONObject layerObj = layersTmp.getJSONObject(i);
-				Layer layer = new Layer(layerObj.getString("name"), layerObj.getBoolean("isBaseLayer"));
-				layers.add(layer);
-			}
-
 			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
-			config.setLayers(layers);
+			JSONObject jsonSettings = new JSONObject(settings);
+			
+			// Save baselayer
+			if(jsonSettings.get("selectedLayers") != JSONObject.NULL){
+				// convert json string to List<String>
+				JSONArray layersTmp = new JSONArray(jsonSettings.get("selectedLayers").toString());
+				
+				List<Layer> layers = new ArrayList<Layer>();
+				for (int i=0, count=layersTmp.length(); i<count; i++) {
+					JSONObject layerObj = layersTmp.getJSONObject(i);
+					Layer layer = new Layer(layerObj.getString("name"), layerObj.getBoolean("isBaseLayer"));
+					layers.add(layer);
+				}
+				
+				config.setLayers(layers);
+			}
+			
+			// Save feature URL
+			if(jsonSettings.get("featureUrl") != JSONObject.NULL){
+				config.setFeatureUrl(jsonSettings.get("featureUrl").toString());	
+			}
+			
+			// Save copyright
+			if(jsonSettings.get("copyrightValue") != JSONObject.NULL){
+				config.setWmsCopyright(jsonSettings.get("copyrightValue").toString());	
+			}
+			
+			if(jsonSettings.get("capUrl") != JSONObject.NULL){
+				config.setWmsCapUrl(jsonSettings.get("capUrl").toString());
+			}
+			
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
