@@ -56,7 +56,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	parentCheckChangeActive:false,
 	isCheckedByCheckedLayers:false,
 	selectedLayersByService: [],
-	state: null
+	state: null,
+	layersByURLService:[] 
 });
 
 /**
@@ -304,8 +305,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						}
 					}
 				}
+				// check if node add by url layer and select parent node
+				if(self.layersByURLService){
+					for (var i = 0, count = self.layersByURLService.length; i < count; i++) {
+						var urlLayer = self.layersByURLService[i];
+						var urlLayerId = urlLayer.params.LAYERS;
+						if(urlLayer.visibility){
+							if(id == urlLayerId){
+								if(parent.attributes.checked != true){
+									parent.getUI().toggleCheck(true);
+									parent.attributes.layer.setVisibility(false);
+								}
+								break;
+							}
+						}
+					}
+				}
 			}
-	
 		});
 	}
 	
@@ -373,8 +389,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 						// Select layer by URL-parameter
 						var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
 						if(parameterIdentifier != ""){
-							isLayerAddByParameter = true;
-							self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+							isLayerAddByParameter = self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
 						}
 					}
 				}
@@ -388,8 +403,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					// Select layer by URL-parameter
 					var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
 					if(parameterIdentifier != ""){
-						isLayerAddByParameter = true;
-						self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+						isLayerAddByParameter = self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
 					}
 				}
 			}
@@ -653,6 +667,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 	var splitIdentifier = parameter.split("%23");
 	var identifierKey = splitIdentifier[0];
 	var identifierValue = splitIdentifier[1];
+	var isAddedVisibilityLayer = false;
 	
 	for ( var i = 0, count = layers.length; i < count; i++) {
 		var layer = layers[i];
@@ -662,11 +677,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 			if(identifiersNodeValue){
 				if(identifiersNodeValue == identifierValue){
 					layer.visibility = true;
+					isAddedVisibilityLayer = true;
 				}
 			}
 		}
 	}
 	this.fireEvent('datachanged');
+	return isAddedVisibilityLayer; 
 }
 
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerVisibility = function(records){
@@ -690,6 +707,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerVi
 											if(isSame){
 												if(recordLayer.visibility){
 													layer.visibility = recordLayer.visibility;
+													self.layersByURLService.push(layer);
 												}
 												break;
 											}
