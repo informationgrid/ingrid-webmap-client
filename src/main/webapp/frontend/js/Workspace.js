@@ -822,7 +822,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
 				kmlArray : this.kmlArray,
-				selectedLayersByService: this.activeServicesPanel.selectedLayersByService
+				selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
+				url: window.location.href
 				
 			});
 	this.session.save(data, isTemporary, responseHandler);
@@ -900,6 +901,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 						for (var i = 0, count = state.activeServices.length; i < count; i++) {
 							var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
 							if(capabilitiesUrl === serviceCapabilitiesUrl){
+								self.activeServicesPanel.state = state;
 								self.activeServicesPanel.addService(state.activeServices[i],false,true);
 								break;
 							}
@@ -908,6 +910,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					
 				}else{
 					for (var i = 0, count = state.activeServices.length; i < count; i++) {
+						self.activeServicesPanel.state = state;
 						self.activeServicesPanel.addService(state.activeServices[i],false,true);
 					}
 					

@@ -231,7 +231,8 @@ public class UserDataResource {
 			userData.setActiveServices(activeServices);
 			userData.setKml(kmlArray);
 			userData.setSelectedLayersByService(selectedLayersByService);
-
+			userData.setUrl(rootObj.getString("url"));
+			
 			// store the data
 			Store store = StoreManager.INSTANCE.getSessionStore();
 			store.putRecord(sessionId, userData.serialize());

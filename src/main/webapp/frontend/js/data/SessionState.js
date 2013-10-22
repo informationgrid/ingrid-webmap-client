@@ -45,6 +45,8 @@ de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 	
 	this.capabilitiesUrlOrder = [];
 	// apply values from the provided config object
+	this.url = "";
+
 	Ext.apply(this, config);
 };
 
@@ -81,7 +83,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 		wmcDocument: wmcDocument,
 		activeServices: capabilityUrls,
 		kmlArray: this.kmlArray,
-		selectedLayersByService: selectedLayers
+		selectedLayersByService: selectedLayers,
+		url: this.url
 	});
 	return serializedState;
 };
@@ -102,6 +105,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	this.title = data.title;
 	this.description = data.description;
 	this.kmlArray = data.kmlArray;
+	this.url = data.url;
 	this.selectedLayersByService = data.selectedLayersByService;
 	this.capabilitiesUrlOrder = data.activeServices;
 	// unserialize map state (must be applied)

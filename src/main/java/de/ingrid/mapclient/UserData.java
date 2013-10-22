@@ -31,6 +31,7 @@ public class UserData {
 	private String description;
 	private String date; // we use a string value to better control un-/serialization format
 	private String wmcDocument;
+	private String url;
 	private LocationKey locationKey;
 	private List<String> activeServices = new ArrayList<String>();
 	private List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
@@ -143,5 +144,13 @@ public class UserData {
 
 	public void setSelectedLayersByService(List<Map<String, String>> selectedLayersByService) {
 		this.selectedLayersByService = selectedLayersByService;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

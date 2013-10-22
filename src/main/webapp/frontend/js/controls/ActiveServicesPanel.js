@@ -55,7 +55,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	serviceCategoryPanel:null,
 	parentCheckChangeActive:false,
 	isCheckedByCheckedLayers:false,
-	selectedLayersByService: []
+	selectedLayersByService: [],
+	state: null
 });
 
 /**
@@ -352,11 +353,48 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode) {
 	var self = this;
 	if(service != undefined){
+		var isLayerAddByParameter = false;
+		
 		if (this.containsService(service)) {
 			//tell the user that the service is already loaded
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
+		
+		// set layer visibility to true by added URL layer
+		if(self.state){
+			// check if URL is the same by refresh or by add new URL layer
+			var url = self.state.url;
+			if(url != window.location.href){
+				var serviceLayers = service.layers;
+				if(serviceLayers){
+					var serviceLayersItem = serviceLayers.items;
+					if(serviceLayersItem){
+						// Select layer by URL-parameter
+						var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
+						if(parameterIdentifier != ""){
+							isLayerAddByParameter = true;
+							self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+						}
+					}
+				}
+			}
+		}else{
+			// No session exist before
+			var serviceLayers = service.layers;
+			if(serviceLayers){
+				var serviceLayersItem = serviceLayers.items;
+				if(serviceLayersItem){
+					// Select layer by URL-parameter
+					var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
+					if(parameterIdentifier != ""){
+						isLayerAddByParameter = true;
+						self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+					}
+				}
+			}
+		}
+		
 		var cntrPanel = Ext.getCmp('centerPanel');
 		//we only have a center panel if we are in the full view
 		if(typeof cntrPanel !== 'undefined' && showService){		
@@ -406,6 +444,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		}
 
+		// Check visibility of added layers by parameter 
+		if(isLayerAddByParameter){
+			self.checkLayerVisibility(serviceRecords);
+		}
+		
 		// add service node to the tree
 		var node = new GeoExt.tree.LayerContainer({
 			text: serviceTitle,
@@ -582,7 +625,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			var layer = layers[j];
 			self.map.raiseLayer(layer, layers.length);
 		}
-		
 	}
 };
 
@@ -604,6 +646,63 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursi
 		}
 	});
 			        
+}
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerByParameter = function(parameter, layers){
+	var self = this;
+	var splitIdentifier = parameter.split("%23");
+	var identifierKey = splitIdentifier[0];
+	var identifierValue = splitIdentifier[1];
+	
+	for ( var i = 0, count = layers.length; i < count; i++) {
+		var layer = layers[i];
+		var identifiers = layer.identifiers;
+		if(identifiers){
+			var identifiersNodeValue = identifiers[identifierKey];
+			if(identifiersNodeValue){
+				if(identifiersNodeValue == identifierValue){
+					layer.visibility = true;
+				}
+			}
+		}
+	}
+	this.fireEvent('datachanged');
+}
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerVisibility = function(records){
+	var self = this;
+	if(this.layerStore){
+		if(this.layerStore.data){
+			var items = this.layerStore.data.items; 
+			if(items){
+				for(var i = 0, count = items.length; i < count; i++) {
+					var item = items[i];
+					if(item){
+						if(item.data){
+							var layer = item.data.layer; 
+							if(layer){
+								for(var j = 0, countJ = records.length; j < countJ; j++) {
+									var record = records[j];
+									if(record.data){
+										var recordLayer = record.data.layer;
+										if(recordLayer){
+											var isSame = de.ingrid.mapclient.frontend.data.Service.compareLayers(layer, recordLayer);
+											if(isSame){
+												if(recordLayer.visibility){
+													layer.visibility = recordLayer.visibility;
+												}
+												break;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayersFromTree = function(node, layers){

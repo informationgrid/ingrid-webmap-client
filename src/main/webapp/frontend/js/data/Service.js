@@ -216,6 +216,9 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							// set layer parameters
 							// we explicitly set a layerAbstract param, since it somehow gets lost later
 							layer.addOptions({layerAbstract:record.data['abstract']},true);
+							// Add identifier to options
+							if(record.data.identifiers)
+								layer.addOptions({identifiers:record.data.identifiers});
 							//check if the config wants us to singleTile or not, but first we check if this property exists
 							var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
 							if(isSingleTile){
