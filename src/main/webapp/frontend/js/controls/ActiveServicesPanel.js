@@ -376,26 +376,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
-		
-		// set layer visibility to true by added URL layer
-		if(self.state){
-			// check if URL is the same by refresh or by add new URL layer
-			var url = self.state.url;
-			if(url != window.location.href){
-				var serviceLayers = service.layers;
-				if(serviceLayers){
-					var serviceLayersItem = serviceLayers.items;
-					if(serviceLayersItem){
-						// Select layer by URL-parameter
-						var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
-						if(parameterIdentifier != ""){
-							isLayerAddByParameter = self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
-						}
-					}
-				}
-			}
-		}else{
-			// No session exist before
+		if(wms == service.capabilitiesUrl){
 			var serviceLayers = service.layers;
 			if(serviceLayers){
 				var serviceLayersItem = serviceLayers.items;
@@ -599,8 +580,30 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		// do we get some data?
 		if(bounds){
 		//do we come from session or user interaction? zoom if user interaction
-			if(!initialAdd)
+			if(initialAdd){
+				if(wms == service.capabilitiesUrl && isLayerAddByParameter){
+					var firstVisibleLayer;
+					var serviceAddByParameterLayers = service.getLayers();
+					for (var i = 0, countI = serviceAddByParameterLayers.length; i < countI; i++) {
+						var serviceAddByParameterLayer = serviceAddByParameterLayers[i];
+						if(serviceAddByParameterLayer.visibility){
+							firstVisibleLayer = serviceAddByParameterLayer;
+							if(firstVisibleLayer.llbbox){
+								break;
+							}
+						}
+					}
+					if(firstVisibleLayer){
+						bounds = OpenLayers.Bounds.fromArray(firstVisibleLayer.llbbox);
+						var oldProj = new OpenLayers.Projection("EPSG:4326");
+						var newProj = new OpenLayers.Projection(this.map.getProjection());
+						bounds.transform(oldProj, newProj);
+						this.map.zoomToExtent(bounds);
+					}
+				}
+			}else{
 				this.map.zoomToExtent(bounds);
+			}
 		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
 		if(typeof expandNode === 'undefined' || expandNode == false)
@@ -668,6 +671,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 	var identifierKey = splitIdentifier[0];
 	var identifierValue = splitIdentifier[1];
 	var isAddedVisibilityLayer = false;
+	var isExist = false;
 	
 	for ( var i = 0, count = layers.length; i < count; i++) {
 		var layer = layers[i];
@@ -676,13 +680,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 			var identifiersNodeValue = identifiers[identifierKey];
 			if(identifiersNodeValue){
 				if(identifiersNodeValue == identifierValue){
+					isExist = true;
 					layer.visibility = true;
 					isAddedVisibilityLayer = true;
 				}
 			}
 		}
+		if(isExist == false){
+			layer.visibility = false;
+		}
+		isExist = false;
 	}
-	this.fireEvent('datachanged');
 	return isAddedVisibilityLayer; 
 }
 
@@ -705,10 +713,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerVi
 										if(recordLayer){
 											var isSame = de.ingrid.mapclient.frontend.data.Service.compareLayers(layer, recordLayer);
 											if(isSame){
-												if(recordLayer.visibility){
-													layer.visibility = recordLayer.visibility;
-													self.layersByURLService.push(layer);
-												}
+												layer.visibility = recordLayer.visibility;
+												self.layersByURLService.push(layer);
 												break;
 											}
 										}
