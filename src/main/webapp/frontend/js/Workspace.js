@@ -78,14 +78,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var self = this;
 	var navigationControl = new OpenLayers.Control.Navigation();
 	this.ctrls['navigationControl'] = navigationControl;
-	// create the map (default projection is WGS 84)
+	// create the map (default projection read from config)
+	var projection =  de.ingrid.mapclient.Configuration.getValue('projections');
+	var epsg = projection[0].epsgCode;
 	this.map = new de.ingrid.mapclient.frontend.IngridMap({
 				containingViewport:self,
 				fractionalZoom : true,
-				projection : new OpenLayers.Projection("EPSG:4326"),
+				projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 				// this will be used by some controls (ArgParser, MousePosition,
 				// Permalink)
-				displayProjection : new OpenLayers.Projection("EPSG:4326"),
+				displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 				// if we dont add these controls on init
 				// we get the default controls plus the added ones
 				// adding controls at init impedes default controls
