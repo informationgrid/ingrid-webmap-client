@@ -48,6 +48,11 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			}
 		}
 	}
+	
+	if(newExtent == undefined){
+		newExtent = newMaxExtent;
+	}
+	
 	var options = {
 		maxExtent: newExtent,
 		projection: newProjection.getCode(),
