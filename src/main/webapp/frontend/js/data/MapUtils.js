@@ -27,30 +27,44 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	var newProjection = new OpenLayers.Projection(newProjCode);
 	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	var newExtent;
-	var mapExtent;
-	
-	if(oldProjection.projCode != newProjection.projCode){
-		mapExtent = container.bounds;
-	}
-	if (mapExtent) {
-		newExtent = mapExtent.clone().transform(oldProjection, newProjection);
-	} else {
-		if(container.map){
-			if(container.map.baseLayer){
-				if(container.map.baseLayer.maxExtent){
-					if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
-						newExtent = container.map.baseLayer.maxExtent.clone().transform(oldProjection, newProjection);
-					}
-					if(newExtent === undefined){
-						newExtent = container.map.baseLayer.maxExtent;
-					}
-				}
-			}
-		}
-	}
+	var mapExtent = map.getExtent();
 	
 	if(newExtent == undefined){
 		newExtent = newMaxExtent;
+		if(map.baseLayer.bbox){
+			// Initial load
+			var hasNewExtent = false;
+			var bboxExtent;
+			var bboxProjection;
+			for(var k in map.baseLayer.bbox){
+				if(k == newProjCode){
+					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
+					bboxProjection = new OpenLayers.Projection(k);
+					hasNewExtent=true;
+				}else{
+					if(!hasNewExtent){
+						bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
+						bboxProjection = new OpenLayers.Projection(k);
+					}else{
+						break;
+					}
+				}
+			}
+			
+			if(hasNewExtent){
+				newExtent = bboxExtent;
+			}else{
+				newExtent = bboxExtent.clone().transform(bboxProjection, newProjection);
+			}
+			
+		}else{
+			// Reload
+			newExtent = map.getMaxExtent();
+			// Projection change
+			if(zoomToExtent == undefined){
+				newExtent = newExtent.clone().transform(oldProjection, newProjection);
+			}
+		}
 	}
 	
 	var options = {
@@ -87,8 +101,15 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	}
 	
 	// only zoom into extent if the map initially had an extent
-	if (typeof(zoomToExtent) === "undefined" || zoomToExtent) {
-		map.zoomToExtent(newMaxExtent);
+	if (zoomToExtent === undefined || zoomToExtent) {
+		var zoomExtent;
+		if(zoomToExtent == undefined){
+			zoomExtent = mapExtent.clone().transform(oldProjection, newProjection);
+			map.zoomToExtent(zoomExtent);
+		}else{
+			zoomExtent = newMaxExtent;
+			map.zoomToExtent(zoomExtent);
+		}
 	}
 	
     map.displayProjection = newProjection;
@@ -102,7 +123,6 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
             }
             if (control instanceof OpenLayers.Control.OverviewMap) {
             	// reset map
-            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
             	control.ovmap.setOptions(options);
             	control.ovmap.baseLayer.addOptions(options);            	
             	control.ovmap.zoomToExtent(newExtent);
@@ -120,7 +140,6 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
             }
             if (control instanceof OpenLayers.Control.OverviewMap) {
             	// reset map
-            	var newExtent = control.ovmap.getExtent().clone().transform(oldProjection, newProjection);
             	control.ovmap.setOptions(options);            	
             	control.ovmap.baseLayer.addOptions(options);            	
             	control.ovmap.zoomToExtent(newExtent);

@@ -579,6 +579,11 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	            this.map.baseLayer.url,
 	            {layers: this.map.baseLayer.params.LAYERS}
 	        );
+		var mapOptions = {
+	            maxExtent: this.map.maxExtent, 
+	            maxResolution: 'auto',
+	            projection: this.map.projection
+	        };
 		var ov = new OpenLayers.Control.OverviewMap({
 			layers : [overviewLayer],
 			minRatio: 2,
@@ -602,7 +607,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 				var copyright = $("copyright");
 				if(copyright)
 					copyright.style.right =  "220px";
-			}
+			},
+			mapOptions:mapOptions
 		});
 		this.map.addControl(ov);
 	}
