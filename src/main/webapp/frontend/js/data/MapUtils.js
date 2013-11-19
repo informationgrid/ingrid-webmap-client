@@ -55,6 +55,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 				newExtent = bboxExtent;
 			}else{
 				newExtent = bboxExtent.clone().transform(bboxProjection, newProjection);
+				if (!newExtent.containsBounds(bboxExtent, false, false)) {
+					newExtent = newMaxExtent;
+				}
 			}
 			
 		}else{
