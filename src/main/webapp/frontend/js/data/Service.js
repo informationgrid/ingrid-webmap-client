@@ -222,6 +222,11 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							// Add llbox
 							if(record.data.llbbox)
 								layer.addOptions({llbbox:record.data.llbbox});
+							// Add bbox
+							if(record.data.bbox){
+								layer.bbox = record.data.bbox;
+							}
+							
 							//check if the config wants us to singleTile or not, but first we check if this property exists
 							var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
 							if(isSingleTile){
