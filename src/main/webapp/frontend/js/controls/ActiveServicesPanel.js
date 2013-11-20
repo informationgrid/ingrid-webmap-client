@@ -402,18 +402,32 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		var supportsSRS = false;
 		// srss holds the name of the supported projections
 		for(srs in  srss){
-			if(srs.toLowerCase() == this.map.projection.toString().toLowerCase()){
-			supportsSRS = true;
-			break;
+			if(this.map.projection instanceof Object){
+				if(srs.toLowerCase() == this.map.projection.getCode().toLowerCase()){
+					supportsSRS = true;
+					break;
+				}
+			}else{
+				if(srs.toLowerCase() == this.map.projection.toString().toLowerCase()){
+					supportsSRS = true;
+					break;
+				}
 			}
 		}
 		// maybe the srs is not in the support list, but there is a bbox defined for it
 		var srss = service.capabilitiesStore.data.items[0].data.bbox;
 		if(!supportsSRS && srss)
 			for(srs in  srss){
-				if(srs.toLowerCase() == this.map.projection.toLowerCase()){
-				supportsSRS = true;
-				break;
+				if(this.map.projection instanceof Object){
+					if(srs.toLowerCase() == this.map.projection.getCode().toLowerCase()){
+						supportsSRS = true;
+						break;
+					}
+				}else{
+					if(srs.toLowerCase() == this.map.projection.toString().toLowerCase()){
+						supportsSRS = true;
+						break;
+					}
 				}
 			}
 		var serviceTitle = "no srs info available";
