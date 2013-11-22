@@ -318,7 +318,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	}
 	
 	// Create Nominatim
-	if (de.ingrid.mapclient.Configuration.getSettings("defaultNominatimEnable")) {
+	if (de.ingrid.mapclient.Configuration.getSettings("searchNominatimEnable")) {
 		toolbarItems.push({
 			id:'nominatim',
 			xtype: "gx_geocodercombo",
@@ -326,7 +326,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("defaultNominatimParams").trim(),
+			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("searchNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
@@ -570,7 +570,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	}
 	this.map.addControls(controls);
 	
-	if(de.ingrid.mapclient.Configuration.getSettings("defaultMinimapEnable")){
+	if(de.ingrid.mapclient.Configuration.getSettings("searchMinimapEnable")){
 		// create the overview layer
 		// (we cannot clone the baselayer here, because it would use wrong 
 		// settings form the main map (zoom levels, etc.).)
