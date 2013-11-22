@@ -102,9 +102,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 
 				if(self.activeNode.attributes.service != undefined){
 					//enable add service button
-					if(self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl]){
-					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
-					self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
+					if(self.serviceCategoryPanel){
+						if(self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl]){
+							self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
+							self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
+						}
 					}
 					self.removeService(self.activeNode.attributes.service, null, self.activeNode);
 					self.removeBtn.disable();
@@ -376,15 +378,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			//de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.VIEW_ALREADY_LOADED_FAILURE);
 			return;
 		}
-		if(wms == service.capabilitiesUrl){
-			var serviceLayers = service.layers;
-			if(serviceLayers){
-				var serviceLayersItem = serviceLayers.items;
-				if(serviceLayersItem){
-					// Select layer by URL-parameter
-					var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
-					if(parameterIdentifier != ""){
-						isLayerAddByParameter = self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+		
+		if(typeof wms === 'string'){
+			if(wms == service.capabilitiesUrl){
+				var serviceLayers = service.layers;
+				if(serviceLayers){
+					var serviceLayersItem = serviceLayers.items;
+					if(serviceLayersItem){
+						// Select layer by URL-parameter
+						var parameterIdentifier = de.ingrid.mapclient.frontend.data.MapUtils.getParameter("ID");
+						if(parameterIdentifier != ""){
+							isLayerAddByParameter = self.checkLayerByParameter(parameterIdentifier, serviceLayersItem);
+						}
 					}
 				}
 			}
