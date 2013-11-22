@@ -94,11 +94,6 @@
       <value>resize</value>
     </setting>
     <setting>
-      <key>defaultMinimapEnable</key>
-      <name>Minimap: Anzeigen des Minimap-Controls</name>
-      <value>true</value>
-    </setting>
-    <setting>
       <key>defaultTreeDragDrop</key>
       <name>Layer-Tree Drag/Drop: Verschieben von Diensten im Dienst Baum</name>
       <value>true</value>
