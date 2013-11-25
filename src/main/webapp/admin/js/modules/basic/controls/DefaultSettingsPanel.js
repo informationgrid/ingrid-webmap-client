@@ -273,6 +273,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.saveSetti
 	settings.push(this.settingsStoreDefault);
 	settings.push(this.settingsStore);
 	settings.push(this.settingsStoreSearch);
+	settings.push(this.settingsStoreUrlCheck);
 	de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
 };
 
