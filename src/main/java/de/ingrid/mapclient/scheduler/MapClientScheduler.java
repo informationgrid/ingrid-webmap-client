@@ -23,7 +23,7 @@ public class MapClientScheduler implements ServletContextListener {
  		ArrayList<Setting> settings = (ArrayList<Setting>) pc.getSettings();
  		for(int i=0; i < settings.size(); i++){
  			Setting setting = settings.get(i);
- 			if(setting.getKey().equals("defaultCronPatternUpdateCapabilities")){
+ 			if(setting.getKey().equals("urlCheckCronPatternUpdateCapabilities")){
  				pattern = setting.getValue();
  				break;
  			}

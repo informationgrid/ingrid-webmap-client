@@ -105,7 +105,7 @@
     </setting>
     <setting>
       <key>urlCheckCronPatternUpdateCapabilities</key>
-      <name>Cron-Pattern: Für die automatischen Aktualisierung der eingebundenen Diensten (Bei Änderung ist ein Neustart notwendig!)</name>
+      <name>Automatisches Ausführungsintervall (Cron-Pattern)</name>
       <value>*/30 * * * *</value>
     </setting>
     <setting>
@@ -135,7 +135,7 @@
     </setting>
     <setting>
       <key>viewActiveAccordionWestPanel</key>
-      <name>Aktive Rubrik bestimmen</name>
+      <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
     </setting>
     <setting>

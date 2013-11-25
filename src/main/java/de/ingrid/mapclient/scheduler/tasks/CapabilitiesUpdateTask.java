@@ -70,15 +70,15 @@ public class CapabilitiesUpdateTask implements Runnable{
 											break;
 										}
 										
-										if(setting.getKey().equals("defaultMailAddressFrom")){
+										if(setting.getKey().equals("urlCheckMailAddressFrom")){
 											from = setting.getValue();
-										}else if(setting.getKey().equals("defaultMailAddressTo")){
+										}else if(setting.getKey().equals("urlCheckMailAddressTo")){
 											to = setting.getValue();
-										}else if(setting.getKey().equals("defaultMailHost")){
+										}else if(setting.getKey().equals("urlCheckMailHost")){
 											host = setting.getValue();
-										}else if(setting.getKey().equals("defaultMailUpdateSubject")){
+										}else if(setting.getKey().equals("urlChecktMailUpdateSubject")){
 											emailSubject = setting.getValue();
-										}else if(setting.getKey().equals("defaultMailUpdateText")){
+										}else if(setting.getKey().equals("urlCheckMailUpdateText")){
 											text = setting.getValue();
 											text = text.concat("\r\n" + service.getName() + " (" + service.getOriginalCapUrl() + ")");
 										}
