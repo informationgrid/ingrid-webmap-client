@@ -76,7 +76,7 @@ public class CapabilitiesUpdateTask implements Runnable{
 											to = setting.getValue();
 										}else if(setting.getKey().equals("urlCheckMailHost")){
 											host = setting.getValue();
-										}else if(setting.getKey().equals("urlChecktMailUpdateSubject")){
+										}else if(setting.getKey().equals("urlCheckMailUpdateSubject")){
 											emailSubject = setting.getValue();
 										}else if(setting.getKey().equals("urlCheckMailUpdateText")){
 											text = setting.getValue();
