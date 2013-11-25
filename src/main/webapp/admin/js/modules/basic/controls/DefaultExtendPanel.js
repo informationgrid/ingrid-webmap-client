@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Initiale Kartenausdehnung',
+	title: 'Eigenschaften',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',

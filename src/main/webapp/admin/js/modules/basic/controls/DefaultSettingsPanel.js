@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Allgemeine Einstellungen',
+	title: 'Benutzeroberfl&auml;che',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',
@@ -19,6 +19,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel = Ext.extend(Ext.Pa
 	gridSearch: null,
 	settingsStoreSearch: {},
 	propertyNamesSearch: {},
+	gridUrlCheck: null,
+	settingsStoreUrlCheck: {},
+	propertyNamesUrlCheck: {},
 	gridDefault: null,
 	settingsStoreDefault: {},
 	propertyNamesDefault: {}
@@ -48,7 +51,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 
 	// create the viewer grid
 	this.grid = new Ext.grid.PropertyGrid({
-		title: 'Viewer',
+		title: 'Kartenviewer',
 	    autoHeight: true,
         propertyNames: this.propertyNames,
         source:  this.settingsStore,
@@ -63,10 +66,25 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 
 	// create the searcher grid
 	this.gridSearch = new Ext.grid.PropertyGrid({
-		title: 'Searcher',
+		title: 'Suche',
 	    autoHeight: true,
         propertyNames: this.propertyNamesSearch,
         source:  this.settingsStoreSearch,
+        viewConfig : {
+            forceFit: true,
+            scrollOffset: 2 // the grid will never have scrollbars
+        },
+        autoExpandColumn: {
+            forceFit: true
+        }
+	});
+	
+	// create the searcher grid
+	this.gridUrlCheck = new Ext.grid.PropertyGrid({
+		title: 'Url-Check',
+	    autoHeight: true,
+        propertyNames: this.propertyNamesUrlCheck,
+        source:  this.settingsStoreUrlCheck,
         viewConfig : {
             forceFit: true,
             scrollOffset: 2 // the grid will never have scrollbars
@@ -171,6 +189,36 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 						}
 					}]
 			    },
+			    this.gridUrlCheck,
+			    {
+					xtype: 'container',
+					height: 20
+			    },
+			    {
+					xtype: 'container',
+					layout: 'column',
+					anchor: '100%',
+				    items: [{
+						xtype: 'container',
+						columnWidth: 1,
+						height: 50
+					}, {
+						xtype: 'container',
+						layout: 'form',
+						height: 50,
+						items: {
+							xtype: 'button',
+							text: 'Einstellungen Speichern',
+							anchor: '100%',
+							style: {
+				                paddingTop: '10px'
+				            },
+							handler: function() {
+								self.saveSettings();
+							}
+						}
+					}]
+			    },
 			    {
 					xtype: 'container',
 					height: 20
@@ -209,6 +257,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.onRender 
 			}else if (key.indexOf("default") == 0){
 				this.settingsStoreDefault[key] = value;
 				this.propertyNamesDefault[key] = setting.name;
+			}else if (key.indexOf("urlCheck") == 0){
+				this.settingsStoreUrlCheck[key] = value;
+				this.propertyNamesUrlCheck[key] = setting.name;
 			}
 		}
 	}

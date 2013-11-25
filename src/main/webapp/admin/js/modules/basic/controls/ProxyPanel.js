@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.ProxyPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Proxy Zugriffs Url',
+	title: 'Proxy Zugriff',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',

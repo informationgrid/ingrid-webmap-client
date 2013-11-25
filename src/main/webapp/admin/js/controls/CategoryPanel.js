@@ -72,7 +72,7 @@ de.ingrid.mapclient.admin.controls.CategoryPanel.prototype.buildContent = functi
 
 	// create the contained GridPanel instance
 	var columns = [{
-		header: 'Neue Rubrik',
+		header: 'Unterrubrik',
 		sortable: true,
 		dataIndex: 'name',
 		editor: {

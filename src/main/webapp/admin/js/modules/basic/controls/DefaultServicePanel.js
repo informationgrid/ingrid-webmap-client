@@ -9,7 +9,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel = Ext.extend(Ext.Panel, {
 
-	title: 'Default Dienst und Layer',
+	title: 'Hintergrundkarte',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',
@@ -36,7 +36,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel = Ext.extend(Ext.Pan
 	 * The field that contains the WMS capabilities url
 	 */
 	wmsCapUrlField: new Ext.form.TextField({
-		fieldLabel: 'WMS Capabilities Url',
+		fieldLabel: 'WMS Capabilities Url der Hintergrundkarte',
 		allowBlank: false,
 		anchor: '99%'
 	}),
@@ -77,7 +77,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 	});
 	
 	this.featureInfoTextField = new Ext.form.TextField({
-		fieldLabel: 'Dienst f&uuml;r die FeatureInfo-Abfrage',
+		fieldLabel: 'WMS f&uuml;r die FeaturInfo-Abfrage',
 		allowBlank: true,
 		anchor: '99%'
 	});
@@ -86,7 +86,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 	this.layerGrid = new Ext.grid.GridPanel({
 		store: this.layerStore,
 		columns: [selectionModel, {
-			header: 'Layer',
+			header: 'Alle Layer',
 			sortable: true,
 			dataIndex: 'title'
 		}],
