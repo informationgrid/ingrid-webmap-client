@@ -599,7 +599,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		// do we get some data?
 		if(bounds){
 		//do we come from session or user interaction? zoom if user interaction
-			if(initialAdd){
+			if(initialAdd || isLayerAddByParameter){
 				if(wms == service.capabilitiesUrl && isLayerAddByParameter){
 					var firstVisibleLayer;
 					var serviceAddByParameterLayers = service.getLayers();
