@@ -613,11 +613,44 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 						}
 					}
 					if(firstVisibleLayer){
+						var newProj = new OpenLayers.Projection(this.map.getProjection());
+						if(newProj){
+							if(firstVisibleLayer.bbox){
+								var isAddedLayerBounds = firstVisibleLayer.bbox[newProj.getCode()];
+								if(isAddedLayerBounds){
+									if(isAddedLayerBounds.bbox){
+										bounds = new OpenLayers.Bounds.fromArray(isAddedLayerBounds.bbox);
+										
+									}
+								}else{
+									for(var key in isAddedLayer.bbox){
+										isAddedLayerBounds = firstVisibleLayer.bbox[key];
+										bounds = new OpenLayers.Bounds.fromArray(isAddedLayerBounds.bbox);
+										var oldProj = new OpenLayers.Projection(key);
+										bounds.transform(oldProj, newProj);
+										break;
+									}
+								}
+								self.map.zoomToExtent(bounds);
+								
+								// zoom in if the content cannot be shown at this level
+								if(firstVisibleLayer.minScale) {
+									var minResolution = OpenLayers.Util.getResolutionFromScale(firstVisibleLayer.minScale, self.map.baseLayer.units);
+									if (minResolution < self.map.resolution) {
+										// probably due to a not so exact conversion of the scale
+										// we have to decrease the scale, so that the layer is actually seen (INGRID-2235)
+										self.map.zoomToScale(firstVisibleLayer.minScale * 0.9);
+									}
+								}
+							}
+						}
+						/*
 						bounds = OpenLayers.Bounds.fromArray(firstVisibleLayer.llbbox);
 						var oldProj = new OpenLayers.Projection("EPSG:4326");
 						var newProj = new OpenLayers.Projection(this.map.getProjection());
 						bounds.transform(oldProj, newProj);
 						this.map.zoomToExtent(bounds);
+						*/
 					}
 				}
 			}else{
@@ -696,6 +729,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 		var layer = layers[i];
 		var identifiers = layer.identifiers;
 		if(identifiers){
+			for (var key in identifiers){
+				var value = identifiers[key];
+				if(identifierValue == value){
+					isExist = true;
+					layer.visibility = true;
+					isAddedVisibilityLayer = true;
+				}
+			}
+		}
+		/*
+		if(identifiers){
 			var identifiersNodeValue = identifiers[identifierKey];
 			if(identifiersNodeValue){
 				if(identifiersNodeValue == identifierValue){
@@ -705,6 +749,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 				}
 			}
 		}
+		*/
 		if(isExist == false){
 			layer.visibility = false;
 		}
