@@ -899,6 +899,39 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 	this.session.load(state, shortUrl, {
 		success : function(responseText) {
 			// restore map state
+			if (!(typeof(state.selectedLayersByService) === "undefined") && state.selectedLayersByService.length > 0){
+				for (var i = 0, count = state.selectedLayersByService.length; i < count; i++) {
+					var selectedLayer = state.selectedLayersByService[i];
+					var id = null;
+					var capabilitiesUrl = null;
+					var checked = null;
+					var cls = null;
+					var leaf = null;
+					for (var j = 0, countJ = selectedLayer.length; j < countJ; j++) {
+						var entry = selectedLayer[j];
+						if(entry[0] == "id"){
+							id = entry[1];
+						}else if(entry[0] == "capabilitiesUrl"){
+							capabilitiesUrl = entry[1];
+						}else if(entry[0] == "checked"){
+							checked = entry[1];
+						}else if(entry[0] == "cls"){
+							cls = entry[1];
+						}else if(entry[0] == "leaf"){
+							leaf = entry[1];
+						}
+					}
+					self.activeServicesPanel.selectedLayersByService.push({
+						id:id,
+						capabilitiesUrl:capabilitiesUrl,
+						checked:checked,
+						cls:cls,
+						leaf:leaf
+					});
+				}
+			}
+			
+			
 			// do this first to make sure the map has it's base layer
 			// BEFORE any other layer (KML, AddWms via URL) is loaded
 			state.restoreMapState(function() {
@@ -941,38 +974,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				}
 			});
 			
-			if (!(typeof(state.selectedLayersByService) === "undefined") && state.selectedLayersByService.length > 0){
-				for (var i = 0, count = state.selectedLayersByService.length; i < count; i++) {
-					var selectedLayer = state.selectedLayersByService[i];
-					var id = null;
-					var capabilitiesUrl = null;
-					var checked = null;
-					var cls = null;
-					var leaf = null;
-					for (var j = 0, countJ = selectedLayer.length; j < countJ; j++) {
-						var entry = selectedLayer[j];
-						if(entry[0] == "id"){
-							id = entry[1];
-						}else if(entry[0] == "capabilitiesUrl"){
-							capabilitiesUrl = entry[1];
-						}else if(entry[0] == "checked"){
-							checked = entry[1];
-						}else if(entry[0] == "cls"){
-							cls = entry[1];
-						}else if(entry[0] == "leaf"){
-							leaf = entry[1];
-						}
-					}
-					self.activeServicesPanel.selectedLayersByService.push({
-						id:id,
-						capabilitiesUrl:capabilitiesUrl,
-						checked:checked,
-						cls:cls,
-						leaf:leaf
-					});
-				}
-			}
-					
 			
 			if (!(typeof(state.kmlArray) === "undefined")
 					&& state.kmlArray.length > 0) {
