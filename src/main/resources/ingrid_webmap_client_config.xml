@@ -80,7 +80,7 @@
   <settings>
     <setting>
       <key>urlCheckMailAddressTo</key>
-      <name>E-Mail Adresse: Kontaktadresse des Admin</name>
+      <name>Email Adresse: Kontaktadresse des Admin</name>
       <value>webmaster@portalu.de</value>
     </setting>
     <setting>
