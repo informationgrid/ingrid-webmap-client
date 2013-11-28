@@ -70,19 +70,27 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 		eventListeners: {
 			"getfeatureinfo": function(e) {
 				// create a panel for each response
-				var service = de.ingrid.mapclient.frontend.data.Service.findByUrl(e.url);
-				var tab;
-				var tabPanel;
+				var isAddTab = false;
+				if(e.layers){
+					if(e.layers[0]){
+						var service = de.ingrid.mapclient.frontend.data.Service.findByLayer(e.layers[0]);
+						var tab;
+						var tabPanel;
+						
+						if(service){
+							tab = {
+						        title : service.getDefinition().title,
+						        html  : e.text,
+						        autoScroll: true,
+						        bodyStyle: 'font-size:16px;',
+						        closeable: true
+						    };
+							isAddTab = true;
+						}
+					}
+				}
 				
-				if(service){
-					tab = {
-				        title : service.getDefinition().title,
-				        html  : e.text,
-				        autoScroll: true,
-				        bodyStyle: 'font-size:16px;',
-				        closeable: true
-				    };
-				}else{
+				if(isAddTab == false){
 					tab = {
 				        title : i18n('tNoTitle'),
 				        html  : e.text,
@@ -102,9 +110,7 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.query = functi
 				tabPanel.add(tab);
 				self.add(tabPanel);
 				self.doLayout();							
-				
 			}
-			
 		}
 	});
 	
