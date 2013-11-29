@@ -704,7 +704,7 @@ public class ConfigurationResource {
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
 			Document doc = stringToDom(response);
-			doc = addIndexToLayers(doc);
+			doc = CapabilitiesUtils.addIndexToLayers(doc);
 			
 			String title = getNameFromXML(doc);
 			TransformerFactory tFactory = TransformerFactory.newInstance();
@@ -1055,7 +1055,7 @@ public class ConfigurationResource {
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
 			// Add name to layers
-			doc = addIndexToLayers(doc);
+			doc = CapabilitiesUtils.addIndexToLayers(doc);
 			DOMSource source = new DOMSource(doc);
 			
 			File f = null;
@@ -1426,33 +1426,5 @@ public class ConfigurationResource {
 		return name;
 	}
 	
-	private Document addIndexToLayers(Document doc) throws XPathExpressionException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException{
-		NodeList nodeList = XPathUtils.getNodeList(doc, "//Layer");
-		for(int i=0; i < nodeList.getLength(); i++){
-			Node node = nodeList.item(i);
-			if(!XPathUtils.nodeExists(node, "./Name")){
-				Element nameNode = doc.createElement("Name");
-				String txt = "";
-				if(node.getFirstChild() != null){
-					Node childNode = node.getFirstChild();
-					if(node.getNodeName() != null)
-						txt = txt + "" + node.getNodeName();
-					if(node.getNodeValue() != null)
-						txt = txt + "" + node.getNodeValue();
-					if(node.getTextContent() != null)
-						txt = txt + "" + node.getTextContent();
-					Text textNode = doc.createTextNode("INGRID-" + createMD5NameText(txt));
-					nameNode.appendChild(textNode);
-					node.insertBefore(nameNode, childNode);					
-				}
-			}
-		}
-		return doc;
-	}
 	
-	private String createMD5NameText(String text) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
-		InputStream is = new ByteArrayInputStream(text.getBytes());
-		 
-		return MD5Util.getMD5(is);
-	}
 }

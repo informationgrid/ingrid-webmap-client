@@ -43,23 +43,6 @@ public class CapabilitiesUtils {
 	protected static final char ALPHABET[] = "0123456789abcdefghijklmnopqrstuvwxyz".toCharArray();
 	protected static final int LENGTH = 8;
 	
-	public static Document addIndexToLayers(Document doc) throws XPathExpressionException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException{
-		NodeList nodeList = XPathUtils.getNodeList(doc, "//Layer");
-		for(int i=0; i < nodeList.getLength(); i++){
-			Node node = nodeList.item(i);
-			if(!XPathUtils.nodeExists(node, "./Name")){
-				Element nameNode = doc.createElement("Name");
-				String txt = "INGRID-";
-				if(node.getFirstChild() != null){
-					txt = txt.concat(generateRandomString());
-					Text textNode = doc.createTextNode(txt);
-					nameNode.appendChild(textNode);
-					node.insertBefore(nameNode, node.getFirstChild());					
-				}
-			}
-		}
-		return doc;
-	}
 	public static String createMD5NameText(String text, Node node) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		DOMSource source = new DOMSource(node);
@@ -111,7 +94,7 @@ public class CapabilitiesUtils {
 		return "";
 	}
 	
-	public static void updateCapabilities(String response, WmsService service){
+	public static void updateCapabilities(String response, WmsService service) throws TransformerFactoryConfigurationError, IOException{
 		String url;
 		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
 		String path = p.getWMSDir();
@@ -151,13 +134,20 @@ public class CapabilitiesUtils {
 		}
 	}
 	
-	public static Document updateCapabilititesDocument(Document doc, WmsService service){
+	public static Document updateCapabilititesDocument(Document doc, WmsService service) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException{
 			// Set actual service name to capabilities 
 			if(service.getName() != null){
 				Node titleNode = (Node) XPathUtils.getNode(doc, "//Service/Title");
 				if(titleNode != null){
 					titleNode.setTextContent(service.getName());
 				}
+			}
+			
+			try {
+				doc = addIndexToLayers(doc);
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		return doc;
 	}
@@ -182,4 +172,34 @@ public class CapabilitiesUtils {
 		}
         return null;
     }
+
+	public static Document addIndexToLayers(Document doc) throws XPathExpressionException, TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException{
+		NodeList nodeList = XPathUtils.getNodeList(doc, "//Layer");
+		for(int i=0; i < nodeList.getLength(); i++){
+			Node node = nodeList.item(i);
+			if(!XPathUtils.nodeExists(node, "./Name")){
+				Element nameNode = doc.createElement("Name");
+				String txt = "";
+				if(node.getFirstChild() != null){
+					Node childNode = node.getFirstChild();
+					if(node.getNodeName() != null)
+						txt = txt + "" + node.getNodeName();
+					if(node.getNodeValue() != null)
+						txt = txt + "" + node.getNodeValue();
+					if(node.getTextContent() != null)
+						txt = txt + "" + node.getTextContent();
+					Text textNode = doc.createTextNode("INGRID-" + CapabilitiesUtils.createMD5NameText(txt));
+					nameNode.appendChild(textNode);
+					node.insertBefore(nameNode, childNode);					
+				}
+			}
+		}
+		return doc;
+	}
+	
+	public static String createMD5NameText(String text) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
+		InputStream is = new ByteArrayInputStream(text.getBytes());
+		 
+		return MD5Util.getMD5(is);
+	}
 }
