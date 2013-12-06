@@ -18,13 +18,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel = Ext.extend(Ext.Pa
 	propertyNames: {},
 	gridSearch: null,
 	settingsStoreSearch: {},
-	propertyNamesSearch: {},
-	gridUrlCheck: null,
-	settingsStoreUrlCheck: {},
-	propertyNamesUrlCheck: {},
-	gridDefault: null,
-	settingsStoreDefault: {},
-	propertyNamesDefault: {}
+	propertyNamesSearch: {}
 });
 
 /**
@@ -33,21 +27,6 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel = Ext.extend(Ext.Pa
 de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initComponent = function() {
 
 	var self = this;	
-
-	// create the searcher grid
-	this.gridDefault = new Ext.grid.PropertyGrid({
-		title: 'Allgemein',
-	    autoHeight: true,
-        propertyNames: this.propertyNamesDefault,
-        source:  this.settingsStoreDefault,
-        viewConfig : {
-            forceFit: true,
-            scrollOffset: 2 // the grid will never have scrollbars
-        },
-        autoExpandColumn: {
-            forceFit: true
-        }
-	});
 
 	// create the viewer grid
 	this.grid = new Ext.grid.PropertyGrid({
@@ -79,57 +58,9 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
         }
 	});
 	
-	// create the searcher grid
-	this.gridUrlCheck = new Ext.grid.PropertyGrid({
-		title: 'Url-Check',
-	    autoHeight: true,
-        propertyNames: this.propertyNamesUrlCheck,
-        source:  this.settingsStoreUrlCheck,
-        viewConfig : {
-            forceFit: true,
-            scrollOffset: 2 // the grid will never have scrollbars
-        },
-        autoExpandColumn: {
-            forceFit: true
-        }
-	});
-
-	
 	// create the final layout
 	Ext.apply(this, {
-		items: [
-		        
-		        this.gridDefault,
-		        {
-		        	xtype: 'container',
-					height: 20
-			    },
-			    {
-					xtype: 'container',
-					layout: 'column',
-					anchor: '100%',
-				    items: [{
-						xtype: 'container',
-						columnWidth: 1,
-						height: 50
-					}, {
-						xtype: 'container',
-						layout: 'form',
-						height: 50,
-						items: {
-							xtype: 'button',
-							text: 'Einstellungen Speichern',
-							anchor: '100%',
-							style: {
-				                paddingTop: '10px'
-				            },
-							handler: function() {
-								self.saveSettings();
-							}
-						}
-					}]
-			    }, 
-			    this.grid,
+		items: [this.grid,
 		        {
 		        	xtype: 'container',
 					height: 20
@@ -188,40 +119,6 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 							}
 						}
 					}]
-			    },
-			    this.gridUrlCheck,
-			    {
-					xtype: 'container',
-					height: 20
-			    },
-			    {
-					xtype: 'container',
-					layout: 'column',
-					anchor: '100%',
-				    items: [{
-						xtype: 'container',
-						columnWidth: 1,
-						height: 50
-					}, {
-						xtype: 'container',
-						layout: 'form',
-						height: 50,
-						items: {
-							xtype: 'button',
-							text: 'Einstellungen Speichern',
-							anchor: '100%',
-							style: {
-				                paddingTop: '10px'
-				            },
-							handler: function() {
-								self.saveSettings();
-							}
-						}
-					}]
-			    },
-			    {
-					xtype: 'container',
-					height: 20
 			    }]
 	});
 	de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.initComponent.call(this);
@@ -248,18 +145,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.onRender 
 			    value =  true;
 			}
 			
-			if(key.indexOf("view") == 0){
+			if(setting.group == "view"){
 				this.settingsStore[key] = value;
 				this.propertyNames[key] = setting.name;
-			}else if (key.indexOf("search") == 0){
+			}else if (setting.group == "search"){
 				this.settingsStoreSearch[key] = value;
 				this.propertyNamesSearch[key] = setting.name;
-			}else if (key.indexOf("default") == 0){
-				this.settingsStoreDefault[key] = value;
-				this.propertyNamesDefault[key] = setting.name;
-			}else if (key.indexOf("urlCheck") == 0){
-				this.settingsStoreUrlCheck[key] = value;
-				this.propertyNamesUrlCheck[key] = setting.name;
 			}
 		}
 	}
@@ -270,10 +161,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.onRender 
  */
 de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.saveSettings = function() {
 	var settings = [];
-	settings.push(this.settingsStoreDefault);
 	settings.push(this.settingsStore);
 	settings.push(this.settingsStoreSearch);
-	settings.push(this.settingsStoreUrlCheck);
 	de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
 };
 

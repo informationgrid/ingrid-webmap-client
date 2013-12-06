@@ -402,9 +402,13 @@ public class ConfigurationResource {
 				Setting setting = settings.get(i);
 				String key = setting.getKey();
 				String name = setting.getName();
+				String group = setting.getGroup();
 				
 				String value = (String) maps.get(key);
-				Setting editSetting = new Setting(key, name, value);
+				if(value == null){
+					value = setting.getValue();
+				}
+				Setting editSetting = new Setting(key, name, value, group);
 				editSettings.add(editSetting);
 			}
 			config.setSettings(editSettings);
