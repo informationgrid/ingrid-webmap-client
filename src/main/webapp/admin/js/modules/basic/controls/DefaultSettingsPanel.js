@@ -43,6 +43,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
         }
 	});
 
+	delete this.grid.getStore().sortInfo;
+	
 	// create the searcher grid
 	this.gridSearch = new Ext.grid.PropertyGrid({
 		title: 'Suche',
@@ -57,6 +59,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
             forceFit: true
         }
 	});
+	
+	delete this.gridSearch.getStore().sortInfo;
 	
 	// create the final layout
 	Ext.apply(this, {

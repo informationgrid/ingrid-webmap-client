@@ -78,6 +78,7 @@
     </scale>
   </scales>
   <settings>
+  	<!-- Url-Check -->
     <setting>
       <key>urlCheckMailAddressTo</key>
       <name>Email Adresse: Kontaktadresse des Admin</name>
@@ -114,6 +115,7 @@
       <value>*/30 * * * *</value>
       <group>urlCheck</group>
     </setting>
+  	<!-- Karten-Einstellungen -->
     <setting>
       <key>defaultSingleTile</key>
       <name>Single Tile: Darstellung der Karte in einer Kachel</name>
@@ -121,26 +123,15 @@
       <group>default</group>
     </setting>
     <setting>
-      <key>defaultLayerSelection</key>
-      <name>Layersteuerung festlegen: Gruppenlayer wird dargestellt und automatische Selektierung von Unterlayer</name>
-      <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
       <key>defaultTransitionEffect</key>
       <name>Transition Effekt</name>
       <value>resize</value>
       <group>default</group>
     </setting>
+    <!-- View -->
     <setting>
-      <key>defaultTreeDragDrop</key>
-      <name>Dienste verschieben</name>
-      <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>defaultMailToSaveMaps</key>
-      <name>Mailto Funktion: Versende Kartenausschnitte aus der Liste der gespeicherten Kartenlinks per Email.</name>
+      <key>viewHasServicesPanel</key>
+      <name>Dienste und Legende anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -151,8 +142,14 @@
       <group>view</group>
     </setting>
     <setting>
-      <key>viewHasServicesPanel</key>
-      <name>Dienste und Legende anzeigen</name>
+      <key>defaultLayerSelection</key>
+      <name>Layersteuerung festlegen: Gruppenlayer wird dargestellt und automatische Selektierung von Unterlayer</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>defaultTreeDragDrop</key>
+      <name>Dienste verschieben</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -169,9 +166,27 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasZoomTool</key>
+      <name>Button: Auf initiale Kartenausdehnung zoomen</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasMeasureTool</key>
       <name>Messen-Button: Strecken und Flächen messen</name>
       <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewNominatimEnable</key>
+      <name>Eingabefeld: Ortssuche</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewNominatimParams</key>
+      <name>Ortssuche Ländereinstellung oder Gebiet festlegen</name>
+      <value>countrycodes=de</value>
       <group>view</group>
     </setting>
     <setting>
@@ -187,14 +202,44 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>defaultMailToSaveMaps</key>
+      <name>Mailto Funktion: Link des gespeicherten Kartenausschnitts versenden</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasSaveTool</key>
       <name>Speichern-Button: Aktuellen Kartenausschnitt speichern (Einloggen)</name>
       <value>true</value>
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasDownloadTool</key>
+      <name>Karte als WMC abspeichern -Button: Download</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewHasPermaLink</key>
+      <name>Permalink: Permalink anzeigen</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewMinimapEnable</key>
+      <name>Minimap: Übersichtskarte anzeigen</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewHasSettings</key>
+      <name>Erweiterte Einstellungen: Fenster anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -211,68 +256,33 @@
       <group>view</group>
     </setting>
     <setting>
-      <key>viewHasPermaLink</key>
-      <name>Permalink: Permalink anzeigen</name>
-      <value>false</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>viewSpacerTop</key>
-      <name>Top-Abstand: Abstand zum oberen Browserrand im Portal</name>
-      <value>142</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>viewHasSettings</key>
-      <name>Erweiterte Einstellungen: Fenster anzeigen</name>
-      <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>viewHasDownloadTool</key>
-      <name>Karte als WMC abspeichern -Button: Download</name>
-      <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>viewHasZoomTool</key>
-      <name>Button: Auf initiale Kartenausdehnung zoomen</name>
-      <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
       <key>viewHasWelcomeDialog</key>
       <name>Willkommens-Dialog: Willkommens-Dialog anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
 	<setting>
-      <key>viewNominatimParams</key>
-      <name>Ortssuche Ländereinstellung oder Gebiet festlegen</name>
-      <value>countrycodes=de</value>
+      <key>viewSpacerTop</key>
+      <name>Top-Abstand: Abstand zum oberen Browserrand im Portal</name>
+      <value>142</value>
       <group>view</group>
     </setting>
+    <!-- Suche -->
     <setting>
-      <key>viewNominatimEnable</key>
-      <name>Eingabefeld: Ortssuche</name>
+      <key>searchHasBboxSelectTool</key>
+      <name>Gebiet-Button: Gebiet auswählen</name>
       <value>true</value>
-      <group>view</group>
+      <group>search</group>
     </setting>
     <setting>
-      <key>viewMinimapEnable</key>
-      <name>Minimap: Anzeige der Übersichtskarte</name>
+      <key>searchHasFeatureInfoTool</key>
+      <name>ID-Button: ID einer Administrativen Einheit auswählen</name>
       <value>true</value>
-      <group>view</group>
-    </setting>
-    <setting>
-      <key>searchHasServicesPanel</key>
-      <name>Dienste und Legende anzeigen</name>
-      <value>false</value>
       <group>search</group>
     </setting>
     <setting>
       <key>searchHasHistoryTool</key>
-      <name>Vor- Zurück Buttons: Einen Kartenausschnitt vor- oder zurückgehen</name>
+      <name>Vor-Zurück Buttons: Einen Kartenausschnitt vor- oder zurückgehen</name>
       <value>false</value>
       <group>search</group>
     </setting>
@@ -280,6 +290,18 @@
       <key>searchHasMeasureTool</key>
       <name>Messen-Button: Strecken und Flächen messen</name>
       <value>false</value>
+      <group>search</group>
+    </setting>
+    <setting>
+      <key>searchNominatimEnable</key>
+      <name>Eingabefeld: Ortssuche</name>
+      <value>true</value>
+      <group>search</group>
+    </setting>
+    <setting>
+      <key>searchNominatimParams</key>
+      <name>Ortssuche Ländereinstellung oder Gebiet festlegen</name>
+      <value>countrycodes=de</value>
       <group>search</group>
     </setting>
     <setting>
@@ -307,6 +329,24 @@
       <group>search</group>
     </setting>
     <setting>
+      <key>searchHasPermaLink</key>
+      <name>Permalink: Permalink anzeigen</name>
+      <value>false</value>
+      <group>search</group>
+    </setting>
+    <setting>
+      <key>searchMinimapEnable</key>
+      <name>Minimap: Übersichtskarte anzeigen</name>
+      <value>true</value>
+      <group>search</group>
+    </setting>
+    <setting>
+      <key>searchHasSettings</key>
+      <name>Erweiterte Einstellungen: Fenster anzeigen</name>
+      <value>false</value>
+      <group>search</group>
+    </setting>
+    <setting>
       <key>searchHasProjectionsList</key>
       <name>Raumbezugssystem: Auswahlfunktion anzeigen</name>
       <value>false</value>
@@ -319,9 +359,9 @@
       <group>search</group>
     </setting>
     <setting>
-      <key>searchHasPermaLink</key>
-      <name>Permalink: Permalink anzeigen</name>
-      <value>false</value>
+      <key>searchHasInfoDialog</key>
+      <name>Info-Dialog: Info-Dialog anzeigen</name>
+      <value>true</value>
       <group>search</group>
     </setting>
     <setting>
@@ -331,53 +371,19 @@
       <group>search</group>
     </setting>
     <setting>
-      <key>searchHasSettings</key>
-      <name>Erweiterte Einstellungen: Fenster anzeigen</name>
-      <value>false</value>
-      <group>search</group>
-    </setting>
-    <setting>
-      <key>searchHasBboxSelectTool</key>
-      <name>Gebiet-Einheit-Button</name>
-      <value>true</value>
-      <group>search</group>
-    </setting>
-    <setting>
-      <key>searchHasFeatureInfoTool</key>
-      <name>ID einer Administrativen Einheit Button: Zur Auswahl einer ID einer Administrativen Einheit</name>
-      <value>true</value>
-      <group>search</group>
-    </setting>
-    <setting>
       <key>searchPanelHeightFacets</key>
       <name>Panel Höhe: Höhe der Kartenkomponente für die Facettierung</name>
       <value>500</value>
       <group>search</group>
     </setting>
+    <!-- 
     <setting>
-      <key>searchHasInfoDialog</key>
-      <name>Info-Dialog: Info-Dialog anzeigen</name>
-      <value>true</value>
+      <key>searchHasServicesPanel</key>
+      <name>Dienste und Legende anzeigen</name>
+      <value>false</value>
       <group>search</group>
     </setting>
-	<setting>
-      <key>searchNominatimParams</key>
-      <name>Ortssuche Ländereinstellung oder Gebiet festlegen</name>
-      <value>countrycodes=de</value>
-      <group>search</group>
-    </setting>
-    <setting>
-      <key>searchNominatimEnable</key>
-      <name>Eingabefeld: Ortssuche</name>
-      <value>true</value>
-      <group>search</group>
-    </setting>
-    <setting>
-      <key>searchMinimapEnable</key>
-      <name>Minimap: Anzeige der Übersichtskarte</name>
-      <value>true</value>
-      <group>search</group>
-    </setting>
+     -->
   </settings>
   <proxyUrl></proxyUrl>
   <mapServiceCategories/>

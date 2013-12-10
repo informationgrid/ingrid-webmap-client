@@ -182,8 +182,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		scope: administrativeFeatureInfoControl
 	});
 	
-	toolbarItems.push(new Ext.ButtonGroup({
-		items : [{
+	toolbarItems.push({
 					xtype : 'button',
 					id : 'bboxButton',
 					iconCls : 'iconSelectCoordinates',
@@ -202,7 +201,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 
 						}
 					}
-				}, {
+				});
+	toolbarItems.push({
 					xtype : 'button',
 					iconCls : 'iconInfo',
 					tooltip : i18n('tIdAuswaehlen'),
@@ -217,7 +217,8 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 							administrativeFeatureInfoControl.deactivate();
 						}
 					}
-				}, {
+				});
+	toolbarItems.push({
 					xtype : 'button',
 					iconCls : 'iconDefault',
 					tooltip : i18n('tKarteVerschieben'),
@@ -231,8 +232,9 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 							// console.debug("button active");
 						}
 					}
-				}]
-	}));
+				});
+	
+	
 	
 	// b.2) history tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasHistoryTool")) {
@@ -437,9 +439,14 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
 	var items = [ centerPanel ];
+	
+	/*
+	 * Not implemented yet
+	 * 
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasServicesPanel")) {
 		items.push(westPanel);
 	}
+	*/
 
 	Ext.apply(this, {
 		items: items
