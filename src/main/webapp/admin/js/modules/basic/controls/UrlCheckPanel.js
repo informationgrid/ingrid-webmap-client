@@ -66,7 +66,7 @@ de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.initComponent = 
 						height: 50,
 						items: {
 							xtype: 'button',
-							text: 'Einstellungen Speichern',
+							text: 'Einstellungen speichern',
 							anchor: '100%',
 							style: {
 				                paddingTop: '10px'

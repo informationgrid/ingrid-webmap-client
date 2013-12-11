@@ -56,6 +56,9 @@ de.ingrid.mapclient.admin.controls.MapExtendPanel.prototype.initComponent = func
 	// create the final layout
 	Ext.apply(this, {
 		items: [{
+			html: '<p>Initiale Kartenausdehnung:</p>',
+			border: false
+		},{
 			xtype: 'container',
 			layout: 'form',
 			labelAlign: 'top',

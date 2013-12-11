@@ -83,7 +83,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 						height: 50,
 						items: {
 							xtype: 'button',
-							text: 'Einstellungen Speichern',
+							text: 'Einstellungen speichern',
 							anchor: '100%',
 							style: {
 				                paddingTop: '10px'
@@ -113,7 +113,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initCompo
 						height: 50,
 						items: {
 							xtype: 'button',
-							text: 'Einstellungen Speichern',
+							text: 'Einstellungen speichern',
 							anchor: '100%',
 							style: {
 				                paddingTop: '10px'
