@@ -24,12 +24,10 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.tree.
      */
     activeNode: null,
 
-	/**
-	 * Toolbar buttons
-	 */
-	addBtn: null,
-	metaDataBtn: null,
-	searchDataBtn: null
+	useArrows:true,
+    lines: false,
+    frame : false,
+    cls: 'x-tree-noicon'
 });
 
 /**
@@ -39,32 +37,9 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 
 	var self = this;
 
-	// create the toolbar buttons
-	this.addBtn = new Ext.Button({
-        iconCls: 'iconAdd',
-        tooltip: i18n('tDienstHinzufuegen'),
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeServicesPanel && self.activeNode) {
-        		var service = self.activeNode.attributes.service;
-        		self.activateService(service);
-        		btn.disable();
-        		// activate activeServicesPanel
-           		self.activeServicesPanel.expand();
-        	}
-        }
-	});
-	this.metaDataBtn = new Ext.Button({
-        iconCls: 'iconMetadata',
-        tooltip: i18n('tFuerMetadatenErst'),
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeNode) {
-            	self.displayMetaData(self.activeNode);
-        	}
-        }
-	});
-	this.searchDataBtn = new Ext.Button({
+	this.activeServicesPanel = Ext.getCmp("activeServices");
+
+	var searchDataBtn = new Ext.Button({
         iconCls: 'iconRemoveAll',
         tooltip: i18n('tSuchergebnisseLoeschen'),
         disabled: false,
@@ -75,6 +50,27 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	// transform service category object into tree node structure
 	var node = this.transform(this.serviceCategory);
 
+	var hoverActions = new Ext.ux.HoverActions({
+		actions: [new Ext.Button({
+	        iconCls: 'iconAdd',
+	        tooltip: i18n('tDienstHinzufuegen'),
+	        disabled: true,
+	        handler: function(node) {
+	        		var service = node.attributes.service;
+	        		self.activateService(service);
+	           		self.activeServicesPanel.expand();
+	        }
+		}), 
+		new Ext.Button({
+	        iconCls: 'iconMetadata',
+	        tooltip: i18n('tFuerMetadatenErst'),
+	        disabled: true,
+	        handler: function(node) {
+					self.displayMetaData(node);
+	        }
+		})]
+	});
+	
 	Ext.apply(this, {
 		title: i18n('tSuchergebnisse'),
         rootVisible: false,
@@ -83,36 +79,8 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	        children: node.children,
 	        expanded: true
 		}),
-		tbar: items = [
-   		    this.addBtn,
-   		    this.metaDataBtn,
-   		    this.searchDataBtn
-   		]
-	});
-
-	this.getSelectionModel().on('selectionchange', function(selModel, node) {
-		// default
-		self.addBtn.disable();
-		self.metaDataBtn.disable();
-		self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
-
-		if (node) {
-			var service = node.attributes.service;
-			if (service != undefined) {
-				// a service node is selected
-				if (!self.activeServicesPanel.containsService(service)) {
-					self.addBtn.enable();
-					self.addBtn.setTooltip(i18n('tDienstHinzufuegen'));
-				}
-				else {
-					self.addBtn.disable();
-					self.addBtn.setTooltip(i18n('tDienstHinzufuegen'));
-				}
-				self.metaDataBtn.enable();
-				self.metaDataBtn.setTooltip(i18n('tMetadaten'));
-			}
-		}
-		self.activeNode = node;
+		plugins:[hoverActions],
+		buttonSpanEl:2
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.superclass.initComponent.call(this);

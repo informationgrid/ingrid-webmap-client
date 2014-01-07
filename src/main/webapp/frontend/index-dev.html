@@ -2,13 +2,12 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">	
 	<title>InGrid Map Client</title>
 
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/extjs/resources/css/ext-all.css" />
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/frontend/css/style.css" />
-
+	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/openlayers.addins/loadingpanel.css" />
 </head>
 <body>
 <p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
@@ -36,19 +35,20 @@
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers/lib/OpenLayers.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext/lib/GeoExt.js"></script>
 	
+	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs.ux/plugins/CustomTreeFeature.js"></script>
+	
     <script type="text/javascript" src="/ingrid-webmap-client/lib/proj4js/lib/proj4js-compressed.js"></script>  
 	
 	<!-- openlayers extensions -->
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers.addins/LoadingPanel.js"></script>
-	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/openlayers.addins/loadingpanel.css" />
-    <!-- extjs extensions -->
+	<!-- extjs extensions -->
     <script type="text/javascript" src="/ingrid-webmap-client/lib/extjs.ux/Extjs.ux.Notification.js"></script>
 	<!-- geoext extensions -->
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/SimplePrint.js"></script>
     <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/Locale.js"></script>
  	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/GeocoderComboBox.js"></script>
-    	
-	<!-- custom code -->
+    
+    <!-- custom code -->
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/config.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/Message.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/Configuration.js"></script>
@@ -67,7 +67,7 @@
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/SearchCategoryPanel.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/SettingsDialog.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/OpacityDialog.js"></script>
-	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/NewServiceDialog.js"></script>
+	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/NewServicePanel.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/MetaDataDialog.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/FeatureInfoControl.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/FeatureInfoDialog.js"></script>
@@ -76,11 +76,13 @@
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/DownloadDialog.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/PrintDialog.js"></script>
     <script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/WelcomeDialog.js"></script>
+	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/LegendDialog.js"></script>
+	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/controls/SearchPanel.js"></script>
 
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/PanelWorkspace.js"></script>
     <script type="text/javascript" src="/ingrid-webmap-client/frontend/js/Workspace.js"></script>
 
-	 <script type="text/javascript" src="/ingrid-webmap-client/frontend/js/main.js"></script> 
+	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/main.js"></script> 
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/flashmessage1.1.1/Ext.ux.MessageBox.flash.js"></script>
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/flashmessage1.1.1/Ext.ux.MessageBox.flash.css" />	 
 </body>

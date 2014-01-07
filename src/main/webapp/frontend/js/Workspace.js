@@ -129,52 +129,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}
 	}
 
+	// Externen Dienst hinzufügen
+	var externServicePanel = new de.ingrid.mapclient.frontend.controls.NewServicePanel({
+		        	 activeServicesPanel: this.activeServicesPanel
+		         });
+	accordionItems.push(externServicePanel);
+	
 	// c) search panel
 
-	var searchPanel = new Ext.FormPanel({
-				id : 'searchPanel',
-				title : i18n('tSuche'),
-				autoScroll : true,
-				labelWidth : 150,
-				items : [{
-							xtype : 'label',
-							fieldLabel : i18n('tSuchbegriffEingeben')
-						}, {
-							name : "search",
-							id : 'search',
-							allowBlank : false,
-							xtype : 'textfield',
-							cls : 'webmapclient_searchpanel',
-							html : '' // style class only gets rendered with
-										// this setting...
-						}, {
-							name : 'searchButton',
-							text : i18n('tSuchen'),
-							xtype : 'button',
-							formBind : true,
-							handler : function() {
-								de.ingrid.mapclient.frontend.Workspace.prototype
-										.search(
-												Ext.getCmp('search').getValue(),
-												self);
-							}
-						}],
-				keys:[{ key: [Ext.EventObject.ENTER], handler: function() {
-                    de.ingrid.mapclient.frontend.Workspace.prototype
-										.search(Ext.getCmp('search').getValue(),
-												self);
-                			}
-            		}]	
-			})
+	var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
 	accordionItems.push(searchPanel);
-
-	// create the legend panel
-	var legendPanel = new GeoExt.LegendPanel({
-				layerStore : this.activeServicesPanel.getLayerStore(),
-				autoScroll : true,
-				border : false,
-				cls: "mapclientLegendPanel"
-			});
 
 	var activeItem = 0;
 	var activeAccordion = accordionItems[activeItem];
@@ -185,17 +149,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	// create the panel for the west region
-	var westPanel = new Ext.TabPanel({
+	var westPanel = new Ext.Panel({
 				id : 'west',
 				region : 'west',
-				defaults:{ autoScroll:true }, 
-    			activeTab : 0,
 				width : 200,
-				split : true,
+				autoScroll : true,
+				layout     : 'fit',
 				collapsible : true,
+				split : true,
 				items : [{
-							id : 'Dienste',
-							title : i18n('tDienste'),
+							id : 'servicePanel',
 							closable : false,
 							layout : 'accordion',
 							layoutConfig : {
@@ -204,9 +167,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 							},
 							border : false,
 							items : accordionItems
-						}, {
-							title : i18n('tLegende'),
-							items : legendPanel
 						}]
 			});
 
@@ -216,6 +176,32 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// but we need the keybiard control earlier
 	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
 	this.ctrls['keyboardControl'] = keyboardControl;
+	
+	// TODO: Add setting config
+	// Legend tool
+	//if (de.ingrid.mapclient.Configuration.getSettings("viewHasLegendTool")) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconLegend',
+			tooltip : i18n('tLegendToolBar'),
+			text : i18n('tLegendToolBar'),				
+			enableToggle : false, 
+			handler: function(btn) {
+				var legendDialog = Ext.getCmp('legendDialog');
+				if(legendDialog == undefined){
+					legendDialog = new de.ingrid.mapclient.frontend.controls.LegendDialog({
+						activeServicesPanel: self.activeServicesPanel
+					});
+				}else{
+					legendDialog.close();
+				}
+			}
+		}));
+		
+		toolbarItems.push({
+            xtype: 'tbseparator'
+        });
+	//}
+	
 	// a) feature tool
 				
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool")) {
@@ -358,6 +344,36 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
+	// Setting tool
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconSettings',
+			tooltip : i18n('tSettingsToolBar'),
+			text : i18n('tSettingsToolBar'),				
+			enableToggle : false, 
+			handler: function(btn) {
+				var settingsDialog = Ext.getCmp('settingsDialog');
+				if(settingsDialog == undefined){
+					settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
+						map : self.map,
+						viewConfig : {
+							hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("viewHasProjectionsList"),
+							hasScaleList: de.ingrid.mapclient.Configuration.getSettings("viewHasScaleList")
+						},
+						ctrls: self.ctrls
+					});
+					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
+				}else{
+					settingsDialog.close();
+				}
+			}
+		}));
+		
+		toolbarItems.push({
+            xtype: 'tbseparator'
+        });
+	}
+	
 	// d) print tool
 	var printActive = false;
 	var printDia = null;
@@ -461,21 +477,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				items : toolbarItems
 			});
 
-	// create the settings dialog
-
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
-		var settingsDialog;
-		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog(
-			{
-				map : this.map,
-				viewConfig : {
-					hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("viewHasProjectionsList"),
-					hasScaleList: de.ingrid.mapclient.Configuration.getSettings("viewHasScaleList")
-				},
-				ctrls: self.ctrls
-			});
-	}
-
 	// welcome dialog
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasWelcomeDialog")) {
 		// show only if cookies do not prevent this
@@ -497,20 +498,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				items : mapPanel,
 				tbar : toolbar
 			});
-	this.on('afterrender', function(el) {
-				if (settingsDialog && de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
-					mapPanel.items.add(settingsDialog); // constrain to mapPanel
-					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
-				}
-			});
-	// create the panel for the center region
-
-		centerPanel.on('afterlayout', function(el) {
-					if (settingsDialog && de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
-						settingsDialog.anchorTo(this.el, 'tr-tr', [-20, 50]);
-					}				
-			});		
-			
+	
 	// dummy panel for the header
 	var northPanel = new Ext.Panel({
 				region : 'north',
@@ -1106,54 +1094,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 			self.initDefaultMap(callback);
 		}
 	});
-	de.ingrid.mapclient.frontend.Workspace.prototype.search = function(
-			searchTerm, self) {
-		var responseHandler = {
-			success : function(responseText) {
-				de.ingrid.mapclient.Message
-						.showInfo(de.ingrid.mapclient.Message.SEARCH_SUCCESS);
-			},
-			failure : function(responseText) {
-				de.ingrid.mapclient.Message
-						.showError(de.ingrid.mapclient.Message.SEARCH_FAILURE);
-			}
-		};
-		var url = de.ingrid.mapclient.SEARCH_URL + "?searchTerm=" + searchTerm;
-		Ext.Ajax.request({
-			url : url,
-			method : 'GET',
-			success : function(response, request) {
-				var resp = Ext.decode(response.responseText);
-				if (typeof self.getComponent('west').getComponent('Dienste')
-						.getComponent('searchResults') !== 'undefined') {
-					self.getComponent('west').getComponent('Dienste')
-							.getComponent('searchResults').destroy();
-				}
-				var searchCategoryPanel = new de.ingrid.mapclient.frontend.controls.SearchCategoryPanel(
-						{
-							id : 'searchResults',
-							serviceCategory : resp,
-							activeServicesPanel : self.activeServicesPanel
-						});
-				var servicePanel = self.getComponent('west')
-						.getComponent('Dienste');
-
-				servicePanel.add(searchCategoryPanel);
-				servicePanel.doLayout();
-				searchCategoryPanel.expand();
-				if (responseHandler
-						&& responseHandler.success instanceof Function) {
-					responseHandler.success(response.responseText);
-				}
-			},
-			failure : function(response, request) {
-				if (responseHandler
-						&& responseHandler.failure instanceof Function) {
-					responseHandler.failure(response.responseText);
-				}
-			}
-		});
-	}
 };
 
 de.ingrid.mapclient.frontend.Workspace.prototype.getElementsByClassName = function (node, classname) {
