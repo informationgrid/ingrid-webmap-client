@@ -41,7 +41,7 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
     destroy : function () {
         document.removeChild(this.element);
     },
-    template: '<div class="x-hoveractions-outer"><table class="" cellspacing="0"><tbody><tr><tpl for="."><td><button type="button" id="{id}" class="x-hoveractions-img {iconCls}">&nbsp;</button></tpl></tr></tbody></table></div>',
+    template: '<div class="x-hoveractions-outer"><table class="" cellspacing="0"><tbody><tr><tpl for="."><td><button type="button" id="{id}" class="x-hoveractions-img {iconCls}" title="{tooltip}">&nbsp;</button></tpl></tr></tbody></table></div>',
     createElement : function () {
         var tpl = new Ext.XTemplate(this.template);
 

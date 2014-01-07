@@ -248,6 +248,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	        tooltip: i18n('tOptionen'),
 	        disabled: true,
 	        handler: function(node,e) {
+	        	self.activeNode = node;
 	        	if(node.attributes.iconCls){
 	        		// Layer menu
     				self.menuLayer.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
@@ -289,11 +290,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	});
 
 	var self = this;
-	this.layerTree.getSelectionModel().on('selectionchange', function(selModel, node) {
-		// default
-		self.activeNode = node;
-	});
-	
 	
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
 		this.layerTree.on('beforeappend', function(tree, parent, node){
@@ -803,6 +799,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayersFro
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
 		service, supressMsgs, activeNode) {
 	var self = this;
+	
+	if (!this.containsService(service)) {
+		return;
+	}
+	
 	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl && (typeof supressMsgs == 'undefined' || !supressMsgs)) {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		de.ingrid.mapclient.Message.showInfo(i18n('tMsgCannotRemoveBaselayer'));
