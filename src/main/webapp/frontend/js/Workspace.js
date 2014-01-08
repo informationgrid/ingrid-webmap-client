@@ -152,7 +152,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var westPanel = new Ext.Panel({
 				id : 'west',
 				region : 'west',
-				width : 200,
+				width : 250,
 				autoScroll : true,
 				layout     : 'fit',
 				collapsible : true,
@@ -183,7 +183,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconLegend',
 			tooltip : i18n('tLegendToolBar'),
-			text : i18n('tLegendToolBar'),				
+			text : i18n('tLegendToolBar'),
 			enableToggle : false, 
 			handler: function(btn) {
 				var legendDialog = Ext.getCmp('legendDialog');

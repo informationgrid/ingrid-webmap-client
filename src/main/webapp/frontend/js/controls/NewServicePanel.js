@@ -11,7 +11,6 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel = Ext.extend(Ext.Panel, {
 	id : 'externServicePanel',
 	title : i18n('tExternServicePanel'),
 	autoScroll : true,
-	bodyStyle: 'padding:5px;',
 	
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -25,7 +24,9 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel = Ext.extend(Ext.Panel, {
     capabilitiesUrlField: null,
     activateLayersCheckbox: null,
     activateZoomCheckbox: null,
-    addButton: null
+    addButton: null,
+    layout: 'fit',
+    bodyCssClass: 'background externServicePanel'
 });
 
 /**
@@ -34,15 +35,19 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel = Ext.extend(Ext.Panel, {
 de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = function() {
 
 	this.capabilitiesUrlField = new Ext.form.TextField({
-		allowBlank: false
+		allowBlank: false,
+		emptyText: i18n('tUrlEingabe'),
+		anchor:'100%'
 	});
 
 	this.activateLayersCheckbox = new Ext.form.Checkbox({
-        boxLabel: i18n('tEbenenAktivieren')
+        boxLabel: i18n('tEbenenAktivieren'),
+        ctCls:'font'
 	});
 
 	this.activateZoomCheckbox = new Ext.form.Checkbox({
-        boxLabel: i18n('tEbenenZoomen')
+        boxLabel: i18n('tEbenenZoomen'),
+        ctCls:'font'
 	});
 
 	this.addButton = {
@@ -72,8 +77,10 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 		bodyStyle: 'padding:5px;background: transparent;',
 		items:[{
 			html: i18n('tBitteCapabilitiesExternerService'),
-			border: false
+			border: false,
+			bodyCssClass: 'background font'
 		},
+		placeholder,
 	    this.capabilitiesUrlField,
 	    placeholder,
 	    this.activateLayersCheckbox,
@@ -85,12 +92,9 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 	    {
 			title: i18n('tHinweis'),
 			html: i18n('tHintZoomToView'),
-			bodyStyle: {
-	            color: '#A8A8A8',
-	            padding: '5px'
-	        },
 	        border: true,
-	        collapsible: true
+	        collapsible: true,
+			bodyCssClass: 'background font hint'
 		}
 	]
 	});

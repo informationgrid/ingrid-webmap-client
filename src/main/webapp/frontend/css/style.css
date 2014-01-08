@@ -114,6 +114,8 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
+	font: bold 12px verdana !important;
+	color: #1B78B1 !important;
 }
 
 .iconSettings {
@@ -121,6 +123,8 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
+	font: bold 12px verdana !important;
+	color: #1B78B1 !important;
 }
 
 
@@ -257,18 +261,6 @@ padding: 1px 3px 1px 3px;
 	background-position: 0;
 }
 
-.x-form-cb-label{
-	font: normal 12px/19px verdana;
-}
-
-.x-panel-body .accordion-lable {
-	font: normal 12px/19px verdana;
-}
-
-.x-panel-body .hint {
-	font: normal 12px/19px verdana;
-}
-
 .x-tree-root-node li .x-tree-node {
 	
 }
@@ -278,9 +270,13 @@ ul .x-tree-node-ct li .x-tree-node {
 }
 
 .x-accordion-hd{
+	font: bold 12px verdana;
+	color: #1C5679;
+}
+
+.x-panel-collapsed .x-accordion-hd{
+	font: bold 12px verdana;
 	color: #1B78B1;
-	font: normal 12px/19px verdana;
-	font-weight: bold;
 }
 
 .x-tree-node {
@@ -337,7 +333,7 @@ ul .x-tree-node-ct li .x-tree-node {
     float:left;
 }
 
-td .x-hoveractions-img {
+.x-hoveractions-img {
 	height: 16px;
     width: 16px;
     cursor: pointer;
@@ -345,11 +341,44 @@ td .x-hoveractions-img {
     padding: 2px;
 }
  
-.img-placeholder{
+.img-placeholder {
 	padding: 0 0 0 2px;	
 }
 
 .buttonSpan {
 	height: 16px;
 	float:left;
+}
+
+.background {
+	background-color: #DFE8F6;
+}
+
+.externServicePanel{
+	padding:5px;
+}
+
+.hint {
+	color: #A8A8A8;
+	padding: 5px;
+}
+
+.font {
+	font: normal 12px/19px verdana;
+}
+
+#servicePanel .x-panel-header {
+	padding: 10px 10px;	
+}
+
+#searchResults .x-panel-header {
+	font: bold 12px/19px verdana;
+	color: #000000;
+    background: #FFFFFF;
+    border-bottom: 1px solid #000000;
+}
+
+.x-tree-elbow-line { 
+	width: 0px;
+	display: none;
 }

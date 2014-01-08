@@ -84,7 +84,7 @@ Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRe
     href = this.getHref(a.href),
     buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
            '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
-           '<img alt="" src="', this.emptyIcon, '" class="x-tree-ec-icon x-tree-elbow" />',
+           '<img alt="" src="', this.emptyIcon, '" class="" />',
            '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
            cb ? ('<input class="x-tree-node-cb" type="checkbox" ' + (a.checked ? 'checked="checked" />' : '/>')) : '',
            '<a hidefocus="on" class="x-tree-node-anchor" href="',href,'" tabIndex="1" ',
@@ -125,3 +125,43 @@ Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRe
     }
 }
 
+Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
+    if(this.rendered){
+        var n = this.node,
+            c1,
+            c2,
+            cls = n.isLast() ? (this.node.ownerTree.noElbowEnd ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow",
+            hasChild = n.hasChildNodes();
+        if(hasChild || n.attributes.expandable){
+            if(n.expanded){
+                cls += "-minus";
+                c1 = "x-tree-node-collapsed";
+                c2 = "x-tree-node-expanded";
+            }else{
+                cls += "-plus";
+                c1 = "x-tree-node-expanded";
+                c2 = "x-tree-node-collapsed";
+            }
+            if(this.wasLeaf){
+                this.removeClass("x-tree-node-leaf");
+                this.wasLeaf = false;
+            }
+            if(this.c1 != c1 || this.c2 != c2){
+                Ext.fly(this.elNode).replaceClass(c1, c2);
+                this.c1 = c1; this.c2 = c2;
+            }
+        }else{
+            if(!this.wasLeaf){
+                Ext.fly(this.elNode).replaceClass("x-tree-node-expanded", "x-tree-node-collapsed");
+                delete this.c1;
+                delete this.c2;
+                this.wasLeaf = true;
+            }
+        }
+        var ecc = "x-tree-ec-icon "+cls;
+        if(this.ecc != ecc){
+            this.ecNode.className = ecc;
+            this.ecc = ecc;
+        }
+    }
+}

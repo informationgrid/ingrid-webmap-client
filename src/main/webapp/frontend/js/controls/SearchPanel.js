@@ -13,7 +13,10 @@ de.ingrid.mapclient.frontend.controls.SearchPanel = Ext.extend(Ext.Panel, {
 	autoScroll : true,
 	searchField : null,
 	searchButton : null,
-	panel : null
+	panel : null,
+	layout: 'fit',
+	bodyCssClass: 'background',
+	bodyStyle: 'padding:5px;',
 });
 
 /**
@@ -27,7 +30,8 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			name : "searchField",
 			emptyText: i18n('tSuchbegriff'),
 			allowBlank : false,
-			xtype : 'textfield'
+			xtype : 'textfield',
+			style : 'padding: 0px 5px;'
 	};
 
 	this.searchButton = {
@@ -48,7 +52,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 	this.resultPanel = new Ext.Panel({});
 	
 	this.panel = new Ext.Panel({
-		bodyStyle: 'padding:5px;background: transparent;',
+		bodyStyle: 'padding:5px; background: transparent;',
 		items:[{
 			xtype: 'container',
 			layout: 'column',
