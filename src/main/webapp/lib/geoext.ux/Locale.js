@@ -215,8 +215,8 @@ Local = {
 		tLoeschen: {en: 'Delete', de: 'L&ouml;schen'},
 		tZoomToLayerExtent: {en: 'Zoom to layer', de: 'Zoom auf Layer'},
 		tExternServicePanel: {en: 'External Service', de: 'Externer Dienst'},
-		tUrlEingabe: {en: 'Enter service url ...', de: 'Dienst Url eingeben ...'},
-		tSuchbegriff: {en: 'Enter search term ...', de: 'Suchbegriff eingeben ...'},
+		tUrlEingabe: {en: 'URL ...', de: 'Url ...'},
+		tSuchbegriff: {en: 'Search term ...', de: 'Suchbegriff ...'},
 		tPfichtfeld: {en: 'This field is required', de: 'Pflichtfeld'},
 		tOptionen: {en: 'Menu', de: 'Menü'}
     }

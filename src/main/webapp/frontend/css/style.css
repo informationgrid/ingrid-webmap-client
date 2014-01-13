@@ -54,6 +54,8 @@ body {
 
 .iconMenu {
 	background-image: url(../../shared/images/icon_menu.png);
+	height: 11px !important;
+	width: 11px !important; 
 }
 
 .iconZoom {
@@ -303,26 +305,26 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-tree-arrows .x-tree-elbow-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 5px;
+	background-position: 5px 6px;
 }
 
 .x-tree-arrows .x-tree-elbow-minus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 5px;
+	background-position: 5px 6px;
 }
 
 .x-tree-arrows .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 5px;
+	background-position: 5px 6px;
 }
 
 .x-tree-arrows .x-tree-elbow-end-minus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 5px;
+	background-position: 5px 6px;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {
-	background-position: 5px 5px;
+	background-position: 5px 6px;
 }
 
 .x-tree-node a span:hover {
@@ -340,7 +342,7 @@ ul .x-tree-node-ct li .x-tree-node {
     border: 0px;
     padding: 2px;
 }
- 
+
 .img-placeholder {
 	padding: 0 0 0 2px;	
 }
@@ -348,6 +350,7 @@ ul .x-tree-node-ct li .x-tree-node {
 .buttonSpan {
 	height: 16px;
 	float:left;
+	padding: 2px 0px 0px 0px;
 }
 
 .background {
@@ -377,6 +380,6 @@ ul .x-tree-node-ct li .x-tree-node {
 	width: 10px;
 }
 
-.x-tree-node-el {
-	line-height: 19px;	
-}
+.x-hoveractions-outer table td { 
+	padding: 0px 2px; 
+} 

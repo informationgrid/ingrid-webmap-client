@@ -138,6 +138,30 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// create the toolbar items
 	var toolbarItems = [];
 
+	// Legend tool
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasLegendTool")) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconLegend',
+			tooltip : i18n('tLegendToolBar'),
+			text : i18n('tLegendToolBar'),
+			enableToggle : false, 
+			handler: function(btn) {
+				var legendDialog = Ext.getCmp('legendDialog');
+				if(legendDialog == undefined){
+					legendDialog = new de.ingrid.mapclient.frontend.controls.LegendDialog({
+						activeServicesPanel: self.activeServicesPanel
+					});
+				}else{
+					legendDialog.close();
+				}
+			}
+		}));
+		
+		toolbarItems.push({
+            xtype: 'tbseparator'
+        });
+	}
+
 	
 	// BBOX select tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasBboxSelectTool")) {
@@ -339,6 +363,36 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
+	// create the settings dialog
+	if (de.ingrid.mapclient.Configuration.getSettings("searchHasSettings")) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconSettings',
+			tooltip : i18n('tSettingsToolBar'),
+			text : i18n('tSettingsToolBar'),				
+			enableToggle : false, 
+			handler: function(btn) {
+				var settingsDialog = Ext.getCmp('settingsDialog');
+				if(settingsDialog == undefined){
+					settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
+						map : self.map,
+						viewConfig : {
+							hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("viewHasProjectionsList"),
+							hasScaleList: de.ingrid.mapclient.Configuration.getSettings("viewHasScaleList")
+						},
+						ctrls: self.ctrls
+					});
+					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
+				}else{
+					settingsDialog.close();
+				}
+			}
+		}));
+		
+		toolbarItems.push({
+            xtype: 'tbseparator'
+        });
+	}
+	
 	// d) print tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasPrintTool")) {
 		toolbarItems.push(new Ext.Button({
@@ -405,24 +459,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		items: toolbarItems
 	});
 
-	// create the settings dialog
-	var settingsDialog;
-	if (de.ingrid.mapclient.Configuration.getSettings("searchHasSettings")) {
-		settingsDialog = new de.ingrid.mapclient.frontend.controls.SettingsDialog({
-		map: this.map,
-		viewConfig: {
-			hasProjectionsList: de.ingrid.mapclient.Configuration.getSettings("searchHasProjectionsList"),
-			hasScaleList: de.ingrid.mapclient.Configuration.getSettings("searchHasScaleList")
-		}
-		});
-	}
-	this.on('afterrender', function(el) {
-		if (settingsDialog) {
-			mapPanel.items.add(settingsDialog); // constrain to mapPanel
-			settingsDialog.anchorTo(mapPanel.el, 'tr-tr', [ -10, 10 ]);
-		}
-	});
-
+	
 	// create the panel for the center region
 	var centerPanel = new Ext.Panel({
 		region: 'center',
