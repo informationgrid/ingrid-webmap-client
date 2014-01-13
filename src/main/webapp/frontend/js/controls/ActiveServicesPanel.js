@@ -10,8 +10,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel, {
 	id: 'activeServices',
 	title: i18n('tAktiveDienste'),
-	autoScroll: true,
-
+	layout: 'fit',
 	/**
 	 * @cfg OpenLayers.Map instance to sync the internal store with
 	 */
@@ -37,17 +36,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	 */
 	layerTree: null,
 
-	/**
-	 * Toolbar buttons
-	 */
-	addBtn: null,
-	removeBtn: null,
-	transparencyBtn: null,
-	metaDataBtn: null,
-	expandBtn: null,
-	groupLayerBtn: null,
-	zoomLayerBtn : null,
-	allExpanded: false,
 	ctrls:null,
 	kmlArray: [],
 	transpBtnActive: false,
@@ -57,7 +45,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	isCheckedByCheckedLayers:false,
 	selectedLayersByService: [],
 	state: null,
-	layersByURLService:[] 
+	layersByURLService:[],
+	menuGroupLayer: null,
+	menuLayer: null,
+	menuService: null
 });
 
 /**
@@ -80,39 +71,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		initDir: GeoExt.data.LayerStore.MAP_TO_STORE
 	});
 
-	// create the toolbar buttons
-	this.addBtn = new Ext.Button({
-		iconCls: 'iconAdd',
-		tooltip: i18n('tDienstHinzufuegen'),
-		disabled: false,
-		handler: function(btn) {
-			new de.ingrid.mapclient.frontend.controls.NewServiceDialog({
-				id: 'newServiceDialog',
-				activeServicesPanel: self,
-				ctrls: self.ctrls
-			}).show();
-		}
-	});
-	this.removeBtn = new Ext.Button({
-		iconCls: 'iconRemove',
-		tooltip: i18n('tZumEntfernenErstEinenDienstMarkieren'),
-		disabled: true,
-		handler: function(btn) {
-			if (self.activeNode) {
-
+	// zoom to layer extent
+	var bbox = null;
+	
+	var deleteAction = {
+        text: i18n('tLoeschen'),
+        iconCls: 'iconRemove',
+        handler: function(){
+        	if (self.activeNode) {
 				if(self.activeNode.attributes.service != undefined){
-					//enable add service button
-					if(self.serviceCategoryPanel){
-						if(self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl]){
-							self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl].enable();
-							self.serviceCategoryPanel.disabledButtons[self.activeNode.attributes.service.capabilitiesUrl] = null;
-						}
-					}
 					self.removeService(self.activeNode.attributes.service, null, self.activeNode);
-					self.removeBtn.disable();
-					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
-					self.metaDataBtn.disable();
-					self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
 				}else if (self.activeNode.layer != undefined){
 					// Remove "Zeige Punktkoordinaten" layers
 					if (self.activeNode.layer.id != undefined){
@@ -120,177 +88,213 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					}
 				}else{
 					// Remove "Zeige Punktkoordinaten" service
-					self.removePointCoordinatesService(self.activeNode);self.remove
+					self.removePointCoordinatesService(self.activeNode);
 				}
 
 			}
+        }
+	};
+	
+	var metadataAction = {
+        text: i18n('tInformation'),
+        iconCls: 'iconMetadata',
+		handler: function() {
+			self.displayMetaData(self.activeNode);
 		}
-	});
-	this.transparencyBtn = new Ext.Button({
-		iconCls: 'iconTransparency',
-		tooltip: i18n('tFuerTransparenzErst'),
-		disabled: true,
-		handler: function(btn) {
-			if (self.activeNode  && !self.transpBtnActive) {
-				self.displayOpacitySlider(self.activeNode.layer);
-				self.transpBtnActive = true;
-			}
-		}
-	});
-	this.metaDataBtn = new Ext.Button({
-		iconCls: 'iconMetadata',
-		tooltip: i18n('tFuerMetadatenErst'),
-		disabled: true,
-		handler: function(btn) {
-			if (self.activeNode && !self.metadataBtnActive) {
-				self.displayMetaData(self.activeNode);
-			}
-		}
-	});
-	this.expandBtn = new Ext.Button({
-		iconCls: 'iconExpand',
-		tooltip: i18n('tAlleZuAufklappen'),
-		disabled: false,
-		handler: function(btn) {
-			if (self.allExpanded) {
-				self.layerTree.collapseAll();
-				self.allExpanded = false;
-			}else{
-				self.layerTree.expandAll();
-				self.allExpanded = true;
-			}
-		}
-	});
-
-	this.groupLayerBtn = new Ext.Button({
-		iconCls: 'iconLayer',
-		tooltip: i18n('tGruppenLayerAnzeigen'),
-		disabled: true,
-		handler: function(btn) {
-			var node = self.activeNode; 
-			if (node.attributes.checked && node.attributes.cls != "x-tree-node-disabled" && node.attributes.cls != "x-tree-node-select-disabled") {
-				var layer = node.layer;
-				if(node.attributes.cls == "x-tree-node-select"){
-					layer.setVisibility(false);
-					node.setCls('x-tree-node-anchor');
+    };
+	
+	var zoomToExtendAction = {
+        text: i18n('tZoomToLayerExtent'),
+        iconCls: 'iconZoomLayerExtent',
+        handler: function() {
+        	var bounds   = null;
+			var minScale = null;
+			var node = self.activeNode;
+			if (node) {
+				//check if we have a service(root) node 
+				if(node instanceof GeoExt.tree.LayerContainer){
+					bounds = self.bboxOfServiceExtent(node.attributes.service)
+					//minScale = self.activeNode.layer.minScale;
+					if (!bounds) bounds = self.getBoundsFromSubLayers(node.attributes.service);
+					minScale = self.getMinScaleFromSubLayers(node.attributes.service);
 				}else{
+					bounds = self.bboxOfLayerExtent(node.attributes)
+					// every layer has a minScale, even if not found in getCapabilities-Document
+					// in that case the minScale is calculated by the resolution of the map (see Layer.js:940) 
+					minScale = node.layer.minScale;
+				}
+				
+				self.map.zoomToExtent(bounds);
+				
+				// zoom in if the content cannot be shown at this level
+				if(minScale) {
+					var minResolution = OpenLayers.Util.getResolutionFromScale(minScale, self.map.baseLayer.units);
+					if (minResolution < self.map.resolution) {
+						// probably due to a not so exact conversion of the scale
+						// we have to decrease the scale, so that the layer is actually seen (INGRID-2235)
+						self.map.zoomToScale(minScale * 0.9);
+					}
+				}
+				this.fireEvent('datachanged');
+			}
+		}
+	};
+	
+	var groupLayerAction = {
+		iconCls: 'iconLayer',
+		text: i18n('tGruppenLayerAnzeigen'),
+		hidden: de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection"),
+		tooltip: i18n('tGruppenLayerAnzeigen'),
+		handler: function() {
+			var node = self.activeNode;
+			if(node.attributes.cls != "x-tree-node-select"){
+				if (node.attributes.cls != "x-tree-node-disabled" && node.attributes.cls != "x-tree-node-select-disabled") {
+					var layer = node.layer;
 					var isParentsSelect = self.isParentsSelect(node);
 					if(isParentsSelect){
 						layer.setVisibility(true);
 					}
 					node.setCls('x-tree-node-select');
+					node.getUI().toggleCheck(true);
 				}
-				node.getUI().toggleCheck(true);
+			}else{
+				var layer = node.layer;
+				layer.setVisibility(false);
+				node.setCls('x-tree-node-anchor');
 			}
 		}
+    };
+	
+	self.menuService = new Ext.menu.Menu({
+		showSeparator: false,
+		width: '150px',
+	    items: [
+	        deleteAction,
+	        metadataAction,
+	        zoomToExtendAction,
+	    ]
 	});
-
-	// zoom to layer extent
-	var bbox = null;
-
-	this.zoomLayerBtn = new Ext.Button({
-				iconCls : 'iconZoomLayerExtent',
-				tooltip : i18n('tZoomeAufServiceOderLayer'),
-				disabled : true,
-				handler : function(btn) {
-					var bounds   = null;
-					var minScale = null;
-					if (self.activeNode) {
-						//check if we have a service(root) node 
-						if(self.activeNode instanceof GeoExt.tree.LayerContainer){
-							bounds = self.bboxOfServiceExtent(self.activeNode.attributes.service)
-							//minScale = self.activeNode.layer.minScale;
-							if (!bounds) bounds = self.getBoundsFromSubLayers(self.activeNode.attributes.service);
-							minScale = self.getMinScaleFromSubLayers(self.activeNode.attributes.service);
-						}else{
-							bounds = self.bboxOfLayerExtent(self.activeNode.attributes)
-							// every layer has a minScale, even if not found in getCapabilities-Document
-							// in that case the minScale is calculated by the resolution of the map (see Layer.js:940) 
-							minScale = self.activeNode.layer.minScale;
-							
-						}
-						
-						self.map.zoomToExtent(bounds);
-						
-						// zoom in if the content cannot be shown at this level
-						if(minScale) {
-							var minResolution = OpenLayers.Util.getResolutionFromScale(minScale, self.map.baseLayer.units);
-							if (minResolution < self.map.resolution) {
-								// probably due to a not so exact conversion of the scale
-								// we have to decrease the scale, so that the layer is actually seen (INGRID-2235)
-								self.map.zoomToScale(minScale * 0.9);
-							}
-						}
-						this.fireEvent('datachanged');
-					}
-				}
-			});
-
+	
+	self.menuGroupLayer = new Ext.menu.Menu({
+		showSeparator: false,
+		width: '150px',
+	    items: [
+	         metadataAction,
+	         zoomToExtendAction,
+	         groupLayerAction,
+	         {
+	     		text: i18n('tTransparenz'),
+	     		iconCls: 'iconTransparency',
+	     		id:'groupLayerTransparentLabel',
+	     		border: false,
+	     		canActivate:false
+	     	},
+	     	new GeoExt.LayerOpacitySlider({
+	        	id:'groupLayerTransparentSlider',
+	        	iconCls:' ',
+	        	animate: false,
+	        	aggressive: false,
+	            autoWidth: true,
+	            autoHeight: true,
+	            minValue: 0,
+	            maxValue: 100,
+	            listeners:{
+	            	change: function(slider, value, obj){
+	            		var layerMenuTextField = Ext.getCmp('groupLayerTransparentLabel');
+	            		layerMenuTextField.setText(i18n('tTransparenz') + ": " + value + "%");
+	            	}
+	            }
+	     	})
+		]
+	});
+	
+	self.menuLayer = new Ext.menu.Menu({
+		showSeparator: false,
+		width: '150px',
+	    items: [
+	         metadataAction,
+	         zoomToExtendAction,
+	         {
+	     		text: i18n('tTransparenz'),
+	     		iconCls: 'iconTransparency',
+	     		id:'layerTransparentLabel',
+	     		border: false,
+	     		canActivate:false
+	     	},
+	     	new GeoExt.LayerOpacitySlider({
+	        	id:'layerTransparentSlider',
+	        	iconCls:' ',
+	        	animate: false,
+	        	aggressive: false,
+	            autoWidth: true,
+	            autoHeight: true,
+	            minValue: 0,
+	            maxValue: 100,
+	            listeners:{
+	            	change: function(slider, value, obj){
+	            		var layerMenuTextField = Ext.getCmp('layerTransparentLabel');
+	            		layerMenuTextField.setText(i18n('tTransparenz') + ": " + value + "%");
+	            	}
+	            }
+	     	})
+		]
+	});
+	
+	var hoverActions = new Ext.ux.HoverActions({
+		actions: [new Ext.Button({
+	        iconCls: 'iconMenu',
+	        tooltip: i18n('tOptionen'),
+	        disabled: true,
+	        handler: function(node,e) {
+	        	self.activeNode = node;
+	        	if(node.attributes.iconCls){
+	        		var layerMenuSlider;
+	        		// Layer menu
+	        		if(node.leaf){
+	        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
+	        			self.menuLayer.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);	
+	        		}else{
+	        			layerMenuSlider = Ext.getCmp('groupLayerTransparentSlider');
+	        			self.menuGroupLayer.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+	        		}
+    				
+    				// Update slider
+    				layerMenuSlider.setLayer(node.layer);
+    				var opacity = 1;
+    				if(node.layer.opacity){
+    					opacity = node.layer.opacity;
+    				}
+    				layerMenuSlider.setValue(0, opacity * 100);
+	        	}else{
+	        		// Service menu
+	        		self.menuService.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+	        	}
+	        }
+		})]
+	});
 	
 	// the layer tree
 	this.layerTree = new Ext.tree.TreePanel({
 		id:"layertree",
-		root: {
+		root: new Ext.tree.AsyncTreeNode({
 			nodeType: 'async',
 			text: i18n('tLayers'),
-			expanded: false,
+			expanded: true,
 			children: []
-		},
+		}),
+		cls: 'x-tree-noicon',
+		autoScroll: true, 
+		useArrows:true,
+        lines: false,
+        frame : false,
 		rootVisible: false,
 		enableDD: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop"),
-		border: false
+		border: false,
+		plugins:[hoverActions],
+		buttonSpanEl:1
 	});
 
 	var self = this;
-	this.layerTree.getSelectionModel().on('selectionchange', function(selModel, node) {
-		// default
-		self.addBtn.enable();
-		self.removeBtn.enable();
-		self.transparencyBtn.disable();
-		self.metaDataBtn.enable();	
-		self.zoomLayerBtn.enable();
-		self.groupLayerBtn.disable();
-
-		if (node) {
-			if (node.layer) {
-				self.transparencyBtn.enable();
-				self.transparencyBtn.setTooltip(i18n('tLayerTransparenz'));
-				self.updateOpacitySlider(node.layer);
-				if (node.layer.CLASS_NAME=="OpenLayers.Layer.GML") {
-					self.removeBtn.enable();
-					self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
-					self.metaDataBtn.disable();
-				} else {
-					self.removeBtn.disable();
-					self.removeBtn.setTooltip(i18n('tZumEntfernenErstEinenDienstMarkieren'));
-					self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
-				}
-				
-				if(selModel.selNode.childNodes.length != 0 && selModel.selNode.attributes.checked){
-					if(selModel.selNode.layer.params.LAYERS){
-						self.groupLayerBtn.enable();
-						if(selModel.selNode.layer.params.LAYERS.indexOf("INGRID-") > -1){
-							self.groupLayerBtn.disable();
-						}
-					}
-				}
-			}else if (node.attributes.service) {
-				self.transparencyBtn.disable();
-				self.transparencyBtn.setTooltip(i18n('tFuerTransparenzErst'));
-				self.removeBtn.enable();
-				self.removeBtn.setTooltip(i18n('tDienstEntfernen'));
-				self.metaDataBtn.enable().setTooltip(i18n('tMetadaten'));
-				
-			} else {
-				// non service layers (i.e. kml folder layer)
-				self.zoomLayerBtn.disable();
-				self.transparencyBtn.disable();
-				self.metaDataBtn.disable();
-			}
-		}
-		self.activeNode = node;
-	});
-	
 	
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
 		this.layerTree.on('beforeappend', function(tree, parent, node){
@@ -327,22 +331,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		});
 	}
 	
-	var items = [
-			this.addBtn,
-			this.removeBtn,
-			this.transparencyBtn,
-			this.metaDataBtn,
-			this.expandBtn,
-			this.zoomLayerBtn
-		]
-	
-	if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-		items.push(this.groupLayerBtn);
-	} 
-	
 	Ext.apply(this, {
-		items: this.layerTree,
-		tbar: items
+		items: this.layerTree
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
 };
@@ -814,9 +804,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayersFro
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeService = function(
 		service, supressMsgs, activeNode) {
 	var self = this;
+	
 	if (!this.containsService(service)) {
 		return;
 	}
+	
 	if (de.ingrid.mapclient.Configuration.getValue("wmsCapUrl") == service.capabilitiesUrl && (typeof supressMsgs == 'undefined' || !supressMsgs)) {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		de.ingrid.mapclient.Message.showInfo(i18n('tMsgCannotRemoveBaselayer'));
@@ -1454,11 +1446,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.enableGroupL
 	
 	if(isEnabled){
 		if(node.childNodes.length != 0){
-			self.groupLayerBtn.enable();
 		}
 	}else{
 		if(node.childNodes.length != 0){
-			this.groupLayerBtn.disable();
 		}
 	}
 }

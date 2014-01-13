@@ -52,6 +52,10 @@ body {
 	background-image: url(../../shared/images/icon_add.png);
 }
 
+.iconMenu {
+	background-image: url(../../shared/images/icon_menu.png);
+}
+
 .iconZoom {
 	background-image: url(../../shared/images/icon_world.png);
 }
@@ -93,15 +97,37 @@ body {
 .iconDownload {
 	background-image: url(../../shared/images/icon_download.png);
 }
+
 .iconExpand {
 	background-image: url(../../shared/images/icon_expand.png);
 }
+
 .iconDefault {
 	background-image: url(../../shared/images/icon_arrow.png);
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
 }
+
+.iconLegend {
+	background-image: url(../../shared/images/icon_legende.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	font: bold 12px verdana !important;
+	color: #1B78B1 !important;
+}
+
+.iconSettings {
+	background-image: url(../../shared/images/icon_einstellungen.png);
+	background-repeat: no-repeat;
+	width: 16px;
+	height: 16px;
+	font: bold 12px verdana !important;
+	color: #1B78B1 !important;
+}
+
+
 .icon {
 	width: 16px;
 	height: 16px;
@@ -155,13 +181,16 @@ font-style: inherit;
 .x-tree-node a span, .x-dd-drag-ghost a span {
 padding: 1px 3px 1px 3px;
 }
-.mapclientLegendPanel div div div label{
+.mapclientLegendPanel div div div label {
 	background-color: #D0DEF0;
 }
-.mapclientLegendPanel div div div img{
-    border: 1px solid #F0F0F0;
+.mapclientLegendPanel div div div img {
+	
 }
-.mapclientLegendPanel{margin-top:15px;}
+.mapclientLegendPanel {
+	padding-top:15px; 
+	background-color: #FFFFFF;
+}
 /*
     Ext.ux.Notification
 */
@@ -215,3 +244,139 @@ padding: 1px 3px 1px 3px;
 #welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
 #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
 #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
+
+.x-panel .x-accordion-hd .x-tool {
+	background-image: url(../../shared/images/arrow_down.png);
+}
+
+.x-panel .x-accordion-hd .x-tool-toggle {
+	background-position: 0;
+}
+
+.x-panel .x-panel-collapsed .x-accordion-hd  .x-tool {
+	background-image: url(../../shared/images/arrow_right.png);
+}
+
+.x-panel-collapsed .x-accordion-hd .x-tool-toggle {
+	background-position: 0;
+}
+
+.x-tree-root-node li .x-tree-node {
+	
+}
+
+ul .x-tree-node-ct li .x-tree-node {
+	border: 0px solid #000000;
+}
+
+.x-accordion-hd{
+	font: bold 12px verdana;
+	color: #1C5679;
+}
+
+.x-panel-collapsed .x-accordion-hd{
+	font: bold 12px verdana;
+	color: #1B78B1;
+}
+
+.x-tree-node {
+	color: #000000;
+	font: normal 12px/19px verdana;
+}
+
+.x-tree-node-el {
+	padding: 5px 0px;
+}
+
+.x-tree-arrows {
+	border-bottom: 1px solid #b4b4b4;
+}
+
+.x-tree-arrows > .x-tree-root-node > .x-tree-node > .x-tree-node-expanded {
+	border-top: 1px solid #b4b4b4;
+	border-bottom: 1px solid #b4b4b4;
+}
+
+.x-tree-arrows > .x-tree-root-node > .x-tree-node > .x-tree-node-collapsed {
+	border-top: 1px solid #b4b4b4;
+}
+
+.x-tree-arrows .x-tree-elbow-plus {
+	background-image: url(../../shared/images/arrow_small_right.png);
+	background-position: 5px 5px;
+}
+
+.x-tree-arrows .x-tree-elbow-minus {
+	background-image: url(../../shared/images/arrow_small_down.png);
+	background-position: 5px 5px;
+}
+
+.x-tree-arrows .x-tree-elbow-end-plus {
+	background-image: url(../../shared/images/arrow_small_right.png);
+	background-position: 5px 5px;
+}
+
+.x-tree-arrows .x-tree-elbow-end-minus {
+	background-image: url(../../shared/images/arrow_small_down.png);
+	background-position: 5px 5px;
+}
+
+.x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {
+	background-position: 5px 5px;
+}
+
+.x-tree-node a span:hover {
+	text-decoration: underline;
+}
+
+.x-hoveractions-outer {
+    float:left;
+}
+
+.x-hoveractions-img {
+	height: 16px;
+    width: 16px;
+    cursor: pointer;
+    border: 0px;
+    padding: 2px;
+}
+ 
+.img-placeholder {
+	padding: 0 0 0 2px;	
+}
+
+.buttonSpan {
+	height: 16px;
+	float:left;
+}
+
+.background {
+	background-color: #DFE8F6;
+}
+
+.hint {
+	color: #A8A8A8;
+}
+
+.font {
+	font: normal 12px/19px verdana;
+}
+
+#servicePanel .x-panel-header {
+	padding: 10px 10px;	
+}
+
+#searchResults .x-panel-header {
+	font: bold 12px/19px verdana;
+	color: #000000;
+    background: #FFFFFF;
+    border-bottom: 1px solid #000000;
+}
+
+.x-tree-placeholder{
+	width: 10px;
+}
+
+.x-tree-node-el {
+	line-height: 19px;	
+}

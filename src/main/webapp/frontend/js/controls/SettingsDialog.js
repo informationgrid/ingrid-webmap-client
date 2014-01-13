@@ -9,13 +9,12 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	id: 'settingsDialog',
 	title: i18n('tErweiterteEinstellungen'),
-	closable: false,
+	closable: true,
 	draggable: true,
 	resizable: false,
 	constrain: true,
-	collapsible: true,
+	collapsible: false,
 	collapsed: true,
-	expandOnShow: false,
 	width: 250,
 	autoHeight: true,
 	shadow: false,
@@ -35,8 +34,6 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	viewConfig: {
 		hasProjectionsList: true,
 		hasScaleList: true
-		//,
-		//hasAreasList: true
 	},
 
 	/**
@@ -173,9 +170,27 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	var scales = de.ingrid.mapclient.Configuration.getValue('scales');
 	de.ingrid.mapclient.data.StoreHelper.load(this.scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
 
+	var scale = this.map.getScale();
+	var scaleRecords = this.scalesCombo.getStore().queryBy(function(record) {
+		return Math.abs(scale-record.get('zoomLevel')) < 1;
+	});
+	if (scaleRecords.length > 0) {
+		scaleRecord = scaleRecords.items[0];
+		this.scalesCombo.setValue(scaleRecord.get('name'));
+	} else {
+		this.scalesCombo.setValue("1:"+this.addThousandSeparator(Math.floor(scale), '.'));
+	}
+	
+	var projection = this.getMapProjection();
+	// select initial projection
+	this.projectionsCombo.setValue(projection.getCode());
+	
 	// bind scales list and projection to map
 	this.map.events.register('zoomend', this, function() {
 		// select the current map scale, if it is in the list
+		var scales = de.ingrid.mapclient.Configuration.getValue('scales');
+		de.ingrid.mapclient.data.StoreHelper.load(self.scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
+		
 		var scale = this.map.getScale();
 		var scaleRecords = this.scalesCombo.getStore().queryBy(function(record) {
 			return Math.abs(scale-record.get('zoomLevel')) < 1;
@@ -198,66 +213,8 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	this.scalesCombo.on('select', function(comboBox, record, index) {
 		this.map.zoomToScale(record.get('zoomLevel'), true);
 	}, this);
-	this.map.events.triggerEvent("zoomend");
+//	this.map.events.triggerEvent("zoomend");
 
-	// add areas
-	/*
-	if (this.viewConfig.hasAreasList) {
-		var areaCategories = de.ingrid.mapclient.Configuration.getValue('areaCategories');
-		if (areaCategories) {
-			for (var i=0, count=areaCategories.length; i<count; i++) {
-				var category = areaCategories[i];
-
-				var combo = new Ext.form.ComboBox({
-					fieldLabel: i18n(category.name),
-					triggerAction: 'all',
-					mode: 'local',
-					store: new Ext.data.ArrayStore({
-						autoDestroy: true,
-						fields: [{
-							name: 'name',
-							type: 'string'
-						}, {
-							name: 'area',
-							type: 'string'
-						}]
-					}),
-					valueField: 'area',
-					displayField: 'name',
-					editable: false
-				});
-				combo.on('expand', function(){
-					self.ctrls['keyboardControl'].deactivate();
-				});
-				combo.on('collapse', function(){
-					self.ctrls['keyboardControl'].activate();
-				});					
-				var areas = category.areas;
-				// convert item objects into record arrays
-				var records = [];
-				for (var j=0, count2=areas.length; j<count2; j++) {
-					var area = areas[j];
-					var record = [area.name, Ext.encode({'north': areas[j].north, 'east': areas[j].east, 'south': areas[j].south, 'west': areas[j].west})];
-					records.push(record);
-				};
-				combo.store.loadData(records);
-
-				// define select callback
-				combo.on('select', function(comboBox, record, index) {
-					// change map extend
-					var area = Ext.decode(record.get('area'));
-					var bounds = new OpenLayers.Bounds.fromArray([area.west, area.south, area.east, area.north]);
-					bounds.transform(new OpenLayers.Projection("EPSG:4326"), this.getMapProjection());
-					this.map.zoomToExtent(bounds, true);
-					this.resetAreaComboBoxes(comboBox);
-				}, this);
-
-				this.windowContent.add(combo);
-				this.areaComboBoxes.add(category.name, combo);
-			}
-		}
-	}
-	*/
 };
 
 /**

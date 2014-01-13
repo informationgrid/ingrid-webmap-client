@@ -24,15 +24,11 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
      */
     activeNode: null,
 
-	/**
-	 * Toolbar buttons
-	 */
-	addBtn: null,
-	metaDataBtn: null,
-	expandBtn: null,
-	allExpanded: false,
-	metadataBtnActive: false,
-	disabledButtons: []
+	disabledButtons: [],
+	useArrows:true,
+    lines: false,
+    frame : false,
+    cls: 'x-tree-noicon'
 });
 
 /**
@@ -42,50 +38,31 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 
 	var self = this;
 
-	// create the toolbar buttons
-	this.addBtn = new Ext.Button({
-        iconCls: 'iconAdd',
-        tooltip: i18n('tDienstHinzufuegen'),
-        disabled: true,
-        handler: function(btn) {
-        	if (self.activeServicesPanel && self.activeNode) {
-        		var service = self.activeNode.attributes.service;
-        		self.activateService(service);
-        		btn.disable();
-        		self.disabledButtons[service.capabilitiesUrl] = btn;
-        		// activate activeServicesPanel
-           		self.activeServicesPanel.expand();
-        	}
-        }
-	});
-	this.metaDataBtn = new Ext.Button({
-        iconCls: 'iconMetadata',
-        tooltip: i18n('tFuerMetadatenErst'),
-        disabled: true,
-        handler: function(btn) {
-			if (self.activeNode && !self.metadataBtnActive) {
-				self.displayMetaData(self.activeNode);
-				self.metadataBtnActive = true;
-			}
-        }
-	});
-	this.expandBtn = new Ext.Button({
-		iconCls: 'iconExpand',
-		tooltip: i18n('tAlleZuAufklappen'),
-		disabled: false,
-		handler: function(btn) {
-			if (self.allExpanded) {
-				self.collapseAll();
-				self.allExpanded = false;
-			}else{
-				self.expandAll();
-				self.allExpanded = true;
-			}
-		}
-	});
+	
 	// transform service category object into tree node structure
 	var node = this.transform(this.mapServiceCategory);
 
+	var hoverActions = new Ext.ux.HoverActions({
+		actions: [new Ext.Button({
+	        iconCls: 'iconAdd',
+	        tooltip: i18n('tDienstHinzufuegen'),
+	        disabled: true,
+	        handler: function(node) {
+	        		var service = node.attributes.service;
+	        		self.activateService(service);
+	           		self.activeServicesPanel.expand();
+	        }
+		}), 
+		new Ext.Button({
+	        iconCls: 'iconMetadata',
+	        tooltip: i18n('tFuerMetadatenErst'),
+	        disabled: true,
+	        handler: function(node) {
+					self.displayMetaData(node);
+	        }
+		})]
+	});
+	
 	Ext.apply(this, {
 		title: i18n(node.text),
         rootVisible: false,
@@ -94,35 +71,11 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	        children: node.children,
 	        expanded: false
 		}),
-		tbar: items = [
-   		    this.addBtn,
-   		    this.metaDataBtn,
-   		    this.expandBtn
-   		]
+		plugins:[hoverActions],
+		buttonSpanEl:2,
+	    onlyServices: true
 	});
 
-	this.getSelectionModel().on('selectionchange', function(selModel, node) {
-		// default
-		self.addBtn.disable();
-		self.metaDataBtn.disable();
-		self.metaDataBtn.setTooltip(i18n('tFuerMetadatenErst'));
-		if (node) {
-			var service = node.attributes.service;
-			if (service != undefined) {
-				// a service node is selected
-				if (!self.activeServicesPanel.containsService(service)) {
-					self.addBtn.enable();
-				}
-				else {
-					self.addBtn.disable();
-					
-				}
-				self.metaDataBtn.enable();
-				self.metaDataBtn.setTooltip(i18n('tMetadaten'));
-			}
-		}
-		self.activeNode = node;
-	});
 	this.activeServicesPanel.serviceCategoryPanel = self;
 	de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.superclass.initComponent.call(this);
 };
@@ -222,7 +175,6 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMeta
 					layerName: node.layer
 				}).show();
 				metaDialog.on('close', function(){
-				self.metadataBtnActive = false;
 				});
 	}
 };
