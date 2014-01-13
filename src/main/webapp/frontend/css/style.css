@@ -129,6 +129,19 @@ body {
 	color: #1B78B1 !important;
 }
 
+.iconCollapse {
+	background-image: url(../../lib/extjs/resources/images/default/panel/tool-sprites.gif);
+	background-position: 0 -180px !important;
+	height: 15px !important;
+	width: 15px !important;
+}
+
+.iconExpand {
+	background-image: url(../../lib/extjs/resources/images/default/panel/tool-sprites.gif);
+	background-position: 0 -165px !important;
+	height: 15px !important;
+	width: 15px !important;
+}
 
 .icon {
 	width: 16px;

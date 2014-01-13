@@ -130,6 +130,12 @@
     </setting>
     <!-- View -->
     <setting>
+      <key>viewHasCollapseTool</key>
+      <name>Service-Bereich auf- und zuklappen</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasServicesPanel</key>
       <name>Dienste anzeigen</name>
       <value>true</value>
@@ -274,6 +280,12 @@
       <group>view</group>
     </setting>
     <!-- Suche -->
+    <setting>
+      <key>searchHasCollapseTool</key>
+      <name>Service-Bereich auf- und zuklappen</name>
+      <value>false</value>
+      <group>search</group>
+    </setting>
     <setting>
       <key>searchHasLegendTool</key>
       <name>Legende-Button: Darstellung der Legende</name>

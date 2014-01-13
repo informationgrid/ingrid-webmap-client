@@ -255,10 +255,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	        		// Layer menu
 	        		if(node.leaf){
 	        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
-	        			self.menuLayer.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);	
+	        			self.menuLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);	
 	        		}else{
 	        			layerMenuSlider = Ext.getCmp('groupLayerTransparentSlider');
-	        			self.menuGroupLayer.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+	        			self.menuGroupLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
 	        		}
     				
     				// Update slider
@@ -270,7 +270,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
     				layerMenuSlider.setValue(0, opacity * 100);
 	        	}else{
 	        		// Service menu
-	        		self.menuService.showAt([e.getTarget().clientLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+	        		self.menuService.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
 	        	}
 	        }
 		})]

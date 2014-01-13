@@ -218,7 +218,8 @@ Local = {
 		tUrlEingabe: {en: 'URL ...', de: 'Url ...'},
 		tSuchbegriff: {en: 'Search term ...', de: 'Suchbegriff ...'},
 		tPfichtfeld: {en: 'This field is required', de: 'Pflichtfeld'},
-		tOptionen: {en: 'Menu', de: 'Menü'}
+		tOptionen: {en: 'Menu', de: 'Menü'},
+		tServiceBereichAufUndZuKlappen: {en: 'Expand and collapse service-area', de: 'Service-Bereich auf- und zuklappen'}
     }
 }
 
