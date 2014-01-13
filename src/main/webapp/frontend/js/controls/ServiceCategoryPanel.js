@@ -73,7 +73,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		}),
 		plugins:[hoverActions],
 		buttonSpanEl:2,
-	    noElbowEnd: true
+	    onlyServices: true
 	});
 
 	this.activeServicesPanel.serviceCategoryPanel = self;

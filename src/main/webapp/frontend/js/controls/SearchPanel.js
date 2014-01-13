@@ -9,14 +9,13 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  */
 de.ingrid.mapclient.frontend.controls.SearchPanel = Ext.extend(Ext.Panel, {
 	id : 'searchPanel',
-	title : i18n('tSuche'),
-	autoScroll : true,
+    title : i18n('tSuche'),
 	searchField : null,
 	searchButton : null,
 	panel : null,
-	layout: 'fit',
 	bodyCssClass: 'background',
 	bodyStyle: 'padding:5px;',
+	autoScroll:true
 });
 
 /**
@@ -49,11 +48,9 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			}
 	};
 	
-	this.resultPanel = new Ext.Panel({});
-	
 	this.panel = new Ext.Panel({
 		bodyStyle: 'padding:5px; background: transparent;',
-		items:[{
+	    items:[{
 			xtype: 'container',
 			layout: 'column',
 			anchor: '100%',
@@ -61,7 +58,10 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			        this.searchField,
 			        this.searchButton
 			]
-		}]
+		},{
+	    	xtype: 'container',
+			height: 10
+	    }]
 	});
 	
 	var self = this;
@@ -102,7 +102,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 						id : 'searchResults',
 						serviceCategory : resp
 			});
-
+			
 			self.panel.add(searchCategoryPanel);
 			self.panel.doLayout();
 			if (responseHandler	&& responseHandler.success instanceof Function) {

@@ -74,7 +74,8 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
     };
 	
 	var panel = new Ext.Panel({
-		bodyStyle: 'padding:5px;background: transparent;',
+		bodyStyle: 'padding:5px;',
+		bodyCssClass: 'background ',
 		items:[{
 			html: i18n('tBitteCapabilitiesExternerService'),
 			border: false,
@@ -92,6 +93,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 	    {
 			title: i18n('tHinweis'),
 			html: i18n('tHintZoomToView'),
+			bodyStyle: 'padding:5px;',
 	        border: true,
 	        collapsible: true,
 			bodyCssClass: 'background font hint'
@@ -101,6 +103,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 	
 	var self = this;
 	Ext.apply(this, {
+		bodyStyle: 'padding:5px;',
 		items: [panel]
 	});
 

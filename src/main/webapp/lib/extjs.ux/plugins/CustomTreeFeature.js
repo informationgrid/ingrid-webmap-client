@@ -39,7 +39,6 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
     },
 
     destroy : function () {
-        document.removeChild(this.element);
     },
     template: '<div class="x-hoveractions-outer"><table class="" cellspacing="0"><tbody><tr><tpl for="."><td><button type="button" id="{id}" class="x-hoveractions-img {iconCls}" title="{tooltip}">&nbsp;</button></tpl></tr></tbody></table></div>',
     createElement : function () {
@@ -58,7 +57,6 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
             this.extElement.show();
     	}
         this.currentNode = node;
-        this.tree.getSelectionModel().select(node);
     },
 
     onNodeOut : function (node, e) {
@@ -73,6 +71,7 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
                 action.handler(node, e);
             }
         });
+        this.tree.getSelectionModel().select(node);
     }
 });
 
@@ -84,7 +83,7 @@ Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRe
     href = this.getHref(a.href),
     buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
            '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
-           '<img alt="" src="', this.emptyIcon, '" class="" />',
+           '<img alt="" src="', this.emptyIcon, (this.node.ownerTree.onlyServices ? '" class="x-tree-placeholder" />' : '" class="x-tree-ec-icon x-tree-elbow" />'),
            '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
            cb ? ('<input class="x-tree-node-cb" type="checkbox" ' + (a.checked ? 'checked="checked" />' : '/>')) : '',
            '<a hidefocus="on" class="x-tree-node-anchor" href="',href,'" tabIndex="1" ',
@@ -130,7 +129,7 @@ Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
         var n = this.node,
             c1,
             c2,
-            cls = n.isLast() ? (this.node.ownerTree.noElbowEnd ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow",
+            cls = n.isLast() ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow",
             hasChild = n.hasChildNodes();
         if(hasChild || n.attributes.expandable){
             if(n.expanded){
@@ -164,4 +163,26 @@ Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
             this.ecc = ecc;
         }
     }
+}
+
+
+Ext.tree.TreeNodeUI.prototype.getChildIndent = function(){
+    if(!this.childIndent){
+        var buf = [],
+            p = this.node;
+        while(p){
+            if(!p.isRoot || (p.isRoot && p.ownerTree.rootVisible)){
+                if(!p.isLast()) {
+                	if(!this.node.ownerTree.onlyServices){
+                		buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-elbow-line" />');
+                	}
+                } else {
+                    buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-icon" />');
+                }
+            }
+            p = p.parentNode;
+        }
+        this.childIndent = buf.join("");
+    }
+    return this.childIndent;
 }

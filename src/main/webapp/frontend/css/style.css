@@ -354,13 +354,8 @@ ul .x-tree-node-ct li .x-tree-node {
 	background-color: #DFE8F6;
 }
 
-.externServicePanel{
-	padding:5px;
-}
-
 .hint {
 	color: #A8A8A8;
-	padding: 5px;
 }
 
 .font {
@@ -378,7 +373,10 @@ ul .x-tree-node-ct li .x-tree-node {
     border-bottom: 1px solid #000000;
 }
 
-.x-tree-elbow-line { 
-	width: 0px;
-	display: none;
+.x-tree-placeholder{
+	width: 10px;
+}
+
+.x-tree-node-el {
+	line-height: 19px;	
 }

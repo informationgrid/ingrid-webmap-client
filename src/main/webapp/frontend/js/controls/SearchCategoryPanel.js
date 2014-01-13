@@ -39,14 +39,6 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 
 	this.activeServicesPanel = Ext.getCmp("activeServices");
 
-	var searchDataBtn = new Ext.Button({
-        iconCls: 'iconRemoveAll',
-        tooltip: i18n('tSuchergebnisseLoeschen'),
-        disabled: false,
-        handler: function(btn) {
-			self.destroy();
-        }
-	});
 	// transform service category object into tree node structure
 	var node = this.transform(this.serviceCategory);
 
@@ -80,7 +72,9 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	        expanded: true
 		}),
 		plugins:[hoverActions],
-		buttonSpanEl:2
+		buttonSpanEl:2,
+		anchor: '100%',
+	    onlyServices: true
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.superclass.initComponent.call(this);

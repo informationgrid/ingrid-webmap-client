@@ -153,7 +153,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				id : 'west',
 				region : 'west',
 				width : 250,
-				autoScroll : true,
 				layout     : 'fit',
 				collapsible : true,
 				split : true,
