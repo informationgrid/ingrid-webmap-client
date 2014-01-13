@@ -154,7 +154,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				region : 'west',
 				width : 250,
 				layout     : 'fit',
-				collapsible : true,
+				collapsible : false,
 				split : true,
 				items : [{
 							id : 'servicePanel',
@@ -175,6 +175,24 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// but we need the keybiard control earlier
 	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
 	this.ctrls['keyboardControl'] = keyboardControl;
+	
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconCollapse',
+		tooltip : i18n('tServiceBereichAufUndZuKlappen'),
+		enableToggle : false, 
+		handler: function(btn) {
+			if (westPanel != null) {
+					westPanel.collapse();
+					westPanel.expand();
+					if(westPanel.collapsed == false){
+						this.setIconClass('iconExpand');	
+					}else{
+						this.setIconClass('iconCollapse');
+					}
+					
+            } 
+		}
+	}));
 	
 	// Legend tool
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasLegendTool")) {
