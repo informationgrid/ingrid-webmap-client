@@ -176,9 +176,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
 	this.ctrls['keyboardControl'] = keyboardControl;
 	
-	// TODO: Add setting config
 	// Legend tool
-	//if (de.ingrid.mapclient.Configuration.getSettings("viewHasLegendTool")) {
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasLegendTool")) {
 		toolbarItems.push(new Ext.Button({
 			iconCls : 'iconLegend',
 			tooltip : i18n('tLegendToolBar'),
@@ -199,7 +198,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		toolbarItems.push({
             xtype: 'tbseparator'
         });
-	//}
+	}
 	
 	// a) feature tool
 				

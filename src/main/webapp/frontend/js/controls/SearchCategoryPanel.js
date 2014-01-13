@@ -72,7 +72,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	        expanded: true
 		}),
 		plugins:[hoverActions],
-		buttonSpanEl:2,
+		buttonSpanElStyle:'width:30px;',
 		anchor: '100%',
 	    onlyServices: true
 	});

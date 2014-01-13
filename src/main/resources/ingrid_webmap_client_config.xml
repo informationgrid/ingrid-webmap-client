@@ -131,7 +131,7 @@
     <!-- View -->
     <setting>
       <key>viewHasServicesPanel</key>
-      <name>Dienste und Legende anzeigen</name>
+      <name>Dienste anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -150,6 +150,12 @@
     <setting>
       <key>defaultTreeDragDrop</key>
       <name>Dienste verschieben</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewHasLegendTool</key>
+      <name>Legende-Button: Darstellung der Legende</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -268,6 +274,12 @@
       <group>view</group>
     </setting>
     <!-- Suche -->
+    <setting>
+      <key>searchHasLegendTool</key>
+      <name>Legende-Button: Darstellung der Legende</name>
+      <value>false</value>
+      <group>search</group>
+    </setting>
     <setting>
       <key>searchHasBboxSelectTool</key>
       <name>Gebiet-Button: Gebiet auswählen</name>

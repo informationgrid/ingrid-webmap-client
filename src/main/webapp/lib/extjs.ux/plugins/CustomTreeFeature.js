@@ -116,9 +116,8 @@ Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRe
     if(a.service){
     	var dv = document.createElement("div");
     	dv.className = "buttonSpan";
-    	if(this.node.ownerTree.buttonSpanEl){
-    		var width = this.node.ownerTree.buttonSpanEl * 16;
-    		dv.style.width = width + "px";
+    	if(this.node.ownerTree.buttonSpanElStyle){
+    		dv.style.cssText = this.node.ownerTree.buttonSpanElStyle;
     	}
     	this.elNode.insertBefore(dv, this.elNode.firstChild);
     }

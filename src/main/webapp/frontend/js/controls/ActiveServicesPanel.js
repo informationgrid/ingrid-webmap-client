@@ -77,6 +77,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	var deleteAction = {
         text: i18n('tLoeschen'),
         iconCls: 'iconRemove',
+        tooltip: i18n('tZumEntfernenErstEinenDienstMarkieren'),
         handler: function(){
         	if (self.activeNode) {
 				if(self.activeNode.attributes.service != undefined){
@@ -98,6 +99,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	var metadataAction = {
         text: i18n('tInformation'),
         iconCls: 'iconMetadata',
+        tooltip: i18n('tFuerMetadatenErst'),
 		handler: function() {
 			self.displayMetaData(self.activeNode);
 		}
@@ -106,6 +108,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	var zoomToExtendAction = {
         text: i18n('tZoomToLayerExtent'),
         iconCls: 'iconZoomLayerExtent',
+        tooltip: i18n('tZoomeAufServiceOderLayer'),
         handler: function() {
         	var bounds   = null;
 			var minScale = null;
@@ -291,7 +294,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		enableDD: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop"),
 		border: false,
 		plugins:[hoverActions],
-		buttonSpanEl:1
+		buttonSpanElStyle:'width:12px;'
 	});
 
 	var self = this;
