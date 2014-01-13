@@ -28,6 +28,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			id : 'searchField',
 			name : "searchField",
 			emptyText: i18n('tSuchbegriff'),
+			blankText: i18n('tPfichtfeld'),
 			allowBlank : false,
 			xtype : 'textfield',
 			style : 'padding: 0px 5px;'

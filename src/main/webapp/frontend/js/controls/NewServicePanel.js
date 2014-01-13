@@ -37,6 +37,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 	this.capabilitiesUrlField = new Ext.form.TextField({
 		allowBlank: false,
 		emptyText: i18n('tUrlEingabe'),
+		blankText: i18n('tPfichtfeld'),
 		anchor:'100%'
 	});
 
