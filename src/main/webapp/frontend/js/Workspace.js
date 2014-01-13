@@ -176,23 +176,27 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var keyboardControl = new OpenLayers.Control.KeyboardDefaults();
 	this.ctrls['keyboardControl'] = keyboardControl;
 	
-	toolbarItems.push(new Ext.Button({
-		iconCls : 'iconCollapse',
-		tooltip : i18n('tServiceBereichAufUndZuKlappen'),
-		enableToggle : false, 
-		handler: function(btn) {
-			if (westPanel != null) {
-					westPanel.collapse();
-					westPanel.expand();
-					if(westPanel.collapsed == false){
-						this.setIconClass('iconExpand');	
-					}else{
-						this.setIconClass('iconCollapse');
-					}
-					
-            } 
-		}
-	}));
+	// Collapse Tool
+	if (de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) {
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconCollapse',
+			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
+			enableToggle : false, 
+			handler: function(btn) {
+				if (westPanel != null) {
+						westPanel.collapse();
+						westPanel.expand();
+						if(westPanel.collapsed == false){
+							this.setIconClass('iconExpand');	
+						}else{
+							this.setIconClass('iconCollapse');
+						}
+						
+	            } 
+			}
+		}));
+		toolbarItems.push({xtype: 'tbspacer', width: 50});
+	}
 	
 	// Legend tool
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasLegendTool")) {
