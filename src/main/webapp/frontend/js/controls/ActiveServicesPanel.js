@@ -186,6 +186,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	         zoomToExtendAction,
 	         groupLayerAction,
 	         {
+	             xtype: 'menuseparator'
+	         },{
 	     		text: i18n('tTransparenz'),
 	     		iconCls: 'iconTransparency',
 	     		id:'groupLayerTransparentLabel',
@@ -218,6 +220,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	         metadataAction,
 	         zoomToExtendAction,
 	         {
+	             xtype: 'menuseparator'
+	         },{
 	     		text: i18n('tTransparenz'),
 	     		iconCls: 'iconTransparency',
 	     		id:'layerTransparentLabel',
