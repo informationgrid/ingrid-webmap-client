@@ -70,7 +70,8 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		useArrows:true,
 	    lines: false,
 	    frame : false,
-	    cls: 'x-tree-noicon'
+	    cls: 'x-tree-noicon',
+		autoScroll: true
 	});
 	
 	Ext.apply(this, {
