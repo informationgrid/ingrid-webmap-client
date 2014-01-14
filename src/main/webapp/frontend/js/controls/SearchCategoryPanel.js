@@ -6,9 +6,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class SearchCategoryPanel shows available services of a given category.
  */
-de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.tree.TreePanel, {
-    autoScroll: true,
-
+de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.Panel, {
     /**
      * @cfg serviceCategory Object with service category definition as provided by the configuration
      */
@@ -22,12 +20,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.tree.
     /**
      * The currently selected node
      */
-    activeNode: null,
-
-	useArrows:true,
-    lines: false,
-    frame : false,
-    cls: 'x-tree-noicon'
+    activeNode: null
 });
 
 /**
@@ -63,7 +56,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		})]
 	});
 	
-	Ext.apply(this, {
+	var tree = new Ext.tree.TreePanel({
 		title: i18n('tSuchergebnisse'),
         rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
@@ -73,8 +66,15 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		}),
 		plugins:[hoverActions],
 		buttonSpanElStyle:'width:30px;',
-		anchor: '100%',
-	    onlyServices: true
+	    onlyServices: true,
+		useArrows:true,
+	    lines: false,
+	    frame : false,
+	    cls: 'x-tree-noicon'
+	});
+	
+	Ext.apply(this, {
+		items:[tree]
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.superclass.initComponent.call(this);

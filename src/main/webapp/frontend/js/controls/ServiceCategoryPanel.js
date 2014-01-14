@@ -6,7 +6,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class ServiceCategoryPanel shows available services of a given category.
  */
-de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree.TreePanel, {
+de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.Panel, {
     autoScroll: true,
 
     /**
@@ -24,11 +24,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.tree
      */
     activeNode: null,
 
-	disabledButtons: [],
-	useArrows:true,
-    lines: false,
-    frame : false,
-    cls: 'x-tree-noicon'
+	disabledButtons: []
 });
 
 /**
@@ -63,9 +59,8 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		})]
 	});
 	
-	Ext.apply(this, {
-		title: i18n(node.text),
-        rootVisible: false,
+	var tree = new Ext.tree.TreePanel({
+		rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,
 	        children: node.children,
@@ -73,8 +68,23 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		}),
 		plugins:[hoverActions],
 		buttonSpanElStyle:'width:30px;',
-	    onlyServices: true
+	    onlyServices: true,
+		useArrows:true,
+	    lines: false,
+	    frame : false,
+	    cls: 'x-tree-noicon',
+	    layout: 'fit',
+	    autoScroll: true
 	});
+	
+	Ext.apply(this, {
+		title: i18n(node.text),
+		layout: 'fit',
+		bodyCssClass: 'background ',
+		bodyStyle: 'padding: 4px;',
+		items:[tree],
+		autoScroll: false
+    });
 
 	this.activeServicesPanel.serviceCategoryPanel = self;
 	de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.superclass.initComponent.call(this);

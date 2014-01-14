@@ -155,6 +155,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				width : 250,
 				layout     : 'fit',
 				collapsible : false,
+				collapsed: (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) ? true : false, 
 				split : true,
 				items : [{
 							id : 'servicePanel',
@@ -179,7 +180,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// Collapse Tool
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) {
 		toolbarItems.push(new Ext.Button({
-			iconCls : 'iconCollapse',
+			iconCls : (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) ? 'iconExpand' : 'iconCollapse',
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
 			enableToggle : false, 
 			handler: function(btn) {
@@ -537,6 +538,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		items = [centerPanel];
 	}
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel")) {
+		items.push(westPanel);
+	}else if(de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")){
 		items.push(westPanel);
 	}
 

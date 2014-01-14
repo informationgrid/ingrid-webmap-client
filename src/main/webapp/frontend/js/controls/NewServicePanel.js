@@ -10,7 +10,6 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 de.ingrid.mapclient.frontend.controls.NewServicePanel = Ext.extend(Ext.Panel, {
 	id : 'externServicePanel',
 	title : i18n('tExternServicePanel'),
-	autoScroll : true,
 	
     /**
      * @cfg activeServicesPanel de.ingrid.mapclient.frontend.controls.ActiveServicesPanel instance
@@ -24,9 +23,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel = Ext.extend(Ext.Panel, {
     capabilitiesUrlField: null,
     activateLayersCheckbox: null,
     activateZoomCheckbox: null,
-    addButton: null,
-    layout: 'fit',
-    bodyCssClass: 'background externServicePanel'
+    addButton: null
 });
 
 /**
@@ -38,17 +35,20 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 		allowBlank: false,
 		emptyText: i18n('tUrlEingabe'),
 		blankText: i18n('tPfichtfeld'),
+		hideLabel: true,
 		anchor:'100%'
 	});
 
 	this.activateLayersCheckbox = new Ext.form.Checkbox({
         boxLabel: i18n('tEbenenAktivieren'),
-        ctCls:'font'
+        hideLabel: true,
+		ctCls:'font'
 	});
 
 	this.activateZoomCheckbox = new Ext.form.Checkbox({
         boxLabel: i18n('tEbenenZoomen'),
-        ctCls:'font'
+        hideLabel: true,
+		ctCls:'font'
 	});
 
 	this.addButton = {
@@ -77,35 +77,39 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 	var panel = new Ext.Panel({
 		bodyStyle: 'padding:5px;',
 		bodyCssClass: 'background ',
+		layout: 'form',
 		items:[{
 			html: i18n('tBitteCapabilitiesExternerService'),
 			border: false,
 			bodyCssClass: 'background font'
-		},
-		placeholder,
-	    this.capabilitiesUrlField,
-	    placeholder,
-	    this.activateLayersCheckbox,
-	    placeholder,
-	    this.activateZoomCheckbox,
-	    placeholder,
-	    this.addButton,
-	    placeholder,
-	    {
-			title: i18n('tHinweis'),
-			html: i18n('tHintZoomToView'),
-			bodyStyle: 'padding:5px;',
-	        border: true,
-	        collapsible: true,
-			bodyCssClass: 'background font hint'
-		}
-	]
+			},
+			placeholder,
+		    this.capabilitiesUrlField,
+		    placeholder,
+		    this.activateLayersCheckbox,
+		    placeholder,
+		    this.activateZoomCheckbox,
+		    placeholder,
+		    this.addButton,
+		    placeholder,
+		    {
+				title: i18n('tHinweis'),
+				html: i18n('tHintZoomToView'),
+				bodyStyle: 'padding:5px;',
+		        border: true,
+		        collapsible: true,
+				bodyCssClass: 'background font hint'
+		    }],
+	    autoScroll: true
 	});
 	
 	var self = this;
 	Ext.apply(this, {
-		bodyStyle: 'padding:5px;',
-		items: [panel]
+		bodyStyle: 'padding: 4px;',
+		layout: 'fit',
+		items: [panel],
+	    autoScroll: false,
+	    bodyCssClass: 'background'
 	});
 
 	de.ingrid.mapclient.frontend.controls.NewServicePanel.superclass.initComponent.call(this);

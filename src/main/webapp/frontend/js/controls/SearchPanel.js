@@ -11,11 +11,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel = Ext.extend(Ext.Panel, {
 	id : 'searchPanel',
     title : i18n('tSuche'),
 	searchField : null,
-	searchButton : null,
-	panel : null,
-	bodyCssClass: 'background',
-	bodyStyle: 'padding:5px;',
-	autoScroll:true
+	searchButton : null
 });
 
 /**
@@ -49,25 +45,47 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			}
 	};
 	
-	this.panel = new Ext.Panel({
+	var panel = new Ext.Panel({
 		bodyStyle: 'padding:5px; background: transparent;',
-	    items:[{
-			xtype: 'container',
-			layout: 'column',
-			anchor: '100%',
-			items: [
-			        this.searchField,
-			        this.searchButton
-			]
-		},{
-	    	xtype: 'container',
-			height: 10
-	    }]
+		layout: 'form',
+		style: 'border-bottom: 0',
+		items:[{
+				xtype: 'container',
+				layout: 'column',
+			    defaults: {
+			        // implicitly create Container by specifying xtype
+			        xtype: 'container',
+			        autoEl: 'div', // This is the default.
+			        layout: 'form',
+			        style: {
+			            padding: '0 10px'
+			        }
+			    },
+				items: [
+				        this.searchField,
+					    this.searchButton,
+				]
+				},{
+		    	   xtype: 'container',
+		    	   height: 10
+		       }]
+	});
+	
+	var panelResult = new Ext.Panel({
+		id: 'panelSearchResult',
+		border: false,
+		layout: 'fit'
 	});
 	
 	var self = this;
 	Ext.apply(this, {
-		items: [self.panel]
+		items: [
+		  panel, 
+		  panelResult
+		],
+		bodyCssClass: 'background',
+		bodyStyle: 'padding: 4px;',
+		autoScroll: true
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchPanel.superclass.initComponent.call(this);
@@ -101,11 +119,14 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 			
 			var searchCategoryPanel = new de.ingrid.mapclient.frontend.controls.SearchCategoryPanel({
 						id : 'searchResults',
-						serviceCategory : resp
+						serviceCategory : resp,
+						border: false
 			});
 			
-			self.panel.add(searchCategoryPanel);
-			self.panel.doLayout();
+			var panel = Ext.getCmp('panelSearchResult');
+			panel.add(searchCategoryPanel);
+			panel.doLayout();
+			
 			if (responseHandler	&& responseHandler.success instanceof Function) {
 				responseHandler.success(response.responseText);
 			}

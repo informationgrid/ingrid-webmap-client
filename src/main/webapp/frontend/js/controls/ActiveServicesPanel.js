@@ -292,7 +292,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
         frame : false,
 		rootVisible: false,
 		enableDD: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop"),
-		border: false,
 		plugins:[hoverActions],
 		buttonSpanElStyle:'width:12px;'
 	});
@@ -335,7 +334,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	}
 	
 	Ext.apply(this, {
-		items: this.layerTree
+		items: this.layerTree,
+		bodyCssClass: 'background',
+		bodyStyle: 'padding: 4px;'
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
 };
