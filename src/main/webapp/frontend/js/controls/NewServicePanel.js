@@ -60,9 +60,6 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
         		var service = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(capabilitiesUrl);
         		self.activateService(service);
         		
-        		self.capabilitiesUrlField.setValue("");
-        		self.activateLayersCheckbox.setValue(false);
-        		self.activateZoomCheckbox.setValue(false);
         		var servicePanel = Ext.getCmp('servicePanel');
         		servicePanel.items.itemAt(0).expand();
 			}
@@ -169,5 +166,10 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.onServiceLoaded 
 	}
 	
 	// add the service
-	this.activeServicesPanel.addService(service, true);
+	this.activeServicesPanel.addService(service, true, false, false, activateZoomCheckbox);
+	
+	this.capabilitiesUrlField.reset();
+	this.activateLayersCheckbox.setValue(false);
+	this.activateZoomCheckbox.setValue(false);
+	
 };

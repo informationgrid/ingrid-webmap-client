@@ -220,8 +220,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	         metadataAction,
 	         zoomToExtendAction,
 	         {
-	             xtype: 'menuseparator'
-	         },{
 	     		text: i18n('tTransparenz'),
 	     		iconCls: 'iconTransparency',
 	     		id:'layerTransparentLabel',
@@ -366,7 +364,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * Add a service to the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode, zoomToExtent) {
 	var self = this;
 	if(service != undefined){
 		var isLayerAddByParameter = false;
@@ -652,7 +650,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					}
 				}
 			}else{
-				this.map.zoomToExtent(bounds);
+				if(zoomToExtent){
+					this.map.zoomToExtent(bounds);
+				}
 			}
 		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
