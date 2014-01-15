@@ -138,28 +138,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 	// create the toolbar items
 	var toolbarItems = [];
 
-	// Collapse Tool
-	if (de.ingrid.mapclient.Configuration.getSettings("searchHasCollapseTool")) {
-		toolbarItems.push(new Ext.Button({
-			iconCls : 'iconCollapse',
-			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
-			enableToggle : false, 
-			handler: function(btn) {
-				if (westPanel != null) {
-						westPanel.collapse();
-						westPanel.expand();
-						if(westPanel.collapsed == false){
-							this.setIconClass('iconExpand');	
-						}else{
-							this.setIconClass('iconCollapse');
-						}
-						
-	            } 
-			}
-		}));
-		toolbarItems.push({xtype: 'tbspacer', width: 50});
-	}
-	
 	// Legend tool
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasLegendTool")) {
 		toolbarItems.push(new Ext.Button({
