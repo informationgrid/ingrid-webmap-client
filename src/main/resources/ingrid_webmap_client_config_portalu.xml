@@ -281,12 +281,6 @@
     </setting>
     <!-- Suche -->
     <setting>
-      <key>searchHasCollapseTool</key>
-      <name>Button zum Ein- und Ausblenden des Service-Bereiches</name>
-      <value>false</value>
-      <group>search</group>
-    </setting>
-    <setting>
       <key>searchHasLegendTool</key>
       <name>Legende-Button: Darstellung der Legende</name>
       <value>false</value>
