@@ -300,7 +300,7 @@ ul .x-tree-node-ct li .x-tree-node {
 }
 
 .x-tree-node-el {
-	padding: 5px 0px;
+	padding: 5px 0px 5px 5px;
 }
 
 .x-tree-arrows {
@@ -363,7 +363,7 @@ ul .x-tree-node-ct li .x-tree-node {
 .buttonSpan {
 	height: 16px;
 	float:left;
-	padding: 2px 0px 0px 0px;
+	padding: 2px 5px 0px 0px;
 }
 
 .background {

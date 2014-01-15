@@ -182,7 +182,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		toolbarItems.push(new Ext.Button({
 			iconCls : (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) ? 'iconExpand' : 'iconCollapse',
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
-			enableToggle : false, 
+			enableToggle : false,
+			style:{
+				marginLeft: '-13px'
+			},
+			handleMouseEvents:false,
 			handler: function(btn) {
 				if (westPanel != null) {
 						westPanel.collapse();
