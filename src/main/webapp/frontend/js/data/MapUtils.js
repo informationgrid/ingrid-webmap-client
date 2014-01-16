@@ -227,3 +227,32 @@ de.ingrid.mapclient.frontend.data.MapUtils.getParameter = function ( name ){
 	else    
 		return results[1];
 }
+
+de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter = function (capabilities){
+	var value = capabilities.toLowerCase();
+	var hasService = false;
+	var hasRequest = false;
+	if(value.indexOf("service=wms") > -1){
+		hasService = true;
+	}
+	
+	if(value.indexOf("request=getcapabilities") > -1){
+		hasRequest = true;
+	}
+	
+	if(hasService == false && hasRequest == false){
+		if(value.indexOf("?") < 0){
+			capabilities = capabilities + "?";
+		}
+	}
+	
+	if(hasRequest == false){
+		capabilities = capabilities + "&REQUEST=GetCapabilities"
+	}
+	
+	if(hasService == false){
+		capabilities = capabilities + "&SERVICE=WMS"
+	}
+	
+	return capabilities;
+};

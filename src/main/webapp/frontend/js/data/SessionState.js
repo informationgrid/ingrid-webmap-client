@@ -43,6 +43,8 @@ de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 
 	this.selectedLayersByService = [];
 	
+	this.treeState = [];
+	
 	this.capabilitiesUrlOrder = [];
 	// apply values from the provided config object
 	this.url = "";
@@ -75,6 +77,11 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 		selectedLayers.push(this.selectedLayersByService[i]);
 	}
 	
+	var treeState = [];
+	for (var i=0, count=this.treeState.length; i<count; i++) {
+		treeState.push(this.treeState[i]);
+	}
+	
 	// encode to JSON
 	var serializedState = Ext.encode({
 		id: id,
@@ -84,7 +91,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 		activeServices: capabilityUrls,
 		kmlArray: this.kmlArray,
 		selectedLayersByService: selectedLayers,
-		url: this.url
+		url: this.url,
+		treeState: treeState
 	});
 	return serializedState;
 };
@@ -107,6 +115,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	this.kmlArray = data.kmlArray;
 	this.url = data.url;
 	this.selectedLayersByService = data.selectedLayersByService;
+	this.treeState = data.treeState;
 	this.capabilitiesUrlOrder = data.activeServices;
 	// unserialize map state (must be applied)
 	this.wmcDocument = data.wmcDocument;

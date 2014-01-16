@@ -136,6 +136,24 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasActiveServiceTreeState</key>
+      <name>Aktive Dienste: Baumstruktur wird in der Session gespeichert</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewHasActiveServiceTreeExpand</key>
+      <name>Aktive Dienste: Layer-Baum wird immer komplett aufgeklappt dargestellt</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewHasActiveServiceTreeExpandAddNode</key>
+      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienste auf</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewActiveAccordionWestPanel</key>
       <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
