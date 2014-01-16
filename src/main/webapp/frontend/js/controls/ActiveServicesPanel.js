@@ -99,11 +99,13 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		handler: function(btn) {
 			if (self.activeNode) {
 
-				// Remove tree state
-				for (var j = 0, count = self.treeState.length; j < count; j++) {
-					var state = self.treeState[j];
-					if(state.capabilitiesUrl  == self.activeNode.attributes.service.capabilitiesUrl ){
-						self.treeState.remove(state);
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+					// Remove tree state
+					for(var i = 0; i < self.treeState.length; i++){
+						var state = self.treeState[i];
+						if(state.capabilitiesUrl  == self.activeNode.attributes.service.capabilitiesUrl ){
+							self.treeState.remove(state);
+						}
 					}
 				}
 				
@@ -299,7 +301,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		self.activeNode = node;
 	});
 	
-	
 	if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
 		this.layerTree.on('beforeappend', function(tree, parent, node){
 			if(node.attributes.layer){
@@ -319,51 +320,54 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	
 		});
 	}
-	this.layerTree.on('beforeexpandnode', function(node){
-		if(node.isRoot == undefined || node.isRoot == false ){
-			var name = node.text;
-			var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-			var isService = node.layer ? false : true;
-			var layer = node.layer ? node.layer.params.LAYERS : "";
-			
-			var exist = false;
-			
-			for (var j = 0, count = self.treeState.length; j < count; j++) {
-				var state = self.treeState[j];
-				if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-					exist = true;
-					break;
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+		this.layerTree.on('beforeexpandnode', function(node){
+			if(node.isRoot == undefined || node.isRoot == false ){
+				var name = node.text;
+				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+				var isService = node.layer ? false : true;
+				var layer = node.layer ? node.layer.params.LAYERS : "";
+				
+				var exist = false;
+				
+				for (var j = 0, count = self.treeState.length; j < count; j++) {
+					var state = self.treeState[j];
+					if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+						exist = true;
+						break;
+					}
+				}
+				
+				if(exist == false){
+					self.treeState.push({
+						name:name,
+						capabilitiesUrl:capabilitiesUrl, 
+						isService: isService, 
+						layer: layer
+					});
+					self.fireEvent('datachanged');
 				}
 			}
-			
-			if(exist == false){
-				self.treeState.push({
-					name:name,
-					capabilitiesUrl:capabilitiesUrl, 
-					isService: isService, 
-					layer: layer
-				});
+		});
+		
+		this.layerTree.on('beforecollapsenode', function(node){
+			if(node.isRoot == undefined || node.isRoot == false ){
+				var name = node.text;
+				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+				var isService = node.layer ? false : true;
+				var layer = node.layer ? node.layer.params.LAYERS : "";
+				
+				for(var i = 0; i < self.treeState.length; i++){
+					var state = self.treeState[i];
+					if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+						self.treeState.remove(state);
+					}
+				}
 				self.fireEvent('datachanged');
 			}
-		}
-	});
-	
-	this.layerTree.on('beforecollapsenode', function(node){
-		if(node.isRoot == undefined || node.isRoot == false ){
-			var name = node.text;
-			var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-			var isService = node.layer ? false : true;
-			var layer = node.layer ? node.layer.params.LAYERS : "";
-			
-			for (var j = 0, count = self.treeState.length; j < count; j++) {
-				var state = self.treeState[j];
-				if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-					self.treeState.remove(state);
-				}
-			}
-			self.fireEvent('datachanged');
-		}
-	});
+		});
+	}
 	
 	var items = [
 			this.addBtn,
@@ -617,7 +621,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				this.map.zoomToExtent(bounds);
 		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
-		if(typeof expandNode === 'undefined' || expandNode == false)
+		if(expandNode){
+			node.expand();
+			self.expandNode(node, false);
+		}
 
 		// Select layer by checkedLayers only on add service.
 		// After mapclient reload load don't select layers by checkedLayers
@@ -1208,25 +1215,37 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getMinScaleF
 	return minScale;
 };
 
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.expandNode = function (node){
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.expandNode = function (node, fromTreeState){
 	var self = this;
 	
-	for (var i = 0, count = this.treeState.length; i < count; i++) {
-		var state = this.treeState[i];
-		var name = node.text;
-		var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-		var isService = node.layer ? false : true;
-		var layer = node.layer ? node.layer.params.LAYERS : "";
-		
-		if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-			node.expand();
-			break;
+	if(fromTreeState){
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+			for (var i = 0, count = this.treeState.length; i < count; i++) {
+				var state = this.treeState[i];
+				var name = node.text;
+				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+				var isService = node.layer ? false : true;
+				var layer = node.layer ? node.layer.params.LAYERS : "";
+				
+				if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+					node.expand();
+					break;
+				}
+			}
+			if(node.hasChildNodes()){
+				for (var j = 0, count = node.childNodes.length; j < count; j++) {
+					var childNode = node.childNodes[j];
+					self.expandNode(childNode, true);
+				}
+			}
 		}
-	}
-	if(node.hasChildNodes()){
-		for (var j = 0, count = node.childNodes.length; j < count; j++) {
-			var childNode = node.childNodes[j];
-			self.expandNode(childNode);
+	}else{
+		node.expand();
+		if(node.hasChildNodes()){
+			for (var j = 0, count = node.childNodes.length; j < count; j++) {
+				var childNode = node.childNodes[j];
+				self.expandNode(childNode, false);
+			}
 		}
 	}
 };
@@ -1238,6 +1257,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.expandNode =
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRecursively  = function(node, scale){
 		var self = this;
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand")){
+			node.expand();
+		}
 		node.eachChild(function(n) {
 	    	var layer = n.layer;
 	    	if(layer){
@@ -1267,7 +1289,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	        	self.checkScaleRecursively(n, scale);
 	        }
 	        
-	        self.expandNode(n);
+	        self.expandNode(n, true);
     	});
     	if(node instanceof GeoExt.tree.LayerNode){
     		var layer = node.layer;

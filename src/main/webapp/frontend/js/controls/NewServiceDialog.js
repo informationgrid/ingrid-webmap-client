@@ -176,5 +176,5 @@ de.ingrid.mapclient.frontend.controls.NewServiceDialog.prototype.onServiceLoaded
 	}
 	
 	// add the service
-	this.activeServicesPanel.addService(service, true);
+	this.activeServicesPanel.addService(service, true, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"));
 };

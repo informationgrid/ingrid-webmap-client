@@ -104,6 +104,21 @@
       <value>true</value>
     </setting>
     <setting>
+      <key>viewHasActiveServiceTreeState</key>
+      <name>Aktive Dienste: Baumstruktur wird in der Session gespeichert</name>
+      <value>false</value>
+    </setting>
+    <setting>
+      <key>viewHasActiveServiceTreeExpand</key>
+      <name>Aktive Dienste: Layer-Baum wird immer komplett aufgeklappt dargestellt</name>
+      <value>true</value>
+    </setting>
+    <setting>
+      <key>viewHasActiveServiceTreeExpandAddNode</key>
+      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienste auf</name>
+      <value>true</value>
+    </setting>
+    <setting>
       <key>viewActiveAccordionWestPanel</key>
       <name>Aktives Akkordeon: Default geöffnetes Akkordeon im Dienstebereich (0=1.Akkordeon, 1=2.Akkordeon, ...)</name>
       <value>0</value>
