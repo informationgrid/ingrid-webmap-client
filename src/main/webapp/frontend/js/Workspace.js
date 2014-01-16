@@ -830,7 +830,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
 				kmlArray : this.kmlArray,
-				selectedLayersByService: this.activeServicesPanel.selectedLayersByService
+				selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
+				treeState: this.activeServicesPanel.treeState
 				
 			});
 	this.session.save(data, isTemporary, responseHandler);
@@ -926,6 +927,34 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 						checked:checked,
 						cls:cls,
 						leaf:leaf
+					});
+				}
+			}
+			
+			if (!(typeof(state.treeState) === "undefined") && state.treeState.length > 0){
+				for (var i = 0, count = state.treeState.length; i < count; i++) {
+					var treeState = state.treeState[i];
+					var name = null;
+					var capabilitiesUrl = null;
+					var isService = null;
+					var layer = null;
+					for (var j = 0, countJ = treeState.length; j < countJ; j++) {
+						var entry = treeState[j];
+						if(entry[0] == "name"){
+							name = entry[1];
+						}else if(entry[0] == "capabilitiesUrl"){
+							capabilitiesUrl = entry[1];
+						}else if(entry[0] == "isService"){
+							isService = entry[1];
+						}else if(entry[0] == "layer"){
+							layer = entry[1];
+						}
+					}
+					self.activeServicesPanel.treeState.push({
+						name:name,
+						capabilitiesUrl:capabilitiesUrl,
+						isService:isService,
+						layer:layer
 					});
 				}
 			}

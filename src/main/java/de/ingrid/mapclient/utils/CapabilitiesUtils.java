@@ -35,7 +35,7 @@ public class CapabilitiesUtils {
 				Element nameNode = doc.createElement("Name");
 				String txt = "INGRID-";
 				if(node.getFirstChild() != null){
-					txt = txt.concat(generateRandomString());
+					txt = txt.concat(createMD5NameText(txt, node.getFirstChild()));
 					Text textNode = doc.createTextNode(txt);
 					nameNode.appendChild(textNode);
 					node.insertBefore(nameNode, node.getFirstChild());					
