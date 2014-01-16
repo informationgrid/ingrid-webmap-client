@@ -364,6 +364,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						self.treeState.remove(state);
 					}
 				}
+				
+				if(node.hasChildNodes()){
+					self.removeCollapseChildNodeEntry(node);
+				}
 				self.fireEvent('datachanged');
 			}
 		});
@@ -1246,6 +1250,29 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.expandNode =
 				var childNode = node.childNodes[j];
 				self.expandNode(childNode, false);
 			}
+		}
+	}
+};
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeCollapseChildNodeEntry = function (node){
+	var self = this;
+	
+	for(var i = 0; i < node.childNodes.length; i++){
+		var node = node.childNodes[i];
+		var name = node.text;
+		var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
+		var isService = node.layer ? false : true;
+		var layer = node.layer ? node.layer.params.LAYERS : "";
+		
+		for(var i = 0; i < self.treeState.length; i++){
+			var state = self.treeState[i];
+			if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+				self.treeState.remove(state);
+			}
+		}
+		
+		if(node.hasChildNodes()){
+			self.removeCollapseChildNodeEntry(node, true);
 		}
 	}
 };
