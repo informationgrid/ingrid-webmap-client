@@ -81,7 +81,6 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		title: i18n(node.text),
 		layout: 'fit',
 		bodyCssClass: 'background ',
-		bodyStyle: 'padding: 4px;',
 		items:[tree],
 		autoScroll: false
     });
@@ -169,7 +168,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.activateService = function(service) {
 	var callback = Ext.util.Functions.createDelegate(this.activeServicesPanel.addService, this.activeServicesPanel);
 	var showFlash = true;
-	de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback, showFlash);
+	de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback, showFlash, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"));
 };
 
 /**

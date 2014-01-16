@@ -56,7 +56,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 		text : i18n('tDienstHinzufuegen'),
 		handler: function(btn) {
 			if (self.activeServicesPanel && self.capabilitiesUrlField.validate()) {
-        		var capabilitiesUrl = self.capabilitiesUrlField.getValue();
+        		var capabilitiesUrl = de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter(self.capabilitiesUrlField.getValue());
         		var service = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(capabilitiesUrl);
         		self.activateService(service);
         		

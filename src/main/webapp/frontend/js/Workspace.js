@@ -320,6 +320,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						id : 'measurePath',
 						text : i18n('tStrecke'),
 						toggleGroup : 'measure',
+						cls: 'font-menu',
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
@@ -335,6 +336,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						id : 'measurePolygon',
 						text : i18n('tFlaeche'),
 						toggleGroup : 'measure',
+						cls: 'font-menu',
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
@@ -358,12 +360,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
+			url: "" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
 			zoom: 5,
-			loadingText: i18n("tNominatimLoading")
+			loadingText: i18n("tNominatimLoading"),
+			emptyClass: 'font-nominatim',
+			listClass: 'font-nominatim'
 		});
 	}
 	
@@ -846,7 +850,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				activeServices : this.activeServicesPanel.getServiceList(),
 				kmlArray : this.kmlArray,
 				selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
-				url: window.location.href
+				url: window.location.href,
+				treeState: this.activeServicesPanel.treeState
 				
 			});
 	this.session.save(data, isTemporary, responseHandler);
@@ -942,6 +947,34 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 						checked:checked,
 						cls:cls,
 						leaf:leaf
+					});
+				}
+			}
+			
+			if (!(typeof(state.treeState) === "undefined") && state.treeState.length > 0){
+				for (var i = 0, count = state.treeState.length; i < count; i++) {
+					var treeState = state.treeState[i];
+					var name = null;
+					var capabilitiesUrl = null;
+					var isService = null;
+					var layer = null;
+					for (var j = 0, countJ = treeState.length; j < countJ; j++) {
+						var entry = treeState[j];
+						if(entry[0] == "name"){
+							name = entry[1];
+						}else if(entry[0] == "capabilitiesUrl"){
+							capabilitiesUrl = entry[1];
+						}else if(entry[0] == "isService"){
+							isService = entry[1];
+						}else if(entry[0] == "layer"){
+							layer = entry[1];
+						}
+					}
+					self.activeServicesPanel.treeState.push({
+						name:name,
+						capabilitiesUrl:capabilitiesUrl,
+						isService:isService,
+						layer:layer
 					});
 				}
 			}

@@ -225,6 +225,21 @@ public class UserDataResource {
 				}
 			}
 			
+			List<Map<String, String>> treeState = new ArrayList<Map<String, String>>();
+			JSONArray treeStateTmp = rootObj.getJSONArray("treeState");
+			for (int i = 0, count = treeStateTmp.length(); i < count; i++) {
+				if (treeStateTmp.get(i) instanceof JSONObject) {
+					JSONObject jsonEntry = treeStateTmp.getJSONObject(i);
+	
+					Map<String, String> entry = new HashMap<String, String>();
+					entry.put("name", jsonEntry.get("name").toString());
+					entry.put("layer", jsonEntry.get("layer").toString());
+					entry.put("isService", jsonEntry.get("isService").toString());
+					entry.put("capabilitiesUrl", jsonEntry.get("capabilitiesUrl").toString());
+					treeState.add(entry);
+				}
+			}
+			
 			UserData userData = new UserData();
 			userData.setId(sessionId);
 			userData.setWmcDocument(wmcDocument);
@@ -232,7 +247,8 @@ public class UserDataResource {
 			userData.setKml(kmlArray);
 			userData.setSelectedLayersByService(selectedLayersByService);
 			userData.setUrl(rootObj.getString("url"));
-			
+			userData.setTreeState(treeState);
+
 			// store the data
 			Store store = StoreManager.INSTANCE.getSessionStore();
 			store.putRecord(sessionId, userData.serialize());
@@ -359,6 +375,21 @@ public class UserDataResource {
 				selectedLayersByService.add(map);
 			}
 			
+			List<Map<String, String>> treeState = new ArrayList<Map<String, String>>();
+			JSONArray treeStateTmp = rootObj.getJSONArray("treeState");
+			for (int i = 0, count = treeStateTmp.length(); i < count; i++) {
+				if (treeStateTmp.get(i) instanceof JSONObject) {
+					JSONObject jsonEntry = treeStateTmp.getJSONObject(i);
+	
+					Map<String, String> entry = new HashMap<String, String>();
+					entry.put("name", jsonEntry.get("name").toString());
+					entry.put("layer", jsonEntry.get("layer").toString());
+					entry.put("isService", jsonEntry.get("isService").toString());
+					entry.put("capabilitiesUrl", jsonEntry.get("capabilitiesUrl").toString());
+					treeState.add(entry);
+				}
+			}
+		
 			
 			UserData userData = new UserData();
 			userData.setTitle(title);
@@ -367,6 +398,7 @@ public class UserDataResource {
 			userData.setWmcDocument(wmcDocument);
 			userData.setActiveServices(activeServices);
 			userData.setSelectedLayersByService(selectedLayersByService);
+			userData.setTreeState(treeState);
 
 			// create a unique record id
 			String recordId = UUID.randomUUID().toString();

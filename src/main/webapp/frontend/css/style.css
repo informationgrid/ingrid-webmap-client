@@ -189,7 +189,7 @@ p.load_icon_webmap{   background-color: transparent;
   border-width: 1px 1px 0 !important;
 }
 #olControlOverviewMapMaximizeButton_innerImage{bottom:-80px;}
-.x-item-disabled{opacity: .45 !important;}
+.x-item-disabled{opacity: .25 !important;}
 .x-tree-node-loading a span {
 font-style: inherit;
 }
@@ -376,6 +376,19 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .font {
 	font: normal 12px/19px verdana;
+}
+
+.font-menu {
+	font: normal 11px/16px verdana !important;
+	color: #000 !important;
+}
+
+.font-nominatim {
+	font: normal 11px/16px verdana !important;
+}
+
+#nominatim {
+	font: normal 11px/16px verdana !important;
 }
 
 #servicePanel .x-panel-header {
