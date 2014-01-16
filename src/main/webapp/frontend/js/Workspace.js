@@ -320,6 +320,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						id : 'measurePath',
 						text : i18n('tStrecke'),
 						toggleGroup : 'measure',
+						cls: 'font-menu',
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
@@ -335,6 +336,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						id : 'measurePolygon',
 						text : i18n('tFlaeche'),
 						toggleGroup : 'measure',
+						cls: 'font-menu',
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
@@ -358,12 +360,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
+			url: "" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),
 			zoom: 5,
-			loadingText: i18n("tNominatimLoading")
+			loadingText: i18n("tNominatimLoading"),
+			emptyClass: 'font-nominatim',
+			listClass: 'font-nominatim'
 		});
 	}
 	

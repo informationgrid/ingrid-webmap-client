@@ -81,7 +81,6 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		title: i18n(node.text),
 		layout: 'fit',
 		bodyCssClass: 'background ',
-		bodyStyle: 'padding: 4px;',
 		items:[tree],
 		autoScroll: false
     });

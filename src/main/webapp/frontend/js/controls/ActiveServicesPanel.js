@@ -104,7 +104,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 
 			}
-        }
+        },
+		cls: 'font-menu'
 	};
 	
 	var metadataAction = {
@@ -113,7 +114,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
         tooltip: i18n('tFuerMetadatenErst'),
 		handler: function() {
 			self.displayMetaData(self.activeNode);
-		}
+		},
+		cls: 'font-menu'
     };
 	
 	var zoomToExtendAction = {
@@ -151,7 +153,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 				this.fireEvent('datachanged');
 			}
-		}
+		},
+		cls: 'font-menu'
 	};
 	
 	var groupLayerAction = {
@@ -203,7 +206,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	     		iconCls: 'iconTransparency',
 	     		id:'groupLayerTransparentLabel',
 	     		border: false,
-	     		canActivate:false
+	     		canActivate:false,
+	    		cls: 'font-menu'
 	     	},
 	     	new GeoExt.LayerOpacitySlider({
 	        	id:'groupLayerTransparentSlider',
@@ -235,7 +239,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	     		iconCls: 'iconTransparency',
 	     		id:'layerTransparentLabel',
 	     		border: false,
-	     		canActivate:false
+	     		canActivate:false,
+	    		cls: 'font-menu'
 	     	},
 	     	new GeoExt.LayerOpacitySlider({
 	        	id:'layerTransparentSlider',
@@ -396,8 +401,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	
 	Ext.apply(this, {
 		items: this.layerTree,
-		bodyCssClass: 'background',
-		bodyStyle: 'padding: 4px;'
+		bodyCssClass: 'background'
 	});
 	de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.superclass.initComponent.call(this);
 };

@@ -378,6 +378,19 @@ ul .x-tree-node-ct li .x-tree-node {
 	font: normal 12px/19px verdana;
 }
 
+.font-menu {
+	font: normal 11px/16px verdana !important;
+	color: #000 !important;
+}
+
+.font-nominatim {
+	font: normal 11px/16px verdana !important;
+}
+
+#nominatim {
+	font: normal 11px/16px verdana !important;
+}
+
 #servicePanel .x-panel-header {
 	padding: 10px 10px;	
 }
