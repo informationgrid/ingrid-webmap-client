@@ -356,7 +356,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 			if(node.isRoot == undefined || node.isRoot == false ){
 				var name = node.text;
 				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-				var isService = node.layer ? false : true;
+				var isService = node.layer ? "false" : "true";
 				var layer = node.layer ? node.layer.params.LAYERS : "";
 				
 				var exist = false;
@@ -1403,7 +1403,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.expandNode =
 				var state = this.treeState[i];
 				var name = node.text;
 				var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-				var isService = node.layer ? false : true;
+				var isService = node.layer ? "false" : "true";
 				var layer = node.layer ? node.layer.params.LAYERS : "";
 				
 				if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
@@ -1433,21 +1433,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeCollap
 	var self = this;
 	
 	for(var i = 0; i < node.childNodes.length; i++){
-		var node = node.childNodes[i];
-		var name = node.text;
-		var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-		var isService = node.layer ? false : true;
-		var layer = node.layer ? node.layer.params.LAYERS : "";
+		var childNode = node.childNodes[i];
+		var name = childNode.text;
+		var capabilitiesUrl = childNode.attributes.service.capabilitiesUrl;
+		var isService = childNode.layer ? "false" : "true";
+		var layer = childNode.layer ? childNode.layer.params.LAYERS : "";
 		
-		for(var i = 0; i < self.treeState.length; i++){
-			var state = self.treeState[i];
+		for(var j = 0; j < self.treeState.length; j++){
+			var state = self.treeState[j];
 			if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
 				self.treeState.remove(state);
 			}
 		}
 		
-		if(node.hasChildNodes()){
-			self.removeCollapseChildNodeEntry(node, true);
+		childNode.collapse();
+		
+		if(childNode.hasChildNodes()){
+			self.removeCollapseChildNodeEntry(childNode);
 		}
 	}
 };
