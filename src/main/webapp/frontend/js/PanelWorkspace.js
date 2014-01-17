@@ -405,7 +405,13 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 			handler: function(btn) {
 				new de.ingrid.mapclient.frontend.controls.PrintDialog({
 					mapPanel: mapPanel,
-					legendPanel: legendPanel
+					legendPanel: new GeoExt.LegendPanel({
+						layerStore : self.activeServicesPanel.getLayerStore(),
+						autoScroll : true,
+						border : false,
+						dynamic : true,
+						cls: "mapclientLegendPanel"
+					})
 				});
 			}
 		}));
@@ -605,7 +611,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initDefaultMap = function(
  * Create the OpenLayers controls for the map.
  */
 de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function() {
-
 	var self = this;
 
 	// add controls to map
@@ -798,7 +803,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 					copyright.innerHTML = wmsCopyright;
 					div[0].appendChild(copyright);
 				}
-				self.finishInitMap();
+				//self.finishInitMap();
 				if (safeStateAfterLoad) {
 					self.save(true);
 				}
@@ -806,7 +811,7 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.load = function(shortUrl, 
 		},
 		failure: function(responseText) {
 			var callback = Ext.util.Functions.createDelegate(function(){
-			self.finishInitMap();
+				//self.finishInitMap();
 			// Copyright
 			var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright")
 			if(wmsCopyright){
