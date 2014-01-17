@@ -416,7 +416,13 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
 									id: 'printDialog',
 									mapPanel : mapPanel,
-									legendPanel : legendPanel
+									legendPanel : new GeoExt.LegendPanel({
+										layerStore : self.activeServicesPanel.getLayerStore(),
+										autoScroll : true,
+										border : false,
+										dynamic : true,
+										cls: "mapclientLegendPanel"
+									})
 								});
 								printActive = true;
 								self.ctrls['keyboardControl'].deactivate();
