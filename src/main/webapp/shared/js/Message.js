@@ -13,9 +13,9 @@ de.ingrid.mapclient.Message = function() {
  * Show the given message in an overlay that fades out automatically
  * @param msg The message
  */
-de.ingrid.mapclient.Message.showInfo = function(msg, params) {
+de.ingrid.mapclient.Message.showInfo = function(msg, params, sessionHide) {
 	if (!params) params={};
-	new Ext.ux.Notification({
+	var note  = new Ext.ux.Notification({
 		iconCls:	params.iconCls || 'x-icon-information',
 		title:	  params.title || 'Info',
 		html:	   msg,
@@ -23,8 +23,14 @@ de.ingrid.mapclient.Message.showInfo = function(msg, params) {
 		autoDestroy: true,
 		hideDelay:  params.delay || 5000,
 		displayTarget: Ext.select('div.x-panel-tbar')
-	}).show(Ext.select('div.x-panel-tbar'));
+	});
 
+	note.on('destroy', function(){
+		if(sessionHide){
+			Ext.util.Cookies.set(sessionHide, true, (new Date()).add(Date.YEAR, 1));
+		}
+	});
+	note.show(Ext.select('div.x-panel-tbar'));
 };
 
 /**

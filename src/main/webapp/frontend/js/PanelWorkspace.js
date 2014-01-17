@@ -677,7 +677,10 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	this.activeServicesPanel.on('datachanged', this.onStateChanged, this);
 	this.listenToStateChanges = true;
 	if (de.ingrid.mapclient.Configuration.getSettings("searchHasInfoDialog")) {
-		de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),{width:450, delay:900000});
+		var searchShowInfoDialog = Ext.util.Cookies.get("ingrid.webmap.client.search.info.dialog.hide") !== "true";
+		if(searchShowInfoDialog){
+			de.ingrid.mapclient.Message.showInfo(i18n('tUmDerSucheEinenRaumbezugHinzuzufuegenBitteEineAuswahlTreffen'),{width:450, delay:900000}, "ingrid.webmap.client.search.info.dialog.hide");
+		}
 	}
 };
 
