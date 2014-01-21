@@ -4,7 +4,7 @@ body {
 }
 
 .iconInfo {
-	background-image: url(../../shared/images/icon_info.png);
+	background-image: url(../../shared/images/icon_objektinformationen.png);
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
@@ -312,6 +312,14 @@ ul .x-tree-node-ct li .x-tree-node {
 	border-bottom: 1px solid #b4b4b4;
 }
 
+.x-tree-node .x-tree-selected {
+	background: #f4f4f4;
+}
+
+.x-tree-node .x-tree-node-over {
+	background: #f4f4f4;
+}
+
 .x-tree-arrows > .x-tree-root-node > .x-tree-node > .x-tree-node-collapsed {
 	border-top: 1px solid #b4b4b4;
 }
@@ -354,6 +362,7 @@ ul .x-tree-node-ct li .x-tree-node {
     cursor: pointer;
     border: 0px;
     padding: 2px;
+    background-color: transparent;
 }
 
 .img-placeholder {
