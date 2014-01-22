@@ -97,7 +97,10 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
 		autoHeight: true,
 		viewConfig: {
 			autoFill: true,
-			forceFit: true
+			forceFit: true,
+			columnsText: 'Spalten',
+            sortAscText: 'A-Z sortieren',
+            sortDescText: 'Z-A sortieren'
 		}
 	};
 	// allow to modify the configuration

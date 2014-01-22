@@ -93,7 +93,10 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 		autoHeight: true,
 		viewConfig: {
 			autoFill: true,
-			forceFit: true
+			forceFit: true,
+			columnsText: 'Spalten',
+            sortAscText: 'A-Z sortieren',
+            sortDescText: 'Z-A sortieren'
 		},
 		selModel: selectionModel
 	});
@@ -316,7 +319,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadLayers
             	}
             }
             else {
-            	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+            	de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
             	self.getEl().unmask();
             	if (callback instanceof Function) {
             		callback(false);
@@ -324,7 +327,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.loadLayers
             }
 		},
 		failure: function(response, request) {
-			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+			de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
 			self.getEl().unmask();
         	if (callback instanceof Function) {
         		callback(false);

@@ -279,7 +279,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 				      stripeRows: true,
 				      autoExpandColumn: 'title',
 				      viewConfig : {
-				      	enableRowBody : true
+				      	enableRowBody : true,
+						columnsText: 'Spalten',
+			            sortAscText: 'A-Z sortieren',
+			            sortDescText: 'Z-A sortieren'
 				      },
 				      listeners: {
 				    	  	'beforeedit': function(e) {

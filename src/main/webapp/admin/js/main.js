@@ -10,7 +10,7 @@ Ext.onReady(function() {
 			new de.ingrid.mapclient.admin.AdminWorkspace();
 		},
 		failure: function() {
-			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+			de.ingrid.mapclient.Message.showError('Das Laden der Konfiguration ist fehlgeschlagen.');
 		}
 	});
 });

@@ -93,7 +93,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		dataIndex: 'originalCapUrl', 
 		editor:{
         	xtype: 'textfield'
-        } 
+        },
+        sortAscText:'Trest'
 	},{
     	header: 'Info',
 		sortable: false,
@@ -183,7 +184,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		plugins:[filters],
 		autoDestroy:false,
 		viewConfig: {
-			forceFit: true
+			forceFit: true,
+			columnsText: 'Spalten',
+            sortAscText: 'A-Z sortieren',
+            sortDescText: 'Z-A sortieren'
 		},
 		height: 360
 	});
@@ -883,12 +887,12 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				de.ingrid.mapclient.Configuration.load({
 					success: function() {
 						self.reloadServiceFromConfig(service, doServiceNew);
-						de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+						de.ingrid.mapclient.Message.showInfo('Die &Auml;nderungen wurden gespeichert.');
 						self.pausecomp(2000);
 						Ext.getBody().unmask();
 					},
 					failure: function() {
-						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CONFIGURATION_FAILURE);
+						de.ingrid.mapclient.Message.showError('Das Laden der Konfiguration ist fehlgeschlagen.');
 						Ext.getBody().unmask();
 					}
 				});
@@ -897,7 +901,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 				if(doServiceDelete){
 					self.deleteService('Dienst kann nicht geladen werden, da dieser nicht mehr zur Verf&uuml;gung steht! Soll dieser Dienst entfernt werden?');
 				}else{
-					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+					de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
 				}
 				Ext.getBody().unmask();
 				} 

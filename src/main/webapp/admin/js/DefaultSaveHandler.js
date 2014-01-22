@@ -17,7 +17,7 @@ de.ingrid.mapclient.admin.DefaultSaveHandler = function() {
  * @param responseText The response text returned from the server
  */
 de.ingrid.mapclient.admin.DefaultSaveHandler.success = function(responseText) {
-	de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SAVE_SUCCESS);
+	de.ingrid.mapclient.Message.showInfo('Die &Auml;nderungen wurden gespeichert.');
 };
 
 /**
@@ -25,5 +25,5 @@ de.ingrid.mapclient.admin.DefaultSaveHandler.success = function(responseText) {
  * @param responseText The response text returned from the server
  */
 de.ingrid.mapclient.admin.DefaultSaveHandler.failure = function(responseText) {
-	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.SAVE_FAILURE);
+	de.ingrid.mapclient.Message.showError('Beim Speichern der Daten ist ein Fehler aufgetreten.');
 };

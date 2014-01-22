@@ -236,11 +236,11 @@ de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel.prototype.saveMapExte
                 de.ingrid.mapclient.Configuration.setValue('mapExtend', Ext.encode(mapExtend), de.ingrid.mapclient.admin.DefaultSaveHandler);
                 self.mapExtendPanel.setExtend(mapExtend.north, mapExtend.west, mapExtend.east, mapExtend.south);
             } else {
-            	de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+            	de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
             }
 		},
 		failure: function(response, request) {
-			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE);
+			de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
 		}
 	});
 };

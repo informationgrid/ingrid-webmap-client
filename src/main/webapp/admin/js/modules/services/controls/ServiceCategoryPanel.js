@@ -71,7 +71,10 @@ de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.prototype.create
 			autoHeight: true,
 			autoWidth:true,
 			viewConfig: {
-			forceFit: true
+				forceFit: true,
+				columnsText: 'Spalten',
+	            sortAscText: 'A-Z sortieren',
+	            sortDescText: 'Z-A sortieren'
 			}
 		});
 
