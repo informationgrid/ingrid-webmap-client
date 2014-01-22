@@ -115,7 +115,7 @@
     </setting>
     <setting>
       <key>viewHasActiveServiceTreeExpandAddNode</key>
-      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienste auf</name>
+      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienst auf</name>
       <value>true</value>
     </setting>
     <setting>
