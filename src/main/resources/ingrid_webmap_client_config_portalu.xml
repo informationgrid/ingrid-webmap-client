@@ -149,13 +149,13 @@
     </setting>
     <setting>
       <key>viewHasActiveServiceTreeExpandAddNode</key>
-      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienste auf</name>
+      <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienst auf</name>
       <value>true</value>
       <group>view</group>
     </setting>
     <setting>
       <key>viewActiveAccordionWestPanel</key>
-      <name>Aktives Akkordeon: Default geöffnetes Akkordeon im Dienstebereich (0=1.Akkordeon, 1=2.Akkordeon, ...)</name>
+      <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
       <group>view</group>
     </setting>
