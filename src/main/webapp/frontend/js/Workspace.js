@@ -347,7 +347,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			// To restrict the search to a bounding box, uncomment the following
 			// line and change the viewboxlbrt parameter to a left,bottom,right,top
 			// bounds in EPSG:4326:
-			url: "http://nominatim.openstreetmap.org/search?format=json&" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
+			url: "" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tNominatimSearch"),

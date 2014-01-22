@@ -206,7 +206,7 @@
     <setting>
       <key>viewNominatimParams</key>
       <name>Nominatim-Suche Parameter: Eingrenzung der Ortssuche</name>
-      <value>countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json&amp;countrycodes=de</value>
     </setting>
     <setting>
       <key>viewNominatimEnable</key>
@@ -301,7 +301,7 @@
     <setting>
       <key>searchNominatimParams</key>
       <name>Nominatim-Suche Parameter: Eingrenzung der Ortssuche</name>
-      <value>countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json&amp;countrycodes=de</value>
     </setting>
     <setting>
       <key>searchNominatimEnable</key>
