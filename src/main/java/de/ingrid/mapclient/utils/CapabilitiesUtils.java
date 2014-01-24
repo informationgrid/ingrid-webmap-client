@@ -1,16 +1,12 @@
 package de.ingrid.mapclient.utils;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.w3c.dom.Document;
@@ -33,26 +29,30 @@ public class CapabilitiesUtils {
 			Node node = nodeList.item(i);
 			if(!XPathUtils.nodeExists(node, "./Name")){
 				Element nameNode = doc.createElement("Name");
-				String txt = "INGRID-";
+				String txt = "";
 				if(node.getFirstChild() != null){
-					txt = txt.concat(createMD5NameText(txt, node.getFirstChild()));
-					Text textNode = doc.createTextNode(txt);
+					Node childNode = node.getFirstChild();
+					if(node.getNodeName() != null)
+						txt = txt + "" + node.getNodeName();
+					if(node.getNodeValue() != null)
+						txt = txt + "" + node.getNodeValue();
+					if(node.getTextContent() != null)
+						txt = txt + "" + node.getTextContent();
+					Text textNode = doc.createTextNode("INGRID-" + CapabilitiesUtils.createMD5NameText(txt));
 					nameNode.appendChild(textNode);
-					node.insertBefore(nameNode, node.getFirstChild());					
+					node.insertBefore(nameNode, childNode);					
 				}
 			}
 		}
 		return doc;
 	}
-	public static String createMD5NameText(String text, Node node) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		DOMSource source = new DOMSource(node);
-		StreamResult outputTarget = new StreamResult(outputStream);
-		TransformerFactory.newInstance().newTransformer().transform(source, outputTarget);
-		InputStream is = new ByteArrayInputStream(outputStream.toByteArray());
-		
+	
+	public static String createMD5NameText(String text) throws TransformerConfigurationException, TransformerException, TransformerFactoryConfigurationError, IOException {
+		InputStream is = new ByteArrayInputStream(text.getBytes());
+		 
 		return MD5Util.getMD5(is);
 	}
+	
 	/**
 	 * Generate a random string with LENGTH chars from ALPHABET
 	 * @return String
@@ -64,5 +64,5 @@ public class CapabilitiesUtils {
 			buf.append(ALPHABET[(int)(Math.random()*numChars)]);
 		}
 		return buf.toString();
-	}	
+	}
 }
