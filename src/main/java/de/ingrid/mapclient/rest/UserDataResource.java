@@ -240,11 +240,14 @@ public class UserDataResource {
 				}
 			}
 			
+			String kmlRedlining = rootObj.getString("kmlRedlining");
+			
 			UserData userData = new UserData();
 			userData.setId(sessionId);
 			userData.setWmcDocument(wmcDocument);
 			userData.setActiveServices(activeServices);
 			userData.setKml(kmlArray);
+			userData.setKmlRedlining(kmlRedlining);
 			userData.setSelectedLayersByService(selectedLayersByService);
 			userData.setTreeState(treeState);
 
@@ -353,6 +356,7 @@ public class UserDataResource {
 			String title = rootObj.getString("title");
 			String description = rootObj.getString("description");
 			String wmcDocument = rootObj.getString("wmcDocument");
+			String kmlRedlining = rootObj.getString("kmlRedlining");
 
 			List<String> activeServices = new ArrayList<String>();
 			JSONArray activeServicesTmp = rootObj.getJSONArray("activeServices");
@@ -398,6 +402,7 @@ public class UserDataResource {
 			userData.setActiveServices(activeServices);
 			userData.setSelectedLayersByService(selectedLayersByService);
 			userData.setTreeState(treeState);
+			userData.setKmlRedlining(kmlRedlining);
 
 			// create a unique record id
 			String recordId = UUID.randomUUID().toString();

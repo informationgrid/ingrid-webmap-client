@@ -64,6 +64,7 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 			listenToStateChanges : false,
 
 			kmlArray : [],
+			kmlRedlining: "",
 			ctrls: []
 
 		});
@@ -495,7 +496,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				id: 'centerPanel',
 				layout : 'fit',
 				items : mapPanel,
-				tbar : toolbar
+				tbar : toolbar,
+				bbar : de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? new Ext.Toolbar() : null
 			});
 	this.on('afterrender', function(el) {
 				if (settingsDialog && de.ingrid.mapclient.Configuration.getSettings("viewHasSettings")) {
@@ -741,6 +743,62 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	this.map.sessionWriteEnable = true;
 	// this is to manually invoke the method, we do this at last, cause we dont have the checkboxes before
 	this.map.setCenter();
+	
+	// Redlining
+	if (de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")) {
+		var cntrPanel = Ext.getCmp('centerPanel');
+		var cntrPanelBbar = cntrPanel.getBottomToolbar();
+		
+		var controler = new GeoExt.ux.FeatureEditingControler({
+	        cosmetic: true,
+	        map: this.map,
+	        styler: 'combobox',
+	        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
+	        triggerAutoSave: function() {
+	            if (this.autoSave) {
+	                this.featurePanel.triggerAutoSave();
+	            }
+	            self.kmlRedlining = GeoExt.ux.data.Export(this.map, 'KML', this.layers, null);
+	            if(this.layers[0].features.length == 0){
+	            	self.kmlRedlining = "";
+	            }
+	            self.save(true);
+	        },
+	        reactivateDrawControl: function() {
+	            if (this.lastDrawControl && this.activeLayer.selectedFeatures.length === 0) {
+	                this.featureControl.deactivate();
+	                this.lastDrawControl.activate();
+	                this.lastDrawControl = null;
+	            }else{
+	            	this.triggerAutoSave();
+	            }
+	            
+	        },
+	        deleteAllFeatures: function() {
+	            Ext.MessageBox.confirm(OpenLayers.i18n('Delete All Features'), OpenLayers.i18n('Do you really want to delete all features ?'), function(btn) {
+	                if (btn == 'yes') {
+	                    if (this.popup) {
+	                        this.popup.close();
+	                        this.popup = null;
+	                    }
+
+	                    for (var i = 0; i < this.layers.length; i++) {
+	                        this.layers[i].destroyFeatures();
+	                    }
+	                    self.kmlRedlining = "";
+	    	            self.save(true);
+	                }
+	            },
+	                    this);
+	        }
+	    });
+		cntrPanelBbar.addItem(controler.actions);
+		cntrPanelBbar.doLayout();
+		
+		if(self.kmlRedlining){
+			GeoExt.ux.data.Import(self.map, controler.activeLayer, 'KML', self.kmlRedlining, null);
+		}
+	}
 };
 
 /**
@@ -813,7 +871,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.onStateChanged = function() {
 de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 		title, description) {
 	// set parameters according to save type
-		var cntrPanel = Ext.getCmp('centerPanel');
 		var responseHandler = (isTemporary == true) ? undefined : {
 		success : function(responseText) {
 			de.ingrid.mapclient.Message.showInfo(i18n('tKarteGespeichert'));
@@ -830,6 +887,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.save = function(isTemporary,
 				map : this.map,
 				activeServices : this.activeServicesPanel.getServiceList(),
 				kmlArray : this.kmlArray,
+				kmlRedlining : this.kmlRedlining,
 				selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
 				treeState: this.activeServicesPanel.treeState
 				
@@ -893,6 +951,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				map : this.map,
 				activeServices : [],
 				kmlArray : [],
+				kmlRedlining: "",
 				selectedLayersByService: []
 			});
 	var self = this;
@@ -983,6 +1042,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					
 				}
 	
+				if(state.kmlRedlining != ""){
+					self.kmlRedlining = state.kmlRedlining;
+				}
+				
 				// Load WMS by "Zeige Karte" from Session
 				if (wms != null) {
 					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
