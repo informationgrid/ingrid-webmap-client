@@ -48,7 +48,7 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
     /** private: property[title]
      *  ``String``  Define the title of the window: OpenLayers.i18n('Export Window')
      */
-    title: OpenLayers.i18n('Export Window'),
+    title: OpenLayers.i18n('Export KML'),
 
     /** private: property[width]
      *  ``Number``  Width of the window: 500

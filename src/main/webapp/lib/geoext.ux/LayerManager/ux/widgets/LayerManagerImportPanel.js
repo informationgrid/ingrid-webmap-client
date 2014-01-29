@@ -158,7 +158,7 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
                                             }
                                             catch (e)
                                             {
-                                                alert('Dear IE user. Add this site in the list of trusted site and activate the ActiveX. ' + e.description);
+                                                alert(OpenLayers.i18n('Dear IE user. Add this site in the list of trusted site and activate the ActiveX.') + e.description);
                                                 return;
                                             }
                                         } else {
@@ -172,7 +172,7 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
                                             	self.fireEvent('dataimported', self, self.formatCombo.getValue(), filecontent, GeoExt.ux.data.importFeatures);
                                             }
                                             reader.onerror = function (evt) {
-                                            	alert('Fehler beim einlesen der Datei	!');
+                                            	alert(OpenLayers.i18n('Error by reading file.'));
                                                 return;
                                             }
                                         }
