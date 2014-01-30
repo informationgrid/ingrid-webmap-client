@@ -787,8 +787,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursi
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerByParameter = function(parameter, layers){
 	var self = this;
 	var splitIdentifier = parameter.split("%23");
-	var identifierKey = splitIdentifier[0];
-	var identifierValue = splitIdentifier[1];
+	var identifierValue = splitIdentifier[0];
+	if(splitIdentifier.lengt > 1){
+		identifierValue = splitIdentifier[1];
+	}
 	var isAddedVisibilityLayer = false;
 	var isExist = false;
 	
@@ -805,18 +807,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 				}
 			}
 		}
-		/*
-		if(identifiers){
-			var identifiersNodeValue = identifiers[identifierKey];
-			if(identifiersNodeValue){
-				if(identifiersNodeValue == identifierValue){
-					isExist = true;
-					layer.visibility = true;
-					isAddedVisibilityLayer = true;
-				}
-			}
-		}
-		*/
 		if(isExist == false){
 			layer.visibility = false;
 		}

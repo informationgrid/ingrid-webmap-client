@@ -1019,7 +1019,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 							self.activeServicesPanel.addService,
 							self.activeServicesPanel);
 					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-									.getCapabilitiesUrl(), callback);
+									.getCapabilitiesUrl(), callback, true, true, true);
 				}
 	
 				self.finishInitMap();
@@ -1137,7 +1137,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 							self.activeServicesPanel.addService,
 							self.activeServicesPanel);
 					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-									.getCapabilitiesUrl(), callback);
+									.getCapabilitiesUrl(), callback, true, true, true);
 				}
 
 				// Add KML "Zeige Punktkoordinaten"
