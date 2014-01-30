@@ -775,7 +775,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	            
 	        },
 	        deleteAllFeatures: function() {
-	            Ext.MessageBox.confirm(OpenLayers.i18n('Delete All Features'), OpenLayers.i18n('Do you really want to delete all features ?'), function(btn) {
+	        	var messageBox = Ext.MessageBox;
+	        	messageBox.buttonText = {ok: OpenLayers.i18n('Ok'), cancel: OpenLayers.i18n('Cancel'), yes: OpenLayers.i18n('Yes'), no: OpenLayers.i18n('No')};
+	        	messageBox.confirm(OpenLayers.i18n('Delete All Features'), OpenLayers.i18n('Do you really want to delete all features ?'), function(btn) {
 	                if (btn == 'yes') {
 	                    if (this.popup) {
 	                        this.popup.close();

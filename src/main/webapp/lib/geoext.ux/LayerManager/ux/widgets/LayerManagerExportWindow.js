@@ -176,9 +176,9 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
                     },
                     transparent: false,
                     swf: this.baseUrl + '/downloadify/media/downloadify.swf',
-                    downloadImage: this.baseUrl + '/downloadify/images/extjs_download_default.png',
-                    width: 66,
-                    height: 21,
+                    downloadImage: this.baseUrl + '/downloadify/images/icon_save.png',
+                    width: 16,
+                    height: 16,
                     append: false
                 });
                 this.downloadifyLoaded = true;

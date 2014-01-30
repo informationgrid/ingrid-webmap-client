@@ -265,7 +265,9 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
      */
     deleteFeatures: function() {
 
-        Ext.MessageBox.confirm(OpenLayers.i18n('Delete Feature'), OpenLayers.i18n('Do you really want to delete this feature ?'), function(btn) {
+    	var messageBox = Ext.MessageBox;
+    	messageBox.buttonText = {ok: OpenLayers.i18n('Ok'), cancel: OpenLayers.i18n('Cancel'), yes: OpenLayers.i18n('Yes'), no: OpenLayers.i18n('No')};
+    	messageBox.confirm(OpenLayers.i18n('Delete Feature'), OpenLayers.i18n('Do you really want to delete this feature ?'), function(btn) {
             if (btn == 'yes') {
                 for (var i = 0; i < this.features.length; i++) {
                     var feature = this.features[i];
