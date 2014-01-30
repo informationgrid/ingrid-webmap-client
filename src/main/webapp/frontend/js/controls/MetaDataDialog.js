@@ -132,7 +132,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 	}
 	else {
 		tpl = this.layerInfoTpl;
-
+		var layerAbstractInfo;
+		var layerIdentifier;
 		// default data from service
 		var data = service.getDefinition();
 		data.wmsTitle = data.title;
@@ -147,7 +148,10 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		for( var i = 0; i < service.layers.items.length; i++){
 			var layerItem = service.layers.items[i];
 			if(layerItem.name == data.name){
-				var layerAbstractInfo = layerItem.layerAbstract;
+				layerAbstractInfo = layerItem.layerAbstract;
+				for (var key in layerItem.identifiers){
+					layerIdentifier = layerItem.identifiers[key];
+				}
 				break;
 			}	
 		}
@@ -156,7 +160,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		// we do this by hand since the apply method doesnt apply our data very well
 		var contactInformation = data.contactInformation;
 		htmlData.name = data.name;
-		htmlData.layerAbstract = layerAbstractInfo;
+		htmlData.layerAbstract = layerAbstractInfo ? layerAbstractInfo : "";
 		htmlData.projections = data.projection.projCode; //TODO in case of more?
 		htmlData.minScale = data.minScale;
 		htmlData.maxScale = data.maxScale;
@@ -181,6 +185,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.href =  data.href ? data.href:"";
 		htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
 		htmlData.orgCapabilities =  data.href ? this.getCapabilities(data.href):"";
+		
+		htmlData.identifier =  layerIdentifier ? layerIdentifier : "";
 		// TODO do more mapping if required
 		
 		
@@ -295,6 +301,7 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml 
 		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
 		'<tr><td>Quelle</td><td>{href}</td></tr>'+
 		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
+		'<tr><td>Identifier</td><td>{identifier}</td></tr>'+
 	'</table>';
 
 	return tplStr;
