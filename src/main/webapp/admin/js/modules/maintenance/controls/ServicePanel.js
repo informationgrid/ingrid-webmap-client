@@ -478,13 +478,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 /**
  * Reload services
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(reloadService, msg) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(reloadService, text) {
 	var self = this;
 	var msg = Ext.Msg;
 	msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
 	msg.show({
 	   title:'Dienst neu einlesen',
-	   msg: msg,
+	   msg: text,
 	   buttons: Ext.Msg.OKCANCEL,
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){
@@ -507,14 +507,14 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 /**
  * Delete services from config
  */
-de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function(msg) {
+de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function(text) {
 	var self = this;
 	var deleteService = self.selectedService;
 	var msg = Ext.Msg;
 	msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
 	msg.show({
 	   title:'Dienst l&ouml;schen',
-	   msg: msg,
+	   msg: text,
 	   buttons: Ext.Msg.OKCANCEL,
 	   icon: Ext.MessageBox.QUESTION,
 	   fn: function(btn){
