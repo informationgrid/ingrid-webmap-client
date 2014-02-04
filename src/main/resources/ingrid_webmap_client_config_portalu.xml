@@ -221,7 +221,7 @@
     </setting>
     <setting>
       <key>viewNominatimParams</key>
-      <name>Ortssuche: URL und Ländereinstellung oder Gebiet festlegen</name>
+      <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
       <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
       <group>view</group>
     </setting>
@@ -342,7 +342,7 @@
     </setting>
     <setting>
       <key>searchNominatimParams</key>
-      <name>Ortssuche: URL und Ländereinstellung oder Gebiet festlegen</name>
+      <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
       <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
       <group>search</group>
     </setting>
