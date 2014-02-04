@@ -480,7 +480,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadService = function(reloadService, msg) {
 	var self = this;
-	Ext.Msg.show({
+	var msg = Ext.Msg;
+	msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+	msg.show({
 	   title:'Dienst neu einlesen',
 	   msg: msg,
 	   buttons: Ext.Msg.OKCANCEL,
@@ -508,7 +510,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.deleteService = function(msg) {
 	var self = this;
 	var deleteService = self.selectedService;
-	Ext.Msg.show({
+	var msg = Ext.Msg;
+	msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+	msg.show({
 	   title:'Dienst l&ouml;schen',
 	   msg: msg,
 	   buttons: Ext.Msg.OKCANCEL,
@@ -859,7 +863,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadService
 
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyServiceToServer  = function (serviceRecord){
 	var self = this;
-	Ext.Msg.show({
+	var msg = Ext.Msg;
+	msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+	msg.show({
 	   title:'Dienst neu laden',
 	   msg: 'Der Dienst muss lokal vorliegen! Soll dies nun durchgef&uuml;hrt werden?',
 	   buttons: Ext.Msg.OKCANCEL,

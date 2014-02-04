@@ -151,7 +151,9 @@ de.ingrid.mapclient.admin.controls.GridPanel.prototype.initComponent = function(
     // check for clicks on the delete column to delete the record
     this.gridPanel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
 		if(columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			Ext.Msg.show({
+			var msg = Ext.Msg;
+			msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+			msg.show({
 				   title: self.dropBoxTitle,
 				   msg: 'Soll der Eintrag wirklich gel&ouml;scht werden?',
 				   buttons: Ext.Msg.OKCANCEL,

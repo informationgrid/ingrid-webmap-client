@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Raumbezugsysteme',
+	title: 'Raumbezugssysteme',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',

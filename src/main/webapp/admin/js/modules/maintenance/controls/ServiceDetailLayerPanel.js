@@ -296,7 +296,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
   								var editValueParent = e.record.data._parent;
   								var editValueIndex = e.record.data.index;
   								if(editValue == ""){
-  									Ext.Msg.show({
+  									var msg = Ext.Msg;
+									msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+									msg.show({
   									   title:'Ung&uuml;ltiger Layername',
   									   msg: 'Layername ist nicht g&uuml;ltig. Die &Auml;nderungen des Layers werden zur&uuml;ckgesetzt!',
   									   buttons: Ext.Msg.OK,
@@ -316,7 +318,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
   												var item = items[i];
   												if(editValueIndex != item.data.index){
 	  												if(editValue == item.data.title && editValueParent == item.data._parent){
-	  													Ext.Msg.show({
+	  													var msg = Ext.Msg;
+	  	        										msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+	  	        										msg.show({
 	  				  									   title:'Ung&uuml;ltiger Layername',
 	  				  									   msg: 'Layername existiert schon. Die &Auml;nderungen des Layers werden zur&uuml;ckgesetzt!',
 	  				  									   buttons: Ext.Msg.OK,
@@ -339,7 +343,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
     								if(e.store){
         								if(e.store.modified){
         									if(e.store.modified.length > 0){
-        										Ext.Msg.show({
+        										var msg = Ext.Msg;
+        										msg.buttonText = {ok: "OK", cancel: "Abbrechen", yes: "Ja", no: "Nein"};
+        										msg.show({
      		  									   title:'&Auml;nderungen speichern',
      		  									   msg: 'Am vorherigen Dienst wurden &Auml;nderungen vorgenommen. Sollen diese &Auml;nderungen gespeichert werden?',
      		  									   buttons: Ext.Msg.OKCANCEL,
