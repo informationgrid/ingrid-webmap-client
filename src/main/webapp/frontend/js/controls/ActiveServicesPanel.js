@@ -311,7 +311,18 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		rootVisible: false,
 		enableDD: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop"),
 		plugins:[hoverActions],
-		buttonSpanElStyle:'width:12px;'
+		buttonSpanElStyle:'width:12px;',
+		listeners: {
+	        click: function(node,e) {
+	        	if(node.hasChildNodes()){
+	        		if(node.isExpanded()){
+	        			node.collapse();
+	        		}else{
+	        			node.expand();
+	        		}
+	        	}
+	        }
+	    }
 	});
 
 	var self = this;

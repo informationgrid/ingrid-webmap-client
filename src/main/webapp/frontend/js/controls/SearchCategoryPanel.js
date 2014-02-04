@@ -71,7 +71,28 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	    lines: false,
 	    frame : false,
 	    cls: 'x-tree-noicon',
-		autoScroll: true
+		autoScroll: true,
+		listeners: {
+	        click: function(node,e) {
+	        	if(node.hasChildNodes()){
+	        		if(node.isExpanded()){
+	        			node.collapse();
+	        		}else{
+	        			node.expand();
+	        		}
+	        	}else{
+	        		if(node){
+	        			if(node.attributes){
+	        				if(node.attributes.service){
+	        					var service = node.attributes.service;
+	        	        		self.activateService(service);
+	        	           		self.activeServicesPanel.expand();
+	        				}
+	        			}
+	        		}
+	        	}
+	        }
+	    }
 	});
 	
 	Ext.apply(this, {

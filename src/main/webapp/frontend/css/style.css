@@ -349,7 +349,7 @@ ul .x-tree-node-ct li .x-tree-node {
 }
 
 .x-tree-node a span:hover {
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 .x-hoveractions-outer {

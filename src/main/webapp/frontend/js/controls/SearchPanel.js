@@ -24,10 +24,11 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			id : 'searchField',
 			name : "searchField",
 			emptyText: i18n('tSuchbegriff'),
-			blankText: i18n('tPfichtfeld'),
-			allowBlank : false,
-			xtype : 'textfield',
-			style : 'padding: 0px 5px;'
+			formBind : true,
+			hideLabel: true,
+			anchor:'100%',
+			allowBlank : true,
+			xtype : 'textfield'
 	};
 
 	this.searchButton = {
@@ -45,30 +46,24 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = func
 			}
 	};
 	
-	var panel = new Ext.Panel({
+	var panel = new Ext.FormPanel({
 		bodyStyle: 'padding:5px; background: transparent;',
 		layout: 'form',
 		style: 'border-bottom: 0',
-		items:[{
-				xtype: 'container',
-				layout: 'column',
-			    defaults: {
-			        // implicitly create Container by specifying xtype
-			        xtype: 'container',
-			        autoEl: 'div', // This is the default.
-			        layout: 'form',
-			        style: {
-			            padding: '0 10px'
-			        }
-			    },
-				items: [
-				        this.searchField,
-					    this.searchButton,
-				]
-				},{
-		    	   xtype: 'container',
-		    	   height: 10
-		       }]
+		items:[
+		    {
+				html: i18n('tSuchbegriffEingeben'),
+				border: false,
+				bodyCssClass: 'background font'
+			},
+			this.searchField,
+		    this.searchButton,
+		    {
+	    	   xtype: 'container',
+	    	   height: 10
+		    }],
+	    keys:[{ key: [Ext.EventObject.ENTER], handler: this.searchButton.handler
+		}]
 	});
 	
 	var panelResult = new Ext.Panel({

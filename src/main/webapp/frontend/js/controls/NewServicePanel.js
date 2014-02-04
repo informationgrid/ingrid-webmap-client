@@ -71,7 +71,7 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 		height: 10
     };
 	
-	var panel = new Ext.Panel({
+	var panel = new Ext.FormPanel({
 		bodyStyle: 'padding:5px;',
 		bodyCssClass: 'background ',
 		layout: 'form',
@@ -80,7 +80,6 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 			border: false,
 			bodyCssClass: 'background font'
 			},
-			placeholder,
 		    this.capabilitiesUrlField,
 		    placeholder,
 		    this.activateLayersCheckbox,
@@ -97,7 +96,9 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.initComponent = 
 		        collapsible: true,
 				bodyCssClass: 'background font hint'
 		    }],
-	    autoScroll: true
+	    autoScroll: true,
+	    keys:[{ key: [Ext.EventObject.ENTER], handler: this.addButton.handler
+			}]
 	});
 	
 	var self = this;
@@ -160,13 +161,13 @@ de.ingrid.mapclient.frontend.controls.NewServicePanel.prototype.onServiceLoaded 
 	//TODO use service method from activeServicesPanel
 	var activateZoomCheckbox = this.activateZoomCheckbox.checked;
 	if (activateZoomCheckbox) {
-	var llbbox = service.capabilitiesStore.data.items[0].data.llbbox;
-	var bounds = new OpenLayers.Bounds.fromArray(llbbox);
-	this.activeServicesPanel.map.zoomToExtent(bounds);
+		var llbbox = service.capabilitiesStore.data.items[0].data.llbbox;
+		var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+		this.activeServicesPanel.map.zoomToExtent(bounds);
 	}
 	
 	// add the service
-	this.activeServicesPanel.addService(service, true, false, false, activateZoomCheckbox);
+	this.activeServicesPanel.addService(service, true, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"), activateZoomCheckbox);
 	
 	this.capabilitiesUrlField.reset();
 	this.activateLayersCheckbox.setValue(false);
