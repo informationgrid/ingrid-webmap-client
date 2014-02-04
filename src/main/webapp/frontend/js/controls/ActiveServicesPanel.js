@@ -788,7 +788,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkLayerBy
 	var self = this;
 	var splitIdentifier = parameter.split("%23");
 	var identifierValue = splitIdentifier[0];
-	if(splitIdentifier.lengt > 1){
+	if(splitIdentifier.length > 1){
 		identifierValue = splitIdentifier[1];
 	}
 	var isAddedVisibilityLayer = false;
