@@ -38,8 +38,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 
 	ctrls:null,
 	kmlArray: [],
-	transpBtnActive: false,
-	metadataBtnActive: false,
 	serviceCategoryPanel:null,
 	parentCheckChangeActive:false,
 	isCheckedByCheckedLayers:false,
@@ -961,13 +959,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 
 	var service = node.attributes.service;
 	if(service){
-		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layer: isService ? null : layer
-		}).show();
-		metaDialog.on('close', function(){
-			self.metadataBtnActive = false;
-		});
+		var id = isService? service.getCapabilitiesUrl() : layer.id ? service.getCapabilitiesUrl() + "" + layer.id : service.getCapabilitiesUrl();
+		var window = Ext.getCmp(id);
+		if(window){
+			window.close();
+		}else{
+			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				id: id,
+				capabilitiesUrl: service.getCapabilitiesUrl(),
+				layer: isService ? null : layer.id
+			}).show();
+		}
 	} else {
 		console.error("Service could not be found!");
 	}
@@ -984,10 +986,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayOpaci
 		id: 'opacityDialog',
 		layer: layer
 	});
-	this.opacityDialog.on('close', function(){
-	self.transpBtnActive = false;
-	});
-
 	this.opacityDialog.show();
 };
 

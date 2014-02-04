@@ -200,11 +200,15 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMeta
 	var self = this;
 	var service = node.attributes.service;
 	if (service) {
-		var metaDialog = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-					capabilitiesUrl: service.getCapabilitiesUrl(),
-					layerName: node.layer
-				}).show();
-				metaDialog.on('close', function(){
-				});
+		var window = Ext.getCmp(service.getCapabilitiesUrl());
+		if(window){
+			window.close();
+		}else{
+			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				id: service.getCapabilitiesUrl(),
+				capabilitiesUrl: service.getCapabilitiesUrl(),
+				layerName: node.layer
+			}).show();
+		}
 	}
 };

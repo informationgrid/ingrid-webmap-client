@@ -158,9 +158,15 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.activateServ
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.displayMetaData = function(node) {
 	var service = node.attributes.service;
 	if (service) {
-		new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-			capabilitiesUrl: service.getCapabilitiesUrl(),
-			layerName: node.layer
-		}).show();
+		var window = Ext.getCmp(service.getCapabilitiesUrl());
+		if(window){
+			window.close();
+		}else{
+			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				id: service.getCapabilitiesUrl(),
+				capabilitiesUrl: service.getCapabilitiesUrl(),
+				layerName: node.layer
+			}).show();
+		}
 	}
 };
