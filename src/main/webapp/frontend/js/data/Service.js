@@ -162,18 +162,23 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 //		}
 //	}
 //	else {
+	
+		var myMask = new Ext.LoadMask(Ext.getBody(), { msg:i18n('tPleaseWaitCapabilities') });
+		myMask.show();
 		// load the service
 		Ext.Ajax.request({
 			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
 			method: 'GET',
 			success: function(response, request) {
+				myMask.hide();
 				var type;
+				var format;
+				
 				if(response.responseText.indexOf('<ViewContext') != -1){
-				var format = new OpenLayers.Format.WMC();
+					format = new OpenLayers.Format.WMC();
+				}else{
+					format = new OpenLayers.Format.WMSCapabilities();
 				}
-				else
-				var format = new OpenLayers.Format.WMSCapabilities();
-
 
 				var capabilities = format.read(response.responseText);
 				if (capabilities.capability || format.name == "WMC") {
@@ -278,6 +283,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				}
 			},
 			failure: function(response, request) {
+				myMask.hide();
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 			}
 		});

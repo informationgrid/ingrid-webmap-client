@@ -101,7 +101,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	Ext.apply(this, {
 		title: i18n(node.text),
 		layout: 'fit',
-		bodyCssClass: 'background ',
+		bodyCssClass: 'background smaller-leaf-padding',
 		items:[tree],
 		autoScroll: false
     });

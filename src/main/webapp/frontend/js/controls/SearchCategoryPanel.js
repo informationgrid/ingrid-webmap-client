@@ -66,6 +66,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		}),
 		plugins:[hoverActions],
 		buttonSpanElStyle:'width:30px;',
+		bodyCssClass: 'smaller-leaf-padding',
 	    onlyServices: true,
 		useArrows:true,
 	    lines: false,

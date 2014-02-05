@@ -313,7 +313,7 @@ ul .x-tree-node-ct li .x-tree-node {
 }
 
 .x-tree-node .x-tree-selected {
-	background: #f4f4f4;
+	background: #ffffff;
 }
 
 .x-tree-node .x-tree-node-over {
@@ -417,4 +417,12 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-hoveractions-outer table td { 
 	padding: 0px 2px; 
-} 
+}
+
+.x-tree-node-anchor {
+	text-decoration: none !important;
+}
+
+.smaller-leaf-padding .x-tree-node-ct .x-tree-node .x-tree-node-el, #searchResults .smaller-leaf-padding .x-tree-node .x-tree-node-el { 
+	padding: 3px 0px 3px 5px
+}
