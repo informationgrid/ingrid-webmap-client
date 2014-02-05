@@ -418,6 +418,12 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		});
 	}
 	
+	// Create Legend for Services
+	var legendDialog = new de.ingrid.mapclient.frontend.controls.LegendDialog({
+		activeServicesPanel: self
+	});
+	legendDialog.hide();
+	
 	Ext.apply(this, {
 		items: this.layerTree,
 		bodyCssClass: 'background'

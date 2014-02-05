@@ -28,7 +28,9 @@ de.ingrid.mapclient.frontend.controls.LegendDialog = Ext.extend(Ext.Window, {
  */
 de.ingrid.mapclient.frontend.controls.LegendDialog.prototype.initComponent = function() {
 	var self = this;
-	
+	this.on('close', function(){
+		this.hide();
+	});
 	var legendPanel = new GeoExt.LegendPanel({
 		layerStore : self.activeServicesPanel.getLayerStore(),
 		autoScroll : true,
@@ -38,7 +40,10 @@ de.ingrid.mapclient.frontend.controls.LegendDialog.prototype.initComponent = fun
 	});
 	
 	Ext.apply(this, {
-		items: legendPanel
+		items: legendPanel,
+		doClose : function(){
+	        this.fireEvent('close', this);
+	    }
 	});
 
 	de.ingrid.mapclient.frontend.controls.LegendDialog.superclass.initComponent.call(this);

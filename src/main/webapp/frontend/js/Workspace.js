@@ -216,8 +216,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 					legendDialog = new de.ingrid.mapclient.frontend.controls.LegendDialog({
 						activeServicesPanel: self.activeServicesPanel
 					});
+				}
+				
+				if(legendDialog.isVisible()){
+					if(legendDialog.hidden){
+						legendDialog.show();
+					}else{
+						legendDialog.hide();						
+					}
 				}else{
-					legendDialog.close();
+					legendDialog.show();
 				}
 			}
 		}));
