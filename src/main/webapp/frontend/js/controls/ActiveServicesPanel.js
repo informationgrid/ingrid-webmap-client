@@ -47,6 +47,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	menuGroupLayer: null,
 	menuLayer: null,
 	menuService: null,
+	menuNodeId:  "",
 	treeState: []
 });
 
@@ -265,28 +266,33 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	        tooltip: i18n('tOptionen'),
 	        disabled: true,
 	        handler: function(node,e) {
-	        	self.activeNode = node;
-	        	if(node.attributes.iconCls){
-	        		var layerMenuSlider;
-	        		// Layer menu
-	        		if(node.leaf){
-	        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
-	        			self.menuLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);	
-	        		}else{
-	        			layerMenuSlider = Ext.getCmp('groupLayerTransparentSlider');
-	        			self.menuGroupLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
-	        		}
-    				
-    				// Update slider
-    				layerMenuSlider.setLayer(node.layer);
-    				var opacity = 1;
-    				if(node.layer.opacity){
-    					opacity = node.layer.opacity;
-    				}
-    				layerMenuSlider.setValue(0, opacity * 100);
+	        	if(self.menuNodeId == node.id){
+	        		self.menuNodeId = "";
 	        	}else{
-	        		// Service menu
-	        		self.menuService.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+	        		self.menuNodeId = node.id;
+	        		self.activeNode = node;
+		        	if(node.attributes.iconCls){
+		        		var layerMenuSlider;
+		        		// Layer menu
+		        		if(node.leaf){
+		        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
+		        			self.menuLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+		        		}else{
+		        			layerMenuSlider = Ext.getCmp('groupLayerTransparentSlider');
+		        			self.menuGroupLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+		        		}
+	    				
+	    				// Update slider
+	    				layerMenuSlider.setLayer(node.layer);
+	    				var opacity = 1;
+	    				if(node.layer.opacity){
+	    					opacity = node.layer.opacity;
+	    				}
+	    				layerMenuSlider.setValue(0, opacity * 100);
+		        	}else{
+		        		// Service menu
+		        		self.menuService.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
+		        	}
 	        	}
 	        }
 		})]
