@@ -186,7 +186,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 	    items: [
 	        deleteAction,
 	        metadataAction,
-	        zoomToExtendAction,
+	        zoomToExtendAction
 	    ]
 	});
 	
