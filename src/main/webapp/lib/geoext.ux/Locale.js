@@ -82,7 +82,7 @@ Local = {
     	tFlaeche : { en: 'Area', de: 'Fl&auml;che' },
     	tFormat : { en: 'Format', de: 'Format' },
     	tFuerTransparenzErst : { en: 'Select a layer for transparency first.', de: 'F&uuml;r Transparenzfunktion einen Layer markieren.' },
-    	tFuerMetadatenErst : { en: 'Select a layer or service to display metadata first.', de: 'F&uuml;r Metadatenanzeige Dienst oder Layer markieren.' },
+    	tFuerMetadatenErst : { en: 'Display metadata.', de: 'Anzeigen der Metadaten.' },
         tGebietAuswaehlen : { en: 'Select area', de: 'Gebiet ausw&auml;hlen' },
         tGebuehren : { en: 'Fees', de: 'Geb&uuml;hren' },
         tHilfe : { en: 'Help', de: 'Hilfe' },
