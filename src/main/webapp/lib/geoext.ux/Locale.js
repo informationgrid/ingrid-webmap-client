@@ -221,8 +221,7 @@ Local = {
 		tSuchbegriff: {en: 'Add search term', de: 'Suchbegriff hinzufügen'},
 		tPfichtfeld: {en: 'This field is required', de: 'Pflichtfeld'},
 		tOptionen: {en: 'Menu', de: 'Menü'},
-		tServiceBereichAufUndZuKlappen: {en: 'Expand and collapse service-area', de: 'Service-Bereich ein- und ausblenden'},
-		
+		tServiceBereichAufUndZuKlappen: {en: 'Expand and collapse service-area', de: 'Service-Bereich ein- und ausblenden'}
     }
 }
 
