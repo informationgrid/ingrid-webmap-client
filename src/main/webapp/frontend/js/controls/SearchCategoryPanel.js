@@ -159,12 +159,12 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.activateServ
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.displayMetaData = function(node) {
 	var service = node.attributes.service;
 	if (service) {
-		var window = Ext.getCmp(service.getCapabilitiesUrl());
+		var window = Ext.getCmp(node.id + "-metadata");
 		if(window){
 			window.close();
 		}else{
 			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-				id: service.getCapabilitiesUrl(),
+				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
 				layerName: node.layer
 			}).show();

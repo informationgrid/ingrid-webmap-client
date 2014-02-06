@@ -103,6 +103,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 
 			}
+        	self.menuNodeId = "";
         },
 		cls: 'font-menu'
 	};
@@ -113,6 +114,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
         tooltip: i18n('tFuerMetadatenErst'),
 		handler: function() {
 			self.displayMetaData(self.activeNode);
+			self.menuNodeId = "";
 		},
 		cls: 'font-menu'
     };
@@ -152,6 +154,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				}
 				this.fireEvent('datachanged');
 			}
+			self.menuNodeId = "";
 		},
 		cls: 'font-menu'
 	};
@@ -960,26 +963,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
 	var self = this;
 	var layer = null;
-	var isService = false;
 	if(node.attributes.layer)
 		layer = node.attributes.layer;
 	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
 	if(!layer) {
-		isService = true;
 		layer = node.childNodes[0].layer;
 	}		
 
 	var service = node.attributes.service;
 	if(service){
-		var id = isService? service.getCapabilitiesUrl() : layer.id ? service.getCapabilitiesUrl() + "" + layer.id : service.getCapabilitiesUrl();
-		var window = Ext.getCmp(id);
+		var window = Ext.getCmp(node.id + "-metadata");
 		if(window){
 			window.close();
 		}else{
 			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
-				id: id,
+				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layer: isService ? null : layer.id
+				layer: layer.id
 			}).show();
 		}
 	} else {

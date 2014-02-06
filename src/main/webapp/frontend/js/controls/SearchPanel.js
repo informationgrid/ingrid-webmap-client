@@ -97,6 +97,9 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.onRender = function(
 de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(searchTerm) {
 	var self = this;
 	
+	var myMask = new Ext.LoadMask(Ext.getBody(), { msg:i18n('tPleaseWaitSearch') });
+	myMask.show();
+	
 	var responseHandler = {
 		success : function(responseText) {
 			de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.SEARCH_SUCCESS);
@@ -110,6 +113,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 		url : url,
 		method : 'GET',
 		success : function(response, request) {
+			myMask.hide();
 			var resp = Ext.decode(response.responseText);
 			
 			var searchCategoryPanel = new de.ingrid.mapclient.frontend.controls.SearchCategoryPanel({
@@ -127,6 +131,7 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 			}
 		},
 		failure : function(response, request) {
+			myMask.hide();
 			if (responseHandler && responseHandler.failure instanceof Function) {
 				responseHandler.failure(response.responseText);
 			}
