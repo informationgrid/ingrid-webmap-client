@@ -55,6 +55,9 @@ public class CapabilitiesUpdateTask implements Runnable{
 									log.info("Send mail for capabilities update: " + service.getOriginalCapUrl());
 									// Update "capabilitiesHashUpdate" value
 									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+									// Update image
+									service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_UPDATE);
+									
 									// Send mail to admin
 									String from = ""; 
 									String to = ""; 
@@ -91,13 +94,15 @@ public class CapabilitiesUpdateTask implements Runnable{
 										service.setCapabilitiesUpdateMailStatus(true);
 									}
 								}
-							}else if(updateFlag.equals("auto")){
+							}else if(updateFlag.equals("an")){
 								if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
 									doServiceChange = true;
 									// Update "capabilitiesHashUpdate" value
 									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
 									// Update "capabilitiesHash" value
 									service.setCapabilitiesHash(capabilitiesHashCode);
+									// Update image
+									service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);	
 									// Update capabilities copy and orgCopy
 									CapabilitiesUtils.updateCapabilities(response, service);
 									
@@ -114,6 +119,11 @@ public class CapabilitiesUpdateTask implements Runnable{
 					doServiceChange = true;
 					service.setCapabilitiesHashUpdate("");
 				}
+				
+				if(service.getCapabilitiesUpdateImage() == null || !service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFFLINE)){
+					doServiceChange = true;
+					service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFFLINE);
+				}
 			}
 			
 			// Save service to settings
@@ -121,12 +131,26 @@ public class CapabilitiesUpdateTask implements Runnable{
 				// Add update boolean if not exist
 				if(service.getCapabilitiesUpdateFlag() == null){
 					doServiceChange = true;
-					service.setCapabilitiesUpdateFlag("auto");
+					service.setCapabilitiesUpdateFlag("an");
 				}
 				
 				if(service.getCapabilitiesUpdateMailStatus() == null){
 					doServiceChange = true;
 					service.setCapabilitiesUpdateMailStatus(false);
+				}
+				
+				if(service.getCapabilitiesUpdateFlag().equals("none")){
+					doServiceChange = true;
+					service.setCapabilitiesUpdateFlag("aus");
+					service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFF);
+				}else if(service.getCapabilitiesUpdateFlag().equals("auto")){
+					doServiceChange = true;
+					service.setCapabilitiesUpdateFlag("an");
+				}
+				
+				if(service.getCapabilitiesUpdateImage() == null){
+					doServiceChange = true;
+					service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);
 				}
 				
 				if(doServiceChange){

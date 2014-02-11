@@ -13,6 +13,12 @@ import java.util.List;
  */
 public class WmsService {
 
+	public final static String WMSSERVICE_OFFLINE = "1_offline";
+	public final static String WMSSERVICE_UPDATE = "2_update";
+	public final static String WMSSERVICE_OK = "3_ok";
+	public final static String WMSSERVICE_OFF = "4_off";
+	
+	
 	private String name;
 
 
@@ -24,6 +30,7 @@ public class WmsService {
 //	private List<Integer> deactivatedLayers = new ArrayList<Integer>();
 	private String capabilitiesHash;
 	private String capabilitiesHashUpdate;
+	private String capabilitiesUpdateImage;
 	private String capabilitiesUpdateFlag;
 	private Boolean capabilitiesUpdateMailStatus;
 
@@ -33,7 +40,7 @@ public class WmsService {
 
 
 
-	public WmsService(String name, String capabilitiesUrl, String capabilitiesUrlOrg, List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<String> checkedLayers, String capabilitiesHash, String capabilitiesHashUpdate, String capabilitiesUpdateFlag, boolean capabilitiesUpdateMailStatus)//, List<Integer> deactivatedLayers)
+	public WmsService(String name, String capabilitiesUrl, String capabilitiesUrlOrg, List<MapServiceCategory> mapServiceCategories, String originalCapUrl, List<String> checkedLayers, String capabilitiesHash, String capabilitiesHashUpdate, String capabilitiesUpdateImage, String capabilitiesUpdateFlag, boolean capabilitiesUpdateMailStatus)//, List<Integer> deactivatedLayers)
 	{
 		this.name = name;
 		this.capabilitiesUrl = capabilitiesUrl;
@@ -43,6 +50,7 @@ public class WmsService {
 		this.checkedLayers = checkedLayers;
 		this.capabilitiesHash = capabilitiesHash;
 		this.capabilitiesHashUpdate = capabilitiesHashUpdate;
+		this.capabilitiesUpdateImage = capabilitiesUpdateImage;
 		this.capabilitiesUpdateFlag = capabilitiesUpdateFlag;
 		this.capabilitiesUpdateMailStatus = capabilitiesUpdateMailStatus;
 //		this.deactivatedLayers = deactivatedLayers;
@@ -141,6 +149,18 @@ public class WmsService {
 
 	public void setCapabilitiesUpdateFlag(String capabilitiesUpdateFlag) {
 		this.capabilitiesUpdateFlag = capabilitiesUpdateFlag;
+	}
+
+
+
+	public String getCapabilitiesUpdateImage() {
+		return capabilitiesUpdateImage;
+	}
+
+
+
+	public void setCapabilitiesUpdateImage(String capabilitiesUpdateImage) {
+		this.capabilitiesUpdateImage = capabilitiesUpdateImage;
 	}
 	
 //	public List<Integer> getDeactivatedLayers() {

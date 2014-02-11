@@ -81,31 +81,31 @@
   	<!-- Url-Check -->
     <setting>
       <key>urlCheckMailAddressTo</key>
-      <name>Email Adresse: Kontaktadresse des Admin</name>
+      <name>Email-Adresse des Empfängers der Benachrichtigungs-Email</name>
       <value>webmaster@portalu.de</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailAddressFrom</key>
-      <name>Email Adresse: Sender der Benachrichtigungs-Email</name>
+      <name>Email-Adresse des Senders der Benachrichtigungs-Email</name>
       <value>portalu@portalu.de</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailHost</key>
-      <name>Email Host der die Benachrichtigungs-Email sendet</name>
+      <name>Email-Server, von dem die Benachrichtigungs-Email gesendet wird</name>
       <value>localhost</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailUpdateText</key>
-      <name>Email Inhalt: Text der Benachrichtigungs-Email (angehängt wird in einer neuen Zeile die betroffene Capabilities-URL )</name>
+      <name>Erläuternder Text in Benachrichtigungs-Email (die entsprechende URL wird automatisch hinzugefügt)</name>
       <value>Eine neues Update erhältlich für folgende Capabilities:</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailUpdateSubject</key>
-      <name>Email Betreff in der Benachrichtigungs-Email</name>
+      <name>Text in der Betreffzeile der Benachrichtigungs-Email</name>
       <value>Capabilities-Update erhältlich!</value>
       <group>urlCheck</group>
     </setting>

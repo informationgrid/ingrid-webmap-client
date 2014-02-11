@@ -8,7 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel = Ext.extend(Ext.Panel, {
 
-	title: 'Url-Check',
+	title: 'URL-Check',
 	layout: 'form',
 	labelAlign: 'top',
 	labelSeparator: '',
@@ -30,7 +30,7 @@ de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.initComponent = 
 
 	// create the searcher grid
 	this.gridUrlCheck = new Ext.grid.PropertyGrid({
-		title: 'Url-Check',
+		title: 'URL-Check',
 	    autoHeight: true,
         propertyNames: this.propertyNamesUrlCheck,
         source:  this.settingsStoreUrlCheck,

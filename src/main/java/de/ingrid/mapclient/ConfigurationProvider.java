@@ -370,7 +370,7 @@ public enum ConfigurationProvider {
 					wmsServ.getMapServiceCategories().add(msC);
 				 }
 				 else{
-					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), null, new ArrayList<MapServiceCategory>(), null, new ArrayList<String>(), null, null, "auto", false);
+					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), null, new ArrayList<MapServiceCategory>(), null, new ArrayList<String>(), null, null, WmsService.WMSSERVICE_OFF, "aus", false);
 					 wmsService.getMapServiceCategories().add(msC);
 					 wmsServices.add(wmsService);
 				 

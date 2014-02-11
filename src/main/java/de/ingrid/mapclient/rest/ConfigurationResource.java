@@ -771,6 +771,9 @@ public class ConfigurationResource {
 					}
 					if(jsonService.get("updateFlag") != JSONObject.NULL){
 						service.setCapabilitiesUpdateFlag(jsonService.getString("updateFlag"));
+						if(jsonService.getString("updateFlag").equals("aus")){
+							service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFF);
+						}
 					}
 					if(jsonService.get("categories") != JSONObject.NULL){
 						//rewrite the categories of the service
@@ -891,6 +894,11 @@ public class ConfigurationResource {
 		// Update hashCode
 		service.setCapabilitiesHash(CapabilitiesUtils.generateMD5String(response));
 		service.setCapabilitiesHashUpdate(CapabilitiesUtils.generateMD5String(response));
+		if(service.getCapabilitiesUpdateFlag().equals("aus")){
+			service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFF);
+		}else{
+			service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);
+		}
 		service.setCapabilitiesUpdateMailStatus(false);
 		
 		updateLayers(service, jsonService);
@@ -939,7 +947,11 @@ public class ConfigurationResource {
 			
 				String title = json.getString("title");
 				String originalCapUrl = json.getString("originalCapUrl");
-				WmsService wmsService = new WmsService(title, map.get("url"), map.get("urlOrg"), new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers, map.get("capabilitiesHash"), map.get("capabilitiesHash"), json.getString("updateFlag"), false);
+				String updateImage = WmsService.WMSSERVICE_OK;
+				if(json.getString("updateFlag").equals("aus")){
+					updateImage = WmsService.WMSSERVICE_OFF;
+				}
+				WmsService wmsService = new WmsService(title, map.get("url"), map.get("urlOrg"), new ArrayList<MapServiceCategory>(), originalCapUrl, checkLayers, map.get("capabilitiesHash"), map.get("capabilitiesHash"), updateImage, json.getString("updateFlag"), false);
 				updateCategories(wmsService, json);
 				p.getPersistentConfiguration().getWmsServices().add(wmsService);
 				p.write(p.getPersistentConfiguration());

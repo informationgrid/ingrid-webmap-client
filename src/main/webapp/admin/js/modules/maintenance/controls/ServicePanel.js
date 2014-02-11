@@ -43,6 +43,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 			name: 'capabilitiesHashUpdate',
 			type: 'string'
 		}, {
+			name: 'capabilitiesUpdateImage',
+			type: 'string'
+		}, {
 			name: 'capabilitiesUpdateFlag',
 			type: 'string'
 		}, {
@@ -63,7 +66,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	deleteServiceBtn:null,
 	reloadServiceBtn:null,
 	addServiceBtn:null,
-	jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers', 'capabilitiesHash', 'capabilitiesHashUpdate', 'capabilitiesUpdateFlag' ],
+	comboFields: ['value', 'display'],
+	comboData: [['an', 'An'], ['aus', 'Aus'], ['mail', 'per Mail']],
+    jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers', 'capabilitiesHash', 'capabilitiesHashUpdate', 'capabilitiesUpdateImage', 'capabilitiesUpdateFlag' ],
 	isSave:false
 });
 
@@ -72,6 +77,26 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
  */
 de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initComponent = function() {
 	var self = this;
+	
+	var combo = new Ext.form.ComboBox({
+		typeAhead: true,
+	    triggerAction: 'all',
+	    lazyRender:true,
+	    mode: 'local',
+	    store: new Ext.data.ArrayStore({
+            fields: self.comboFields,
+            data: self.comboData,
+            autoLoad: false
+        }),
+        valueField: 'value',
+        displayField: 'display',
+        listeners: { 
+    		select: function(combo, record, index) {
+    			var selectedRecord = self.selectedModel.record;
+    			self.updateService(null, selectedRecord.data.capabilitiesUrl, selectedRecord.data.capabilitiesUrlOrg, selectedRecord.data.originalCapUrl, null, null, combo.value);
+    		}
+    	}
+	});
 	
 	this.columns = [{
 		header: 'Name',
@@ -108,57 +133,25 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 		sortable: true,
 		id: 'update', 
 		width: 10,
+		dataIndex: 'capabilitiesUpdateImage',
 		renderer: function(v, p, record, rowIndex){
-			var capabilitiesHash;
-			var capabilitiesHashUpdate;
-			
-			if(record.data.capabilitiesHash){
-				capabilitiesHash = record.data.capabilitiesHash;	
+			if(record.data.capabilitiesUpdateImage == "1_offline"){
+				return '<div title="GetCap offline" class="iconUpdateOffline"></div>';		
+			}else if(record.data.capabilitiesUpdateImage == "2_update"){
+				return '<div title="Update: Hier klicken, um URL neu einzulesen!" class="iconUpdate"></div>';				
+			}else if(record.data.capabilitiesUpdateImage == "3_ok"){
+				return '<div title="OK" class="iconUpdateNo"></div>';		
+			}else if(record.data.capabilitiesUpdateImage == "4_off"){
+				return '<div title="URL-Check Aus" class="iconUpdateOff"></div>';		
 			}
-			
-			if(record.data.capabilitiesHashUpdate){
-				capabilitiesHashUpdate = record.data.capabilitiesHashUpdate;
-			}
-			
-			if(record.data.capabilitiesUpdateFlag == "none"){
-				return '<div title="Kein Update-Status vorhanden. (F&uuml;r Update: Button \'Neu einlesen\' verwenden)" class="iconUpdateOff"></div>';		
-			}else if(capabilitiesHashUpdate == "" || capabilitiesHashUpdate == undefined){
-				return '<div title="Capabilities Offline" class="iconUpdateOffline"></div>';				
-			}else if(capabilitiesHash == capabilitiesHashUpdate){
-				return '<div title="Kein Update vorhanden" class="iconUpdateNo"></div>';		
-			}else if(capabilitiesHash != capabilitiesHashUpdate){
-				return '<div title="Update vorhanden (Bitte klicken f&uuml;r Update)" class="iconUpdate"></div>';		
-			}else{
-				return '<div title="Kein Update vorhanden" class="iconUpdateNo"></div>';
-			}        
 	    }
 	}, {
-		header: 'Update',
+		header: 'Autom. Update',
 		sortable: true,
 		dataIndex: 'capabilitiesUpdateFlag', 
 		width: 30,
-		editor:{
-        	xtype: 'combo',
-        	store: new Ext.data.SimpleStore({
-                fields: ['value', 'display'],
-                data: [['none', 'none'], ['mail', 'mail'], ['auto', 'auto']],
-                autoLoad: false
-            }),
-        	displayField: 'display',
-            valueField: 'value',
-            typeAhead: true,
-            forceSelection: true,
-            mode: 'local',
-            triggerAction: 'all',
-            selectOnFocus: true,
-            editable: false,
-        	listeners: { 
-        		select: function(combo, record, index) {
-        			var selectedRecord = self.selectedModel.record;
-        			self.updateService(null, selectedRecord.data.capabilitiesUrl, selectedRecord.data.capabilitiesUrlOrg, selectedRecord.data.originalCapUrl, null, null, combo.value);
-        		}
-        	}
-        }
+		editor: combo,
+		renderer: Ext.util.Format.comboRenderer(combo)
 	}];
 	
 	var filters = new Ext.ux.grid.GridFilters({
@@ -404,8 +397,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
                 name: 'update',
             	id: 'update',
             	store: new Ext.data.SimpleStore({
-                    fields: ['value', 'display'],
-                    data: [['none', 'none'], ['mail', 'mail'], ['auto', 'auto']],
+                    fields: self.comboFields,
+                    data: self.comboData,
                     autoLoad: false
                 }),
             	displayField: 'display',
@@ -416,11 +409,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
                 triggerAction: 'all',
                 selectOnFocus: true,
                 editable: false,
-                value: 'none',
-            	listeners: { 
-            		select: function(combo, record, index) {
-            		}
-            	}
+                value: 'an'
             }
 	 ],
 
@@ -922,3 +911,10 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.pausecomp =
 	do { curDate = new Date(); }
 	while(curDate-date < millis);
 };
+
+Ext.util.Format.comboRenderer = function(combo){
+    return function(value){
+        var record = combo.findRecord(combo.valueField, value);
+        return record ? record.get(combo.displayField) : combo.valueNotFoundText;
+    }
+}
