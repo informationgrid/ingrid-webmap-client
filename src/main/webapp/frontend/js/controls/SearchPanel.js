@@ -115,11 +115,12 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 		success : function(response, request) {
 			myMask.hide();
 			var resp = Ext.decode(response.responseText);
-			
+			var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
 			var searchCategoryPanel = new de.ingrid.mapclient.frontend.controls.SearchCategoryPanel({
 						id : 'searchResults',
 						serviceCategory : resp,
-						border: false
+						border: false,
+						metadataWindowStartY: 50 * mapServiceCategories.length + 50
 			});
 			
 			var panel = Ext.getCmp('panelSearchResult');

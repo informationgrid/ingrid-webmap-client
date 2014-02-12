@@ -24,7 +24,10 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.Pane
      */
     activeNode: null,
 
-	disabledButtons: []
+	disabledButtons: [],
+	metadataWindowsCount: 0,
+	metadataWindowStartX: 0,
+	metadataWindowStartY: 0
 });
 
 /**
@@ -39,16 +42,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	var node = this.transform(this.mapServiceCategory);
 
 	var hoverActions = new Ext.ux.HoverActions({
-		actions: [new Ext.Button({
-	        iconCls: 'iconAdd',
-	        tooltip: i18n('tDienstHinzufuegen'),
-	        disabled: true,
-	        handler: function(node) {
-	        		var service = node.attributes.service;
-	        		self.activateService(service);
-	           		self.activeServicesPanel.expand();
-	        }
-		}), 
+		actions: [
 		new Ext.Button({
 	        iconCls: 'iconMetadata',
 	        tooltip: i18n('tFuerMetadatenErst'),
@@ -67,7 +61,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	        expanded: false
 		}),
 		plugins:[hoverActions],
-		buttonSpanElStyle:'width:30px;',
+		buttonSpanElStyle:'width:8px;',
 	    onlyServices: true,
 		useArrows:true,
 	    lines: false,
@@ -204,11 +198,23 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.displayMeta
 		if(window){
 			window.close();
 		}else{
-			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			self.metadataWindowsCount = self.metadataWindowsCount + 1;
+			if(self.metadataWindowStartX == 0){
+				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
+			}
+			if(self.metadataWindowsCount % 10 == 0){
+				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
+			}else{
+				self.metadataWindowStartX = self.metadataWindowStartX + 50;
+			}
+			var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layerName: node.layer
-			}).show();
+				layerName: node.layer,
+				x: self.metadataWindowStartX,
+				y: Ext.getCmp("centerPanel").y + self.metadataWindowStartY
+			});
+			metadataWindow.show();
 		}
 	}
 };

@@ -48,7 +48,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 	menuLayer: null,
 	menuService: null,
 	menuNodeId:  "",
-	treeState: []
+	treeState: [],
+	metadataWindowsCount: 0,
+	metadataWindowStart: 0
 });
 
 /**
@@ -57,7 +59,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel = Ext.extend(Ext.Panel
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponent = function() {
 
 	var self = this;
-
+	
 	// add the datachanged event
 	this.addEvents({
 		datachanged: false
@@ -976,11 +978,23 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 		if(window){
 			window.close();
 		}else{
-			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			self.metadataWindowsCount = self.metadataWindowsCount + 1;
+			if(self.metadataWindowStart == 0){
+				self.metadataWindowStart = Ext.getCmp("centerPanel").x;
+			}
+			if(self.metadataWindowsCount % 10 == 0){
+				self.metadataWindowStart = Ext.getCmp("centerPanel").x;
+			}else{
+				self.metadataWindowStart = self.metadataWindowStart + 75;
+			}
+			var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layer: layer.id
-			}).show();
+				layer: layer.id,
+				x: self.metadataWindowStart,
+				y: Ext.getCmp("centerPanel").y
+			});
+			metadataWindow.show();
 		}
 	} else {
 		console.error("Service could not be found!");

@@ -115,15 +115,15 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
-	var mapServiceCategories = de.ingrid.mapclient.Configuration
-			.getValue("mapServiceCategories");
+	var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
 	if (mapServiceCategories) {
 		for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
 			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel(
 					{
 						id : "serviceCategory_" + mapServiceCategories[i].name,
 						mapServiceCategory : mapServiceCategories[i],
-						activeServicesPanel : this.activeServicesPanel
+						activeServicesPanel : this.activeServicesPanel,
+						metadataWindowStartY: 50 + (50*i)
 					});
 			accordionItems.push(panel);
 		}

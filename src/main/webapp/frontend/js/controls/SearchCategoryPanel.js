@@ -20,7 +20,11 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.Panel
     /**
      * The currently selected node
      */
-    activeNode: null
+    activeNode: null,
+	metadataWindowsCount: 0,
+	metadataWindowStartX: 0,
+	metadataWindowStartY: 0
+	
 });
 
 /**
@@ -36,16 +40,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	var node = this.transform(this.serviceCategory);
 
 	var hoverActions = new Ext.ux.HoverActions({
-		actions: [new Ext.Button({
-	        iconCls: 'iconAdd',
-	        tooltip: i18n('tDienstHinzufuegen'),
-	        disabled: true,
-	        handler: function(node) {
-	        		var service = node.attributes.service;
-	        		self.activateService(service);
-	           		self.activeServicesPanel.expand();
-	        }
-		}), 
+		actions: [ 
 		new Ext.Button({
 	        iconCls: 'iconMetadata',
 	        tooltip: i18n('tFuerMetadatenErst'),
@@ -65,7 +60,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	        expanded: true
 		}),
 		plugins:[hoverActions],
-		buttonSpanElStyle:'width:30px;',
+		buttonSpanElStyle:'width:8px;',
 		bodyCssClass: 'smaller-leaf-padding',
 	    onlyServices: true,
 		useArrows:true,
@@ -157,17 +152,31 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.activateServ
  * @param node Ext.tree.TreeNode instance
  */
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.displayMetaData = function(node) {
+	var self = this;
 	var service = node.attributes.service;
 	if (service) {
 		var window = Ext.getCmp(node.id + "-metadata");
 		if(window){
 			window.close();
 		}else{
-			new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+			self.metadataWindowsCount = self.metadataWindowsCount + 1;
+			if(self.metadataWindowStartX == 0){
+				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
+			}
+			if(self.metadataWindowsCount % 10 == 0){
+				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
+			}else{
+				self.metadataWindowStartX = self.metadataWindowStartX + 75;
+			}
+			
+			var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
-				layerName: node.layer
-			}).show();
+				layerName: node.layer,
+				x: self.metadataWindowStartX,
+				y: Ext.getCmp("centerPanel").y + self.metadataWindowStartY
+			});
+			metadataWindow.show();
 		}
 	}
 };
