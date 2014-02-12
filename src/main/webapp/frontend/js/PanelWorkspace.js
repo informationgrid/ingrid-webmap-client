@@ -617,10 +617,6 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.finishInitMap = function()
 	var controls = [new OpenLayers.Control.KeyboardDefaults(),
 		new OpenLayers.Control.LoadingPanel()
 	];
-	if (de.ingrid.mapclient.Configuration.getSettings("searchHasPermaLink")) {
-		controls.push(new OpenLayers.Control.Permalink());
-		controls.push(new OpenLayers.Control.Permalink('permalink'));
-	}
 	this.map.addControls(controls);
 	
 	if(de.ingrid.mapclient.Configuration.getSettings("searchMinimapEnable")){

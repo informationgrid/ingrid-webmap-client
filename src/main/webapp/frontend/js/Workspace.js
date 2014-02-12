@@ -705,11 +705,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 			new OpenLayers.Control.ScaleLine(),
 			new OpenLayers.Control.MousePosition(),
 			keyboardControl];
-
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasPermaLink")) {
-		controls.push(new OpenLayers.Control.Permalink());
-		controls.push(new OpenLayers.Control.Permalink('permalink'));
-	}
 	this.map.addControls(controls);
 	
 	if(de.ingrid.mapclient.Configuration.getSettings("viewMinimapEnable")){

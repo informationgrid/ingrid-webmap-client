@@ -262,12 +262,6 @@
       <group>view</group>
     </setting>
     <setting>
-      <key>viewHasPermaLink</key>
-      <name>Permalink: Permalink anzeigen</name>
-      <value>false</value>
-      <group>view</group>
-    </setting>
-    <setting>
       <key>viewMinimapEnable</key>
       <name>Minimap: Übersichtskarte anzeigen</name>
       <value>true</value>
@@ -368,12 +362,6 @@
       <key>searchHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
       <value>true</value>
-      <group>search</group>
-    </setting>
-    <setting>
-      <key>searchHasPermaLink</key>
-      <name>Permalink: Permalink anzeigen</name>
-      <value>false</value>
       <group>search</group>
     </setting>
     <setting>
