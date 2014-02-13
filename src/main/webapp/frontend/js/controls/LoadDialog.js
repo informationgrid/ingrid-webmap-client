@@ -53,7 +53,9 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.getFileId = function(
 	var selModel = this.fileList.getSelectionModel();
 	if (selModel && selModel.hasSelection) {
 		var selected = selModel.getSelected();
-		return selected.id;
+		if(selected){
+			return selected.id;
+		}
 	}
 	return "";
 };

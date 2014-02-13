@@ -123,7 +123,7 @@ Local = {
         tOrganisation : { en: 'Organisation', de: 'Organisation' },
         tPDFErstellen: { en: 'Create PDF', de: 'PDF Erstellen' },
         tPleaseWait: { en: 'Please wait', de: 'Bitte warten' },
-        tPleaseWaitCapabilities: { en: 'Loading Capabilities. Please wait ...', de: 'Capabilities wird geladen. Bitte warten ...' },
+        tPleaseWaitCapabilities: { en: 'Loading Capabilities. Please wait ...', de: 'Dienst wird geladen...' },
         tPleaseWaitSearch: { en: 'Searching term. Please wait ...', de: 'Suche wird durchgef&uuml;hrt. Bitte warten ...' },
         tPLZ: { en: 'ZIP', de: 'PLZ' },
         tPreviousHint: { en: '&laquo; Previous', de: '&laquo; Vorheriger' },

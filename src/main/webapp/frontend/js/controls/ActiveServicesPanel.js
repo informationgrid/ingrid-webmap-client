@@ -978,15 +978,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaD
 		if(window){
 			window.close();
 		}else{
-			self.metadataWindowsCount = self.metadataWindowsCount + 1;
 			if(self.metadataWindowStart == 0){
 				self.metadataWindowStart = Ext.getCmp("centerPanel").x;
 			}
 			if(self.metadataWindowsCount % 10 == 0){
-				self.metadataWindowStart = Ext.getCmp("centerPanel").x;
+				self.metadataWindowStart = Ext.getCmp("centerPanel").x + 50;
 			}else{
-				self.metadataWindowStart = self.metadataWindowStart + 75;
+				self.metadataWindowStart = self.metadataWindowStart + 50;
 			}
+			self.metadataWindowsCount = self.metadataWindowsCount + 1;
 			var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),

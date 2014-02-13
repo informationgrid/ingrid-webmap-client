@@ -352,6 +352,15 @@ ul .x-tree-node-ct li .x-tree-node {
 	text-decoration: none;
 }
 
+.x-tree-node-add a.x-tree-node-anchor span {
+	text-decoration: none;
+}
+
+
+.x-tree-node-add a.x-tree-node-anchor span:hover {
+	text-decoration: underline;
+}
+
 .x-hoveractions-outer {
     float:left;
 }

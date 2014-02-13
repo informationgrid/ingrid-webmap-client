@@ -120,7 +120,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 			text: curService.name,
 			service: serviceInstance,
 			leaf: true,
-			cls: 'x-tree-noicon'
+			cls: 'x-tree-noicon x-tree-node-add'
 		};
 		children.push(childNode);
 	}
@@ -159,16 +159,15 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.displayMetaD
 		if(window){
 			window.close();
 		}else{
-			self.metadataWindowsCount = self.metadataWindowsCount + 1;
 			if(self.metadataWindowStartX == 0){
 				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
 			}
 			if(self.metadataWindowsCount % 10 == 0){
-				self.metadataWindowStartX = Ext.getCmp("centerPanel").x;
+				self.metadataWindowStartX = Ext.getCmp("centerPanel").x + 50;
 			}else{
-				self.metadataWindowStartX = self.metadataWindowStartX + 75;
+				self.metadataWindowStartX = self.metadataWindowStartX + 50;
 			}
-			
+			self.metadataWindowsCount = self.metadataWindowsCount + 1;
 			var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
 				id: node.id + "-metadata",
 				capabilitiesUrl: service.getCapabilitiesUrl(),
