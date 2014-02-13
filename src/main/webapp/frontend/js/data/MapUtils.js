@@ -232,11 +232,11 @@ de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter = function (
 	var value = capabilities.toLowerCase();
 	var hasService = false;
 	var hasRequest = false;
-	if(value.indexOf("service=wms") > -1){
+	if(value.indexOf("service=") > -1){
 		hasService = true;
 	}
 	
-	if(value.indexOf("request=getcapabilities") > -1){
+	if(value.indexOf("request=") > -1){
 		hasRequest = true;
 	}
 	

@@ -221,7 +221,11 @@ Local = {
 		tSuchbegriff: {en: 'Add search term', de: 'Suchbegriff hinzufügen'},
 		tPfichtfeld: {en: 'This field is required', de: 'Pflichtfeld'},
 		tOptionen: {en: 'Menu', de: 'Menü'},
-		tServiceBereichAufUndZuKlappen: {en: 'Expand and collapse service-area', de: 'Service-Bereich ein- und ausblenden'}
+		tServiceBereichAufUndZuKlappen: {en: 'Expand and collapse service-area', de: 'Service-Bereich ein- und ausblenden'},
+		tLoadingFailServiceWFS: {en: 'WFS not supported.', de: 'WFS wird nicht unterst&uuml;tzt.'},
+		tLoadingFailServiceException: {en: 'ServiceException.', de: 'GetCapabilities-Anfrage fehlerhaft: ServiceException.'},
+		tLoadingFailServiceCSW: {en: 'CSW not supported.', de: 'CSW wird nicht unterst&uuml;tzt.'},
+		tLoadingFailServiceNoContent: {en: 'No service content.', de: 'GetCapabilities-Anfrage: Keine Response-Inhalt vorhanden.'}
     }
 }
 

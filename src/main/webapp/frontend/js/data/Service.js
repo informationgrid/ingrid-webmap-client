@@ -176,6 +176,24 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				
 				if(response.responseText.indexOf('<ViewContext') != -1){
 					format = new OpenLayers.Format.WMC();
+				}else if(response.responseText.indexOf('<WFS_Capabilities') != -1 || response.responseText.indexOf('<wfs:') != -1){
+					myMask.hide();
+					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceWFS')+"<br />\nUrl: <br />"+capabilitiesUrl);
+					return;
+				}else if(response.responseText.indexOf('<csw:') != -1){
+					myMask.hide();
+					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
+					return;
+					ServiceException
+				}else if(response.responseText.indexOf('ServiceException') != -1){
+					myMask.hide();
+					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
+					return;
+					ServiceException
+				}else if(response.responseText.length == 0){
+					myMask.hide();
+					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
+					return;
 				}else{
 					format = new OpenLayers.Format.WMSCapabilities();
 				}
