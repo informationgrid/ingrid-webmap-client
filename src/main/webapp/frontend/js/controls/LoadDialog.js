@@ -113,13 +113,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		columns: [{
 			id: 'title',
 			header: i18n('tTitle'),
-			width: 100,
+			width: 80,
 			sortable: true,
 			dataIndex: 'title'
 		}, {
 			id: 'description',
 			header: i18n('tBeschreibung'),
-			width: 100,
+			width: 80,
 			sortable: true,
 			renderer: function (val) {
 				return '<div style="white-space:normal !important;">'+val+'</div>';
