@@ -144,7 +144,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	                	var record = grid.getStore().getAt(rowIndex);
 	        			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
 	        			window.open(url);
-	                }
+	                },
+	                iconCls:'loadingDialogIcon'
             	},
                 {
 	                icon   : '/ingrid-webmap-client/shared/images/icon_mail.png',
@@ -157,6 +158,12 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	        			}
 	        			var url = location + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
 	        			window.location.href ='mailto:?body=' + url + '&subject=' +  i18n('tMailToMapLink');
+	                },
+	                iconCls:'loadingDialogIcon',
+	                getClass: function(v, meta, rec) {
+	                	if(!de.ingrid.mapclient.Configuration.getSettings("defaultMailToSaveMaps")){
+	                		return 'x-hide-display';
+	                	} 
 	                }
                 },
                 {
@@ -177,7 +184,8 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 	        					}
 	        				});
 	        			}
-	                }
+	                },
+	                iconCls:'loadingDialogIcon'
                 }]
         }]
 	});
