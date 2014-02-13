@@ -113,13 +113,13 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		columns: [{
 			id: 'title',
 			header: i18n('tTitle'),
-			width: 25,
+			width: 100,
 			sortable: true,
 			dataIndex: 'title'
 		}, {
 			id: 'description',
 			header: i18n('tBeschreibung'),
-			width: 45,
+			width: 100,
 			sortable: true,
 			renderer: function (val) {
 				return '<div style="white-space:normal !important;">'+val+'</div>';
@@ -128,75 +128,58 @@ de.ingrid.mapclient.frontend.controls.LoadDialog.prototype.initComponent = funct
 		}, {
 			id: 'date',
 			header: i18n('tDatum'),
-			width: 20,
+			width: 60,
 			sortable: true,
 			renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
 			dataIndex: 'date'
-		}, {
-			id: 'shortUrl',
-			header: '',
-			width: 5,
-			align: 'center',
-			sortable: false,
-			renderer: function(val) {
-				return '<div class="icon iconLink" style="cursor:pointer;" title="link"></div>';
-			},
-			dataIndex: 'shortUrl'
-		}, {
-			id: 'emailUrl',
-			header: '',
-			width: 5,
-			align: 'center',
-			sortable: false,
-			hidden: de.ingrid.mapclient.Configuration.getSettings("defaultMailToSaveMaps") ? false : true,
-			renderer: function(val) {
-				return '<div class="icon iconMail" style="cursor:pointer;" title="mailto"></div>';
-			},
-			dataIndex: 'emailUrl'
-		}, {
-			id: 'delete',
-			header: '',
-			width: 5,
-			align: 'center',
-			sortable: false,
-			renderer: function(val) {
-				return '<div class="icon iconRemove" style="cursor:pointer;" title="' + i18n('tloeschen') + '"></div>';
-			},
-			dataIndex: 'delete'
-		}]
-	});
-	// button handler
-	this.fileList.on('cellclick', function(grid, rowIndex, columnIndex, e) {
-		if (columnIndex == grid.getColumnModel().getIndexById('shortUrl')) {
-			var record = grid.getStore().getAt(rowIndex);
-			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
-			window.open(url);
-		}
-		if (columnIndex == grid.getColumnModel().getIndexById('emailUrl')) {
-			var record = grid.getStore().getAt(rowIndex);
-			var location = window.location.origin;
-			if(location === undefined){
-				location = window.location.protocol + "//" +window.location.host;
-			}
-			var url = location + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
-			window.location.href ='mailto:?body=' + url + '&subject=' +  i18n('tMailToMapLink');
-		}
-		if (columnIndex == grid.getColumnModel().getIndexById('delete')) {
-			if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
-				var record = grid.getStore().getAt(rowIndex);
-				var state = new de.ingrid.mapclient.frontend.data.SessionState({
-					id: record.id
-				});
-				self.session.remove(state, {
-					success: function(response, request) {
-						self.fileList.getStore().remove(record);
-					},
-					failure: function(response, request) {
-						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_DELETE_FAILURE);
-					}
-				});
-			}
-		}
+		},
+        {
+            xtype: 'actioncolumn',
+            width: 40,
+            css:"padding:0 0 0 5px;",
+			items: [{
+	                icon   : '/ingrid-webmap-client/shared/images/link_go.png',
+	                tooltip: i18n('tLoadDialogLink'),
+	                handler: function(grid, rowIndex, colIndex) {
+	                	var record = grid.getStore().getAt(rowIndex);
+	        			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
+	        			window.open(url);
+	                }
+            	},
+                {
+	                icon   : '/ingrid-webmap-client/shared/images/icon_mail.png',
+	                tooltip: i18n('tLoadDialogMail'),
+	                handler: function(grid, rowIndex, colIndex) {
+	                	var record = grid.getStore().getAt(rowIndex);
+	        			var location = window.location.origin;
+	        			if(location === undefined){
+	        				location = window.location.protocol + "//" +window.location.host;
+	        			}
+	        			var url = location + ''+ de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
+	        			window.location.href ='mailto:?body=' + url + '&subject=' +  i18n('tMailToMapLink');
+	                }
+                },
+                {
+	                icon   : '/ingrid-webmap-client/shared/images/icon_delete.png',
+	                tooltip: i18n('tLoadDialogDelete'),
+	                handler: function(grid, rowIndex, colIndex) {
+	                	if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
+	        				var record = grid.getStore().getAt(rowIndex);
+	        				var state = new de.ingrid.mapclient.frontend.data.SessionState({
+	        					id: record.id
+	        				});
+	        				self.session.remove(state, {
+	        					success: function(response, request) {
+	        						self.fileList.getStore().remove(record);
+	        					},
+	        					failure: function(response, request) {
+	        						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_DELETE_FAILURE);
+	        					}
+	        				});
+	        			}
+	                }
+                }]
+        }]
 	});
 
 	var windowContent = new Ext.FormPanel({

@@ -225,7 +225,10 @@ Local = {
 		tLoadingFailServiceWFS: {en: 'WFS not supported.', de: 'WFS wird nicht unterst&uuml;tzt.'},
 		tLoadingFailServiceException: {en: 'ServiceException.', de: 'GetCapabilities-Anfrage fehlerhaft: ServiceException.'},
 		tLoadingFailServiceCSW: {en: 'CSW not supported.', de: 'CSW wird nicht unterst&uuml;tzt.'},
-		tLoadingFailServiceNoContent: {en: 'No service content.', de: 'GetCapabilities-Anfrage: Keine Response-Inhalt vorhanden.'}
+		tLoadingFailServiceNoContent: {en: 'No service content.', de: 'GetCapabilities-Anfrage: Keine Response-Inhalt vorhanden.'},
+		tLoadDialogMail: {en: 'Sending saved map as mail.', de: 'Gespeicherte Karte als Email versenden.'},
+		tLoadDialogDelete: {en: 'Delete saved map.', de: 'Gespeicherte Karte l&ouml;schen.'},
+		tLoadDialogLink: {en: 'Open saved map in a new tab.', de: 'Gespeicherte Karte im neuen Tab &ouml;ffnen.'}
     }
 }
 
