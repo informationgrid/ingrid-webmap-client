@@ -308,24 +308,26 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 		
 		var task = new Ext.util.DelayedTask(function(){
 			if(ajax.conn){
-				var msg = Ext.Msg.show({
+				var msg = Ext.Msg;
+				msg.buttonText = {ok: i18n('tOk'), cancel: i18n('tAbbrechen'), yes: i18n('tJa'), no: i18n('tNein')};
+				msg.show({
 				    title: i18n('tLoadingServiceTaskTitle'),
 				    msg: i18n('tLoadingServiceTaskMessage'),
 				    buttons: Ext.Msg.YESNO,
 				    modal: false,
 					fn: function(btn){
-						if (btn == 'ok'){
+						if (btn == 'yes'){
 							if(ajax.conn){
 								ajax.conn.abort();
 								loadingMask.hide();
 							}
 						}
-						if (btn == 'cancel'){
+						if (btn == 'no'){
 							task.delay(5000);
 						}
 					}
 				});
-				msg.getDialog().getPositionEl().setTop(142);
+				msg.getDialog().getPositionEl().setTop(parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop")) + 50);
 			}
 		});      
         task.delay(5000);

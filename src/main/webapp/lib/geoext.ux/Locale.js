@@ -41,6 +41,9 @@ Local = {
 
     localizedStrings: {
     	tAbbrechen: { en: 'Cancel', de: 'Abbrechen' },
+    	tOk: { en: 'Ok', de: 'Ok' },
+    	tNein: { en: 'No', de: 'Nein' },
+    	tJa: { en: 'Yes', de: 'Ja' },
     	tAdresse: { en: 'Address', de: 'Adresse' },
     	tAdministrativeAuswahl: { en: 'Select administrative entity', de: 'Administrative Auswahl' },
     	tAdministrativeEinheit : { en: 'Administrative entity', de: 'Administrative Einheit' },
