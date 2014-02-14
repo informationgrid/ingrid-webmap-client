@@ -323,14 +323,14 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 							}
 						}
 						if (btn == 'no'){
-							task.delay(5000);
+							task.delay(10000);
 						}
 					}
 				});
 				msg.getDialog().getPositionEl().setTop(parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop")) + 50);
 			}
 		});      
-        task.delay(5000);
+        task.delay(10000);
 //	}
 };
 
