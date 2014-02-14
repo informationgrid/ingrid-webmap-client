@@ -228,7 +228,9 @@ Local = {
 		tLoadingFailServiceNoContent: {en: 'No service content.', de: 'GetCapabilities-Anfrage: Keine Response-Inhalt vorhanden.'},
 		tLoadDialogMail: {en: 'Sending saved map as mail.', de: 'Gespeicherte Karte als Email versenden.'},
 		tLoadDialogDelete: {en: 'Delete saved map.', de: 'Gespeicherte Karte l&ouml;schen.'},
-		tLoadDialogLink: {en: 'Open saved map in a new tab.', de: 'Gespeicherte Karte im neuen Tab &ouml;ffnen.'}
+		tLoadDialogLink: {en: 'Open saved map in a new tab.', de: 'Gespeicherte Karte im neuen Tab &ouml;ffnen.'},
+		tLoadingServiceTaskTitle: {en: 'Added service not available?', de: 'Hinzugef&uuml;gter Dienst nicht erreichbar?'},
+		tLoadingServiceTaskMessage: {en: 'Cancel loading capabilities?', de: 'M&ouml;chten Sie den Ladenvorgang abbrechen?'}
     }
 }
 

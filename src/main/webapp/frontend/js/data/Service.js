@@ -163,35 +163,35 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 //	}
 //	else {
 	
-		var myMask = new Ext.LoadMask(Ext.getBody(), { msg:i18n('tPleaseWaitCapabilities') });
-		myMask.show();
+		var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:i18n('tPleaseWaitCapabilities') });
+		loadingMask.show();
 		// load the service
-		Ext.Ajax.request({
+		var ajax = Ext.Ajax.request({
 			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
 			method: 'GET',
 			success: function(response, request) {
-				myMask.hide();
+				loadingMask.hide();
 				var type;
 				var format;
 				
 				if(response.responseText.indexOf('<ViewContext') != -1){
 					format = new OpenLayers.Format.WMC();
 				}else if(response.responseText.indexOf('<WFS_Capabilities') != -1 || response.responseText.indexOf('<wfs:') != -1){
-					myMask.hide();
+					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceWFS')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else if(response.responseText.indexOf('<csw:') != -1){
-					myMask.hide();
+					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 					ServiceException
 				}else if(response.responseText.indexOf('ServiceException') != -1){
-					myMask.hide();
+					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 					ServiceException
 				}else if(response.responseText.length == 0){
-					myMask.hide();
+					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else{
@@ -301,10 +301,34 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				}
 			},
 			failure: function(response, request) {
-				myMask.hide();
+				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 			}
 		});
+		
+		var task = new Ext.util.DelayedTask(function(){
+			if(ajax.conn){
+				var msg = Ext.Msg.show({
+				    title: i18n('tLoadingServiceTaskTitle'),
+				    msg: i18n('tLoadingServiceTaskMessage'),
+				    buttons: Ext.Msg.YESNO,
+				    modal: false,
+					fn: function(btn){
+						if (btn == 'ok'){
+							if(ajax.conn){
+								ajax.conn.abort();
+								loadingMask.hide();
+							}
+						}
+						if (btn == 'cancel'){
+							task.delay(5000);
+						}
+					}
+				});
+				msg.getDialog().getPositionEl().setTop(142);
+			}
+		});      
+        task.delay(5000);
 //	}
 };
 
