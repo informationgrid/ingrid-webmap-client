@@ -67,7 +67,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel = Ext.extend(de.ingri
 	reloadServiceBtn:null,
 	addServiceBtn:null,
 	comboFields: ['value', 'display'],
-	comboData: [['an', 'An'], ['aus', 'Aus'], ['mail', 'per Mail']],
+	comboData: [['an', 'an'], ['aus', 'aus'], ['mail', 'per Mail']],
     jsonColumn: ['name', 'capabilitiesUrl', 'capabilitiesUrlOrg', 'mapServiceCategories', 'originalCapUrl', 'checkedLayers', 'capabilitiesHash', 'capabilitiesHashUpdate', 'capabilitiesUpdateImage', 'capabilitiesUpdateFlag' ],
 	isSave:false
 });
@@ -138,15 +138,15 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.initCompone
 			if(record.data.capabilitiesUpdateImage == "1_offline"){
 				return '<div title="GetCap offline" class="iconUpdateOffline"></div>';		
 			}else if(record.data.capabilitiesUpdateImage == "2_update"){
-				return '<div title="Update: Hier klicken, um URL neu einzulesen!" class="iconUpdate"></div>';				
+				return '<div title="Update vorhanden: Hier klicken, um URL neu einzulesen!" class="iconUpdate"></div>';				
 			}else if(record.data.capabilitiesUpdateImage == "3_ok"){
 				return '<div title="OK" class="iconUpdateNo"></div>';		
 			}else if(record.data.capabilitiesUpdateImage == "4_off"){
-				return '<div title="URL-Check Aus" class="iconUpdateOff"></div>';		
+				return '<div title="URL-Check deaktiviert" class="iconUpdateOff"></div>';		
 			}
 	    }
 	}, {
-		header: 'Autom. Update',
+		header: 'autom. Update',
 		sortable: true,
 		dataIndex: 'capabilitiesUpdateFlag', 
 		width: 30,
