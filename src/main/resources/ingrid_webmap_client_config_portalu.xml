@@ -100,13 +100,13 @@
     <setting>
       <key>urlCheckMailUpdateText</key>
       <name>Erläuternder Text in Benachrichtigungs-Email (die entsprechende URL wird automatisch hinzugefügt)</name>
-      <value>Eine neues Update erhältlich für folgende Capabilities:</value>
+      <value>Nachfolgende GetCap-URL wurde aktualisiert. Um den Update in den Kartenviewer zu übernehmen, in der Kartenviewer-Administration bitte folgenden Dienst neu einlesen.</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailUpdateSubject</key>
       <name>Text in der Betreffzeile der Benachrichtigungs-Email</name>
-      <value>Capabilities-Update erhältlich!</value>
+      <value>Eingebundene Kartendienste: GetCap-Update erforderlich!</value>
       <group>urlCheck</group>
     </setting>
     <setting>
@@ -354,7 +354,7 @@
     </setting>
     <setting>
       <key>searchHasScaleList</key>
-      <name>Einstellugen: Auswahlfunktion Maßstab anzeigen</name>
+      <name>Einstellungen: Auswahlfunktion Maßstab anzeigen</name>
       <value>true</value>
       <group>search</group>
     </setting>
