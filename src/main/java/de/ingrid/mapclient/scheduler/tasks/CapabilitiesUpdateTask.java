@@ -29,100 +29,102 @@ public class CapabilitiesUpdateTask implements Runnable{
 			String originalCapUrl = service.getOriginalCapUrl();
 			
 			// Get request of capabilitities
-			try {
-				String response = HttpProxy.doRequest(originalCapUrl);
-				if(response != null){
-					String capabilitiesHashCode = CapabilitiesUtils.generateMD5String(response);
-					// Add hash code if not exist
-					if(service.getCapabilitiesHashUpdate() == null){
-						doServiceChange = true;
-						service.setCapabilitiesHash("");
-						service.setCapabilitiesHashUpdate(capabilitiesHashCode);
-					}else if(service.getCapabilitiesHashUpdate() != null){
-						service.setCapabilitiesHashUpdate(capabilitiesHashCode);
-					}
-					
-					// Update capabilities automatically
-					if(service.getCapabilitiesUpdateFlag() != null){
-						if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
-							String updateFlag =  service.getCapabilitiesUpdateFlag();
-							if(updateFlag.equals("mail")){
-								if(service.getCapabilitiesUpdateMailStatus() == null){
-									service.setCapabilitiesUpdateMailStatus(false);
-								}
-								// Check mail status
-								if(!service.getCapabilitiesUpdateMailStatus()){
-									log.info("Send mail for capabilities update: " + service.getOriginalCapUrl());
-									// Update "capabilitiesHashUpdate" value
-									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
-									// Update image
-									service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_UPDATE);
-									
-									// Send mail to admin
-									String from = ""; 
-									String to = ""; 
-									String text = "";
-									String host = "";
-									String emailSubject = "";
-									
-									// Get mail configuration
-									for(int s=0; s < settings.size(); s++){
-										Setting setting = settings.get(s);
+			if(service.getCapabilitiesUpdateFlag() != null && !service.getCapabilitiesUpdateFlag().equals("aus")){
+				try {
+					String response = HttpProxy.doRequest(originalCapUrl);
+					if(response != null){
+						String capabilitiesHashCode = CapabilitiesUtils.generateMD5String(response);
+						// Add hash code if not exist
+						if(service.getCapabilitiesHashUpdate() == null){
+							doServiceChange = true;
+							service.setCapabilitiesHash("");
+							service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+						}else if(service.getCapabilitiesHashUpdate() != null){
+							service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+						}
+						
+						// Update capabilities automatically
+						if(service.getCapabilitiesUpdateFlag() != null){
+							if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
+								String updateFlag =  service.getCapabilitiesUpdateFlag();
+								if(updateFlag.equals("mail")){
+									if(service.getCapabilitiesUpdateMailStatus() == null){
+										service.setCapabilitiesUpdateMailStatus(false);
+									}
+									// Check mail status
+									if(!service.getCapabilitiesUpdateMailStatus()){
+										log.info("Send mail for capabilities update: " + service.getOriginalCapUrl());
+										// Update "capabilitiesHashUpdate" value
+										service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+										// Update image
+										service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_UPDATE);
 										
-										if(from != "" && to != "" & host != "" && emailSubject != "" && text != ""){
-											break;
+										// Send mail to admin
+										String from = ""; 
+										String to = ""; 
+										String text = "";
+										String host = "";
+										String emailSubject = "";
+										
+										// Get mail configuration
+										for(int s=0; s < settings.size(); s++){
+											Setting setting = settings.get(s);
+											
+											if(from != "" && to != "" & host != "" && emailSubject != "" && text != ""){
+												break;
+											}
+											
+											if(setting.getKey().equals("urlCheckMailAddressFrom")){
+												from = setting.getValue();
+											}else if(setting.getKey().equals("urlCheckMailAddressTo")){
+												to = setting.getValue();
+											}else if(setting.getKey().equals("urlCheckMailHost")){
+												host = setting.getValue();
+											}else if(setting.getKey().equals("urlCheckMailUpdateSubject")){
+												emailSubject = setting.getValue();
+											}else if(setting.getKey().equals("urlCheckMailUpdateText")){
+												text = setting.getValue();
+												text = text.concat("\r\n" + service.getName() + " (" + service.getOriginalCapUrl() + ")");
+											}
 										}
 										
-										if(setting.getKey().equals("urlCheckMailAddressFrom")){
-											from = setting.getValue();
-										}else if(setting.getKey().equals("urlCheckMailAddressTo")){
-											to = setting.getValue();
-										}else if(setting.getKey().equals("urlCheckMailHost")){
-											host = setting.getValue();
-										}else if(setting.getKey().equals("urlCheckMailUpdateSubject")){
-											emailSubject = setting.getValue();
-										}else if(setting.getKey().equals("urlCheckMailUpdateText")){
-											text = setting.getValue();
-											text = text.concat("\r\n" + service.getName() + " (" + service.getOriginalCapUrl() + ")");
+										// Send mail
+										boolean isMailSend = Utils.sendEmail(from, emailSubject, new String[] { to }, text, null, host);
+										if(isMailSend){
+											// Set mail status to send
+											service.setCapabilitiesUpdateMailStatus(true);
 										}
 									}
-									
-									// Send mail
-									boolean isMailSend = Utils.sendEmail(from, emailSubject, new String[] { to }, text, null, host);
-									if(isMailSend){
-										// Set mail status to send
-										service.setCapabilitiesUpdateMailStatus(true);
+								}else if(updateFlag.equals("an")){
+									if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
+										doServiceChange = true;
+										// Update "capabilitiesHashUpdate" value
+										service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+										// Update "capabilitiesHash" value
+										service.setCapabilitiesHash(capabilitiesHashCode);
+										// Update image
+										service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);	
+										// Update capabilities copy and orgCopy
+										CapabilitiesUtils.updateCapabilities(response, service);
+										
+										log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 									}
-								}
-							}else if(updateFlag.equals("an")){
-								if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
-									doServiceChange = true;
-									// Update "capabilitiesHashUpdate" value
-									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
-									// Update "capabilitiesHash" value
-									service.setCapabilitiesHash(capabilitiesHashCode);
-									// Update image
-									service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);	
-									// Update capabilities copy and orgCopy
-									CapabilitiesUtils.updateCapabilities(response, service);
-									
-									log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 								}
 							}
 						}
 					}
-				}
-			} catch (Exception e) {
-				log.info("Update failed for (offline) capabilities '" + service.getName() + "' with url: " + originalCapUrl);
-				// Set hash code update value to empty (flag for offline)
-				if(service.getCapabilitiesHashUpdate() == null){
-					doServiceChange = true;
-					service.setCapabilitiesHashUpdate("");
-				}
-				
-				if(service.getCapabilitiesUpdateImage() == null || !service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFFLINE)){
-					doServiceChange = true;
-					service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFFLINE);
+				} catch (Exception e) {
+					log.info("Update failed for (offline) capabilities '" + service.getName() + "' with url: " + originalCapUrl);
+					// Set hash code update value to empty (flag for offline)
+					if(service.getCapabilitiesHashUpdate() == null){
+						doServiceChange = true;
+						service.setCapabilitiesHashUpdate("");
+					}
+					
+					if(service.getCapabilitiesUpdateImage() == null || (!service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFFLINE) && !service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFF))){
+						doServiceChange = true;
+						service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFFLINE);
+					}
 				}
 			}
 			
@@ -132,20 +134,24 @@ public class CapabilitiesUpdateTask implements Runnable{
 				if(service.getCapabilitiesUpdateFlag() == null){
 					doServiceChange = true;
 					service.setCapabilitiesUpdateFlag("an");
-				}
-				
-				if(service.getCapabilitiesUpdateMailStatus() == null){
-					doServiceChange = true;
-					service.setCapabilitiesUpdateMailStatus(false);
-				}
-				
-				if(service.getCapabilitiesUpdateFlag().equals("none")){
+				}else if(service.getCapabilitiesUpdateFlag().equals("none")){
 					doServiceChange = true;
 					service.setCapabilitiesUpdateFlag("aus");
 					service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFF);
 				}else if(service.getCapabilitiesUpdateFlag().equals("auto")){
 					doServiceChange = true;
 					service.setCapabilitiesUpdateFlag("an");
+				}else if(service.getCapabilitiesUpdateFlag().equals("aus")){
+					if(!service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFF)){
+						doServiceChange = true;
+						service.setCapabilitiesUpdateFlag("aus");
+						service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OFF);
+					}
+				}
+				
+				if(service.getCapabilitiesUpdateMailStatus() == null){
+					doServiceChange = true;
+					service.setCapabilitiesUpdateMailStatus(false);
 				}
 				
 				if(service.getCapabilitiesUpdateImage() == null){
