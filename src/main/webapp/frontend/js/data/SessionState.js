@@ -40,6 +40,8 @@ de.ingrid.mapclient.frontend.data.SessionState = function(config) {
 	this.wmcDocument = null;
 
 	this.kmlArray = [];
+	
+	this.kmlRedlining = [];
 
 	this.selectedLayersByService = [];
 	
@@ -88,6 +90,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 		wmcDocument: wmcDocument,
 		activeServices: capabilityUrls,
 		kmlArray: this.kmlArray,
+		kmlRedlining: this.kmlRedlining,
 		selectedLayersByService: selectedLayers,
 		treeState: treeState
 	});
@@ -110,6 +113,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	this.title = data.title;
 	this.description = data.description;
 	this.kmlArray = data.kmlArray;
+	this.kmlRedlining = data.kmlRedlining;
 	this.selectedLayersByService = data.selectedLayersByService;
 	this.treeState = data.treeState;
 	this.capabilitiesUrlOrder = data.activeServices;
