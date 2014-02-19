@@ -414,7 +414,8 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
             geometryTypes.push(OpenLayers.i18n("Point"));
             geometryTypes.push(OpenLayers.i18n("LineString"));
             geometryTypes.push(OpenLayers.i18n("Polygon"));
-            geometryTypes.push(OpenLayers.i18n("Label"));
+            // TODO: Check Label KML Export
+            // geometryTypes.push(OpenLayers.i18n("Label"));
         }
 
         for (var i = 0; i < geometryTypes.length; i++) {

@@ -752,7 +752,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		var controler = new GeoExt.ux.FeatureEditingControler({
 	        cosmetic: true,
 	        map: this.map,
-	        styler: 'combobox',
+	        // TODO: Check Styles import export
+	        // styler: 'combobox',
 	        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
 	        triggerAutoSave: function() {
 	            if (this.autoSave) {
