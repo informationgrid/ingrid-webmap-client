@@ -155,7 +155,7 @@
     </setting>
     <setting>
       <key>viewHasActiveServiceTreeZoomToExtend</key>
-      <name>Aktive Dienste: Zoomen auf Dienst beim Hinzufügen aus den Kategorien</name>
+      <name>Aktive Dienste: Zoomen auf Dienst beim Hinzufügen aus den Rubriken</name>
       <value>true</value>
       <group>view</group>
     </setting>
