@@ -753,7 +753,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	        cosmetic: true,
 	        map: this.map,
 	        // TODO: Check Styles import export
-	        // styler: 'combobox',
+	        styler: de.ingrid.mapclient.Configuration.getSettings("viewRedliningStyleEnable") ? 'combobox' : '',
 	        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
 	        triggerAutoSave: function() {
 	            if (this.autoSave) {
