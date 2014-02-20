@@ -40,7 +40,7 @@ GeoExt.ux.data.Import = function(map, layer, format, filecontent, features) {
     if (format && filecontent) {
         if (format == 'KML') {
             var kmlReader = new OpenLayers.Format.KML(OpenLayers.Util.extend(
-            {externalProjection: new OpenLayers.Projection("EPSG:4326"),internalProjection: map.getProjectionObject()},
+            {placemarksDesc:' ', externalProjection: new OpenLayers.Projection("EPSG:4326"),internalProjection: map.getProjectionObject()},
                     GeoExt.ux.data.formats.getFormatConfig(format)));
             GeoExt.ux.data.importFeatures = kmlReader.read(filecontent);
         } else if (format == 'GPX') {
