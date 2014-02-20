@@ -219,6 +219,11 @@
       <value>false</value>
     </setting>
     <setting>
+      <key>viewRedliningStyleEnable</key>
+      <name>Styling von Redlining-Objekten</name>
+      <value>false</value>
+    </setting>
+    <setting>
       <key>viewMinimapEnable</key>
       <name>Minimap: Anzeigen des Minimap-Controls</name>
       <value>true</value>
