@@ -129,6 +129,11 @@
       <value>true</value>
     </setting>
     <setting>
+      <key>viewHasDragMapTool</key>
+      <name>Karte verschieben</name>
+      <value>false</value>
+    </setting>
+    <setting>
       <key>viewHasInfoTool</key>
       <name>Info-Button: Feature-Abfrage eines Dienstes</name>
       <value>true</value>
