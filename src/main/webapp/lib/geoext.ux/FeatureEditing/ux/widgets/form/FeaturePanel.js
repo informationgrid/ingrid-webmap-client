@@ -185,6 +185,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
 
         for (var attribute in feature.attributes) {
             field = {
+            	'xtype': attribute == 'description' ? 'textarea' : 'textfield',
                 'name': attribute,
                 'fieldLabel': OpenLayers.i18n(attribute),
                 'id': attribute,
