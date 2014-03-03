@@ -438,6 +438,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		iconCls : 'iconPrint',
 		tooltip : i18n('tDrucken'),
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool") ? false : true,
+		toggleGroup : 'toggleGroupMapPanel',
 		handler : function(btn) {
 			if(!printActive){
 			printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
