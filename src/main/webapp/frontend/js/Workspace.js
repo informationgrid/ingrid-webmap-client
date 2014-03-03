@@ -230,7 +230,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		tooltip : i18n('tKarteVerschieben'),
 		toggleGroup : 'toggleGroupMapPanel',
 		enableToggle : true,
-		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") ? false : true,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? false : true,
 		pressed: true,
 		handler : function(btn) {
 			if (btn.pressed) {
@@ -264,7 +264,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				
 				featureInfoControl.activate();
 			}else{
-				btn.getEl().dom.click();
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
+					btn.getEl().dom.click();
+				}
 			}
 		}
 	}));
@@ -382,7 +384,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						self.deactivateRedlining();
 						
 					}else{
-						btn.getEl().dom.click();
+						if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
+							btn.getEl().dom.click();
+						}
 					}
 				},
 				listeners:{
@@ -1295,9 +1299,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.getElementsByClassName = functi
 
 de.ingrid.mapclient.frontend.Workspace.prototype.deactivateRedlining = function () {
 	var self = this;
-	if(self.redliningControler.lastDrawControl){
-		self.redliningControler.lastDrawControl.deactivate();
-		self.redliningControler.lastDrawControl = null;
+	if(self.redliningControler){
+		if(self.redliningControler.lastDrawControl){
+			self.redliningControler.lastDrawControl.deactivate();
+			self.redliningControler.lastDrawControl = null;
+		}
 	}
 }
 
