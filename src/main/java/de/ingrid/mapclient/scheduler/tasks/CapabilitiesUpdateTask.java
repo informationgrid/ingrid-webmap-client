@@ -45,7 +45,7 @@ public class CapabilitiesUpdateTask implements Runnable{
 						
 						// Update capabilities automatically
 						if(service.getCapabilitiesUpdateFlag() != null){
-							if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
+							if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash()) || service.getCapabilitiesUpdateImage().equals(WmsService.WMSSERVICE_OFFLINE)){
 								String updateFlag =  service.getCapabilitiesUpdateFlag();
 								if(updateFlag.equals("mail")){
 									if(service.getCapabilitiesUpdateMailStatus() == null){
@@ -96,19 +96,19 @@ public class CapabilitiesUpdateTask implements Runnable{
 										}
 									}
 								}else if(updateFlag.equals("an")){
+									doServiceChange = true;
+									// Update "capabilitiesHashUpdate" value
+									service.setCapabilitiesHashUpdate(capabilitiesHashCode);
+									// Update "capabilitiesHash" value
+									service.setCapabilitiesHash(capabilitiesHashCode);
+									// Update image
+									service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);	
+									// Update capabilities copy and orgCopy
 									if(!service.getCapabilitiesHashUpdate().equals(service.getCapabilitiesHash())){
-										doServiceChange = true;
-										// Update "capabilitiesHashUpdate" value
-										service.setCapabilitiesHashUpdate(capabilitiesHashCode);
-										// Update "capabilitiesHash" value
-										service.setCapabilitiesHash(capabilitiesHashCode);
-										// Update image
-										service.setCapabilitiesUpdateImage(WmsService.WMSSERVICE_OK);	
-										// Update capabilities copy and orgCopy
 										CapabilitiesUtils.updateCapabilities(response, service);
-										
-										log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 									}
+									
+									log.info("Update capabilities '" + service.getName() + "' with url: " + originalCapUrl);
 								}
 							}
 						}
