@@ -280,6 +280,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewRedliningEnable</key>
+      <name>Bereitstellung der Redlining-Tools</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewMinimapEnable</key>
       <name>Minimap: Übersichtskarte anzeigen</name>
       <value>true</value>

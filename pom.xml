@@ -66,6 +66,9 @@
 						<exclude>**/lib/openlayers/**</exclude>
 						<exclude>**/lib/geoext/**</exclude>
 						<exclude>**/lib/proj4js/**</exclude>
+						<exclude>**/lib/geoext.ux/FeatureEditing/**</exclude>
+						<exclude>**/lib/geoext.ux/LayerManager/**</exclude>
+						<exclude>**/lib/geoext.ux/Styler/**</exclude>
 					</excludes>
 					<aggregations>
 						<aggregation>
