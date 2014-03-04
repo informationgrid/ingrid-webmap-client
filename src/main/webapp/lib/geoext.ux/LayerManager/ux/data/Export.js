@@ -63,7 +63,7 @@ GeoExt.ux.data.Export = function(map, format, layers, features) {
 
     if (format == 'KML') {
         var kmlWriter = new OpenLayers.Format.KML(OpenLayers.Util.extend(
-        {externalProjection: new OpenLayers.Projection("EPSG:4326"),internalProjection: map.getProjectionObject()},
+        {placemarksDesc:' ', externalProjection: new OpenLayers.Projection("EPSG:4326"),internalProjection: map.getProjectionObject()},
                 GeoExt.ux.data.formats.getFormatConfig(format)));
         return kmlWriter.write(exportFeatures);
     } else if (format == 'GeoJSON') {

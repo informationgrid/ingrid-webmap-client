@@ -286,6 +286,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewRedliningStyleEnable</key>
+      <name>Styling von Redlining-Objekten</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewMinimapEnable</key>
       <name>Minimap: Übersichtskarte anzeigen</name>
       <value>true</value>
