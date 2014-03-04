@@ -398,6 +398,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					});
 					self.fireEvent('datachanged');
 				}
+				self.checkScaleRecursively(node, self.map.getScale());
 			}
 		});
 		
