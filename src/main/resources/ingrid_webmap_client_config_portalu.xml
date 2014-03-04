@@ -190,6 +190,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasDragMapTool</key>
+      <name>Karte verschieben</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasInfoTool</key>
       <name>Objektinformationen-Button: Feature Abfrage eines Dienstes</name>
       <value>true</value>

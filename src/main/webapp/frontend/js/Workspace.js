@@ -65,7 +65,8 @@ de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
 
 			kmlArray : [],
 			kmlRedlining: "",
-			ctrls: []
+			ctrls: [],
+			redliningControler : null
 
 		});
 
@@ -83,49 +84,47 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var projection =  de.ingrid.mapclient.Configuration.getValue('projections');
 	var epsg = projection[0].epsgCode;
 	this.map = new de.ingrid.mapclient.frontend.IngridMap({
-				containingViewport:self,
-				fractionalZoom : true,
-				projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
-				// this will be used by some controls (ArgParser, MousePosition,
-				// Permalink)
-				displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
-				// if we dont add these controls on init
-				// we get the default controls plus the added ones
-				// adding controls at init impedes default controls
-				controls : [navigationControl,
-							new OpenLayers.Control.PanZoomBar(),
-							new OpenLayers.Control.ScaleLine(),
-							new OpenLayers.Control.MousePosition()]
-			});
+		containingViewport:self,
+		fractionalZoom : true,
+		projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
+		// this will be used by some controls (ArgParser, MousePosition,
+		// Permalink)
+		displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
+		// if we dont add these controls on init
+		// we get the default controls plus the added ones
+		// adding controls at init impedes default controls
+		controls : [navigationControl,
+					new OpenLayers.Control.PanZoomBar(),
+					new OpenLayers.Control.ScaleLine(),
+					new OpenLayers.Control.MousePosition()]
+	});
 
 	// create the map container
 	var mapPanel = new GeoExt.MapPanel({
-				border : false,
-				map : this.map
-			});
+		border : false,
+		map : this.map
+	});
 
 	// create the accordion for the west panel
 	var accordionItems = [];
 
 	// a) layer tree
-	this.activeServicesPanel = new de.ingrid.mapclient.frontend.controls.ActiveServicesPanel(
-			{
-				map : this.map,
-				ctrls: self.ctrls
-			});
+	this.activeServicesPanel = new de.ingrid.mapclient.frontend.controls.ActiveServicesPanel({
+		map : this.map,
+		ctrls: self.ctrls
+	});
 	accordionItems.push(this.activeServicesPanel);
 
 	// b) available service categories
 	var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
 	if (mapServiceCategories) {
 		for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
-			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel(
-					{
-						id : "serviceCategory_" + mapServiceCategories[i].name,
-						mapServiceCategory : mapServiceCategories[i],
-						activeServicesPanel : this.activeServicesPanel,
-						metadataWindowStartY: 50 + (50*i)
-					});
+			var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel({
+				id : "serviceCategory_" + mapServiceCategories[i].name,
+				mapServiceCategory : mapServiceCategories[i],
+				activeServicesPanel : this.activeServicesPanel,
+				metadataWindowStartY: 50 + (50*i)
+			});
 			accordionItems.push(panel);
 		}
 	}
@@ -151,25 +150,25 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	// create the panel for the west region
 	var westPanel = new Ext.Panel({
-				id : 'west',
-				region : 'west',
-				width : 250,
-				layout     : 'fit',
-				collapsible : false,
-				collapsed: (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) ? true : false, 
-				split : true,
-				items : [{
-							id : 'servicePanel',
-							closable : false,
-							layout : 'accordion',
-							layoutConfig : {
-								animate : true,
-								activeItem: activeAccordion
-							},
-							border : false,
-							items : accordionItems
-						}]
-			});
+		id : 'west',
+		region : 'west',
+		width : 250,
+		layout     : 'fit',
+		collapsible : false,
+		collapsed: (de.ingrid.mapclient.Configuration.getSettings("viewHasServicesPanel") == false && de.ingrid.mapclient.Configuration.getSettings("viewHasCollapseTool")) ? true : false, 
+		split : true,
+		items : [{
+					id : 'servicePanel',
+					closable : false,
+					layout : 'accordion',
+					layoutConfig : {
+						animate : true,
+						activeItem: activeAccordion
+					},
+					border : false,
+					items : accordionItems
+				}]
+	});
 
 	// create the toolbar items
 	var toolbarItems = []; 
@@ -237,94 +236,122 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 	
 	// a) feature tool
+	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+		map : this.map
+	}); 
+
+	this.map.events.on({
+		'click' : featureInfoControl.query,
+		scope : featureInfoControl
+	});
+
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconDefault',
+		tooltip : i18n('tKarteVerschieben'),
+		toggleGroup : 'toggleGroupMapPanel',
+		enableToggle : true,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") ? false : true,
+		pressed: true,
+		handler : function(btn) {
+			if (btn.pressed) {
+				// Deactivate controls
+				measurePathCtrl.deactivate();
+				measurePolygonCtrl.deactivate();
+				Ext.getCmp('measurePath').setChecked(false);
+				Ext.getCmp('measurePolygon').setChecked(false);
+				featureInfoControl.deactivate();
+				self.deactivateRedlining();
+			}else{
+				btn.getEl().dom.click();
+			}
+		}
+	}));
+	
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconInfo',
+		tooltip : i18n('tObjektinformationen'),
+		toggleGroup : 'toggleGroupMapPanel',
+		enableToggle : true, 
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool") ? false : true,
+		handler : function(btn) {
+			if (btn.pressed) {
+				// Deactivate controls
+				measurePathCtrl.deactivate();
+				measurePolygonCtrl.deactivate();
+				Ext.getCmp('measurePath').setChecked(false);
+				Ext.getCmp('measurePolygon').setChecked(false);
+				self.deactivateRedlining();
 				
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool")) {
+				featureInfoControl.activate();
+			}else{
+				btn.getEl().dom.click();
+			}
+		}
+	}));
 
-		var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog(
-				{
-					map : this.map
-				}); 
-		this.map.events.on({
-					'click' : featureInfoControl.query,
-					scope : featureInfoControl
-				});
-
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconInfo',
-					tooltip : i18n('tObjektinformationen'),
-					enableToggle : true, 
-					handler : function(btn) {
-						if (btn.pressed) {
-							featureInfoControl.activate();
-						} else {
-							featureInfoControl.deactivate();
-						}
-					}
-				}));
-
-	}
 
 	// b) history tool
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasHistoryTool")) {
-		// create the OpenLayers control
-		var historyCtrl = new OpenLayers.Control.NavigationHistory();
-		this.map.addControl(historyCtrl);
+	// create the OpenLayers control
+	var historyCtrl = new OpenLayers.Control.NavigationHistory();
+	this.map.addControl(historyCtrl);
 
-		toolbarItems.push(new GeoExt.Action({
-					control : historyCtrl.previous,
-					disabled : true,
-					iconCls : 'iconZoomPrev',
-					tooltip : i18n('tZurueck')
-				}));
-		toolbarItems.push(new GeoExt.Action({
-					control : historyCtrl.next,
-					disabled : true,
-					iconCls : 'iconZoomNext',
-					tooltip : i18n('tVor')
-				}));
-	}
- 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasZoomTool")) {
+	toolbarItems.push(new GeoExt.Action({
+		control : historyCtrl.previous,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasHistoryTool") ? false : true,
+		disabled : true,
+		iconCls : 'iconZoomPrev',
+		tooltip : i18n('tZurueck')
+	}));
+	toolbarItems.push(new GeoExt.Action({
+		control : historyCtrl.next,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasHistoryTool") ? false : true,
+		disabled : true,
+		iconCls : 'iconZoomNext',
+		tooltip : i18n('tVor')
+	}));
 
- 
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconZoom',
-					tooltip : i18n('tKarteZoomen'),
-					enableToggle : false, 
-					handler : function(btn) {
-						var newProjection = new OpenLayers.Projection(self.map.projection);
-						var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
-						self.map.zoomToExtent(newMaxExtent);
-					}
-				}));
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconZoom',
+		tooltip : i18n('tKarteZoomen'),
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasZoomTool") ? false : true,
+		enableToggle : false, 
+		handler : function(btn) {
+			var newProjection = new OpenLayers.Projection(self.map.projection);
+			var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
+			self.map.zoomToExtent(newMaxExtent);
+		}
+	}));
 
-	}
 	// c) measure tool
+	// create the OpenLayers control
 	if (de.ingrid.mapclient.Configuration.getSettings("viewHasMeasureTool")) {
 		// create the OpenLayers control
 		var measurePathCtrl = new OpenLayers.Control.Measure(
-				OpenLayers.Handler.Path, {
-					persist : true
-				});
+			OpenLayers.Handler.Path, {
+				persist : true
+		});
 		measurePathCtrl.events.on({
-					"measure" : this.measure
-				});
+				"measure" : this.measure
+		});
 		this.map.addControl(measurePathCtrl);
 		var measurePolygonCtrl = new OpenLayers.Control.Measure(
-				OpenLayers.Handler.Polygon, {
-					persist : true
-				});
+			OpenLayers.Handler.Polygon, {
+				persist : true
+		});
 		measurePolygonCtrl.events.on({
-					"measure" : this.measure
-				});
+			"measure" : this.measure
+		});
 		// activate animated toolbar at initial load of map
 		this.map.addControl(measurePolygonCtrl);
 		var loadingPanel = new OpenLayers.Control.LoadingPanel();
 		this.map.addControl(loadingPanel);
 		loadingPanel.activate();
-
+		
 		toolbarItems.push(new Ext.SplitButton({
+			id: 'measureButton',
 			iconCls : 'iconMeassure',
 			tooltip : i18n('tMessen'),
+			toggleGroup : 'toggleGroupMapPanel',
 			menu : [new Ext.menu.CheckItem({
 						id : 'measurePath',
 						text : i18n('tStrecke'),
@@ -333,52 +360,94 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
-									Ext.getCmp('measurePolygon')
-											.setChecked(false);
+									var button = Ext.getCmp('measureButton');
+									var dom = button.getEl().dom;
+									if(!button.pressed){
+										dom.click();	
+									}
+									// Deactivate controls
+									featureInfoControl.deactivate();
+									
+									Ext.getCmp('measurePolygon').setChecked(false);
 									measurePathCtrl.activate();
 								} else {
 									measurePathCtrl.deactivate();
 								}
 							}
 						}
-					}), new Ext.menu.CheckItem({
-						id : 'measurePolygon',
-						text : i18n('tFlaeche'),
-						toggleGroup : 'measure',
-						cls: 'font-menu',
-						listeners : {
-							checkchange : function(item, checked) {
-								if (checked) {
-									Ext.getCmp('measurePath').setChecked(false);
-									measurePolygonCtrl.activate();
-								} else {
-									measurePolygonCtrl.deactivate();
+				}), new Ext.menu.CheckItem({
+					id : 'measurePolygon',
+					text : i18n('tFlaeche'),
+					toggleGroup : 'measure',
+					cls: 'font-menu',
+					listeners : {
+						checkchange : function(item, checked) {
+							if (checked) {
+								var button = Ext.getCmp('measureButton');
+								var dom = button.getEl().dom;
+								if(!button.pressed){
+									dom.click();	
 								}
+								// Deactivate controls
+								featureInfoControl.deactivate();
+								
+								Ext.getCmp('measurePath').setChecked(false);
+								measurePolygonCtrl.activate();
+							} else {
+								measurePolygonCtrl.deactivate();
 							}
 						}
-					})]
+					}
+				})],
+				handler: function(btn){
+					if(btn.pressed){
+						self.deactivateRedlining();
+						
+					}else{
+						btn.getEl().dom.click();
+					}
+				},
+				listeners:{
+					menushow: function (){
+						var button = Ext.getCmp('measureButton');
+						var dom = button.getEl().dom;
+						if(!button.pressed){
+							dom.click();	
+						}
+						
+						self.deactivateRedlining();
+					}
+				},
+				toggleHandler: function(button, state){
+		            var me = this;
+		            if(!me.pressed){
+		            	Ext.getCmp('measurePath').setChecked(false);
+		            	Ext.getCmp('measurePolygon').setChecked(false);
+						measurePathCtrl.deactivate();
+						measurePolygonCtrl.deactivate();
+		            }
+		        }
 		}));
 	}
 	
 	// Create Nominatim
-	if (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")) {
-		toolbarItems.push({
-			id:'nominatim',
-			xtype: "gx_geocodercombo",
-			hideTrigger: true,
-			// To restrict the search to a bounding box, uncomment the following
-			// line and change the viewboxlbrt parameter to a left,bottom,right,top
-			// bounds in EPSG:4326:
-			url: "" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
-			width: 300,
-			map: this.map,
-			emptyText: i18n("tNominatimSearch"),
-			zoom: 5,
-			loadingText: i18n("tNominatimLoading"),
-			emptyClass: 'font-nominatim',
-			listClass: 'font-nominatim'
-		});
-	}
+	toolbarItems.push({
+		id:'nominatim',
+		xtype: "gx_geocodercombo",
+		hideTrigger: true,
+		// To restrict the search to a bounding box, uncomment the following
+		// line and change the viewboxlbrt parameter to a left,bottom,right,top
+		// bounds in EPSG:4326:
+		url: "" + de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").trim(),
+		width: 300,
+		map: this.map,
+		emptyText: i18n("tNominatimSearch"),
+		zoom: 5,
+		loadingText: i18n("tNominatimLoading"),
+		emptyClass: 'font-nominatim',
+		listClass: 'font-nominatim',
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? false : true
+	});
 	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
@@ -415,106 +484,100 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	// d) print tool
 	var printActive = false;
 	var printDia = null;
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool")) {
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconPrint',
-					tooltip : i18n('tDrucken'),
-					handler : function(btn) {
-						
-						if(!printActive){
-						printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
-									id: 'printDialog',
-									mapPanel : mapPanel,
-									legendPanel : new GeoExt.LegendPanel({
-										layerStore : self.activeServicesPanel.getLayerStore(),
-										autoScroll : true,
-										border : false,
-										dynamic : true,
-										cls: "mapclientLegendPanel"
-									})
-								});
-								printActive = true;
-								self.ctrls['keyboardControl'].deactivate();
-						}
-						printDia.on('close', function(){
-							printActive = false;
-							self.ctrls['keyboardControl'].activate();
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconPrint',
+		tooltip : i18n('tDrucken'),
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool") ? false : true,
+		handler : function(btn) {
+			
+			if(!printActive){
+			printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
+						id: 'printDialog',
+						mapPanel : mapPanel,
+						legendPanel : new GeoExt.LegendPanel({
+							layerStore : self.activeServicesPanel.getLayerStore(),
+							autoScroll : true,
+							border : false,
+							dynamic : true,
+							cls: "mapclientLegendPanel"
 						})
-						
-					}
-				}));
-	}
+					});
+					printActive = true;
+					self.ctrls['keyboardControl'].deactivate();
+			}
+			printDia.on('close', function(){
+				printActive = false;
+				self.ctrls['keyboardControl'].activate();
+			})
+			
+		}
+	}));
 
 	// e) load tool
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasLoadTool")) {
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconLoad',
-					tooltip : i18n('tLaden'),
-					disabled : !this.session.hasUserId(),
-					handler : function(btn) {
-						var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog(
-								{
-									id: 'loadDialog',
-									session : self.session
-								});
-								self.ctrls.keyboardControl.deactivate();
-						dlg.on('close', function(p) {
-									if (dlg.isLoad()) {
-										var supressMsgs = true;
-										self.load(undefined, dlg.getFileId(), supressMsgs);
-									}
-									self.ctrls.keyboardControl.activate();
-								});
-					}
-				}));
-	}
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconLoad',
+		tooltip : i18n('tLaden'),
+		disabled : !this.session.hasUserId(),
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasLoadTool") ? false : true,
+		handler : function(btn) {
+			var dlg = new de.ingrid.mapclient.frontend.controls.LoadDialog(
+					{
+						id: 'loadDialog',
+						session : self.session
+					});
+					self.ctrls.keyboardControl.deactivate();
+			dlg.on('close', function(p) {
+						if (dlg.isLoad()) {
+							var supressMsgs = true;
+							self.load(undefined, dlg.getFileId(), supressMsgs);
+						}
+						self.ctrls.keyboardControl.activate();
+					});
+		}
+	}));
 
 	// f) save tool
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasSaveTool")) {
-		toolbarItems.push(new Ext.Button({
-			iconCls : 'iconSave',
-			tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen'),
-			disabled : !this.session.hasUserId(),
-			handler : function(btn) {
-				var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({id: 'saveDialog', ctrls: self.ctrls});
-				dlg.on('close', function(p) {
-							if (dlg.isSave()) {
-								self.save(false, dlg.getTitle(), dlg
-												.getDescription());
-							}
-						});
-			}
-		}));
-	}
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconSave',
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasSaveTool") ? false : true,
+		tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen') ,
+		disabled : !this.session.hasUserId(),
+		handler : function(btn) {
+			var dlg = new de.ingrid.mapclient.frontend.controls.SaveDialog({id: 'saveDialog', ctrls: self.ctrls});
+			dlg.on('close', function(p) {
+				if (dlg.isSave()) {
+					self.save(false, dlg.getTitle(), dlg.getDescription());
+				}
+			});
+		}
+	}));
 
 	// g) download tool
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasDownloadTool")) {
-		toolbarItems.push(new Ext.Button({
-			iconCls : 'iconDownload',
-			tooltip : i18n('tKarteHerunterladen'),
-			handler : function(btn) {
-				var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({id: 'downloadDialog', ctrls: self.ctrls});
-				dia.on('close', function(p) {
-							if (dia.isSave()) {
-								self.download(dia.getTitle());
-							}
-						});
-				}
-		
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconDownload',
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasDownloadTool") ? false : true,
+		tooltip : i18n('tKarteHerunterladen'),
+		handler : function(btn) {
+			var dia = new de.ingrid.mapclient.frontend.controls.DownloadDialog({id: 'downloadDialog', ctrls: self.ctrls});
+			dia.on('close', function(p) {
+						if (dia.isSave()) {
+							self.download(dia.getTitle());
+						}
+					});
 			}
-		));
-	}
+	
+		}
+	));
 	// h) help tool
-	if (de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool")) {
-		toolbarItems.push(new Ext.Button({
-					iconCls : 'iconHelp',
-					tooltip : i18n('tHilfe'),
-					handler : function(btn) {
-						popupWin = window.open(de.ingrid.mapclient.HELP_URL, "InternalWin", 'width=750,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
-  						popupWin.focus();
-					}
-				}));
-	}
+	toolbarItems.push(new Ext.Button({
+		iconCls : 'iconHelp',
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasInfoTool") ? false : true,
+		tooltip : i18n('tHilfe'),
+		handler : function(btn) {
+			popupWin = window.open(de.ingrid.mapclient.HELP_URL, "InternalWin", 'width=750,height=550,resizable=yes,scrollbars=yes,location=no,toolbar=yes');
+			popupWin.focus();
+		}
+	}));
 
 	// create the toolbar
 	var toolbar = new Ext.Toolbar({
@@ -526,32 +589,31 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		// show only if cookies do not prevent this
 		var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
 		if (showWelcomeDialog) {
-	        var welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog(
-	                {
-	                    map : this.map,
-	                    ctrls: self.ctrls
-	                });
+	        var welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog({
+                map : this.map,
+                ctrls: self.ctrls
+            });
 	
 		}
 	}
 	
 	var centerPanel = new Ext.Panel({
-				region : 'center',
-				id: 'centerPanel',
-				layout : 'fit',
-				items : mapPanel,
-				tbar : toolbar,
-				bbar : de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? new Ext.Toolbar() : null
-			});
-	
+		region : 'center',
+		id: 'centerPanel',
+		layout : 'fit',
+		items : mapPanel,
+		tbar : toolbar,
+		bbar : de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? new Ext.Toolbar() : null
+	});
+
 	// dummy panel for the header
 	var northPanel = new Ext.Panel({
-				region : 'north',
-				baseCls : '',
-				height : de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
-						? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim())
-						: 0
-			});
+		region : 'north',
+		baseCls : '',
+		height : de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
+				? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim())
+				: 0
+	});
 
 	// add the items according to the selected configuration
 	// (center panel is mandatory)
@@ -568,8 +630,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	}
 
 	Ext.apply(this, {
-				items : items
-			});
+		items : items
+	});
 
 	de.ingrid.mapclient.frontend.Workspace.superclass.initComponent.call(this);
 };
@@ -606,91 +668,83 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initDefaultMap = function(
 	var self = this;
 	var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
 	de.ingrid.mapclient.frontend.data.Service.load(capUrl, function(service) {
-				// get the selected layer names and base layer name from
-				// the configuration
-				var selectedLayers = de.ingrid.mapclient.Configuration
-						.getValue("layers");
-				var selectedLayerNames = [];
-				var baseLayerName = '';
-				for (var i = 0, count = selectedLayers.length; i < count; i++) {
-					var layer = selectedLayers[i];
-					selectedLayerNames.push(layer.name);
-					if (layer.isBaseLayer == true) {
-						baseLayerName = layer.name;
-					}
-				}
+		// get the selected layer names and base layer name from
+		// the configuration
+		var selectedLayers = de.ingrid.mapclient.Configuration.getValue("layers");
+		var selectedLayerNames = [];
+		var baseLayerName = '';
+		for (var i = 0, count = selectedLayers.length; i < count; i++) {
+			var layer = selectedLayers[i];
+			selectedLayerNames.push(layer.name);
+			if (layer.isBaseLayer == true) {
+				baseLayerName = layer.name;
+			}
+		}
 
-				// process the layers
-				var layers = service.getLayers();
-				var baseLayerSet = false;
-				for (var i = 0, count = layers.length; i < count; i++) {
-					var layer = layers[i];
+		// process the layers
+		var layers = service.getLayers();
+		var baseLayerSet = false;
+		for (var i = 0, count = layers.length; i < count; i++) {
+			var layer = layers[i];
 
-					// set the layer visibility according to the default
-					// layer selection
-					var isDefaultLayer = selectedLayerNames.indexOf(layer.name) != -1
-							? true
-							: false;
-					// set the baselayer attribute
-					var isBaseLayer = (layer.name == baseLayerName)
-							? true
-							: false;
-					layer.visibility = isDefaultLayer;
-					layer.isBaseLayer = isBaseLayer;
-					
-					if (isBaseLayer) {
-						baseLayerSet = true;
-						// bind the base layer to the map
-						// only bind the baseLayer to the map because since GeoExt 1.1
-						// the map is zoomed to extent on layer add. Without a base layer 
-						// set the extent cannot be derived.
-						// the other layer will be add in
-						// ActiveServicesPanel.addService()
-						self.map.addLayer(layer);
-					}
+			// set the layer visibility according to the default
+			// layer selection
+			var isDefaultLayer = selectedLayerNames.indexOf(layer.name) != -1
+					? true
+					: false;
+			// set the baselayer attribute
+			var isBaseLayer = (layer.name == baseLayerName)
+					? true
+					: false;
+			layer.visibility = isDefaultLayer;
+			layer.isBaseLayer = isBaseLayer;
+			
+			if (isBaseLayer) {
+				baseLayerSet = true;
+				// bind the base layer to the map
+				// only bind the baseLayer to the map because since GeoExt 1.1
+				// the map is zoomed to extent on layer add. Without a base layer 
+				// set the extent cannot be derived.
+				// the other layer will be add in
+				// ActiveServicesPanel.addService()
+				self.map.addLayer(layer);
+			}
 
-				}
-				
-				if (!baseLayerSet) {
-					console.debug("Error!! BaseLayer '"+baseLayerName+"' does not match any layer.");
-				}
+		}
+		
+		if (!baseLayerSet) {
+			console.debug("Error!! BaseLayer '"+baseLayerName+"' does not match any layer.");
+		}
 
-				// set initial projection, if no projection has been defined,
-				// use default projection from map
+		// set initial projection, if no projection has been defined,
+		// use default projection from map
 
-				// initialize the projections list
-				var projections = de.ingrid.mapclient.Configuration
-						.getValue('projections');
-				if (projections && projections.length > 0) {
-					de.ingrid.mapclient.frontend.data.MapUtils
-							.assureProj4jsDef(projections[0].epsgCode,
-									function() {
-										de.ingrid.mapclient.frontend.data.MapUtils
-												.changeProjection(
-														projections[0].epsgCode,
-														self.map, this, true);
-										self.map.events.triggerEvent("zoomend");
-									});
-				} else {
-					// set initial bounding box for the map (expected to be WGS
-					// 84)
-					// note: this must be done after layouting the map!
-					var bbox = de.ingrid.mapclient.Configuration
-							.getValue("mapExtend");
-					var bounds = new OpenLayers.Bounds.fromArray([bbox.west,
-							bbox.south, bbox.east, bbox.north]);
-					// bounds.transform(new OpenLayers.Projection("EPSG:4326"),
-					// self.map.getProjectionObject());
-					self.map.zoomToExtent(bounds);
-				}
-
-				// add default service to active services
-				self.activeServicesPanel.addService(service, false, true);
-
-				if (callback instanceof Function) {
-					callback();
-				}
+		// initialize the projections list
+		var projections = de.ingrid.mapclient.Configuration.getValue('projections');
+		if (projections && projections.length > 0) {
+			de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(projections[0].epsgCode,
+				function() {
+					de.ingrid.mapclient.frontend.data.MapUtils.changeProjection(projections[0].epsgCode, self.map, this, true);
+					self.map.events.triggerEvent("zoomend");
 			});
+		} else {
+			// set initial bounding box for the map (expected to be WGS
+			// 84)
+			// note: this must be done after layouting the map!
+			var bbox = de.ingrid.mapclient.Configuration.getValue("mapExtend");
+			var bounds = new OpenLayers.Bounds.fromArray([bbox.west, bbox.south, bbox.east, bbox.north]);
+			// bounds.transform(new OpenLayers.Projection("EPSG:4326"),
+			// self.map.getProjectionObject());
+			self.map.zoomToExtent(bounds);
+		}
+
+		// add default service to active services
+		self.activeServicesPanel.addService(service, false, true);
+
+		if (callback instanceof Function) {
+			callback();
+		}
+	});
 };
 
 /**
@@ -777,9 +831,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		var cntrPanelBbar = cntrPanel.getBottomToolbar();
 		
-		var controler = new GeoExt.ux.FeatureEditingControler({
+		this.redliningControler = new GeoExt.ux.FeatureEditingControler({
 	        cosmetic: true,
 	        map: this.map,
+	        toggleGroup : 'toggleGroupMapPanel',
 	        // TODO: Check Styles import export
 	        styler: de.ingrid.mapclient.Configuration.getSettings("viewRedliningStyleEnable") ? 'combobox' : '',
 	        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
@@ -797,7 +852,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	            if (this.lastDrawControl && this.activeLayer.selectedFeatures.length === 0) {
 	                this.featureControl.deactivate();
 	                this.lastDrawControl.activate();
-	                this.lastDrawControl = null;
 	            }else{
 	            	this.triggerAutoSave();
 	            }
@@ -823,11 +877,11 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	                    this);
 	        }
 	    });
-		cntrPanelBbar.addItem(controler.actions);
+		cntrPanelBbar.addItem(this.redliningControler.actions);
 		cntrPanelBbar.doLayout();
 		
 		if(self.kmlRedlining){
-			GeoExt.ux.data.Import(self.map, controler.activeLayer, 'KML', self.kmlRedlining, null);
+			GeoExt.ux.data.Import(self.map, this.redliningControler.activeLayer, 'KML', self.kmlRedlining, null);
 		}
 	}
 };
@@ -941,12 +995,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.download = function(
 	// set parameters according to save type
 	var responseHandler = {
 		success : function(responseText) {
-			de.ingrid.mapclient.Message
-					.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
+			de.ingrid.mapclient.Message.showInfo(de.ingrid.mapclient.Message.MAP_SAVE_SUCCESS);
 		},
 		failure : function(responseText) {
-			de.ingrid.mapclient.Message
-					.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
+			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_SAVE_FAILURE);
 		}
 	};
 
@@ -1084,11 +1136,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				if (wms != null) {
 					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
 							.createFromCapabilitiesUrl(wms);
-					var callback = Ext.util.Functions.createDelegate(
-							self.activeServicesPanel.addService,
-							self.activeServicesPanel);
-					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-									.getCapabilitiesUrl(), callback, true, true, true);
+					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 				}
 	
 				self.finishInitMap();
@@ -1200,13 +1249,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				self.finishInitMap();
 				// Add WMS "Zeige Karte"
 				if (wms != null) {
-					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
-							.createFromCapabilitiesUrl(wms);
-					var callback = Ext.util.Functions.createDelegate(
-							self.activeServicesPanel.addService,
-							self.activeServicesPanel);
-					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS
-									.getCapabilitiesUrl(), callback, true, true, true);
+					var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
+					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback, true, true, true);
 				}
 
 				// Add KML "Zeige Punktkoordinaten"
@@ -1240,6 +1285,14 @@ de.ingrid.mapclient.frontend.Workspace.prototype.getElementsByClassName = functi
     return a;
 };
 
+de.ingrid.mapclient.frontend.Workspace.prototype.deactivateRedlining = function () {
+	var self = this;
+	if(self.redliningControler.lastDrawControl){
+		self.redliningControler.lastDrawControl.deactivate();
+		self.redliningControler.lastDrawControl = null;
+	}
+}
+
 /**
  * 
  * @override GeoExt.WMSLegend
@@ -1254,8 +1307,7 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
         var layer = rec.getLayer();
         layerNames = layerNames || [layer.params.LAYERS].join(",").split(",");
 
-        var styleNames = layer.params.STYLES &&
-                             [layer.params.STYLES].join(",").split(",");
+        var styleNames = layer.params.STYLES && [layer.params.STYLES].join(",").split(",");
         var idx = layerNames.indexOf(layerName);
         var styleName = styleNames && styleNames[idx];
         // check if we have a legend URL in the record's
@@ -1287,8 +1339,7 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
         }
         // add scale parameter - also if we have the url from the record's
         // styles data field and it is actually a GetLegendGraphic request.
-        if(this.useScaleParameter === true &&
-                url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
+        if(this.useScaleParameter === true && url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
             var scale = layer.map.getScale();
             url = Ext.urlAppend(url, "SCALE=" + scale);
         }
