@@ -246,6 +246,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	});
 
 	toolbarItems.push(new Ext.Button({
+		id : 'btnDragMap',
 		iconCls : 'iconDefault',
 		tooltip : i18n('tKarteVerschieben'),
 		toggleGroup : 'toggleGroupMapPanel',
@@ -492,12 +493,15 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		iconCls : 'iconPrint',
 		tooltip : i18n('tDrucken'),
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool") ? false : true,
-		toggleGroup : 'toggleGroupMapPanel',
 		handler : function(btn) {
+			measurePathCtrl.deactivate();
+			measurePolygonCtrl.deactivate();
+			Ext.getCmp('measurePath').setChecked(false);
+			Ext.getCmp('measurePolygon').setChecked(false);
+			featureInfoControl.deactivate();
 			self.deactivateRedlining();
 	        if(!printActive){
 				printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
-							id: 'printDialog',
 							mapPanel : mapPanel,
 							legendPanel : new GeoExt.LegendPanel({
 								layerStore : self.activeServicesPanel.getLayerStore(),
@@ -513,6 +517,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			printDia.on('close', function(){
 				printActive = false;
 				self.ctrls['keyboardControl'].activate();
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
+					var btn = Ext.getCmp("btnDragMap");
+					btn.getEl().dom.click();
+				}
 			})
 		}
 	}));
