@@ -490,7 +490,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	var printActive = false;
 	var printDia = null;
 	toolbarItems.push(new Ext.Button({
+		enableToggle:false,
 		iconCls : 'iconPrint',
+		toggleGroup : de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? 'toggleGroupMapPanel' : null,
 		tooltip : i18n('tDrucken'),
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool") ? false : true,
 		handler : function(btn) {
@@ -518,8 +520,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				printActive = false;
 				self.ctrls['keyboardControl'].activate();
 				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
-					var btn = Ext.getCmp("btnDragMap");
-					btn.getEl().dom.click();
+					var btnDragMap = Ext.getCmp("btnDragMap");
+					btnDragMap.getEl().dom.click();
 				}
 			})
 		}

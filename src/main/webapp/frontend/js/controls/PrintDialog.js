@@ -53,10 +53,12 @@ de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.initComponent = func
 		autoLoad: true,
 		listeners: {
 			"loadcapabilities": function(provider, capabilities) {
-				// Edit capabilities to https urls
-				this.capabilities.createURL = this.capabilities.createURL.replace("http:", window.location.protocol);
-                this.capabilities.printURL = this.capabilities.printURL.replace("http:", window.location.protocol);
-				
+				// Edit capabilities entries to https urls
+				if(window.location.protocol == "https:"){
+					this.capabilities.createURL = this.capabilities.createURL.replace("http:", window.location.protocol);
+	                this.capabilities.printURL = this.capabilities.printURL.replace("http:", window.location.protocol);
+				}
+
 				self.loadMask.hide();
 				// create the printform and show it
 				var printForm = self.createPrintForm();
