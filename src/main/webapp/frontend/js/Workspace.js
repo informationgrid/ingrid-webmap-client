@@ -494,27 +494,26 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewHasPrintTool") ? false : true,
 		toggleGroup : 'toggleGroupMapPanel',
 		handler : function(btn) {
-			
-			if(!printActive){
-			printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
-						id: 'printDialog',
-						mapPanel : mapPanel,
-						legendPanel : new GeoExt.LegendPanel({
-							layerStore : self.activeServicesPanel.getLayerStore(),
-							autoScroll : true,
-							border : false,
-							dynamic : true,
-							cls: "mapclientLegendPanel"
-						})
-					});
-					printActive = true;
-					self.ctrls['keyboardControl'].deactivate();
+			self.deactivateRedlining();
+	        if(!printActive){
+				printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
+							id: 'printDialog',
+							mapPanel : mapPanel,
+							legendPanel : new GeoExt.LegendPanel({
+								layerStore : self.activeServicesPanel.getLayerStore(),
+								autoScroll : true,
+								border : false,
+								dynamic : true,
+								cls: "mapclientLegendPanel"
+							})
+						});
+						printActive = true;
+						self.ctrls['keyboardControl'].deactivate();
 			}
 			printDia.on('close', function(){
 				printActive = false;
 				self.ctrls['keyboardControl'].activate();
 			})
-			
 		}
 	}));
 
@@ -880,6 +879,41 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	                }
 	            },
 	                    this);
+	        },
+	        onFeatureAdded: function(event) {
+	            var feature, drawControl, featureTyp, featureCmp, hasEnoughCmp;
+
+	            feature = event.feature;
+	            featureTyp = feature.geometry.CLASS_NAME;
+            	feature.state = OpenLayers.State.INSERT;
+	            hasEnoughCmp = true;
+	            
+	            drawControl = this.getActiveDrawControl();
+	            if (drawControl) {
+	                drawControl.deactivate();
+	                this.lastDrawControl = drawControl;
+	            }
+	            
+	            if(featureTyp === "OpenLayers.Geometry.Polygon"){
+	            	if(feature.geometry){
+		            	if(feature.geometry.components){
+		            		if(feature.geometry.components[0]){
+		            			if(feature.geometry.components[0].components){
+		            				if(feature.geometry.components[0].components.length < 4){
+		            					hasEnoughCmp = false
+		            				}
+		            			}
+		            		}
+		            	}
+		            }
+	            }
+	            if(hasEnoughCmp){
+	            	this.featureControl.activate();
+		            this.getSelectControl().select(feature);
+	            }else{
+	            	drawControl.activate();
+	            	feature.layer.destroyFeatures([feature]);
+	            }
 	        }
 	    });
 		cntrPanelBbar.addItem(this.redliningControler.actions);
