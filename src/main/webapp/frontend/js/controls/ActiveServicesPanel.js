@@ -92,6 +92,15 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					}
 				}
 				
+				// Remove selected Layers
+				for(var i = 0; i < self.selectedLayersByService.length; i++){
+					var layer = self.selectedLayersByService[i];
+					if(layer.capabilitiesUrl == self.activeNode.attributes.service.capabilitiesUrl){
+						self.selectedLayersByService.remove(layer);
+						i--;
+					}
+				}
+				
 				if(self.activeNode.attributes.service != undefined){
 					self.removeService(self.activeNode.attributes.service, null, self.activeNode);
 				}else if (self.activeNode.layer != undefined){
@@ -388,7 +397,9 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 						break;
 					}
 				}
-				
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
+					self.checkScaleRecursively(node, self.map.getScale());
+				}
 				if(exist == false){
 					self.treeState.push({
 						name:name,
@@ -398,7 +409,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 					});
 					self.fireEvent('datachanged');
 				}
-				self.checkScaleRecursively(node, self.map.getScale());
 			}
 		});
 		
@@ -595,14 +605,20 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 						if(self.activeNode){
 							var isEnable = self.activeNode.attributes.checked;
-							
-							if(self.activeNode.layer.params.LAYERS){
-								if(self.activeNode.layer.params.LAYERS.indexOf("INGRID-") > -1){
-									isEnable = false;
+							if(self.activeNode){
+								if(self.activeNode.layer){
+									if(self.activeNode.layer.params){
+										if(self.activeNode.layer.params.LAYERS){
+											if(self.activeNode.layer.params.LAYERS.indexOf("INGRID-") > -1){
+												isEnable = false;
+											}
+										}else{
+											isEnable = false;
+										}
+									}
 								}
-							}else{
-								isEnable = false;
 							}
+							
 							self.enableGroupLayerButton(self.activeNode, isEnable);
 						}
 						
@@ -787,6 +803,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		for (var j = 0, count = layers.length; j < count; j++) {
 			var layer = layers[j];
 			self.map.raiseLayer(layer, layers.length);
+		}
+		// Set vector layers to the end
+		if(de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") == true){
+			if(this.map){
+				var cosmeticLayer;
+				var layers = this.map.layers;
+				for (var i = 0, count = layers.length; i < count; i++) {
+					var layer = layers[i];
+					if(layer){
+						if(layer.name){
+							if(layer.name == "Cosmetic"){
+								cosmeticLayer = layer;
+								this.map.removeLayer(layer);
+							}
+						}
+					}
+				}
+				if(cosmeticLayer){
+					this.map.addLayer(cosmeticLayer);
+				}
+			}
 		}
 	}
 };
