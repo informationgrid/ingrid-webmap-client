@@ -192,7 +192,8 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 				layer.setVisibility(false);
 				node.setCls('x-tree-node-anchor');
 			}
-		}
+		},
+		cls: 'font-menu'
     };
 	
 	self.menuService = new Ext.menu.Menu({
