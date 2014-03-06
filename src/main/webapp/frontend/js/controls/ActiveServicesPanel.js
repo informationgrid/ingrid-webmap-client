@@ -1003,15 +1003,21 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getServiceLi
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.displayMetaData = function(node) {
 	var self = this;
 	var layer = null;
-	if(node.attributes.layer)
+	if(node.attributes.layer){
 		layer = node.attributes.layer;
-	//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
-	if(!layer) {
-		layer = node.childNodes[0].layer;
-	}		
+	}
 
 	var service = node.attributes.service;
 	if(service){
+		//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
+		if(!layer) {
+			if(service.layers){
+				if(service.layers.items){
+					layer = service.layers.items[0];
+				}
+			}
+		}		
+
 		var window = Ext.getCmp(node.id + "-metadata");
 		if(window){
 			window.close();
