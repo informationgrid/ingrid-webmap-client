@@ -190,6 +190,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasDragMapTool</key>
+      <name>Karte verschieben</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasInfoTool</key>
       <name>Objektinformationen-Button: Feature Abfrage eines Dienstes</name>
       <value>true</value>
@@ -277,6 +283,18 @@
       <key>viewHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
       <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewRedliningEnable</key>
+      <name>Bereitstellung der Redlining-Tools</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewRedliningStyleEnable</key>
+      <name>Styling von Redlining-Objekten</name>
+      <value>false</value>
       <group>view</group>
     </setting>
     <setting>

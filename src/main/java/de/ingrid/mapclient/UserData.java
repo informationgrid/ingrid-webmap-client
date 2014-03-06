@@ -35,6 +35,7 @@ public class UserData {
 	private LocationKey locationKey;
 	private List<String> activeServices = new ArrayList<String>();
 	private List<Map<String, String>> kmlArray = new ArrayList<Map<String, String>>();
+	private String kmlRedlining;
 	private List<Map<String, String>> selectedLayersByService= new ArrayList<Map<String, String>>();
 	private List<Map<String, String>> treeState = new ArrayList<Map<String, String>>();
 	
@@ -161,5 +162,13 @@ public class UserData {
 
 	public void setTreeState(List<Map<String, String>> treeState) {
 		this.treeState = treeState;
+	}
+
+	public String getKmlRedlining() {
+		return kmlRedlining;
+	}
+
+	public void setKmlRedlining(String kmlRedlining) {
+		this.kmlRedlining = kmlRedlining;
 	}
 }

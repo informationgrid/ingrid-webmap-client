@@ -8,29 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/extjs/resources/css/ext-all.css" />
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/frontend/css/style.css" />
 	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/openlayers.addins/loadingpanel.css" />
-</head>
-<body>
-<p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
-     <script type="text/javascript">
-     
-    function endLoadIcon() {
-
-    ProgressImage = document.getElementById("progress_image");
-    document.getElementById("progress").style.visibility = "hidden";
-    setTimeout("ProgressImage.src = ProgressImage.src",100);
-    return true;
-
-    } 
-    </script>
-<div id="openlayersDiv" style="width:800px;"></div>
-   <script type="text/javascript">
-   var wms = null;
-   var kml = null;
-   </script>
-   <noscript>
-   Javascript has to be enabled to run this application.
-   </noscript>
-   	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/adapter/ext/ext-base-debug.js"></script>
+	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/geoext.ux/FeatureEditing/resources/css/feature-editing.css" />
+	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/adapter/ext/ext-base-debug.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/extjs/ext-all-debug.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers/lib/OpenLayers.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext/lib/GeoExt.js"></script>
@@ -41,7 +20,7 @@
 	
 	<!-- openlayers extensions -->
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers.addins/LoadingPanel.js"></script>
-	<!-- extjs extensions -->
+    <!-- extjs extensions -->
     <script type="text/javascript" src="/ingrid-webmap-client/lib/extjs.ux/Extjs.ux.Notification.js"></script>
 	<!-- geoext extensions -->
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/SimplePrint.js"></script>
@@ -49,6 +28,22 @@
  	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/GeocoderComboBox.js"></script>
     
     <!-- custom code -->
+    
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/downloadify/js/swfobject.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/downloadify/js/downloadify.min.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/utils/flash.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/data/FormatStore.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/data/Export.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/data/Import.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/widgets/LayerManagerExportPanel.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/widgets/LayerManagerImportPanel.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/widgets/LayerManagerWindow.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/widgets/LayerManagerExportWindow.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/Styler/ux/LayerStyleManager.js"></script>
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/Styler/ux/widgets/StyleSelectorComboBox.js"></script>
+   
+    <script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/FeatureEditing/ux/FeatureEditing.js"></script>
+    
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/config.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/Message.js"></script>
 	<script type="text/javascript" src="/ingrid-webmap-client/shared/js/Configuration.js"></script>
@@ -84,7 +79,29 @@
 
 	<script type="text/javascript" src="/ingrid-webmap-client/frontend/js/main.js"></script> 
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/flashmessage1.1.1/Ext.ux.MessageBox.flash.js"></script>
-	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/flashmessage1.1.1/Ext.ux.MessageBox.flash.css" />	 
+	<link rel="stylesheet" type="text/css" href="/ingrid-webmap-client/lib/flashmessage1.1.1/Ext.ux.MessageBox.flash.css" />	
+</head>
+<body>
+<p id="progress" class="load_icon_webmap"/><img id="progress_image"  src="images/ajax-loader.gif" alt="">  Map is loading...</p> 
+     <script type="text/javascript">
+     
+    function endLoadIcon() {
+
+    ProgressImage = document.getElementById("progress_image");
+    document.getElementById("progress").style.visibility = "hidden";
+    setTimeout("ProgressImage.src = ProgressImage.src",100);
+    return true;
+
+    } 
+    </script>
+<div id="openlayersDiv" style="width:800px;"></div>
+   <script type="text/javascript">
+   var wms = null;
+   var kml = null;
+   </script>
+   <noscript>
+   Javascript has to be enabled to run this application.
+   </noscript> 
 </body>
 </html>
 	
