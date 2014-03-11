@@ -30,3 +30,9 @@ if(typeof viewConfiguration == "undefined"){
 	}
 }
 
+if(typeof wms == "undefined"){
+	var wmsUrl = getParameter("wms_url");
+	if(wmsUrl){
+		var wms = wmsUrl;
+	}
+}
