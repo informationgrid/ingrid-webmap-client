@@ -5,11 +5,20 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">	
 	<title>InGrid Map Client</title>
 
+	<script type="text/javascript">var isFullScreen = true;</script> 
+	<script type="text/javascript" src="/ingrid-webmap-client/auth"></script>
 	<script type="text/javascript" src="../lib/geoext.ux/Locale.js"></script>
 	<script type="text/javascript" src="../lib/extjs/adapter/ext/ext-base.js"></script>
 	<script type="text/javascript" src="../lib/extjs/ext-all.js"></script>
 	<script type="text/javascript" src="../lib/openlayers/OpenLayers.js"></script>
+	<script type="text/javascript">
+		document.write('<script type="text/javascript" src="/ingrid-webmap-client/lib/openlayers/lib/OpenLayers/Lang/'+languageCode+'.js"><\/script>');
+	</script>
 	<script type="text/javascript" src="../lib/geoext/script/GeoExt.js"></script>
+	<script type="text/javascript">
+		OpenLayers.Lang.setCode(languageCode);
+		document.write('<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/FeatureEditing/resources/lang/'+ languageCode + '.js"><\/script>');
+	</script>
 	<script type="text/javascript" src="../lib/extjs.ux/plugins/CustomTreeFeature.js"></script>
 
 	<script type="text/javascript" src="/ingrid-webmap-client/lib/geoext.ux/LayerManager/ux/downloadify/js/swfobject.js"></script>
