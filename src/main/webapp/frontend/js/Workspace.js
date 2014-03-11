@@ -184,7 +184,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
 			enableToggle : false,
 			style:{
-				marginLeft: isFullScreen ? '-7px' : '-13px'
+				marginLeft: typeof isFullScreen == "undefined" ? '-13px' : '-7px'
 			},
 			handleMouseEvents:false,
 			handler: function(btn) {
