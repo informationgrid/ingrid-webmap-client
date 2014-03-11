@@ -22,3 +22,11 @@ if(typeof languageCode == "undefined"){
 		languageCode = lang;
 	}
 }
+
+if(typeof viewConfiguration == "undefined"){
+	var config = getParameter("config");
+	if(config){
+		var viewConfiguration = config;
+	}
+}
+
