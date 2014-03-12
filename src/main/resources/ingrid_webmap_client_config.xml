@@ -280,6 +280,30 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewPortalButton</key>
+      <name>Button zum öffnen des Portals</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewPortalURL</key>
+      <name>URL zum Portal</name>
+      <value>/startseite</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewFullScreenButton</key>
+      <name>Fullscreen-Button für die Kartenkomponente</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewFullScreenURL</key>
+      <name>URL zur Kartenkomponente im Fullscreen</name>
+      <value>/ingrid-webmap-client/frontend</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
       <value>true</value>

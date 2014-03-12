@@ -184,7 +184,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
 			enableToggle : false,
 			style:{
-				marginLeft: '-13px'
+				marginLeft: typeof isFullScreen == "undefined" ? '-13px' : '-7px'
 			},
 			handleMouseEvents:false,
 			handler: function(btn) {
@@ -247,7 +247,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	toolbarItems.push(new Ext.Button({
 		id : 'btnDragMap',
-		iconCls : 'iconDefault',
+		iconCls : 'iconDrag',
 		tooltip : i18n('tKarteVerschieben'),
 		toggleGroup : 'toggleGroupMapPanel',
 		enableToggle : true,
@@ -582,6 +582,36 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	
 		}
 	));
+	
+	if(typeof isFullScreen !== "undefined"){
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconPortal',
+			hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalButton") ? false : true,
+			tooltip : i18n('tPortal'),
+			handler : function(btn) {
+				var win=window.open(de.ingrid.mapclient.Configuration.getSettings("viewPortalURL"), '_blank');
+				win.focus();
+			}
+		}));
+	}else{
+		toolbarItems.push(new Ext.Button({
+			iconCls : 'iconFullScreen',
+			hidden: de.ingrid.mapclient.Configuration.getSettings("viewFullScreenButton") ? false : true,
+			tooltip : i18n('tFullScreen'),
+			handler : function(btn) {
+				var url = de.ingrid.mapclient.Configuration.getSettings("viewFullScreenURL");
+				if(url.indexOf("?") < 0){
+					url = url + "?";
+				}
+				url = url + "lang=" + languageCode;
+				
+				var win=window.open(url, '_blank');
+				win.focus();
+			}
+		}));
+
+	}
+	
 	// h) help tool
 	toolbarItems.push(new Ext.Button({
 		iconCls : 'iconHelp',
@@ -592,7 +622,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			popupWin.focus();
 		}
 	}));
-
+	
 	// create the toolbar
 	var toolbar = new Ext.Toolbar({
 				items : toolbarItems
