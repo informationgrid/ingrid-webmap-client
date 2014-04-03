@@ -235,7 +235,8 @@ Local = {
 		tLoadingServiceTaskTitle: {en: 'Service seems to be unresponsive.', de: 'Dienst evtl. nicht erreichbar.'},
 		tLoadingServiceTaskMessage: {en: 'Cancel loading capabilities?', de: 'M&ouml;chten Sie den Ladenvorgang abbrechen?'},
 		tFullScreen: {en: 'Open map client on full screen', de: 'Darstellung der Kartenkomponente im Vollbildschirm'},
-		tPortal: {en: 'Open PortalU', de: 'PortalU &ouml;ffnen'}
+		tPortal: {en: 'Open PortalU', de: 'PortalU &ouml;ffnen'},
+		tKeineTreffer: {en: 'No hits', de: 'Keine Treffer'}
     }
 }
 
