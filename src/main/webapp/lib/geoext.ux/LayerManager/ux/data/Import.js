@@ -92,7 +92,7 @@ GeoExt.ux.data.Import.KMLImport = function(map, layer) {
         layer: layer
     });
     importPanel.on('dataimported', function(panel, format, filecontent, features) {
-        alert(OpenLayers.i18n("KML data sucessfully imported in layer: " + panel.layer.name + " !" + " Number of imported features: " + features.length));
+        alert(OpenLayers.i18n("Data sucessfully imported! Number of imported features:") + " " + features.length);
         importWindow.close();
     });
     var importWindow = new Ext.Window({

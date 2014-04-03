@@ -99,7 +99,7 @@ GeoExt.ux.LayerManagerWindow = Ext.extend(Ext.Window, {
         });
 
         this.importPanel.on('dataimported', function(panel, format, filecontent, features) {
-            alert(OpenLayers.i18n("KML data sucessfully imported in layer: " + panel.layer.name + " !" + " Number of imported features: " + features.length));
+        	alert(OpenLayers.i18n("Data sucessfully imported! Number of imported features:") + " " + features.length);
         });
 
         this.items = [

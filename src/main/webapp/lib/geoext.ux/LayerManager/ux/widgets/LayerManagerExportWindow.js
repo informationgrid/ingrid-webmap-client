@@ -172,7 +172,7 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
                     onCancel: function() {
                     },
                     onError: function() {
-                        alert('Error occured during storage');
+                        alert(unescape(OpenLayers.i18n('Error occured during storage')));
                     },
                     transparent: false,
                     swf: this.baseUrl + '/downloadify/media/downloadify.swf',

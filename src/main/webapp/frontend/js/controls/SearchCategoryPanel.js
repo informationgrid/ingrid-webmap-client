@@ -91,8 +91,20 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	    }
 	});
 	
+	var panel = new Ext.Panel({
+		bodyStyle: 'padding:5px; background: transparent;',
+		layout: 'form',
+		style: 'border-bottom: 0',
+		items:[
+		    {
+				html: i18n('tSuchbegriffEingeben'),
+				border: false,
+				bodyCssClass: 'background font'
+			}]
+	});
+	
 	Ext.apply(this, {
-		items:[tree]
+		items:[tree,panel]
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.superclass.initComponent.call(this);

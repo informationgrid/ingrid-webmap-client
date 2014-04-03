@@ -4,6 +4,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'Export': 'Export',
     'Import KML': 'Import',
     'Import': 'Import',
+    'Data sucessfully imported! Number of imported features:' : 'Daten erfolgreich importiert! Anzahl von importierten Objekten:',
     'Close': 'Schliessen',
     'Attributes': 'Attribute',
     'select a color...': 'Farbe ...',
@@ -35,12 +36,15 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'No' : 'Nein',
     'Ok' : 'Ok',
     'Cancel' : 'Abbrechen',
-    'Select a file to import' : 'Datei für den Import auswählen',
+    'Select a file to import' : 'Datei f%FCr den Import ausw%E4hlen',
     'Dear IE user. Add this site in the list of trusted site and activate the ActiveX. ' : 'Lieber IE User. Fügen Sie diese Seite zur der Liste der vertrauten Webseiten und aktivieren Sie ActiveX. ',
     'Error by reading file.' : 'Fehler beim Einlesen der Datei.',
     'name' : 'Name',
     'description' : 'Beschreibung',
-
+    'Error occured during storage' : 'Fehler w%E4hrend dem Speichervorgang',
+    'Your browser is not supported.' : 'Ihr Browser wird nicht unterst%FCtzt.',
+    'Please install Flash 10 in order to use the following window.' : 'Bitte installieren Sie Flash 10, um das folgende Fenster zu verwenden',
+    
      /* colors for styler */
     'black': 'schwarz',
     'blue': 'blau',
