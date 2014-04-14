@@ -163,7 +163,7 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
                                             if (GetFlashVersion() > 10.00) {
                                                 GeoExt.ux.data.Export.OpenWindowDownloadify();
                                             } else {
-                                                alert('Please install Flash 10 in order to use the following window');
+                                                alert(OpenLayers.i18n('Please install Flash 10 in order to use the following window.'));
                                                 GeoExt.ux.data.Export.OpenWindowDownloadify();
                                             }
                                         } else if (Ext.isGecko) {
@@ -173,7 +173,7 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
                                                 this.exportLinkBox.getEl().dom.innerHTML = '<a href="data:text/xml,' + GeoExt.ux.data.Export.content.replace(/"/g, '\'') + '" target="new">Right mouse click, Save As...</a>';
                                             }
                                         } else {
-                                            alert('Your browser is not supported. Patch welcome !');
+                                            alert(unescape(OpenLayers.i18n('Your browser is not supported.')));
                                         }
                                     }
                                     if (Ext.getCmp('layermanagerwindow')) {

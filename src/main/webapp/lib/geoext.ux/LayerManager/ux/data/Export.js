@@ -170,7 +170,7 @@ GeoExt.ux.data.Export.KMLExport = function(map, layers, features, downloadServic
         if (GetFlashVersion() > 10.00) {
             GeoExt.ux.data.Export.OpenWindowDownloadify();
         } else {
-            alert('Please install Flash 10 in order to use the following window.');
+            alert(OpenLayers.i18n('Please install Flash 10 in order to use the following window.'));
             GeoExt.ux.data.Export.OpenWindowDownloadify();
         }
     }
