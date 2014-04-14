@@ -798,15 +798,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 
 	var self = this;
 
-	// add controls to map
-	var keyboardControl =this.ctrls['keyboardControl'];
-	var controls = [new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.PanZoomBar(),
-			new OpenLayers.Control.ScaleLine(),
-			new OpenLayers.Control.MousePosition(),
-			keyboardControl];
-	this.map.addControls(controls);
-	
 	if(de.ingrid.mapclient.Configuration.getSettings("viewMinimapEnable")){
 		// create the overview layer
 		// (we cannot clone the baselayer here, because it would use wrong 
@@ -874,90 +865,91 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 	if (de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")) {
 		var cntrPanel = Ext.getCmp('centerPanel');
 		var cntrPanelBbar = cntrPanel.getBottomToolbar();
-		
-		this.redliningControler = new GeoExt.ux.FeatureEditingControler({
-	        cosmetic: true,
-	        map: this.map,
-	        toggleGroup : 'toggleGroupMapPanel',
-	        // TODO: Check Styles import export
-	        styler: de.ingrid.mapclient.Configuration.getSettings("viewRedliningStyleEnable") ? 'combobox' : '',
-	        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
-	        triggerAutoSave: function() {
-	            if (this.autoSave) {
-	                this.featurePanel.triggerAutoSave();
-	            }
-	            self.kmlRedlining = GeoExt.ux.data.Export(this.map, 'KML', this.layers, null);
-	            if(this.layers[0].features.length == 0){
-	            	self.kmlRedlining = "";
-	            }
-	            self.save(true);
-	        },
-	        reactivateDrawControl: function() {
-	            if (this.lastDrawControl && this.activeLayer.selectedFeatures.length === 0) {
-	                this.featureControl.deactivate();
-	                this.lastDrawControl.activate();
-	            }else{
-	            	this.triggerAutoSave();
-	            }
-	            
-	        },
-	        deleteAllFeatures: function() {
-	        	var messageBox = Ext.MessageBox;
-	        	messageBox.buttonText = {ok: OpenLayers.i18n('Ok'), cancel: OpenLayers.i18n('Cancel'), yes: OpenLayers.i18n('Yes'), no: OpenLayers.i18n('No')};
-	        	messageBox.confirm(OpenLayers.i18n('Delete All Features'), OpenLayers.i18n('Do you really want to delete all features ?'), function(btn) {
-	                if (btn == 'yes') {
-	                    if (this.popup) {
-	                        this.popup.close();
-	                        this.popup = null;
-	                    }
-
-	                    for (var i = 0; i < this.layers.length; i++) {
-	                        this.layers[i].destroyFeatures();
-	                    }
-	                    self.kmlRedlining = "";
-	    	            self.save(true);
-	                }
-	            },
-	                    this);
-	        },
-	        onFeatureAdded: function(event) {
-	            var feature, drawControl, featureTyp, featureCmp, hasEnoughCmp;
-
-	            feature = event.feature;
-	            featureTyp = feature.geometry.CLASS_NAME;
-            	feature.state = OpenLayers.State.INSERT;
-	            hasEnoughCmp = true;
-	            
-	            drawControl = this.getActiveDrawControl();
-	            if (drawControl) {
-	                drawControl.deactivate();
-	                this.lastDrawControl = drawControl;
-	            }
-	            
-	            if(featureTyp === "OpenLayers.Geometry.Polygon"){
-	            	if(feature.geometry){
-		            	if(feature.geometry.components){
-		            		if(feature.geometry.components[0]){
-		            			if(feature.geometry.components[0].components){
-		            				if(feature.geometry.components[0].components.length < 4){
-		            					hasEnoughCmp = false
-		            				}
-		            			}
-		            		}
-		            	}
+		if(this.redliningControler == null){
+			this.redliningControler = new GeoExt.ux.FeatureEditingControler({
+		        cosmetic: true,
+		        map: this.map,
+		        toggleGroup : 'toggleGroupMapPanel',
+		        // TODO: Check Styles import export
+		        styler: de.ingrid.mapclient.Configuration.getSettings("viewRedliningStyleEnable"),
+		        popupOptions: {map: this.map, anchored: false, unpinnable: false, draggable: true},
+		        triggerAutoSave: function() {
+		            if (this.autoSave) {
+		                this.featurePanel.triggerAutoSave();
 		            }
-	            }
-	            if(hasEnoughCmp){
-	            	this.featureControl.activate();
-		            this.getSelectControl().select(feature);
-	            }else{
-	            	drawControl.activate();
-	            	feature.layer.destroyFeatures([feature]);
-	            }
-	        }
-	    });
-		cntrPanelBbar.addItem(this.redliningControler.actions);
-		cntrPanelBbar.doLayout();
+		            self.kmlRedlining = GeoExt.ux.data.Export(this.map, 'KML', this.layers, null);
+		            if(this.layers[0].features.length == 0){
+		            	self.kmlRedlining = "";
+		            }
+		            self.save(true);
+		        },
+		        reactivateDrawControl: function() {
+		            if (this.lastDrawControl && this.activeLayer.selectedFeatures.length === 0) {
+		                this.featureControl.deactivate();
+		                this.lastDrawControl.activate();
+		            }else{
+		            	this.triggerAutoSave();
+		            }
+		            
+		        },
+		        deleteAllFeatures: function() {
+		        	var messageBox = Ext.MessageBox;
+		        	messageBox.buttonText = {ok: OpenLayers.i18n('Ok'), cancel: OpenLayers.i18n('Cancel'), yes: OpenLayers.i18n('Yes'), no: OpenLayers.i18n('No')};
+		        	messageBox.confirm(OpenLayers.i18n('Delete All Features'), OpenLayers.i18n('Do you really want to delete all features ?'), function(btn) {
+		                if (btn == 'yes') {
+		                    if (this.popup) {
+		                        this.popup.close();
+		                        this.popup = null;
+		                    }
+
+		                    for (var i = 0; i < this.layers.length; i++) {
+		                        this.layers[i].destroyFeatures();
+		                    }
+		                    self.kmlRedlining = "";
+		    	            self.save(true);
+		                }
+		            },
+		                    this);
+		        },
+		        onFeatureAdded: function(event) {
+		            var feature, drawControl, featureTyp, featureCmp, hasEnoughCmp;
+
+		            feature = event.feature;
+		            featureTyp = feature.geometry.CLASS_NAME;
+	            	feature.state = OpenLayers.State.INSERT;
+		            hasEnoughCmp = true;
+		            
+		            drawControl = this.getActiveDrawControl();
+		            if (drawControl) {
+		                drawControl.deactivate();
+		                this.lastDrawControl = drawControl;
+		            }
+		            
+		            if(featureTyp === "OpenLayers.Geometry.Polygon"){
+		            	if(feature.geometry){
+			            	if(feature.geometry.components){
+			            		if(feature.geometry.components[0]){
+			            			if(feature.geometry.components[0].components){
+			            				if(feature.geometry.components[0].components.length < 4){
+			            					hasEnoughCmp = false
+			            				}
+			            			}
+			            		}
+			            	}
+			            }
+		            }
+		            if(hasEnoughCmp){
+		            	this.featureControl.activate();
+			            this.getSelectControl().select(feature);
+		            }else{
+		            	drawControl.activate();
+		            	feature.layer.destroyFeatures([feature]);
+		            }
+		        }
+		    });
+			cntrPanelBbar.addItem(this.redliningControler.actions);
+			cntrPanelBbar.doLayout();
+		}
 		
 		if(self.kmlRedlining){
 			GeoExt.ux.data.Import(self.map, this.redliningControler.activeLayer, 'KML', self.kmlRedlining, null);

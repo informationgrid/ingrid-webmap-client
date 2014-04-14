@@ -37,7 +37,7 @@ OpenLayers.Util.extend(OpenLayers.Lang.de, {
     'Ok' : 'Ok',
     'Cancel' : 'Abbrechen',
     'Select a file to import' : 'Datei f%FCr den Import ausw%E4hlen',
-    'Dear IE user. Add this site in the list of trusted site and activate the ActiveX. ' : 'Lieber IE User. Fügen Sie diese Seite zur der Liste der vertrauten Webseiten und aktivieren Sie ActiveX. ',
+    'Dear IE user. Add this site in the list of trusted site and activate the ActiveX.' : 'Lieber IE User. Fügen Sie diese Seite zur der Liste der vertrauten Webseiten und aktivieren Sie ActiveX.',
     'Error by reading file.' : 'Fehler beim Einlesen der Datei.',
     'name' : 'Name',
     'description' : 'Beschreibung',

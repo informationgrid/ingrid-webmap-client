@@ -10,8 +10,6 @@ Ext.namespace('GeoExt.ux');
 
 /**
  * @include OpenLayers/Lang.js
- * @include LayerManager/ux/downloadify/js/downloadify.min.js
- * @include LayerManager/ux/utils/flash.js
  */
 
 /** private: property[scriptSource]
@@ -95,15 +93,15 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
      */
     filecontent: null,
 
-    /** private: property[downloadifyBox]
-     *  ``Ext.BoxComponent``  Box use to present the downloadify button
+    /** private: property[downloadBox]
+     *  ``Ext.BoxComponent``  Box use to present the download button
      */
-    downloadifyBox: null,
+    downloadBox: null,
 
-    /** private: property[downloadifyLoaded]
-     *  ``Boolean``  Flag used to check that downloadify has been used
+    /** private: property[downloadLoaded]
+     *  ``Boolean``  Flag used to check that download has been used
      */
-    downloadifyLoaded: false,
+    downloadLoaded: false,
 
     /** api: config[baseUrl]
      *  ``Boolean``  Base URL in order to get the images from the donwloadify directory. Has to be set if this file is integrated in a JS build.
@@ -117,18 +115,20 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
      *  Private initComponent override.
      */
     initComponent: function() {
-        this.downloadifyBox = new Ext.BoxComponent({
-            x: 405,
+        this.downloadBox = new Ext.Button({
+        	id:'saveExportBtn',
+			iconCls : 'iconSave',
+			x: 405,
             y: 6,
-            width: 66,
-            height: 21,
-            id: 'downloadify',
-            anchor:'',
-            autoEl:{
-                tag:'p',
-                style:"text-align:right"
-            }
-        });
+            tooltip : i18n('tSpeichern'),
+			enableToggle : false,
+			handler: function(btn) {
+			    var blob = new Blob([document.getElementById('data').value], {
+				    type: "text/plain;charset=utf-8;",
+				});
+				saveAs(blob, document.getElementById('filename').value);
+			}
+		})
 
 
         this.items = [
@@ -141,7 +141,7 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
                 value: this.filename,
                 width: 384
             },
-            this.downloadifyBox,
+            this.downloadBox,
             {
                 x: 10,
                 y: 35,
@@ -154,38 +154,6 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
         ];
 
         GeoExt.ux.LayerManagerExportWindow.superclass.initComponent.call(this);
-        this.on(
-                'afterlayout', function() {
-            var el = Ext.get('downloadify');
-
-            if (el && !this.downloadifyLoaded && GetFlashVersion() >= 10.00) {
-                Downloadify.create('downloadify', {
-                    filename: function() {
-                        return document.getElementById('filename').value;
-                    },
-                    data: function() {
-                        return document.getElementById('data').value;
-                    },
-                    onComplete: function() {
-                        Ext.getCmp('layermanagerexportwindow').close();
-                    },
-                    onCancel: function() {
-                    },
-                    onError: function() {
-                        alert(unescape(OpenLayers.i18n('Error occured during storage')));
-                    },
-                    transparent: false,
-                    swf: this.baseUrl + '/downloadify/media/downloadify.swf',
-                    downloadImage: this.baseUrl + '/downloadify/images/icon_save.png',
-                    width: 16,
-                    height: 16,
-                    append: false
-                });
-                this.downloadifyLoaded = true;
-            }
-        },
-                this);
-
     }
 });
 

@@ -12,7 +12,6 @@ Ext.namespace('GeoExt.ux');
  * @include OpenLayers/Lang.js
  * @include LayerManager/ux/data/Export.js
  * @include LayerManager/ux/data/FormatStore.js
- * @include LayerManager/ux/utils/flash.js
  */
 
 /** api: (define)
@@ -160,18 +159,10 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
 
                                     } else {
                                         if (Ext.isIE || Ext.isChrome || Ext.isSafari) {
-                                            if (GetFlashVersion() > 10.00) {
-                                                GeoExt.ux.data.Export.OpenWindowDownloadify();
-                                            } else {
-                                                alert(OpenLayers.i18n('Please install Flash 10 in order to use the following window.'));
-                                                GeoExt.ux.data.Export.OpenWindowDownloadify();
-                                            }
+                                            GeoExt.ux.data.Export.OpenWindowDownloadify();
                                         } else if (Ext.isGecko) {
-                                            if (GetFlashVersion() > 10.00) {
-                                                GeoExt.ux.data.Export.OpenWindowDownloadify();
-                                            } else {
-                                                this.exportLinkBox.getEl().dom.innerHTML = '<a href="data:text/xml,' + GeoExt.ux.data.Export.content.replace(/"/g, '\'') + '" target="new">Right mouse click, Save As...</a>';
-                                            }
+                                            GeoExt.ux.data.Export.OpenWindowDownloadify();
+                                            //this.exportLinkBox.getEl().dom.innerHTML = '<a href="data:text/xml,' + GeoExt.ux.data.Export.content.replace(/"/g, '\'') + '" target="new">Right mouse click, Save As...</a>';
                                         } else {
                                             alert(unescape(OpenLayers.i18n('Your browser is not supported.')));
                                         }

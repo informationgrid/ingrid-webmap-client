@@ -236,7 +236,7 @@ Local = {
 		tLoadingServiceTaskMessage: {en: 'Cancel loading capabilities?', de: 'M&ouml;chten Sie den Ladenvorgang abbrechen?'},
 		tFullScreen: {en: 'Open map client on full screen', de: 'Darstellung der Kartenkomponente im Vollbildschirm'},
 		tPortal: {en: 'Open PortalU', de: 'PortalU &ouml;ffnen'},
-		tKeineTreffer: {en: 'No hits', de: 'Keine Treffer'}
+		tKeineTreffer: {en: '<p>No hits</p>', de: '<p>Keine Treffer</p>'}
     }
 }
 
