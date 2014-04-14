@@ -158,7 +158,7 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
                                             }
                                             catch (e)
                                             {
-                                                alert(OpenLayers.i18n('Dear IE user. Add this site in the list of trusted site and activate the ActiveX.') + e.description);
+                                                alert(OpenLayers.i18n('Dear IE user. Add this site in the list of trusted site and activate the ActiveX.') + " " + e.description);
                                                 return;
                                             }
                                         } else {

@@ -216,7 +216,7 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
     defaultPopupOptions: {
         title: OpenLayers.i18n('Edit Feature'),
         layout: 'fit',
-        width: 280
+        width: 300
     },
 
     /** api: property[selectControlOptions]

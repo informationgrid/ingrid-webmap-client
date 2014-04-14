@@ -317,8 +317,8 @@
     </setting>
     <setting>
       <key>viewRedliningStyleEnable</key>
-      <name>Styling von Redlining-Objekten</name>
-      <value>false</value>
+      <name>Styling von Redlining-Objekten per Combobox (combobox) oder Farbpalette (palette)</name>
+      <value>combobox</value>
       <group>view</group>
     </setting>
     <setting>
