@@ -123,10 +123,25 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
             tooltip : i18n('tSpeichern'),
 			enableToggle : false,
 			handler: function(btn) {
-			    var blob = new Blob([document.getElementById('data').value], {
-				    type: "text/plain;charset=utf-8;",
-				});
-				saveAs(blob, document.getElementById('filename').value);
+				try {
+				    var isFileSaverSupported = !!new Blob();
+				    if(isFileSaverSupported){
+					    var blob = new Blob([document.getElementById('data').value], {
+						    type: "text/plain;charset=utf-8;",
+						});
+						saveAs(blob, document.getElementById('filename').value);
+				    }
+				} catch (e) {
+					w = window.open();
+					doc = w.document;
+					doc.open( "text/xml",'replace');
+					doc.charset = "utf-8";
+					doc.write(document.getElementById('data').value);
+					doc.close();
+					doc.execCommand("SaveAs", true, document.getElementById('filename').value + ".xml");
+					w.close();
+				}
+				
 			}
 		})
 
