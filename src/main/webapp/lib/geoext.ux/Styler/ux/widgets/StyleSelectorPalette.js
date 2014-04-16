@@ -28,7 +28,8 @@ Ext.namespace("GeoExt.ux");
 GeoExt.ux.StyleSelectorPalette = Ext.extend(Ext.Panel, {
 
     palette: null,
-
+    defaultColor: 'FF0000',
+    
     /** private: method[initComponent]
      */
     initComponent: function() {
@@ -69,9 +70,9 @@ GeoExt.ux.StyleSelectorPalette = Ext.extend(Ext.Panel, {
 
         var oPalette = new Ext.ColorPalette({
         	id: 'colorPaletteRedling',
-        	layout: 'fit'
+        	layout: 'fit',
+        	value: self.defaultColor.toUpperCase()
         });
-
         oItems.push(oPalette);
 
         oPalette.on('select', 
