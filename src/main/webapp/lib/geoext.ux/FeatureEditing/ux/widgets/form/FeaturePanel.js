@@ -240,10 +240,23 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
               if (!GeoExt.ux.LayerStyleManager) {
                   break;
               }
-
+              
+              var defaultColor = "FF0000";
+              
+              if(feature.isLabel){
+            	  defaultColor = "000000";
+              }
+              
+              if(feature.style.fillColor){
+            	  if(feature.style.fillColor != "red"){
+            		  defaultColor = feature.style.fillColor.replace("#", "");
+            	  }
+              }
+              
               var styler = new GeoExt.ux.LayerStyleManager(
                   new GeoExt.ux.StyleSelectorPalette({
-                	  fieldLabel: OpenLayers.i18n('color')
+                	  fieldLabel: OpenLayers.i18n('color'),
+                	  defaultColor: defaultColor
               }), {});
 
               oGroup = {
