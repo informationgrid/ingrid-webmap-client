@@ -287,6 +287,8 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			}else{
 				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
 					btn.getEl().dom.click();
+				}else{
+					featureInfoControl.deactivate();
 				}
 			}
 		}
