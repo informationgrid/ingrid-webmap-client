@@ -29,6 +29,7 @@ de.ingrid.mapclient.admin.modules.basic.BaseModule.prototype.initComponent = fun
 	Ext.apply(this, {
 		items: [
 	        new de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel(),
+	        new de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel(),
 	        new de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel(),
 	        new de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel(),
 	        new de.ingrid.mapclient.admin.modules.basic.ScalesPanel(),

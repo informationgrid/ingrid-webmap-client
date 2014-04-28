@@ -14,6 +14,7 @@ import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
 import de.ingrid.mapclient.model.Setting;
+import de.ingrid.mapclient.model.WmsActiveService;
 import de.ingrid.mapclient.model.WmsService;
 
 /**
@@ -38,6 +39,7 @@ public class PersistentConfiguration {
 	private List<WmsService> wmsServices;
 	private List<AreaCategory> areaCategories;
 	private List<ServiceCategory> serviceCategories;
+	private List<WmsActiveService> wmsActiveServices;
 	
 
 
@@ -56,6 +58,7 @@ public class PersistentConfiguration {
 		this.proxyUrl = "";
 		this.wmsServices = new ArrayList<WmsService>();
 		this.mapServiceCategories = new ArrayList<MapServiceCategory>();
+		this.setWmsActiveServices(new ArrayList<WmsActiveService>());
 	}
 
 	public List<ServiceCategory> getServiceCategories() {
@@ -162,5 +165,13 @@ public class PersistentConfiguration {
 
 	public void setSettings(List<Setting> settings) {
 		this.settings = settings;
+	}
+
+	public List<WmsActiveService> getWmsActiveServices() {
+		return wmsActiveServices;
+	}
+
+	public void setWmsActiveServices(List<WmsActiveService> wmsActiveServices) {
+		this.wmsActiveServices = wmsActiveServices;
 	}
 }

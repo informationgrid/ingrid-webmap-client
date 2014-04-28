@@ -1320,6 +1320,16 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 		failure : function(responseText) {
 			var callback = Ext.util.Functions.createDelegate( function() {
 				self.finishInitMap();
+				
+				var wmsActiveServices = de.ingrid.mapclient.Configuration.getValue("wmsActiveServices");
+				for (j = 0; j < wmsActiveServices.length; j++) {
+					var wmsActiveService = wmsActiveServices[j];
+					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
+							.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+					de.ingrid.mapclient.frontend.data.Service.loadDefault(serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false);
+				}
+				
 				// Add WMS "Zeige Karte"
 				if (wms != null) {
 					var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
