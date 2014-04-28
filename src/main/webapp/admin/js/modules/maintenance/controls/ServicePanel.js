@@ -619,7 +619,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   capabilitiesUrlOrg: capabilitiesUrlOrg,
     					   originalCapUrl: (originalCapUrl) ? originalCapUrl : capabilitiesUrl,
     					   categories: categories,
-    					   layers: layers
+    					   layers: layers,
+    					   updateFlag: copyService.data.capabilitiesUpdateFlag
     				};
     				// Save copy to config
     				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!', false, true);

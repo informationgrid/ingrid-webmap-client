@@ -32,6 +32,7 @@ import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.ServiceCategory;
 import de.ingrid.mapclient.model.Setting;
+import de.ingrid.mapclient.model.WmsActiveService;
 import de.ingrid.mapclient.model.WmsServer;
 import de.ingrid.mapclient.model.WmsService;
 
@@ -238,6 +239,8 @@ public enum ConfigurationProvider {
 		xstream.alias("configuration", Configuration.class);
 		xstream.alias("serviceCategory", ServiceCategory.class);
 		xstream.alias("service", WmsServer.class);
+		xstream.alias("wmsActiveService", WmsActiveService.class);
+		
 
 
 	}
@@ -373,19 +376,16 @@ public enum ConfigurationProvider {
 					 WmsService wmsService = new WmsService(service.getName(), service.getCapabilitiesUrl(), null, new ArrayList<MapServiceCategory>(), null, new ArrayList<String>(), null, null, WmsService.WMSSERVICE_OFF, "aus", false);
 					 wmsService.getMapServiceCategories().add(msC);
 					 wmsServices.add(wmsService);
-				 
 				 }
 			 }
 				 
 		}
-		
-		
-		
 
 //		//we set the categories, containing the services, in the configuration
 		this.persistentConfiguration.setMapServiceCategories(mapServiceCategories);
 		this.persistentConfiguration.setWmsServices(wmsServices);
-
+		List<WmsActiveService> wmsActiveServices = new ArrayList<WmsActiveService>();
+		this.persistentConfiguration.setWmsActiveServices(wmsActiveServices);
 	}	
 
 }
