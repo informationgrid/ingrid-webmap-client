@@ -767,9 +767,29 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
+		if(checkedLayers){
+			node.expand();
+			var rootChildNodes = this.layerTree.root.childNodes;
+			for (var i = 0; i < rootChildNodes.length; i++) {
+				var rootChildNode = rootChildNodes[i];
+				if(rootChildNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl){
+					for (var j = 0; j < checkedLayers.length; j++) {
+						var checkedLayer = checkedLayers[j];
+						this.checkNode(checkedLayer, rootChildNode);
+					}
+				}
+			}
+		}
+		
 		if(expandNode){
 			node.expand();
 			self.expandNode(node, false);
+		}else{
+			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
+				node.collapse();
+			}else{
+				node.expand();
+			}
 		}
 
 		// Select layer by checkedLayers only on add service.
@@ -823,21 +843,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 				if(cosmeticLayer){
 					this.map.addLayer(cosmeticLayer);
-				}
-			}
-		}
-		
-		if(checkedLayers){
-			var rootChildNodes = this.layerTree.root.childNodes;
-			for (var i = 0; i < rootChildNodes.length; i++) {
-				var rootChildNode = rootChildNodes[i];
-				if(rootChildNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl){
-					for (var j = 0; j < checkedLayers.length; j++) {
-						var checkedLayer = checkedLayers[j];
-						this.checkNode(checkedLayer, rootChildNode);
-						
-						console.log(checkedLayer);
-					}
 				}
 			}
 		}
@@ -1594,6 +1599,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkScaleRe
 	        
 	        self.expandNode(n, true);
     	});
+		
     	if(node instanceof GeoExt.tree.LayerNode){
     		var layer = node.layer;
     		if(layer){
