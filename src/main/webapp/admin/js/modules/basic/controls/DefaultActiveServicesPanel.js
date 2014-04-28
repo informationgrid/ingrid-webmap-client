@@ -9,7 +9,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(Ext.Panel, {
 
-	title: '\'Aktive Dienste\'',
+	title: 'Definition \'Aktive Dienste\'',
 	layout: 'column',
 	labelAlign: 'top',
 	labelSeparator: '',
