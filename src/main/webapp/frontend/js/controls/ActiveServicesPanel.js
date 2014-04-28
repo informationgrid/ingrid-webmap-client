@@ -469,7 +469,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
  * Add a service to the panel
  * @param service de.ingrid.mapclient.frontend.data.Service instance
  */
-de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode, zoomToExtent) {
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService = function(service, showService, initialAdd, expandNode, zoomToExtent, checkedLayers) {
 	var self = this;
 	if(service != undefined){
 		var isLayerAddByParameter = false;
@@ -698,7 +698,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		//and we zoom to extent, otherwise we load from session, therefore no writing needed and
 		//we zoom to the extend of the wmc-session doc
 		if(!initialAdd){
-		this.fireEvent('datachanged');
+			this.fireEvent('datachanged');
 		}
 
 
@@ -826,8 +826,37 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 				}
 			}
 		}
+		
+		if(checkedLayers){
+			var rootChildNodes = this.layerTree.root.childNodes;
+			for (var i = 0; i < rootChildNodes.length; i++) {
+				var rootChildNode = rootChildNodes[i];
+				if(rootChildNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl){
+					for (var j = 0; j < checkedLayers.length; j++) {
+						var checkedLayer = checkedLayers[j];
+						this.checkNode(checkedLayer, rootChildNode);
+						
+						console.log(checkedLayer);
+					}
+				}
+			}
+		}
 	}
 };
+
+de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkNode = function(layerName, serviceNode){
+	var nodes = serviceNode.childNodes;
+	for (var i = 0; i < nodes.length; i++) {
+		var node = nodes[i];
+		if(layerName == node.attributes.layer.params.LAYERS){
+			node.getUI().toggleCheck(true);
+		}
+			
+		if(node.childNodes){
+			this.checkNode(layerName, node);
+		}
+	}
+}
 
 /**
  * check layer nodes recursively, since we implemented tree view in the panel

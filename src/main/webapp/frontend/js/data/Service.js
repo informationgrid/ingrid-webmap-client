@@ -432,13 +432,8 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 								layer.transitionEffect = transitionEffect;
 							}
 							
-							for (j = 0; j < checkedLayers.length; j++) {
-								var checkedLayer = checkedLayers[j];
-								if(layer.params.LAYERS == checkedLayer){
-									layer.visibility = true;
-									break;
-								}
-							}
+							layer.visibility = false;
+							
 							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
 							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
 														// the base layer is defined explicitly
@@ -466,9 +461,9 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 						// call the callback if given
 						if (callback instanceof Function) {
 										if(showFlash)
-											callback(service, showFlash, false, expandNode, zoomToExtent);
+											callback(service, showFlash, false, expandNode, zoomToExtent, checkedLayers);
 											else
-											callback(service, false, false, expandNode, zoomToExtent);
+											callback(service, false, false, expandNode, zoomToExtent, checkedLayers);
 						}
 					} else {
 						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
