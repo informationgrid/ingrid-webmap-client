@@ -465,18 +465,21 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 						else
 							callback(service, false, false, expandNode, zoomToExtent, checkedLayers);
 					}
-					if(entry < calls.length){
-						self.loadCalls(calls, entry);
-					}
 				} else {
 					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 				}
 			} else {
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 			}
+			if(entry < calls.length){
+				self.loadCalls(calls, entry);
+			}
 		},
 		failure: function(response, request) {
 			de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
+			if(entry < calls.length){
+				self.loadCalls(calls, entry);
+			}
 		}
 	});
 };
