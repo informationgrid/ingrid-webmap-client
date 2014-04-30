@@ -1323,13 +1323,15 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				
 				var wmsActiveServices = de.ingrid.mapclient.Configuration.getValue("wmsActiveServices");
 				var calls = [];
-				for (var j = 0; j < wmsActiveServices.length; j++) {
-					var wmsActiveService = wmsActiveServices[j];
-					var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
-					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
-					calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+				if(wmsActiveServices){
+					for (var j = 0; j < wmsActiveServices.length; j++) {
+						var wmsActiveService = wmsActiveServices[j];
+						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+						var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+						calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+					}
 				}
-				
+
 				if(calls.length > 0){
 					de.ingrid.mapclient.frontend.data.Service.loadCalls(calls, 0);
 				}
