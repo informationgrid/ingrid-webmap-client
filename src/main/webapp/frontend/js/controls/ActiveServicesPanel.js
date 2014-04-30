@@ -768,7 +768,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		}
 		//we need to expand the nodes otherwise the root node doesnt know its children
 		if(checkedLayers){
-			node.expand();
+			node.expand(false, false);
 			var rootChildNodes = this.layerTree.root.childNodes;
 			for (var i = 0; i < rootChildNodes.length; i++) {
 				var rootChildNode = rootChildNodes[i];
@@ -786,7 +786,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			self.expandNode(node, false);
 		}else{
 			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
-				node.collapse();
+				node.collapse(false, false);
 			}else{
 				node.expand();
 			}
