@@ -20,9 +20,7 @@ de.ingrid.mapclient.frontend.controls.PositionDialog = Ext.extend(Ext.Window, {
     layout: 'fit',
     constrain: true,
     centerPanelEl: null,
-    x:350,
-    y:75,
-
+    x: 350,
 	/**
 	 * @cfg The OpenLayers.Map instance to query feature infos for
 	 */

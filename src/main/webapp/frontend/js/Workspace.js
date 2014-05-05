@@ -248,7 +248,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 
 	var positionControl = new de.ingrid.mapclient.frontend.controls.PositionDialog({
 		id: 'positionControl',
-		map : this.map
+		map : this.map,
+		y: de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
+				? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim()) + 75 : 75 
 	}); 
 	this.map.events.on({
 		'click' : positionControl.point,
