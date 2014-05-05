@@ -220,6 +220,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewPositionButtonEnable</key>
+      <name>Positions-Button anzeigen</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewNominatimEnable</key>
       <name>Eingabefeld: Ortssuche</name>
       <value>true</value>
