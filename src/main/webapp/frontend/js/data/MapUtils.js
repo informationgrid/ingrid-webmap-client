@@ -107,7 +107,21 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	if (zoomToExtent === undefined || zoomToExtent) {
 		var zoomExtent;
 		if(zoomToExtent == undefined){
+			var isOutside = false;
 			zoomExtent = mapExtent.clone().transform(oldProjection, newProjection);
+			
+			if(newMaxExtent.top < zoomExtent.top){
+				zoomExtent.top = newMaxExtent.top;
+			}
+			if(newMaxExtent.bottom > zoomExtent.bottom){
+				zoomExtent.bottom = newMaxExtent.bottom;
+			}
+			if(newMaxExtent.left > zoomExtent.left){
+				zoomExtent.left = newMaxExtent.left;
+			}
+			if(newMaxExtent.right < zoomExtent.right){
+				zoomExtent.right = newMaxExtent.right;
+			}
 			map.zoomToExtent(zoomExtent);
 		}else{
 			zoomExtent = newMaxExtent;
