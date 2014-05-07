@@ -70,11 +70,15 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
 	this.isPoint = true;
 	
 	var fieldLabel = "";
+	var fieldValue = "";
+	
 	if(this.map.displayProjection.proj){
 		if(this.map.displayProjection.proj.projName == "tmerc"){
 			fieldLabel = i18n('tPositionGK');
+			fieldValue = lonlat.lon +  "/" + lonlat.lat;
 		}else if(this.map.displayProjection.proj.projName == "utm"){
 			fieldLabel = i18n('tPositionUTM');
+			fieldValue = lonlat.lon +  "/" + lonlat.lat;
 		}
 	}
 	
@@ -82,10 +86,14 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
 		fieldLabel = i18n('tPositionWGS');
 	}
 	
+	if(fieldValue == ""){
+		fieldValue = lonlat.lat +  "/" + lonlat.lon;
+	}
+	
 	this.formPanel.add({
 		id: 'position',
         fieldLabel: fieldLabel,
-        value: lonlat.lat +  "/" + lonlat.lon,
+        value: fieldValue,
         labelStyle: 'width:140px;' 
     });
 		
@@ -133,10 +141,26 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split("/")[0];
-        			var positionLon = textfieldValue.split("/")[1];
-        			position = new OpenLayers.LonLat(positionLon,positionLat);
+	        		var positionLat = "";
+        			var positionLon = "";
         			
+        			if(self.map.displayProjection.proj){
+        				if(self.map.displayProjection.proj.projName == "tmerc"){
+        					positionLat = textfieldValue.split("/")[1];
+                			positionLon = textfieldValue.split("/")[0];
+        				}else if(self.map.displayProjection.proj.projName == "utm"){
+        					positionLat = textfieldValue.split("/")[1];
+                			positionLon = textfieldValue.split("/")[0];
+        				}else{
+        					positionLat = textfieldValue.split("/")[0];
+                			positionLon = textfieldValue.split("/")[1];
+        				}
+        			}else{
+        				positionLat = textfieldValue.split("/")[0];
+            			positionLon = textfieldValue.split("/")[1];
+        			}
+        			
+        			position = new OpenLayers.LonLat(positionLon,positionLat);
         			self.map.setCenter(position);
 	        	}
 	        }
@@ -148,8 +172,25 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split("/")[0];
-        			var positionLon = textfieldValue.split("/")[1];
+	        		var positionLat = "";
+        			var positionLon = "";
+        			
+        			if(self.map.displayProjection.proj){
+        				if(self.map.displayProjection.proj.projName == "tmerc"){
+        					positionLat = textfieldValue.split("/")[1];
+                			positionLon = textfieldValue.split("/")[0];
+        				}else if(self.map.displayProjection.proj.projName == "utm"){
+        					positionLat = textfieldValue.split("/")[1];
+                			positionLon = textfieldValue.split("/")[0];
+        				}else{
+        					positionLat = textfieldValue.split("/")[0];
+                			positionLon = textfieldValue.split("/")[1];
+        				}
+        			}else{
+        				positionLat = textfieldValue.split("/")[0];
+            			positionLon = textfieldValue.split("/")[1];
+        			}
+        			
         			position = new OpenLayers.LonLat(positionLon,positionLat);
         			
         			if(self.markers){
