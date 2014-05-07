@@ -69,19 +69,23 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
 	var lonlat = this.map.getLonLatFromPixel(e.xy);
 	this.isPoint = true;
 	
-	var fieldLabel = '';
-	if(this.map.displayProjection.projName == "tmerc"){
-		fieldLabel = i18n('tPositionGK');
-	}else if(this.map.displayProjection.projName == "utm"){
-		fieldLabel = i18n('tPositionUTM');
-	}else{
+	var fieldLabel = "";
+	if(this.map.displayProjection.proj){
+		if(this.map.displayProjection.proj.projName == "tmerc"){
+			fieldLabel = i18n('tPositionGK');
+		}else if(this.map.displayProjection.proj.projName == "utm"){
+			fieldLabel = i18n('tPositionUTM');
+		}
+	}
+	
+	if(fieldLabel == ""){
 		fieldLabel = i18n('tPositionWGS');
 	}
 	
 	this.formPanel.add({
 		id: 'position',
         fieldLabel: fieldLabel,
-        value: lonlat.lat +  " " + lonlat.lon,
+        value: lonlat.lat +  "/" + lonlat.lon,
         labelStyle: 'width:140px;' 
     });
 		
@@ -129,8 +133,8 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split(" ")[0];
-        			var positionLon = textfieldValue.split(" ")[1];
+	        		var positionLat = textfieldValue.split("/")[0];
+        			var positionLon = textfieldValue.split("/")[1];
         			position = new OpenLayers.LonLat(positionLon,positionLat);
         			
         			self.map.setCenter(position);
@@ -144,8 +148,8 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split(" ")[0];
-        			var positionLon = textfieldValue.split(" ")[1];
+	        		var positionLat = textfieldValue.split("/")[0];
+        			var positionLon = textfieldValue.split("/")[1];
         			position = new OpenLayers.LonLat(positionLon,positionLat);
         			
         			if(self.markers){
