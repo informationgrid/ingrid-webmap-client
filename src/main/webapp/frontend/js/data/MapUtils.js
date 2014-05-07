@@ -36,18 +36,15 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			var hasNewExtent = false;
 			var bboxExtent;
 			var bboxProjection;
-			for(var k in map.baseLayer.bbox){
-				if(k == newProjCode){
+			if(map.baseLayer.bbox[newProjCode]){
+				bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
+				bboxProjection = new OpenLayers.Projection(newProjCode);
+				hasNewExtent=true;
+			}else{
+				for(var k in map.baseLayer.bbox){
 					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
 					bboxProjection = new OpenLayers.Projection(k);
-					hasNewExtent=true;
-				}else{
-					if(!hasNewExtent){
-						bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
-						bboxProjection = new OpenLayers.Projection(k);
-					}else{
-						break;
-					}
+					break;
 				}
 			}
 			
