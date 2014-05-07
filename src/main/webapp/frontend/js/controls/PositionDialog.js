@@ -81,7 +81,7 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
 	this.formPanel.add({
 		id: 'position',
         fieldLabel: fieldLabel,
-        value: lonlat.lat +  " / " + lonlat.lon,
+        value: lonlat.lat +  " " + lonlat.lon,
         labelStyle: 'width:140px;' 
     });
 		
@@ -129,8 +129,8 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split(" / ")[0];
-        			var positionLon = textfieldValue.split(" / ")[1];
+	        		var positionLat = textfieldValue.split(" ")[0];
+        			var positionLon = textfieldValue.split(" ")[1];
         			position = new OpenLayers.LonLat(positionLon,positionLat);
         			
         			self.map.setCenter(position);
@@ -144,8 +144,8 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 				
 	        	if(self.isPoint){
 	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = textfieldValue.split(" / ")[0];
-        			var positionLon = textfieldValue.split(" / ")[1];
+	        		var positionLat = textfieldValue.split(" ")[0];
+        			var positionLon = textfieldValue.split(" ")[1];
         			position = new OpenLayers.LonLat(positionLon,positionLat);
         			
         			if(self.markers){
