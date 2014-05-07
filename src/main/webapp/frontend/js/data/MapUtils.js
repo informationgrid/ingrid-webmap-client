@@ -63,6 +63,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 		}else{
 			// Reload
 			newExtent = map.getMaxExtent();
+			if(map.baseLayer.maxExtent){
+				newExtent = map.baseLayer.maxExtent;
+			}
 			// Projection change
 			if(zoomToExtent == undefined){
 				newExtent = newExtent.clone().transform(oldProjection, newProjection);
