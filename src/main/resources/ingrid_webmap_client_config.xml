@@ -172,6 +172,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewHasActiveServiceAddReversal</key>
+      <name>Aktive Dienste: Dienste am Anfang hinzufügen</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewActiveAccordionWestPanel</key>
       <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
