@@ -690,8 +690,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			});
 		}
 		
-		
-		this.layerTree.root.appendChild(node);
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == true){
+			this.layerTree.root.insertBefore(node, this.layerTree.root.firstChild);
+		}else{
+			this.layerTree.root.appendChild(node);
+		}
 
 		this.services.add(service.getCapabilitiesUrl(), service);
 		//if we are not in an initial state, then we fire the event which causes session write
