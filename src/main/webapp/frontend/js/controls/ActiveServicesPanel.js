@@ -682,9 +682,16 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					 	self.getLayersFromTree(serviceNode, layers);
 					}
 				
-					for (var j = 0, count = layers.length; j < count; j++) {
-						var layer = layers[j];
-						self.map.raiseLayer(layer, layers.length);
+					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+						for (var j = 0, count = layers.length; j < count; j++) {
+							var layer = layers[j];
+							self.map.raiseLayer(layer, layers.length);
+						}
+					}else{
+						for (var j = layers.length - 1; j >= 0; j--) {
+							var layer = layers[j];
+							self.map.raiseLayer(layer, layers.length);
+						}
 					}
              	}
 			});
@@ -824,9 +831,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		 	self.getLayersFromTree(serviceNode, layers);
 		}
 	
-		for (var j = 0, count = layers.length; j < count; j++) {
-			var layer = layers[j];
-			self.map.raiseLayer(layer, layers.length);
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+			for (var j = 0, count = layers.length; j < count; j++) {
+				var layer = layers[j];
+				self.map.raiseLayer(layer, layers.length);
+			}
 		}
 		// Set vector layers to the end
 		if(de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") == true){

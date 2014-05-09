@@ -1228,25 +1228,47 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 			// BEFORE any other layer (KML, AddWms via URL) is loaded
 			state.restoreMapState(function() {
 				// restore active services
-				if(state.capabilitiesUrlOrder){
-					for (var j = 0, countJ = state.capabilitiesUrlOrder.length; j < countJ; j++) {
-						var capabilitiesUrl = state.capabilitiesUrlOrder[j];
-						for (var i = 0, count = state.activeServices.length; i < count; i++) {
-							var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
-							if(capabilitiesUrl === serviceCapabilitiesUrl){
-								self.activeServicesPanel.state = state;
-								self.activeServicesPanel.addService(state.activeServices[i],false,true);
-								break;
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+					if(state.capabilitiesUrlOrder){
+						for (var j = 0, countJ = state.capabilitiesUrlOrder.length; j < countJ; j++) {
+							var capabilitiesUrl = state.capabilitiesUrlOrder[j];
+							for (var i = 0, count = state.activeServices.length; i < count; i++) {
+								var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
+								if(capabilitiesUrl === serviceCapabilitiesUrl){
+									self.activeServicesPanel.state = state;
+									self.activeServicesPanel.addService(state.activeServices[i],false,true);
+									break;
+								}
 							}
 						}
+						
+					}else{
+						for (var i = 0, count = state.activeServices.length; i < count; i++) {
+							self.activeServicesPanel.state = state;
+							self.activeServicesPanel.addService(state.activeServices[i],false,true);
+						}
+						
 					}
-					
 				}else{
-					for (var i = 0, count = state.activeServices.length; i < count; i++) {
-						self.activeServicesPanel.state = state;
-						self.activeServicesPanel.addService(state.activeServices[i],false,true);
+					if(state.capabilitiesUrlOrder){
+						for (var j = state.capabilitiesUrlOrder.length - 1; j >= 0; j--) {
+							var capabilitiesUrl = state.capabilitiesUrlOrder[j];
+							for (var i = 0, count = state.activeServices.length; i < count; i++) {
+								var serviceCapabilitiesUrl = state.activeServices[i].capabilitiesUrl;
+								if(capabilitiesUrl === serviceCapabilitiesUrl){
+									self.activeServicesPanel.state = state;
+									self.activeServicesPanel.addService(state.activeServices[i],false,true);
+									break;
+								}
+							}
+						}
+						
+					}else{
+						for (var i = state.activeServices.length - 1; i >= 0; i--) {
+							self.activeServicesPanel.state = state;
+							self.activeServicesPanel.addService(state.activeServices[i],false,true);
+						}
 					}
-					
 				}
 	
 				if(state.kmlRedlining != ""){
@@ -1372,11 +1394,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				var wmsActiveServices = de.ingrid.mapclient.Configuration.getValue("wmsActiveServices");
 				var calls = [];
 				if(wmsActiveServices){
-					for (var j = 0; j < wmsActiveServices.length; j++) {
-						var wmsActiveService = wmsActiveServices[j];
-						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
-						var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
-						calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+						for (var j = 0; j < wmsActiveServices.length; j++) {
+							var wmsActiveService = wmsActiveServices[j];
+							var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+							var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+							calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+						}
+					}else{
+						for (var j = wmsActiveServices.length - 1; j >= 0; j--) {
+							var wmsActiveService = wmsActiveServices[j];
+							var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+							var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+							calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+						}
 					}
 				}
 
