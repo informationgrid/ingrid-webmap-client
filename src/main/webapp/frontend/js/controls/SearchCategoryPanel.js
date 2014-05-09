@@ -23,15 +23,14 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel = Ext.extend(Ext.Panel
     activeNode: null,
 	metadataWindowsCount: 0,
 	metadataWindowStartX: 0,
-	metadataWindowStartY: 0
-	
+	metadataWindowStartY: 0,
+	tree: null
 });
 
 /**
  * Initialize the component (called by Ext)
  */
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponent = function() {
-
 	var self = this;
 
 	this.activeServicesPanel = Ext.getCmp("activeServices");
@@ -51,7 +50,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 		})]
 	});
 	
-	var tree = new Ext.tree.TreePanel({
+	self.tree = new Ext.tree.TreePanel({
 		title: i18n('tSuchergebnisse'),
         rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
@@ -80,9 +79,12 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	        		if(node){
 	        			if(node.attributes){
 	        				if(node.attributes.service){
-	        					var service = node.attributes.service;
-	        	        		self.activateService(service);
-	        	           		self.activeServicesPanel.expand();
+	        					if(node.attributes.cls.indexOf("x-tree-node-disabled") == -1){
+		        					var service = node.attributes.service;
+		        					node.setCls("x-tree-node-disabled");
+		        	        		self.activateService(service);
+		        	           		self.activeServicesPanel.expand();
+	        					}
 	        				}
 	        			}
 	        		}
@@ -91,11 +93,35 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
 	    }
 	});
 	
+	self.tree.root.on("expand", function(){
+		self.reloadTreeUI();
+	});
+	
 	Ext.apply(this, {
-		items:[tree]
+		items:[self.tree]
 	});
 
 	de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.superclass.initComponent.call(this);
+};
+
+de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.reloadTreeUI = function(){
+	var self = this;
+	var childNodes = self.tree.root.childNodes;
+    for(var i=0; i<childNodes.length; i++){
+		var childNode = childNodes[i];
+		childNode.getUI().removeClass("x-tree-node-disabled");
+		childNode.setCls("x-tree-node-add");
+		var activeServices = Ext.getCmp("activeServices").layerTree.root.childNodes;
+        for(var j=0; j<activeServices.length; j++){
+    		var activeService = activeServices[j];
+    		if(activeService.attributes.service && childNode.attributes.service){
+    			if(activeService.attributes.service.capabilitiesUrl.split("?")[0] == childNode.attributes.service.capabilitiesUrl.split("?")[0]){
+        			childNode.setCls("x-tree-node-disabled");
+        			break;
+        		}    			
+    		}
+    	}
+    }
 };
 
 /**
@@ -106,7 +132,6 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.initComponen
  */
 de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = function(services) {
 	var children = [];
-
 
 	for (var i=0, count=services.length; i<count; i++) {
 		var curService = services[i];
@@ -120,7 +145,7 @@ de.ingrid.mapclient.frontend.controls.SearchCategoryPanel.prototype.transform = 
 			text: curService.name,
 			service: serviceInstance,
 			leaf: true,
-			cls: 'x-tree-noicon x-tree-node-add'
+			cls: 'x-tree-node-add'
 		};
 		children.push(childNode);
 	}
