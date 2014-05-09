@@ -462,7 +462,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayerStor
  * @return Boolean
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsService = function(service) {
-	return this.services.containsKey(service.getCapabilitiesUrl());
+	for(var i=0; i<this.services.items.length; i++){
+		var tmpService = this.services.items[i];
+		if(service.getCapabilitiesUrl().split("?")[0] == tmpService.getCapabilitiesUrl().split("?")[0]){
+			return true;
+		}else if((service.getDefinition().href.split("?")[0] == tmpService.getDefinition().href.split("?")[0]) 
+				&& (service.getDefinition().name == tmpService.getDefinition().name) 
+				&& (service.getDefinition().abstract == tmpService.getDefinition().abstract)){
+			return true;
+		}
+	}
+	return false;
 };
 
 /**
