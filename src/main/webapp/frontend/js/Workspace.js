@@ -1394,11 +1394,20 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				var wmsActiveServices = de.ingrid.mapclient.Configuration.getValue("wmsActiveServices");
 				var calls = [];
 				if(wmsActiveServices){
-					for (var j = 0; j < wmsActiveServices.length; j++) {
-						var wmsActiveService = wmsActiveServices[j];
-						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
-						var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
-						calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+						for (var j = 0; j < wmsActiveServices.length; j++) {
+							var wmsActiveService = wmsActiveServices[j];
+							var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+							var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+							calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+						}
+					}else{
+						for (var j = wmsActiveServices.length - 1; j >= 0; j--) {
+							var wmsActiveService = wmsActiveServices[j];
+							var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+							var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+							calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+						}
 					}
 				}
 

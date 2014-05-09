@@ -173,7 +173,7 @@
     </setting>
     <setting>
       <key>viewHasActiveServiceAddReversal</key>
-      <name>Aktive Dienste: Dienste am Anfang hinzufügen</name>
+      <name>Aktive Dienste: Dienste am Anfang hinzufügen und Layer-Darstellung in der Karte umkehren</name>
       <value>false</value>
       <group>view</group>
     </setting>
