@@ -204,13 +204,19 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.reloadTreeU
 	    for(var j=0; j<activeServices.length; j++){
 			var activeService = activeServices[j];
 			if(activeService.attributes.service && childNode.attributes.service){
-				if(activeService.attributes.service.capabilitiesUrl.split("?")[0] == childNode.attributes.service.capabilitiesUrl.split("?")[0]){
-					childNode.setCls("x-tree-node-disabled");
-					break;
+				var activeServiceCap = activeService.attributes.service.capabilitiesUrl;
+        		var searchServiceCap = childNode.attributes.service.capabilitiesUrl;
+        		if(activeServiceCap && searchServiceCap){
+        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
+        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
+        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+        				childNode.setCls("x-tree-node-disabled");
+        				break;
+        			}
 				}
 			}
 		}
-	}	
+	}
 };
 
 /**

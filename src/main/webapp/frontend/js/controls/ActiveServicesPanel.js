@@ -465,11 +465,27 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
 	for(var i=0; i<this.services.items.length; i++){
 		var tmpService = this.services.items[i];
 		if(service.getCapabilitiesUrl().split("?")[0] == tmpService.getCapabilitiesUrl().split("?")[0]){
-			return true;
-		}else if((service.getDefinition().href.split("?")[0] == tmpService.getDefinition().href.split("?")[0]) 
-				&& (service.getDefinition().name == tmpService.getDefinition().name) 
-				&& (service.definition["abstract"] == tmpService.definition["abstract"])){
-			return true;
+			var addServiceCap = service.getCapabilitiesUrl();
+			var tmpServiceCap = tmpService.getCapabilitiesUrl();
+			if(addServiceCap && tmpServiceCap){
+				addServiceCap = addServiceCap.replace("http://","").replace("https://","");
+				tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","");
+				if(addServiceCap.split("?")[0] == tmpServiceCap.split("?")[0]){
+					return true;
+				}
+			}
+		}else if(service.getDefinition() && tmpService.getDefinition()){
+			var addServiceCap = service.getDefinition().href;
+			var tmpServiceCap = tmpService.getDefinition().href;
+			if(addServiceCap && tmpServiceCap){
+				addServiceCap = addServiceCap.replace("http://","").replace("https://","");
+				tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","");
+				if((addServiceCap.split("?")[0] == tmpServiceCap.split("?")[0]) 
+					&& (service.getDefinition().name == tmpService.getDefinition().name) 
+					&& (service.definition["abstract"] == tmpService.definition["abstract"])){
+					return true;
+				}
+			}
 		}
 	}
 	return false;
