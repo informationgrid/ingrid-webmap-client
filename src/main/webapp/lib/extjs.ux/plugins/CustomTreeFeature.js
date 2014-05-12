@@ -128,7 +128,7 @@ Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
         var n = this.node,
             c1,
             c2,
-            cls = n.isLast() ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow",
+            cls = n.isLast() ? this.node.ownerTree ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow" : "x-tree-elbow",
             hasChild = n.hasChildNodes();
         if(hasChild || n.attributes.expandable){
             if(n.expanded){
