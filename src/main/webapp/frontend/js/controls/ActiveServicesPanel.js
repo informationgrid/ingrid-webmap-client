@@ -468,7 +468,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
 			return true;
 		}else if((service.getDefinition().href.split("?")[0] == tmpService.getDefinition().href.split("?")[0]) 
 				&& (service.getDefinition().name == tmpService.getDefinition().name) 
-				&& (service.getDefinition().abstract == tmpService.getDefinition().abstract)){
+				&& (service.definition["abstract"] == tmpService.definition["abstract"])){
 			return true;
 		}
 	}
