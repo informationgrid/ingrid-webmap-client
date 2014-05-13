@@ -237,6 +237,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	
 	// a) feature tool
 	var featureInfoControl = new de.ingrid.mapclient.frontend.controls.FeatureInfoDialog({
+		id: 'featureInfoControl',
 		map : this.map
 	}); 
 
@@ -245,6 +246,17 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		scope : featureInfoControl
 	});
 
+	var positionControl = new de.ingrid.mapclient.frontend.controls.PositionDialog({
+		id: 'positionControl',
+		map : this.map,
+		y: de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
+				? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim()) + 75 : 75 
+	}); 
+	this.map.events.on({
+		'click' : positionControl.point,
+		scope : positionControl
+	});
+	
 	toolbarItems.push(new Ext.Button({
 		id : 'btnDragMap',
 		iconCls : 'iconDrag',
@@ -261,6 +273,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				Ext.getCmp('measurePath').setChecked(false);
 				Ext.getCmp('measurePolygon').setChecked(false);
 				featureInfoControl.deactivate();
+				positionControl.deactivate();
 				self.deactivateRedlining();
 			}else{
 				btn.getEl().dom.click();
@@ -282,7 +295,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				Ext.getCmp('measurePath').setChecked(false);
 				Ext.getCmp('measurePolygon').setChecked(false);
 				self.deactivateRedlining();
-				
+				positionControl.deactivate();
 				featureInfoControl.activate();
 			}else{
 				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
@@ -372,6 +385,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 									}
 									// Deactivate controls
 									featureInfoControl.deactivate();
+									positionControl.deactivate();
 									
 									Ext.getCmp('measurePolygon').setChecked(false);
 									measurePathCtrl.activate();
@@ -395,6 +409,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 								}
 								// Deactivate controls
 								featureInfoControl.deactivate();
+								positionControl.deactivate();
 								
 								Ext.getCmp('measurePath').setChecked(false);
 								measurePolygonCtrl.activate();
@@ -436,6 +451,35 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		        }
 		}));
 	}
+	
+	toolbarItems.push(new Ext.Button({
+		id:'mapPin',
+		iconCls : 'iconMapPin',
+		tooltip : i18n('tPositionAnzeigen'),
+		toggleGroup : 'toggleGroupMapPanel',
+		enableToggle : true,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPositionButtonEnable") ? false : true,
+		handler : function(btn) {
+			if (btn.pressed) {
+				// Deactivate featureInfoControl
+				measurePathCtrl.deactivate();
+				measurePolygonCtrl.deactivate();
+				Ext.getCmp('measurePath').setChecked(false);
+				Ext.getCmp('measurePolygon').setChecked(false);
+				self.deactivateRedlining();
+				featureInfoControl.deactivate();
+				positionControl.deactivate();
+
+				positionControl.activate(true);
+			} else {
+				if(de.ingrid.mapclient.Configuration.getSettings("viewHasDragMapTool") || de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable")){
+					btn.getEl().dom.click();
+				}else{
+					positionControl.deactivate();
+				}
+			}
+		}
+	}));
 	
 	// Create Nominatim
 	toolbarItems.push({
@@ -503,6 +547,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			Ext.getCmp('measurePath').setChecked(false);
 			Ext.getCmp('measurePolygon').setChecked(false);
 			featureInfoControl.deactivate();
+			positionControl.deactivate();
 			self.deactivateRedlining();
 	        if(!printActive){
 				printDia = new de.ingrid.mapclient.frontend.controls.PrintDialog({
@@ -914,6 +959,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.finishInitMap = function() {
 		                    this);
 		        },
 		        onFeatureAdded: function(event) {
+		        	Ext.getCmp("featureInfoControl").deactivate();
+		        	Ext.getCmp("positionControl").deactivate();
+		        	
 		            var feature, drawControl, featureTyp, featureCmp, hasEnoughCmp;
 
 		            feature = event.feature;
@@ -1322,12 +1370,18 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 				self.finishInitMap();
 				
 				var wmsActiveServices = de.ingrid.mapclient.Configuration.getValue("wmsActiveServices");
-				for (j = 0; j < wmsActiveServices.length; j++) {
-					var wmsActiveService = wmsActiveServices[j];
-					var serviceWMS = de.ingrid.mapclient.frontend.data.Service
-							.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
-					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
-					de.ingrid.mapclient.frontend.data.Service.loadDefault(serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false);
+				var calls = [];
+				if(wmsActiveServices){
+					for (var j = 0; j < wmsActiveServices.length; j++) {
+						var wmsActiveService = wmsActiveServices[j];
+						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wmsActiveService.capabilitiesUrl);
+						var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
+						calls.push([serviceWMS.getCapabilitiesUrl(), wmsActiveService.checkedLayers, callback, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand"), false]);
+					}
+				}
+
+				if(calls.length > 0){
+					de.ingrid.mapclient.frontend.data.Service.loadCalls(calls, 0);
 				}
 				
 				// Add WMS "Zeige Karte"

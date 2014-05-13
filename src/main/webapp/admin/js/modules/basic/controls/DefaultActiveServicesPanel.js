@@ -118,25 +118,25 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
         
         self.treeService.on('afterrender', function(tree){
         	var moveServices = [];
-        	for (var i=0, count=self.services.length; i<count; i++) {
-				var curService = self.services[i];
-				var isInUsed = false;
-				var usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
-				for (j = 0; j < usedServices.length; j++) {
-					var usedService = usedServices[j];
+        	var usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
+        	for (var j = 0; j < usedServices.length; j++) {
+				var usedService = usedServices[j];
+				for (var i=0, count=self.services.length; i<count; i++) {
+					var curService = self.services[i];
+					var isInUsed = false;
+				
 					if(usedService.capabilitiesUrl == curService.capabilitiesUrl){
 						moveServices.push(usedService);
 					}
 				}
 			}
         	if(moveServices.length > 0){
-        		for (i = 0; i < tree.root.childNodes.length; i++) {
-            		var childNode = tree.root.childNodes[i];
-            		if(childNode.attributes){
-            			var curService = childNode.attributes.service;
-                		
-                		for (j = 0; j < moveServices.length; j++) {
-                			var moveService = moveServices[j];
+        		for (var j = 0; j < moveServices.length; j++) {
+        			var moveService = moveServices[j];
+	        		for (var i = 0; i < tree.root.childNodes.length; i++) {
+	            		var childNode = tree.root.childNodes[i];
+	            		if(childNode.attributes){
+	            			var curService = childNode.attributes.service;
                 			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
                 				self.treeActiveService.root.appendChild(childNode);
                 				self.checkedChildNodes(childNode, moveService.checkedLayers);
@@ -150,10 +150,10 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	},
 	checkedChildNodes: function(node, layers){
 		var self = this;
-		for (i = 0; i < layers.length; i++) {
-			for (j = 0; j < node.childNodes.length; j++) {
+		for (var i = 0; i < layers.length; i++) {
+			var layer = layers[i];
+			for (var j = 0; j < node.childNodes.length; j++) {
 				var childNode = node.childNodes[j];
-				var layer = layers[i];
 				if(layer == childNode.attributes.name){
 					childNode.getUI().toggleCheck(true);
 				}
@@ -277,7 +277,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 					var name = "";
 		    		var title = "";
 		    		
-		    		for (j = 0; j < layer.children.length; j++) {
+		    		for (var j = 0; j < layer.children.length; j++) {
 		    			var tmpchildren = layer.children[j];
 		    			if(tmpchildren.tagName == "Title"){
 		    				if(tmpchildren.textContent){
@@ -322,7 +322,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 					var name = "";
 		    		var title = "";
 		    		
-		    		for (j = 0; j < child.children.length; j++) {
+		    		for (var j = 0; j < child.children.length; j++) {
 		    			var tmpchildren = child.children[j];
 		    			if(tmpchildren.tagName == "Title"){
 		    				if(tmpchildren.textContent){

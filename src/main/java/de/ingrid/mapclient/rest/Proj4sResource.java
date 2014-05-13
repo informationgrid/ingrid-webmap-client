@@ -79,6 +79,11 @@ public class Proj4sResource {
 
 		try {
 			String url = CODE_URL_PATTERN.matcher(BASE_URL).replaceAll(code);
+			if(url != null){
+				if(!url.endsWith("/")){
+					url = url + "/";
+				}
+			}
 			response = HttpProxy.doRequest(url);
 			return response;
 		}

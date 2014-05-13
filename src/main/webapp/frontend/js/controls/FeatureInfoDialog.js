@@ -226,12 +226,12 @@ de.ingrid.mapclient.frontend.controls.FeatureInfoDialog.prototype.decodeResponse
 	var items = []
 
 	for(var i = 0; i < data.length; i++){
-	var item = {
-			      name: 'AdminInfos',
-			      inputValue: data[i]['rs'],
-			      boxLabel: data[i]['type']+': '+data[i]['name']
-					}
-	items.push(item);		    
+		var item = {
+		  name: 'AdminInfos',
+		  inputValue: data[i]['rs'],
+		  boxLabel: data[i]['type']+': '+data[i]['name']
+		}
+		items.push(item);		    
 	}
 	
 	return items;

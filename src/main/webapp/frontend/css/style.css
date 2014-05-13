@@ -58,6 +58,10 @@ body {
 	width: 11px !important; 
 }
 
+.iconMapPin {
+	background-image: url(../../shared/images/icon_map_pin.png);
+}
+
 .iconZoom {
 	background-image: url(../../shared/images/icon_world.png);
 }
