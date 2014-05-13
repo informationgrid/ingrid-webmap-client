@@ -20,6 +20,13 @@ de.ingrid.mapclient.frontend.controls.SearchPanel = Ext.extend(Ext.Panel, {
 de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.initComponent = function() {
 	var self = this; 
 	
+	this.on("expand", function(){
+		var searchResults = Ext.getCmp("searchResults");
+		if(searchResults){
+			searchResults.reloadTreeUI();
+		}
+	});
+	
 	this.searchField = {
 			id : 'searchField',
 			name : "searchField",

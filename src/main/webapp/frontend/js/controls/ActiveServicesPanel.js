@@ -462,7 +462,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.getLayerStor
  * @return Boolean
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsService = function(service) {
-	return this.services.containsKey(service.getCapabilitiesUrl());
+	for(var i=0; i<this.services.items.length; i++){
+		var tmpService = this.services.items[i];
+		if(service.getCapabilitiesUrl().split("?")[0] == tmpService.getCapabilitiesUrl().split("?")[0]){
+			return true;
+		}else if((service.getDefinition().href.split("?")[0] == tmpService.getDefinition().href.split("?")[0]) 
+				&& (service.getDefinition().name == tmpService.getDefinition().name) 
+				&& (service.getDefinition().abstract == tmpService.getDefinition().abstract)){
+			return true;
+		}
+	}
+	return false;
 };
 
 /**
@@ -682,16 +692,26 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					 	self.getLayersFromTree(serviceNode, layers);
 					}
 				
-					for (var j = 0, count = layers.length; j < count; j++) {
-						var layer = layers[j];
-						self.map.raiseLayer(layer, layers.length);
+					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+						for (var j = 0, count = layers.length; j < count; j++) {
+							var layer = layers[j];
+							self.map.raiseLayer(layer, layers.length);
+						}
+					}else{
+						for (var j = layers.length - 1; j >= 0; j--) {
+							var layer = layers[j];
+							self.map.raiseLayer(layer, layers.length);
+						}
 					}
              	}
 			});
 		}
 		
-		
-		this.layerTree.root.appendChild(node);
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == true){
+			this.layerTree.root.insertBefore(node, this.layerTree.root.firstChild);
+		}else{
+			this.layerTree.root.appendChild(node);
+		}
 
 		this.services.add(service.getCapabilitiesUrl(), service);
 		//if we are not in an initial state, then we fire the event which causes session write
@@ -821,9 +841,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		 	self.getLayersFromTree(serviceNode, layers);
 		}
 	
-		for (var j = 0, count = layers.length; j < count; j++) {
-			var layer = layers[j];
-			self.map.raiseLayer(layer, layers.length);
+		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+			for (var j = 0, count = layers.length; j < count; j++) {
+				var layer = layers[j];
+				self.map.raiseLayer(layer, layers.length);
+			}
 		}
 		// Set vector layers to the end
 		if(de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") == true){

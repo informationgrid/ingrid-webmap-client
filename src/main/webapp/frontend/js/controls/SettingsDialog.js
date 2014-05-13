@@ -164,6 +164,15 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	this.projectionsCombo.setValue(projection.getCode());
 	// define select callback
 	this.projectionsCombo.on('select', function(comboBox, record, index) {
+		var positionDialog = Ext.getCmp("positionControl");
+		if(positionDialog){
+			if(positionDialog.markers){
+				self.map.removeLayer(positionDialog.markers);
+				positionDialog.markers = null;
+			}
+			positionDialog.hide();
+		}
+		
 		var newProjCode = record.get('epsgCode');
 		de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(newProjCode, function() {self.changeProjection(newProjCode)});
 	}, this);

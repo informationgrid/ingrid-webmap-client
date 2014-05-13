@@ -36,18 +36,15 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			var hasNewExtent = false;
 			var bboxExtent;
 			var bboxProjection;
-			for(var k in map.baseLayer.bbox){
-				if(k == newProjCode){
+			if(map.baseLayer.bbox[newProjCode]){
+				bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
+				bboxProjection = new OpenLayers.Projection(newProjCode);
+				hasNewExtent=true;
+			}else{
+				for(var k in map.baseLayer.bbox){
 					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
 					bboxProjection = new OpenLayers.Projection(k);
-					hasNewExtent=true;
-				}else{
-					if(!hasNewExtent){
-						bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
-						bboxProjection = new OpenLayers.Projection(k);
-					}else{
-						break;
-					}
+					break;
 				}
 			}
 			
@@ -63,6 +60,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 		}else{
 			// Reload
 			newExtent = map.getMaxExtent();
+			if(map.baseLayer.maxExtent){
+				newExtent = map.baseLayer.maxExtent;
+			}
 			// Projection change
 			if(zoomToExtent == undefined){
 				newExtent = newExtent.clone().transform(oldProjection, newProjection);
@@ -107,7 +107,21 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	if (zoomToExtent === undefined || zoomToExtent) {
 		var zoomExtent;
 		if(zoomToExtent == undefined){
+			var isOutside = false;
 			zoomExtent = mapExtent.clone().transform(oldProjection, newProjection);
+			
+			if(newMaxExtent.top < zoomExtent.top){
+				zoomExtent.top = newMaxExtent.top;
+			}
+			if(newMaxExtent.bottom > zoomExtent.bottom){
+				zoomExtent.bottom = newMaxExtent.bottom;
+			}
+			if(newMaxExtent.left > zoomExtent.left){
+				zoomExtent.left = newMaxExtent.left;
+			}
+			if(newMaxExtent.right < zoomExtent.right){
+				zoomExtent.right = newMaxExtent.right;
+			}
 			map.zoomToExtent(zoomExtent);
 		}else{
 			zoomExtent = newMaxExtent;

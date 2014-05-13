@@ -27,16 +27,24 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel = Ext.extend(Ext.Pane
 	disabledButtons: [],
 	metadataWindowsCount: 0,
 	metadataWindowStartX: 0,
-	metadataWindowStartY: 0
+	metadataWindowStartY: 0,
+	tree: null
 });
 
 /**
  * Initialize the component (called by Ext)
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initComponent = function() {
-
 	var self = this;
-
+	
+	this.on("expand", function(){
+		var childNodesCategories = self.tree.root.childNodes;
+		for(var h=0; h<childNodesCategories.length; h++){
+			var childNodesCategory = childNodesCategories[h];
+			var childNodes = childNodesCategory.childNodes;
+	        self.reloadTreeUI(childNodes);
+		}
+	});
 	
 	// transform service category object into tree node structure
 	var node = this.transform(this.mapServiceCategory);
@@ -53,7 +61,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 		})]
 	});
 	
-	var tree = new Ext.tree.TreePanel({
+	self.tree = new Ext.tree.TreePanel({
 		rootVisible: false,
 		root: new Ext.tree.AsyncTreeNode({
 			text: node.text,
@@ -81,9 +89,12 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	        		if(node){
 	        			if(node.attributes){
 	        				if(node.attributes.service){
-	        					var service = node.attributes.service;
-	        	        		self.activateService(service);
-	        	           		self.activeServicesPanel.expand();
+	        					if(node.attributes.cls.indexOf("x-tree-node-disabled") == -1){
+	        						var service = node.attributes.service;
+	        						node.setCls("x-tree-node-disabled");
+		        	        		self.activateService(service);
+		        	           		self.activeServicesPanel.expand();
+	        					}
 	        				}
 	        			}
 	        		}
@@ -92,11 +103,13 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
 	    }
 	});
 	
+	
+	
 	Ext.apply(this, {
 		title: i18n(node.text),
 		layout: 'fit',
 		bodyCssClass: 'background smaller-leaf-padding',
-		items:[tree],
+		items:[self.tree],
 		autoScroll: false
     });
 
@@ -111,6 +124,7 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.initCompone
  * @return Object to be passed to Ext.tree.TreeLoader
  */
 de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform = function(serviceCategory) {
+	var self = this;
 	var children = [];
 	var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
 	// transform sub categories
@@ -118,35 +132,34 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 
 		
 	if(subCategories){
-
-	function sortFunc(a,b){
-		name1 = a.name.toLowerCase();
-		name2 = b.name.toLowerCase();
-		if(name1 == name2)
-				return 0;
-		return (name1 < name2) ? -1 : 1;
-	}
-	//TODO not very performant ?!?
-	for (var i=0, count=subCategories.length; i<count; i++) {
-		var catId = subCategories[i].idx;
-		subCategories[i].services = [];
-		for(var j = 0; j < wmsServices.length; j++){
-			for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++)
-			if(catId == wmsServices[j].mapServiceCategories[k].idx){
-			var tempService = new Object();
-			tempService.name = wmsServices[j].name;
-			tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
-			subCategories[i].services.push(tempService);
-			
+		function sortFunc(a,b){
+			name1 = a.name.toLowerCase();
+			name2 = b.name.toLowerCase();
+			if(name1 == name2)
+					return 0;
+			return (name1 < name2) ? -1 : 1;
+		}
+		//TODO not very performant ?!?
+		for (var i=0, count=subCategories.length; i<count; i++) {
+			var catId = subCategories[i].idx;
+			subCategories[i].services = [];
+			for(var j = 0; j < wmsServices.length; j++){
+				for(var k = 0;k < wmsServices[j].mapServiceCategories.length; k++){
+					if(catId == wmsServices[j].mapServiceCategories[k].idx){
+						var tempService = new Object();
+						tempService.name = wmsServices[j].name;
+						tempService.capabilitiesUrl = wmsServices[j].capabilitiesUrl;
+						subCategories[i].services.push(tempService);
+					}
+				}
+				subCategories[i].services.sort(sortFunc);
 			}
-			subCategories[i].services.sort(sortFunc);
+			
+			if(subCategories[i].services.length != 0){
+				var childNode = this.transform(subCategories[i]);
+				children.push(childNode);
+			}
 		}
-		
-		if(subCategories[i].services.length != 0){
-		var childNode = this.transform(subCategories[i]);
-		children.push(childNode);
-		}
-	}
 	}
 
 	// transform services
@@ -159,8 +172,9 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 			text: curService.name,
 			service: serviceInstance,
 			leaf: true,
-			cls: 'x-tree-noicon x-tree-node-add'
+			cls: 'x-tree-noicon'
 		};
+		
 		children.push(childNode);
 	}
 
@@ -170,9 +184,33 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.transform =
 		children: children,
 		leaf: children.length == 0 ? true : false,
 		expanded: false,
-		expandable: true
+		expandable: true,
+		listeners: {
+		    expand: function(node, event){
+		        var childNodes = node.childNodes;
+		        self.reloadTreeUI(childNodes);
+		    }
+		}
 	};
 	return node;
+};
+
+de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.reloadTreeUI = function (childNodes){
+	for(var i=0; i<childNodes.length; i++){
+		var childNode = childNodes[i];
+		childNode.getUI().removeClass("x-tree-node-disabled");
+		childNode.setCls("x-tree-node-add");
+		var activeServices = Ext.getCmp("activeServices").layerTree.root.childNodes;
+	    for(var j=0; j<activeServices.length; j++){
+			var activeService = activeServices[j];
+			if(activeService.attributes.service && childNode.attributes.service){
+				if(activeService.attributes.service.capabilitiesUrl.split("?")[0] == childNode.attributes.service.capabilitiesUrl.split("?")[0]){
+					childNode.setCls("x-tree-node-disabled");
+					break;
+				}
+			}
+		}
+	}	
 };
 
 /**
