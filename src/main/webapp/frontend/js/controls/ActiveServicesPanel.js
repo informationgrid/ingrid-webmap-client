@@ -324,6 +324,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.initComponen
 		}),
 		cls: 'x-tree-noicon',
 		autoScroll: true, 
+		onlyServices: false,
 		useArrows:true,
         lines: false,
         frame : false,
@@ -596,6 +597,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			layerStore: this.layerStore,
 			leaf: false,
 			expanded: false,
+			allowDrop: false,
 			service: service,
 			loader: new de.ingrid.mapclient.frontend.controls.ServiceTreeLoader({
 				filter: function(record) {
