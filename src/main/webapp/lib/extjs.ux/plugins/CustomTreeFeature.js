@@ -83,7 +83,7 @@ Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRe
     href = this.getHref(a.href),
     buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
            '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
-           '<img alt="" src="', this.emptyIcon, (this.node.ownerTree.onlyServices ? '" class="x-tree-placeholder" />' : '" class="x-tree-ec-icon x-tree-elbow" />'),
+           '<img alt="" src="', this.emptyIcon, this.node.ownerTree ? (this.node.ownerTree.onlyServices ? '" class="x-tree-placeholder" />' : '" class="x-tree-ec-icon x-tree-elbow" />') : '" class="x-tree-ec-icon x-tree-elbow" />',
            '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
            cb ? ('<input class="x-tree-node-cb" type="checkbox" ' + (a.checked ? 'checked="checked" />' : '/>')) : '',
            '<a hidefocus="on" class="x-tree-node-anchor" href="',href,'" tabIndex="1" ',
@@ -128,7 +128,7 @@ Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
         var n = this.node,
             c1,
             c2,
-            cls = n.isLast() ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow",
+            cls = n.isLast() ? this.node.ownerTree ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow" : "x-tree-elbow",
             hasChild = n.hasChildNodes();
         if(hasChild || n.attributes.expandable){
             if(n.expanded){
@@ -172,8 +172,10 @@ Ext.tree.TreeNodeUI.prototype.getChildIndent = function(){
         while(p){
             if(!p.isRoot || (p.isRoot && p.ownerTree.rootVisible)){
                 if(!p.isLast()) {
-                	if(!this.node.ownerTree.onlyServices){
-                		buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-elbow-line" />');
+                	if(this.node.ownerTree){
+                		if(!this.node.ownerTree.onlyServices){
+                    		buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-elbow-line" />');
+                    	}
                 	}
                 } else {
                     buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-icon" />');
