@@ -15,7 +15,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel = Ext.exte
 	selectedService: null,
 	mainPanel:null,
 	store:null,
-	layerRecord:[]
+	layerRecord:[],
+	fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend']
 });
 
 /**
@@ -25,7 +26,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 	var self = this;
 	
 	self.store = new Ext.data.ArrayStore({
-	    fields: ['index', 'title', 'deactivated', 'checked', 'featureInfo', 'legend'],
+	    fields: self.fields,
 	    idIndex: 0 
 	});
 	
@@ -174,41 +175,6 @@ de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel.prototype.
 
 				    	}
 					});
-				    //TODO diese logik verträgt sich nicht so gut mit dem checken/unchecken der boxen, daher ist sie erstmal auskommentiert
-					// Toan muss entscheiden, ob er das so machen will, wie unten oder anders, es funktioniert aber erstmal 
-				    // Checkboxes for tbar
-//					var deactivatedTbar = {
-//				            xtype: 'checkbox',
-//				            boxLabel: 'Alle Layer verwerfen',
-//				            id : 'cb_deactivated',
-//				            checked: allDeactivated,
-//				            handler: function(btn) {
-//				    			self.allCheckboxesDeactivated(Ext.getCmp('cb_deactivated').getValue());
-//				    		},
-//							renderer: self.allCheckboxesStyle
-//						};
-//
-//					var checkedTbar = {
-//				            xtype: 'checkbox',
-//				            boxLabel: 'Alle Layer aktvieren',
-//				            id : 'cb_checked',
-//				            checked: allChecked,
-//				            disabled: allDeactivated ? true : false,
-//				            handler: function(btn) {
-//				    			self.allCheckboxesChecked(Ext.getCmp('cb_checked').getValue());
-//				    		}
-//						};
-//
-//					var featureInfoTbar = {
-//				            xtype: 'checkbox',
-//				            boxLabel: 'Alle Layer Infos aktvieren',
-//				            id : 'cb_featureInfo',
-//				            checked: allFeatureInfo,
-//				            disabled: allDeactivated ? true : false,
-//				            handler: function(btn) {
-//				            	self.allCheckboxesFeatureInfo(Ext.getCmp('cb_featureInfo').getValue());
-//				    		}
-//						};
 					
 					// Button for tbar
 					var saveBtn = new Ext.Button({

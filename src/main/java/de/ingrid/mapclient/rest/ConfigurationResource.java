@@ -3,10 +3,8 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -31,10 +29,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -47,10 +43,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -71,10 +64,10 @@ import de.ingrid.mapclient.model.MapServiceCategory;
 import de.ingrid.mapclient.model.Projection;
 import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.Setting;
+import de.ingrid.mapclient.model.WmsActiveService;
 import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.mapclient.utils.CapabilitiesUtils;
-import de.ingrid.utils.tool.MD5Util;
 import de.ingrid.utils.xml.XPathUtils;
 
 /**
@@ -484,7 +477,47 @@ public class ConfigurationResource {
 		}
 	}
 
-
+	/**
+	 * Set the active services
+	 * @param String containing a JSON encoded array of active service
+	 */
+	@POST
+	@Path(DYNAMIC_PATH+"/activeServices")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public void setActiveSettings(String activeServices, @Context HttpServletRequest req) {
+		try {
+			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
+			// convert json string to List<Setting>
+			JSONArray settingTmp = new JSONArray(activeServices);
+			List<WmsActiveService> wmsActiveServices = new ArrayList<WmsActiveService>();
+			for (int j=0, count=settingTmp.length(); j<count; j++) {
+				JSONObject settingsObj = settingTmp.getJSONObject(j);
+				Iterator<?> keys = settingsObj.keys();
+				WmsActiveService wmsActiveService = new WmsActiveService();
+		        while( keys.hasNext() ){
+		            String key = (String)keys.next();
+		            if(key.equals("serviceLayers")){
+		            	JSONArray serviceLayers = new JSONArray(settingsObj.get(key).toString());
+		    			List<String> serviceLayersList = new ArrayList<String>();
+		    			for (int i = 0, count1 = serviceLayers.length(); i < count1; i++){
+		    				serviceLayersList.add(serviceLayers.getString(i));
+		    			}
+		    			wmsActiveService.setCheckedLayers(serviceLayersList);
+		            }else if(key.equals("serviceUrl")){
+		            	wmsActiveService.setCapabilitiesUrl(settingsObj.get(key).toString());
+		            }
+		        }
+		        wmsActiveServices.add(wmsActiveService);
+			}
+			config.setWmsActiveServices(wmsActiveServices);
+			ConfigurationProvider.INSTANCE.write(config);
+		}
+		catch (Exception ex) {
+			log.error("Error setting Settings", ex);
+			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+		}
+	}
+	
 	/**
 	 * Create a MapServiceCategory instance from the given JSON object
 	 * @param object JSONObject instance containing the category data

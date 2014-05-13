@@ -145,7 +145,7 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
                                 handler: function(a, b, c) {
                                 	var self = this;
                                     if (document.getElementById('fileselector').value == "") {
-                                        alert(OpenLayers.i18n('Select a file to import'));
+                                        alert(unescape(OpenLayers.i18n('Select a file to import')));
                                     } else {
                                     	var filecontent;
                                     	
@@ -158,7 +158,7 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
                                             }
                                             catch (e)
                                             {
-                                                alert(OpenLayers.i18n('Dear IE user. Add this site in the list of trusted site and activate the ActiveX.') + e.description);
+                                                alert(OpenLayers.i18n('Dear IE user. Add this site in the list of trusted site and activate the ActiveX.') + " " + e.description);
                                                 return;
                                             }
                                         } else {

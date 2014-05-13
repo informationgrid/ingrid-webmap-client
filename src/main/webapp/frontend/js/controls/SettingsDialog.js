@@ -64,6 +64,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 	});
 
 	this.projectionsCombo = new Ext.form.ComboBox({
+		id: 'projectionsCombo',
 		fieldLabel: i18n('tRaumbezugssystem'),
 		triggerAction: 'all',
 		mode: 'local',
@@ -88,6 +89,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.initComponent = f
 		self.ctrls['keyboardControl'].activate();
 	});	
 	this.scalesCombo = new Ext.form.ComboBox({
+		id: 'scalesCombo',
 		fieldLabel: i18n('tMaszstab'),
 		triggerAction: 'all',
 		mode: 'local',

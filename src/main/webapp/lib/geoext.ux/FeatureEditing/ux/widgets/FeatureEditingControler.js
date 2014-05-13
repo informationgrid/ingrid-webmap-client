@@ -216,7 +216,7 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
     defaultPopupOptions: {
         title: OpenLayers.i18n('Edit Feature'),
         layout: 'fit',
-        width: 280
+        width: 300
     },
 
     /** api: property[selectControlOptions]
@@ -357,8 +357,9 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
      *  actions array.
      */
     initFeatureControl: function(layer) {
-        var control, actionOptions;
-
+    	var control, actionOptions;
+    	var self = this;
+    	
         control = new OpenLayers.Control.ModifyFeature(
                 layer, this.selectControlOptions);
 
@@ -375,7 +376,10 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
             tooltip: OpenLayers.i18n("Edit Feature"),
             // check item options
             group: this.toggleGroup,
-            checked: false
+            checked: false,
+            handler: function(){
+            	self.lastDrawControl = null;
+            }
         };
 
         if (this.useIcons === true) {

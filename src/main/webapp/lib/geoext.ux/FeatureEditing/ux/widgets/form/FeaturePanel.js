@@ -62,7 +62,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     /** api: config[defaults]
      *  ``Object``  Default value.
      */
-    defaults: {width: 120},
+    defaults: {width: 145},
 
     /** api: config[defaultType]
      *  ``String``  Default value.
@@ -235,6 +235,47 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
             styler.setCurrentFeature(this.features[0]);
 
             break;
+          case "palette":
+
+              if (!GeoExt.ux.LayerStyleManager) {
+                  break;
+              }
+              
+              var defaultColor = "FF0000";
+              
+              if(feature.isLabel){
+            	  defaultColor = "000000";
+              }
+              
+              if(feature.style.fillColor){
+            	  if(feature.style.fillColor != "red"){
+            		  defaultColor = feature.style.fillColor.replace("#", "");
+            	  }
+              }
+              
+              var styler = new GeoExt.ux.LayerStyleManager(
+                  new GeoExt.ux.StyleSelectorPalette({
+                	  fieldLabel: OpenLayers.i18n('color'),
+                	  defaultColor: defaultColor
+              }), {});
+
+              oGroup = {
+                  xtype: 'fieldset',
+                  title: OpenLayers.i18n('Style'),
+                  layout: 'form',
+                  collapsible: true,
+                  autoHeight: this.autoHeight,
+                  autoWidth: this.autoWidth,
+                  defaults: this.defaults,
+                  defaultType: this.defaultType,
+                  items: [styler.createLayout()]
+              };
+
+              oItems.push(oGroup);
+
+              styler.setCurrentFeature(this.features[0]);
+
+              break;
         }
 
         Ext.apply(this, {items: oItems});
@@ -276,14 +317,15 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
                         feature.popup.close();
                         feature.popup = null;
                     }
-
-                    feature.layer.destroyFeatures([feature]);
+                    if(feature.layer){
+                    	feature.layer.destroyFeatures([feature]);
+                    }
                 }
 
                 this.controler.reactivateDrawControl();
             }
         },
-                this);
+        this);
     },
 
     /** private: method[getActions]
@@ -321,11 +363,13 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
                 feature.style.label = feature.attributes[this.labelAttribute];
                 feature.style.graphic = false;
                 feature.style.labelSelect = true;
-
-                feature.layer.drawFeature(feature);
+                if(feature.layer){
+                	feature.layer.drawFeature(feature);
+                }
             } else {
-                //this.controler.getSelectControl().unselect();
-                feature.layer.destroyFeatures([feature]);
+            	if(feature.layer){
+            		feature.layer.destroyFeatures([feature]);
+            	}
                 if(this.controler.popup) {
                     this.controler.popup.close();
                     this.controler.popup = null;

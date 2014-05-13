@@ -16,7 +16,6 @@ Ext.namespace("GeoExt.ux.data");
  * @include OpenLayers/Projection.js
  * @include OpenLayers/Util.js
  * @include LayerManager/ux/data/FormatStore.js
- * @include LayerManager/ux/utils/flash.js
  * @include LayerManager/ux/widgets/LayerManagerExportWindow.js
  */
 
@@ -122,7 +121,6 @@ GeoExt.ux.data.Export.isLayerSupported = function(className) {
 };
 
 /** static: method[GeoExt.ux.data.Export.OpenWindowDownloadify]
- *  Open an export window with downloadify flash add-in
  *
  */
 GeoExt.ux.data.Export.OpenWindowDownloadify = function() {
@@ -167,11 +165,6 @@ GeoExt.ux.data.Export.KMLExport = function(map, layers, features, downloadServic
         document.body.appendChild(form);
         form.submit();
     } else {
-        if (GetFlashVersion() > 10.00) {
-            GeoExt.ux.data.Export.OpenWindowDownloadify();
-        } else {
-            alert('Please install Flash 10 in order to use the following window.');
-            GeoExt.ux.data.Export.OpenWindowDownloadify();
-        }
+    	GeoExt.ux.data.Export.OpenWindowDownloadify();
     }
 };

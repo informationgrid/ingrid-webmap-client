@@ -125,6 +125,22 @@ de.ingrid.mapclient.frontend.controls.SearchPanel.prototype.search = function(se
 			
 			var panel = Ext.getCmp('panelSearchResult');
 			panel.add(searchCategoryPanel);
+			if(resp){
+				if(resp.length == 0){
+					searchCategoryPanel.add(new Ext.Panel({
+						id: 'panelSearchNoHits',
+						bodyStyle: 'padding:8px; background: transparent;',
+						layout: 'form',
+						bodyCssClass: 'smaller-leaf-padding',
+						style: 'border-bottom: 0',
+						items:[
+						    {
+								html: i18n('tKeineTreffer'),
+								border: false
+							}]
+					}));
+				}
+			}
 			panel.doLayout();
 			
 			if (responseHandler	&& responseHandler.success instanceof Function) {
