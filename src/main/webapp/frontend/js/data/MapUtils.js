@@ -37,9 +37,29 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			var bboxExtent;
 			var bboxProjection;
 			if(map.baseLayer.bbox[newProjCode]){
-				bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
-				bboxProjection = new OpenLayers.Projection(newProjCode);
-				hasNewExtent=true;
+				var version = map.baseLayer.params.VERSION; 
+				if(version == "1.3.0"){
+					if(map.baseLayer.yx){
+						if(map.baseLayer.yx[newProjCode]){
+							var bounds = map.baseLayer.bbox[newProjCode].bbox;
+							bboxExtent = new OpenLayers.Bounds(bounds[1], bounds[0], bounds[3], bounds[2]);
+							bboxProjection = new OpenLayers.Projection(newProjCode);
+							hasNewExtent=true;
+						}else{
+							bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
+							bboxProjection = new OpenLayers.Projection(newProjCode);
+							hasNewExtent=true;
+						}
+					}else{
+						bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
+						bboxProjection = new OpenLayers.Projection(newProjCode);
+						hasNewExtent=true;
+					}
+				}else{
+					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
+					bboxProjection = new OpenLayers.Projection(newProjCode);
+					hasNewExtent=true;
+				}
 			}else{
 				for(var k in map.baseLayer.bbox){
 					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
