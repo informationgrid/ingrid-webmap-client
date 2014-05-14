@@ -36,9 +36,10 @@ de.ingrid.mapclient.frontend.data.MapUtils.getBoundsYX = function(layer, newProj
 				for(var k in layer.yx){
 					if(layer.bbox[k]){
 						var bbox = layer.bbox[k].bbox;
+						var tmpBounds = new OpenLayers.Bounds(bbox[1], bbox[0], bbox[3], bbox[2]);
 						var bboxProjection = new OpenLayers.Projection(k);
 						var newProjection = new OpenLayers.Projection(newProjCode);
-						bounds = bbox.clone().transform(bboxProjection, newProjection);
+						bounds = tmpBounds.clone().transform(bboxProjection, newProjection);
 						break;
 					}
 				}
