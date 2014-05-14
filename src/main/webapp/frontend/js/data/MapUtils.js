@@ -19,6 +19,41 @@ de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection = function(map) {
 };
 
 /**
+ * Get bounds
+ * @return OpenLayers.Bounds instance
+ */
+de.ingrid.mapclient.frontend.data.MapUtils.getBoundsYX = function(layer, newProjCode) {
+	var bounds = null;
+	var version = layer.params.VERSION; 
+	if(version == "1.3.0"){
+		if(layer.yx){
+			if(layer.yx[newProjCode]){
+				if(layer.bbox[newProjCode]){
+					var bbox = layer.bbox[newProjCode].bbox;
+					bounds = new OpenLayers.Bounds(bbox[1], bbox[0], bbox[3], bbox[2]);
+				}
+			}else{
+				for(var k in layer.yx){
+					if(layer.bbox[k]){
+						var bbox = layer.bbox[k].bbox;
+						var tmpBounds = new OpenLayers.Bounds(bbox[1], bbox[0], bbox[3], bbox[2]);
+						var bboxProjection = new OpenLayers.Projection(k);
+						var newProjection = new OpenLayers.Projection(newProjCode);
+						bounds = tmpBounds.clone().transform(bboxProjection, newProjection);
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	if(bounds == null){
+		bounds = OpenLayers.Bounds.fromArray(layer.bbox[newProjCode].bbox);
+	}
+	return bounds
+};
+
+/**
  * Get the current projection of a map
  * @return OpenLayers.Projection instance
  */
@@ -37,29 +72,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			var bboxExtent;
 			var bboxProjection;
 			if(map.baseLayer.bbox[newProjCode]){
-				var version = map.baseLayer.params.VERSION; 
-				if(version == "1.3.0"){
-					if(map.baseLayer.yx){
-						if(map.baseLayer.yx[newProjCode]){
-							var bounds = map.baseLayer.bbox[newProjCode].bbox;
-							bboxExtent = new OpenLayers.Bounds(bounds[1], bounds[0], bounds[3], bounds[2]);
-							bboxProjection = new OpenLayers.Projection(newProjCode);
-							hasNewExtent=true;
-						}else{
-							bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
-							bboxProjection = new OpenLayers.Projection(newProjCode);
-							hasNewExtent=true;
-						}
-					}else{
-						bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
-						bboxProjection = new OpenLayers.Projection(newProjCode);
-						hasNewExtent=true;
-					}
-				}else{
-					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[newProjCode].bbox);
-					bboxProjection = new OpenLayers.Projection(newProjCode);
-					hasNewExtent=true;
-				}
+				bboxExtent = this.getBoundsYX(map.baseLayer, newProjCode);
+				bboxProjection = new OpenLayers.Projection(newProjCode);
+				hasNewExtent=true;
 			}else{
 				for(var k in map.baseLayer.bbox){
 					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
