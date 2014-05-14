@@ -908,6 +908,7 @@ public class ConfigurationResource {
 		String capabilitiesUrlOrg = jsonService.getString("capabilitiesUrlOrg"); 
 		String originalCapUrl = jsonService.getString("originalCapUrl"); 
 		String title = jsonService.getString("title"); 
+		String protocol = jsonService.getString("protocol"); 
 		HashMap<String, String> fileNames = new HashMap<String, String>();
 		ConfigurationProvider p = ConfigurationProvider.INSTANCE;
 		String path = p.getWMSDir();
@@ -921,7 +922,7 @@ public class ConfigurationResource {
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		writeWmsCopyToFile(doc, req, title, fileNames);
+		writeWmsCopyToFile(doc, req, title, fileNames, protocol);
 		
 		WmsService service = findService(jsonService);
 		// Update hashCode
@@ -946,10 +947,11 @@ public class ConfigurationResource {
 		String capabilitiesUrl = jsonService.getString("capabilitiesUrl"); 
 		String originalCapUrl = capabilitiesUrl; 
 		String title = jsonService.getString("title"); 
+		String protocol = jsonService.getString("protocol"); 
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
 		Document doc = stringToDom(response);
-		HashMap<String, String> url = writeWmsCopy(doc, req, title);
+		HashMap<String, String> url = writeWmsCopy(doc, req, title, protocol);
 		
 		WmsService service = findService(jsonService);
 		service.setCapabilitiesUrl(url.get("url"));
@@ -1052,6 +1054,10 @@ public class ConfigurationResource {
 			if(isCopy){
 				capUrl = json.getString("capabilitiesUrl");
 			}
+			String protocol = null;			
+			if(json.get("protocol") != JSONObject.NULL){
+				protocol = json.getString("protocol");
+			}
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
 			log.debug(response);
@@ -1063,7 +1069,7 @@ public class ConfigurationResource {
 			if(!isCopy){
 				doc = changeXml(doc, json);
 			}
-			urls = writeWmsCopy(doc, req, title);
+			urls = writeWmsCopy(doc, req, title, protocol);
 			
 			// add hashCode for capabilities response
 			urls.put("capabilitiesHash", CapabilitiesUtils.generateMD5String(response));
@@ -1079,12 +1085,12 @@ public class ConfigurationResource {
 		
 	}
 
-	private HashMap<String, String> writeWmsCopy(Document doc, HttpServletRequest req, String title) {
+	private HashMap<String, String> writeWmsCopy(Document doc, HttpServletRequest req, String title, String protocol) {
 
-		return writeWmsCopyToFile(doc, req, title, null);
+		return writeWmsCopyToFile(doc, req, title, null, protocol);
 	}
 	
-	private HashMap<String, String> writeWmsCopyToFile(Document doc, HttpServletRequest req, String title, HashMap<String, String> fileNames) {
+	private HashMap<String, String> writeWmsCopyToFile(Document doc, HttpServletRequest req, String title, HashMap<String, String> fileNames, String protocol) {
 
 		HashMap<String, String> urls = null;
 		String url = null;
@@ -1099,6 +1105,9 @@ public class ConfigurationResource {
 			}
 			
 			urlPrefix = req.getRequestURL().toString();
+			if(protocol != null){
+				urlPrefix = urlPrefix.replace("http:", protocol); 
+			}
 			urlPrefix = urlPrefix.substring(0, urlPrefix.indexOf("rest/"));
 			urlPrefix += "wms/";
 			TransformerFactory tFactory = TransformerFactory.newInstance();
