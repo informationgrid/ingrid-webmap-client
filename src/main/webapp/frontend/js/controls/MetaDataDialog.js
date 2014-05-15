@@ -43,14 +43,6 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog = Ext.extend(Ext.Window, {
  */
 de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.initComponent = function() {
 
-	// create the template for service meta data
-	this.serviceInfoTpl = new Ext.Template(this.getServiceInfoHtml());
-	this.serviceInfoTpl.compile();
-
-	// create the template for layer meta data
-	this.layerInfoTpl = new Ext.Template(this.getLayerInfoHtml());
-	this.layerInfoTpl.compile();
-
 	// create the window layout
 	this.windowContent = new Ext.FormPanel({
 		border: false,
@@ -58,7 +50,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.initComponent = f
 		labelAlign: 'top',
 		defaults: {
 			anchor:'100%'
-		}
+		},
+		autoScroll:true
 	});
 
 	// load the capabilities
@@ -66,7 +59,8 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.initComponent = f
 	de.ingrid.mapclient.frontend.data.Service.load(this.capabilitiesUrl, this.applyData.createDelegate(self));
 
 	Ext.apply(this, {
-		items: this.windowContent
+		items: this.windowContent,
+		layout:'fit'
 	});
 
 	de.ingrid.mapclient.frontend.controls.MetaDataDialog.superclass.initComponent.call(this);
@@ -84,9 +78,18 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 	var tpl = null;
 	var html = null;
 	var data = {};
+	var wmsOriginalCapUrl = null;
+	
+	var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+	for( var i = 0; i < wmsServices.length; i++){
+		var wmsService = wmsServices[i];
+		if(wmsService.capabilitiesUrl == service.capabilitiesUrl){
+			wmsOriginalCapUrl = wmsService.originalCapUrl;
+			break;
+		}
+	}
+	
 	if (isServiceRequest) {
-		tpl = this.serviceInfoTpl;
-
 		// collect the layer names
 		var layerNames = [];
 		var layers = service.getLayers();
@@ -123,15 +126,23 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactFax = contactInformation.fax ? data.contactInformation.fax:"";
 		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
 		htmlData.href =  data.href ? data.href:"";
-		htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
-		htmlData.orgCapabilities =  data.href ? this.getCapabilities(data.href):"";
+		if(wmsOriginalCapUrl){
+			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+			htmlData.orgCapabilities =  wmsOriginalCapUrl ? this.getCapabilities(wmsOriginalCapUrl):"";
+		}else{
+			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+		}
 		htmlData.metadata = data.metadata;		
 		
+		// create the template for service meta data
+		this.serviceInfoTpl = new Ext.Template(this.getServiceInfoHtml(htmlData));
+		this.serviceInfoTpl.compile();
+
+		tpl = this.serviceInfoTpl;
+
 		html = tpl.apply(htmlData);
 		// TODO do more mapping if required
-	}
-	else {
-		tpl = this.layerInfoTpl;
+	} else {
 		var layerAbstractInfo;
 		var layerIdentifier;
 		// default data from service
@@ -183,12 +194,20 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
 		htmlData.metadata = data.metadata;
 		htmlData.href =  data.href ? data.href:"";
-		htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
-		htmlData.orgCapabilities =  data.href ? this.getCapabilities(data.href):"";
-		
+		if(wmsOriginalCapUrl){
+			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+			htmlData.orgCapabilities =  wmsOriginalCapUrl ? this.getCapabilities(wmsOriginalCapUrl):"";
+		}else{
+			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+		}
 		htmlData.identifier =  layerIdentifier ? layerIdentifier : "";
 		// TODO do more mapping if required
 		
+		// create the template for layer meta data
+		this.layerInfoTpl = new Ext.Template(this.getLayerInfoHtml(htmlData));
+		this.layerInfoTpl.compile();
+
+		tpl = this.layerInfoTpl;
 		
 		html = tpl.apply(htmlData);
 	}
@@ -208,37 +227,58 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
  * Get the html template string for the service meta data table
  * @returns String
  */
-de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtml = function() {
+de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getServiceInfoHtml = function(data) {
 
-	var tplStr = '<table class="metaDataTable">'+
+	var tplStr = '<table class="metaDataTable">';
 
-		//'<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>'+
-		//'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
-		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
-		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
-		'<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		//'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
-		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
-		'<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>'+
-		'<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>'+
-
-		'<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>'+
-		'<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>'+
-		'<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>'+
-		'<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>'+
-		'<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>'+
-		'<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>'+
-		'<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>'+
-		'<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>'+
-		'<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>'+
-		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
-
-		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
-		'<tr><td>' + i18n('tEbenen') + '</td><td>{layers}</td></tr>'+
-		'<tr><td>Quelle</td><td>{href}</td></tr>'+
-		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
-	'</table>';
+	// tplStr = tplStr + '<tr><td>' + i18n('tTitle') + '</td><td>{title}</td></tr>';
+	// tplStr = tplStr + '<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>';
+	if(data.wmsId)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>';
+	if(data.wmsTitle)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>';
+	if(data.wmsAbstract)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>';
+	if(data.projections)
+		tplStr = tplStr + '<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>';
+	// tplStr = tplStr + '<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>';
+	if(data.issuer)
+		tplStr = tplStr + '<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>';
+	if(data.fees)
+		tplStr = tplStr + '<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>';
+	if(data.restrictions)
+		tplStr = tplStr + '<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>';
+	if(data.contactPerson)
+		tplStr = tplStr + '<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>';
+	if(data.contactOrganization)
+		tplStr = tplStr + '<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>';
+	if(data.contactAddress)
+		tplStr = tplStr + '<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>';
+	if(data.contactCity)
+		tplStr = tplStr + '<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>';
+	if(data.contactState)
+		tplStr = tplStr + '<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>';
+	if(data.contactPostalcode)
+		tplStr = tplStr + '<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>';
+	if(data.contactPhone)
+		tplStr = tplStr + '<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>';
+	if(data.contactFax)
+		tplStr = tplStr + '<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>';
+	if(data.contactEmail)
+		tplStr = tplStr + '<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>';
+	if(data.contactCountry)
+		tplStr = tplStr + '<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>';
+	if(data.metadata)
+		tplStr = tplStr + '<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>';
+	if(data.layers)
+		tplStr = tplStr + '<tr><td>' + i18n('tEbenen') + '</td><td>{layers}</td></tr>';
+	if(data.href)
+		tplStr = tplStr + '<tr><td>' + i18n('tQuelleMetadata') + '</td><td><a target="_new" href="{href}">{href}</a></td></tr>';
+	if(data.capabilities)
+		tplStr = tplStr + '<tr><td>' + i18n('tGetCapabilitiesMetadata') + '</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>';
+	if(data.orgCapabilities)
+		tplStr = tplStr + '<tr><td>' + i18n('tGetCapabilitiesBasedOnMetadata') + '</td><td><a target="_new" href="{orgCapabilities}">{orgCapabilities}</a></td></tr>';
+	tplStr = tplStr + '</table>';
 
 	return tplStr;
 };
@@ -272,37 +312,60 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getCapabilities =
  * Get the html template string for the layer meta data table
  * @returns String
  */
-de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml = function() {
+de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.getLayerInfoHtml = function(data) {
 
-	var tplStr = '<table class="metaDataTable">'+
+	var tplStr = '<table class="metaDataTable">';
 
-		'<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>'+
-		'<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>'+
-		'<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>'+
-		//'<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>'+
-		'<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>'+
-		'<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>'+
-		'<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>'+
-		'<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>'+
-		'<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>'+
-		'<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>'+
-
-		'<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>'+
-		'<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>'+
-		'<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>'+
-		'<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>'+
-		'<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>'+
-		'<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>'+
-		'<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>'+
-		'<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>'+
-		'<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>'+
-		'<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>'+
-
-		'<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>'+
-		'<tr><td>Quelle</td><td>{href}</td></tr>'+
-		'<tr><td>GetCapabilities</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>'+
-		'<tr><td>Identifier</td><td>{identifier}</td></tr>'+
-	'</table>';
+	if(data.name)
+		tplStr = tplStr + '<tr><td>' + i18n('tTitle') + '</td><td>{name}</td></tr>';
+	if(data.layerAbstract)
+		tplStr = tplStr + '<tr><td>' + i18n('tZusammenfassung') + '</td><td>{layerAbstract}</td></tr>';
+	if(data.projections)
+		tplStr = tplStr + '<tr><td>' + i18n('tKoordinatensysteme') + '</td><td>{projections}</td></tr>';
+	//tplStr = tplStr + '<tr><td>' + i18n('tDatumDerRegistrierung') + '</td><td>{date}</td></tr>';
+	if(data.issuer)
+		tplStr = tplStr + '<tr><td>' + i18n('tRegistrierendeStelle') + '</td><td>{issuer}</td></tr>';
+	if(data.wmsId)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsId') + '</td><td>{wmsId}</td></tr>';
+	if(data.wmsTitle)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsTitle') + '</td><td>{wmsTitle}</td></tr>';
+	if(data.wmsAbstract)
+		tplStr = tplStr + '<tr><td>' + i18n('tWmsAbstract') + '</td><td>{wmsAbstract}</td></tr>';
+	if(data.fees)
+		tplStr = tplStr + '<tr><td>' + i18n('tGebuehren') + '</td><td>{fees}</td></tr>';
+	if(data.restrictions)
+		tplStr = tplStr + '<tr><td>' + i18n('tZugriffsbeschraenkung') + '</td><td>{restrictions}</td></tr>';
+	if(data.contactPerson)
+		tplStr = tplStr + '<tr><td>' + i18n('tAnsprechpartner') + '</td><td>{contactPerson}</td></tr>';
+	if(data.contactOrganization)
+		tplStr = tplStr + '<tr><td>' + i18n('tOrganisation') + '</td><td>{contactOrganization}</td></tr>';
+	if(data.contactAddress)
+		tplStr = tplStr + '<tr><td>' + i18n('tAdresse') + '</td><td>{contactAddress}</td></tr>';
+	if(data.contactCity)
+		tplStr = tplStr + '<tr><td>' + i18n('tStadt') + '</td><td>{contactCity}</td></tr>';
+	if(data.contactState)
+		tplStr = tplStr + '<tr><td>' + i18n('tBundesland') + '</td><td>{contactState}</td></tr>';
+	if(data.contactPostalcode)
+		tplStr = tplStr + '<tr><td>' + i18n('tPLZ') + '</td><td>{contactPostalcode}</td></tr>';
+	if(data.contactPhone)
+		tplStr = tplStr + '<tr><td>' + i18n('tTelefon') + '</td><td>{contactPhone}</td></tr>';
+	if(data.contactFax)
+		tplStr = tplStr + '<tr><td>' + i18n('tFax') + '</td><td>{contactFax}</td></tr>';
+	if(data.contactEmail)
+		tplStr = tplStr + '<tr><td>' + i18n('tEmail') + '</td><td>{contactEmail}</td></tr>';
+	if(data.contactCountry)
+		tplStr = tplStr + '<tr><td>' + i18n('tLand') + '</td><td>{contactCountry}</td></tr>';
+	if(data.metadata)
+		tplStr = tplStr + '<tr><td>' + i18n('tMetadaten') + '</td><td>{metadata}</td></tr>';
+	if(data.href)
+		tplStr = tplStr + '<tr><td>' + i18n('tQuelleMetadata') + '</td><td><a target="_new" href="{href}">{href}</a></td></tr>';
+	if(data.capabilities)
+		tplStr = tplStr + '<tr><td>' + i18n('tGetCapabilitiesMetadata') + '</td><td><a target="_new" href="{capabilities}">{capabilities}</a></td></tr>';
+	if(data.orgCapabilities)
+		tplStr = tplStr + '<tr><td>' + i18n('tGetCapabilitiesBasedOnMetadata') + '</td><td><a target="_new" href="{orgCapabilities}">{orgCapabilities}</a></td></tr>';
+	if(data.identifier)
+		tplStr = tplStr + '<tr><td>' + i18n('tIdentifierMetadata') + '</td><td>{identifier}</td></tr>';
+	tplStr = tplStr + '</table>';
 
 	return tplStr;
 };
