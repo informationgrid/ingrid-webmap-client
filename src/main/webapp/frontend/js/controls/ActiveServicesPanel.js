@@ -819,17 +819,6 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			}
 		}
 		
-		if(expandNode){
-			node.expand();
-			self.expandNode(node, false);
-		}else{
-			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
-				node.collapse(false, false);
-			}else{
-				node.expand();
-			}
-		}
-
 		// Select layer by checkedLayers only on add service.
 		// After mapclient reload load don't select layers by checkedLayers
 		if(!initialAdd){
@@ -848,6 +837,17 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 					}
 					break;
 				}
+			}
+		}
+		
+		if(expandNode){
+			node.expand();
+			self.expandNode(node, false);
+		}else{
+			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
+				node.collapse(false, false);
+			}else{
+				node.expand();
 			}
 		}
 		
@@ -912,6 +912,7 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkNode = 
  */
 de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkRecursively = function(layerName, node){
 	var self = this;
+	node.expand();
 	node.eachChild(function(n) {
 		if (layerName == n.layer.params.LAYERS)
 			n.getUI().toggleCheck(true);
