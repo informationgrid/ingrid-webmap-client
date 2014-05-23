@@ -14,18 +14,6 @@ Ext.namespace("GeoExt.form");
 
 /** api: constructor
 * .. class:: BWaStrLocator(config)
-*
-* Creates a combo box that handles results from a geocoding service. By
-* default it uses OSM Nominatim, but it can be configured with a custom store
-* to use other services. If the user enters a valid address in the search
-* box, the combo's store will be populated with records that match the
-* address. By default, records have the following fields:
-*
-* * name - ``String`` The formatted address.
-* * lonlat - ``Array`` Location matching address, for use with
-* OpenLayers.LonLat.fromArray.
-* * bounds - ``Array`` Recommended viewing bounds, for use with
-* OpenLayers.Bounds.fromArray.
 */
 GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
     
@@ -174,6 +162,19 @@ GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
 */
     handleSelect: function(combo, rec) {
         var value = this.getValue();
+
+        // Show Dialog
+        var bWaStrDialog = Ext.getCmp("bWaStrDialog");
+        if(bWaStrDialog){
+        	bWaStrDialog.close();
+        }
+        
+    	bWaStrDialog = new de.ingrid.mapclient.frontend.controls.BWaStr({
+        	id: 'bWaStrDialog',
+			record: rec,
+			map: this.map
+        });
+        bWaStrDialog.show();
     },
     
     /** private: method[removeLocationFeature]

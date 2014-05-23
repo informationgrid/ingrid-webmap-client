@@ -50,9 +50,9 @@ GeoExt.form.PortalSearch = Ext.extend(Ext.form.ComboBox, {
     
     /** api: config[minChars]
 * ``Number`` Minimum number of entered characters to trigger a search.
-* Default is 1.
+* Default is 3.
 */
-    minChars: 1,
+    minChars: 3,
     
     /** private: method[initComponent]
 * Override

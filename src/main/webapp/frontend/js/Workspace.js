@@ -26,49 +26,49 @@ de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
  * @class Workspace is the main gui component for the frontend.
  */
 de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
-			layout : 'border',
-			monitorResize : true,
+	layout : 'border',
+	monitorResize : true,
 
-			/**
-			 * @cfg The initial map url to load. This is typically a short url
-			 *      which the server maps to a user data url (optional)
-			 */
-			mapUrl : null,
+	/**
+	 * @cfg The initial map url to load. This is typically a short url
+	 *      which the server maps to a user data url (optional)
+	 */
+	mapUrl : null,
 
-			/**
-			 * @cfg de.ingrid.mapclient.frontend.data.Session instance
-			 */
-			session : null,
+	/**
+	 * @cfg de.ingrid.mapclient.frontend.data.Session instance
+	 */
+	session : null,
 
-			/**
-			 * @cfg The view configuration. The default configuration lists all
-			 *      known properties:
-			 */
-			viewConfig : "default",
+	/**
+	 * @cfg The view configuration. The default configuration lists all
+	 *      known properties:
+	 */
+	viewConfig : "default",
 
-			/**
-			 * The OpenLayers.Map instance
-			 */
-			map : null,
+	/**
+	 * The OpenLayers.Map instance
+	 */
+	map : null,
 
-			/**
-			 * The main layer tree
-			 */
-			activeServicesPanel : null,
+	/**
+	 * The main layer tree
+	 */
+	activeServicesPanel : null,
 
-			/**
-			 * Indicates if workspace state changes should be handled or not
-			 * 
-			 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
-			 */
-			listenToStateChanges : false,
+	/**
+	 * Indicates if workspace state changes should be handled or not
+	 * 
+	 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
+	 */
+	listenToStateChanges : false,
 
-			kmlArray : [],
-			kmlRedlining: "",
-			ctrls: [],
-			redliningControler : null
+	kmlArray : [],
+	kmlRedlining: "",
+	ctrls: [],
+	redliningControler : null
 
-		});
+});
 
 /**
  * Initialize the component (called by Ext)
@@ -570,6 +570,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		loadingText: i18n("tPortalSearchSearch"),
 		emptyClass: 'font-nominatim',
 		listClass: 'font-nominatim',
+		minChars: 1,
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? false : true,
 		tpl: new Ext.XTemplate(
 		        '<tpl for="."><div class="x-combo-list-item">{name}</div></tpl>'
@@ -592,6 +593,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		loadingText: i18n("tNominatimLoading"),
 		emptyClass: 'font-nominatim',
 		listClass: 'font-nominatim',
+		minChars: 1,
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? false : true),
 	});
 	
@@ -608,6 +610,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		loadingText: i18n("tBWaStrLocatorLoading"),
 		emptyClass: 'font-nominatim',
 		listClass: 'font-nominatim',
+		minChars: 1,
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true)),
 	});
 	

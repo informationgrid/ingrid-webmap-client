@@ -2,6 +2,8 @@ package de.ingrid.mapclient.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -29,6 +31,7 @@ public class JsonCallbackResource{
 	 * Path to search term
 	 */
 	private static final String SEARCH_PATH = "query";
+	private static final String SEARCHPOST_PATH = "queryPost";
 	
 	@GET
 	@Path(SEARCH_PATH)
@@ -55,6 +58,35 @@ public class JsonCallbackResource{
 				json  = jsonCallback + "("+json+")";
 			}
 		}
+		return Response.ok(json).build();
+
+	}
+	
+	@GET
+	@Path(SEARCHPOST_PATH)
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response searchPost(@QueryParam("data") String data, @QueryParam("url") String paramURL) throws IOException {
+
+		String content = "content=" + URLEncoder.encode(data.trim(), "UTF-8");
+		
+		URL url = new URL(paramURL);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("POST");
+		con.setDoInput(true);
+		con.setDoOutput(true);
+		con.setRequestProperty("Content-Type", MediaType.APPLICATION_FORM_URLENCODED);
+		con.setRequestProperty("Content-Length", String.valueOf(content.length()));
+		
+		OutputStreamWriter writer = new OutputStreamWriter( con.getOutputStream() );
+		writer.write(content);
+		writer.flush();
+		
+		InputStream in = con.getInputStream();
+		String encoding = con.getContentEncoding();
+		encoding = encoding == null ? "UTF-8" : encoding;
+		
+		String json = IOUtils.toString(in, encoding);
 		return Response.ok(json).build();
 
 	}
