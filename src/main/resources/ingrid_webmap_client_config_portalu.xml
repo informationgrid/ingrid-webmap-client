@@ -239,7 +239,7 @@
     </setting>
     <setting>
       <key>viewPortalSearchEnable</key>
-      <name>Eingabefeld: PortalSuche</name>
+      <name>Eingabefeld: Dienstsuche</name>
       <value>true</value>
       <group>view</group>
     </setting>

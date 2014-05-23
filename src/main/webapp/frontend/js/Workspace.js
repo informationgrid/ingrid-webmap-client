@@ -136,10 +136,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	accordionItems.push(externServicePanel);
 	
 	// c) search panel
-
-	var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
-	accordionItems.push(searchPanel);
-
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable" == false)){
+		var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
+		accordionItems.push(searchPanel);
+	}
+	
 	var activeItem = 0;
 	var activeAccordion = accordionItems[activeItem];
 	if (de.ingrid.mapclient.Configuration.getSettings("viewActiveAccordionWestPanel")) {
