@@ -390,11 +390,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	        		            	var label_coordsToKmHelp = Ext.getCmp('label_coordsToKmHelp');
     	        		            	if(label_coordsToKmHelp){
     	        		            		if(comboBox.value == "1"){
-    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
+    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>407465,50 5767866,59&#8626;</span>');
     		        		            	}else if(comboBox.value == "2"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 13,13542133 51,48756133&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 407465,50 5767866,59&#8626;</span>');
     		        		            	}else if(comboBox.value == "3"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>407465,50 5767866,59&#8626;</span>');
     		        		            	}
     	        		            	}
     	        		            }

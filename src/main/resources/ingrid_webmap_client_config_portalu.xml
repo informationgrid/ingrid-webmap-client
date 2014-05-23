@@ -263,7 +263,7 @@
     </setting>
     <setting>
       <key>viewBWaStrLocatorEnable</key>
-      <name>Eingabefeld: Ortssuche</name>
+      <name>Eingabefeld: BWaStr</name>
       <value>false</value>
       <group>view</group>
     </setting>

@@ -200,11 +200,15 @@ de.ingrid.mapclient.frontend.controls.MetaDataDialog.prototype.applyData = funct
 		htmlData.contactEmail = contactInformation.email ? data.contactInformation.email:"";
 		htmlData.metadata = data.metadata;
 		htmlData.href =  data.href ? data.href:"";
-		if(wmsOriginalCapUrl){
-			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
-			htmlData.orgCapabilities =  wmsOriginalCapUrl ? this.getCapabilities(wmsOriginalCapUrl):"";
+		if(de.ingrid.mapclient.Configuration.getSettings("viewMetadataShowPortalCapabilities")){
+			htmlData.capabilities =  wmsOriginalCapUrl ? this.getCapabilities(wmsOriginalCapUrl): (service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"");
 		}else{
-			htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+			if(wmsOriginalCapUrl){
+				htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+				htmlData.orgCapabilities =  wmsOriginalCapUrl ? this.getCapabilities(wmsOriginalCapUrl):"";
+			}else{
+				htmlData.capabilities =  service.capabilitiesUrl ? this.getCapabilities(service.capabilitiesUrl):"";
+			}
 		}
 		htmlData.identifier =  layerIdentifier ? layerIdentifier : "";
 		// TODO do more mapping if required
