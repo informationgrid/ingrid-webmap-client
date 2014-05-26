@@ -236,6 +236,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        		+ textfield_singleQueryOffset.getValue() + '},"spatialReference":{"wkid":'
     		                        		+ projection.split(":")[1] + '}}]}';
     		                        	
+    		                        	self.removeLayers();
     		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
     		                        }
     		                    }
@@ -355,6 +356,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 							}
                 						}
                 						content = content + ']}';
+                						
+                						self.removeLayers();
     		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
     		                        }
     		                    }
@@ -390,11 +393,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	        		            	var label_coordsToKmHelp = Ext.getCmp('label_coordsToKmHelp');
     	        		            	if(label_coordsToKmHelp){
     	        		            		if(comboBox.value == "1"){
-    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>407465,50 5767866,59&#8626;</span>');
+    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
     		        		            	}else if(comboBox.value == "2"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 407465,50 5767866,59&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 13,13542133 51,48756133&#8626;</span>');
     		        		            	}else if(comboBox.value == "3"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>407465,50 5767866,59&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
     		        		            	}
     	        		            	}
     	        		            }
@@ -451,6 +454,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
             							}
                 					}
                 					content = content + ']}';
+                					
+                					self.removeLayers();
 		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&data=" + content);
 		                        }
     	                    }
@@ -467,6 +472,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
             collapsed: true,
 			region: 'east',
 			layout: 'accordion',
+			hidden: true,
 			items:[]
     	});
         	
@@ -484,7 +490,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		var self = this;
 		de.ingrid.mapclient.frontend.controls.BWaStr.superclass.onRender.apply(this, arguments);
 	},
-	loadData: function(url){
+	loadData: function(url, callback){
 		var self = this;
 		var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Daten werden berechnet ...' });
 		loadingMask.show();
@@ -507,6 +513,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 								
 								if(data.result){
 						    		var results = data.result;
+						    		var isAddResult = false;
 						    		if(Ext.getCmp("radio_bwastrKmToCoords").checked){
 						    			for(var i=0; i<results.length; i++){
 							    			var result = results[i]
@@ -540,6 +547,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 													map: self.map
 												});
 												panel_bwastrResult.add(resultPanel);
+												isAddResult = true;
 							    			}
 						    			}
 						    		}else{
@@ -597,23 +605,29 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 			    		    	        });
 					    				
 					    				var tableData = [];
+					    				var pointData = [];
 					    				for(var i=0; i<results.length; i++){
 							    			var result = results[i]
 						    		    	if(result){
-						    		    		var entry = []
-							    	            entry.push(result.bwastrid);
-						    		    		entry.push(result.bwastr_name);
-						    		    		entry.push(result.strecken_name);
-						    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[0]));
-						    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[1]));
-						    		    		entry.push(result.stationierung.km_wert);
-						    		    		entry.push(self.convertStringFloatValue(result.stationierung.offset, 3));
-							    	            tableData.push(entry);
+						    		    		if(result.error){
+
+						    		    		}else{
+						    		    			var entry = []
+								    	            entry.push(result.bwastrid);
+							    		    		entry.push(result.bwastr_name);
+							    		    		entry.push(result.strecken_name);
+							    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[0]));
+							    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[1]));
+							    		    		entry.push(result.stationierung.km_wert);
+							    		    		entry.push(self.convertStringFloatValue(result.stationierung.offset, 3));
+								    	            tableData.push(entry);
+								    	            pointData.push(result.geometry.coordinates);
+						    		    		}
 						    		    	}
 					    				}
 					    		    	store.loadData(tableData);
-					    				
-					    				var resultPanel = new Ext.grid.GridPanel({
+					    		    	
+					    		    	var resultPanel = new Ext.grid.GridPanel({
 					    					title: 'Treffer',
 					    		            store: store,
 					    		            columns: columns,
@@ -626,10 +640,28 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 					    		            }
 					    		        });
 					    				panel_bwastrResult.add(resultPanel);
+					    				isAddResult = true; 
+					    				
+					    				// Create Layer
+					    				var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrMarker" );
+					    				self.map.addLayer(bWaStrMarker);
+					    				
+					    				for(var i=0; i < pointData.length; i++){
+					    					var point = pointData[i];
+					    					if(point){
+						    					var size = new OpenLayers.Size(21,25);
+						    					var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+						    					var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
+						    					bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(point[0],point[1]),icon));
+						    				}
+					    				}
 						    		}
 								}
-								panel_bwastrResult.collapse(true);
-								panel_bwastrResult.expand(true);
+								if(isAddResult){
+									panel_bwastrResult.show();
+									panel_bwastrResult.collapse(true);
+									panel_bwastrResult.expand(true);
+								}
 								panel_bwastrResult.doLayout();
 							}
 						}
@@ -658,5 +690,22 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 			}
 		}
 		return value;
+	},
+	removeLayers: function(){
+		var self = this;
+		
+		var bWaStrVector = self.map.getLayersByName("bWaStrVector");
+		if(bWaStrVector){
+			for(var i=0; i<bWaStrVector.length;i++){
+				bWaStrVector[i].removeAllFeatures()
+			}
+		}
+		
+		var bWaStrMarker = self.map.getLayersByName("bWaStrMarker");
+		if(bWaStrMarker){
+			for(var i=0; i<bWaStrMarker.length;i++){
+				self.map.removeLayer(bWaStrMarker[i]);
+			}
+		}
 	}
 });

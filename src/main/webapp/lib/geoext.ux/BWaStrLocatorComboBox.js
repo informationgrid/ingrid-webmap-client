@@ -98,6 +98,8 @@ GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
 */
     minChars: 3,
     
+    vector: null,
+    
     /** private: method[initComponent]
 * Override
 */
@@ -174,9 +176,120 @@ GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
 			record: rec,
 			map: this.map
         });
-        bWaStrDialog.show();
+        bWaStrDialog.anchorTo(Ext.getCmp("centerPanel").el, 'tr-tr', [-20, 50]);
+        
+        
+        // Render Layer
+        this.renderLayer(rec);
     },
-    
+    renderLayer: function(rec){
+    	if(rec.data){
+    		var km_von = rec.data.km_von;
+        	var km_bis = rec.data.km_bis;
+        	var projection = this.map.projection;
+        	var content = '{"limit":200,"queries":[{"qid":1,"bwastrid":"'
+        		+ rec.data.bwastrid +'","stationierung":{"km_von":'
+        		+ km_von + ',"km_bis":'
+        		+ km_bis + ',"offset":0},"spatialReference":{"wkid":'
+        		+ projection.split(":")[1] + '}}]}';
+        	this.loadLayerData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
+    	}
+    },
+    loadLayerData: function(url){
+    	var self = this;
+		var ajax = Ext.Ajax.request({
+			url: url,
+			method: 'GET',
+			success: function(response, request) {
+				if(response){
+					if(response.responseText){
+						var data = JSON.parse(response.responseText);
+						if(data){
+							if(data.result){
+								var results = data.result;
+				    			for(var i=0; i<results.length; i++){
+				    				var result = results[i];
+				    				var name = result.bwastr_name;
+				    				var firstPoint = null;
+				    				var lastPoint = null;
+				    				var geometry = result.geometry;
+				    				if(geometry){
+				    					if(geometry.type == "MultiLineString"){
+				    						var coordinates = geometry.coordinates;
+				    						var points = [];
+				    						if(coordinates){
+				    							for(var j=0; j<coordinates.length;j++){
+				    								var coordinate = coordinates[j];
+				    								if(coordinate.length){
+				    									for(var k=0; k<coordinate.length;k++){
+				    										var coordinateEntry = coordinate[k];
+				    										if(k == 0){
+						    									if(firstPoint == null){
+						    										firstPoint = coordinateEntry;
+						    									}
+						    								}
+						    								lastPoint = coordinateEntry;
+						    								points.push(new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]));
+				    									}
+				    								}else{
+				    									points.push(new OpenLayers.Geometry.Point(coordinate[0], coordinate[1]));
+				    								}
+				    							}
+				    						}
+				    						self.createVectorLayer(self, points, firstPoint, lastPoint);
+				    					}
+				    				}
+				    			}
+							}
+						}
+					}
+				}
+			},
+			failure: function(response, request) {
+			}
+		});
+    },
+    createVectorLayer: function(self, points, firstPoint, lastPoint){
+    	
+    	var bWaStrVector = self.map.getLayersByName("bWaStrVector");
+    	if(bWaStrVector){
+			for(var i=0; i<bWaStrVector.length;i++){
+				bWaStrVector[i].removeAllFeatures()
+			}
+		}
+
+		bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {});
+		bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(points, null))]);
+		self.map.addLayer(bWaStrVector);
+		
+		var bWaStrMarker = self.map.getLayersByName("bWaStrMarker");
+		if(bWaStrMarker){
+			for(var i=0; i<bWaStrMarker.length;i++){
+				self.map.removeLayer(bWaStrMarker[i]);
+			}
+		}
+		
+		var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrMarker" );
+		self.map.addLayer(bWaStrMarker);
+		
+		if(firstPoint){
+			var size = new OpenLayers.Size(21,25);
+			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
+			bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(firstPoint[0],firstPoint[1]),icon));
+		}
+		
+		if(lastPoint){
+			var size = new OpenLayers.Size(21,25);
+			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
+			bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lastPoint[0],lastPoint[1]),icon));
+		}
+		
+		if(bWaStrVector){
+			self.map.zoomToExtent(bWaStrVector.getDataExtent());
+		}
+    },
     /** private: method[removeLocationFeature]
 * Remove the location marker from the :obj:`layer` and destroy the
 * :obj:`locationFeature`.

@@ -46,6 +46,9 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         });
     	
     	var tableData = [];
+    	var vectorData = [];
+    	var firstPoint = null;
+    	var lastPoint = null;
     	if(this.data){
     		var geometry = this.data.geometry;
         	if(geometry){
@@ -56,18 +59,25 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	    			var coordinatesValues = coordinates[0];
     	    			if(coordinatesValues.length){
     	    				for(var j=0; j<coordinatesValues.length; j++){
-        	    				var coordinatesValue = coordinatesValues[j];
+    	    					var coordinatesValue = coordinatesValues[j];
         	    				var measure = "0";
         	    				if(measures[j]){
         	    					measure = measures[j];
         	    				}
+        	    				
+        	    				if(j == 0){
+        	    					firstPoint = coordinatesValue;
+    	    					}
+        	    				lastPoint = coordinatesValue;
         	    				tableData.push([this.convertStringFloatValue(coordinatesValue[0]), this.convertStringFloatValue(coordinatesValue[1]), this.convertStringFloatValue(measure, 3)]);
+        	    				vectorData.push(new OpenLayers.Geometry.Point(coordinatesValue[0], coordinatesValue[1]));
         	    			}		
     	    			}else{
     	    				var measure = "0";
     	    				if(measures[0]){
     	    					measure = measures[0];
     	    				}
+    	    				lastPoint = coordinates;
     	    				tableData.push([this.convertStringFloatValue(coordinates[0]), this.convertStringFloatValue(coordinates[1]), this.convertStringFloatValue(measure, 3)]);
     	    			}
     	    		}
@@ -87,6 +97,32 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     			forceFit: true
             }
         });
+    	
+    	// Create vector Layer
+    	var bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {});
+		bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
+		self.map.addLayer(bWaStrVector);
+		
+		var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrMarker" );
+		self.map.addLayer(bWaStrMarker);
+		
+		if(firstPoint){
+			var size = new OpenLayers.Size(21,25);
+			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
+			bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(firstPoint[0],firstPoint[1]),icon));
+		}
+		
+		if(lastPoint){
+			var size = new OpenLayers.Size(21,25);
+			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
+			bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lastPoint[0],lastPoint[1]),icon));
+		}
+		
+		if(bWaStrVector){
+			self.map.zoomToExtent(bWaStrVector.getDataExtent());
+		}
     	
     	Ext.apply(this, {
             items: [{
