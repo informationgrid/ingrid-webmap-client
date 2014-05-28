@@ -483,82 +483,6 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}
 	}));
 	
-	var searchToolStoreData = [];
-	var countTools = 0;
-	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
-		searchToolStoreData.push(['portalsearch', i18n('tSearchToolPortalSearch')]);
-		countTools++;
-	}
-	if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
-		searchToolStoreData.push(['nominatim', i18n('tSearchToolNominatim')]);
-		countTools++;
-	}
-	if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
-		searchToolStoreData.push(['bwastrlocator', i18n('tSearchToolBWaStrLocator')]);
-		countTools++;
-	}
-	
-	var searchToolStore = new Ext.data.ArrayStore({
-        fields: ['searchToolValue', 'searchToolName'],
-        data : searchToolStoreData
-    });
-	
-	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")
-			|| de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")
-			|| de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
-		
-		if(countTools > 1){
-			var combo = new Ext.form.ComboBox({
-		    	id:'searchTool',
-				store: searchToolStore,
-				valueField: 'searchToolValue',
-				displayField:'searchToolName',
-		        editable: false,
-		        mode: 'local',
-		        triggerAction: 'all',
-		        width: 80
-		    });
-			
-			if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
-				combo.setValue(i18n('tSearchToolPortalSearch'));
-			} else if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
-				combo.setValue(i18n('tSearchToolNominatim'));
-			} else if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
-				combo.setValue(i18n('tSearchToolBWaStrLocator'));
-			}
-			
-			combo.on('select', function(comboBox, record, index) {
-				var nominatimCB = Ext.getCmp("nominatim"); 
-				var bwastrlocatorCB = Ext.getCmp("bwastrlocator");
-				var portalsearchCB = Ext.getCmp("portalsearch");
-				
-				if(comboBox.value == "portalsearch"){
-					bwastrlocatorCB.hide();
-					bwastrlocatorCB.reset();
-					nominatimCB.hide();
-					nominatimCB.reset();
-					
-					portalsearchCB.show();
-				}else if(comboBox.value == "nominatim"){
-					bwastrlocatorCB.hide();
-					bwastrlocatorCB.reset();
-					portalsearchCB.hide();
-					portalsearchCB.reset();
-					
-					nominatimCB.show();
-				}else if(comboBox.value == "bwastrlocator"){
-					nominatimCB.hide();
-					nominatimCB.reset();
-					portalsearchCB.hide();
-					portalsearchCB.reset();
-					
-					bwastrlocatorCB.show();
-				}
-			}, this);
-			toolbarItems.push(combo);
-		}
-	}
-    
     // Create PortalSearch
 	toolbarItems.push({
 		id:'portalsearch',
@@ -616,6 +540,93 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true)),
 	});
 	
+	var searchToolStoreData = [];
+	var countTools = 0;
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
+		searchToolStoreData.push(['portalsearch', i18n('tSearchToolPortalSearch')]);
+		countTools++;
+	}
+	if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
+		searchToolStoreData.push(['nominatim', i18n('tSearchToolNominatim')]);
+		countTools++;
+	}
+	if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+		searchToolStoreData.push(['bwastrlocator', i18n('tSearchToolBWaStrLocator')]);
+		countTools++;
+	}
+	
+	var searchToolStore = new Ext.data.ArrayStore({
+        fields: ['searchToolValue', 'searchToolName'],
+        data : searchToolStoreData
+    });
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")
+			|| de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")
+			|| de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+		
+		if(countTools > 1){
+			var combo = new Ext.form.ComboBox({
+		    	id:'searchTool',
+				store: searchToolStore,
+				valueField: 'searchToolValue',
+				displayField:'searchToolName',
+		        editable: false,
+		        mode: 'local',
+		        triggerAction: 'all',
+		        width: 80
+		    });
+			
+			if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
+				combo.setValue('portalsearch');
+			} else if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
+				combo.setValue('nominatim');
+			} else if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+				combo.setValue('bwastrlocator');
+			}
+			
+			combo.on('select', function(comboBox, record, index) {
+				var nominatimCB = Ext.getCmp("nominatim"); 
+				var bwastrlocatorCB = Ext.getCmp("bwastrlocator");
+				var portalsearchCB = Ext.getCmp("portalsearch");
+				
+				if(comboBox.value == "portalsearch"){
+					bwastrlocatorCB.hide();
+					bwastrlocatorCB.reset();
+					nominatimCB.hide();
+					nominatimCB.reset();
+					
+					portalsearchCB.show();
+				}else if(comboBox.value == "nominatim"){
+					bwastrlocatorCB.hide();
+					bwastrlocatorCB.reset();
+					portalsearchCB.hide();
+					portalsearchCB.reset();
+					
+					nominatimCB.show();
+				}else if(comboBox.value == "bwastrlocator"){
+					nominatimCB.hide();
+					nominatimCB.reset();
+					portalsearchCB.hide();
+					portalsearchCB.reset();
+					
+					bwastrlocatorCB.show();
+				}
+			}, this);
+			toolbarItems.push(combo);
+			
+			toolbarItems.push(new Ext.Button({
+				id: 'btnBWaStrClear',
+				iconCls : 'iconRemove',
+				tooltip : 'BWaStr-Layer/-Marker entfernen',
+				enableToggle : false,
+				hidden: de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true,
+				handler: function(btn) {
+					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearLayer(self.map);
+				}
+			}));
+		}
+	}
+	
 	toolbarItems.push(new Ext.Toolbar.Fill());
 
 	// Setting tool
@@ -637,8 +648,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 						ctrls: self.ctrls
 					});
 					settingsDialog.anchorTo(centerPanel.el, 'tr-tr', [-20, 50]);
+				}else if(settingsDialog.hidden){
+					settingsDialog.show();
 				}else{
-					settingsDialog.close();
+					settingsDialog.hide();
 				}
 			}
 		}));

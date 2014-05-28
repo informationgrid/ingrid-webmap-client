@@ -7,7 +7,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  * @class BWaStr is the dialog used for BWaStr Locator.
  */
 de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
-	title: i18n('tBWaStr'),
+	title: 'BWaStr-Suche',
 	closable: true,
 	draggable: true,
 	resizable: false,
@@ -19,12 +19,20 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 
 	record: null,
 	map: null,
+	exampleCoordinates: [13.13542133, 51.48756133], 
 	/**
      * Initialize the component (called by Ext)
      */
     initComponent: function() {
     	var self = this;
     	
+    	var exampleLonLat = new OpenLayers.LonLat(this.exampleCoordinates[0],this.exampleCoordinates[1]);
+    	var newProj = new OpenLayers.Projection(this.map.getProjection());
+		if(newProj){
+			var oldProj = new OpenLayers.Projection("EPSG:4326");
+			exampleLonLat.transform(oldProj, newProj);
+		}
+		
     	var data = this.record.data;
     
     	var panelCenter = new Ext.Panel({
@@ -102,6 +110,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     				    				fieldset_bwastrKmToCoords.show();
     				    				fieldset_bwastrCoordsToKm.hide();
     			    				}
+    			    				// Render Layer
+    			    		        de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer(self.record, self);
     			    			}
     			        	}
     			        },
@@ -128,6 +138,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                         			if(combo_coordsToKmQuery){
                         				combo_coordsToKmQuery.setValue('1');
                         			}
+                        			// Render Layer
+    			    		        de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer(self.record, self);
                         		}
                         	}
                     	}
@@ -202,19 +214,55 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryFrom',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Von [km] (' + data.km_von + ')'
+    		                        fieldLabel: 'Von [km] (' + data.km_von + ')',
+    		                        allowNegative: false,
+    		                        decimalPrecision: 3,
+    		                        decimalSeparator: '.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        minLength: 1,
+    		                        emptyText : data.km_von + "",
+    		                        validator: function(value){
+		                        		var v = parseFloat(value.replace("\,","."));
+		                        		if(v == data.km_bis){
+    		                        		return false;
+		                        		}else if(v < data.km_von || v > data.km_bis){
+    		                        		return false;
+    		                        	}
+    		                        	return true;
+    		                        }
     		                    },
     		                    {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryTo',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Bis [km] (' + data.km_bis + ')'
+    		                        fieldLabel: 'Bis [km] (' + data.km_bis + ')',
+    		                        allowNegative: false,
+    		                        decimalPrecision: 3,
+    		                        decimalSeparator: '.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        minLength: 1,
+    		                        emptyText: data.km_bis + "",
+    		                        validator: function(value){
+		                        		var v = parseFloat(value.replace("\,","."));
+		                        		if(v == data.km_von){
+    		                        		return false;
+		                        		}else if(v < data.km_von || v > data.km_bis){
+    		                        		return false;
+    		                        	}
+    		                        	return true;
+    		                        }
     		                    },
     		                    {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryOffset',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Seitlicher Abstand [m]'
+    		                        fieldLabel: 'Seitlicher Abstand [m]',
+    		                        allowNegative: false,
+    		                        decimalPrecision: 3,
+    		                        decimalSeparator: '.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        minLength: 1,
+    		                        emptyText: "0"
     		                    },
     		                    {
     		            			xtype: 'container',
@@ -231,12 +279,14 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        	var projection = self.map.projection;
     		                        	var content = '{"limit":200,"queries":[{"qid":1,"bwastrid":"'
     		                        		+ data.bwastrid +'","stationierung":{"km_von":'
-    		                        		+ textfield_singleQueryFrom.getValue() + ',"km_bis":'
-    		                        		+ textfield_singleQueryTo.getValue() + ',"offset":'
-    		                        		+ textfield_singleQueryOffset.getValue() + '},"spatialReference":{"wkid":'
+    		                        		+ (textfield_singleQueryFrom.getValue() != "" ? textfield_singleQueryFrom.getValue() : textfield_singleQueryFrom.emptyText) + ',"km_bis":'
+    		                        		+ (textfield_singleQueryTo.getValue() != "" ? textfield_singleQueryTo.getValue() : textfield_singleQueryTo.emptyText) + ',"offset":'
+    		                        		+ (textfield_singleQueryOffset.getValue() != "" ? textfield_singleQueryOffset.getValue() : textfield_singleQueryOffset.emptyText) + '},"spatialReference":{"wkid":'
     		                        		+ projection.split(":")[1] + '}}]}';
     		                        	
-    		                        	self.removeLayers();
+    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+    		                        	
     		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
     		                        }
     		                    }
@@ -275,23 +325,25 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		        		            	var label_multiQueryHelp = Ext.getCmp('label_multiQueryHelp');
     		        		            	if(label_multiQueryHelp){
     		        		            		if(comboBox.value == "1"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170,001&#8626;<br>185,255&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170.001&#8626;<br>185.255&#8626;</span>');
     			        		            	}else if(comboBox.value == "2"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170,001 2,5&#8626;<br>185,255 2,3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170.001 2.5&#8626;<br>185.255 2.3&#8626;</span>');
     			        		            	}else if(comboBox.value == "3"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170,001 173,445&#8626;<br>185,255 201,113&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170.001 173.445&#8626;<br>185.255 201.113&#8626;</span>');
     			        		            	}else if(comboBox.value == "4"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170,001 173,445 2,5&#8626;<br>185,255 201,113 2,3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170.001 173.445 2.5&#8626;<br>185.255 201.113 2.3&#8626;</span>');
     			        		            	}else if(comboBox.value == "5"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170,001&#8626;<br>3902 1,44&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170.001&#8626;<br>3902 1.44&#8626;</span>');
     			        		            	}else if(comboBox.value == "6"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170,001 2,5&#8626;<br>3902 1,44 2,3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170.001 2.5&#8626;<br>3902 1.44 2.3&#8626;</span>');
     			        		            	}else if(comboBox.value == "7"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170,001 180,123&#8626;<br>3902 1,441 190,565&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170.001 180.123&#8626;<br>3902 1.441 190.565&#8626;</span>');
     			        		            	}else if(comboBox.value == "8"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170,001 180,123 2,5&#8626;<br>3902 1,441 190,565 2,3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170.001 180.123 2.5&#8626;<br>3902 1.441 190.565 2.3&#8626;</span>');
     			        		            	}
     		        		            	}
+    		        		            	var textarea_multiQuery = Ext.getCmp('textarea_multiQuery');
+    		        		            	textarea_multiQuery.validate();
     		        		            }
     		        		       }
     		                    },
@@ -299,7 +351,54 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'textarea',
     		                        id:'textarea_multiQuery',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Kopieren Sie Ihre Datens&auml;tze in das Eingabefeld'
+    		                        fieldLabel: 'Kopieren Sie Ihre Datens&auml;tze in das Eingabefeld',
+    		                        invalidText: 'Bitte Eingabe &uuml;berpr&uuml;fen.',
+    		                        validator: function(value){
+    		                        	var v = value.trim();
+    		                        	var vList = value.split("\n");
+    		                        	var comboBox = Ext.getCmp('combo_multiQuery');
+    		                        	
+    		                        	for(var i=0; i<vList.length;i++){
+    		                        		var vListEntry = vList[i].trim();
+    		                        		var vListEntries = vListEntry.split(" ");
+    		                        		if(comboBox){
+    	    		                        	if(comboBox.value == "1"){
+    	    		                        		if(vListEntries.length !=  1){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "2"){
+    	    		                        		if(vListEntries.length != 2){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "3"){
+    	    		                        		if(vListEntries.length != 2){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "4"){
+    	    		                        		if(vListEntries.length != 3){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "5"){
+    	    		                        		if(vListEntries.length != 2){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "6"){
+    	    		                        		if(vListEntries.length != 3){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "7"){
+    	    		                        		if(vListEntries.length != 3){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}else if(comboBox.value == "8"){
+    	    		                        		if(vListEntries.length != 4){
+    	    		                        			return false;
+    	    		                        		}
+    	    		                        	}
+        		                        	}
+    		                        	}
+    		                        	return true;
+    		                        }
     		                    },
     		                    {
     		            			xtype: 'container',
@@ -308,7 +407,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    {
     		                        xtype: 'label',
     		                        id: 'label_multiQueryHelp',
-    		                        html: '<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span>Beispieleingabe:<br>170,001&#8626;<br>185,255&#8626;</span>'
+    		                        html: '<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span>Beispieleingabe:<br>170.001&#8626;<br>185.255&#8626;</span>'
     		                    },
     		                    {
     		            			xtype: 'container',
@@ -357,7 +456,12 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 						}
                 						content = content + ']}';
                 						
-                						self.removeLayers();
+                						//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+
+                						de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
+    		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarkerTmp");
+    		                        	
     		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
     		                        }
     		                    }
@@ -393,11 +497,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	        		            	var label_coordsToKmHelp = Ext.getCmp('label_coordsToKmHelp');
     	        		            	if(label_coordsToKmHelp){
     	        		            		if(comboBox.value == "1"){
-    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
+    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
     		        		            	}else if(comboBox.value == "2"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 13,13542133 51,48756133&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 ' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
     		        		            	}else if(comboBox.value == "3"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>13,13542133 51,48756133&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
     		        		            	}
     	        		            	}
     	        		            }
@@ -407,7 +511,36 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	                        xtype: 'textarea',
     	                        id:'textarea_coordsToKmQuery',
     	                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    	                        fieldLabel: 'Kopieren Sie Ihre Datens&auml;tze in das Eingabefeld.'
+    	                        fieldLabel: 'Kopieren Sie Ihre Datens&auml;tze in das Eingabefeld.',
+    	                        invalidText: 'Bitte Eingabe &uuml;berpr&uuml;fen.',
+		                        validator: function(value){
+		                        	if(value != ""){
+		                        		var v = value.trim();
+			                        	var vList = value.split("\n");
+			                        	var comboBox = Ext.getCmp('combo_coordsToKmQuery');
+			                        	
+			                        	for(var i=0; i<vList.length;i++){
+			                        		var vListEntry = vList[i].trim();
+			                        		var vListEntries = vListEntry.split(" ");
+			                        		if(comboBox){
+		    		                        	if(comboBox.value == "1"){
+		    		                        		if(vListEntries.length != 2){
+		    		                        			return false;
+		    		                        		}
+		    		                        	}else if(comboBox.value == "2"){
+		    		                        		if(vListEntries.length != 3){
+		    		                        			return false;
+		    		                        		}
+		    		                        	}else if(comboBox.value == "3"){
+		    		                        		if(vListEntries.length != 2){
+		    		                        			return false;
+		    		                        		}
+		    		                        	}
+	    		                        	}
+			                        	}
+		                        	}
+		                        	return true;
+		                        }
     	                    },
     	                    {
     	            			xtype: 'container',
@@ -416,7 +549,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	                    {
     	                        xtype: 'label',
     	                        id: 'label_coordsToKmHelp',
-    	                        html: '<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span>Beispieleingabe:<br>170,001&#8626;<br>185,255&#8626;</span>'
+    	                        html: '<div><div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>'
     	                    },
     	                    {
     	            			xtype: 'container',
@@ -455,8 +588,12 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 					}
                 					content = content + ']}';
                 					
-                					self.removeLayers();
-		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&data=" + content);
+                					//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+
+                					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
+                			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarkerTmp");
+                			    	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&data=" + content);
 		                        }
     	                    }
     	             ]
@@ -464,22 +601,10 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		}]
     	});
         	
-    	var panelEast= new Ext.Panel({
-			id: 'panel_bwastrResult',
-			split: true,
-            width: 470,
-            collapsible: true,
-            collapsed: true,
-			region: 'east',
-			layout: 'accordion',
-			hidden: true,
-			items:[]
-    	});
-        	
     	Ext.apply(this, {
             plain:true,
             layout: 'border',
-            items: [panelCenter, panelEast]
+            items: [panelCenter]
     	});
     	de.ingrid.mapclient.frontend.controls.BWaStr.superclass.initComponent.call(this);
 	},
@@ -488,6 +613,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 	 */
 	onRender: function() {
 		var self = this;
+		// Render Layer
+        de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer(self.record, self);
 		de.ingrid.mapclient.frontend.controls.BWaStr.superclass.onRender.apply(this, arguments);
 	},
 	loadData: function(url, callback){
@@ -501,169 +628,178 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				if(response){
 					if(response.responseText){
 						var data = JSON.parse(response.responseText);
-						var panel_bwastrResult = Ext.getCmp("panel_bwastrResult");
 						var panelResults = [];
-						if(panel_bwastrResult){
-							if(data){
-								if(panel_bwastrResult.items){
-									if(panel_bwastrResult.items.items){
-										panel_bwastrResult.removeAll();
-									}
-								}
-								
-								if(data.result){
-						    		var results = data.result;
-						    		var isAddResult = false;
-						    		if(Ext.getCmp("radio_bwastrKmToCoords").checked){
-						    			for(var i=0; i<results.length; i++){
-							    			var result = results[i]
-							    			if(result.error){
-							    				
-							    			}else{
-						    					var title = result.strecken_name + ' (';
+						var winItems = [];
+						if(data){
+							if(data.result){
+					    		var results = data.result;
+					    		var isAddResult = false;
+					    		if(Ext.getCmp("radio_bwastrKmToCoords").checked){
+					    			for(var i=0; i<results.length; i++){
+						    			var result = results[i]
+						    			if(result.error){
+						    				Ext.MessageBox.alert('Fehler', 'Fehler bei der Abfrage! (' + result.message + ')');
+						    			}else{
+					    					var title = result.strecken_name + ' (';
 
-								    			if(result.stationierung){
-													if(result.stationierung.km_von){
-														title = title + result.stationierung.km_von + ' ';
-													}
-													if(result.stationierung.km_bis){
-														title = title + result.stationierung.km_bis + ' ';
-													}
-													if(result.stationierung.km_wert){
-														title = title + result.stationierung.km_wert + ' ';
-													}
-													if(result.stationierung.offset){
-														title = title + result.stationierung.offset;
-													}
+							    			if(result.stationierung){
+												if(result.stationierung.km_von){
+													title = title + result.stationierung.km_von + ' ';
 												}
-												
-												title = title + ')';
-												
-												var resultPanel = new de.ingrid.mapclient.frontend.controls.BWaStrPanelResult({
-													data: result,
-													title: title,
-													height: 500,
-													autoWidth: true,
-													map: self.map
-												});
-												panel_bwastrResult.add(resultPanel);
-												isAddResult = true;
-							    			}
+												if(result.stationierung.km_bis){
+													title = title + result.stationierung.km_bis + ' ';
+												}
+												if(result.stationierung.km_wert){
+													title = title + result.stationierung.km_wert + ' ';
+												}
+												if(result.stationierung.offset){
+													title = title + result.stationierung.offset;
+												}
+											}
+											
+											title = title + ')';
+											
+											var resultPanel = new de.ingrid.mapclient.frontend.controls.BWaStrPanelResult({
+												data: result,
+												title: title,
+												height: 500,
+												autoWidth: true,
+												map: self.map
+											});
+											winItems.push(resultPanel);
+											isAddResult = true;
 						    			}
-						    		}else{
-						    			var columns = [{
-						    	                header   : 'BWaStr-IdNr', 
-						    	                sortable : false, 
-						    	                dataIndex: 'bwastrid'
-						    	            },
-						    	            {
-						    	                header   : 'BWaStr-Bezeichnung', 
-						    	                sortable : true, 
-						    	                dataIndex: 'bwastr_name'
-						    	            },
-						    	            {
-						    	                header   : 'Streckenbezeichnung', 
-						    	                sortable : true, 
-						    	                dataIndex: 'strecken_name'
-						    	            },
-						    	            {
-						    	                header   : 'L&auml;nge [Dezimalgrad', 
-						    	                sortable : true, 
-						    	                dataIndex: 'rechtswert'
-						    	            },
-						    	            {
-						    	                header   : 'Breite [Dezimalgrad]', 
-						    	                sortable : true, 
-						    	                dataIndex: 'hochwert'
-						    	            },
-						    	            {
-						    	                header   : 'Kilometer', 
-						    	                sortable : true, 
-						    	                dataIndex: 'km_wert'
-						    	            },
-						    	            {
-						    	                header   : 'Abstand [m]', 
-						    	                sortable : true, 
-						    	                dataIndex: 'offset'
-						    	            }
-						    	    	];
-					    				
-					    				var store = new Ext.data.ArrayStore({
-					    		    		fields:[
-			    		    	              {name: 'bwastrid'},
-			    		    	              {name: 'bwastr_name'},
-			    		    	              {name: 'strecken_name'},
-			    		    	              {name: 'rechtswert'},
-			    		    	              {name: 'hochwert'},
-			    		    	              {name: 'km_wert'},
-			    		    	              {name: 'offset'}
-			    		    	            ],
-			    		    	            sortInfo: {
-			    		    	                field: 'offset',
-			    		    	                direction: 'ASC'
-			    		    	            }
-			    		    	        });
-					    				
-					    				var tableData = [];
-					    				var pointData = [];
-					    				for(var i=0; i<results.length; i++){
-							    			var result = results[i]
-						    		    	if(result){
-						    		    		if(result.error){
+					    			}
+					    		}else{
+					    			var columns = [{
+					    	                header   : 'BWaStr-IdNr', 
+					    	                sortable : false, 
+					    	                dataIndex: 'bwastrid'
+					    	            },
+					    	            {
+					    	                header   : 'BWaStr-Bezeichnung', 
+					    	                sortable : true, 
+					    	                dataIndex: 'bwastr_name'
+					    	            },
+					    	            {
+					    	                header   : 'Streckenbezeichnung', 
+					    	                sortable : true, 
+					    	                dataIndex: 'strecken_name'
+					    	            },
+					    	            {
+					    	                header   : 'L&auml;nge [Dezimalgrad', 
+					    	                sortable : true, 
+					    	                dataIndex: 'rechtswert'
+					    	            },
+					    	            {
+					    	                header   : 'Breite [Dezimalgrad]', 
+					    	                sortable : true, 
+					    	                dataIndex: 'hochwert'
+					    	            },
+					    	            {
+					    	                header   : 'Kilometer', 
+					    	                sortable : true, 
+					    	                dataIndex: 'km_wert'
+					    	            },
+					    	            {
+					    	                header   : 'Abstand [m]', 
+					    	                sortable : true, 
+					    	                dataIndex: 'offset'
+					    	            }
+					    	    	];
+				    				
+				    				var store = new Ext.data.ArrayStore({
+				    		    		fields:[
+		    		    	              {name: 'bwastrid'},
+		    		    	              {name: 'bwastr_name'},
+		    		    	              {name: 'strecken_name'},
+		    		    	              {name: 'rechtswert'},
+		    		    	              {name: 'hochwert'},
+		    		    	              {name: 'km_wert'},
+		    		    	              {name: 'offset'}
+		    		    	            ],
+		    		    	            sortInfo: {
+		    		    	                field: 'offset',
+		    		    	                direction: 'ASC'
+		    		    	            }
+		    		    	        });
+				    				
+				    				var tableData = [];
+				    				var pointData = [];
+				    				for(var i=0; i<results.length; i++){
+						    			var result = results[i]
+					    		    	if(result){
+					    		    		if(result.error){
 
-						    		    		}else{
-						    		    			var entry = []
-								    	            entry.push(result.bwastrid);
-							    		    		entry.push(result.bwastr_name);
-							    		    		entry.push(result.strecken_name);
-							    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[0]));
-							    		    		entry.push(self.convertStringFloatValue(result.geometry.coordinates[1]));
-							    		    		entry.push(result.stationierung.km_wert);
-							    		    		entry.push(self.convertStringFloatValue(result.stationierung.offset, 3));
-								    	            tableData.push(entry);
-								    	            pointData.push(result.geometry.coordinates);
-						    		    		}
-						    		    	}
+					    		    		}else{
+					    		    			var entry = []
+							    	            entry.push(result.bwastrid);
+						    		    		entry.push(result.bwastr_name);
+						    		    		entry.push(result.strecken_name);
+						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[0]));
+						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[1]));
+						    		    		entry.push(result.stationierung.km_wert);
+						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.stationierung.offset, 3));
+							    	            tableData.push(entry);
+							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert]);
+					    		    		}
+					    		    	}
+				    				}
+				    		    	store.loadData(tableData);
+				    		    	
+				    		    	var resultPanel = new Ext.grid.GridPanel({
+				    					title: 'Treffer',
+				    		            store: store,
+				    		            columns: columns,
+				    		            stripeRows: true,
+				    		            autoWidth: true,
+				    		            height: 300,
+				    		            autoScroll: true,
+				    		            viewConfig: {
+				    		    			forceFit: true
+				    		            }
+				    		        });
+				    		    	winItems.push(resultPanel);
+				    				isAddResult = true; 
+				    				
+				    				// Create Layer
+				    				var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarkerTmp" );
+				    				self.map.addLayer(bWaStrMarker);
+				    				
+				    				for(var i=0; i < pointData.length; i++){
+				    					var point = pointData[i];
+				    					if(point){
+					    					var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,point[0],point[1],point[2], "blue");
+					    					bWaStrMarker.addMarker(marker);
 					    				}
-					    		    	store.loadData(tableData);
-					    		    	
-					    		    	var resultPanel = new Ext.grid.GridPanel({
-					    					title: 'Treffer',
-					    		            store: store,
-					    		            columns: columns,
-					    		            stripeRows: true,
-					    		            autoWidth: true,
-					    		            height: 300,
-					    		            autoScroll: true,
-					    		            viewConfig: {
-					    		    			forceFit: true
-					    		            }
-					    		        });
-					    				panel_bwastrResult.add(resultPanel);
-					    				isAddResult = true; 
-					    				
-					    				// Create Layer
-					    				var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrMarker" );
-					    				self.map.addLayer(bWaStrMarker);
-					    				
-					    				for(var i=0; i < pointData.length; i++){
-					    					var point = pointData[i];
-					    					if(point){
-						    					var size = new OpenLayers.Size(21,25);
-						    					var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-						    					var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_red.png', size, offset);
-						    					bWaStrMarker.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(point[0],point[1]),icon));
-						    				}
-					    				}
-						    		}
-								}
-								if(isAddResult){
-									panel_bwastrResult.show();
-									panel_bwastrResult.collapse(true);
-									panel_bwastrResult.expand(true);
-								}
-								panel_bwastrResult.doLayout();
-							}
+				    				}
+				    				if(bWaStrMarker){
+				    					if(bWaStrMarker.markers){
+				    						if(bWaStrMarker.markers.length > 1){
+				    							self.map.zoomToExtent(bWaStrMarker.getDataExtent());
+				    						}else{
+				    							var point = bWaStrMarker.markers[0];
+				    							self.map.setCenter(point.lonlat, 5);
+				    						}
+				    					}
+				    				}
+					    		}
+					    		if(isAddResult){
+					    			var win = new Ext.Window({
+					    				title: 'BWaStr-Suchergebnis',
+						                layout: 'accordion',
+						                width: 500,
+						                height: 500,
+						                plain: true,
+						                x: 20,
+						                y: 110,
+						                items: winItems
+						    		});
+						    		win.show();
+					    		}
+							}else if(data.error){
+			    				Ext.MessageBox.alert('Fehler bei der Abfrage', 'Bitte pr&uuml;fen Sie Ihre Eingabe! (' + data.error.message + ')');
+			    			}
 						}
 					}
 				}
@@ -673,39 +809,5 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				loadingMask.hide();
 			}
 		});
-	},
-	convertStringFloatValue: function (value, index){
-		if(value){
-			if(index){
-				value = Math.round(value * Math.pow(10,index)) / Math.pow(10,index) ;
-			}else{
-				if(value.toString().indexOf(".") > -1){
-					var splitValue = value.toString().split(".");
-					if(splitValue[0].length < 3){
-						value = Math.round(value * Math.pow(10,8)) / Math.pow(10,8) ;
-					}else{
-						value = Math.round(value * Math.pow(10,2)) / Math.pow(10,2) ;
-					}
-				}
-			}
-		}
-		return value;
-	},
-	removeLayers: function(){
-		var self = this;
-		
-		var bWaStrVector = self.map.getLayersByName("bWaStrVector");
-		if(bWaStrVector){
-			for(var i=0; i<bWaStrVector.length;i++){
-				bWaStrVector[i].removeAllFeatures()
-			}
-		}
-		
-		var bWaStrMarker = self.map.getLayersByName("bWaStrMarker");
-		if(bWaStrMarker){
-			for(var i=0; i<bWaStrMarker.length;i++){
-				self.map.removeLayer(bWaStrMarker[i]);
-			}
-		}
 	}
 });
