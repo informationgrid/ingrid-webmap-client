@@ -19,6 +19,21 @@ de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection = function(map) {
 };
 
 /**
+ * Zoom passed map to passed BBOX ("xMin,yMin,xMax,yMax"), also pass BBOX SRS as String (e.g. "EPSG:4326") !
+ */
+de.ingrid.mapclient.frontend.data.MapUtils.zoomTo = function(map, bbox, bboxSrs) {
+    if (bbox != null && bboxSrs != null) {
+        var inBounds = new OpenLayers.Bounds.fromString(bbox);
+        var inProjection = new OpenLayers.Projection(bboxSrs);
+        var mapProjection = map.getProjectionObject();
+        if (mapProjection.getCode() != inProjection.getCode()){
+            inBounds = inBounds.clone().transform(inProjection, mapProjection);                     
+        }
+        map.zoomToExtent(inBounds);
+    }
+};
+
+/**
  * Get bounds
  * @return OpenLayers.Bounds instance
  */

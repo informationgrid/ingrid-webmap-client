@@ -40,3 +40,16 @@ if(typeof wms == "undefined"){
 		var wms = wmsUrl;
 	}
 }
+
+if(typeof inBbox  == "undefined"){
+    var reqBbox = getParameter("BBOX");
+    if(reqBbox){
+        var inBbox = reqBbox;
+    }
+}
+if(typeof inSrs  == "undefined"){
+    var reqSrs = getParameter("SRS");
+    if(reqSrs){
+        var inSrs = reqSrs;
+    }
+}

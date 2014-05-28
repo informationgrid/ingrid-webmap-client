@@ -1283,6 +1283,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 				}
 	
+                // initial zoom via request ?
+                de.ingrid.mapclient.frontend.data.MapUtils.zoomTo(self.map, inBbox, inSrs);
+
 				self.finishInitMap();
 				if (safeStateAfterLoad) {
 					self.save(true);
@@ -1421,6 +1424,9 @@ de.ingrid.mapclient.frontend.Workspace.prototype.load = function(shortUrl, id, s
 					var callback = Ext.util.Functions.createDelegate(self.activeServicesPanel.addService, self.activeServicesPanel);
 					de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback, true, true, true);
 				}
+
+                // initial zoom via request ?
+                de.ingrid.mapclient.frontend.data.MapUtils.zoomTo(self.map, inBbox, inSrs);
 
 				// Add KML "Zeige Punktkoordinaten"
 				if (kml != null) {
