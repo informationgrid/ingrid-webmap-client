@@ -741,7 +741,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 						    		    		entry.push(result.stationierung.km_wert);
 						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.stationierung.offset, 3));
 							    	            tableData.push(entry);
-							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert]);
+							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert])]);
 					    		    		}
 					    		    	}
 				    				}

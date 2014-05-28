@@ -66,10 +66,12 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         	    					measure = measures[count];
         	    				}
         	    				if(j == 0){
-        	    					firstPoint = [coordinatesValue[0], coordinatesValue[1], measure];
+        	    					if(firstPoint == null){
+        	    						firstPoint = [coordinatesValue[0], coordinatesValue[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinatesValue[0], coordinatesValue[1], measure])];        	    						
+        	    					}
     	    					}
         	    				if(count == measures.length -1){
-        	    					lastPoint = [coordinatesValue[0], coordinatesValue[1], measure];
+									lastPoint = [coordinatesValue[0], coordinatesValue[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinatesValue[0], coordinatesValue[1], measure])];
         	    				}
         	    				tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
         	    				vectorData.push(new OpenLayers.Geometry.Point(coordinatesValue[0], coordinatesValue[1]));
@@ -80,8 +82,8 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	    				if(measures[0]){
     	    					measure = measures[0];
     	    				}
-    	    				lastPoint = [coordinates[0], coordinates[1], measure];
-    	    				tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
+							lastPoint = [coordinates[0], coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinates[0], coordinates[1], measure])];
+							tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
     	    				break;
     	    			}
     	    		}

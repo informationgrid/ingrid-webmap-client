@@ -621,7 +621,10 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 				enableToggle : false,
 				hidden: de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true,
 				handler: function(btn) {
-					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearLayer(self.map);
+					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
+					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarkerTmp");
 				}
 			}));
 		}

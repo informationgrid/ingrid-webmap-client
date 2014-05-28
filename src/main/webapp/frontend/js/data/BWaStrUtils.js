@@ -56,7 +56,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker = function (self, layer,
 
    var feature = new OpenLayers.Feature(layer, ll, data); 
    feature.closeBox = false;
-   feature.popupClass = OpenLayers.Class(OpenLayers.Popup.Anchored,{autoSize: true } );
+   feature.popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud,{autoSize: true } );
    feature.data.popupContentHTML = popupContentHTML;
    feature.data.overflow = "hidden";
    
@@ -129,6 +129,14 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
     	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
 	}
 };
+de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values){
+	var popUpTmp = "<div style=''>" +
+		"Rechtswert [m]: " + values[0] + "<br>" +
+		"Hochwert [m]: " + values[1] + "<br>" +
+		"Station [km]: " + values[2] + "<br>" +
+	"</div>";
+	return popUpTmp;
+};
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url){
 	var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Layer wird erstellt ...' });
@@ -167,11 +175,11 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    		        	    				}
 			    		        	    				if(k == 0){
 					    									if(firstPoint == null){
-					    										firstPoint = [coordinateEntry[0],coordinateEntry[1], measure];
+							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
 					    									}
 					    								}
 			    		        	    				if(count == measures.length -1){
-			    		        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], measure];
+						        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
 			    		        	    				}
 					    								points.push(new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]));
 					    								count++;
