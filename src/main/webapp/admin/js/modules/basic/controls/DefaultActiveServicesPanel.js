@@ -119,31 +119,35 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
         self.treeService.on('afterrender', function(tree){
         	var moveServices = [];
         	var usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
-        	for (var j = 0; j < usedServices.length; j++) {
-				var usedService = usedServices[j];
-				for (var i=0, count=self.services.length; i<count; i++) {
-					var curService = self.services[i];
-					var isInUsed = false;
-				
-					if(usedService.capabilitiesUrl == curService.capabilitiesUrl){
-						moveServices.push(usedService);
-					}
-				}
-			}
-        	if(moveServices.length > 0){
-        		for (var j = 0; j < moveServices.length; j++) {
-        			var moveService = moveServices[j];
-	        		for (var i = 0; i < tree.root.childNodes.length; i++) {
-	            		var childNode = tree.root.childNodes[i];
-	            		if(childNode.attributes){
-	            			var curService = childNode.attributes.service;
-                			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
-                				self.treeActiveService.root.appendChild(childNode);
-                				self.checkedChildNodes(childNode, moveService.checkedLayers);
-                        		break;
-                			}
+        	if(usedServices){
+        		for (var j = 0; j < usedServices.length; j++) {
+    				var usedService = usedServices[j];
+    				if(self.services){
+    					for (var i=0, count=self.services.length; i<count; i++) {
+        					var curService = self.services[i];
+        					var isInUsed = false;
+        				
+        					if(usedService.capabilitiesUrl == curService.capabilitiesUrl){
+        						moveServices.push(usedService);
+        					}
+        				}    					
+    				}
+    			}
+            	if(moveServices.length > 0){
+            		for (var j = 0; j < moveServices.length; j++) {
+            			var moveService = moveServices[j];
+    	        		for (var i = 0; i < tree.root.childNodes.length; i++) {
+    	            		var childNode = tree.root.childNodes[i];
+    	            		if(childNode.attributes){
+    	            			var curService = childNode.attributes.service;
+                    			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
+                    				self.treeActiveService.root.appendChild(childNode);
+                    				self.checkedChildNodes(childNode, moveService.checkedLayers);
+                            		break;
+                    			}
+                    		}
                 		}
-            		}
+                	}
             	}
         	}
         });

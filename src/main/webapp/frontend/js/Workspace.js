@@ -26,49 +26,49 @@ de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
  * @class Workspace is the main gui component for the frontend.
  */
 de.ingrid.mapclient.frontend.Workspace = Ext.extend(Ext.Viewport, {
-			layout : 'border',
-			monitorResize : true,
+	layout : 'border',
+	monitorResize : true,
 
-			/**
-			 * @cfg The initial map url to load. This is typically a short url
-			 *      which the server maps to a user data url (optional)
-			 */
-			mapUrl : null,
+	/**
+	 * @cfg The initial map url to load. This is typically a short url
+	 *      which the server maps to a user data url (optional)
+	 */
+	mapUrl : null,
 
-			/**
-			 * @cfg de.ingrid.mapclient.frontend.data.Session instance
-			 */
-			session : null,
+	/**
+	 * @cfg de.ingrid.mapclient.frontend.data.Session instance
+	 */
+	session : null,
 
-			/**
-			 * @cfg The view configuration. The default configuration lists all
-			 *      known properties:
-			 */
-			viewConfig : "default",
+	/**
+	 * @cfg The view configuration. The default configuration lists all
+	 *      known properties:
+	 */
+	viewConfig : "default",
 
-			/**
-			 * The OpenLayers.Map instance
-			 */
-			map : null,
+	/**
+	 * The OpenLayers.Map instance
+	 */
+	map : null,
 
-			/**
-			 * The main layer tree
-			 */
-			activeServicesPanel : null,
+	/**
+	 * The main layer tree
+	 */
+	activeServicesPanel : null,
 
-			/**
-			 * Indicates if workspace state changes should be handled or not
-			 * 
-			 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
-			 */
-			listenToStateChanges : false,
+	/**
+	 * Indicates if workspace state changes should be handled or not
+	 * 
+	 * @see de.ingrid.mapclient.frontend.Workspace.onStateChanged
+	 */
+	listenToStateChanges : false,
 
-			kmlArray : [],
-			kmlRedlining: "",
-			ctrls: [],
-			redliningControler : null
+	kmlArray : [],
+	kmlRedlining: "",
+	ctrls: [],
+	redliningControler : null
 
-		});
+});
 
 /**
  * Initialize the component (called by Ext)
@@ -136,10 +136,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	accordionItems.push(externServicePanel);
 	
 	// c) search panel
-
-	var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
-	accordionItems.push(searchPanel);
-
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable" == false)){
+		var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
+		accordionItems.push(searchPanel);
+	}
+	
 	var activeItem = 0;
 	var activeAccordion = accordionItems[activeItem];
 	if (de.ingrid.mapclient.Configuration.getSettings("viewActiveAccordionWestPanel")) {
@@ -481,6 +483,102 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		}
 	}));
 	
+	var searchToolStoreData = [];
+	var countTools = 0;
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
+		searchToolStoreData.push(['portalsearch', i18n('tSearchToolPortalSearch')]);
+		countTools++;
+	}
+	if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
+		searchToolStoreData.push(['nominatim', i18n('tSearchToolNominatim')]);
+		countTools++;
+	}
+	if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+		searchToolStoreData.push(['bwastrlocator', i18n('tSearchToolBWaStrLocator')]);
+		countTools++;
+	}
+	
+	var searchToolStore = new Ext.data.ArrayStore({
+        fields: ['searchToolValue', 'searchToolName'],
+        data : searchToolStoreData
+    });
+	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")
+			|| de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")
+			|| de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+		
+		if(countTools > 1){
+			var combo = new Ext.form.ComboBox({
+		    	id:'searchTool',
+				store: searchToolStore,
+				valueField: 'searchToolValue',
+				displayField:'searchToolName',
+		        editable: false,
+		        mode: 'local',
+		        triggerAction: 'all',
+		        width: 80
+		    });
+			
+			if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
+				combo.setValue(i18n('tSearchToolPortalSearch'));
+			} else if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
+				combo.setValue(i18n('tSearchToolNominatim'));
+			} else if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+				combo.setValue(i18n('tSearchToolBWaStrLocator'));
+			}
+			
+			combo.on('select', function(comboBox, record, index) {
+				var nominatimCB = Ext.getCmp("nominatim"); 
+				var bwastrlocatorCB = Ext.getCmp("bwastrlocator");
+				var portalsearchCB = Ext.getCmp("portalsearch");
+				
+				if(comboBox.value == "portalsearch"){
+					bwastrlocatorCB.hide();
+					bwastrlocatorCB.reset();
+					nominatimCB.hide();
+					nominatimCB.reset();
+					
+					portalsearchCB.show();
+				}else if(comboBox.value == "nominatim"){
+					bwastrlocatorCB.hide();
+					bwastrlocatorCB.reset();
+					portalsearchCB.hide();
+					portalsearchCB.reset();
+					
+					nominatimCB.show();
+				}else if(comboBox.value == "bwastrlocator"){
+					nominatimCB.hide();
+					nominatimCB.reset();
+					portalsearchCB.hide();
+					portalsearchCB.reset();
+					
+					bwastrlocatorCB.show();
+				}
+			}, this);
+			toolbarItems.push(combo);
+		}
+	}
+    
+    // Create PortalSearch
+	toolbarItems.push({
+		id:'portalsearch',
+		xtype: "gx_portalsearch",
+		hideTrigger: true,
+		url: "" + de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchParams"),
+		width: 300,
+		map: this.map,
+		emptyText: i18n("tPortalSearchSearch"),
+		zoom: 5,
+		loadingText: i18n("tPortalSearchSearch"),
+		emptyClass: 'font-nominatim',
+		listClass: 'font-nominatim',
+		minChars: 1,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? false : true,
+		tpl: new Ext.XTemplate(
+		        '<tpl for="."><div class="x-combo-list-item">{name}</div></tpl>'
+	    )
+	});
+    
 	// Create Nominatim
 	toolbarItems.push({
 		id:'nominatim',
@@ -497,7 +595,25 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		loadingText: i18n("tNominatimLoading"),
 		emptyClass: 'font-nominatim',
 		listClass: 'font-nominatim',
-		hidden: de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? false : true
+		minChars: 1,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? false : true),
+	});
+	
+	// Create BWaStrLocator
+	toolbarItems.push({
+		id:'bwastrlocator',
+		xtype: "gx_bwastrlocator",
+		hideTrigger: true,
+		url: "" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorParams"),
+		width: 300,
+		map: this.map,
+		emptyText: i18n("tBWaStrLocatorSearch"),
+		zoom: 5,
+		loadingText: i18n("tBWaStrLocatorLoading"),
+		emptyClass: 'font-nominatim',
+		listClass: 'font-nominatim',
+		minChars: 1,
+		hidden: de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable") ? true : (de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true)),
 	});
 	
 	toolbarItems.push(new Ext.Toolbar.Fill());

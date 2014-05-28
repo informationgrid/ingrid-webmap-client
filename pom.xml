@@ -116,6 +116,8 @@
                                 <include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
 								<include>lib/geoext.ux/SimplePrint-min.js</include>
 								<include>lib/geoext.ux/GeocoderComboBox-min.js</include>
+								<include>lib/geoext.ux/BWaStrLocatorComboBox-min.js</include>
+								<include>lib/geoext.ux/PortalSearchComboBox-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>frontend/**/*-min.js</include>
 							</includes>
