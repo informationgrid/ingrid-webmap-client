@@ -106,20 +106,29 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         });
     	
     	// Create vector Layer
-    	var styleMap = new OpenLayers.StyleMap({'default':{
-   		 fillColor: "blue", 
-   		 strokeColor: "blue", 
-            strokeWidth: 2
-        }});
-    	
-    	var bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVectorTmp", {
-    		styleMap: styleMap
-    	});
-		bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
-		self.map.addLayer(bWaStrVector);
+    	var bWaStrVectorTmp = self.map.getLayersByName("bWaStrVectorTmp");
+    	if(bWaStrVectorTmp.length == 0){
+    		bWaStrVectorTmp = new OpenLayers.Layer.Vector("bWaStrVectorTmp", {
+    			styleMap: new OpenLayers.StyleMap({'default':{
+    				 fillColor: "blue", 
+    				 strokeColor: "blue", 
+    		         strokeWidth: 2
+    		    }})
+    		});
+    		self.map.addLayer(bWaStrVectorTmp);
+    	}else{
+    		bWaStrVectorTmp = bWaStrVectorTmp[0];
+    	}
+		bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
 		
-		var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarkerTmp" );
-		self.map.addLayer(bWaStrMarker);
+		
+		var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+		if(bWaStrMarker.length == 0){
+			bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+			self.map.addLayer(bWaStrMarker);
+		}else{
+			bWaStrMarker = bWaStrMarker[0];
+		}
 		
 		if(firstPoint){
 			var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "blue");
@@ -131,9 +140,9 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
 			bWaStrMarker.addMarker(marker);
 		}
 		
-		if(bWaStrVector){
+		if(bWaStrVectorTmp){
 			if(firstPoint){
-				self.map.zoomToExtent(bWaStrVector.getDataExtent());
+				self.map.zoomToExtent(bWaStrVectorTmp.getDataExtent());
 			}else{
 				if(bWaStrMarker){
 					if(bWaStrMarker.markers){

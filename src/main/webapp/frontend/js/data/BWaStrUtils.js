@@ -9,23 +9,51 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils = function() {
 };
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self, points, firstPoint, lastPoint){
+	
+	// Clear draw
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
 	
-	 var styleMap = new OpenLayers.StyleMap({'default':{
-		 fillColor: "red", 
-		 strokeColor: "red", 
-         strokeWidth: 2
-     }});
-	
-	var bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {
-		styleMap: styleMap
-	});
+	// Textfield selection
+	var bWaStrVector = self.map.getLayersByName("bWaStrVector");
+	if(bWaStrVector.length == 0){
+		bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {
+			styleMap: new OpenLayers.StyleMap({'default':{
+				 fillColor: "red", 
+				 strokeColor: "red", 
+		         strokeWidth: 2
+		    }})
+		});
+		self.map.addLayer(bWaStrVector);
+	}else{
+		bWaStrVector = bWaStrVector[0];
+	}
 	bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(points, null))]);
-	self.map.addLayer(bWaStrVector);
 	
-	var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
-	self.map.addLayer(bWaStrMarker);
+	// Custom lines
+	var bWaStrVectorTmp = self.map.getLayersByName("bWaStrVectorTmp");
+	if(bWaStrVectorTmp.length == 0){
+		bWaStrVectorTmp = new OpenLayers.Layer.Vector("bWaStrVectorTmp", {
+			styleMap: new OpenLayers.StyleMap({'default':{
+				 fillColor: "blue", 
+				 strokeColor: "blue", 
+		         strokeWidth: 2
+		    }})
+		});
+		self.map.addLayer(bWaStrVectorTmp);
+	}else{
+		bWaStrVectorTmp = bWaStrVectorTmp[0];
+	}
+	
+	// Markers
+	var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+	if(bWaStrMarker.length == 0){
+		bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+		self.map.addLayer(bWaStrMarker);
+	}else{
+		bWaStrMarker = bWaStrMarker[0];
+	}
 	
 	if(firstPoint){
 		var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "red");
@@ -91,9 +119,28 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer = function(map, n
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker = function(map, name) {
 	var bWaStrMarker = map.getLayersByName(name);
+	var bWaStrVector = map.getLayersByName("bWaStrVector");
+	var isVectorVisible = false;
+	
+	if(bWaStrVector.length > 0){
+		if(bWaStrVector[0].features.length > 0){
+			isVectorVisible = true;
+		}
+	}
 	if(bWaStrMarker){
 		for(var i=0; i<bWaStrMarker.length;i++){
-			map.removeLayer(bWaStrMarker[i]);
+			var marker = bWaStrMarker[i];
+			for(var j=0; j<marker.markers.length;j++){
+				if(isVectorVisible){
+					if(j != 0 && j != 1){
+						marker.removeMarker(marker.markers[j]);
+						j--;
+					}
+				}else{
+					marker.removeMarker(marker.markers[j]);
+					j--;
+				}
+			}
 		}
 	}
 };

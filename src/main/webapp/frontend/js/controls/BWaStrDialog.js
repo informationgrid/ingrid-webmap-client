@@ -460,7 +460,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
 
                 						de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
-    		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarkerTmp");
+    		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
     		                        	
     		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
     		                        }
@@ -592,7 +592,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
 
                 					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
-                			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarkerTmp");
+                			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
                 			    	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&data=" + content);
 		                        }
     	                    }
@@ -763,8 +763,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    				isAddResult = true; 
 				    				
 				    				// Create Layer
-				    				var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarkerTmp" );
-				    				self.map.addLayer(bWaStrMarker);
+				    				var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+				    				if(bWaStrMarker.length == 0){
+				    					bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+				    					self.map.addLayer(bWaStrMarker);
+				    				}else{
+				    					bWaStrMarker = bWaStrMarker[0];
+				    				}
 				    				
 				    				for(var i=0; i < pointData.length; i++){
 				    					var point = pointData[i];
