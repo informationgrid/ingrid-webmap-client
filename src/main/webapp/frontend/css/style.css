@@ -464,3 +464,7 @@ ul .x-tree-node-ct li .x-tree-node {
 .loadingDialogIcon {
 	padding: 0 2px;
 }
+
+.tbspacer_centerToolbar {
+	width: 50px !important;
+}

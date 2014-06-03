@@ -284,10 +284,10 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        		+ (textfield_singleQueryOffset.getValue() != "" ? textfield_singleQueryOffset.getValue() : textfield_singleQueryOffset.emptyText) + '},"spatialReference":{"wkid":'
     		                        		+ projection.split(":")[1] + '}}]}';
     		                        	
-    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
-    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+    		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
+    		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
     		                        	
-    		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
+    		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrGeokodierung")+ "" + content);
     		                        }
     		                    }
     		             ]
@@ -462,7 +462,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 						de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
     		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
     		                        	
-    		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
+    		                        	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrGeokodierung")+ "" + content);
     		                        }
     		                    }
     		             ]
@@ -541,6 +541,23 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		                        	}
 		                        	return true;
 		                        }
+    	                    },{
+    	                    	xtype: 'checkbox',
+    	                    	labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
+    	                        fieldLabel: 'Koordinaten durch Kartenklick aktivieren',
+    	                        handler: function(chb, status){
+    	                        	if(status){
+    	                        		var mapPin = Ext.getCmp("mapPin");
+    	                        		mapPin.toggle(true);
+    	                        		Ext.getCmp("featureInfoControl").deactivate();
+    	            		        	Ext.getCmp("positionControl").activate(true);
+    	                        	}else{
+    	                        		var btnDragMap = Ext.getCmp("btnDragMap");
+    	                        		btnDragMap.toggle(true);
+    	                        		Ext.getCmp("featureInfoControl").deactivate();
+    	            		        	Ext.getCmp("positionControl").deactivate();
+    	                        	}
+    	                        }
     	                    },
     	                    {
     	            			xtype: 'container',
@@ -593,7 +610,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 
                 					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
                 			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
-                			    	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&data=" + content);
+                			    	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "" + content);
 		                        }
     	                    }
     	             ]

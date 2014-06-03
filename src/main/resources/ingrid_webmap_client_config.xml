@@ -274,6 +274,18 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewBWaStrGeokodierung</key>
+      <name>BWaStr-Locator: URL Geokodierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&amp;data=</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrStationierung</key>
+      <name>BWaStr-Locator: URL Stationierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query&amp;data=</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasSettings</key>
       <name>Button Einstellungen: Fenster anzeigen</name>
       <value>true</value>

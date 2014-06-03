@@ -177,11 +177,23 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
 	}
 };
 de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values){
-	var popUpTmp = "<div style=''>" +
-		"Rechtswert [m]: " + values[0] + "<br>" +
-		"Hochwert [m]: " + values[1] + "<br>" +
-		"Station [km]: " + values[2] + "<br>" +
-	"</div>";
+	var r = values[0];
+	var h = values[1];
+	var s = values[2];
+	if(!(r instanceof String)){
+		r = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(r);
+	}
+	if(!(h instanceof String)){
+		h = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(h);
+	}
+	if(!(r instanceof String)){
+		s = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(s, 3);
+	}
+	var popUpTmp = "<table style=''>" +
+		"<tr><td>Rechtswert [m]:</td><td>" + r + "</td></tr>" +
+		"<tr><td>Hochwert [m]:</td><td>" + h + "</td></tr>" +
+		"<tr><td>Station [km]:</td><td>" + s + "</td></tr>" +
+	"</table>";
 	return popUpTmp;
 };
 
