@@ -173,7 +173,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
     		+ km_von + ',"km_bis":'
     		+ km_bis + ',"offset":0},"spatialReference":{"wkid":'
     		+ projection.split(":")[1] + '}}]}';
-    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
+    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content);
 	}
 };
 de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values){
