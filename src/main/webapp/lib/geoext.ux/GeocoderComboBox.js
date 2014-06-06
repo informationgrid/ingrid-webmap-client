@@ -156,7 +156,7 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
                     }}
                 ],
                 proxy: new Ext.data.ScriptTagProxy({
-                    url: this.url,
+                    url: decodeURIComponent(this.url),
                     callbackParam: "json_callback"
                 })
             });

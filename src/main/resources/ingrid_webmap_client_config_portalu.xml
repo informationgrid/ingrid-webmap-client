@@ -246,7 +246,7 @@
     <setting>
       <key>viewPortalSearchParams</key>
       <name>PortalSuche: URL festlegen</name>
-      <value>/ingrid-webmap-client/rest/search/query?</value>
+      <value>http://portalu.de/ingrid-webmap-client/rest/search/query?</value>
       <group>view</group>
     </setting>
     <setting>
@@ -258,7 +258,7 @@
     <setting>
       <key>viewNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
-      <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de</value>
       <group>view</group>
     </setting>
     <setting>
@@ -271,6 +271,18 @@
       <key>viewBWaStrLocatorParams</key>
       <name>BWaStr-Locator: URL festlegen</name>
       <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200&amp;searchfield=all</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrGeokodierung</key>
+      <name>BWaStr-Locator: URL Geokodierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrStationierung</key>
+      <name>BWaStr-Locator: URL Stationierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query</value>
       <group>view</group>
     </setting>
     <setting>

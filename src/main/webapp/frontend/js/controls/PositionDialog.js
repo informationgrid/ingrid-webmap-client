@@ -114,7 +114,34 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
         data: data
     });
 	
-	this.show();
+	// Add to BWaStr
+	var bWaStrDialog = Ext.getCmp("bWaStrDialog");
+    if(bWaStrDialog){
+    	if(bWaStrDialog.isVisible()){
+    		var radio_bwastrCoordsToKm = Ext.getCmp("radio_bwastrCoordsToKm");
+    		if(radio_bwastrCoordsToKm){
+    			if(radio_bwastrCoordsToKm.checked){
+        			var textarea_coordsToKmQuery = Ext.getCmp("textarea_coordsToKmQuery");
+        			if(textarea_coordsToKmQuery){
+        				var content = textarea_coordsToKmQuery.getRawValue().trim();
+        				var value = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lon) +  " " + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lat);
+
+        				if(content == ""){
+        					content = value;	
+        				}else{
+        					content = content + "\n" + value;
+        				}
+        				textarea_coordsToKmQuery.setValue(content);
+        				textarea_coordsToKmQuery.el.dom.scrollTop = 99999;
+        			}
+        		}
+    		}
+    	}else{
+    		this.show();
+    	}
+    }else{
+    	this.show();
+    }
 };
 
 /**

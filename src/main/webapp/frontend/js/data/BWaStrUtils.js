@@ -9,23 +9,51 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils = function() {
 };
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self, points, firstPoint, lastPoint){
+	
+	// Clear draw
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
+	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
 	
-	 var styleMap = new OpenLayers.StyleMap({'default':{
-		 fillColor: "red", 
-		 strokeColor: "red", 
-         strokeWidth: 2
-     }});
-	
-	var bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {
-		styleMap: styleMap
-	});
+	// Textfield selection
+	var bWaStrVector = self.map.getLayersByName("bWaStrVector");
+	if(bWaStrVector.length == 0){
+		bWaStrVector = new OpenLayers.Layer.Vector("bWaStrVector", {
+			styleMap: new OpenLayers.StyleMap({'default':{
+				 fillColor: "red", 
+				 strokeColor: "red", 
+		         strokeWidth: 2
+		    }})
+		});
+		self.map.addLayer(bWaStrVector);
+	}else{
+		bWaStrVector = bWaStrVector[0];
+	}
 	bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(points, null))]);
-	self.map.addLayer(bWaStrVector);
 	
-	var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
-	self.map.addLayer(bWaStrMarker);
+	// Custom lines
+	var bWaStrVectorTmp = self.map.getLayersByName("bWaStrVectorTmp");
+	if(bWaStrVectorTmp.length == 0){
+		bWaStrVectorTmp = new OpenLayers.Layer.Vector("bWaStrVectorTmp", {
+			styleMap: new OpenLayers.StyleMap({'default':{
+				 fillColor: "blue", 
+				 strokeColor: "blue", 
+		         strokeWidth: 2
+		    }})
+		});
+		self.map.addLayer(bWaStrVectorTmp);
+	}else{
+		bWaStrVectorTmp = bWaStrVectorTmp[0];
+	}
+	
+	// Markers
+	var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+	if(bWaStrMarker.length == 0){
+		bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+		self.map.addLayer(bWaStrMarker);
+	}else{
+		bWaStrMarker = bWaStrMarker[0];
+	}
 	
 	if(firstPoint){
 		var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "red");
@@ -39,6 +67,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
 	
 	if(bWaStrVector){
 		self.map.zoomToExtent(bWaStrVector.getDataExtent());
+		self.map.zoomTo(self.map.getZoom() - 1);
 	}
 };
 de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker = function (self, layer, lon, lat, popupContentHTML, color) {
@@ -91,9 +120,28 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer = function(map, n
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker = function(map, name) {
 	var bWaStrMarker = map.getLayersByName(name);
+	var bWaStrVector = map.getLayersByName("bWaStrVector");
+	var isVectorVisible = false;
+	
+	if(bWaStrVector.length > 0){
+		if(bWaStrVector[0].features.length > 0){
+			isVectorVisible = true;
+		}
+	}
 	if(bWaStrMarker){
 		for(var i=0; i<bWaStrMarker.length;i++){
-			map.removeLayer(bWaStrMarker[i]);
+			var marker = bWaStrMarker[i];
+			for(var j=0; j<marker.markers.length;j++){
+				if(isVectorVisible){
+					if(j != 0 && j != 1){
+						marker.removeMarker(marker.markers[j]);
+						j--;
+					}
+				}else{
+					marker.removeMarker(marker.markers[j]);
+					j--;
+				}
+			}
 		}
 	}
 };
@@ -126,15 +174,31 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
     		+ km_von + ',"km_bis":'
     		+ km_bis + ',"offset":0},"spatialReference":{"wkid":'
     		+ projection.split(":")[1] + '}}]}';
-    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query&data=" + content);
+    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrGeokodierung")+ "&data=" + content);
 	}
 };
-de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values){
-	var popUpTmp = "<div style=''>" +
-		"Rechtswert [m]: " + values[0] + "<br>" +
-		"Hochwert [m]: " + values[1] + "<br>" +
-		"Station [km]: " + values[2] + "<br>" +
-	"</div>";
+de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values, self){
+	var r = values[0];
+	var h = values[1];
+	var s = values[2];
+	if(!(r instanceof String)){
+		r = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(r);
+	}
+	if(!(h instanceof String)){
+		h = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(h);
+	}
+	if(!(r instanceof String)){
+		s = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(s, 3);
+	}
+	
+	var strR = self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]:' : 'Rechtswert [m]:';
+	var strH = self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]:' : 'Hochwert [m]:';
+	
+	var popUpTmp = "<table style=''>" +
+		"<tr><td>" + strR + "</td><td>" + r + "</td></tr>" +
+		"<tr><td>" + strH + "</td><td>" + h + "</td></tr>" +
+		"<tr><td>Station [km]:</td><td>" + s + "</td></tr>" +
+	"</table>";
 	return popUpTmp;
 };
 
@@ -175,11 +239,11 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    		        	    				}
 			    		        	    				if(k == 0){
 					    									if(firstPoint == null){
-							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
+							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
 					    									}
 					    								}
 			    		        	    				if(count == measures.length -1){
-						        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
+						        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
 			    		        	    				}
 					    								points.push(new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]));
 					    								count++;
