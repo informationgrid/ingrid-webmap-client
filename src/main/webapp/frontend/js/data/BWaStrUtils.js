@@ -67,6 +67,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
 	
 	if(bWaStrVector){
 		self.map.zoomToExtent(bWaStrVector.getDataExtent());
+		self.map.zoomTo(self.map.getZoom() - 1);
 	}
 };
 de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker = function (self, layer, lon, lat, popupContentHTML, color) {
@@ -173,10 +174,10 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
     		+ km_von + ',"km_bis":'
     		+ km_bis + ',"offset":0},"spatialReference":{"wkid":'
     		+ projection.split(":")[1] + '}}]}';
-    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content);
+    	de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData(self, "/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrGeokodierung")+ "&data=" + content);
 	}
 };
-de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values){
+de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (values, self){
 	var r = values[0];
 	var h = values[1];
 	var s = values[2];
@@ -189,9 +190,13 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (va
 	if(!(r instanceof String)){
 		s = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(s, 3);
 	}
+	
+	var strR = self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]:' : 'Rechtswert [m]:';
+	var strH = self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]:' : 'Hochwert [m]:';
+	
 	var popUpTmp = "<table style=''>" +
-		"<tr><td>Rechtswert [m]:</td><td>" + r + "</td></tr>" +
-		"<tr><td>Hochwert [m]:</td><td>" + h + "</td></tr>" +
+		"<tr><td>" + strR + "</td><td>" + r + "</td></tr>" +
+		"<tr><td>" + strH + "</td><td>" + h + "</td></tr>" +
 		"<tr><td>Station [km]:</td><td>" + s + "</td></tr>" +
 	"</table>";
 	return popUpTmp;
@@ -234,11 +239,11 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    		        	    				}
 			    		        	    				if(k == 0){
 					    									if(firstPoint == null){
-							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
+							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
 					    									}
 					    								}
 			    		        	    				if(count == measures.length -1){
-						        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure])];
+						        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
 			    		        	    				}
 					    								points.push(new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]));
 					    								count++;

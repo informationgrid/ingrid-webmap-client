@@ -77,7 +77,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.prototype.initCompon
 	});
 	
 	this.featureInfoTextField = new Ext.form.TextField({
-		fieldLabel: 'WMS f&uuml;r die FeaturInfo-Abfrage',
+		fieldLabel: 'WMS f&uuml;r die FeatureInfo-Abfrage',
 		allowBlank: true,
 		anchor: '99%'
 	});

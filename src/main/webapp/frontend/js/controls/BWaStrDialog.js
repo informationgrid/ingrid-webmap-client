@@ -10,6 +10,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 	title: 'BWaStr-Suche',
 	closable: true,
 	draggable: true,
+	constrain: true,
 	resizable: false,
 	width: 500,
 	height: 500,
@@ -610,6 +611,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 
                 					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
                 			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+                			    	
                 			    	self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content);
 		                        }
     	                    }
@@ -661,20 +663,24 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 
 							    			if(result.stationierung){
 												if(result.stationierung.km_von){
-													title = title + result.stationierung.km_von + ' ';
+													title = title + ' ';
+													title = title + result.stationierung.km_von;
 												}
 												if(result.stationierung.km_bis){
-													title = title + result.stationierung.km_bis + ' ';
+													title = title + ' ';
+													title = title + result.stationierung.km_bis;
 												}
 												if(result.stationierung.km_wert){
-													title = title + result.stationierung.km_wert + ' ';
+													title = title + ' ';
+													title = title + result.stationierung.km_wert;
 												}
 												if(result.stationierung.offset){
+													title = title + ' ';
 													title = title + result.stationierung.offset;
 												}
 											}
 											
-											title = title + ')';
+											title = title + ' )';
 											
 											var resultPanel = new de.ingrid.mapclient.frontend.controls.BWaStrPanelResult({
 												data: result,
@@ -704,17 +710,17 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 					    	                dataIndex: 'strecken_name'
 					    	            },
 					    	            {
-					    	                header   : 'L&auml;nge [Dezimalgrad', 
+					    	                header   : self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]' : 'Rechtswert [m]', 
 					    	                sortable : true, 
 					    	                dataIndex: 'rechtswert'
 					    	            },
 					    	            {
-					    	                header   : 'Breite [Dezimalgrad]', 
+					    	                header   : self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]' : 'Hochwert [m]', 
 					    	                sortable : true, 
 					    	                dataIndex: 'hochwert'
 					    	            },
 					    	            {
-					    	                header   : 'Kilometer', 
+					    	                header   : 'Station [km]', 
 					    	                sortable : true, 
 					    	                dataIndex: 'km_wert'
 					    	            },
@@ -758,7 +764,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 						    		    		entry.push(result.stationierung.km_wert);
 						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.stationierung.offset, 3));
 							    	            tableData.push(entry);
-							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert])]);
+							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert], self)]);
 					    		    		}
 					    		    	}
 				    				}
@@ -799,6 +805,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    					if(bWaStrMarker.markers){
 				    						if(bWaStrMarker.markers.length > 1){
 				    							self.map.zoomToExtent(bWaStrMarker.getDataExtent());
+				    							self.map.zoomTo(self.map.getZoom() - 1);
 				    						}else{
 				    							var point = bWaStrMarker.markers[0];
 				    							self.map.setCenter(point.lonlat, 5);
@@ -809,7 +816,9 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 					    		if(isAddResult){
 					    			var win = new Ext.Window({
 					    				title: 'BWaStr-Suchergebnis',
-						                layout: 'accordion',
+					    				resizable: false,
+					    				constrain: true,
+					    				layout: 'accordion',
 						                width: 500,
 						                height: 500,
 						                plain: true,

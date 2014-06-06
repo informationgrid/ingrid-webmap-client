@@ -17,12 +17,12 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     initComponent: function() {
     	var self = this;
     	this.columns = [{
-                header   : 'Rechtswert [m]', 
+                header   : self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]' : 'Rechtswert [m]', 
                 sortable : false, 
                 dataIndex: 'rechtswert'
             },
             {
-                header   : 'Hochwert [m]', 
+                header   : self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]' : 'Hochwert [m]', 
                 sortable : true, 
                 dataIndex: 'hochwert'
             },
@@ -65,16 +65,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         	    				if(measures[count]){
         	    					measure = measures[count];
         	    				}
-        	    				if(j == 0){
-        	    					if(firstPoint == null){
-        	    						firstPoint = [coordinatesValue[0], coordinatesValue[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinatesValue[0], coordinatesValue[1], measure])];        	    						
-        	    					}
-    	    					}
-        	    				if(count == measures.length -1){
-									lastPoint = [coordinatesValue[0], coordinatesValue[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinatesValue[0], coordinatesValue[1], measure])];
-        	    				}
         	    				tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
-        	    				vectorData.push(new OpenLayers.Geometry.Point(coordinatesValue[0], coordinatesValue[1]));
         	    				count++;
         	    			}		
     	    			}else{
@@ -82,7 +73,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	    				if(measures[0]){
     	    					measure = measures[0];
     	    				}
-							lastPoint = [coordinates[0], coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinates[0], coordinates[1], measure])];
+							lastPoint = [coordinates[0], coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinates[0], coordinates[1], measure], self)];
 							tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
     	    				break;
     	    			}
@@ -105,6 +96,20 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
             }
         });
     	
+    	var items = this.store.data.items;
+    	for(var i=0; i<items.length;i++){
+    		var item = items[i];
+    		if(i == 0){
+				if(firstPoint == null){
+					firstPoint = [item.data.rechtswert, item.data.hochwert, de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([item.data.rechtswert, item.data.hochwert, item.data.station], self)];        	    						
+				}
+			}
+			if(i == items.length -1){
+				lastPoint = [item.data.rechtswert, item.data.hochwert, de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([item.data.rechtswert, item.data.hochwert, item.data.station], self)];
+			}
+			
+    		vectorData.push(new OpenLayers.Geometry.Point(item.data.rechtswert, item.data.hochwert));
+    	}
     	// Create vector Layer
     	var bWaStrVectorTmp = self.map.getLayersByName("bWaStrVectorTmp");
     	if(bWaStrVectorTmp.length == 0){
@@ -120,7 +125,6 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     		bWaStrVectorTmp = bWaStrVectorTmp[0];
     	}
 		bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
-		
 		
 		var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
 		if(bWaStrMarker.length == 0){
@@ -141,19 +145,11 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
 		}
 		
 		if(bWaStrVectorTmp){
-			if(firstPoint){
-				self.map.zoomToExtent(bWaStrVectorTmp.getDataExtent());
+			self.map.zoomToExtent(bWaStrVectorTmp.getDataExtent());
+			if(bWaStrVectorTmp.features.length > 1){
+				self.map.zoomTo(self.map.getZoom() - 1);
 			}else{
-				if(bWaStrMarker){
-					if(bWaStrMarker.markers){
-						if(bWaStrMarker.markers.length > 1){
-							self.map.zoomToExtent(bWaStrMarker.getDataExtent());
-						}else{
-							var point = bWaStrMarker.markers[0];
-							self.map.setCenter(point.lonlat, 5);
-						}
-					}
-				}
+				self.map.zoomTo(self.map.getZoom() - 5);
 			}
 		}
     	
@@ -212,33 +208,39 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
                                 style: {
                                     fontWeight: 'bold'
                                 },
-                                text: 'Von [km]:'
+                                text: 'Von [km]:',
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
                                 style: {
                                     fontWeight: 'bold'
                                 },
-                                text: 'Bis [km]:'
+                                text: 'Bis [km]:',
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
                                 style: {
                                     fontWeight: 'bold'
                                 },
-        	                    text: 'Abstand [m]:'
+        	                    text: 'Abstand [m]:',
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                             	columnWidth:.33,
                                 xtype: 'label',
-                                text: this.data.stationierung.km_von ? this.data.stationierung.km_von : "0"
+                                text: this.data.stationierung.km_von ? this.data.stationierung.km_von : "0",
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
-                                text: this.data.stationierung.km_bis
+                                text: this.data.stationierung.km_bis,
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
-        	                    text: this.data.stationierung.offset ? this.data.stationierung.offset : "0"
+        	                    text: this.data.stationierung.offset ? this.data.stationierung.offset : "0",
+                                hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:1,
                                 xtype: 'label',
