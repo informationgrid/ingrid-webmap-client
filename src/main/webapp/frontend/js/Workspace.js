@@ -137,7 +137,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 	
 	// c) search panel
 	
-	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable" == false)){
+	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") == false){
 		var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
 		accordionItems.push(searchPanel);
 	}
