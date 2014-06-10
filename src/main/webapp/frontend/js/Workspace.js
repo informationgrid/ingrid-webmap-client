@@ -518,7 +518,12 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 		        '</tpl>',
 		        '<div class="x-combo-list-item">{display_field}</div>',
 		        '</tpl>'
-	    )
+	    ),
+	    listeners: {
+	    	'beforequery' : function(){
+	    		this.tpl.group="";
+	    	}
+	    }
 	});
 	
 	// Create BWaStrLocator
