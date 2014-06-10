@@ -111,9 +111,9 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
             this.srs = new OpenLayers.Projection(this.srs);
         }
         var data = '{cmp:[';
-        
+        var entry = '';
         if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
-        	data = data + 
+        	entry = entry + 
         	'{' +
         	'"group":"bwastrlocator",' +
         	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorParams") + '",' +
@@ -123,8 +123,10 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
         	'}';
     	}
     	if(de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")){
-    		data = data + ',';
-    		data = data + 
+    		if(entry != ''){
+    			entry = entry + ',';
+    		}
+    		entry = entry + 
         	'{' +
         	'"group":"nominatim",' +
         	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams") + '",' +
@@ -134,8 +136,10 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
         	'}';
     	}
     	if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable")){
-    		data = data + ',';
-    		data = data + 
+    		if(entry != ''){
+    			entry = entry + ',';
+    		}
+    		entry = entry + 
         	'{' +
         	'"group":"portalsearch",' +
         	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchParams") + '",' +
@@ -145,7 +149,7 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
         	'}';
     	}
     	
-    	data = data + ']}';
+    	data = data + '' + entry + ']}';
     	
         if (!this.store) {
             this.store = new Ext.data.JsonStore({
