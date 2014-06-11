@@ -245,7 +245,7 @@
     </setting>
     <setting>
       <key>viewPortalSearchParams</key>
-      <name>PortalSuche: URL festlegen</name>
+      <name>Dienstsuche: URL festlegen</name>
       <value>http://portalu.de/ingrid-webmap-client/rest/search/query?</value>
       <group>view</group>
     </setting>
@@ -270,7 +270,7 @@
     <setting>
       <key>viewBWaStrLocatorParams</key>
       <name>BWaStr-Locator: URL festlegen</name>
-      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200&amp;searchfield=all</value>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200%26searchfield=all</value>
       <group>view</group>
     </setting>
     <setting>
