@@ -1,7 +1,7 @@
 Ext.tree.TreeNodeUI.prototype.onOver = Ext.tree.TreeNodeUI.prototype.onOver.createSequence(function (e) {
     var tree = this.node.getOwnerTree();
 
-    if (tree.allowNodeOver) {
+    if (tree.allowNodeOver || tree.allowNodeOver == undefined) {
         tree.fireEvent('nodeover', this.node);
         tree.allowNodeOver = false;
     }       
