@@ -164,6 +164,7 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 	this.projectionsCombo.setValue(projection.getCode());
 	// define select callback
 	this.projectionsCombo.on('select', function(comboBox, record, index) {
+		// Close position dialog
 		var positionDialog = Ext.getCmp("positionControl");
 		if(positionDialog){
 			if(positionDialog.markers){
@@ -172,6 +173,13 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 			}
 			positionDialog.hide();
 		}
+		
+		// Close BwaStrDialog
+		var bWaStrDialog = Ext.getCmp("bWaStrDialog");
+        if(bWaStrDialog){
+        	bWaStrDialog.hide();
+        }
+		
 		
 		var newProjCode = record.get('epsgCode');
 		de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(newProjCode, function() {self.changeProjection(newProjCode)});
@@ -202,23 +210,23 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog.prototype.onRender = functi
 		var scales = de.ingrid.mapclient.Configuration.getValue('scales');
 		de.ingrid.mapclient.data.StoreHelper.load(self.scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
 		
-		var scale = this.map.getScale();
-		var scaleRecords = this.scalesCombo.getStore().queryBy(function(record) {
+		var scale = self.map.getScale();
+		var scaleRecords = self.scalesCombo.getStore().queryBy(function(record) {
 			return Math.abs(scale-record.get('zoomLevel')) < 1;
 		});
 		if (scaleRecords.length > 0) {
 			scaleRecord = scaleRecords.items[0];
-			this.scalesCombo.setValue(scaleRecord.get('name'));
+			self.scalesCombo.setValue(scaleRecord.get('name'));
 		} else {
-			if (!this.scalesCombo.rendered) {
+			if (!self.scalesCombo.rendered) {
 				return;
 			}
-			this.scalesCombo.setValue("1:"+this.addThousandSeparator(Math.floor(scale), '.'));
+			self.scalesCombo.setValue("1:"+self.addThousandSeparator(Math.floor(scale), '.'));
 		}
 		
-		var projection = this.getMapProjection();
+		var projection = self.getMapProjection();
 		// select initial projection
-		this.projectionsCombo.setValue(projection.getCode());
+		self.projectionsCombo.setValue(projection.getCode());
 		
 	});
 	this.scalesCombo.on('select', function(comboBox, record, index) {

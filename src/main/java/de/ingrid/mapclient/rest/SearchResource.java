@@ -56,7 +56,7 @@ public class SearchResource {
 	@Path(SEARCH_PATH)
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response search(@QueryParam("searchTerm") String searchTerm) {
+	public Response search(@QueryParam("searchTerm") String searchTerm, @QueryParam("json_callback") String jsonCallback) {
 		//get the opensearch url through the application properties file
 		String OSUrl = ConfigurationProvider.INSTANCE.getOpensearchUrl();
 		InputStream result = null;
@@ -116,6 +116,11 @@ public class SearchResource {
 		});
 		
 		String json = xstream.toXML(services);
+		if(jsonCallback != null){
+			if(json.indexOf(jsonCallback) < 0){
+				json  = jsonCallback + "("+json+")";
+			}
+		}
 		return Response.ok(json).build();
 
 	}

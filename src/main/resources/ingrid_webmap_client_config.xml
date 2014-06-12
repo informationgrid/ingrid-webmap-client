@@ -184,6 +184,12 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewMetadataShowPortalCapabilities</key>
+      <name>Metadaten: Zeigt im Metadaten-Dialog nur die originale Capabilities an</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewHasCollapseTool</key>
       <name>Button zum Ein- und Ausblenden des Service-Bereiches</name>
       <value>true</value>
@@ -232,6 +238,18 @@
       <group>view</group>
     </setting>
     <setting>
+      <key>viewPortalSearchEnable</key>
+      <name>Eingabefeld: Dienstsuche</name>
+      <value>true</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewPortalSearchParams</key>
+      <name>Dienstsuche: URL festlegen</name>
+      <value>http://portalu.de/ingrid-webmap-client/rest/search/query?</value>
+      <group>view</group>
+    </setting>
+    <setting>
       <key>viewNominatimEnable</key>
       <name>Eingabefeld: Ortssuche</name>
       <value>true</value>
@@ -240,7 +258,31 @@
     <setting>
       <key>viewNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
-      <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrLocatorEnable</key>
+      <name>Eingabefeld: BWaStr</name>
+      <value>false</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrLocatorParams</key>
+      <name>BWaStr-Locator: URL festlegen</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200%26searchfield=all</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrGeokodierung</key>
+      <name>BWaStr-Locator: URL Geokodierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query</value>
+      <group>view</group>
+    </setting>
+    <setting>
+      <key>viewBWaStrStationierung</key>
+      <name>BWaStr-Locator: URL Stationierung</name>
+      <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query</value>
       <group>view</group>
     </setting>
     <setting>

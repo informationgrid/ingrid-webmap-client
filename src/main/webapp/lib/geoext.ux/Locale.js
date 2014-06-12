@@ -207,8 +207,18 @@ Local = {
         tZusammenfassung: { en: 'Layer Abstract', de: 'Layer Zusammenfassung' },
         Themen: {en: 'Topics', de: 'Themen'},
 		Anbieter: {en: 'Provider', de: 'Anbieter'},
+		tSearchToolAll: {en: 'All', de: 'Alle'},
+		tSearchAllSearch: {en: 'Search ...', de: 'Suchen ...'},
+		tSearchAllLoading: {en: 'Loading ...', de: 'Laden ...'},
+		tSearchToolPortalSearch: {en: 'Search', de: 'Dienst'},
+		tPortalSearchSearch: {en: 'Service search ...', de: 'Dienstsuche ...'},
+		tPortalSearchLoading: {en: 'Loading ...', de: 'Laden ...'},
+		tSearchToolNominatim: {en: 'Nominatim', de: 'Ort'},
 		tNominatimSearch: {en: 'Nominatim search ...', de: 'Ortssuche ...'},
 		tNominatimLoading: {en: 'Loading ...', de: 'Laden ...'},
+		tSearchToolBWaStrLocator: {en: 'BWaStr', de: 'BWaStr'},
+		tBWaStrLocatorSearch: {en: 'BWaStr-IdNr, -Bezeichnung, Streckenbezeichnung', de: 'BWaStr-IdNr, -Bezeichnung, Streckenbezeichnung'},
+		tBWaStrLocatorLoading: {en: 'Loading ...', de: 'Laden ...'},
 		tStaedte: {en: 'Cities', de: 'St&auml;dte'},
 		tNoTitle: {en: 'No title', de: 'Kein Titel'},
 		tGruppenLayerAnzeigen: {en: 'Display group layer', de: 'Gruppenlayer anzeigen'},
@@ -246,7 +256,11 @@ Local = {
 		tPositionAnzeigen: {en: 'Show coordinates', de: 'Zeige Koordinaten'},
 		tPositionGK: {en: 'Rechtswert / Hochwert', de: 'Rechtswert / Hochwert'},
 		tPositionUTM: {en: 'East / North', de: 'East / North'},
-		tPositionWGS: {en: 'Breite / L&auml;nge', de: 'Breite / L&auml;nge'}
+		tPositionWGS: {en: 'Breite / L&auml;nge', de: 'Breite / L&auml;nge'},
+		tGetCapabilitiesMetadata: {en: 'GetCapabilities', de: 'GetCapabilities'},
+		tGetCapabilitiesBasedOnMetadata: {en: 'Based on', de: 'Basierend auf'},
+		tIdentifierMetadata: {en: 'Identifier', de: 'Identifier'},
+		tQuelleMetadata: {en: 'Resource', de: 'Quelle'}
     }
 }
 

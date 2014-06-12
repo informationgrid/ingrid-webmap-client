@@ -7,27 +7,15 @@
 
 /** api: (define)
 * module = GeoExt.form
-* class = GeocoderComboBox
+* class = BWaStrLocator
 * base_link = `Ext.form.ComboBox <http://dev.sencha.com/deploy/dev/docs/?class=Ext.form.ComboBox>`_
 */
 Ext.namespace("GeoExt.form");
 
 /** api: constructor
-* .. class:: GeocoderComboBox(config)
-*
-* Creates a combo box that handles results from a geocoding service. By
-* default it uses OSM Nominatim, but it can be configured with a custom store
-* to use other services. If the user enters a valid address in the search
-* box, the combo's store will be populated with records that match the
-* address. By default, records have the following fields:
-*
-* * name - ``String`` The formatted address.
-* * lonlat - ``Array`` Location matching address, for use with
-* OpenLayers.LonLat.fromArray.
-* * bounds - ``Array`` Recommended viewing bounds, for use with
-* OpenLayers.Bounds.fromArray.
+* .. class:: BWaStrLocator(config)
 */
-GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
+GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
     
     /** api: config[emptyText]
 * ``String`` Text to display for an empty field (i18n).
@@ -36,14 +24,15 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
     
     /** api: config[map]
 * ``GeoExt.MapPanel|OpenLayers.Map`` The map that will be controlled by
-* this GeoCoderComboBox. Only used if this component is not added as item
+* this BWaStrLocator. Only used if this component is not added as item
 * or toolbar item to a ``GeoExt.MapPanel``.
 */
     
     /** private: property[map]
 * ``OpenLayers.Map``
 */
-
+    map : null,
+    
     /** api: config[srs]
 * ``String|OpenLayers.Projection`` The srs used by the geocoder service.
 * Default is "EPSG:4326".
@@ -77,13 +66,13 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
 * supposed to contain an array of [left, bottom, right, top] coordinates
 * for a bounding box or [x, y] for a location.
 */
-    valueField: "bounds",
+    valueField: "bwastrid",
 
     /** api: config[displayField]
 * ``String`` The field to display in the combo boy. Default is
 * "name" for instant use with the default store for this component.
 */
-    displayField: "name",
+    displayField: "concat_name",
     
     /** api: config[locationField]
 * ``String`` The field to get the location from. This field is supposed
@@ -93,22 +82,15 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
     locationField: "lonlat",
     
     /** api: config[url]
-* ``String`` URL template for querying the geocoding service. If a
-* :obj:`store` is configured, this will be ignored. Note that the
-* :obj:`queryParam` will be used to append the user's combo box
-* input to the url. Default is
-* "http://nominatim.openstreetmap.org/search?format=json", for instant
-* use with the OSM Nominatim geolocator. However, if you intend to use
-* that, note the
-* `Nominatim Usage Policy <http://wiki.openstreetmap.org/wiki/Nominatim_usage_policy>`_.
+* ``String`` URL template
 */
-    url: "http://nominatim.openstreetmap.org/search?format=json",
+    url: "http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200&searchfield=all",
     
     /** api: config[queryParam]
 * ``String`` The query parameter for the user entered search text.
 * Default is "q" for instant use with OSM Nominatim.
 */
-    queryParam: "q",
+    queryParam: "searchterm",
     
     /** api: config[minChars]
 * ``Number`` Minimum number of entered characters to trigger a search.
@@ -116,21 +98,7 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
 */
     minChars: 3,
     
-    /** api: config[store]
-* ``Ext.data.Store`` The store used for this combo box. Default is a
-* store with a ScriptTagProxy and the url configured as :obj:`url`
-* property.
-*/
-    
-    /** private: property[center]
-* ``OpenLayers.LonLat`` Last center that was zoomed to after selecting
-* a location in the combo box.
-*/
-    
-    /** private: property[locationFeature]
-* ``OpenLayers.Feature.Vector`` Last location provided by the geolocator.
-* Only set if :obj:`layer` is configured.
-*/
+    vector: null,
     
     /** private: method[initComponent]
 * Override
@@ -144,19 +112,21 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
         }
         if (!this.store) {
             this.store = new Ext.data.JsonStore({
-                root: null,
+                root: "result",
                 fields: [
-                    {name: "name", mapping: "display_name"},
-                    {name: "bounds", convert: function(v, rec) {
-                        var bbox = rec.boundingbox;
-                        return [bbox[2], bbox[0], bbox[3], bbox[1]];
-                    }},
-                    {name: "lonlat", convert: function(v, rec) {
-                        return [rec.lon, rec.lat];
-                    }}
+                    {name: "qid", mapping: "qid"},
+                    {name: "bwastrid", mapping: "bwastrid"},
+                    {name: "bwastr_name", mapping: "bwastr_name"},
+                    {name: "strecken_name", mapping: "strecken_name"},
+                    {name: "concat_name", mapping: "concat_name"},
+                    {name: "km_von", mapping: "km_von"},
+                    {name: "km_bis", mapping: "km_bis"},
+                    {name: "priority", mapping: "priority"},
+                    {name: "fehlkilometer", mapping: "fehlkilometer"},
+                    {name: "fliessrichtung", mapping: "fliessrichtung"}
                 ],
                 proxy: new Ext.data.ScriptTagProxy({
-                    url: decodeURIComponent(this.url),
+                    url: this.url,
                     callbackParam: "json_callback"
                 })
             });
@@ -172,7 +142,7 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
             scope: this
         });
         
-        return GeoExt.form.GeocoderComboBox.superclass.initComponent.apply(this, arguments);
+        return GeoExt.form.BWaStrLocator.superclass.initComponent.apply(this, arguments);
     },
     
     /** private: method[handleAdded]
@@ -194,44 +164,23 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
 */
     handleSelect: function(combo, rec) {
         var value = this.getValue();
-        if (Ext.isArray(value)) {
-            var mapProj = this.map.getProjectionObject();
-            delete this.center;
-            delete this.locationFeature;
-            if (value.length === 4) {
-                this.map.zoomToExtent(
-                    OpenLayers.Bounds.fromArray(value)
-                        .transform(this.srs, mapProj)
-                );
-                // Set zoom to 10
-                if(this.map.getZoom() == 15){
-                	this.map.zoomTo(10);
-                }
-            } else {
-                this.map.setCenter(
-                    OpenLayers.LonLat.fromArray(value)
-                        .transform(this.srs, mapProj),
-                    Math.max(this.map.getZoom(), this.zoom)
-                );
-            }
-            this.center = this.map.getCenter();
 
-            var lonlat = rec.get(this.locationField);
-            if (this.layer && lonlat) {
-                var geom = new OpenLayers.Geometry.Point(
-                    lonlat[0], lonlat[1]).transform(this.srs, mapProj);
-                this.locationFeature = new OpenLayers.Feature.Vector(geom, rec.data);
-                this.layer.addFeatures([this.locationFeature]);
-            }
+        // Show Dialog
+        var bWaStrDialog = Ext.getCmp("bWaStrDialog");
+        if(bWaStrDialog){
+        	bWaStrDialog.close();
         }
-        // blur the combo box
-        //TODO Investigate if there is a more elegant way to do this.
-        (function() {
-            this.triggerBlur();
-            this.el.blur();
-        }).defer(100, this);
+        
+    	bWaStrDialog = new de.ingrid.mapclient.frontend.controls.BWaStr({
+        	id: 'bWaStrDialog',
+			record: rec,
+			map: this.map,
+			x: 20,
+			y: 100
+        });
+        bWaStrDialog.show();
     },
-    
+
     /** private: method[removeLocationFeature]
 * Remove the location marker from the :obj:`layer` and destroy the
 * :obj:`locationFeature`.
@@ -288,9 +237,9 @@ GeoExt.form.GeocoderComboBox = Ext.extend(Ext.form.ComboBox, {
         delete this.map;
         delete this.layer;
         delete this.center;
-        GeoExt.form.GeocoderComboBox.superclass.beforeDestroy.apply(this, arguments);
+        GeoExt.form.BWaStrLocator.superclass.beforeDestroy.apply(this, arguments);
     }
 });
 
-/** api: xtype = gx_geocodercombo */
-Ext.reg("gx_geocodercombo", GeoExt.form.GeocoderComboBox);
+/** api: xtype = gx_bwastrlocator */
+Ext.reg("gx_bwastrlocator", GeoExt.form.BWaStrLocator);

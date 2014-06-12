@@ -426,7 +426,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             				capabilitiesUrlOrg:"",
             				categories:[],
             				layers:[],
-            				updateFlag: update
+            				updateFlag: update,
+            				protocol: location.protocol
             		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
@@ -438,7 +439,8 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             				capabilitiesUrlOrg:"",
             				categories:[],
             				layers:[],
-            				updateFlag: update
+            				updateFlag: update,
+            				protocol: location.protocol
             		};
             		// Add service
             		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
@@ -454,13 +456,13 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
     });
 	
 	var win = new Ext.Window({
-							layout: 'fit',
-					        width: 500,
-					        height: 300,
-					        modal: true,
-					        closeAction: 'hide',
-					        items: simple
-					        });
+		layout: 'fit',
+	    width: 500,
+	    height: 300,
+	    modal: true,
+	    closeAction: 'hide',
+	    items: simple
+    });
 	win.show();
 };
 
@@ -484,7 +486,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.reloadServi
 						   capabilitiesUrl: reloadService.data.capabilitiesUrl,
 						   capabilitiesUrlOrg: reloadService.data.capabilitiesUrlOrg,
 						   originalCapUrl: reloadService.data.originalCapUrl, 
-						   layers: [] };
+						   layers: [],
+						   protocol: location.protocol
+           			};
 				   // Reload service
 				   self.setValue ('reloadservice', service, 'Bitte warten! Dienst wird neugeladen!');
 			   }
@@ -620,7 +624,9 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
     					   originalCapUrl: (originalCapUrl) ? originalCapUrl : capabilitiesUrl,
     					   categories: categories,
     					   layers: layers,
-    					   updateFlag: copyService.data.capabilitiesUpdateFlag
+    					   updateFlag: copyService.data.capabilitiesUpdateFlag,
+    					   protocol: location.protocol 
+    					   
     				};
     				// Save copy to config
     				self.setValue ('copyservice', service, 'Bitte warten! Dienst wird kopiert!', false, true);
@@ -863,10 +869,11 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 	   fn: function(btn){
 		   if (btn == 'ok'){
 			   var tmpService = { 
-					   title:serviceRecord.data.name, 
-					   capabilitiesUrl:serviceRecord.data.capabilitiesUrl, 
-					   originalCapUrl:serviceRecord.data.capabilitiesUrl 
-					   };
+				   title:serviceRecord.data.name, 
+				   capabilitiesUrl:serviceRecord.data.capabilitiesUrl, 
+				   originalCapUrl:serviceRecord.data.capabilitiesUrl,
+				   protocol: location.protocol 
+			   };
 			   // Refresh service
 			   self.setValue ('refreshservice', tmpService, 'Bitte warten! Dienst wird auf dem Server gespeichert!', true);
 		   }
