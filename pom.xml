@@ -300,7 +300,7 @@
 			<url>http://dev.mapfish.org/maven/repository</url>
 		</repository>
 	</repositories>
-
+<!-- LEADS TO ERRORS due to malformed files from repo !
 	<pluginRepositories>
 		<pluginRepository>
 			<name>oss.sonatype.org</name>
@@ -308,4 +308,5 @@
 			<url>http://oss.sonatype.org/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
+-->
 </project>
