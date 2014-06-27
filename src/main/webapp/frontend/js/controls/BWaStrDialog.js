@@ -505,9 +505,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 						}
                 						content = content + ']}';
                 						
-                						//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
-    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
-
                 						de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
     		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
     		                        	
@@ -654,9 +651,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 					}
                 					content = content + ']}';
                 					
-                					//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
-		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
-
                 					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
                 			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
                 			    	
@@ -692,6 +686,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 			url: url,
 			method: 'GET',
 			success: function(response, request) {
+				loadingMask.hide();
 				if(response){
 					if(response.responseText){
 						var data = JSON.parse(response.responseText);
@@ -837,6 +832,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    				var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
 				    				if(bWaStrMarker.length == 0){
 				    					bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+				    					bWaStrMarker.id = "bWaStrVectorMarker";
 				    					self.map.addLayer(bWaStrMarker);
 				    				}else{
 				    					bWaStrMarker = bWaStrMarker[0];
@@ -845,8 +841,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    				for(var i=0; i < pointData.length; i++){
 				    					var point = pointData[i];
 				    					if(point){
-					    					var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,point[0],point[1],point[2], "blue");
-					    					bWaStrMarker.addMarker(marker);
+					    					de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,point[0],point[1],point[2], "blue");
 					    				}
 				    				}
 				    				if(bWaStrMarker){
@@ -882,7 +877,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 						}
 					}
 				}
-				loadingMask.hide();
 			},
 			failure: function(response, request) {
 				loadingMask.hide();
