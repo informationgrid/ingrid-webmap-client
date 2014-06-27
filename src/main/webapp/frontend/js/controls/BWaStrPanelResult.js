@@ -110,38 +110,52 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
 			
     		vectorData.push(new OpenLayers.Geometry.Point(item.data.rechtswert, item.data.hochwert));
     	}
-    	// Create vector Layer
-    	var bWaStrVectorTmp = self.map.getLayersByName("bWaStrVectorTmp");
+    	
+    	var bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
     	if(bWaStrVectorTmp.length == 0){
-    		bWaStrVectorTmp = new OpenLayers.Layer.Vector("bWaStrVectorTmp", {
-    			styleMap: new OpenLayers.StyleMap({'default':{
-    				 fillColor: "blue", 
-    				 strokeColor: "blue", 
-    		         strokeWidth: 2
-    		    }})
-    		});
+    		bWaStrVectorTmp = new OpenLayers.Layer.Vector("BWaStr Locator", {
+    			styleMap: new OpenLayers.StyleMap(
+					new OpenLayers.Style(
+						{}, 
+						{
+							rules:[new OpenLayers.Rule({
+					            title: "Teilstrecke",
+					            symbolizer: {
+					            	fillColor: "blue", 
+									strokeColor: "blue", 
+							        strokeWidth: 2
+					            }
+							})]
+						}
+					))
+				}
+    		);
+    		bWaStrVectorTmp.id = "bWaStrVectorTmp";
     		self.map.addLayer(bWaStrVectorTmp);
     	}else{
     		bWaStrVectorTmp = bWaStrVectorTmp[0];
     	}
-		bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
-		
-		var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+    	bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
+    	
+    	if(vectorData.length > 1){
+    		bWaStrVectorTmp.setVisibility(true);
+    	}
+    	
+    	var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
 		if(bWaStrMarker.length == 0){
 			bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+			bWaStrMarker.id = "bWaStrVectorMarker";
 			self.map.addLayer(bWaStrMarker);
 		}else{
 			bWaStrMarker = bWaStrMarker[0];
 		}
 		
 		if(firstPoint){
-			var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "blue");
-			bWaStrMarker.addMarker(marker);
+			de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "blue");
 		}
 		
 		if(lastPoint){
-			var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,lastPoint[0],lastPoint[1],lastPoint[2], "blue");
-			bWaStrMarker.addMarker(marker);
+			de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,lastPoint[0],lastPoint[1],lastPoint[2], "blue");
 		}
 		
 		if(bWaStrVectorTmp){

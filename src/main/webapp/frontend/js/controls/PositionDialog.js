@@ -161,33 +161,31 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
         items: [],
 
         buttons: [{
+        	id:'btnPositionStation',
+            text: 'Stationierung',
+            hidden: de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true,
+	        handler: function () {
+	        	var position = null;
+				
+	        	if(self.isPoint){
+	        		position = self.getPosition();
+	        		
+	        		var content = "";
+        			content = content + '{"limit":200,"queries":[';
+        			content = content + '{"qid":1,"geometry":{"type":"Point","coordinates":['+ position.lon +','+ position.lat +'],"spatialReference":{"wkid":'+ self.map.getProjection().split(":")[1] +'}}}';
+        			content = content + ']}';
+        			self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content, self.addStationPin);
+	        	}
+	        }
+        },{
         	id:'btnPositionCenter',
             text: i18n('tKoordinatenZentrieren'),
 	        handler: function () {
 	        	var position = null;
 				
 	        	if(self.isPoint){
-	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = "";
-        			var positionLon = "";
-        			
-        			if(self.map.displayProjection.proj){
-        				if(self.map.displayProjection.proj.projName == "tmerc"){
-        					positionLat = textfieldValue.split(" ")[1];
-                			positionLon = textfieldValue.split(" ")[0];
-        				}else if(self.map.displayProjection.proj.projName == "utm"){
-        					positionLat = textfieldValue.split(" ")[1];
-                			positionLon = textfieldValue.split(" ")[0];
-        				}else{
-        					positionLat = textfieldValue.split(" ")[0];
-                			positionLon = textfieldValue.split(" ")[1];
-        				}
-        			}else{
-        				positionLat = textfieldValue.split(" ")[0];
-            			positionLon = textfieldValue.split(" ")[1];
-        			}
-        			
-        			position = new OpenLayers.LonLat(positionLon,positionLat);
+	        		position = self.getPosition();
+	        		
         			self.map.setCenter(position);
 	        	}
 	        }
@@ -198,30 +196,12 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
 	        	var position = null;
 				
 	        	if(self.isPoint){
-	        		var textfieldValue = Ext.getCmp('position').getValue();
-	        		var positionLat = "";
-        			var positionLon = "";
-        			
-        			if(self.map.displayProjection.proj){
-        				if(self.map.displayProjection.proj.projName == "tmerc"){
-        					positionLat = textfieldValue.split(" ")[1];
-                			positionLon = textfieldValue.split(" ")[0];
-        				}else if(self.map.displayProjection.proj.projName == "utm"){
-        					positionLat = textfieldValue.split(" ")[1];
-                			positionLon = textfieldValue.split(" ")[0];
-        				}else{
-        					positionLat = textfieldValue.split(" ")[0];
-                			positionLon = textfieldValue.split(" ")[1];
-        				}
-        			}else{
-        				positionLat = textfieldValue.split(" ")[0];
-            			positionLon = textfieldValue.split(" ")[1];
-        			}
-        			
-        			position = new OpenLayers.LonLat(positionLon,positionLat);
-        			
-        			if(self.markers){
-        				self.map.removeLayer(self.markers);
+	        		position = self.getPosition();
+
+	        		if(self.markers){
+	        			var markerList = self.markers.markers;
+	        			self.clearMarkers(markerList);
+	        			self.map.removeLayer(self.markers);
         			}
         			
         			self.markers = new OpenLayers.Layer.Markers( "Markers" );
@@ -238,15 +218,11 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
             text: i18n('tMarkerEntfernen'),
 	        handler: function () {
 	        	if(self.markers){
-    				self.map.removeLayer(self.markers);
+	        		var markerList = self.markers.markers;
+	        		self.clearMarkers(markerList);
+	        		self.map.removeLayer(self.markers);
     			}
 	        	self.markers = null;
-	        }
-        },{
-        	id:'btnPositionClose',
-            text: i18n('tSchliessen'),
-	        handler: function () {
-	        	self.hide();
 	        }
         }]
 	});
@@ -262,4 +238,127 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.initComponent = f
  */
 de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.onRender = function() {
 	de.ingrid.mapclient.frontend.controls.PositionDialog.superclass.onRender.apply(this, arguments);
+};
+
+de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.getPosition = function() {
+	var self = this;
+	var textfieldValue = Ext.getCmp('position').getValue();
+	var positionLat = "";
+	var positionLon = "";
+	
+	if(self.map.displayProjection.proj){
+		if(self.map.displayProjection.proj.projName == "tmerc"){
+			positionLat = textfieldValue.split(" ")[1];
+			positionLon = textfieldValue.split(" ")[0];
+		}else if(self.map.displayProjection.proj.projName == "utm"){
+			positionLat = textfieldValue.split(" ")[1];
+			positionLon = textfieldValue.split(" ")[0];
+		}else{
+			positionLat = textfieldValue.split(" ")[0];
+			positionLon = textfieldValue.split(" ")[1];
+		}
+	}else{
+		positionLat = textfieldValue.split(" ")[0];
+		positionLon = textfieldValue.split(" ")[1];
+	}
+	return new OpenLayers.LonLat(positionLon,positionLat);
+};
+
+de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.loadData = function(url, callback){
+	var self = this;
+	var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Daten werden berechnet ...' });
+	loadingMask.show();
+	var ajax = Ext.Ajax.request({
+		url: url,
+		method: 'GET',
+		success: function(response, request) {
+			loadingMask.hide();
+			if(response){
+				var data = JSON.parse(response.responseText);
+				if(data){
+					if(data.result){
+						var results = data.result;
+						for(var i=0; i<results.length; i++){
+							var result = results[i]
+							if(result.error){
+			    				Ext.MessageBox.alert('Fehler', 'Fehler bei der Abfrage! (' + result.error.message + ')');
+			    			}else{
+			    				callback(result, self);
+			    			}
+						}
+					}else if(data.error){
+						Ext.MessageBox.alert('Fehler', 'Keine Stationierungsdaten vorhanden!');
+					}
+				}
+			}
+		},
+		failure: function(response, request) {
+			loadingMask.hide();
+		}
+	});
+};
+
+de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.addStationPin = function(result, self){
+	var position = self.getPosition();
+	
+	if(self.markers){
+		var markerList = self.markers.markers;
+		self.clearMarkers(markerList);
+		self.map.removeLayer(self.markers);
+	}
+	
+	self.markers = new OpenLayers.Layer.Markers( "Markers" );
+	
+	de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, self.markers, position.lon, position.lat, self.createPopUpTemplate(self, result), "blue", true);
+	
+	self.map.addLayer(self.markers);
+};
+
+de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.createPopUpTemplate = function (self, result){
+	var popUpTmp = "";
+	if(result){
+		var r = result.geometry.coordinates[0];
+		var h = result.geometry.coordinates[1];
+		var s = result.stationierung.km_wert;
+		var o = result.stationierung.offset;
+		if(!(r instanceof String)){
+			r = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(r);
+		}
+		if(!(h instanceof String)){
+			h = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(h);
+		}
+		if(!(s instanceof String)){
+			s = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(s, 3);
+		}
+		if(!(o instanceof String)){
+			o = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(o, 3);
+		}
+		
+		var strR = self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]:' : 'Rechtswert [m]:';
+		var strH = self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]:' : 'Hochwert [m]:';
+		
+		popUpTmp = "<table style=''>";
+		popUpTmp = popUpTmp + "<tr><td>BWaStr-IdNr:</td><td>" + result.bwastrid + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>BWaStr-Bezeichnung:</td><td>" + result.bwastr_name + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>Streckenbezeichnung:</td><td>" + result.strecken_name + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>" + strR + "</td><td>" + r + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>" + strH + "</td><td>" + h + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>Station [km]:</td><td>" + s + "</td></tr>";
+		popUpTmp = popUpTmp + "<tr><td>Abstand [m]:</td><td>" + o + "</td></tr>";
+		popUpTmp = popUpTmp + "</table>";
+	}
+	return popUpTmp;
+};
+
+de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.clearMarkers = function (markerList){
+	if(markerList){
+		for(var i=0; i<markerList.length; i++){
+			var markerEntry = markerList[i];
+			if(markerEntry.feature){
+				if(markerEntry.feature.popup){
+					markerEntry.feature.popup.toggle();
+				}
+			}
+		}
+	}
 };

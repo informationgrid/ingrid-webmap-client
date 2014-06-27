@@ -219,7 +219,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
     		                        decimalSeparator: '.',
-    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
     		                        emptyText : data.km_von + "",
     		                        validator: function(value){
@@ -227,6 +227,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		                        		if(v == data.km_bis){
     		                        		return false;
 		                        		}else if(v < data.km_von || v > data.km_bis){
+    		                        		return false;
+    		                        	}else if(value == Ext.getCmp("textfield_singleQueryTo").getValue()){
     		                        		return false;
     		                        	}
     		                        	return true;
@@ -240,7 +242,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
     		                        decimalSeparator: '.',
-    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
     		                        emptyText: data.km_bis + "",
     		                        validator: function(value){
@@ -248,6 +250,8 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		                        		if(v == data.km_von){
     		                        		return false;
 		                        		}else if(v < data.km_von || v > data.km_bis){
+    		                        		return false;
+    		                        	}else if(value == Ext.getCmp("textfield_singleQueryFrom").getValue()){
     		                        		return false;
     		                        	}
     		                        	return true;
@@ -261,7 +265,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
     		                        decimalSeparator: '.',
-    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches.',
+    		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
     		                        emptyText: "0"
     		                    },
@@ -278,12 +282,56 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        	var textfield_singleQueryTo = Ext.getCmp("textfield_singleQueryTo");
     		                        	var textfield_singleQueryOffset = Ext.getCmp("textfield_singleQueryOffset");
     		                        	var projection = self.map.projection;
-    		                        	var content = '{"limit":200,"queries":[{"qid":1,"bwastrid":"'
-    		                        		+ data.bwastrid +'","stationierung":{"km_von":'
-    		                        		+ (textfield_singleQueryFrom.getValue() != "" ? textfield_singleQueryFrom.getValue() : textfield_singleQueryFrom.emptyText) + ',"km_bis":'
-    		                        		+ (textfield_singleQueryTo.getValue() != "" ? textfield_singleQueryTo.getValue() : textfield_singleQueryTo.emptyText) + ',"offset":'
-    		                        		+ (textfield_singleQueryOffset.getValue() != "" ? textfield_singleQueryOffset.getValue() : textfield_singleQueryOffset.emptyText) + '},"spatialReference":{"wkid":'
-    		                        		+ projection.split(":")[1] + '}}]}';
+    		                        	var content = '{'
+    		                        		+ '"limit":200,'
+    		                        		+ '"queries":['
+    		                        		+ '{'
+    		                        		+ '"qid":1,'
+    		                        		+ '"bwastrid":"'+ data.bwastrid +'",'
+    		                        		+ '"stationierung":{';
+    		                        	if(textfield_singleQueryFrom.getValue() == "" 
+    		                        		&& textfield_singleQueryTo.getValue() == ""
+    		                        		&& textfield_singleQueryOffset.getValue() == ""){
+    		                        		content = content + '"km_wert":'+ textfield_singleQueryFrom.emptyText;
+    		                        	}else{
+    		                        		
+    		                        		if(textfield_singleQueryFrom.getValue() != ""
+    		                        			&& textfield_singleQueryTo.getValue() == ""){
+    		                        			content = content + '"km_wert":'+ textfield_singleQueryFrom.getValue();
+    		                        		}else{
+    		                        			if(textfield_singleQueryFrom.getValue() != ""){
+        		                        			content = content + '"km_von":'+ textfield_singleQueryFrom.getValue();
+        		                        		}
+    		                        			
+    		                        			if(textfield_singleQueryTo.getValue() != ""){
+        		                        			if(textfield_singleQueryFrom.getValue() == ""){
+        		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+        		                        			}
+        		                        			content = content + ',';
+        		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.getValue();
+        		                        		}
+    		                        		}
+    		                        		
+    		                        		if(textfield_singleQueryOffset.getValue() != ""){
+    		                        			if(textfield_singleQueryFrom.getValue() == ""){
+    		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+    		                        				content = content + ',';
+    		                        			}
+    		                        			if(textfield_singleQueryTo.getValue() == ""){
+    		                        				content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText;
+    		                        				content = content + ',';
+    		                        			}
+    		                        			content = content + ',';
+    		                        			content = content + '"offset":'+ textfield_singleQueryOffset.getValue();
+    		                        		}
+    		                        	}
+    		                        	content = content + '},'
+    		                        		+ '"spatialReference":{'
+    		                        		+ '"wkid":'+ projection.split(":")[1]
+    		                        		+ '}'
+    		                        		+ '}'
+    		                        		+ ']'
+    		                        		+ '}';
     		                        	
     		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
     		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
@@ -457,9 +505,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 						}
                 						content = content + ']}';
                 						
-                						//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
-    		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
-
                 						de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
     		                        	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
     		                        	
@@ -606,9 +651,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                 					}
                 					content = content + ']}';
                 					
-                					//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
-		                        	//de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
-
                 					de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
                 			    	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
                 			    	
@@ -644,6 +686,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 			url: url,
 			method: 'GET',
 			success: function(response, request) {
+				loadingMask.hide();
 				if(response){
 					if(response.responseText){
 						var data = JSON.parse(response.responseText);
@@ -789,6 +832,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    				var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
 				    				if(bWaStrMarker.length == 0){
 				    					bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
+				    					bWaStrMarker.id = "bWaStrVectorMarker";
 				    					self.map.addLayer(bWaStrMarker);
 				    				}else{
 				    					bWaStrMarker = bWaStrMarker[0];
@@ -797,8 +841,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 				    				for(var i=0; i < pointData.length; i++){
 				    					var point = pointData[i];
 				    					if(point){
-					    					var marker = de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,point[0],point[1],point[2], "blue");
-					    					bWaStrMarker.addMarker(marker);
+					    					de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,point[0],point[1],point[2], "blue");
 					    				}
 				    				}
 				    				if(bWaStrMarker){
@@ -834,7 +877,6 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 						}
 					}
 				}
-				loadingMask.hide();
 			},
 			failure: function(response, request) {
 				loadingMask.hide();
