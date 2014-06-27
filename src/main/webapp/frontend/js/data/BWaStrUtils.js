@@ -44,6 +44,33 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
 	bWaStrVector.setVisibility(true);
 	bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(points, null))]);
 	
+	// Custom lines
+	var bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
+	if(bWaStrVectorTmp.length == 0){
+		bWaStrVectorTmp = new OpenLayers.Layer.Vector("BWaStr Locator", {
+			styleMap: new OpenLayers.StyleMap(
+				new OpenLayers.Style(
+					{}, 
+					{
+						rules:[new OpenLayers.Rule({
+				            title: "Teilstrecke",
+				            symbolizer: {
+				            	fillColor: "blue", 
+								strokeColor: "blue", 
+						        strokeWidth: 2
+				            }
+						})]
+					}
+				))
+			}
+		);
+		bWaStrVectorTmp.id = "bWaStrVectorTmp";
+		self.map.addLayer(bWaStrVectorTmp);
+	}else{
+		bWaStrVectorTmp = bWaStrVectorTmp[0];
+	}
+	bWaStrVectorTmp.setVisibility(false);
+	
 	// Markers
 	var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker", {
 		displayInLayerSwitcher: false
