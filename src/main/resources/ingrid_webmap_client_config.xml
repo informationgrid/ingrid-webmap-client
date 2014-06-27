@@ -239,7 +239,7 @@
     </setting>
     <setting>
       <key>viewPortalSearchEnable</key>
-      <name>Eingabefeld: Dienstsuche</name>
+      <name>Dienstsuche in gemeinsames Suchfeld integrieren</name>
       <value>true</value>
       <group>view</group>
     </setting>
@@ -251,7 +251,7 @@
     </setting>
     <setting>
       <key>viewNominatimEnable</key>
-      <name>Eingabefeld: Ortssuche</name>
+      <name>Ortssuche in gemeinsames Suchfeld integrieren</name>
       <value>true</value>
       <group>view</group>
     </setting>
