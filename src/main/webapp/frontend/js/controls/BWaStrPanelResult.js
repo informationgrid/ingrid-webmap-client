@@ -111,38 +111,36 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     		vectorData.push(new OpenLayers.Geometry.Point(item.data.rechtswert, item.data.hochwert));
     	}
     	
-    	var bWaStrVectorTmp = null;
-    	if(vectorData.length > 1){
-    		// Create vector Layer
-        	bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
-        	if(bWaStrVectorTmp.length == 0){
-        		bWaStrVectorTmp = new OpenLayers.Layer.Vector("BWaStr Locator", {
-        			styleMap: new OpenLayers.StyleMap(
-    					new OpenLayers.Style(
-    						{}, 
-    						{
-    							rules:[new OpenLayers.Rule({
-    					            title: "Teilstrecke",
-    					            symbolizer: {
-    					            	fillColor: "blue", 
-    									strokeColor: "blue", 
-    							        strokeWidth: 2
-    					            }
-    							})]
-    						}
-    					))
-    				}
-        		);
-        		bWaStrVectorTmp.id = "bWaStrVectorTmp";
-        		self.map.addLayer(bWaStrVectorTmp);
-        	}else{
-        		bWaStrVectorTmp = bWaStrVectorTmp[0];
-        	}
-        	bWaStrVectorTmp.setVisibility(true);
-        	bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
-    		
+    	var bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
+    	if(bWaStrVectorTmp.length == 0){
+    		bWaStrVectorTmp = new OpenLayers.Layer.Vector("BWaStr Locator", {
+    			styleMap: new OpenLayers.StyleMap(
+					new OpenLayers.Style(
+						{}, 
+						{
+							rules:[new OpenLayers.Rule({
+					            title: "Teilstrecke",
+					            symbolizer: {
+					            	fillColor: "blue", 
+									strokeColor: "blue", 
+							        strokeWidth: 2
+					            }
+							})]
+						}
+					))
+				}
+    		);
+    		bWaStrVectorTmp.id = "bWaStrVectorTmp";
+    		self.map.addLayer(bWaStrVectorTmp);
+    	}else{
+    		bWaStrVectorTmp = bWaStrVectorTmp[0];
     	}
-
+    	bWaStrVectorTmp.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(vectorData, null))]);
+    	
+    	if(vectorData.length > 1){
+    		bWaStrVectorTmp.setVisibility(true);
+    	}
+    	
     	var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
 		if(bWaStrMarker.length == 0){
 			bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker" );
