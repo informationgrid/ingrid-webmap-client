@@ -1012,6 +1012,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.removeServic
 		service, supressMsgs, activeNode) {
 	var self = this;
 	
+	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode") == false){
+		activeNode.expand();
+		self.expandNode(activeNode, false);
+	}
+	
 	if (!this.containsService(service)) {
 		return;
 	}
