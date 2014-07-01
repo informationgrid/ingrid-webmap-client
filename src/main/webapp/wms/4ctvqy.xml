@@ -28,7 +28,7 @@
                  <Country>Deutschland</Country>
              </ContactAddress>
              <ContactVoiceTelephone>+49 3677 669 2299</ContactVoiceTelephone>
-             <ContactElectronicMailAddress>gdi-wsv.support@dlz-it-bvbs.bund.de</ContactElectronicMailAddress>
+             <ContactElectronicMailAddress>gdi-wsv.support@ba-dlz-it.bund.de</ContactElectronicMailAddress>
 
          </ContactInformation>
          <AccessConstraints>Die Wasser- und Schifffahrtsverwaltung des Bundes (WSV) betreibt eine Geodateninfrastruktur (GDI-WSV). In diesem Rahmen werden auch standardisierte Web-Dienste bereitgestellt. Einige Dienste der GDI-WSV sind im Internet kostenfrei verfügbar. Die WSV übernimmt keine Gewähr für die Richtigkeit und Vollständigkeit der Daten. Die Nutzer müssen bei Verwertungen derte jeglicher Art einen deutlich sichtbaren Quellenvermerk an den Daten/Diensten anbringen: © Wasser- und Schifffahrtsverwaltung des undes (www.wsv.de). Eine Weiterleitung der hier angebotenen Dienste wie z.B. WMS (Web Mapping Services) darf nur nach Absprache mit dem DLZ-IT BMVBS (http://www.dlz-it.de) erfolgen. Die WSV besitzt alle Rechte an den von ihr hergestellten und aktuell gehaltenen Daten.</AccessConstraints>
@@ -175,7 +175,7 @@
         </inspire_common:Conformity>
         <inspire_common:MetadataPointOfContact xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">
           <inspire_common:OrganisationName xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">Bundesanstalt für IT-Dienstleistungen im Geschäftsbereich des BMVBS (DLZ-IT BMVBS)</inspire_common:OrganisationName>
-          <inspire_common:EmailAddress xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">gdi-wsv.support@dlz-it-bvbs.bund.de</inspire_common:EmailAddress>
+          <inspire_common:EmailAddress xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">gdi-wsv.support@ba-dlz-it.bund.de</inspire_common:EmailAddress>
         </inspire_common:MetadataPointOfContact>
         <inspire_common:SpatialDataServiceType xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0">view</inspire_common:SpatialDataServiceType>
         <inspire_common:MandatoryKeyword xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0" xsi:type="inspire_common:classificationOfSpatialDataService">
