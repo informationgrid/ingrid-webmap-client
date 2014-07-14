@@ -460,7 +460,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
 	    width: 500,
 	    height: 300,
 	    modal: true,
-	    closeAction: 'hide',
+	    closeAction: 'close',
 	    items: simple
     });
 	win.show();
@@ -646,7 +646,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.copyService
 			        width: 500,
 			        height: 300,
 			        modal: true,
-			        closeAction: 'hide',
+			        closeAction: 'close',
 			        items: simple
 			        });
 	win.show();
