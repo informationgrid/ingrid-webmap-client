@@ -19,7 +19,8 @@ de.ingrid.mapclient.frontend.controls.SettingsDialog = Ext.extend(Ext.Window, {
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
-	ctrls:null,
+	closeAction: 'hide',
+    ctrls:null,
 	windowContent: null,
 
 	/**
