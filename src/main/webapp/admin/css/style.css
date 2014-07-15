@@ -50,6 +50,11 @@ body {
 	height: 16px;
 }
 
+.iconNone {
+	background-image: none;
+	width: 0px;
+}
+
 /*
     Ext.ux.Notification
 */

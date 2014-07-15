@@ -6,8 +6,9 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
 /**
  * @class MapExtendPanel allows to enter map extend coordinates.
  */
-de.ingrid.mapclient.admin.controls.MapExtendPanel = Ext.extend(Ext.Panel, {
-
+Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', { 
+	extend: 'Ext.panel.Panel',
+	id: 'mapExtendPanel',
 	layout: {
 	    type: 'vbox',
 	    align: 'center',
@@ -20,121 +21,150 @@ de.ingrid.mapclient.admin.controls.MapExtendPanel = Ext.extend(Ext.Panel, {
 	 * @cfg northField A field for the north value of the map extend (optional, will be created if not provided)
 	 */
 	northField: null,
+	northFieldValue: null,
 	/**
 	 * @cfg westField A field for the west value of the map extend (optional, will be created if not provided)
 	 */
 	westField: null,
+	westFieldValue: null,
 	/**
 	 * @cfg eastField A field for the east value of the map extend (optional, will be created if not provided)
 	 */
 	eastField: null,
+	eastFieldValue: null,
 	/**
 	 * @cfg southField A field for the south value of the map extend (optional, will be created if not provided)
 	 */
-	southField: null
-});
+	southField: null,
+	southFieldValue: null,
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
+		var self = this;
+		
+		// create the input fields if not provided
+		if (this.northField == null) {
+			this.northField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
+					id:'northField',
+					listeners: {
+						afterRender: function(){
+							this.setValue(self.northFieldValue);
+						}
+					}
+				}
+			);
+		}
+		if (this.westField == null) {
+			this.westField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
+					id:'westField',
+					listeners: {
+						afterRender: function(){
+							this.setValue(self.westFieldValue);
+						}
+					}
+				}
+			);
+		}
+		if (this.eastField == null) {
+			this.eastField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
+					id:'eastField',
+					listeners: {
+						afterRender: function(){
+							this.setValue(self.eastFieldValue);
+						}
+					}
+				}
+			);
+		}
+		if (this.southField == null) {
+			this.southField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
+					id:'southField',
+					listeners: {
+						afterRender: function(){
+							this.setValue(self.southFieldValue);
+						}
+					}
+				}
+			);
+		}
 
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.admin.controls.MapExtendPanel.prototype.initComponent = function() {
-
-	// create the input fields if not provided
-	if (this.northField == null) {
-		this.northField = new de.ingrid.mapclient.admin.controls.CoordinateField();
-	}
-	if (this.westField == null) {
-		this.westField = new de.ingrid.mapclient.admin.controls.CoordinateField();
-	}
-	if (this.eastField == null) {
-		this.eastField = new de.ingrid.mapclient.admin.controls.CoordinateField();
-	}
-	if (this.southField == null) {
-		this.southField = new de.ingrid.mapclient.admin.controls.CoordinateField();
-	}
-
-	// create the final layout
-	Ext.apply(this, {
-		items: [{
-			html: '<p>Initiale Kartenausdehnung:</p>',
-			border: false
-		},{
-			xtype: 'container',
-			layout: 'form',
-			labelAlign: 'top',
-			labelSeparator: '',
-			height: 70,
-			items: this.northField
-		}, {
-			xtype: 'container',
-			layout: 'column',
-			height: 70,
+		// create the final layout
+		Ext.apply(this, {
 			items: [{
+				html: '<p>Bitte alle Koordinaten in WGS 84 angeben</p>',
+				border: false
+			},{
+				html: '<p>Initiale Kartenausdehnung:</p>',
+				border: false
+			},{
 				xtype: 'container',
-				layout: 'form',
-				labelAlign: 'top',
-				labelSeparator: '',
-				width: 130,
-				items: this.westField
-			}, {
-				html: '&nbsp',
-				bodyBorder: false,
-				width: 130
+				layout: 'column',
+				height: 70,
+				items: this.northField
 			}, {
 				xtype: 'container',
-				layout: 'form',
-				labelAlign: 'top',
-				labelSeparator: '',
-				width: 130,
-				items: this.eastField
+				layout: 'column',
+				height: 70,
+				items: [{
+					xtype: 'container',
+					layout: 'form',
+					width: 130,
+					items: this.westField
+				}, {
+					html: '&nbsp',
+					border: false,
+					width: 130
+				}, {
+					xtype: 'container',
+					layout: 'form',
+					width: 130,
+					items: this.eastField
+				}]
+			}, {
+				xtype: 'container',
+				layout: 'column',
+				height: 70,
+				items: this.southField
 			}]
-		}, {
-			xtype: 'container',
-			layout: 'form',
-			labelAlign: 'top',
-			labelSeparator: '',
-			height: 70,
-			items: this.southField
-		}, {
-			html: '<p>Bitte alle Koordinaten in WGS 84 angeben</p>',
-			border: false
-		}]
-	});
-	de.ingrid.mapclient.admin.controls.MapExtendPanel.superclass.initComponent.call(this);
-};
-
-/**
- * Validate the content
- * @return Boolean
- */
-de.ingrid.mapclient.admin.controls.MapExtendPanel.prototype.validate = function() {
-	return (this.northField.validate() && this.westField.validate() && this.eastField.validate() && this.southField.validate());
-};
-
-/**
- * Set the map extend to display
- * @param north The north coordinate
- * @param west The west coordinate
- * @param east The east coordinate
- * @param south The south coordinate
- */
-de.ingrid.mapclient.admin.controls.MapExtendPanel.prototype.setExtend = function(north, west, east, south) {
-	this.northField.setValue(north);
-	this.westField.setValue(west);
-	this.eastField.setValue(east);
-	this.southField.setValue(south);
-};
-
-/**
- * Get the map extend from the input fields
- * @return An object with attributes north, west, east, south
- */
-de.ingrid.mapclient.admin.controls.MapExtendPanel.prototype.getExtend = function() {
-	var mapExtend = {
-		north: this.northField.getValue(),
-		west: this.westField.getValue(),
-		east: this.eastField.getValue(),
-		south: this.southField.getValue()
-	};
-	return mapExtend;
-};
+		});
+		de.ingrid.mapclient.admin.controls.MapExtendPanel.superclass.initComponent.call(this);
+	},
+	/**
+	 * Validate the content
+	 * @return Boolean
+	 */
+	validate: function() {
+		return (this.northField.validate() && this.westField.validate() && this.eastField.validate() && this.southField.validate());
+	},
+	/**
+	 * Set the map extend to display
+	 * @param north The north coordinate
+	 * @param west The west coordinate
+	 * @param east The east coordinate
+	 * @param south The south coordinate
+	 */
+	setExtend: function(north, west, east, south) {
+		this.northField.setValue(north);
+		this.northFieldValue = north;
+		this.westField.setValue(west);
+		this.westFieldValue = west;
+		this.eastField.setValue(east);
+		this.eastFieldValue = east;
+		this.southField.setValue(south);
+		this.southFieldValue = south;
+	},
+	/**
+	 * Get the map extend from the input fields
+	 * @return An object with attributes north, west, east, south
+	 */
+	getExtend: function() {
+		var mapExtend = {
+			north: this.northField.getValue(),
+			west: this.westField.getValue(),
+			east: this.eastField.getValue(),
+			south: this.southField.getValue()
+		};
+		return mapExtend;
+	}
+});

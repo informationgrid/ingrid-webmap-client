@@ -79,16 +79,16 @@
 							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
 							<includes>
 								<include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
-								<include>lib/extjs.ux/gridfilters/GridFilters-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/Filter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/BooleanFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/StringFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/DateFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/ListFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/NumericFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/menu/ListMenu-min.js</include>
-								<include>lib/extjs.ux/gridfilters/menu/RangeMenu-min.js</include>
-								<include>lib/extjs.ux/tree/TreeGrid-min.js</include>
+								<include>lib/extjs.ux/grid/FiltersFeature-min.js</include>
+								<include>lib/extjs.ux/grid/filter/Filter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/BooleanFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/StringFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/DateFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/DateTimeFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/ListFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/NumericFilter-min.js</include>
+								<include>lib/extjs.ux/grid/menu/ListMenu-min.js</include>
+								<include>lib/extjs.ux/grid/menu/RangeMenu-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>admin/js/*-min.js</include>
 								<include>admin/js/modules/*-min.js</include>
@@ -300,7 +300,7 @@
 			<url>http://dev.mapfish.org/maven/repository</url>
 		</repository>
 	</repositories>
-
+<!-- LEADS TO ERRORS due to malformed files from repo !
 	<pluginRepositories>
 		<pluginRepository>
 			<name>oss.sonatype.org</name>
@@ -308,4 +308,5 @@
 			<url>http://oss.sonatype.org/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
+-->
 </project>
