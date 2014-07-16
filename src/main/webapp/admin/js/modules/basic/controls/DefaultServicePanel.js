@@ -76,7 +76,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			typeAhead: true,
 		    triggerAction: 'all',
 		    lazyRender:true,
-		    mode: 'local',
+		    queryMode: 'local',
 		    store: this.layerStore,
 			valueField: 'title',
 			displayField: 'title',
