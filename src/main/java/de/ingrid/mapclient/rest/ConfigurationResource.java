@@ -664,11 +664,12 @@ public class ConfigurationResource {
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
+	 * @throws SAXException 
 	 */
 	@POST
 	@Path(DYNAMIC_PATH + "/" + ADD_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void addService(String service, @Context HttpServletRequest req) throws IOException {
+	public void addService(String service, @Context HttpServletRequest req) throws SAXException {
 		try {
 				JSONObject jsonService = new JSONObject(service);
 				HashMap<String, String> map = makeCopyOfService(jsonService, false, req);
@@ -678,8 +679,10 @@ public class ConfigurationResource {
 					Exception ex = new Exception();
 					throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 				}
-		}
-		catch (Exception ex) {
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			throw new WebApplicationException(e, Response.Status.CONFLICT);
+		} catch (Exception ex) {
 			log.error("some error", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
@@ -696,11 +699,12 @@ public class ConfigurationResource {
 	 *  checkedLayers: [3,5,7]}
 	 *  the originalCapUrl HAS to be the original cap url, if the service we receive is already a copy!!!
 	 * @param String containing the object
+	 * @throws SAXException 
 	 */
 	@POST
 	@Path(DYNAMIC_PATH + "/" + ADD_COPY_SERVICE)
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void addServiceOrgCopy(String service, @Context HttpServletRequest req) throws IOException {
+	public void addServiceOrgCopy(String service, @Context HttpServletRequest req) throws IOException, SAXException {
 		try {
 			JSONObject json = new JSONObject(service);
 			HashMap<String, String> url = makeOrgCopyOfService(json, req);
@@ -713,13 +717,17 @@ public class ConfigurationResource {
 				throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 			}
 		}
+		catch (SAXException e) {
+			// TODO Auto-generated catch block
+			throw new SAXException(e);
+		} 
 		catch (Exception ex) {
 			log.error("some error", ex);
 			throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
 		}
 	}
 	
-	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req){
+	private HashMap<String, String> makeOrgCopyOfService(JSONObject json, HttpServletRequest req) throws SAXException{
 		HashMap<String, String> urls = null;
 		String urlOrg = null;
 		String urlPrefix = null;
@@ -765,6 +773,9 @@ public class ConfigurationResource {
 			
 		} catch (JSONException e) {
 			log.error("Unable to decode json object: "+e);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			throw new SAXException(e);
 		} catch (Exception e) {
 			log.error("Error on doing request: "+e);
 			throw new WebApplicationException(e, Response.Status.SERVICE_UNAVAILABLE);
@@ -1042,8 +1053,9 @@ public class ConfigurationResource {
 	 * this method actually does the whole copying of the received service data
 	 * @param json
 	 * @param req 
+	 * @throws SAXException 
 	 */
-	private HashMap<String, String> makeCopyOfService(JSONObject json, boolean isCopy, HttpServletRequest req){
+	private HashMap<String, String> makeCopyOfService(JSONObject json, boolean isCopy, HttpServletRequest req) throws SAXException{
 		HashMap<String, String> urls = null;
 		try {
 			String title = null;
@@ -1077,7 +1089,10 @@ public class ConfigurationResource {
 		} catch (JSONException e) {
 			
 			log.error("Unable to decode json object: "+e);
-		} catch (Exception e) {
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			throw new SAXException(e);
+		}  catch (Exception e) {
 
 			log.error("Error on doing request: "+e);
 		}
@@ -1261,7 +1276,7 @@ public class ConfigurationResource {
 	 * @throws ParserConfigurationException
 	 * @throws IOException
 	 */
-    public Document stringToDom(String xmlSource) {
+    public Document stringToDom(String xmlSource) throws SAXException {
 
 		try {
 	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -1271,15 +1286,14 @@ public class ConfigurationResource {
 	        return doc;
 		} catch (ParserConfigurationException e) {
 			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
+			throw new WebApplicationException(e, Response.Status.CONFLICT);
 		} catch (SAXException e) {
 			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
+			throw new SAXException(e);
 		} catch (IOException e) {
 			log.error("error on parsing xml string: "+e.getMessage());
-			e.printStackTrace();
+			throw new WebApplicationException(e, Response.Status.CONFLICT);
 		}
-        return null;
     }
 	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
 
