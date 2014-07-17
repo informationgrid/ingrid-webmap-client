@@ -900,11 +900,16 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.setValue = 
 					}
 				});
 			},
-			failure: function() {
+			failure: function(e) {
 				if(doServiceDelete){
 					self.deleteService('Dienst kann nicht geladen werden, da dieser nicht mehr zur Verf&uuml;gung steht! Soll dieser Dienst entfernt werden?');
 				}else{
-					de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
+					if(e.indexOf("Conflict") > -1){
+						de.ingrid.mapclient.Message.showError('Capabilities Dokument ist fehlerhaft.');
+					}else{
+						de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
+					}
+					
 				}
 				Ext.getBody().unmask();
 				} 
