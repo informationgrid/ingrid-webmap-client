@@ -47,6 +47,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', {
 		        this.gridUrlCheck,
 		        {
 					xtype: 'container',
+					height: 10
+		        },
+		        {
+					xtype: 'container',
 					layout: {
 					    type: 'vbox',
 					    align: 'right',
