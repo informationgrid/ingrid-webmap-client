@@ -39,7 +39,7 @@ de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.registerSt
  */
 de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.removeStore = function(path) {
 	var key = Ext.encode(path);
-	this.stores.removeKey(key);
+	this.stores.removeAtKey(key);
 };
 
 /**

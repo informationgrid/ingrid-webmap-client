@@ -76,36 +76,39 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			}
 		}];
 
-		this.expander = new Ext.ux.grid.RowExpander({
-			tpl: '<div class="ux-row-expander-box"></div>',
-			actAsTree: true,
-			treeLeafProperty: 'is_leaf',
-			lazyRender: false,
-			destroyNestedGrids: function(gridEl) {},
-			listeners: {
-				expand: function(expander, record, body, rowIndex) {
-					var element = Ext.get(expander.grid.getView().getRow(rowIndex)).child('.ux-row-expander-box');
-					self.getSubPanel(record, element);
-				}
-			}
-		});
-
 		this.gridConfigCb = function(config) {
 			// add the expander column
-			config.columns.unshift(self.expander);
-			config.plugins = self.expander;
+			//config.columns.unshift(self.expander);
+			config.plugins = [
+			    {
+					ptype:'rowexpander',
+			    	rowBodyTpl: '<div class="ux-row-expander-box"></div>',
+			    	expandOnEnter: true,
+			        expandOnDblClick: false
+				},
+				Ext.create('Ext.grid.plugin.CellEditing', {
+		            clicksToEdit: 1
+		        }
+			)];
 			config.hideHeaders = true;
 			return config;
 		};
-
+		
 		// create the grid
-		this.grid = new de.ingrid.mapclient.admin.controls.GridPanel({
+		this.grid = Ext.create('de.ingrid.mapclient.admin.controls.GridPanel', {
+			id: 'categoryGrid',
 			store: store,
 			columns: columns,
 			gridConfigCb: self.gridConfigCb,
 			dropBoxTitle: self.dropBoxTitle
 		});
-
+		
+		this.grid.gridPanel.getView().on('expandbody', function(node, record, eNode) {
+			var element = Ext.get(eNode).down('.ux-row-expander-box');
+			self.getSubPanel(record, element);
+			this.resumeLayouts(true);
+		});
+		
 		// listen to category stores in order to update the store registry on any change
 		// and store the changes
 		store.on({
@@ -222,11 +225,11 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// create items of store record type from the store content
 			var items = [];
 			store.each(function(record) {
-				items.push(record.data);
+				items.push(record.raw);
 			}, this);
 			// create item
 			parent.name = path[path.length-1];
-			parent[store.baseParams.type] = items;
+			parent[categoriesName] = items;
 			return parent;
 		},
 		// initial context
@@ -255,36 +258,40 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// create items of store record type from the store content
 			var items = [];
 			store.each(function(record) {
-				items.push(record.data);
+				items.push(record.raw);
 			}, this);
 			// create item
 			parent.name = path[path.length-1];
-			parent[store.baseParams.type] = items;
+			parent[categoriesName] = items;
 			return parent;
 		},
 		// initial context
 		result);
 		var highest = 0;
 		var catReference = null;
-		for (var i = 0; i < result.mapServiceCategories.length; i++){
-			if(result.mapServiceCategories[i].idx || result.mapServiceCategories[i].idx == 0){
-				if(result.mapServiceCategories[i].idx > highest)
-					highest = result.mapServiceCategories[i].idx; 
-			}else{
-				catReference = result.mapServiceCategories[i]
-			}
-			if(result.mapServiceCategories[i].mapServiceCategories){
-				for (var j = 0; j < result.mapServiceCategories[i].mapServiceCategories.length; j++){
-					if(result.mapServiceCategories[i].mapServiceCategories[j].idx){
-						if(result.mapServiceCategories[i].mapServiceCategories[j].idx > highest)
-							highest = result.mapServiceCategories[i].mapServiceCategories[j].idx; 
-					}else{
-						catReference = result.mapServiceCategories[i].mapServiceCategories[j];						
+		if(result.mapServiceCategories){
+			for (var i = 0; i < result.mapServiceCategories.length; i++){
+				if(result.mapServiceCategories[i].idx || result.mapServiceCategories[i].idx == 0){
+					if(result.mapServiceCategories[i].idx > highest)
+						highest = result.mapServiceCategories[i].idx; 
+				}else{
+					catReference = result.mapServiceCategories[i]
+				}
+				if(result.mapServiceCategories[i].mapServiceCategories){
+					for (var j = 0; j < result.mapServiceCategories[i].mapServiceCategories.length; j++){
+						if(result.mapServiceCategories[i].mapServiceCategories[j].idx){
+							if(result.mapServiceCategories[i].mapServiceCategories[j].idx > highest)
+								highest = result.mapServiceCategories[i].mapServiceCategories[j].idx; 
+						}else{
+							catReference = result.mapServiceCategories[i].mapServiceCategories[j];						
+						}
 					}
 				}
 			}
+			if(catReference){
+				catReference.idx = highest + 1;
+			}
 		}
-		catReference.idx = highest + 1;
 		de.ingrid.mapclient.Configuration.setValue(categoriesName, Ext.encode(result), de.ingrid.mapclient.admin.DefaultSaveHandler);
 
 	},
@@ -424,7 +431,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			}]
 		});
 		var categoriesName = this.getCategoriesName();
-		//store.setBaseParam("type", categoriesName);
 		this.initializeStore(store, category[categoriesName]);
 
 		return store;

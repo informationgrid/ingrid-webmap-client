@@ -84,14 +84,9 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 			scope: this
 		});
 		
-		this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1
-        });
-
 		// construct the grid
 		var gridConfig = {
 			store: this.store,
-			xtype: 'cell-editing',
 		    columns: { 
 		    	items: this.createColumnConfig(this.columns),
 		        columnsText: 'Spalten',
@@ -102,13 +97,15 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 		    selector: Ext.create('Ext.selection.RowModel', {mode: "SINGLE"}),
 		    enableDragDrop: true,
 			autoHeight: true,
-			plugins: [this.cellEditing],
+			plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
+	            clicksToEdit: 1
+	        })],
 			viewConfig: {
 				autoFill: true,
 				forceFit: true,
-	            plugins: {
+	            plugins: [{
 	                ptype: 'gridviewdragdrop'
-	            }
+	            }]
 			}
 		};
 		// allow to modify the configuration
@@ -118,7 +115,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 	    this.gridPanel = Ext.create('Ext.grid.Panel', gridConfig);
 
 	    // set up grid events
-
+	    this.gridPanel.getView().addEvents('collapsebody', 'expandbody');
 	    // install a drop target and start listening to
 	    // drag/drop event to store the new record order
 	    this.gridPanel.on('render', function(e) {

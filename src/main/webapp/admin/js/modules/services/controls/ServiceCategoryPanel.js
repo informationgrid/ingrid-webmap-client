@@ -39,7 +39,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				editor: {
 				   xtype: 'textfield',
 				   disabled: true
-				}
+				},
+				flex: 1
 			}, {
 				header: 'Capabilities Url',
 				sortable: true,
@@ -47,20 +48,18 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				editor: {
 				   xtype: 'textfield',
 				   disabled: true
-				}
+				},
+				flex: 1
+			}, {
+				header: 'Info',
+				sortable: false,
+				id: 'capabilities',
+			    width: 10,
+			    renderer: function(v, p, record, rowIndex){
+			        return '<div class="iconInfo"></div>';
+			    },
+				flex: 1
 			}];
-
-
-				columns.push({
-					header: 'Info',
-					sortable: false,
-					id: 'capabilities',
-				    width: 10,
-				    renderer: function(v, p, record, rowIndex){
-				        return '<div class="iconInfo"></div>';
-				    }
-				});
-				
 
 			panel = Ext.create('Ext.grid.Panel', {
 				store: this.getStoreManager().getStore(path),
@@ -103,11 +102,11 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				self.save();
 			});
 			// show capabilities if clicking the capabilities icon
-		    panel.on('cellclick', function(grid, rowIndex, columnIndex, e) {
-				if(columnIndex == grid.getColumnModel().getIndexById('capabilities')) {
-					var url = grid.getSelectionModel().getSelected().get('capabilitiesUrl');
+		    panel.on('cellclick', function(grid, body, columnIndex, record) {
+		    	if(columnIndex == 2){
+		    		var url = record.get('capabilitiesUrl');
 					self.showCapabilities(url);
-				}
+		    	}
 		    });
 			// prevent propagating events up to parent grid
 			panel.getEl().swallowEvent(['click', 'mousedown', 'keydown', 'mouseover', 'contextmenu', 'dblclick'], true);
@@ -145,7 +144,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 					type: 'string'
 				}]
 			});
-			//store.setBaseParam("type", "services");
 			this.initializeStore(store, services);
 		}
 		else {
