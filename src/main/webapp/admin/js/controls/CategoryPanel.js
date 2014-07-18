@@ -72,8 +72,13 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			dataIndex: 'name',
 			editor: {
 			   xtype: 'textfield',
-			   allowBlank: false
-			}
+			   allowBlank: false,
+			   labelAlign: 'top',
+			   labelSeparator: '',
+			   labelStyle: 'padding-bottom:5px;',
+			   columnWidth: 0.95
+			},
+			flex: 1
 		}];
 
 		this.gridConfigCb = function(config) {
