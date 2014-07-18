@@ -44,16 +44,28 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', {
 		// create the final layout
 		Ext.apply(this, {
 			items: [
-			        this.gridUrlCheck,
-				    {
-						xtype: 'button',
-						id:'btnSaveUrlCheckPanel',
-						text: 'Einstellungen speichern',
-						anchor: '100%',
-						handler: function() {
-							self.saveSettings();
-						}
-				    }]
+		        this.gridUrlCheck,
+		        {
+					xtype: 'container',
+					layout: {
+					    type: 'vbox',
+					    align: 'right',
+					    pack: 'start'
+					},
+					anchor: '100%',
+				    items: [
+			            {
+							xtype: 'button',
+							id:'btnSaveUrlCheckPanel',
+							text: 'Einstellungen speichern',
+							anchor: '100%',
+							handler: function() {
+								self.saveSettings();
+							}
+			            }
+		            ]
+			    }
+	        ]
 		});
 		de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.initComponent.call(this);
 	},

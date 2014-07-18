@@ -52,26 +52,62 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel', {
 		
 		// create the final layout
 		Ext.apply(this, {
-			items: [this.grid,
-			        {
-						xtype: 'button',
-						id:'btnSaveDefaultSettingsPanel1',
-						text: 'Einstellungen speichern',
-						anchor: '100%',
-						handler: function() {
-							self.saveSettings();
-						}
-				    }, 
-				    this.gridSearch,
-				    {
-						xtype: 'button',
-						id:'btnSaveDefaultSettingsPanel2',
-						text: 'Einstellungen speichern',
-						anchor: '100%',
-						handler: function() {
-							self.saveSettings();
-						}
-				    }]
+			items: [
+		        this.grid,
+		        {
+					xtype: 'container',
+					height: 20
+		        },
+		        {
+					xtype: 'container',
+					layout: {
+					    type: 'vbox',
+					    align: 'right',
+					    pack: 'start'
+					},
+					anchor: '100%',
+				    items: [
+			            {
+							xtype: 'button',
+							id:'btnSaveDefaultSettingsPanel1',
+							text: 'Einstellungen speichern',
+							anchor: '100%',
+							handler: function() {
+								self.saveSettings();
+							}
+			            }
+		            ]
+			    },
+			    {
+					xtype: 'container',
+					height: 20
+		        },
+			    this.gridSearch,
+			    {
+					xtype: 'container',
+					height: 20
+		        },
+			    {
+					xtype: 'container',
+					layout: {
+					    type: 'vbox',
+					    align: 'right',
+					    pack: 'start'
+					},
+					anchor: '100%',
+				    items: [
+			            {
+							xtype: 'button',
+							id:'btnSaveDefaultSettingsPanel2',
+							text: 'Einstellungen speichern',
+							anchor: '100%',
+							handler: function() {
+								self.saveSettings();
+							}
+			            }
+		            ]
+			    }
+		    ]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.initComponent.call(this);
 	},

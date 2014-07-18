@@ -52,6 +52,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			vtype: 'url',
 			labelAlign: 'top',
 			labelSeparator: '',
+			labelStyle: 'padding-bottom:5px;',
 			listeners:{
 				afterRender: function(){
 					var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
@@ -73,6 +74,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			id: 'defaultServiceBaseLayerCombo',
 			width: 135,
 			fieldLabel: 'Baselayer',
+			labelStyle: 'padding-bottom:5px;',
 			typeAhead: true,
 		    triggerAction: 'all',
 		    lazyRender:true,
@@ -89,6 +91,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			allowBlank: true,
 			labelAlign: 'top',
 			labelSeparator: '',
+			labelStyle: 'padding-bottom:5px;',
 			listeners:{
 				afterRender: function(){
 					var wmsCopyright = de.ingrid.mapclient.Configuration.getValue("wmsCopyright");
@@ -103,6 +106,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			allowBlank: true,
 			labelAlign: 'top',
 			labelSeparator: '',
+			labelStyle: 'padding-bottom:5px;',
 			listeners:{
 				afterRender: function(){
 					var featureUrl = de.ingrid.mapclient.Configuration.getValue("featureUrl");
@@ -154,7 +158,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 					items: {
 						xtype: 'button',
 						text: 'Laden',
-						fieldLabel: '&nbsp;',
+						width: '100%',
 						handler: function() {
 							if (self.wmsCapUrlField.validate()) {
 								self.loadCapUrl();
@@ -163,14 +167,29 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 					}
 				}]
 		    },
-			this.layerGrid, {
-			    // spacer
+		    {
 				xtype: 'container',
-				height: 20
+				height: 10
+	        },
+			this.layerGrid, {
+				xtype: 'container',
+				height: 10
 		    }, 
 		    this.baseLayerCombo,
+		    {
+				xtype: 'container',
+				height: 10
+	        },
 		    this.baseLayerCopyrightTextField,
+		    {
+				xtype: 'container',
+				height: 10
+	        },
 		    this.featureInfoTextField, 
+		    {
+				xtype: 'container',
+				height: 10
+	        },
 		    {
 				xtype: 'container',
 				layout: 'column',
@@ -186,7 +205,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 						xtype: 'button',
 						id: 'featureInfoBtn',
 						text: 'Speichern',
-						anchor: '100%',
+						width: '100%',
 						handler: function() {
 							if (self.baseLayerCombo.validate() && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
 								self.save();

@@ -48,26 +48,61 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel', {
 		Ext.apply(this, {
 			items: [this.mapExtendPanel,
 			        {
-						xtype: 'button',
-						id: 'btnMapExtendPanel',
-						text: 'Initiale Kartenausdehnung speichern',
-						anchor: '100%',
-						handler: function() {
-							if (self.mapExtendPanel.validate()) {
-								self.saveMapExtend();
-							}
-						}
-					},
-		            this.gridDefault,
+						xtype: 'container',
+						height: 20
+			        },
 			        {
-						xtype: 'button',
-						id: 'btnGridDefault',
-						text: 'Einstellungen speichern',
+						xtype: 'container',
+						layout: {
+						    type: 'vbox',
+						    align: 'right',
+						    pack: 'start'
+						},
 						anchor: '100%',
-						handler: function() {
-							self.saveSettings();
-						}
-					}]
+					    items: [
+				            {
+								xtype: 'button',
+								id: 'btnMapExtendPanel',
+								text: 'Initiale Kartenausdehnung speichern',
+								anchor: '100%',
+								handler: function() {
+									if (self.mapExtendPanel.validate()) {
+										self.saveMapExtend();
+									}
+								}
+				            }
+				        ]
+			        },
+			        {
+						xtype: 'container',
+						height: 20
+			        },
+		            this.gridDefault,
+		            {
+						xtype: 'container',
+						height: 20
+			        },
+		            {
+						xtype: 'container',
+						layout: {
+						    type: 'vbox',
+						    align: 'right',
+						    pack: 'start'
+						},
+						anchor: '100%',
+					    items: [
+				            {
+								xtype: 'button',
+								id: 'btnGridDefault',
+								text: 'Einstellungen speichern',
+								anchor: '100%',
+								handler: function() {
+									self.saveSettings();
+								}
+				            }
+				         ]
+		            }
+			]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel.superclass.initComponent.call(this);
 	},

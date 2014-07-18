@@ -15,6 +15,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 	labelSeparator: '',
 	buttonAlign: 'right',
 	border: false,
+	autoScroll: true,
 	bodyPadding: 10,
 	
 	/**
@@ -42,7 +43,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		   xtype: 'textfield',
 		   allowBlank: false,
 		   labelAlign: 'top',
-		   labelSeparator: ''
+		   labelSeparator: '',
+		   labelStyle: 'padding-bottom:5px;',
+		   columnWidth: 0.95
 		},
 		flex:1
 	}, {
@@ -53,7 +56,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		   xtype: 'textfield',
 		   allowBlank: false,
 		   labelAlign: 'top',
-		   labelSeparator: ''
+		   labelSeparator: '',
+		   labelStyle: 'padding-bottom:5px;',
+		   columnWidth: 0.95
 		},
 		flex:1
 	}],
