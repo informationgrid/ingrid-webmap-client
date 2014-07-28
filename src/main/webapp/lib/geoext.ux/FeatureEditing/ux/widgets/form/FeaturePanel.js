@@ -22,8 +22,9 @@ Ext.namespace("GeoExt.ux.form");
  *
  *  Todo
  */
-GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
-
+Ext.define('GeoExt.ux.form.FeaturePanel', {
+	extend: 'Ext.form.FormPanel',
+	alias: 'gx_featurepanel',
     /** api: config[labelWidth]
      *  ``Number``  Default value.
      */
@@ -445,6 +446,3 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     }
 
 });
-
-/** api: xtype = gx_featurepanel */
-Ext.reg("gx_featurepanel", GeoExt.ux.form.FeaturePanel);

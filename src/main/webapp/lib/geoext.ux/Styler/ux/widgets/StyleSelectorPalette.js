@@ -25,8 +25,9 @@ Ext.namespace("GeoExt.ux");
  *
  *  Todo
  */
-GeoExt.ux.StyleSelectorPalette = Ext.extend(Ext.Panel, {
-
+Ext.define('GeoExt.ux.StyleSelectorPalette', {
+	extend: 'Ext.panel.Panel',
+	alias: 'gx_styleselectorpalette',
     palette: null,
     defaultColor: 'FF0000',
     
@@ -92,6 +93,3 @@ GeoExt.ux.StyleSelectorPalette = Ext.extend(Ext.Panel, {
     }
 
 });
-
-/** api: xtype = gx_minisymbolizer */
-Ext.reg("gx_StyleSelectorPalette", GeoExt.ux.StyleSelectorPalette);

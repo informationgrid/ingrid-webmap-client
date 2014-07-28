@@ -35,8 +35,9 @@ Ext.namespace("GeoExt.ux.form");
  *  So it's a convenience object to quickly generate a RedLining complete tool
  *  with all required controls and features.
  */
-GeoExt.ux.form.RedLiningPanel = Ext.extend(GeoExt.ux.form.FeatureEditingPanel, {
-
+Ext.define('GeoExt.ux.form.RedLiningPanel', {
+	extend: 'GeoExt.ux.form.FeatureEditingPanel',
+	alias: 'gx_redliningpanel',
     /** api: property[map]
      *  ``OpenLayers.Map``  A configured map object.
      */
@@ -109,6 +110,3 @@ GeoExt.ux.form.RedLiningPanel = Ext.extend(GeoExt.ux.form.FeatureEditingPanel, {
         });
     }
 });
-
-/** api: xtype = gx_featureform */
-Ext.reg("gx_redliningpanel", GeoExt.ux.form.RedLiningPanel);

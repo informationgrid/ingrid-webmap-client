@@ -6,7 +6,8 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class WelcomeDialog is the dialog for configuring the map view.
  */
-de.ingrid.mapclient.frontend.controls.WelcomeDialog = Ext.extend(Ext.Window, {
+Ext.define('de.ingrid.mapclient.frontend.controls.WelcomeDialog', {
+	extend: 'Ext.Window',
     id: 'welcomeDialog',
     //title: i18n('tWillkommen'),
     autoLoad:{
@@ -28,46 +29,38 @@ de.ingrid.mapclient.frontend.controls.WelcomeDialog = Ext.extend(Ext.Window, {
     initHidden: false,
     ctrls:null,
     windowContent: null,
-    buttonAlign: 'left'
+    buttonAlign: 'left',
+    getWindow: function() {
+    	return this;
+	},
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
+	    var self = this;
+	    // register the baselayer change handler
+	    this.map.events.on({
+	        'changebaselayer': this.onBaseLayerChange,
+	        scope: this
+	    });
+	    
+	    var cookieState = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") === "true";
+
+	    var self = this;
+	    this.buttons = [
+	      new Ext.form.Checkbox({id: 'disableWelcomeDialog', boxLabel: i18n('tDisableWelcome'), 
+	          checked: cookieState, handler: self.handleDisableWelcomeDialog })/*,
+	      new Ext.Toolbar.Fill(),
+	      { 
+	        text: 'Close', handler: function() {
+	            self.close();
+	        }
+	      }*/
+	    ];
+	    this.superclass.initComponent.call(this);
+	},
+	handleDisableWelcomeDialog: function(element, isActive) {
+		// cookie is valid one year from now
+	    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive, (new Date()).add(Date.YEAR, 1));
+	}
 });
-
-de.ingrid.mapclient.frontend.controls.WelcomeDialog.prototype.getWindow = function() {
-  return this;
-};
-
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.frontend.controls.WelcomeDialog.prototype.initComponent = function() {
-    var self = this;
-    // register the baselayer change handler
-    this.map.events.on({
-        'changebaselayer': this.onBaseLayerChange,
-        scope: this
-    });
-    
-    var cookieState = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") === "true";
-
-    var self = this;
-    this.buttons = [
-      new Ext.form.Checkbox({id: 'disableWelcomeDialog', boxLabel: i18n('tDisableWelcome'), 
-          checked: cookieState, handler: self.handleDisableWelcomeDialog })/*,
-      new Ext.Toolbar.Fill(),
-      { 
-        text: 'Close', handler: function() {
-            self.close();
-        }
-      }*/
-    ];
-    
-    de.ingrid.mapclient.frontend.controls.WelcomeDialog.superclass.initComponent.call(this);
-};
-
-
-de.ingrid.mapclient.frontend.controls.WelcomeDialog.prototype.handleDisableWelcomeDialog = function(element, isActive) {
-	// cookie is valid one year from now
-    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive, (new Date()).add(Date.YEAR, 1));
-}
-
-
-

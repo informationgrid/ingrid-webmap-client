@@ -32,7 +32,9 @@ var scriptSourceLayerManagerExportWindow = (function() {
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Window>`_
  */
 
-GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
+Ext.define('GeoExt.ux.LayerManagerExportWindow', {
+	extend: 'Ext.Window',
+	alias: 'gxux_layermanagerexportwindow',
     /** private: property[id]
      *  ``String``  id set to layermanagerexportwindow (don't change it)
      */
@@ -171,6 +173,3 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
         GeoExt.ux.LayerManagerExportWindow.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerexportwindow */
-Ext.reg('gxux_layermanagerexportwindow', GeoExt.ux.LayerManagerExportWindow);

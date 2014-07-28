@@ -3,17 +3,11 @@
  */
 Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
-/**
- * @class ServiceTreeLoader asynchronously loads layers in a service.
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = function() {
-};
-
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = Ext.extend(GeoExt.tree.LayerLoader, {
+Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
+	extend: 'GeoExt.tree.LayerLoader',
 	initComponent : function() {
 		Ext.apply(this, {});
-		de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.superclass.initComponent
-				.apply(this, arguments);
+		this.superclass.initComponent.apply(this, arguments);
 	},
 	
 	/** 
@@ -32,130 +26,112 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = Ext.extend(GeoExt.tree
     onStoreRemove: function(store, record, index, node) {
 		// skip event handling of store
 		return;
-    }
-});
+    },
+    /**
+     * @param {GeoExt.data.LayerTreeModel} node The node to add children to.
+     * @private
+     */
+    load: function(node) {
+    	if (this.fireEvent("beforeload", this, node)) {
+            this.removeStoreHandlers();
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
 
-/**
- * Load children of the given node. This method is overridden in order to take layer
- * hierarchies into account.
- * @param node Ext.tree.TreeNode to load the children for
- * @param callback A function to be called after load
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.load = function(node, callback) {
-	if (this.fireEvent("beforeload", this, node)) {
-		this.removeStoreHandlers();
-		while (node.firstChild) {
-			node.removeChild(node.firstChild);
-		}
+            if (!this.store) {
+                this.store = GeoExt.MapPanel.guess().layers;
+            }
+            this.store.each(function(record) {
+                this.addLayerNode(node, record);
+            }, this);
+            this.addStoreHandlers(node);
 
-		if (!this.uiProviders) {
-			this.uiProviders = node.getOwnerTree().getLoader().uiProviders;
-		}
+            this.fireEvent("load", this, node);
+        }
+    	/*
+    	if (this.fireEvent("beforeload", this, node)) {
+            this.removeStoreHandlers();
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
 
-		if (!this.store) {
-			this.store = GeoExt.MapPanel.guess().layers;
-		}
+            if (!this.store) {
+                this.store = GeoExt.MapPanel.guess().layers;
+            }
+            
+            var service = node.getData().container.service;
+            if (!service) {
+    			throw "Service attribute is expected on node: "+node.text;
+    		}
 
-		// check if the current node is the service or a layer node
-		var service = node.attributes.service;
-		if (!service) {
-			throw "Service attribute is expected on node: "+node.text;
-		}
-		// problem is that node.text is at first the service title
-		// so we need a routine that checks what the node is i.e. layer/service
-		// if its a service we null it and look for the rootlayer
-		// otherwise its a layer and we have the info we need
-		var layer = null;
-		if(node.layer)
-			layer = service.getLayerByName(node.layer.params.LAYERS);// layer = node.layer does NOT work!
-		else if (node.text == service.getDefinition().title)
-			layer = null; // it is a service so we look for the rootlayer
-		else
-			layer = service.getLayerByTitle("");//not yet implemented since id are made with unique names not titles		
-		if (layer) {
-			// the node represents a layer -> get child layers
-			var nestedLayers = layer.options.nestedLayers;
-			this.store.each(function(record) {
-				if (this.filter(record) === true) {
-					var recordLayer = record.getLayer();
-					// NOTE: use params.LAYERS attribute instead of name for lookup,
-					// because name might differ from the definition in nestedLayers attribute
-					if (nestedLayers.indexOf(recordLayer.params.LAYERS) != -1) {
-						this.addLayerNode(node, record);
-					}
+            this.store.each(function(record) {
+            	var layer = record.getLayer();
+            	if(layer.options.isRootLayer){
+            		this.addLayerNode(node, record);
+            		if(layer.options.nestedLayers){
+                		this.addNestedLayerNodes(node.firstChild, this.store, layer, service);
+                	}
+            	}
+            }, this);
+            
+            this.addStoreHandlers(node);
+
+            this.fireEvent("load", this, node);
+        }
+        */
+    },
+    addNestedLayerNodes: function(node, store, rootLayer, service) {
+    	var self = this;
+		if(node){
+			if(rootLayer){
+				var nestedLayers = rootLayer.options.nestedLayers;
+				for(var i = 0; i < nestedLayers.length; i++){
+					var nestedLayer = nestedLayers[i];
+					var layer = service.getLayerByName(nestedLayer);
+					store.each(function(record) {
+	            		if (record.getLayer() == layer) {
+	            			console.debug(nestedLayer);
+	            			this.addLayerNode(node, record, i);
+	            			if(layer.options.nestedLayers){
+	            				this.addNestedLayerNodes(node.firstChild, store, layer, service);
+		                	}
+	            		}
+		            }, this);
 				}
-			}, this);
+			}
 		}
-		else if (node.text == service.getDefinition().title) {
-			// the node represents the service -> load root layers
-			this.store.each(function(record) {
-				if (this.filter(record) === true) {
-					var layer = service.getLayerByName(record.getLayer().params.LAYERS);
-					if (layer.options.isRootLayer) {
-						this.addLayerNode(node, record);
-					}
-				}
-			}, this);
-		}
-
-		this.addStoreHandlers(node);
-
-		if (typeof callback == "function") {
-			callback();
-		}
-
-		this.fireEvent("load", this, node);
-	}
-};
-
-/**
- * Add a node representing the given record as child of the given node. This method is overridden
- * in order to add custom information to the nodes
- * @param node The node to add to
- * @param layerRecord The record describing the layer to add
- * @param index
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode = function(node, layerRecord, index) {
-	index = index || 0;
-	var service = node.attributes.service;
-	var layer = service.getLayerByName(layerRecord.data.layer.params.LAYERS);
-	if (!layer) {
-		// something went wrong...
-		return;
-	}
-	var isLeaf = layer.options.nestedLayers.length == 0;
-	var loader = isLeaf ? undefined : this;
-	var child = this.createNode({
-		nodeType: 'gx_layer',
-		layer: layerRecord.getLayer(),
-		layerStore: this.store,
-		loader: loader,
-		isLeaf: isLeaf,
-		service: service,
-		allowDrop:false,
-		allowDrag:false 
-	});
-	
-	if(child){
-		node.allowChildren=false;
-		node.appendChild(child);
-	}
-	
-	child.on("move", this.onChildMove, this);
-	//on checkchange(we check the service) we expand the nodes of the service and check all layers
-	if (this.onCheckChangeCallback) {
-		child.on('checkchange', this.onCheckChangeCallback);
-	}
-};
-
-
-Ext.override(GeoExt.tree.LayerNodeUI, {
-    onDblClick: function(e) {
-        e.preventDefault();
-        if(e.getTarget('.x-tree-node-cb', 1)) {
-            this.toggleCheck(this.isChecked());
-        } else {
-            GeoExt.tree.LayerNodeUI.superclass.onClick.apply(this, arguments);
+    },
+    /**
+     * Adds a child node representing a layer of the map
+     *
+     * @param {GeoExt.data.LayerTreeModel} node The node that the layer node
+     *     will be added to as child.
+     * @param {GeoExt.data.LayerModel} layerRecord The layer record containing
+     *     the layer to be added.
+     * @param {Integer} index Optional index for the new layer.  Default is 0.
+     * @private
+     */
+    addLayerNode: function(node, layerRecord, index) {
+    	index = index || 0;
+        if (this.filter(layerRecord) === true) {
+            var layer = layerRecord.getLayer();
+            var child = this.createNode({
+                plugins: [{
+                    ptype: 'gx_layer'
+                }],
+                layer: layer,
+                text: layer.name,
+                listeners: {
+                    move: this.onChildMove,
+                    scope: this
+                }
+            });
+            if (index !== undefined) {
+                node.insertChild(index, child);
+            } else {
+                node.appendChild(child);
+            }
+            node.getChildAt(index).on("move", this.onChildMove, this);
         }
     }
 });

@@ -25,8 +25,9 @@ Ext.namespace("GeoExt.ux");
  *
  *  Todo
  */
-GeoExt.ux.StyleSelectorComboBox = Ext.extend(Ext.Panel, {
-
+Ext.define('GeoExt.ux.StyleSelectorComboBox', {
+	extend: 'Ext.panel.Panel',
+	alias: 'gx_styleselectorcombobox',
     store: null,
 
     comboBox: null,
@@ -100,6 +101,3 @@ GeoExt.ux.StyleSelectorComboBox = Ext.extend(Ext.Panel, {
     }
 
 });
-
-/** api: xtype = gx_minisymbolizer */
-Ext.reg("gx_styleselectorcombobox", GeoExt.ux.StyleSelectorComboBox);

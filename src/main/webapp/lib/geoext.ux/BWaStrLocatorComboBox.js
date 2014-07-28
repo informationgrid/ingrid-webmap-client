@@ -15,8 +15,9 @@ Ext.namespace("GeoExt.form");
 /** api: constructor
 * .. class:: BWaStrLocator(config)
 */
-GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
-    
+Ext.define('GeoExt.form.BWaStrLocator', {
+    extend: 'Ext.form.ComboBox',
+    alias: 'gx_bwastrlocator',
     /** api: config[emptyText]
 * ``String`` Text to display for an empty field (i18n).
 */
@@ -126,8 +127,8 @@ GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
                     {name: "fliessrichtung", mapping: "fliessrichtung"}
                 ],
                 proxy: new Ext.data.ScriptTagProxy({
-                    url: this.url,
-                    callbackParam: "json_callback"
+                    url: this.url.split("&").join("%26"),
+                    callbackKey: "json_callback"
                 })
             });
         }
@@ -240,6 +241,3 @@ GeoExt.form.BWaStrLocator = Ext.extend(Ext.form.ComboBox, {
         GeoExt.form.BWaStrLocator.superclass.beforeDestroy.apply(this, arguments);
     }
 });
-
-/** api: xtype = gx_bwastrlocator */
-Ext.reg("gx_bwastrlocator", GeoExt.form.BWaStrLocator);

@@ -9,8 +9,9 @@ Ext.namespace("GeoExt.form");
 * .. class:: BWaStrLocator(config)
 *
 */
-GeoExt.form.PortalSearch = Ext.extend(Ext.form.ComboBox, {
-    
+Ext.define('GeoExt.form.PortalSearch', {
+	extend: 'Ext.form.field.ComboBox',
+    alias: 'gx_portalsearch',
 	/** api: config[emptyText]
 * ``String`` Text to display for an empty field (i18n).
 */
@@ -60,13 +61,14 @@ GeoExt.form.PortalSearch = Ext.extend(Ext.form.ComboBox, {
     initComponent: function() {
         if (!this.store) {
             this.store = new Ext.data.JsonStore({
+            	root: null,
                 fields: [
                     {name: "name", mapping: "name"},
                     {name: "capabilitiesUrl", mapping: "capabilitiesUrl" }
                 ],
                 proxy: new Ext.data.ScriptTagProxy({
                     url: this.url,
-                    callbackParam: "json_callback"
+                    callbackKey: "json_callback"
                 })
             });
         }
@@ -176,6 +178,3 @@ GeoExt.form.PortalSearch = Ext.extend(Ext.form.ComboBox, {
         GeoExt.form.PortalSearch.superclass.beforeDestroy.apply(this, arguments);
     }
 });
-
-/** api: xtype = gx_portalsearch */
-Ext.reg("gx_portalsearch", GeoExt.form.PortalSearch);

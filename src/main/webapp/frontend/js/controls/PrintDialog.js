@@ -6,7 +6,8 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class PrintDialog is the dialog used for printing the current map.
  */
-de.ingrid.mapclient.frontend.controls.PrintDialog = Ext.extend(Ext.Window, {
+Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
+	extend: 'Ext.Window',
 	title: i18n('tKarteDrucken'),
 	closable: true,
 	draggable: true,
@@ -37,133 +38,127 @@ de.ingrid.mapclient.frontend.controls.PrintDialog = Ext.extend(Ext.Window, {
 	/**
 	 * Ext.LoadMask instance
 	 */
-	loadMask: null
-});
+	loadMask: null,
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
+		var self = this;
+		// create the print provider
+		this.printProvider = Ext.create('GeoExt.data.MapfishPrintProvider', {
+			url: de.ingrid.mapclient.PRINT_URL,
+			autoLoad: true,
+			listeners: {
+				"loadcapabilities": function(provider, capabilities) {
+					// Edit capabilities entries to https urls
+					if(window.location.protocol == "https:"){
+						this.capabilities.createURL = this.capabilities.createURL.replace("http:", window.location.protocol);
+		                this.capabilities.printURL = this.capabilities.printURL.replace("http:", window.location.protocol);
+					}
 
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.initComponent = function() {
-
-	var self = this;
-
-	// create the print provider
-	this.printProvider = new GeoExt.data.PrintProvider({
-		url: de.ingrid.mapclient.PRINT_URL,
-		autoLoad: true,
-		listeners: {
-			"loadcapabilities": function(provider, capabilities) {
-				// Edit capabilities entries to https urls
-				if(window.location.protocol == "https:"){
-					this.capabilities.createURL = this.capabilities.createURL.replace("http:", window.location.protocol);
-	                this.capabilities.printURL = this.capabilities.printURL.replace("http:", window.location.protocol);
+					if(self.loadMask){
+						self.loadMask.hide();
+					}
+					// create the printform and show it
+					var printForm = self.createPrintForm();
+					self.add(printForm);
+					self.doLayout();
+					self.setPagePosition(350,300);
+				},
+				"printexception": function(provider, response) {
+					de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_PRINT_FAILURE+" "+response.statusText);
+					self.close();
 				}
-
-				self.loadMask.hide();
-				// create the printform and show it
-				var printForm = self.createPrintForm();
-				self.add(printForm);
-				self.doLayout();
-			},
-			"printexception": function(provider, response) {
-				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.MAP_PRINT_FAILURE+" "+response.statusText);
-				self.close();
 			}
-		}
-	});
-	self.setPagePosition(350,300);
-	de.ingrid.mapclient.frontend.controls.PrintDialog.superclass.initComponent.call(this);
-};
+		});
+		this.superclass.initComponent.call(this);
+	},
+	/**
+	 * Render callback (called by Ext)
+	 */
+	onRender: function() {
+		this.superclass.onRender.apply(this, arguments);
+		this.loadMask = new Ext.LoadMask(this.body, {
+			msg:i18n('tLadeDruckkonfiguration')
+		});
+	},
+	/**
+	 * Create the window content (print form)
+	 * @return GeoExt.ux.SimplePrint instance
+	 */
+	createPrintForm: function() {
+		var self = this;
+		// create the print form
+		var printForm = Ext.create('GeoExt.ux.SimplePrint', {
+			mapPanel: this.mapPanel,
+			autoFit: true,
+			printProvider: this.printProvider,
+			bodyStyle: {
+				padding: "5px"
+			},
+			labelWidth: 70,
+			defaults: {
+				width: 150
+			},
+			border: false,
+			layoutText: i18n('tFormat'),
+			dpiText: "DPI",
+			scaleText: i18n('tMaszstab'),
+			rotationText: i18n('tDrehung'),
+			printText: i18n('tPDFErstellen'),
+			creatingPdfText: i18n('tPDFErstellen') + "..."
 
-/**
- * Render callback (called by Ext)
- */
-de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.onRender = function() {
-	de.ingrid.mapclient.frontend.controls.PrintDialog.superclass.onRender.apply(this, arguments);
-
-	this.loadMask = new Ext.LoadMask(this.body, {
-		msg:i18n('tLadeDruckkonfiguration')
-	});
-};
-
-/**
- * Create the window content (print form)
- * @return GeoExt.ux.SimplePrint instance
- */
-de.ingrid.mapclient.frontend.controls.PrintDialog.prototype.createPrintForm = function() {
-
-	var self = this;
-	// create the print form
-	var printForm = new GeoExt.ux.SimplePrint({
-		mapPanel: this.mapPanel,
-		autoFit: true,
-		printProvider: this.printProvider,
-		bodyStyle: {
-			padding: "5px"
-		},
-		labelWidth: 70,
-		defaults: {
-			width: 150
-		},
-		border: false,
-		layoutText: i18n('tFormat'),
-		dpiText: "DPI",
-		scaleText: i18n('tMaszstab'),
-		rotationText: i18n('tDrehung'),
-		printText: i18n('tPDFErstellen'),
-		creatingPdfText: i18n('tPDFErstellen') + "..."
-
-	});
-	// add title and description fields to the form
-	printForm.insert(0, {
-		xtype: "textfield",
-		name: "mapTitle",
-		value: "", // don't send null values because printing will fail
-		fieldLabel: i18n('tTitle'),
-		plugins: new GeoExt.plugins.PrintPageField({
-			printPage: printForm.printPage
-		})
-	});
-	printForm.insert(1, {
-		xtype: "textarea",
-		name: "comment",
-		value: "", // don't send null values because printing will fail
-		fieldLabel: i18n('tKommentar'),
-		plugins: new GeoExt.plugins.PrintPageField({
-			printPage: printForm.printPage
-		})
-	});
-	printForm.insert(2, {
-		xtype: "checkbox",
-		fieldLabel: i18n('tLegende'),
-		name: "legend",
-		listeners: {
-			"check": function(checkbox, checked) {
-				// add the legend panel to the printOptions if selected
-				if (checked) {
-					printForm.printOptions = {
-						legend: self.legendPanel
-					};
-				}
-				else {
-					if (printForm.printOptions) {
-						delete printForm.printOptions.legend;
+		});
+		// add title and description fields to the form
+		printForm.insert(0, {
+			xtype: "textfield",
+			name: "mapTitle",
+			value: "", // don't send null values because printing will fail
+			fieldLabel: i18n('tTitle'),
+			plugins: new GeoExt.plugins.PrintPageField({
+				printPage: printForm.printPage
+			})
+		});
+		printForm.insert(1, {
+			xtype: "textarea",
+			name: "comment",
+			value: "", // don't send null values because printing will fail
+			fieldLabel: i18n('tKommentar'),
+			plugins: new GeoExt.plugins.PrintPageField({
+				printPage: printForm.printPage
+			})
+		});
+		printForm.insert(2, {
+			xtype: "checkbox",
+			fieldLabel: i18n('tLegende'),
+			name: "legend",
+			listeners: {
+				"check": function(checkbox, checked) {
+					// add the legend panel to the printOptions if selected
+					if (checked) {
+						printForm.printOptions = {
+							legend: self.legendPanel
+						};
+					}
+					else {
+						if (printForm.printOptions) {
+							delete printForm.printOptions.legend;
+						}
 					}
 				}
 			}
-		}
-	});
-	printForm.on("beforedestroy", function(form) {
-		// hide the busy mask in every case (also if an exception ocurred)
-		if (form.busyMask.hide) {
-			form.busyMask.hide();
-		}
-	});
-    this.printProvider.on({
-    	// close this form after printing
-        "print": self.close,
-        scope: self
-    });
-
-	return printForm;
-};
+		});
+		printForm.on("beforedestroy", function(form) {
+			// hide the busy mask in every case (also if an exception ocurred)
+			if (form.busyMask.hide) {
+				form.busyMask.hide();
+			}
+		});
+	    this.printProvider.on({
+	    	// close this form after printing
+	        "print": self.close,
+	        scope: self
+	    });
+		return printForm;
+	}
+});

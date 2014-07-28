@@ -6,7 +6,16 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class LegendDialog is the dialog for displaying meta data about a wms or wms layer.
  */
-de.ingrid.mapclient.frontend.controls.LegendDialog = Ext.extend(Ext.Window, {
+
+Ext.define('de.ingrid.mapclient.frontend.controls.LegendDialog', {
+	extend: 'Ext.Window',
+	requires: [
+       'GeoExt.panel.Map', 
+       'GeoExt.container.WmsLegend',
+       'GeoExt.container.UrlLegend',
+       'GeoExt.container.VectorLegend',
+       'GeoExt.panel.Legend'
+    ],
 	id: 'legendDialog',
 	bodyCls: 'mapclientLegendPanel',
 	title: i18n('tLegende'),
@@ -20,31 +29,32 @@ de.ingrid.mapclient.frontend.controls.LegendDialog = Ext.extend(Ext.Window, {
 	autoScroll:true,
 	constrain: true,
 	windowContent: null,
-	activeServicesPanel: null
+	layerStore: null,
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
+		var self = this;
+		this.on('close', function(){
+			this.hide();
+		});
+		
+		var legendPanel = Ext.create('GeoExt.panel.Legend', {
+			autoScroll : true,
+			border : false,
+			dynamic : true,
+			cls: "mapclientLegendPanel"
+		});
+		
+		Ext.apply(this, {
+			items: legendPanel,
+			doClose : function(){
+		        this.fireEvent('close', this);
+		    }
+		});
+
+		this.superclass.initComponent.call(this);
+	}
 });
 
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.frontend.controls.LegendDialog.prototype.initComponent = function() {
-	var self = this;
-	this.on('close', function(){
-		this.hide();
-	});
-	var legendPanel = new GeoExt.LegendPanel({
-		layerStore : self.activeServicesPanel.getLayerStore(),
-		autoScroll : true,
-		border : false,
-		dynamic : true,
-		cls: "mapclientLegendPanel"
-	});
-	
-	Ext.apply(this, {
-		items: legendPanel,
-		doClose : function(){
-	        this.fireEvent('close', this);
-	    }
-	});
 
-	de.ingrid.mapclient.frontend.controls.LegendDialog.superclass.initComponent.call(this);
-};

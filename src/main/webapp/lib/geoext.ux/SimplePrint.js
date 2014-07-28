@@ -28,8 +28,9 @@ Ext.namespace("GeoExt.ux");
  *  and rotation are configurable in the form. A Print button is also added to
  *  the form.
  */
-GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
-    
+Ext.define('GeoExt.ux.SimplePrint', {
+	extend: 'Ext.form.FormPanel',
+    alias: 'widget.gxux_simpleprint',
     /* begin i18n */
     /** api: config[layoutText] ``String`` i18n */
     layoutText: "Layout",
@@ -289,6 +290,3 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
         this.printExtent.hide();
     }
 });
-
-/** api: xtype = gxux_simpleprint */
-Ext.reg("gxux_simpleprint", GeoExt.ux.SimplePrint);

@@ -134,25 +134,9 @@ body {
 	color: #1B78B1 !important;
 }
 
-.iconCollapse {
-	background-image: url(../../lib/extjs/resources/images/default/panel/tool-sprites.gif);
-	background-position: 0 -180px !important;
+.iconCollapseExpand {
 	height: 15px !important;
 	width: 15px !important;
-}
-
-.iconExpand {
-	background-image: url(../../lib/extjs/resources/images/default/panel/tool-sprites.gif);
-	background-position: 0 -165px !important;
-	height: 15px !important;
-	width: 15px !important;
-}
-
-.iconFullScreen {
-	background-image: url(../../shared/images/icon_full.png);
-	background-repeat: no-repeat;
-	width: 16px;
-	height: 16px;
 }
 
 .iconDrag {
@@ -302,6 +286,14 @@ padding: 1px 3px 1px 3px;
 	background-position: 0;
 }
 
+.x-tree-icon-parent {
+	display: none;
+}
+
+.x-tree-icon-leaf {
+	display: none;
+}
+
 .x-tree-root-node li .x-tree-node {
 	
 }
@@ -310,7 +302,7 @@ ul .x-tree-node-ct li .x-tree-node {
 	border: 0px solid #000000;
 }
 
-.x-accordion-hd{
+.x-header-text{
 	font: bold 12px verdana;
 	color: #1C5679;
 }
@@ -320,7 +312,7 @@ ul .x-tree-node-ct li .x-tree-node {
 	color: #1B78B1;
 }
 
-.x-tree-node {
+.x-tree-node-text {
 	color: #000000;
 	font: normal 12px/19px verdana;
 }
@@ -338,40 +330,32 @@ ul .x-tree-node-ct li .x-tree-node {
 	border-bottom: 1px solid #b4b4b4;
 }
 
-.x-tree-node .x-tree-selected {
-	background: #ffffff;
-}
-
-.x-tree-node .x-tree-node-over {
-	background: #f4f4f4;
-}
-
 .x-tree-arrows > .x-tree-root-node > .x-tree-node > .x-tree-node-collapsed {
 	border-top: 1px solid #b4b4b4;
 }
 
 .x-tree-arrows .x-tree-elbow-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 6px;
+	background-position: 5px 6px !important;
 }
 
 .x-tree-arrows .x-tree-elbow-minus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 6px;
+	background-position: 5px 6px !important;
 }
 
 .x-tree-arrows .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 6px;
+	background-position: 5px 6px !important;
 }
 
 .x-tree-arrows .x-tree-elbow-end-minus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 6px;
+	background-position: 5px 6px !important;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {
-	background-position: 5px 6px;
+	background-position: 5px 6px !important;
 }
 
 .x-tree-node a span:hover {
@@ -382,8 +366,15 @@ ul .x-tree-node-ct li .x-tree-node {
 	text-decoration: none;
 }
 
+.x-grid-row-selected .x-grid-td {
+	background: #ffffff;
+} 
 
-.x-tree-node-add a.x-tree-node-anchor span:hover {
+.x-grid-row-over .x-grid-td {
+	background: #f4f4f4;
+}
+
+.x-grid-row-over span.x-tree-node-text:hover {
 	text-decoration: underline;
 }
 
@@ -474,3 +465,6 @@ ul .x-tree-node-ct li .x-tree-node {
 	width: 50px !important;
 }
 
+.x-boundlist-item {
+	font-size: 12px;
+}

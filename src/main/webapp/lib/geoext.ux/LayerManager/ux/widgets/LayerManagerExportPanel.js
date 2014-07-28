@@ -20,7 +20,9 @@ Ext.namespace('GeoExt.ux');
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Panel>`_
  */
 
-GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
+Ext.define('GeoExt.ux.LayerManagerExportPanel', {
+	extend: 'Ext.panel.Panel',
+	alias: 'gxux_layermanagerexportpanel',
     /** api: config[map]
      *  ``OpenLayers.Map``  A configured map
      */
@@ -201,6 +203,3 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
         GeoExt.ux.LayerManagerExportPanel.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerexportpanel */
-Ext.reg('gxux_layermanagerexportpanel', GeoExt.ux.LayerManagerExportPanel);

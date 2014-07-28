@@ -19,8 +19,9 @@ Ext.namespace('GeoExt.ux');
  *  class = LayerManagerImportPanel
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Panel>`_
  */
-
-GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
+Ext.define('GeoExt.ux.LayerManagerImportPanel', {
+	extend: 'Ext.panel.Panel',
+	alias: 'gxux_layermanagerimportpanel',
     /** api: config[map]
      *  ``OpenLayers.Map``  A configured map
      */
@@ -210,6 +211,3 @@ GeoExt.ux.LayerManagerImportPanel = Ext.extend(Ext.Panel, {
         GeoExt.ux.LayerManagerImportPanel.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerimportpanel */
-Ext.reg('gxux_layermanagerimportpanel', GeoExt.ux.LayerManagerImportPanel);

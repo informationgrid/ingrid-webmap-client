@@ -3,6 +3,11 @@
  */
 Ext.namespace("de.ingrid.mapclient.frontend.data");
 
+
+Ext.Loader.syncRequire([
+    'GeoExt.data.WmsCapabilitiesLayerModel',
+    'GeoExt.data.reader.WmsCapabilities'
+]);
 /**
  * @class Service represents a WMS server.
  *
@@ -67,7 +72,7 @@ de.ingrid.mapclient.frontend.data.Service.prototype.getLayerById = function(id) 
  * @return OpenLayers.Layer instance
  */
 de.ingrid.mapclient.frontend.data.Service.prototype.getLayerByName = function(name) {
-	return this.layers.find(function(item) {
+	return this.layers.findBy(function(item) {
 		return (item.params.LAYERS == name);
 	});
 };
@@ -184,12 +189,10 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
-					ServiceException
 				}else if(response.responseText.indexOf('ServiceException') != -1){
 					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
-					ServiceException
 				}else if(response.responseText.length == 0){
 					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
@@ -202,96 +205,109 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				if (capabilities.capability || format.name == "WMC") {
 					// set up store data
 					// we check if
-					if(format.name == "WMC")
-					var data = new GeoExt.data.WMCReader().readRecords(capabilities);
-					else
-					var data = new de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader().readRecords(response.responseText);
-					if (data.success) {
-						if(format.name == "WMC")
-						var store = new GeoExt.data.LayerStore();
-						else
-						var store = new GeoExt.data.WMSCapabilitiesStore();
-						store.add(data.records);
-						// prepare layers from records
-						var records = store.getRange();
-						var layers = new Ext.util.MixedCollection();
-						for (var i=0, count=records.length; i<count; i++) {
-							var record = records[i];
-
-							// extract the layer from the record
-							var layer = record.get("layer");
-							if(format.name == "WMC") {
-                                var myImageFormat = self.getPreferredImageFormat('',data.records[i]);								
-    							layer.mergeNewParams({
-                                    format: myImageFormat.format,
-                                    transparent: myImageFormat.transparent,
-    								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
-    							});
-							} else {
-								var myImageFormat = self.getPreferredImageFormat(capabilities.capability, null);
-                                layer.mergeNewParams({
-                                    format: myImageFormat.format,
-                                    transparent: myImageFormat.transparent,
-                                    INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
-                                });
-							}
-
-							// set layer parameters
-							// we explicitly set a layerAbstract param, since it somehow gets lost later
-							layer.addOptions({layerAbstract:record.data['abstract']},true);
-							// Add identifier to options
-							if(record.data.identifiers)
-								layer.addOptions({identifiers:record.data.identifiers});
-							// Add llbox
-							if(record.data.llbbox)
-								layer.addOptions({llbbox:record.data.llbbox});
-							// Add bbox
-							if(record.data.bbox){
-								layer.bbox = record.data.bbox;
+					var data;
+					if(format.name == "WMC"){
+						data = new GeoExt.data.WMCReader().readRecords(capabilities);
+					}else{
+						var reader = Ext.create('de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader', {
+							keepRaw: true
+						});
+						data = reader.read(response);
+					}
+					if(data){
+						if (data.success) {
+							var store;
+							if(format.name == "WMC"){
+								store = new GeoExt.data.LayerStore();
+							}else{
+								store = Ext.create('GeoExt.data.WmsCapabilitiesLayerStore', {});								
 							}
 							
-							//check if the config wants us to singleTile or not, but first we check if this property exists
-							var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
-							if(isSingleTile){
-								layer.singleTile = true;
-								layer.ratio = 1;
+							store.add(data.records);
+							// prepare layers from records
+							var records = store.getRange();
+							var layers = new Ext.util.MixedCollection();
+							for (var i=0, count=records.length; i<count; i++) {
+								var record = records[i];
+
+								// extract the layer from the record
+								var layer = record.getLayer();
+								if(format.name == "WMC") {
+	                                var myImageFormat = self.getPreferredImageFormat('',data.records[i]);								
+	    							layer.mergeNewParams({
+	                                    format: myImageFormat.format,
+	                                    transparent: myImageFormat.transparent,
+	    								INFO_FORMAT: self.getPreferredInfoFormat('',data.records[i])
+	    							});
+								} else {
+									var myImageFormat = self.getPreferredImageFormat(capabilities.capability, null);
+	                                layer.mergeNewParams({
+	                                    format: myImageFormat.format,
+	                                    transparent: myImageFormat.transparent,
+	                                    INFO_FORMAT: self.getPreferredInfoFormat(capabilities.capability,null)
+	                                });
+								}
+
+								// set layer parameters
+								// we explicitly set a layerAbstract param, since it somehow gets lost later
+								layer.addOptions({layerAbstract:record.data['abstract']},true);
+								// Add identifier to options
+								if(record.data.identifiers)
+									layer.addOptions({identifiers:record.data.identifiers});
+								// Add llbox
+								if(record.data.llbbox)
+									layer.addOptions({llbbox:record.data.llbbox});
+								// Add bbox
+								if(record.data.bbox){
+									layer.bbox = record.data.bbox;
+								}
+								
+								//check if the config wants us to singleTile or not, but first we check if this property exists
+								var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
+								if(isSingleTile){
+									layer.singleTile = true;
+									layer.ratio = 1;
+								}
+								//check if the config wants us to transition or not, but first we check if this property exists
+								var transitionEffect = de.ingrid.mapclient.Configuration.getSettings("defaultTransitionEffect").trim();
+								if(transitionEffect && transitionEffect.length > 0) {
+									layer.transitionEffect = transitionEffect;
+								}
+								layer.visibility = false;
+								layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
+								layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
+															// the base layer is defined explicitly
+
+								layer.styles = record.get("styles");
+								self.fixLayerProperties(layer);
+
+								// add the layer to the layer lists
+								var layerId = de.ingrid.mapclient.frontend.data.Service.getLayerId(layer);
+								layers.add(layerId, layer);
 							}
-							//check if the config wants us to transition or not, but first we check if this property exists
-							var transitionEffect = de.ingrid.mapclient.Configuration.getSettings("defaultTransitionEffect").trim();
-							if(transitionEffect && transitionEffect.length > 0) {
-								layer.transitionEffect = transitionEffect;
+
+							// create the service instance from the result
+							var service;
+							if(format.name == "WMC"){
+								var temp = {
+									title:capabilities.title
+								}
+								service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, temp, layers, store);
+							}else{
+								service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, capabilities.service, layers, store);
 							}
-							layer.visibility = false;
-							layer.queryable = record.get("queryable"); // needed for GetFeatureInfo request
-							layer.isBaseLayer = false;	// WMS layers are base layers by default, but in this application
-														// the base layer is defined explicitly
-
-							layer.styles = record.get("styles");
-							self.fixLayerProperties(layer);
-
-							// add the layer to the layer lists
-							var layerId = de.ingrid.mapclient.frontend.data.Service.getLayerId(layer);
-							layers.add(layerId, layer);
-						}
-
-						// create the service instance from the result
-
-						if(format.name == "WMC"){
-						var temp = {
-							title:capabilities.title
+							// register the service
+							de.ingrid.mapclient.frontend.data.Service.registry.add(capabilitiesUrl, service);
+							// call the callback if given
+							if (callback instanceof Function) {
+								if(showFlash){
+									callback(service, showFlash, false, expandNode, zoomToExtent);
+								} else {
+									callback(service, false, false, expandNode, zoomToExtent);	
+								}
 							}
-						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, temp, layers, store);
-						}
-						else
-						var service = new de.ingrid.mapclient.frontend.data.Service(capabilitiesUrl, capabilities.service, layers, store);
-						// register the service
-						de.ingrid.mapclient.frontend.data.Service.registry.add(capabilitiesUrl, service);
-						// call the callback if given
-						if (callback instanceof Function) {
-							if(showFlash)
-								callback(service, showFlash, false, expandNode, zoomToExtent);
-							else
-								callback(service, false, false, expandNode, zoomToExtent);
+						} else {
+							de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 						}
 					} else {
 						de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
@@ -378,9 +394,11 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 				var data = new de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader().readRecords(response.responseText);
 				if (data.success) {
 					if(format.name == "WMC")
-					var store = new GeoExt.data.LayerStore();
+						var store = new GeoExt.data.LayerStore();
 					else
-					var store = new GeoExt.data.WMSCapabilitiesStore();
+						var store = Ext.create('GeoExt.data.WMSCapabilitiesStore', {
+							format: format
+						});
 					store.add(data.records);
 					// prepare layers from records
 					var records = store.getRange();

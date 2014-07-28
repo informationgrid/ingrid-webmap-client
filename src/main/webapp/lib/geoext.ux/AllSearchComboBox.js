@@ -15,8 +15,9 @@ Ext.namespace("GeoExt.form");
 /** api: constructor
 * .. class:: AllSearchComboBox(config)
 */
-GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
-    
+Ext.define('GeoExt.form.AllSearchComboBox', {
+    extend: 'Ext.form.ComboBox',
+    alias: 'gx_allsearchcombobox',
     /** api: config[emptyText]
 * ``String`` Text to display for an empty field (i18n).
 */
@@ -116,7 +117,7 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
         	entry = entry + 
         	'{' +
         	'"group":"bwastrlocator",' +
-        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorParams") + '",' +
+        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorParams").split("&").join("%26") + '",' +
         	'"queryPost": "true",' +
         	'"identifier":"searchterm",' +
         	'"displayPre":"'+ i18n("tSearchToolBWaStrLocator") + '"' +
@@ -129,7 +130,7 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
     		entry = entry + 
         	'{' +
         	'"group":"nominatim",' +
-        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams") + '",' +
+        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewNominatimParams").split("&").join("%26") + '",' +
         	'"queryPost": "false",' +
         	'"identifier":"q",' +
         	'"displayPre":"'+ i18n("tSearchToolNominatim") + '"' +
@@ -142,7 +143,7 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
     		entry = entry + 
         	'{' +
         	'"group":"portalsearch",' +
-        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchParams") + '",' +
+        	'"url":"'+ de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchParams").split("&").join("%26") + '",' +
         	'"queryPost": "false",' +
         	'"identifier":"searchTerm",' +
         	'"displayPre":"'+ i18n("tSearchToolPortalSearch") + '"' +
@@ -180,7 +181,7 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
                 ],
                 proxy: new Ext.data.ScriptTagProxy({
                     url: this.url + "&data=" + data,
-                    callbackParam: "json_callback"
+                    callbackKey: "json_callback"
                 })
             });
         }
@@ -346,6 +347,3 @@ GeoExt.form.AllSearchComboBox = Ext.extend(Ext.form.ComboBox, {
         GeoExt.form.AllSearchComboBox.superclass.beforeDestroy.apply(this, arguments);
     }
 });
-
-/** api: xtype = gx_allsearchcombobox */
-Ext.reg("gx_allsearchcombobox", GeoExt.form.AllSearchComboBox);
