@@ -55,7 +55,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.MetaDataDialog', {
 
 		// load the capabilities
 		var self = this;
-		de.ingrid.mapclient.frontend.data.Service.load(de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter(this.capabilitiesUrl), Ext.Function.bind(this.applyData, self, self));
+		de.ingrid.mapclient.frontend.data.Service.load(de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter(this.capabilitiesUrl), Ext.Function.createDelayed(this.applyData, self, self));
 		
 		Ext.apply(this, {
 			items: this.windowContent,

@@ -1011,11 +1011,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	displayMetaData: function(node) {
 		var self = this;
 		var layer = null;
-		if(node.attributes.layer){
-			layer = node.attributes.layer;
+		var isServiceRequest = true;
+		if(node.getData().layer){
+			layer = node.getData().layer;
+			isServiceRequest = false;
 		}
 
-		var service = node.attributes.service;
+		var service = layer ? node.parentNode.getData().container.service : node.getData().container.service;
 		if(service){
 			//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
 			if(!layer) {
