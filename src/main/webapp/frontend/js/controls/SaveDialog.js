@@ -56,38 +56,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SaveDialog', {
      */
     initComponent: function() {
 
-    	Ext.override(Ext.form.TextField, {
-        //  Add functionality to Field's initComponent to enable the change event to bubble
-    	// We dont want the map to move while in focus therefore we do this
-        initComponent : Ext.form.TextField.prototype.initComponent.createSequence(function() {
-            this.enableBubble(['focus','blur']);
-        }),
-
-        //  We know that we want Field's events to bubble directly to the FormPanel.
-        getBubbleTarget : function() {
-            if (!this.windowContent) {
-                this.windowContent = this.findParentByType('form');
-            }
-            return this.windowContent;
-        }
-    	});
-    	Ext.override(Ext.form.TextArea, {
-        //  Add functionality to Field's initComponent to enable the change event to bubble
-    	// We dont want the map to move while in focus therefore we do this
-        initComponent : Ext.form.TextArea.prototype.initComponent.createSequence(function() {
-            this.enableBubble(['focus','blur']);
-        }),
-
-        //  We know that we want Field's events to bubble directly to the FormPanel.
-        getBubbleTarget : function() {
-            if (!this.windowContent) {
-                this.windowContent = this.findParentByType('form');
-            }
-            return this.windowContent;
-        }
-    	});
-    	
-    	
     	this.titleField = new Ext.form.TextField({
     		id:"saveTitleDialog",
     		fieldLabel: i18n('tTitle'),

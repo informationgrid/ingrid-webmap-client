@@ -773,6 +773,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					id: 'loadDialog',
 					session : self.session
 				});
+				dlg.show();
 				self.ctrls.keyboardControl.deactivate();
 				dlg.on('close', function(p) {
 					if (dlg.isLoad()) {
@@ -795,6 +796,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					id: 'saveDialog', 
 					ctrls: self.ctrls}
 				);
+				dlg.show();
 				dlg.on('close', function(p) {
 					if (dlg.isSave()) {
 						self.save(false, dlg.getTitle(), dlg.getDescription());
@@ -813,6 +815,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					id: 'downloadDialog', 
 					ctrls: self.ctrls}
 				);
+				dia.show();
 				dia.on('close', function(p) {
 					if (dia.isSave()) {
 						self.download(dia.getTitle());
@@ -1229,16 +1232,16 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 		}
 		new Ext.Window({
-					title : title,
-					width : 120,
-					height : 60,
-					layout : 'fit',
-					items : {
-						border : false,
-						bodyStyle : 'padding: 5px',
-						html : content
-					}
-				}).show();
+			title : title,
+			width : 120,
+			height : 60,
+			layout : 'fit',
+			items : {
+				border : false,
+				bodyStyle : 'padding: 5px',
+				html : content
+			}
+		}).show();
 	},
 	/**
 	 * Method to be called, when any data changes that needs to be stored on the
@@ -1287,17 +1290,17 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// create the session state instance
 		var data = new de.ingrid.mapclient.frontend.data.SessionState({
-					title : title,
-					description : description,
-					map : this.map,
-					activeServices : this.activeServicesPanel.getServiceList(),
-					kmlArray : this.kmlArray,
-					kmlRedlining : this.kmlRedlining,
-					selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
-					url: window.location.href,
-					treeState: this.activeServicesPanel.treeState
-					
-				});
+			title : title,
+			description : description,
+			map : this.map,
+			activeServices : this.activeServicesPanel.getServiceList(),
+			kmlArray : this.kmlArray,
+			kmlRedlining : this.kmlRedlining,
+			selectedLayersByService: this.activeServicesPanel.selectedLayersByService,
+			url: window.location.href,
+			treeState: this.activeServicesPanel.treeState
+			
+		});
 		// TODO ktt: Session saving
 		//this.session.save(data, isTemporary, responseHandler);
 	},
@@ -1323,11 +1326,11 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// create the session state instance
 		var data = new de.ingrid.mapclient.frontend.data.SessionState({
-					title : title,
-					map : this.map,
-					activeServices : this.activeServicesPanel.getServiceList(),
-					kmlArray : this.kmlArray
-				});
+			title : title,
+			map : this.map,
+			activeServices : this.activeServicesPanel.getServiceList(),
+			kmlArray : this.kmlArray
+		});
 		this.session.download(data, responseHandler);
 	},
 	/**

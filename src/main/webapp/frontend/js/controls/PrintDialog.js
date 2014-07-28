@@ -99,8 +99,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 			},
 			labelWidth: 70,
 			defaults: {
-				width: 220
-			},
+    			anchor: '100%'
+    		},
 			border: false,
 			layoutText: i18n('tFormat'),
 			dpiText: "DPI",
