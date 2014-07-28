@@ -455,9 +455,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		}
 		
 		// Create Legend for Services
-		var legendDialog = new de.ingrid.mapclient.frontend.controls.LegendDialog({
-			activeServicesPanel: self
-		});
+		var legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {});
 		legendDialog.hide();
 		
 		Ext.apply(this, {
@@ -1380,17 +1378,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		var bounds=null;
 		
 		// check for WMS Layers
-		if (attributes.service) {
-			//layerUrl
-			var url = attributes.layer.url;
-			//get the layerId, but the right one! our layer id doesnt help, no bbox in this object
-			var layerId;
-			if (attributes.layer.params) {
-				layerId = attributes.service.layers.get(url+':'+attributes.layer.params.LAYERS)
-			} else {
-				layerId = attributes.service.layers.get(url+':'+attributes.layer.name)
-			}
-			var layer = attributes.service.capabilitiesStore.data.get(layerId.id);
+		if (layer instanceof OpenLayers.Layer.WMS) {
 			//check if our layers upport the map projection
 			bounds = this._getBoundingBoxFromLayer(layer, srs);
 		} else {

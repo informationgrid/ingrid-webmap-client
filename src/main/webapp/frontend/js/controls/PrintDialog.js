@@ -63,6 +63,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 					var printForm = self.createPrintForm();
 					self.add(printForm);
 					self.doLayout();
+					self.show();
 					self.setPagePosition(350,300);
 				},
 				"printexception": function(provider, response) {
@@ -98,7 +99,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 			},
 			labelWidth: 70,
 			defaults: {
-				width: 150
+				width: 220
 			},
 			border: false,
 			layoutText: i18n('tFormat'),
@@ -115,7 +116,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 			name: "mapTitle",
 			value: "", // don't send null values because printing will fail
 			fieldLabel: i18n('tTitle'),
-			plugins: new GeoExt.plugins.PrintPageField({
+			plugins: Ext.create('GeoExt.plugins.PrintPageField',{
 				printPage: printForm.printPage
 			})
 		});
@@ -124,7 +125,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 			name: "comment",
 			value: "", // don't send null values because printing will fail
 			fieldLabel: i18n('tKommentar'),
-			plugins: new GeoExt.plugins.PrintPageField({
+			plugins: Ext.create('GeoExt.plugins.PrintPageField',{
 				printPage: printForm.printPage
 			})
 		});

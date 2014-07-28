@@ -219,9 +219,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			handler: function(btn) {
 				var legendDialog = Ext.getCmp('legendDialog');
 				if(legendDialog == undefined){
-					legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {
-						layerStore: self.activeServicesPanel.getLayerStore()
-					});
+					legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {});
 				}
 				
 				if(legendDialog.isVisible()){

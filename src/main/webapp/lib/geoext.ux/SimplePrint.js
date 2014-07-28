@@ -29,8 +29,7 @@ Ext.namespace("GeoExt.ux");
  *  the form.
  */
 Ext.define('GeoExt.ux.SimplePrint', {
-	extend: 'Ext.form.FormPanel',
-    alias: 'widget.gxux_simpleprint',
+    extend: 'Ext.form.FormPanel',
     /* begin i18n */
     /** api: config[layoutText] ``String`` i18n */
     layoutText: "Layout",
@@ -128,13 +127,17 @@ Ext.define('GeoExt.ux.SimplePrint', {
         // the fbar as part of initComponent.
         this.fbar = this.fbar || [];
 
-        GeoExt.ux.SimplePrint.superclass.initComponent.call(this);
+        this.superclass.initComponent.call(this);
 
-        this.printPage = new GeoExt.data.PrintPage({
-            printProvider: this.initialConfig.printProvider
+        this.printPage = Ext.create('GeoExt.data.PrintPage', {
+            printProvider: this.initialConfig.printProvider,
+            customParams:{
+            	mapTitle: "",
+            	comment: ""
+            }
         });
         
-        this.printExtent = new GeoExt.plugins.PrintExtent({
+        this.printExtent = Ext.create('GeoExt.plugins.PrintExtent', {
             pages: [this.printPage],
             layer: this.initialConfig.layer
         });
@@ -195,9 +198,9 @@ Ext.define('GeoExt.ux.SimplePrint', {
             store: p.layouts,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintProviderField({
+            plugins: Ext.create('GeoExt.plugins.PrintProviderField', {
                 printProvider: p
             })
         }, cbOptions));
@@ -207,9 +210,9 @@ Ext.define('GeoExt.ux.SimplePrint', {
             store: p.dpis,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintProviderField({
+            plugins: Ext.create('GeoExt.plugins.PrintProviderField', {
                 printProvider: p
             })
         }, cbOptions));
@@ -219,9 +222,9 @@ Ext.define('GeoExt.ux.SimplePrint', {
             store: p.scales,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintPageField({
+            plugins: Ext.create('GeoExt.plugins.PrintPageField', {
                 printPage: this.printPage
             })
         }, cbOptions));
@@ -230,12 +233,13 @@ Ext.define('GeoExt.ux.SimplePrint', {
             fieldLabel: this.rotationText,
             name: "rotation",
             enableKeyEvents: true,
-            plugins: new GeoExt.plugins.PrintPageField({
+            plugins: Ext.create('GeoExt.plugins.PrintPageField', {
                 printPage: this.printPage
             })
         });
 
-        this.addButton({
+        this.add({
+        	xtype: "button",
             text: this.printText,
             handler: function() {
                 this.printExtent.print(this.printOptions);

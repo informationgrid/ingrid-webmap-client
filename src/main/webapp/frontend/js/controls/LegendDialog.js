@@ -29,7 +29,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LegendDialog', {
 	autoScroll:true,
 	constrain: true,
 	windowContent: null,
-	layerStore: null,
 	/**
 	 * Initialize the component (called by Ext)
 	 */
