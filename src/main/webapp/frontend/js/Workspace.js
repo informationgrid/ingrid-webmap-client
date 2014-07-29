@@ -1746,8 +1746,12 @@ GeoExt.WMSLegend.prototype.getLegendUrl = function(layerName, layerNames) {
     OpenLayers.Layer.prototype.setVisibility = function(visibility){
     	
 	    // check for NON WMS layers first (KML Layer)
-	    if (this.params && this.params['LAYERS'].indexOf('INGRID-') != -1) {
-			visibility = false;
+	    if (this.params) {
+	    	if(this.params['LAYERS']){
+	    		if(this.params['LAYERS'].indexOf('INGRID-') != -1){
+		    		visibility = false;
+		    	}
+	    	}
 	    }
 	
         if (visibility != this.visibility) {
