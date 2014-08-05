@@ -49,7 +49,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchCategoryPanel', {
 			})]
 		});
 		
-		self.tree = new Ext.tree.TreePanel({
+		self.tree = Ext.create('Ext.tree.Panel', {
 			viewType: 'gx_custom_treeview',
 			title: i18n('tSuchergebnisse'),
 	        rootVisible: false,
@@ -59,41 +59,42 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchCategoryPanel', {
 		        expanded: true
 			},
 			plugins:[hoverActions],
-			buttonSpanElStyle:'width:8px;',
-			bodyCssClass: 'smaller-leaf-padding',
-		    onlyServices: true,
+			buttonSpanElStyle:'width:15px;',
+			allowNodeOver: true,
+			onlyServices: true,
 			useArrows:true,
 		    lines: false,
 		    frame : false,
 		    cls: 'x-tree-noicon',
 			autoScroll: true,
 			listeners: {
-		        click: function(node,e) {
-		        	if(node.hasChildNodes()){
-		        		if(node.isExpanded()){
-		        			node.collapse();
-		        		}else{
-		        			node.expand();
-		        		}
-		        	}else{
-		        		if(node){
-		        			if(node.attributes){
-		        				if(node.attributes.service){
-		        					if(node.attributes.cls.indexOf("x-tree-node-disabled") == -1){
-			        					var service = node.attributes.service;
-			        					node.setCls("x-tree-node-disabled");
-			        	        		self.activateService(service);
-			        	           		self.activeServicesPanel.expand();
-		        					}
-		        				}
-		        			}
-		        		}
-		        	}
+		        click: function(service) {
+		        	var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
+		        	var exist = false;
+			        for(var j=0; j<activeServices.length; j++){
+			    		var activeService = activeServices[j];
+			    		if(activeService.raw.service && service){
+			    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+			        		var searchServiceCap = service.capabilitiesUrl;
+			        		if(activeServiceCap && searchServiceCap){
+			        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
+			        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
+			        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+			        				exist = true;
+			            			break;
+			            		}
+			        		}
+			    		}
+			    	}
+			        if(!exist){
+			        	self.activateService(service);
+		           		self.activeServicesPanel.expand();
+			        }
 		        }
 		    }
 		});
 		
-		self.tree.root.on("expand", function(){
+		self.tree.store.tree.root.on("expand", function(){
 			self.reloadTreeUI();
 		});
 		
@@ -105,22 +106,21 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchCategoryPanel', {
 	},
 	reloadTreeUI: function(){
 		var self = this;
-		var childNodes = self.tree.root.childNodes;
+		var childNodes = self.tree.store.tree.root.childNodes;
 	    for(var i=0; i<childNodes.length; i++){
 			var childNode = childNodes[i];
-			childNode.getUI().removeClass("x-tree-node-disabled");
-			childNode.setCls("x-tree-node-add");
-			var activeServices = Ext.getCmp("activeServices").layerTree.root.childNodes;
+			childNode.set("cls", "x-tree-node-add");
+			var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
 	        for(var j=0; j<activeServices.length; j++){
 	    		var activeService = activeServices[j];
-	    		if(activeService.attributes.service && childNode.attributes.service){
-	    			var activeServiceCap = activeService.attributes.service.capabilitiesUrl;
-	        		var searchServiceCap = childNode.attributes.service.capabilitiesUrl;
+	    		if(activeService.raw.service && childNode.raw.service){
+	    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+	        		var searchServiceCap = childNode.raw.service.capabilitiesUrl;
 	        		if(activeServiceCap && searchServiceCap){
 	        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
 	        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
 	        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
-	            			childNode.setCls("x-tree-node-disabled");
+	            			childNode.set("cls", "x-tree-node-disabled");
 	            			break;
 	            		}
 	        		}
@@ -195,7 +195,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchCategoryPanel', {
 					self.metadataWindowStartX = self.metadataWindowStartX + 50;
 				}
 				self.metadataWindowsCount = self.metadataWindowsCount + 1;
-				var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				var metadataWindow = Ext.create('de.ingrid.mapclient.frontend.controls.MetaDataDialog', {
 					id: node.id + "-metadata",
 					capabilitiesUrl: service.getCapabilitiesUrl(),
 					layerName: node.layer,

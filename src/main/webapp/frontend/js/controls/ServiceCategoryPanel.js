@@ -37,7 +37,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 		var self = this;
 		
 		this.on("expand", function(){
-			var childNodesCategories = self.tree.root.childNodes;
+			var childNodesCategories = self.tree.store.tree.root.childNodes;
 			for(var h=0; h<childNodesCategories.length; h++){
 				var childNodesCategory = childNodesCategories[h];
 				var childNodes = childNodesCategory.childNodes;
@@ -60,7 +60,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 			})]
 		});
 
-		self.tree = Ext.create ('GeoExt.tree.Panel', {
+		self.tree = Ext.create('Ext.tree.Panel', {
 			viewType: 'gx_custom_treeview',
 			rootVisible: false,
 			root: {
@@ -79,10 +79,36 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 		    autoScroll: true,
 		    listeners: {
 		        click: function(service) {
-		        		self.activateService(service);
-		        	    self.activeServicesPanel.expand();
+		        	var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
+		        	var exist = false;
+			        for(var j=0; j<activeServices.length; j++){
+			    		var activeService = activeServices[j];
+			    		if(activeService.raw.service && service){
+			    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+			        		var searchServiceCap = service.capabilitiesUrl;
+			        		if(activeServiceCap && searchServiceCap){
+			        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
+			        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
+			        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+			        				exist = true;
+			            			break;
+			            		}
+			        		}
+			    		}
+			    	}
+			        if(!exist){
+			        	self.activateService(service);
+		           		self.activeServicesPanel.expand();
+			        }
 		        }
 		    }
+		});
+		
+		self.tree.store.on({
+			expand: function(node) {
+				var childNodes = node.childNodes;
+		        self.reloadTreeUI(childNodes);
+			}
 		});
 		
 		Ext.apply(this, {
@@ -161,32 +187,25 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 			children: children,
 			leaf: children.length == 0 ? true : false,
 			expanded: false,
-			expandable: true,
-			listeners: {
-			    expand: function(node, event){
-			        var childNodes = node.childNodes;
-			        self.reloadTreeUI(childNodes);
-			    }
-			}
+			expandable: true
 		};
 		return node;
 	},
 	reloadTreeUI: function (childNodes){
 		for(var i=0; i<childNodes.length; i++){
 			var childNode = childNodes[i];
-			childNode.getUI().removeClass("x-tree-node-disabled");
-			childNode.setCls("x-tree-node-add");
-			var activeServices = Ext.getCmp("activeServices").layerTree.root.childNodes;
+			childNode.set("cls", "");
+			var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
 		    for(var j=0; j<activeServices.length; j++){
 				var activeService = activeServices[j];
-				if(activeService.attributes.service && childNode.attributes.service){
-					var activeServiceCap = activeService.attributes.service.capabilitiesUrl;
-	        		var searchServiceCap = childNode.attributes.service.capabilitiesUrl;
+				if(activeService.raw.service && childNode.raw.service){
+					var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+	        		var searchServiceCap = childNode.raw.service.capabilitiesUrl;
 	        		if(activeServiceCap && searchServiceCap){
 	        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
 	        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
 	        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
-	        				childNode.setCls("x-tree-node-disabled");
+	        				childNode.set("cls", "x-tree-node-disabled");
 	        				break;
 	        			}
 					}
@@ -225,7 +244,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 					self.metadataWindowStartX = self.metadataWindowStartX + 50;
 				}
 				self.metadataWindowsCount = self.metadataWindowsCount + 1;
-				var metadataWindow = new de.ingrid.mapclient.frontend.controls.MetaDataDialog({
+				var metadataWindow = Ext.create('de.ingrid.mapclient.frontend.controls.MetaDataDialog', {
 					id: node.id + "-metadata",
 					capabilitiesUrl: service.getCapabilitiesUrl(),
 					layerName: node.layer,

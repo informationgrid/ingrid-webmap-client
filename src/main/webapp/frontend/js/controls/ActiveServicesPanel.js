@@ -93,7 +93,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 						// Remove tree state
 						for(var i = 0; i < self.treeState.length; i++){
 							var state = self.treeState[i];
-							if(state.capabilitiesUrl  == node.attributes.service.capabilitiesUrl ){
+							if(state.capabilitiesUrl  == node.raw.service.capabilitiesUrl ){
 								self.treeState.remove(state);
 							}
 						}
@@ -102,7 +102,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					// Remove selected Layers
 					for(var i = 0; i < self.selectedLayersByService.length; i++){
 						var layer = self.selectedLayersByService[i];
-						if(layer.capabilitiesUrl == node.attributes.service.capabilitiesUrl){
+						if(layer.capabilitiesUrl == node.raw.service.capabilitiesUrl){
 							self.selectedLayersByService.remove(layer);
 							i--;
 						}
@@ -110,9 +110,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					
 					if(service != undefined){
 						self.removeService(service, null, node);
-					}else if (node.layer != undefined){
+					}else if (node.get("layer") != undefined){
 						// Remove "Zeige Punktkoordinaten" layers
-						if (node.layer.id != undefined){
+						if (node.get("layer").id != undefined){
 							self.removePointCoordinatesLayer(node);
 						}
 					}else{
@@ -146,7 +146,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				var minScale = null;
 				var node = self.layerTree.selModel.getSelection()[0];
 				if (node) {
-					var layer = node.getData().layer;
+					var layer = node.get("layer");
 					if(layer){
 						bounds = self.bboxOfLayerExtent(layer)
 						// every layer has a minScale, even if not found in getCapabilities-Document
@@ -184,20 +184,21 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			tooltip: i18n('tGruppenLayerAnzeigen'),
 			handler: function() {
 				var node = self.activeNode;
-				if(node.attributes.cls != "x-tree-node-select"){
-					if (node.attributes.cls != "x-tree-node-disabled" && node.attributes.cls != "x-tree-node-select-disabled") {
-						var layer = node.layer;
+				if(node.getData().cls != "x-tree-node-select"){
+					if (node.getData().cls != "x-tree-node-disabled" && node.getData().cls != "x-tree-node-select-disabled") {
+						var layer = node.get("layer");
 						var isParentsSelect = self.isParentsSelect(node);
 						if(isParentsSelect){
 							layer.setVisibility(true);
 						}
-						node.setCls('x-tree-node-select');
-						node.getUI().toggleCheck(true);
+						node.set('cls', 'x-tree-node-select');
+						node.set('checked', true);
+						
 					}
 				}else{
-					var layer = node.layer;
+					var layer = node.get("layer");
 					layer.setVisibility(false);
-					node.setCls('x-tree-node-anchor');
+					node.set('cls', '');
 				}
 			},
 			cls: 'font-menu'
@@ -288,14 +289,16 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		        tooltip: i18n('tOptionen'),
 		        disabled: true,
 		        handler: function(record,e) {
+		        	self.activeNode = record;
+		        	
 		        	if(self.menuNodeId == record.id){
 		        		self.menuNodeId = "";
 		        	}else{
 		        		self.menuNodeId = record.id;
-		        		if(record.raw.layer){
+		        		if(record.get("layer")){
 			        		var layerMenuSlider;
 			        		// Layer menu
-			        		if(record.raw.layer.options.nestedLayers.length == 0){
+			        		if(record.get("layer").options.nestedLayers.length == 0){
 			        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
 			        			self.menuLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
 			        		}else{
@@ -304,10 +307,10 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			        		}
 		    				
 		    				// Update slider
-		    				layerMenuSlider.setLayer(record.raw.layer);
+		    				layerMenuSlider.setLayer(record.get("layer"));
 		    				var opacity = 1;
-		    				if(record.raw.layer.opacity){
-		    					opacity = record.raw.layer.opacity;
+		    				if(record.get("layer").opacity){
+		    					opacity = record.get("layer").opacity;
 		    				}
 		    				layerMenuSlider.setValue(0, opacity * 100);
 			        	}else{
@@ -322,7 +325,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		
 		// create the layer store
 		this.layerStore = Ext.create('GeoExt.data.LayerStore', {
-			map: this.map
+			map: this.map,
+			initDir: GeoExt.data.LayerStore.MAP_TO_STORE
 		});
 		
 		this.treeStore = Ext.create('Ext.data.TreeStore', {
@@ -335,7 +339,62 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	                  store: self.layerStore
 	              }*/],
 	              children: []
-	          }
+	          },
+	          listeners: {
+			        collapse: function(node){
+			        	// Save tree state by collapse node
+			        	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+							if(node.isRoot == undefined || node.isRoot == false ){
+								var name = node.get("text");
+								var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+								var isService = node.get("layer") ? false : true;
+								var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
+								
+								for(var i = 0; i < self.treeState.length; i++){
+									var state = self.treeState[i];
+									if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+										self.treeState.remove(state);
+									}
+								}
+								
+								if(node.hasChildNodes()){
+									self.removeCollapseChildNodeEntry(node);
+								}
+								self.fireEvent('datachanged');
+							}
+			        	}
+					},
+					expand: function(node){
+						// Save tree state by expand node
+			        	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+							if(node.isRoot() == undefined || node.isRoot() == false ){
+								var name = node.get("text");
+								var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+								var isService = node.get("layer") ? "false" : "true";
+								var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
+								
+								var exist = false;
+								
+								for (var j = 0, count = self.treeState.length; j < count; j++) {
+									var state = self.treeState[j];
+									if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+										exist = true;
+										break;
+									}
+								}
+								if(exist == false){
+									self.treeState.push({
+										name:name,
+										capabilitiesUrl:capabilitiesUrl, 
+										isService: isService, 
+										layer: layer
+									});
+									self.fireEvent('datachanged');
+								}
+							}
+						}
+					}
+	          	}
 	      });
 		 
 		// the layer tree
@@ -353,107 +412,43 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			plugins:[hoverActions],
 			buttonSpanElStyle:'width:12px;',
 			listeners: {
-		        click: function(node,e) {
-		        	if(node.hasChildNodes()){
-		        		if(node.isExpanded()){
-		        			node.collapse();
-		        		}else{
-		        			node.expand();
-		        		}
-		        	}
-		        }
-		    }
-		});
-
-		if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
-			this.layerTree.on('beforeappend', function(tree, parent, node){
-				if(node.attributes.layer){
-					var id = node.attributes.layer.params.LAYERS;
-					var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-					
-					for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
-					    var selectedLayer = self.selectedLayersByService[j];
-						if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-							node.attributes.checked=true;
-							if(selectedLayer.cls){
-								node.setCls(selectedLayer.cls);
-							}
-						}
-					}
-					// check if node add by url layer and select parent node
-					if(self.layersByURLService){
-						for (var i = 0, count = self.layersByURLService.length; i < count; i++) {
-							var urlLayer = self.layersByURLService[i];
-							var urlLayerId = urlLayer.params.LAYERS;
-							if(urlLayer.visibility){
-								if(id == urlLayerId){
-									if(parent.attributes.checked != true){
-										parent.getUI().toggleCheck(true);
-										parent.attributes.layer.setVisibility(false);
+				checkchange: function(node, index, ev){
+					if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
+						if(node.get("layer")){
+							var id = node.get("layer").params.LAYERS;
+							var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+							
+							for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
+							    var selectedLayer = self.selectedLayersByService[j];
+								if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+									node.attributes.checked=true;
+									if(selectedLayer.cls){
+										node.setCls(selectedLayer.cls);
 									}
-									break;
+								}
+							}
+							// check if node add by url layer and select parent node
+							if(self.layersByURLService){
+								for (var i = 0, count = self.layersByURLService.length; i < count; i++) {
+									var urlLayer = self.layersByURLService[i];
+									var urlLayerId = urlLayer.params.LAYERS;
+									if(urlLayer.visibility){
+										if(id == urlLayerId){
+											if(parent.attributes.checked != true){
+												parent.getUI().toggleCheck(true);
+												parent.attributes.layer.setVisibility(false);
+											}
+											break;
+										}
+									}
 								}
 							}
 						}
 					}
 				}
-			});
-		}
-		
-		if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
-			this.layerTree.on('beforeexpandnode', function(node){
-				if(node.isRoot == undefined || node.isRoot == false ){
-					var name = node.text;
-					var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-					var isService = node.layer ? "false" : "true";
-					var layer = node.layer ? node.layer.params.LAYERS : "";
-					
-					var exist = false;
-					
-					for (var j = 0, count = self.treeState.length; j < count; j++) {
-						var state = self.treeState[j];
-						if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-							exist = true;
-							break;
-						}
-					}
-					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand") == false){
-						self.checkScaleRecursively(node, self.map.getScale());
-					}
-					if(exist == false){
-						self.treeState.push({
-							name:name,
-							capabilitiesUrl:capabilitiesUrl, 
-							isService: isService, 
-							layer: layer
-						});
-						self.fireEvent('datachanged');
-					}
-				}
-			});
-			
-			this.layerTree.on('beforecollapsenode', function(node){
-				if(node.isRoot == undefined || node.isRoot == false ){
-					var name = node.text;
-					var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-					var isService = node.layer ? false : true;
-					var layer = node.layer ? node.layer.params.LAYERS : "";
-					
-					for(var i = 0; i < self.treeState.length; i++){
-						var state = self.treeState[i];
-						if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-							self.treeState.remove(state);
-						}
-					}
-					
-					if(node.hasChildNodes()){
-						self.removeCollapseChildNodeEntry(node);
-					}
-					self.fireEvent('datachanged');
-				}
-			});
-		}
-		
+		    }
+		});
+
 		// Create Legend for Services
 		var legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {});
 		legendDialog.hide();
@@ -604,6 +599,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				service: service,
 				loader: Ext.create('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 					service: service,
+					initialAdd: initialAdd,
 					store: service.capabilitiesStore,
 					filter: function(record) {
 						var layer = record.getLayer();
@@ -613,60 +609,22 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				})
 			});
 
-			/*
-			//on checkchange(we check the service) we expand the nodes of the service and check all layers
-			node.on('checkchange', function(node, checked) {
-				this.expand(true);
-				var checkedOnce = false;
-				node.eachChild(function(n) {
-			    	// check everything but the first layer, which is our baselayer
-			    	if(!checkedOnce && de.ingrid.mapclient.Configuration.getValue('layers')[0].name == n.text ){
-			    		checkedOnce = true;
-						// we dont check/uncheck our base layer but we have to pass the checked command to its child nodes
-			    		if(n.hasChildNodes){
-			    			n.eachChild(function(n){
-			    			n.getUI().toggleCheck(checked);
-			    			});
-			    		}
-			    	} else {
-			    		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
-			    			n.getUI().toggleCheck(checked);
-			    		}
-			    	}
-			    });
-			});
-			
-			if(de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop")){
-				node.on('move', function(tree, thisNode, oldParent, newParent, index, nextNode) {
-					if (oldParent == newParent) {
-						var serviceNodes = tree.root.childNodes;
-						var layers = [];
-						for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
-						 	var serviceNode = serviceNodes[i];
-						 	self.getLayersFromTree(serviceNode, layers);
-						}
-					
-						if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
-							for (var j = 0, count = layers.length; j < count; j++) {
-								var layer = layers[j];
-								self.map.raiseLayer(layer, layers.length);
-							}
-						}else{
-							for (var j = layers.length - 1; j >= 0; j--) {
-								var layer = layers[j];
-								self.map.raiseLayer(layer, layers.length);
-							}
-						}
-	             	}
-				});
-			}
-			*/
-			
-			this.treeStore.tree.root.appendChild({
+			var appendChild = {
 				text: serviceTitle,
-                plugins: [node]
-			});
-
+				leaf: false,
+				service: service,
+				plugins: [node],
+				listeners:{
+					append: function(){
+						console.log("append");
+					},
+					insert: function(){
+						console.log("insert");
+					}
+				}
+			};
+			this.treeStore.tree.root.appendChild(appendChild);
+			
 			this.services.add(service.getCapabilitiesUrl(), service);
 			//if we are not in an initial state, then we fire the event which causes session write
 			//and we zoom to extent, otherwise we load from session, therefore no writing needed and
@@ -674,7 +632,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			if(!initialAdd){
 				this.fireEvent('datachanged');
 			}
-
 
 			bounds = self.bboxOfServiceExtent(service, supportsSRS);
 			// do we get some data?
@@ -746,7 +703,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				var rootChildNodes = this.layerTree.root.childNodes;
 				for (var i = 0; i < rootChildNodes.length; i++) {
 					var rootChildNode = rootChildNodes[i];
-					if(rootChildNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl){
+					if(rootChildNode.raw.service.capabilitiesUrl == service.capabilitiesUrl){
 						for (var j = 0; j < checkedLayers.length; j++) {
 							var checkedLayer = checkedLayers[j];
 							this.checkNode(checkedLayer, rootChildNode);
@@ -755,26 +712,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				}
 			}
 			
-			// Select layer by checkedLayers only on add service.
-			// After mapclient reload load don't select layers by checkedLayers
-			if(!initialAdd){
-				//we check the services which are meant to be checked by default
-				var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-				for(var i = 0; i < wmsServices.length; i++){
-					if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-						var cl = wmsServices[i].checkedLayers;
-						if(cl){
-							for(var j = 0; j < cl.length; j++){
-								var k = 0;
-								// Set boolean to note checkedLayers selection (single selection)
-								self.isCheckedByCheckedLayers = true;
-								self.checkRecursively(cl[j],node);
-							}
-						}
-						break;
-					}
-				}
-			}
 			/*
 			if(expandNode){
 				node.expand();
@@ -836,26 +773,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				this.checkNode(layerName, node);
 			}
 		}
-	},
-	/**
-	 * check layer nodes recursively, since we implemented tree view in the panel
-	 * this method checks wether our childnodes need to be checked and since we
-	 * have a tree it is done recursively now
-	 * @param {} layerName
-	 * @param {} node
-	 */
-	checkRecursively: function(layerName, node){
-		var self = this;
-		node.expand();
-		node.eachChild(function(n) {
-			if (layerName == n.layer.params.LAYERS)
-				n.getUI().toggleCheck(true);
-			if (n.hasChildNodes) {
-				n.expand();
-				self.checkRecursively(layerName, n);
-			}
-		});
-				        
 	},
 	checkLayerByParameter: function(parameter, layers){
 		var self = this;
@@ -925,7 +842,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		var layerNodes = node.childNodes;
 		for (var i = 0, countI = layerNodes.length; i < countI; i++) {
 			var layerNode = layerNodes[i];
-			var layer = layerNode.layer;
+			var layer = layerNode.get("layer");
 			if(layer){
 				layers.push(layer);
 			}
@@ -982,7 +899,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			var childNodes = self.layerTree.getRootNode().childNodes;
 			for (var i=0; i<childNodes.length; i++) {
 				childNode = childNodes[i];
-				if (childNode.attributes.service && childNode.attributes.service.capabilitiesUrl == service.capabilitiesUrl) {
+				var nodeService = childNode.raw.service;
+				if (nodeService && nodeService.capabilitiesUrl == service.capabilitiesUrl) {
 					self.removeService(service, supressMsgs, childNode);
 				}
 			}
@@ -997,8 +915,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		var serviceNodes = this.layerTree.getRootNode().childNodes;
 		for (var i=0, count=serviceNodes.length; i<count; i++) {
 			var serviceNode = serviceNodes[i];
-			// TODO: Check services
-			//services.push(serviceNode.attributes.service);
+			services.push(serviceNode.raw.service);
 		}
 		return services;
 	},
@@ -1010,12 +927,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		var self = this;
 		var layer = null;
 		var isServiceRequest = true;
-		if(node.getData().layer){
-			layer = node.getData().layer;
+		if(node.get("layer")){
+			layer = node.get("layer");
 			isServiceRequest = false;
 		}
 
-		var service = layer ? node.parentNode.getData().container.service : node.getData().container.service;
+		var service = node.raw.service;
 		if(service){
 			//if we get a layer then this should be a LayerNode, otherwise we get a LayerContainer object
 			if(!layer) {
@@ -1196,7 +1113,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		}
 	},
 	removePointCoordinatesLayer: function(activeNode) {
-		var layerId = activeNode.layer.id;
+		var layerId = activeNode.get("layer").id;
 		var parentNode = activeNode.parentNode;
 
 		// Remove layer from map
@@ -1259,8 +1176,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 
 		// Remove from session
 		if(this.kmlArray){
-			var title = activeNode.layer.name;
-			var url = activeNode.layer.url;
+			var title = activeNode.get("layer").name;
+			var url = activeNode.get("layer").url;
 			for (var i=0, count10=this.kmlArray.length; i<count10; i++) {
 				var kml = this.kmlArray[i];
 				if(title == kml.title && url == kml.url){
@@ -1451,9 +1368,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				for (var i = 0, count = this.treeState.length; i < count; i++) {
 					var state = this.treeState[i];
 					var name = node.text;
-					var capabilitiesUrl = node.attributes.service.capabilitiesUrl;
-					var isService = node.layer ? "false" : "true";
-					var layer = node.layer ? node.layer.params.LAYERS : "";
+					var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+					var isService = node.get("layer") ? "false" : "true";
+					var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
 					
 					if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
 						node.expand();
@@ -1484,8 +1401,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			var childNode = node.childNodes[i];
 			var name = childNode.text;
 			var capabilitiesUrl = childNode.attributes.service.capabilitiesUrl;
-			var isService = childNode.layer ? "false" : "true";
-			var layer = childNode.layer ? childNode.layer.params.LAYERS : "";
+			var isService = childNode.get("layer") ? "false" : "true";
+			var layer = childNode.get("layer") ? childNode.get("layer").params.LAYERS : "";
 			
 			for(var j = 0; j < self.treeState.length; j++){
 				var state = self.treeState[j];
@@ -1512,60 +1429,34 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			node.expand();
 		}
 		node.eachChild(function(n) {
-	    	var layer = n.layer;
+	    	var layer = n.get("layer");
 	    	if(layer){
-	    		if(layer.maxScale > scale || layer.minScale < scale){
-	    			//if we disable, they are not selectable anymore
-	    			//this style class is set on disable, but doesnt reeally disable
-	    			//n.disable();
-	    			n.setCls('x-tree-node-disabled');
-	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-		    			if(n.layer.visibility && !n.leaf){
-		    				n.setCls('x-tree-node-select-disabled');
+	    		if(layer.inRange != undefined){
+	    			if(layer.inRange == false){
+		    			n.set('cls', 'x-tree-node-disabled');
+		    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+			    			if(layer.visibility && !n.get("leaf")){
+			    				n.set('cls', 'x-tree-node-select-disabled');
+			    			}
 		    			}
-	    			}
-	    		}
-	        	else{
-	        		n.enable();
-	        		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-	        			if(n.attributes.cls != "x-tree-node-select")
-		        			n.setCls('x-tree-node-anchor');
-		        		if((n.layer.visibility && !n.leaf) || n.attributes.cls == "x-tree-node-select-disabled"){
-		        			n.setCls('x-tree-node-select');
+		    		}
+		        	else{
+		        		n.set('cls', '');
+		    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+		        			if(n.get("cls") != "x-tree-node-select")
+			        			n.set('cls', 'x-tree-node-anchor');
+			        		if((layer.visibility && !n.leaf) || n.get("cls") == "x-tree-node-select-disabled"){
+			        			n.set('cls', 'x-tree-node-select');
+			        		}
 		        		}
-	        		}
-	        	}
+		        	}
+	    		}
 	    	}
 	        if(n.hasChildNodes){
 	        	self.checkScaleRecursively(n, scale);
 	        }
-	        
 	        self.expandNode(n, true);
     	});
-    	if(node instanceof GeoExt.tree.LayerNode){
-    		var layer = node.layer;
-    		if(layer){
-	    		if(layer.maxScale > scale || layer.minScale < scale){
-//	    			node.disable();
-	    			node.setCls('x-tree-node-disabled');
-	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-	    				if(node.layer.visibility && !node.leaf){
-	    					node.setCls('x-tree-node-select-disabled');
-	    				}
-	    			}
-	    		}else{
-	    			node.enable();
-	    			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
-		    			if(node.attributes.cls != "x-tree-node-select"){
-		    				node.setCls('x-tree-node-anchor');
-		    			}
-		    			if((node.layer.visibility && !node.leaf) || node.attributes.cls == "x-tree-node-select-disabled"){
-		    				node.setCls('x-tree-node-select');
-		        		}
-	    			}
-	    		}
-    		}
-    	}
 	},
 	/**
 	 * destroy layers by hand so that they dont keep loading when removed
@@ -1587,7 +1478,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	isParentsSelect: function(node) {
 		var parentNode = node.parentNode;
 		var isChecked = true;
-		if(parentNode.layer){
+		if(parentNode.get("layer")){
 	    	if(parentNode.attributes.checked){
 	    		isChecked = this.isParentsSelect(parentNode);
 	    	}else{
@@ -1602,7 +1493,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			var childNode = childNodes[i];
 			var isParentSelectChildNode = this.isParentsSelect(childNode);
 			if(childNode.attributes.checked){
-				var layer = childNode.layer;
+				var layer = childNode.get("layer");
 				if(layer){
 					if(select){
 						if(((layer.getVisibility() == false) && (childNode.leaf == true) && isParentSelectChildNode) == true){
@@ -1633,59 +1524,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		}else{
 			if(node.childNodes.length != 0){
 			}
-		}
-	}
-});
-
-Ext.override('GeoExt.tree.LayerNode', {
-	onCheckChange : function(node, checked){
-		if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
-			var isParentsSelect = this.prototype.isParentsSelect(node);
-			if(isParentsSelect){
-				if(checked != this.layer.getVisibility()) {
-	                this._visibilityChanging = true;
-	                var layer = this.layer;
-	                if(checked && layer.isBaseLayer && layer.map) {
-	                    layer.map.setBaseLayer(layer);
-	                } else {
-	                   	if(checked && this.childNodes.length > 0){
-	                   		 layer.setVisibility(false);
-	                   	}else{
-	                   		 if(isParentsSelect){
-	                   			 layer.setVisibility(checked);
-	                   		 }else{
-	                   			 layer.setVisibility(false);
-	                   		 }
-	                   	}
-	                }
-	                if(layer.isBaseLayer){
-	                	layer.setVisibility(true);
-	                }
-	                delete this._visibilityChanging;
-				}
-				if(checked == false){
-					if(node.attributes.cls != "x-tree-node-disabled"){
-						node.setCls('x-tree-node-anchor');
-					}
-	            }
-	            
-	           	if(checked){
-	           		this.prototype.checkboxSelection(node, true, isParentsSelect);
-	           	}else{
-	           		this.prototype.checkboxSelection(node, false, isParentsSelect);
-	           	}
-			}
-		}else{
-			if(checked != this.layer.getVisibility()) {
-	            this._visibilityChanging = true;
-	            var layer = this.layer;
-	            if(checked && layer.isBaseLayer && layer.map) {
-	                layer.map.setBaseLayer(layer);
-	            } else {
-	                layer.setVisibility(checked);
-	            }
-	            delete this._visibilityChanging;
-	        }
 		}
 	}
 });

@@ -87,10 +87,13 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			fractionalZoom : true,
 			projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 			displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
-			controls : [navigationControl,
+			controls : [
+			    navigationControl,
 				new OpenLayers.Control.PanZoomBar(),
 				new OpenLayers.Control.ScaleLine(),
-				new OpenLayers.Control.MousePosition()],
+				new OpenLayers.Control.MousePosition(),
+				new OpenLayers.Control.LayerSwitcher()
+			],
 			setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
 		        de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
 				//on each setcenter method(fired when zoomed), we check if our layers are in the right
@@ -122,7 +125,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		var mapServiceCategories = de.ingrid.mapclient.Configuration.getValue("mapServiceCategories");
 		if (mapServiceCategories) {
 			for (var i = 0, count = mapServiceCategories.length; i < count; i++) {
-				var panel = new de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel({
+				var panel = Ext.create('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 					id : "serviceCategory_" + mapServiceCategories[i].name,
 					mapServiceCategory : mapServiceCategories[i],
 					activeServicesPanel : this.activeServicesPanel,
@@ -133,13 +136,13 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		}
 
 		// Externen Dienst hinzufügen
-		var externServicePanel = new de.ingrid.mapclient.frontend.controls.NewServicePanel({});
+		var externServicePanel = Ext.create('de.ingrid.mapclient.frontend.controls.NewServicePanel', {});
 		accordionItems.push(externServicePanel);
 		
 		// search panel
 		
 		if(de.ingrid.mapclient.Configuration.getSettings("viewPortalSearchEnable") == false){
-			var searchPanel = new de.ingrid.mapclient.frontend.controls.SearchPanel();
+			var searchPanel = Ext.create('de.ingrid.mapclient.frontend.controls.SearchPanel', {});
 			accordionItems.push(searchPanel);
 		}
 		
@@ -152,7 +155,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		}
 
 		// create the panel for the west region
-		var westPanel = new Ext.Panel({
+		var westPanel = Ext.create('Ext.panel.Panel', {
 			id : 'west',
 			region : 'west',
 			width : 250,
@@ -250,7 +253,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			scope : featureInfoControl
 		});
 
-		var positionControl = new de.ingrid.mapclient.frontend.controls.PositionDialog({
+		var positionControl = Ext.create('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 			id: 'positionControl',
 			map : this.map,
 			y: de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && this.viewConfig != "default"						
@@ -597,7 +600,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			searchToolStoreData.push(['portalsearch', i18n('tSearchToolPortalSearch')]);
 		}
 		
-		var searchToolStore = new Ext.data.ArrayStore({
+		var searchToolStore = Ext.create('Ext.data.ArrayStore', {
 	        fields: ['searchToolValue', 'searchToolName'],
 	        data : searchToolStoreData
 	    });
@@ -606,7 +609,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 				|| de.ingrid.mapclient.Configuration.getSettings("viewNominatimEnable")
 				|| de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
 			
-			var combo = new Ext.form.ComboBox({
+			var combo = Ext.create('Ext.form.ComboBox', {
 		    	id:'searchTool',
 				store: searchToolStore,
 				valueField: 'searchToolValue',
@@ -740,7 +743,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		        if(!printActive){
 					printDia = Ext.create('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 								mapPanel : mapPanel,
-								legendPanel : new GeoExt.LegendPanel({
+								legendPanel : Ext.create('GeoExt.panel.Legend', {
 									layerStore : self.activeServicesPanel.getLayerStore(),
 									autoScroll : true,
 									border : false,
@@ -900,21 +903,21 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			// show only if cookies do not prevent this
 			var showWelcomeDialog = Ext.util.Cookies.get("ingrid.webmap.client.welcome.dialog.hide") !== "true";
 			if (showWelcomeDialog) {
-		        var welcomeDialog = new de.ingrid.mapclient.frontend.controls.WelcomeDialog({
+		        var welcomeDialog = Ext.create('de.ingrid.mapclient.frontend.controls.WelcomeDialog', {
 	                map : this.map,
 	                ctrls: self.ctrls
 	            });
-		
+		        welcomeDialog.show();
 			}
 		}
 		
-		var centerPanel = new Ext.Panel({
+		var centerPanel = Ext.create('Ext.panel.Panel', {
 			region : 'center',
 			id: 'centerPanel',
 			layout : 'fit',
 			items : mapPanel,
 			tbar : toolbar,
-			bbar : de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? new Ext.Toolbar({id: 'cntrPanelBBar'}) : null
+			bbar : de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") ? Ext.create('Ext.toolbar.Toolbar', {id: 'cntrPanelBBar'}) : null
 		});
 
 		// dummy panel for the header
@@ -1055,16 +1058,16 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			// (we cannot clone the baselayer here, because it would use wrong 
 			// settings form the main map (zoom levels, etc.).)
 			var overviewLayer = new OpenLayers.Layer.WMS(
-					this.map.baseLayer.name, 
-		            this.map.baseLayer.url,
-		            {layers: this.map.baseLayer.params.LAYERS}
-		        );
+				this.map.baseLayer.name, 
+	            this.map.baseLayer.url,
+	            {layers: this.map.baseLayer.params.LAYERS}
+	        );
 			
 			var mapOptions = {
-		            maxExtent: this.map.maxExtent, 
-		            maxResolution: 'auto',
-		            projection: this.map.projection
-		        };
+	            maxExtent: this.map.maxExtent, 
+	            maxResolution: 'auto',
+	            projection: this.map.projection
+	        };
 			var ov = new OpenLayers.Control.OverviewMap({
 				layers : [overviewLayer],
 				minRatio: 30, 
@@ -1231,7 +1234,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			title += i18n('tFlaeche');
 			content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 		}
-		new Ext.Window({
+		Ext.create('Ext.window.Window', {
 			title : title,
 			width : 120,
 			height : 60,
@@ -1302,7 +1305,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			
 		});
 		// TODO ktt: Session saving
-		//this.session.save(data, isTemporary, responseHandler);
+		this.session.save(data, isTemporary, responseHandler);
 	},
 	/**
 	 * Store the current map state along with the given title and description on the
@@ -1353,13 +1356,13 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		this.activeServicesPanel.removeAll(supressMsgs);
 		var state = new de.ingrid.mapclient.frontend.data.SessionState({
-					id : id,
-					map : this.map,
-					activeServices : [],
-					kmlArray : [],
-					kmlRedlining: "",
-					selectedLayersByService: []
-				});
+			id : id,
+			map : this.map,
+			activeServices : [],
+			kmlArray : [],
+			kmlRedlining: "",
+			selectedLayersByService: []
+		});
 		var self = this;
 		this.session.load(state, shortUrl, {
 			success : function(responseText) {
@@ -1676,7 +1679,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
  * we overide this method, because some WmsServer have trouble with multiple format paramters
  * so we make sure this paramters is only once in the request 
  * 
- 
+*/ 
 Ext.override('GeoExt.WMSLegend', {
 	getLegendUrl : function(layerName, layerNames) {
         var rec = this.layerRecord;
@@ -1735,46 +1738,6 @@ Ext.override('GeoExt.WMSLegend', {
     }
     
 });
-*/  
-    /**
-     * @overwrite Openlayers.Layer.setVisibility  
-     * the problem is that we give random names to our layers,
-     * that dont have one, to make them visible in tree view.
-     * This gives us another problem, now every layer has a node,
-     * but in GeoExt every node also is a layer with a request when 
-     * checked. Every check triggers this(setVisibility) function,
-     * our random layer names are all prefixed with "INGRID-".
-     * There are several ways to deal with this matter, but this one 
-     * seems to be the cheapest, since every other involves overwriting
-     * even more api functions.
-     *
-  
-     * 
-     * 
-     * basically a hack until a better solution is found 
-     * @param {} visibility
-     */
-    //TODO if OpenLayers is updated check if this still makes sense
-    OpenLayers.Layer.prototype.setVisibility = function(visibility){
-    	
-	    // check for NON WMS layers first (KML Layer)
-	    if (this.params && this.params['LAYERS'].indexOf('INGRID-') != -1) {
-			visibility = false;
-	    }
-	
-        if (visibility != this.visibility) {
-            this.visibility = visibility;
-            this.display(visibility);
-            this.redraw();
-            if (this.map != null) {
-                this.map.events.triggerEvent("changelayer", {
-                    layer: this,
-                    property: "visibility"
-                });
-            }
-            this.events.triggerEvent("visibilitychanged");
-        }
-};
 
 OpenLayers.Map.prototype.setCenter = function(lonlat, zoom, dragging, forceZoomChange) {
 	if (this.panTween) {

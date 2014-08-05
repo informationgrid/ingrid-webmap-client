@@ -41,26 +41,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             if (!this.store) {
                 this.store = GeoExt.MapPanel.guess().layers;
             }
-            this.store.each(function(record) {
-                this.addLayerNode(node, record);
-            }, this);
-            this.addStoreHandlers(node);
-
-            this.fireEvent("load", this, node);
-        }
-    	/*
-    	if (this.fireEvent("beforeload", this, node)) {
-            this.removeStoreHandlers();
-            while (node.firstChild) {
-                node.removeChild(node.firstChild);
-            }
-
-            if (!this.store) {
-                this.store = GeoExt.MapPanel.guess().layers;
-            }
             
-            var service = node.getData().container.service;
-            if (!service) {
+            if (!this.service) {
     			throw "Service attribute is expected on node: "+node.text;
     		}
 
@@ -69,16 +51,39 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             	if(layer.options.isRootLayer){
             		this.addLayerNode(node, record);
             		if(layer.options.nestedLayers){
-                		this.addNestedLayerNodes(node.firstChild, this.store, layer, service);
+            			if(layer.options.nestedLayers.length > 0){
+	            			var lastChild = node.lastChild;
+	            			lastChild.set("allowDrag", false);
+	            			lastChild.set("allowDrop", false);
+	            			lastChild.set("leaf", false);
+	                		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
+            			}
                 	}
             	}
             }, this);
+            
+            // Check nodes by admin configuration
+            if(!this.initialAdd){
+	            var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+				for(var i = 0; i < wmsServices.length; i++){
+					if(this.service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+						var cl = wmsServices[i].checkedLayers;
+						if(cl){
+							for(var j = 0; j < cl.length; j++){
+								var k = 0;
+								this.checkNodes(cl[j],node);
+							}
+						}
+						break;
+					}
+				}
+            }
             
             this.addStoreHandlers(node);
 
             this.fireEvent("load", this, node);
         }
-        */
+        
     },
     addNestedLayerNodes: function(node, store, rootLayer, service) {
     	var self = this;
@@ -87,13 +92,19 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 				var nestedLayers = rootLayer.options.nestedLayers;
 				for(var i = 0; i < nestedLayers.length; i++){
 					var nestedLayer = nestedLayers[i];
-					var layer = service.getLayerByName(nestedLayer);
+					var layer = this.service.getLayerByName(nestedLayer);
 					store.each(function(record) {
 	            		if (record.getLayer() == layer) {
-	            			console.debug(nestedLayer);
 	            			this.addLayerNode(node, record, i);
 	            			if(layer.options.nestedLayers){
-	            				this.addNestedLayerNodes(node.firstChild, store, layer, service);
+	            				if(layer.options.nestedLayers.length > 0){
+	            					var lastChild = node.lastChild;
+	            					lastChild.set("allowDrag", false);
+	    	            			lastChild.set("allowDrop", false);
+	    	            			lastChild.set("leaf", false);
+	    	            			lastChild.set("expandable", true);
+	    	                		this.addNestedLayerNodes(lastChild, store, layer, this.service);
+	            				}
 		                	}
 	            		}
 		            }, this);
@@ -113,25 +124,43 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
      */
     addLayerNode: function(node, layerRecord, index) {
     	index = index || 0;
-        if (this.filter(layerRecord) === true) {
+    	if (this.filter(layerRecord) === true) {
             var layer = layerRecord.getLayer();
-            var child = this.createNode({
-                plugins: [{
-                    ptype: 'gx_layer'
+            var child = this.createNode(Ext.create('GeoExt.tree.LayerNode', {
+            	plugins: [{
+                    ptype: 'gx_layer_ingrid'
                 }],
                 layer: layer,
                 text: layer.name,
-                listeners: {
-                    move: this.onChildMove,
-                    scope: this
-                }
-            });
+                leaf: false,
+                checked: false,
+                cls: layer.inRange ? "" : "x-tree-node-disabled",
+                service: this.service,
+                // Expand nodes
+                expanded: de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection"),
+                expandable: true,
+                children: []
+            }));
+            
+            node.set("allowDrop", false);
+            
             if (index !== undefined) {
-                node.insertChild(index, child);
+            	node.insertChild(index, child);
             } else {
                 node.appendChild(child);
             }
-            node.getChildAt(index).on("move", this.onChildMove, this);
         }
+    },
+    checkNodes: function(layerName, node){
+    	var self = this;
+		node.eachChild(function(n) {
+			if (layerName == n.get("layer").params.LAYERS){
+				n.get("layer").setVisibility(true);
+			}
+				
+			if (n.hasChildNodes) {
+				self.checkNodes(layerName, n);
+			}
+		});
     }
 });

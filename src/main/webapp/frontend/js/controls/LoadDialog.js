@@ -39,19 +39,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 	*/
 	initComponent: function() {
 		var self = this;
-		var store = new Ext.data.JsonStore({
-			autoLoad: false,
-			autoDestroy: true,
-			// reader configs
-			root: 'files',
-			idProperty: 'id',
+		var store = Ext.create('Ext.data.ArrayStore', {
 			fields: ['id', 'shortUrl', 'emailUrl', 'title', 'description',
 					 {name: 'date', type: 'date', dateFormat: 'Y-m-d H:i:s'}
 			],
-			sortInfo: {
-				field: 'date',
-				direction: 'DESC'
-			}
+			sorters: [{
+			    property: 'date',
+			    direction: 'DESC'
+			}]
 		});
 
 		// load the data for the store
@@ -60,11 +55,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 				if (responseText.length > 0) {
 					// decode from JSON
 					var list = Ext.decode(responseText);
-					var data = {
-						files: list,
-						totalCount: list.length
-					};
-					store.loadData(data);
+					store.loadData(list);
 				}
 			},
 			failure: function(responseText) {
@@ -72,7 +63,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 			}
 		});
 
-		this.fileList = new Ext.grid.GridPanel({
+		this.fileList = Ext.create('Ext.grid.Panel', {
 			store: store,
 			multiSelect: false,
 			height: 300,
@@ -85,29 +76,28 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 			columns: [{
 				id: 'title',
 				header: i18n('tTitle'),
-				width: 80,
 				sortable: true,
-				dataIndex: 'title'
+				dataIndex: 'title',
+				flex: 1
 			}, {
 				id: 'description',
 				header: i18n('tBeschreibung'),
-				width: 80,
 				sortable: true,
 				renderer: function (val) {
 					return '<div style="white-space:normal !important;">'+val+'</div>';
 				},
-				dataIndex: 'description'
+				dataIndex: 'description',
+				flex: 1
 			}, {
 				id: 'date',
 				header: i18n('tDatum'),
-				width: 60,
 				sortable: true,
 				renderer: Ext.util.Format.dateRenderer('d.m.Y H:i:s'),
-				dataIndex: 'date'
+				dataIndex: 'date',
+				flex: 1
 			},
 	        {
 	            xtype: 'actioncolumn',
-	            width: 40,
 	            css:"padding:0 0 0 5px;",
 				items: [{
 		                icon   : '/ingrid-webmap-client/shared/images/link_go.png',
@@ -116,8 +106,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 		                	var record = grid.getStore().getAt(rowIndex);
 		        			var url = de.ingrid.mapclient.Configuration.getProperty('frontend.shortUrlBase')+"?mapUrl="+record.get('shortUrl');
 		        			window.open(url);
-		                },
-		                iconCls:'loadingDialogIcon'
+		                }
 	            	},
 	                {
 		                icon   : '/ingrid-webmap-client/shared/images/icon_mail.png',
@@ -156,13 +145,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 		        					}
 		        				});
 		        			}
-		                },
-		                iconCls:'loadingDialogIcon'
-	                }]
+		                }
+	                }],
+					flex: 1
 	        }]
 		});
 
-		var windowContent = new Ext.FormPanel({
+		var windowContent = Ext.create('Ext.form.Panel', {
 			border: false,
 			bodyStyle: 'padding: 10px',
 			labelAlign: 'top',
@@ -214,9 +203,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 	getFileId: function() {
 		var selModel = this.fileList.getSelectionModel();
 		if (selModel && selModel.hasSelection) {
-			var selected = selModel.getSelected();
+			var selected = selModel.getSelection();
 			if(selected){
-				return selected.id;
+				if(selected.length > 0){
+					return selected[0].get("id");
+				}
 			}
 		}
 		return "";

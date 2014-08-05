@@ -86,7 +86,8 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 	
 	// encode to JSON
 	var serializedState = Ext.encode({
-		id: id,
+		// TODO: Check id
+		id: "ext-gen2",
 		title: this.title,
 		description: this.description,
 		wmcDocument: wmcDocument,

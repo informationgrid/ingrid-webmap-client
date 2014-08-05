@@ -23,7 +23,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.WelcomeDialog', {
     collapsed: false,
     expandOnShow: false,
     width: 650,
-    // height: 560, // do not set height, since content defines the height!
+    //height: 560, // do not set height, since content defines the height!
     y: 100,
     shadow: false,
     initHidden: false,
@@ -48,8 +48,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.WelcomeDialog', {
 
 	    var self = this;
 	    this.buttons = [
-	      new Ext.form.Checkbox({id: 'disableWelcomeDialog', boxLabel: i18n('tDisableWelcome'), 
-	          checked: cookieState, handler: self.handleDisableWelcomeDialog })/*,
+	      Ext.create('Ext.form.Checkbox', {
+	    	  id: 'disableWelcomeDialog', 
+	    	  boxLabel: i18n('tDisableWelcome'), 
+	          checked: cookieState, 
+	          handler: self.handleDisableWelcomeDialog 
+	      })/*,
 	      new Ext.Toolbar.Fill(),
 	      { 
 	        text: 'Close', handler: function() {
@@ -61,6 +65,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.WelcomeDialog', {
 	},
 	handleDisableWelcomeDialog: function(element, isActive) {
 		// cookie is valid one year from now
-	    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive, (new Date()).add(Date.YEAR, 1));
+		var date = new Date();
+		var nextDate = new Date();
+		nextDate.setFullYear(date.getFullYear()+1);
+	    Ext.util.Cookies.set("ingrid.webmap.client.welcome.dialog.hide", isActive, nextDate);
 	}
 });

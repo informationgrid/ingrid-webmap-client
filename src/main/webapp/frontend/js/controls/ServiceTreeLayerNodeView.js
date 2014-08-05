@@ -24,7 +24,7 @@
  *
  * @class GeoExt.tree.View
  */
-Ext.define('de.ingrid.mapclient.frontend.widgets.View', {
+Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNodeView', {
     extend: 'GeoExt.tree.View',
     alias: 'widget.gx_custom_treeview',
     requires: [
@@ -117,28 +117,13 @@ Ext.define('de.ingrid.mapclient.frontend.widgets.View', {
         }
     },
     onItemDblClick: function(record, item, index) {
-        var me = this,
-            editingPlugin = me.editingPlugin;
-            
-        me.callParent(arguments);
-        if (me.toggleOnDblClick && record.isExpandable() && !(editingPlugin && editingPlugin.clicksToEdit === 2)) {
-            me.toggle(record);
-        }
         if(record){
         	if(record.raw){
-            	if(record.raw.layer){
-            		var checked = record.get('checked');
-                    if (Ext.isBoolean(checked)) {
-                        checked = !checked;
-                        record.set('checked', checked);
-                        this.fireEvent('checkchange', record, checked);
-                    }
-            	}else if(record.raw.service){
+        		if(record.raw.service){
             		var tree = record.getOwnerTree();
             		tree.fireEvent("click", record.raw.service);
             	}
             }
         }
-    },
-
+    }
 });

@@ -4,22 +4,22 @@ Ext.view.Table.prototype.processSpecialEvent =  Ext.Function.createSequence(Ext.
     rowNode  = e.getTarget(me.itemSelector),
     record   = me.getRecord(rowNode),
     header   = me.getHeaderByCell(cellNode);
-
-    var tree = this.node.getOwnerTree();
-
-    if (tree.allowNodeOver) {
-    	if(record){
-    		if(record.raw){
-    			if(record.raw.plugins || record.raw.service){
-    				if(e.type == "mouseover"){
-    		    		tree.fireEvent('nodeover', me, e);
-    		    	}else if(e.type == "mouseout"){
-    		    		 tree.fireEvent('nodeout', me, e);
-    		    	}
-    			}
-    		}
-    	}
-    }       
+	if(this.node){
+		var tree = this.node.getOwnerTree();
+	    if (tree.allowNodeOver) {
+	    	if(record){
+	    		if(record.raw){
+	    			if(record.raw.plugins || record.raw.service){
+	    				if(e.type == "mouseover"){
+	    		    		tree.fireEvent('nodeover', me, e);
+	    		    	}else if(e.type == "mouseout"){
+	    		    		 tree.fireEvent('nodeout', me, e);
+	    		    	}
+	    			}
+	    		}
+	    	}
+	    }
+	}
 });
 
 Ext.define('Ext.ux.HoverActions', {

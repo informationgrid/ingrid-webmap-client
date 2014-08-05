@@ -468,3 +468,11 @@ ul .x-tree-node-ct li .x-tree-node {
 .x-boundlist-item {
 	font-size: 12px;
 }
+
+.x-tree-node-disabled span.x-tree-node-text {
+	color: gray !important;
+}
+
+.x-tree-node-disabled span.x-tree-node-text:hover {
+	text-decoration: none !important;
+}

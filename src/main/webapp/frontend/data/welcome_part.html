@@ -8,7 +8,7 @@ Ext.onReady(function() {
     Ext.fly("text_link1").update(i18n('tWelcomeTextLink1'));
     Ext.fly("text_link2").update(i18n('tWelcomeTextLink2'));
 
-    var chooseMapService = new Ext.Panel({
+    var chooseMapService = Ext.create('Ext.panel.Panel', {
         title: i18n('tChooseMapServices'),
         border: false,
         html: "<div><table class='welcomeTable'> \
@@ -20,7 +20,7 @@ Ext.onReady(function() {
         autoScroll: false
     });
 
-    var useMapService = new Ext.Panel({
+    var useMapService = Ext.create('Ext.panel.Panel', {
         title: i18n('tUseMapServices'),
         border: false,
         html: '<div><table class="welcomeTable"> \
@@ -33,7 +33,7 @@ Ext.onReady(function() {
         autoScroll: true
     });
 
-    var printSaveFunctions = new Ext.Panel({
+    var printSaveFunctions = Ext.create('Ext.panel.Panel', {
         title: i18n('tPrintAndSaveFunctions'),
         border: false,
         html: '<div><table class="welcomeTable"> \
@@ -52,10 +52,10 @@ Ext.onReady(function() {
         l.setActiveItem(next);
         Ext.getCmp('card-prev').setDisabled(next===0);
         Ext.getCmp('card-next').setDisabled(next===5);
-        $('card-info-page').innerHTML = next+1;
+        Ext.get('card-info-page').dom.innerHTML = next+1;
     };
 
-    tips = new Ext.Panel({
+    tips = Ext.create('Ext.panel.Panel', {
         id: 'tipsPanel',
         title: i18n('tTipsAndTricks'),
         layout: 'card',
@@ -71,12 +71,12 @@ Ext.onReady(function() {
         },'->', {
             id: 'card-prev',
             text: i18n('tPreviousHint'),
-            handler: cardNav.createDelegate(this, [-1]),
+            handler: cardNav.bind(this, -1),
             disabled: true
         },{
             id: 'card-next',
             text: i18n('tNextHint'),
-            handler: cardNav.createDelegate(this, [1])
+            handler: cardNav.bind(this, 1)
         }],
         items: [{
             id: 'card-0',
@@ -100,7 +100,7 @@ Ext.onReady(function() {
     });
 
 
-    var accordion = new Ext.Panel({
+    var accordion = Ext.create('Ext.panel.Panel', {
         region:'center',
         layout: 'accordion',
         border: false,
@@ -115,7 +115,7 @@ Ext.onReady(function() {
         items: [chooseMapService, useMapService, printSaveFunctions, tips]
     });
 
-    borderl = new Ext.Panel({
+    borderl = Ext.create('Ext.panel.Panel', {
         renderTo: 'welcomePanel',
         height: 286,
         //border: false,
