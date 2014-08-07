@@ -86,7 +86,6 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 	
 	// encode to JSON
 	var serializedState = Ext.encode({
-		// TODO: Check id
 		id: "ext-gen2",
 		title: this.title,
 		description: this.description,
@@ -166,7 +165,7 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 		}
 	});
 	// restore map state
-	var context = format.read(this.wmcDocument, this.map);
+	var context = format.read(this.wmcDocument);
 	var layers = format.getLayersFromContext(context.layersContext);
 	// merge default params from layers already loaded for the service
 	for (var i=0, count=layers.length; i<count; i++) {

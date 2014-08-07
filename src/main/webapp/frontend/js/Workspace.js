@@ -2,25 +2,6 @@
  * Copyright (c) 2011 wemove digital solutions. All rights reserved.
  */
 Ext.namespace("de.ingrid.mapclient.frontend");
-//we extend the map because we dont listen to the default map events anymore
-//we write the session on the setCenter method now
-//also we disable this method on load, we enable it on finishing the whole init process
-de.ingrid.mapclient.frontend.IngridMap = Ext.extend(OpenLayers.Map,{
-	constructor: function(config){
-		de.ingrid.mapclient.frontend.IngridMap.superclass.constructor.call(this, config);
-	},
-	sessionWriteEnable:false,
-	containingViewport:null,
-	setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
-     de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
-		//on each setcenter method(fired when zoomed), we check if our layers are in the right
-     //scale to be displayed
-     var servicesPanel = this.containingViewport.activeServicesPanel;
-     var root = servicesPanel.layerTree.getRootNode();
-     servicesPanel.checkScaleRecursively(root, this.getScale());
- }
-	
-});
 
 /**
  * @class Workspace is the main gui component for the frontend.
@@ -81,7 +62,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		// create the map (default projection read from config)
 		var projection =  de.ingrid.mapclient.Configuration.getValue('projections');
 		var epsg = projection[0].epsgCode;
-		//this.map = new de.ingrid.mapclient.frontend.IngridMap({
 		this.map = new OpenLayers.Map({
 			containingViewport:self,
 			fractionalZoom : true,
@@ -91,17 +71,9 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			    navigationControl,
 				new OpenLayers.Control.PanZoomBar(),
 				new OpenLayers.Control.ScaleLine(),
-				new OpenLayers.Control.MousePosition(),
-				new OpenLayers.Control.LayerSwitcher()
-			],
-			setCenter: function(lonlat, zoom, dragging, forceZoomChange) {
-		        de.ingrid.mapclient.frontend.IngridMap.superclass.setCenter.call(this, lonlat, zoom, dragging, forceZoomChange);
-				//on each setcenter method(fired when zoomed), we check if our layers are in the right
-		        //scale to be displayed
-		        var servicesPanel = this.containingViewport.activeServicesPanel;
-		        var root = servicesPanel.layerTree.getRootNode();
-		        servicesPanel.checkScaleRecursively(root, this.getScale());
-		    }
+				//new OpenLayers.Control.LayerSwitcher(),
+				new OpenLayers.Control.MousePosition()
+			]
 		});
 		
 
@@ -1304,7 +1276,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			treeState: this.activeServicesPanel.treeState
 			
 		});
-		// TODO ktt: Session saving
 		this.session.save(data, isTemporary, responseHandler);
 	},
 	/**
@@ -1481,8 +1452,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					
 					// Load WMS by "Zeige Karte" from Session
 					if (wms != null) {
-						var serviceWMS = de.ingrid.mapclient.frontend.data.Service
-								.createFromCapabilitiesUrl(wms);
+						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
 						var callback = Ext.Function.bind(self.activeServicesPanel.addService, self.activeServicesPanel);
 						de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 					}

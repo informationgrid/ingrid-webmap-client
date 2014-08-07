@@ -63,9 +63,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
     			// Selection of all childs
 				n.set("checked", checked);
     		}else{
-    			var layer = n.get('layer');
-    			layer.setVisibility(false);
-    			//n.set('checked', true);
+    			// TODO: Checked group layer
     		}
 	    });
         this.enforceOneVisible();

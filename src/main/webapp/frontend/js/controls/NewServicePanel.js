@@ -156,7 +156,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.NewServicePanel', {
     	}
     	
     	// add the service
-    	activeServicesPanel.addService(service, true, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"), activateZoomCheckbox);
+    	activeServicesPanel.addService(service, true, false, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"), activateZoomCheckbox.value);
     	
     	// Reset form
     	capabilitiesUrlField.reset();
