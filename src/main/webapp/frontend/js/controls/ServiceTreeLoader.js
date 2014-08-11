@@ -60,7 +60,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                     			var lastChild = node.lastChild;
                     			lastChild.set("allowDrag", false);
                     			lastChild.set("allowDrop", false);
-                    			lastChild.set("leaf", false);
                         		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
                 			}
                     	}
@@ -177,7 +176,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     	var self = this;
 		node.eachChild(function(n) {
 			if (layerName == n.get("layer").params.LAYERS){
-				n.get("layer").setVisibility(true);
+				n.set('checked', true);
 			}
 				
 			if (n.hasChildNodes) {
@@ -225,7 +224,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 	            					var lastChild = node.lastChild;
 	            					lastChild.set("allowDrag", false);
 	    	            			lastChild.set("allowDrop", false);
-	    	            			lastChild.set("leaf", false);
 	    	            			lastChild.set("expandable", true);
 	    	                		this.addNestedLayerNodes(lastChild, store, layer, this.service);
 	            				}
@@ -258,13 +256,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 text: layer.name,
                 allowDrop: false,
                 allowDrag: false,
-                leaf: false,
+                leaf: layer.options.nestedLayers.length > 0 ? false : true,
                 checked: false,
                 cls: layer.inRange ? "" : "x-tree-node-disabled",
                 service: this.service,
                 // Expand nodes
                 expanded: false,
-                expandable: true,
+                expandable: layer.options.nestedLayers.length > 0 ? true : false,
                 children: []
             }));
             

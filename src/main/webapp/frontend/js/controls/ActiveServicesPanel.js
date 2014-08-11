@@ -222,7 +222,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		
 		self.menuService = Ext.create('Ext.menu.Menu', {
 			showSeparator: false,
-			width: '150px',
 		    items: [
 		        deleteAction,
 		        metadataAction,
@@ -232,7 +231,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		
 		self.menuGroupLayer = Ext.create('Ext.menu.Menu', {
 			showSeparator: false,
-			width: '150px',
 		    items: [
 		         metadataAction,
 		         zoomToExtendAction,
@@ -268,7 +266,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		
 		self.menuLayer = Ext.create('Ext.menu.Menu', {
 			showSeparator: false,
-			width: '150px',
 		    items: [
 		         metadataAction,
 		         zoomToExtendAction,
@@ -314,7 +311,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		        		if(record.get("layer")){
 			        		var layerMenuSlider;
 			        		// Layer menu
-			        		if(record.get("layer").options.nestedLayers.length == 0){
+			        		if(record.childNodes.length == 0){
 			        			layerMenuSlider = Ext.getCmp('layerTransparentSlider');
 			        			self.menuLayer.showAt([e.getTarget().offsetLeft ,e.getXY()[1] + e.getTarget().offsetHeight]);
 			        		}else{
@@ -449,7 +446,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			plugins:[hoverActions],
 			buttonSpanElStyle:'width:12px;',
 			listeners: {
-				checkchange: function(node, index, ev){
+				checkchange: function(node, checked, ev){
 					if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
 						if(node.get("layer")){
 							var id = node.get("layer").params.LAYERS;
@@ -623,7 +620,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					var serviceLayer = serviceRecord.get('layer');
 					var layer = record.getLayer();
 					if(layer  && serviceLayer){
-						return de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
+						var isSame = de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
+						if(isSame){
+							layer.options = Ext.apply(serviceLayer.options, layer.options);
+						}
+						return isSame;
 					}else{
 						return 0;
 					}

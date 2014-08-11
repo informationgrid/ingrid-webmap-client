@@ -71,7 +71,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			    navigationControl,
 				new OpenLayers.Control.PanZoomBar(),
 				new OpenLayers.Control.ScaleLine(),
-				new OpenLayers.Control.LayerSwitcher(),
+				//new OpenLayers.Control.LayerSwitcher(),
 				new OpenLayers.Control.MousePosition()
 			]
 		});
