@@ -134,9 +134,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 			fieldLabel: i18n('tLegende'),
 			name: "legend",
 			listeners: {
-				"check": function(checkbox, checked) {
+				"change": function( checkbox, newValue, oldValue, eOpts ) {
 					// add the legend panel to the printOptions if selected
-					if (checked) {
+					if (newValue) {
 						printForm.printOptions = {
 							legend: self.legendPanel
 						};

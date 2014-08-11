@@ -71,7 +71,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			    navigationControl,
 				new OpenLayers.Control.PanZoomBar(),
 				new OpenLayers.Control.ScaleLine(),
-				//new OpenLayers.Control.LayerSwitcher(),
+				new OpenLayers.Control.LayerSwitcher(),
 				new OpenLayers.Control.MousePosition()
 			]
 		});
@@ -194,7 +194,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			handler: function(btn) {
 				var legendDialog = Ext.getCmp('legendDialog');
 				if(legendDialog == undefined){
-					legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {});
+					legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {
+					});
 				}
 				
 				if(legendDialog.isVisible()){
@@ -715,13 +716,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		        if(!printActive){
 					printDia = Ext.create('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 								mapPanel : mapPanel,
-								legendPanel : Ext.create('GeoExt.panel.Legend', {
-									layerStore : self.activeServicesPanel.getLayerStore(),
-									autoScroll : true,
-									border : false,
-									dynamic : true,
-									cls: "mapclientLegendPanel"
-								})
+								legendPanel : Ext.getCmp('legendDialog').legendPanel
 							});
 							printActive = true;
 							self.ctrls['keyboardControl'].deactivate();
@@ -1276,6 +1271,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			treeState: this.activeServicesPanel.treeState
 			
 		});
+		// TODO ktt: Session saving
 		this.session.save(data, isTemporary, responseHandler);
 	},
 	/**
@@ -1452,7 +1448,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					
 					// Load WMS by "Zeige Karte" from Session
 					if (wms != null) {
-						var serviceWMS = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(wms);
+						var serviceWMS = de.ingrid.mapclient.frontend.data.Service
+								.createFromCapabilitiesUrl(wms);
 						var callback = Ext.Function.bind(self.activeServicesPanel.addService, self.activeServicesPanel);
 						de.ingrid.mapclient.frontend.data.Service.load(serviceWMS.getCapabilitiesUrl(), callback);
 					}
@@ -1640,73 +1637,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			}
 		}
 	}
-});
-
-
-/**
- * 
- * @override GeoExt.WMSLegend
- * we overide this method, because some WmsServer have trouble with multiple format paramters
- * so we make sure this paramters is only once in the request 
- * 
-*/ 
-Ext.override('GeoExt.WMSLegend', {
-	getLegendUrl : function(layerName, layerNames) {
-        var rec = this.layerRecord;
-        var url;
-        var styles = rec && rec.get("styles");
-        var layer = rec.getLayer();
-        layerNames = layerNames || [layer.params.LAYERS].join(",").split(",");
-
-        var styleNames = layer.params.STYLES && [layer.params.STYLES].join(",").split(",");
-        var idx = layerNames.indexOf(layerName);
-        var styleName = styleNames && styleNames[idx];
-        // check if we have a legend URL in the record's
-        // "styles" data field
-        if(styles && styles.length > 0) {
-            if(styleName) {
-                Ext.each(styles, function(s) {
-                    url = (s.name == styleName && s.legend) && s.legend.href;
-                    return !url;
-                });
-            } else if(this.defaultStyleIsFirst === true && !styleNames &&
-                      !layer.params.SLD && !layer.params.SLD_BODY) {
-                url = styles[0].legend && styles[0].legend.href;
-            }
-        }
-        if(!url) {
-            url = layer.getFullRequestString({
-                REQUEST: "GetLegendGraphic",
-                WIDTH: null,
-                HEIGHT: null,
-                EXCEPTIONS: "application/vnd.ogc.se_xml",
-                LAYER: layerName,
-                LAYERS: null,
-                STYLE: (styleName !== '') ? styleName: null,
-                STYLES: null,
-                SRS: null,
-                FORMAT: null
-            });
-        }
-        // add scale parameter - also if we have the url from the record's
-        // styles data field and it is actually a GetLegendGraphic request.
-        if(this.useScaleParameter === true && url.toLowerCase().indexOf("request=getlegendgraphic") != -1) {
-            var scale = layer.map.getScale();
-            url = Ext.urlAppend(url, "SCALE=" + scale);
-        }
-        var params = this.baseParams || {};
-        //TODO we change this part since we are having trouble on some servers with the mutliple occurence format parameter
-        var formatAlreadyThere = false
-        if(url.indexOf("&FORMAT=") != -1  || url.indexOf("&format=") != -1 || url.indexOf("%26FORMAT=") != -1 || url.indexOf("%26format=") != -1)
-        	formatAlreadyThere = true;
-        Ext.applyIf(params, {FORMAT: 'image/gif'});
-        if(url.indexOf('?') > 0 && !formatAlreadyThere) {
-            url = Ext.urlEncode(params, url);
-        }
-
-        return url;
-    }
-    
 });
 
 OpenLayers.Map.prototype.setCenter = function(lonlat, zoom, dragging, forceZoomChange) {

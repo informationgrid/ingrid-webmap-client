@@ -476,3 +476,7 @@ ul .x-tree-node-ct li .x-tree-node {
 .x-tree-node-disabled span.x-tree-node-text:hover {
 	text-decoration: none !important;
 }
+
+#west-placeholder-targetEl div.x-tool-pressed {
+	display: none;
+}

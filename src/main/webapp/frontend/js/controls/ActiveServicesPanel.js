@@ -13,19 +13,23 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	extend: 'Ext.Panel',
 	requires: [
 		'Ext.layout.container.Border',
-		'GeoExt.tree.Panel',
 		'Ext.tree.plugin.TreeViewDragDrop',
+		'Ext.data.TreeStore',
+        'GeoExt.tree.Panel',
 		'GeoExt.panel.Map',
 		'GeoExt.tree.OverlayLayerContainer',
 		'GeoExt.tree.BaseLayerContainer',
 		'GeoExt.data.LayerTreeModel',
 		'GeoExt.tree.View',
 		'GeoExt.tree.Column',
-        'Ext.data.TreeStore',
         'GeoExt.data.LayerTreeModel',
         'GeoExt.data.LayerStore',
         'GeoExt.tree.LayerLoader',
-        'GeoExt.tree.LayerContainer'
+        'GeoExt.tree.LayerContainer',
+        'GeoExt.container.WmsLegend',
+        'GeoExt.container.UrlLegend',
+        'GeoExt.container.VectorLegend',
+        'GeoExt.panel.Legend'
 	],
 	id: 'activeServices',
 	title: i18n('tAktiveDienste'),
@@ -482,10 +486,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		    }
 		});
 
-		// Create Legend for Services
-		var legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {});
-		legendDialog.hide();
-		
 		Ext.apply(this, {
 			items: this.layerTree,
 			bodyCssClass: 'background'
@@ -630,6 +630,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				});
 				if (index == -1) {
 					this.layerStore.add([serviceRecord]);
+					// Create Legend for Services
+					var legendDialog = Ext.getCmp('legendDialog');
+					if(legendDialog == undefined){
+						var legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {
+						}).show();
+						legendDialog.hide();
+					}
+					
 				}
 			}
 						
@@ -647,6 +655,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 						service: service,
 						initialAdd: initialAdd,
 						treeState: self.treeState,
+						map: self.map,
+						layerTree: self.layerTree,
+						panel: self,
 						selectedLayersByService: self.selectedLayersByService,
 						layersByURLService: self.layersByURLService,
 						store: this.layerStore,
@@ -738,21 +749,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					if(zoomToExtent){
 						this.map.zoomToExtent(bounds);
 					}
-				}
-			}
-			
-			var serviceNodes = this.layerTree.getRootNode().childNodes;
-			var layers = [];
-			for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
-			 	var serviceNode = serviceNodes[i];
-			 	self.getLayersFromTree(serviceNode, layers);
-			}
-		
-			// Change layer order on map
-			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
-				for (var j = 0, count = layers.length; j < count; j++) {
-					var layer = layers[j];
-					self.map.raiseLayer(layer, layers.length);
 				}
 			}
 			

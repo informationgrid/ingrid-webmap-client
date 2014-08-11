@@ -93,6 +93,20 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 }
             }
             
+            var serviceNodes = this.layerTree.getRootNode().childNodes;
+			var layers = [];
+			for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
+			 	var serviceNode = serviceNodes[i];
+			 	this.panel.getLayersFromTree(serviceNode, layers);
+			}
+		
+			// Change layer order on map
+			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+				for (var j = 0, count = layers.length; j < count; j++) {
+					var layer = layers[j];
+					this.map.raiseLayer(layer, layers.length);
+				}
+			}
             this.addStoreHandlers(node);
 
             this.fireEvent("load", this, node);

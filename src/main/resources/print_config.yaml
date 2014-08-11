@@ -66,8 +66,8 @@ layouts:
         - !legends
           maxHeight: 0
           maxWidth: 0
-          maxIconWidth: 0
-          maxIconHeight: 0
+          maxIconWidth: 300
+          maxIconHeight: 400
           defaultScale: 0
           classIndentation: 0
           layerSpace: 5
