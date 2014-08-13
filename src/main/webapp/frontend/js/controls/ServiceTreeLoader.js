@@ -71,8 +71,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             	// Check nodes by admin configuration
                 this.checkNodeByAddService(node);
             }else{
-            	if(node.firstChild){
-            		this.checkNodeByState(node.firstChild);
+            	if(node.hasChildNodes()){
+            		this.checkNodeByState(node.childNodes);
             	}
             }
             
@@ -81,7 +81,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 this.expandNodeByDefault(node);
             } else if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
             	// Expand nodes by state
-                this.expandNodeByState(node);
+            	if(this.initialAdd){
+            		this.expandNodeByState(node);
+            	}
     		}
             
             if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
@@ -159,18 +161,24 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 			}
 		}
     },
-    checkNodeByState: function (node){
-    	var id = node.get("layer").params.LAYERS;
-		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
-		
-		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
-		    var selectedLayer = this.selectedLayersByService[j];
-			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-				if(selectedLayer.cls){
-					node.set("checked", true);
-				}
-			}
-		}
+    checkNodeByState: function (nodes){
+    	for(var i = 0; i < nodes.length; i++){
+    		var node = nodes[i];
+    		var id = node.get("layer").params.LAYERS;
+    		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+    		
+    		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
+    		    var selectedLayer = this.selectedLayersByService[j];
+    			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+    				if(selectedLayer.cls){
+    					node.set("checked", true);
+    				}
+    			}
+    		}
+    		if(node.hasChildNodes()){
+    			this.checkNodeByState(node.childNodes);
+    		}
+    	}
     },
     checkNodes: function(layerName, node){
     	var self = this;
@@ -248,7 +256,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     	index = index || 0;
     	if (this.filter(layerRecord) === true) {
             var layer = layerRecord.getLayer();
-            var child = this.createNode(Ext.create('GeoExt.tree.LayerNode', {
+            var child = this.createNode({
             	plugins: [{
                     ptype: 'gx_layer_ingrid'
                 }],
@@ -264,7 +272,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 expanded: false,
                 expandable: layer.options.nestedLayers.length > 0 ? true : false,
                 children: []
-            }));
+            });
             
             node.set("allowDrop", false);
 

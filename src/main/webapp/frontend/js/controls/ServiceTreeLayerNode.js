@@ -31,12 +31,24 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         }
 
         target.on('afteredit', this.onAfterEdit, this);
+        /*
+        layer.events.on({
+            "visibilitychanged": this.onLayerVisibilityChanged,
+            scope: this
+        });
+        */
         this.enforceOneVisible();
+    },
+    onLayerVisibilityChanged: function() {
+        if(!this._visibilityChanging) {
+            this.target.set('checked', this.target.get('layer').getVisibility());
+        }
     },
     onCheckChange: function() {
         var node = this.target,
             checked = this.target.get('checked');
 
+        
         if(checked != node.get('layer').getVisibility() || de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
             node._visibilityChanging = true;
             var layer = node.get('layer');
@@ -47,24 +59,28 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
                 // Must prevent the unchecking of radio buttons
                 node.set('checked', layer.getVisibility());
             } else {
-            	 if(layer.params['LAYERS'].indexOf('INGRID-') == -1){
-            		 if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
-            			 layer.setVisibility(checked);
-            		 }else{
-            			 var isParentsSelect = this.isParentsSelect(node);
-         				 if(node.childNodes.length == 0){
-            				if(isParentsSelect){
-            					layer.setVisibility(checked);
-            				}
-            			 }else{
-            				 if(checked){
-             					this.checkboxSelection(node, true, isParentsSelect);
-         		           	}else{
-         		           		this.checkboxSelection(node, false, isParentsSelect);
-         		           	}
-            			 }
-            		 }
-            	 }
+        		if(layer.params['LAYERS'].indexOf('INGRID-') == -1){
+               		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
+               			layer.setVisibility(checked);
+               		}else{
+						var isParentsSelect = this.isParentsSelect(node);
+						if(node.childNodes.length == 0){
+							if(isParentsSelect){
+								layer.setVisibility(checked);
+							}
+						}else{
+							if(checked){
+								if(node.get("cls").indexof("x-tree-node-select") > -1){
+									layer.setVisibility(checked);
+								}
+								this.checkboxSelection(node, true, isParentsSelect);
+					       	}else{
+		               			layer.setVisibility(checked);
+					       		this.checkboxSelection(node, false, isParentsSelect);
+					       	}
+						}
+               		}
+           	 	}
             }
             delete node._visibilityChanging;
         }
@@ -100,7 +116,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
     			var layer = childNode.get("layer");
     			if(layer){
     				if(select){
-    					if(((layer.getVisibility() == false) && (layer.options.isRootLayer == false) && isParentSelectChildNode) == true){
+    					if(((layer.getVisibility() == false) && (layer.options.nestedLayers.length == 0) && isParentSelectChildNode) == true){
         					layer.setVisibility(select);
         				}else if ((childNode.leaf == false) && (childNode.attributes.cls == "x-tree-node-select") && isParentSelectChildNode){
         					layer.setVisibility(select);

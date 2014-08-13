@@ -248,15 +248,6 @@ padding: 1px 3px 1px 3px;
     z-index: 1100;
 }
 
-.x-tree-node .x-tree-node-select a span{
-	font-weight:bold !important;
-}
-
-.x-tree-node .x-tree-node-select-disabled a span{
-	font-weight:bold !important;
-	color:gray !important;
-}
-
 #welcomePage {font: normal 100%/120% Verdana, Arial, sans-serif; }
 #welcomePage h1 { color: rgb(23, 103, 152); font-size: 15px; font-weight: bold; margin-bottom: 10px; }
 #welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
@@ -339,7 +330,7 @@ ul .x-tree-node-ct li .x-tree-node {
 	background-position: 5px 6px !important;
 }
 
-.x-tree-arrows .x-tree-elbow-minus {
+.x-tree-arrows .x-tree-expand .x-tree-elbow-plus {
 	background-image: url(../../shared/images/arrow_small_down.png);
 	background-position: 5px 6px !important;
 }
@@ -349,13 +340,22 @@ ul .x-tree-node-ct li .x-tree-node {
 	background-position: 5px 6px !important;
 }
 
-.x-tree-arrows .x-tree-elbow-end-minus {
+.x-tree-arrows .x-tree-expand .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_down.png);
 	background-position: 5px 6px !important;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {
 	background-position: 5px 6px !important;
+}
+
+.x-tree-view .x-tree-node-select div span{
+	font-weight:bold !important;
+}
+
+.x-tree-view .x-tree-node-select-disabled div span{
+	font-weight:bold !important;
+	color:gray !important;
 }
 
 .x-tree-node a span:hover {

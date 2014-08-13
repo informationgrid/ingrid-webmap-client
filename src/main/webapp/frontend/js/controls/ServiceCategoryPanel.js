@@ -106,8 +106,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 		
 		self.tree.store.on({
 			expand: function(node) {
+				node.set("cls", "x-tree-expand");
 				var childNodes = node.childNodes;
 		        self.reloadTreeUI(childNodes);
+			},
+			collapse: function(node){
+				node.set("cls", "");
 			}
 		});
 		
