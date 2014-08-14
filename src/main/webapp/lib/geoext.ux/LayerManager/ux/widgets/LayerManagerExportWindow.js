@@ -117,7 +117,7 @@ Ext.define('GeoExt.ux.LayerManagerExportWindow', {
      *  Private initComponent override.
      */
     initComponent: function() {
-        this.downloadBox = new Ext.Button({
+        this.downloadBox = Ext.create('Ext.Button', {
         	id:'saveExportBtn',
 			iconCls : 'iconSave',
 			x: 405,
@@ -128,19 +128,19 @@ Ext.define('GeoExt.ux.LayerManagerExportWindow', {
 				try {
 				    var isFileSaverSupported = !!new Blob();
 				    if(isFileSaverSupported){
-					    var blob = new Blob([document.getElementById('data').value], {
+					    var blob = new Blob([Ext.getCmp("data").value], {
 						    type: "text/plain;charset=utf-8;",
 						});
-						saveAs(blob, document.getElementById('filename').value);
+						saveAs(blob, Ext.getCmp("filename").value);
 				    }
 				} catch (e) {
 					w = window.open();
 					doc = w.document;
 					doc.open( "text/xml",'replace');
 					doc.charset = "utf-8";
-					doc.write(document.getElementById('data').value);
+					doc.write(Ext.getCmp("data").value);
 					doc.close();
-					doc.execCommand("SaveAs", true, document.getElementById('filename').value + ".xml");
+					doc.execCommand("SaveAs", true, Ext.getCmp("filename").value + ".xml");
 					w.close();
 				}
 				

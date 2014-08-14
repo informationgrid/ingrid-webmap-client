@@ -69,7 +69,7 @@ Ext.define('GeoExt.ux.StyleSelectorPalette', {
     	var self = this;
         var oItems= Array();
 
-        var oPalette = new Ext.ColorPalette({
+        var oPalette = Ext.create('Ext.picker.Color', {
         	id: 'colorPaletteRedling',
         	layout: 'fit',
         	value: self.defaultColor.toUpperCase()

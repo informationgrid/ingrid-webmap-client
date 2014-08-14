@@ -5,7 +5,8 @@ Ext.namespace("GeoExt.ux");
  * @include LayerManager/ux/data/Import.js
  */
 
-GeoExt.ux.ImportFeatures = Ext.extend(Ext.util.Observable, {
+Ext.define('GeoExt.ux.ImportFeatures', {
+	extend: 'Ext.util.Observable',
 
     layer: null,
 
@@ -27,7 +28,7 @@ GeoExt.ux.ImportFeatures = Ext.extend(Ext.util.Observable, {
             actionOptions.text = OpenLayers.i18n("Import");
         }
 
-        var action = new Ext.Action(actionOptions);
+        var action = Ext.create('Ext.Action', actionOptions);
         form.getTopToolbar().add(action);
         this.controler.actions.push(action);
     },

@@ -5,7 +5,8 @@ Ext.namespace("GeoExt.ux");
  * @include LayerManager/ux/data/Export.js
  */
 
-GeoExt.ux.ExportFeatures = Ext.extend(Ext.util.Observable, {
+Ext.define('GeoExt.ux.ExportFeatures', {
+	extend: 'Ext.util.Observable',
 
     controler: null,
 
@@ -24,7 +25,7 @@ GeoExt.ux.ExportFeatures = Ext.extend(Ext.util.Observable, {
             actionOptions.text = OpenLayers.i18n("Export");
         }
 
-        var action = new Ext.Action(actionOptions);
+        var action = Ext.create('Ext.Action', actionOptions);
         form.getTopToolbar().add(action);
         this.controler.actions.push(action);
     },

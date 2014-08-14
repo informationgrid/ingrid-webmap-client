@@ -70,7 +70,7 @@ Ext.define('GeoExt.ux.LayerManagerExportPanel', {
      */
     initComponent: function() {
 
-        this.formatCombo = new Ext.form.ComboBox({
+        this.formatCombo = Ext.create('Ext.form.ComboBox', {
             id: 'layermanagerexportformat',
             fieldLabel: OpenLayers.i18n('Format'),
             store: GeoExt.ux.data.FormatStore,
@@ -85,7 +85,7 @@ Ext.define('GeoExt.ux.LayerManagerExportPanel', {
 
         this.formatCombo.setValue(this.defaultFormat);
 
-        this.exportLinkBox = new Ext.BoxComponent({
+        this.exportLinkBox = Ext.create('Ext.Component', {
             id: 'exportlink',
             autoEl: {
                 html: '<a href=""></a>'

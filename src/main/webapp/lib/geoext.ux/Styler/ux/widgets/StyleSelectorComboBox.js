@@ -75,25 +75,21 @@ Ext.define('GeoExt.ux.StyleSelectorComboBox', {
             return;
         }
 
-        var oCombo = new Ext.form.ComboBox(
+        var oCombo = Ext.create('Ext.form.field.ComboBox', 
             Ext.applyIf(this.comboBoxOptions, {
                 store: this.store,
-                tpl: '<tpl for="."><div class="x-combo-list-item">{[values.name]}</div></tpl>',
                 editable: false,
                 triggerAction: 'all', // needed so that the combo box doesn't filter by its current content
-                mode: 'local' // keep the combo box from forcing a lot of unneeded data refreshes,
+                queryMode: 'local' // keep the combo box from forcing a lot of unneeded data refreshes,
             })
         );
 
         oItems.push(oCombo);
 
-        oCombo.on('select', 
-            function(combo, record, index) {
-                oCombo.setValue(record.data.name);
-                this.fireEvent("change", OpenLayers.Util.applyDefaults(record.data.style, OpenLayers.Feature.Vector.style['default']));
-            },
-            this
-        );    
+        oCombo.on('select', function(combo, record, index) {
+                oCombo.setValue(record[0].get("name"));
+                this.fireEvent("change", OpenLayers.Util.applyDefaults(record[0].get("style"), OpenLayers.Feature.Vector.style['default']));
+        }, this);    
 
         Ext.apply(this, {items: oItems});
 

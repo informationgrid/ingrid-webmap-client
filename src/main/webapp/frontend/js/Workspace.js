@@ -218,6 +218,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// feature tool
 		var featureInfoControl = Ext.create('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
+			id: 'featureInfoControl',
 			map : this.map
 		}); 
 
@@ -1165,15 +1166,14 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			            }
 			            if(hasEnoughCmp){
 			            	this.featureControl.activate();
-				            this.getSelectControl().select(feature);
+			            	this.getSelectControl().selectFeature(feature);
 			            }else{
 			            	drawControl.activate();
 			            	feature.layer.destroyFeatures([feature]);
 			            }
 			        }
 			    });
-			// TODO ktt: Add redlining tools to toolbar
-			// cntrPanelBbar.addItem(this.redliningControler.actions);
+				cntrPanelBbar.add(this.redliningControler.actions);
 				cntrPanelBbar.doLayout();
 			
 			if(self.kmlRedlining){
@@ -1656,4 +1656,22 @@ OpenLayers.Map.prototype.setCenter = function(lonlat, zoom, dragging, forceZoomC
     var servicesPanel = Ext.getCmp("activeServices");
     var root = servicesPanel.layerTree.getRootNode();
     servicesPanel.checkScaleRecursively(root, this.getScale());
+};
+
+// FIX TileManager for SingleTiles
+OpenLayers.TileManager.prototype.addTile =  function(evt) {
+    if (evt.tile instanceof OpenLayers.Tile.Image) {
+    	if (!evt.tile.layer.singleTile) {
+	        evt.tile.events.on({
+	            beforedraw: this.queueTileDraw,
+	            beforeload: this.manageTileCache,
+	            loadend: this.addToCache,
+	            unload: this.unloadTile,
+	            scope: this
+	        });
+    	}
+    } else {
+        // Layer has the wrong tile type, so don't handle it any longer
+        this.removeLayer({layer: evt.tile.layer});
+    }
 };

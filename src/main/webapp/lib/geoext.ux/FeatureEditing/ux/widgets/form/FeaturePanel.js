@@ -63,7 +63,7 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
     /** api: config[defaults]
      *  ``Object``  Default value.
      */
-    defaults: {width: 145},
+    defaults: {},
 
     /** api: config[defaultType]
      *  ``String``  Default value.
@@ -154,7 +154,12 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
         this.initDeleteAction();
 
         // Add buttons and toolbar
-        Ext.apply(this, {bbar: new Ext.Toolbar(this.getActions())});
+        Ext.apply(this, {
+        	bbar: Ext.create('Ext.toolbar.Toolbar', {
+        			items: this.getActions()
+        		})
+        	}
+        );
     },
 
     /** private: method[initMyItems]
@@ -206,15 +211,18 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
             if (!GeoExt.ux.LayerStyleManager) {
                 break;
             }
-
-            var styleStore = new Ext.data.SimpleStore(Ext.ux.util.clone(
-                GeoExt.ux.data.FeatureEditingDefaultStyleStoreOptions));
+            
+            var styleStore = Ext.create('Ext.data.Store', Ext.ux.util.clone(
+                    GeoExt.ux.data.FeatureEditingDefaultStyleStoreOptions));
             styleStore.sort('name');
-            var styler = new GeoExt.ux.LayerStyleManager(
-                new GeoExt.ux.StyleSelectorComboBox({
+            
+            var styler = Ext.create('GeoExt.ux.LayerStyleManager',
+            	Ext.create('GeoExt.ux.StyleSelectorComboBox', {
                     store: styleStore,
                     comboBoxOptions: {
-                        emptyText: OpenLayers.i18n("select a color..."),
+                    	valueField: 'style',
+                    	displayField: 'name',
+                    	emptyText: OpenLayers.i18n("select a color..."),
                         fieldLabel: OpenLayers.i18n('color')
                     }
             }), {});
@@ -254,8 +262,8 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
             	  }
               }
               
-              var styler = new GeoExt.ux.LayerStyleManager(
-                  new GeoExt.ux.StyleSelectorPalette({
+              var styler = Ext.create('GeoExt.ux.LayerStyleManager' ,
+            		  Ext.create('GeoExt.ux.StyleSelectorPalette', {
                 	  fieldLabel: OpenLayers.i18n('color'),
                 	  defaultColor: defaultColor
               }), {});
@@ -299,7 +307,7 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
             actionOptions.text = OpenLayers.i18n('Delete');
         }
 
-        this.deleteAction = new Ext.Action(actionOptions);
+        this.deleteAction = Ext.create('Ext.Action', actionOptions);
     },
 
     /** private: method[deleteFeatures]
@@ -386,7 +394,7 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
     parseFeatureAttributesToFormFields: function(feature) {
         var aoElements, nElements, fieldSet;
 
-        fieldSet = this.findById(this.attributeFieldSetId);
+        fieldSet = this.child('#' + this.attributeFieldSetId);
         aoElements = fieldSet.items.items;
         nElements = aoElements.length;
 
@@ -414,7 +422,7 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
     parseFormFieldsToFeatureAttributes: function(feature) {
         var field, id, value, fieldSet;
 
-        fieldSet = this.findById(this.attributeFieldSetId);
+        fieldSet = this.child('#' + this.attributeFieldSetId);
 
         for (var i = 0; i < fieldSet.items.length; i++) {
             field = fieldSet.items.get(i);

@@ -3,7 +3,6 @@
  *  class = FeatureEditingControler
  *  base_link = `Ext.util.Observable <http://extjs.com/deploy/dev/docs/?class=Ext.util.Observable>`_
  */
-Ext.namespace("GeoExt.ux");
 
 // FIXME: add DeleteFeature control when available
 /**
@@ -30,8 +29,8 @@ Ext.namespace("GeoExt.ux");
  *
  *      Create a FeatureEditing main controler.
  */
-GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
-
+Ext.define('GeoExt.ux.FeatureEditingControler', {
+	extend: 'Ext.util.Observable',
     /** api: property[map]
      *  ``OpenLayers.Map``  A configured map object.
      */
@@ -266,7 +265,7 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
             var layerOptions = OpenLayers.Util.applyDefaults(
                 this.layerOptions, {
                   styleMap: styleMap,
-                  displayInLayerSwitcher: false
+                  displayInLayerSwitcher: true
             });
             layer = new OpenLayers.Layer.Vector("Cosmetic", layerOptions);
             this.addLayers([layer]);
@@ -388,9 +387,9 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
             actionOptions.text = OpenLayers.i18n("Edit Feature");
         }
 
-        var action = new GeoExt.Action(actionOptions);
+        var action = Ext.create('GeoExt.Action', actionOptions);
 
-        this.actions.push(action);
+        this.actions.push(Ext.create('Ext.button.Button', action));
     },
 
     /** private: method[destroyFeatureControl]
@@ -489,9 +488,9 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
                 actionOptions.text = geometryType;
             }
 
-            action = new GeoExt.Action(actionOptions);
+            action = Ext.create('GeoExt.Action', actionOptions);
 
-            this.actions.push(action);
+            this.actions.push(Ext.create('Ext.button.Button', action));
         }
     },
 
@@ -522,10 +521,10 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
             actionOptions.text = OpenLayers.i18n('DeleteAll');
         }
 
-        var action = new Ext.Action(actionOptions);
+        var action = Ext.create('GeoExt.Action', actionOptions);
 
         this.deleteAllAction = action;
-        this.actions.push(action);
+        this.actions.push(Ext.create('Ext.button.Button', action));
     },
 
     /** private: method[deleteAllFeatures]
@@ -564,8 +563,8 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
                 actionOptions.text = OpenLayers.i18n("Import");
             }
 
-            var action = new Ext.Action(actionOptions);
-            this.actions.push(action);
+            var action = Ext.create('Ext.Action', actionOptions);
+            this.actions.push(Ext.create('Ext.button.Button', action));
         }
     },
 
@@ -587,8 +586,8 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
                 actionOptions.text = OpenLayers.i18n("Export");
             }
 
-            var action = new Ext.Action(actionOptions);
-            this.actions.push(action);
+            var action = Ext.create('Ext.Action', actionOptions);
+            this.actions.push(Ext.create('Ext.button.Button', action));
         }
     },
 
@@ -610,7 +609,7 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
                 break;
             case "OpenLayers.Control.ModifyFeature":
             case "OpenLayers.Control.DeleteFeature":
-                control = this.featureControl.selectControl;
+                control = this.featureControl;
                 break;
         }
 
@@ -664,7 +663,7 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
 
         this.featureControl.activate();
 
-        this.getSelectControl().select(feature);
+        this.getSelectControl().selectFeature(feature);
     },
 
     /** private: method[onModificationStart]
@@ -701,10 +700,10 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
         };
 
         if(this['export'] === true) {
-            options['plugins'] = [new GeoExt.ux.ExportFeature(), new GeoExt.ux.CloseFeatureDialog()];
+            options['plugins'] = [Ext.create('GeoExt.ux.ExportFeature', {}), Ext.create('GeoExt.ux.CloseFeatureDialog', {})];
         }
 
-        this.featurePanel = new GeoExt.ux.form.FeaturePanel(options);
+        this.featurePanel = Ext.create('GeoExt.ux.form.FeaturePanel', options);
 
         // display the popup
         popupOptions = {
@@ -716,13 +715,13 @@ GeoExt.ux.FeatureEditingControler = Ext.extend(Ext.util.Observable, {
                                                      this.popupOptions);
         popupOptions = OpenLayers.Util.applyDefaults(popupOptions,
                                                      this.defaultPopupOptions);
-        var popup = new GeoExt.Popup(popupOptions);
+        var popup = Ext.create('GeoExt.window.Popup', popupOptions);
         feature.popup = popup;
         this.popup = popup;
         popup.on({
             close: function() {
                 if (OpenLayers.Util.indexOf(this.controler.activeLayer.selectedFeatures, this.feature) > -1) {
-                    this.controler.getSelectControl().unselect(this.feature);
+                    this.controler.getSelectControl().unselectFeature(this.feature);
                 }
             }
         });

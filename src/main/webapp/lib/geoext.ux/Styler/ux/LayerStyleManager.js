@@ -12,8 +12,8 @@ Ext.namespace("GeoExt.ux");
  *
  * Extends: Ext.util.Observable
  */
-GeoExt.ux.LayerStyleManager = Ext.extend(Ext.util.Observable, {
-
+Ext.define('GeoExt.ux.LayerStyleManager', {
+	extend: 'Ext.util.Observable',
     currentLayer: null,
 
     currentFeature: null,

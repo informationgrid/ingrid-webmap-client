@@ -99,7 +99,7 @@ Ext.define('GeoExt.ux.form.RedLiningPanel', {
      *  Automatically create a FeatureEditingControler.
      */
     initControler: function() {
-        this.controler = new GeoExt.ux.FeatureEditingControler({
+        this.controler = Ext.create('GeoExt.ux.FeatureEditingControler', {
             'cosmetic': true,
             'map': this.map,
             'import': this['import'],

@@ -59,7 +59,7 @@ Ext.define('GeoExt.ux.LayerManagerImportPanel', {
      */
     initComponent: function() {
 
-        this.formatCombo = new Ext.form.ComboBox({
+        this.formatCombo = Ext.create('Ext.form.ComboBox', {
             id: 'layermanagerimportformat',
             fieldLabel: OpenLayers.i18n('Format'),
             store: GeoExt.ux.data.FormatStore,
@@ -69,12 +69,12 @@ Ext.define('GeoExt.ux.LayerManagerImportPanel', {
             triggerAction: 'all',
             emptyText:'Select a format...',
             selectOnFocus:true,
-            resizable:true
+            resizable:false
         });
 
         this.formatCombo.setValue(this.defaultFormat);
 
-        this.fileSelectorBox = new Ext.BoxComponent({
+        this.fileSelectorBox = Ext.create('Ext.Component', {
             id: 'fileSelectorBox',
             autoEl: {
                 // http://www.quirksmode.org/dom/inputfile.html

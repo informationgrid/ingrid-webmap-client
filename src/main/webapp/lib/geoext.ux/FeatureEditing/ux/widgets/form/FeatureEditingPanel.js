@@ -94,7 +94,7 @@ Ext.define('GeoExt.ux.form.FeatureEditingPanel', {
      */
     initToolbar: function() {
         // Add buttons and toolbar
-        Ext.apply(this, {tbar: new Ext.Toolbar(this.controler.actions)});
+        Ext.apply(this, {tbar: Ext.create('Ext.toolbar.Toolbar', this.controler.actions)});
     },
 
     /** private: method[initForm]

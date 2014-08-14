@@ -89,13 +89,13 @@ Ext.define('GeoExt.ux.LayerManagerWindow', {
      */
     initComponent: function() {
 
-        this.exportPanel = new GeoExt.ux.LayerManagerExportPanel({
+        this.exportPanel = Ext.create('GeoExt.ux.LayerManagerExportPanel', {
             map: this.map,
             downloadService: this.downloadService,
             defaultFormat: 'KML'
         });
 
-        this.importPanel = new GeoExt.ux.LayerManagerImportPanel({
+        this.importPanel = Ext.create('GeoExt.ux.LayerManagerImportPanel', {
             map: this.map,
             defaultFormat: 'KML'
         });
