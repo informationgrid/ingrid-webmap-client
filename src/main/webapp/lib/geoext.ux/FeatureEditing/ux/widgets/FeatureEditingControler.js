@@ -265,7 +265,7 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
             var layerOptions = OpenLayers.Util.applyDefaults(
                 this.layerOptions, {
                   styleMap: styleMap,
-                  displayInLayerSwitcher: true
+                  displayInLayerSwitcher: false
             });
             layer = new OpenLayers.Layer.Vector("Cosmetic", layerOptions);
             this.addLayers([layer]);
