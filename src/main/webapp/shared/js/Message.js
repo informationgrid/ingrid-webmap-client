@@ -27,7 +27,10 @@ de.ingrid.mapclient.Message.showInfo = function(msg, params, sessionHide) {
 
 	note.on('destroy', function(){
 		if(sessionHide){
-			Ext.util.Cookies.set(sessionHide, true, (new Date()).add(Date.YEAR, 1));
+			var date = new Date();
+			var nextDate = new Date();
+			nextDate.setFullYear(date.getFullYear()+1);
+			Ext.util.Cookies.set(sessionHide, true, nextDate);
 		}
 	});
 	note.show(Ext.select('div.x-panel-tbar'));
