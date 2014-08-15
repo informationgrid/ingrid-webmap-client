@@ -988,6 +988,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 	 * Render callback (called by Ext)
 	 */
 	onRender: function() {
+		var self = this;
 		this.superclass.onRender.apply(this, arguments);
 		if (this.mapUrl) {
 			// load the map defined in the mapUrl
@@ -1202,7 +1203,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 	 * Create the OpenLayers controls for the map.
 	 */
 	finishInitMap: function() {
-
 		var self = this;
 
 		if(self.configMinimapEnable){
