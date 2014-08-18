@@ -579,7 +579,11 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 			var index = this.layerStore.findBy(function(record) {
 				var serviceLayer = serviceRecord.get('layer');
 				var layer = record.get('layer');
-				return de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
+				var isSame = de.ingrid.mapclient.frontend.data.Service.compareLayers(serviceLayer, layer);
+				if(isSame){
+					record.set("styles", Ext.apply(serviceLayer.styles, layer.styles));
+				}
+				return isSame;
 			});
 			if (index == -1) {
 				this.layerStore.add([serviceRecord]);
