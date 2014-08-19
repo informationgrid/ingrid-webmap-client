@@ -677,7 +677,7 @@ de.ingrid.mapclient.frontend.Workspace.prototype.initComponent = function() {
 			
 			toolbarItems.push(new Ext.Button({
 				id: 'btnBWaStrClear',
-				iconCls : 'iconRemove',
+				iconCls : 'iconErase',
 				tooltip : 'BWaStr-Layer/-Marker entfernen',
 				enableToggle : false,
 				hidden: de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable") ? false : true,
