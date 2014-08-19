@@ -826,20 +826,22 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.addService =
 		// Select layer by checkedLayers only on add service.
 		// After mapclient reload load don't select layers by checkedLayers
 		if(!initialAdd){
-			//we check the services which are meant to be checked by default
-			var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-			for(var i = 0; i < wmsServices.length; i++){
-				if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-					var cl = wmsServices[i].checkedLayers;
-					if(cl){
-						for(var j = 0; j < cl.length; j++){
-							var k = 0;
-							// Set boolean to note checkedLayers selection (single selection)
-							self.isCheckedByCheckedLayers = true;
-							self.checkRecursively(cl[j],node);
+			if(checkedLayers == undefined){
+				//we check the services which are meant to be checked by default
+				var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+				for(var i = 0; i < wmsServices.length; i++){
+					if(service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+						var cl = wmsServices[i].checkedLayers;
+						if(cl){
+							for(var j = 0; j < cl.length; j++){
+								var k = 0;
+								// Set boolean to note checkedLayers selection (single selection)
+								self.isCheckedByCheckedLayers = true;
+								self.checkRecursively(cl[j],node);
+							}
 						}
+						break;
 					}
-					break;
 				}
 			}
 		}
