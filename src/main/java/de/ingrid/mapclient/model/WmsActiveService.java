@@ -4,6 +4,7 @@
 package de.ingrid.mapclient.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -16,14 +17,14 @@ public class WmsActiveService {
 	private String name;
 	private String capabilitiesUrl;
 	private String originalCapUrl;
-	private List<String> checkedLayers = new ArrayList<String>();
+	private List<WmsServiceLayer> checkedLayers = new ArrayList<WmsServiceLayer>();
 
 	public WmsActiveService(){
 	}
 
 
 
-	public WmsActiveService(String name, String capabilitiesUrl, String originalCapUrl, List<String> checkedLayers){
+	public WmsActiveService(String name, String capabilitiesUrl, String originalCapUrl, List<WmsServiceLayer> checkedLayers){
 		this.name = name;
 		this.capabilitiesUrl = capabilitiesUrl;
 		this.originalCapUrl = originalCapUrl;
@@ -38,11 +39,11 @@ public class WmsActiveService {
 		this.capabilitiesUrl = capabilitiesUrl;
 	}
 
-	public void setCheckedLayers(List<String> checkedLayers) {
+	public void setCheckedLayers(List<WmsServiceLayer> checkedLayers) {
 		this.checkedLayers = checkedLayers;
 	}
 
-	public List<String> getCheckedLayers() {
+	public List<WmsServiceLayer> getCheckedLayers() {
 		return checkedLayers;
 	}
 
