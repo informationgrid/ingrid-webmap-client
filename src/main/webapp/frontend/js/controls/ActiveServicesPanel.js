@@ -899,8 +899,21 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.checkNode = 
 	var nodes = serviceNode.childNodes;
 	for (var i = 0; i < nodes.length; i++) {
 		var node = nodes[i];
-		if(layerName == node.attributes.layer.params.LAYERS){
-			node.getUI().toggleCheck(true);
+		if(layerName instanceof String){
+			if(layerName == node.attributes.layer.params.LAYERS){
+				node.getUI().toggleCheck(true);
+			}
+		}else{
+			if(layerName.layer == node.attributes.layer.params.LAYERS){
+				node.getUI().toggleCheck(layerName.checked);
+				if(layerName.opacity != ""){
+					node.attributes.layer.setOpacity(parseInt(layerName.opacity)/100);
+				}else{
+					if(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')){
+						node.attributes.layer.setOpacity(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity'))/100);
+					}
+				}
+			}
 		}
 			
 		if(node.childNodes){
