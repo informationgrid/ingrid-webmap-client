@@ -729,7 +729,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			
 			var btnBWaStrClear = Ext.create('Ext.button.Button', {
 				id: 'btnBWaStrClear',
-				iconCls : 'iconRemove',
+				iconCls : 'iconErase',
 				tooltip : 'BWaStr-Layer/-Marker entfernen',
 				enableToggle : false,
 				hidden: self.configBWaStrLocatorEnable ? false : true,
