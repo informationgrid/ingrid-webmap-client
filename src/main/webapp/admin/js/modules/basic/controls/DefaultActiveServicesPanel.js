@@ -53,7 +53,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
         });
         
         var sliderService = new Ext.Slider({
-            fieldLabel: 'Allgemeine Sichtbarkeit',
+            fieldLabel: 'Default',
             minValue: 0,
             maxValue: 100,
             id: 'slider_service',
@@ -72,12 +72,16 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
     	        			sliderLayer.setValue(value, false);
             			}
             		}
+            		slider.label.update('Default: ' + value + '%');
+            	},
+            	afterrender: function(slider){
+            		slider.setValue(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')), false);
             	}
             }
         });
         
         var sliderLayer = new Ext.Slider({
-            fieldLabel: 'Layer Sichtbarkeit',
+            fieldLabel: 'Layer',
             minValue: 0,
             maxValue: 100,
             id: 'slider_layer',
@@ -94,16 +98,24 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             			if(obj.dragging){
             				node.attributes.opacity = value;
             			}
+            			if(node.attributes.opacity){
+            				slider.label.update('Layer: ' + value + '%');
+            			}else{
+            				slider.label.update('Layer: default');
+            			}
             			slider.setValue(value, false);
+            			
             		}
             	}
             }
         });
         
         var form = new Ext.form.FormPanel({
-            width : 150,
-            height: 160,
-            border: false,
+            width : 170,
+            autoHeight: true,
+            title: 'Sichtbarkeit',
+            border: true,
+            bodyStyle: 'padding: 5px;',
             labelAlign: 'top',
             defaults: {
                 anchor: '95%'
@@ -115,36 +127,36 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 			items: [{
                 columnWidth:.1,
                 border: false,
-                items:[{
-    				xtype: 'button',
-    				text: 'Speichern',
-    				handler: function() {
-    					self.save();
-    				},
-    				width: 75
+                items:[
+			      {
+					  xtype: 'button',
+					  text: 'Speichern',
+					  handler: function() {
+						  self.save();
+					  },
+					  width: 75
     		      },{
-    				    // spacer
-    					xtype: 'container',
-    					height: 10
+    		    	  xtype: 'container',
+    		    	  height: 10
     		      },{
-    		    	xtype: 'button',
-					text: 'Neuladen',
-					handler: function() {
-						var sliderLayer = Ext.getCmp("slider_layer");
-	        			sliderLayer.hide();
-
-	        			self.createActiveServiceTree();
-						self.treeActiveService.doLayout();
-						self.createServiceTree();
-						self.treeService.doLayout();
-					},
-    				width: 75
-			      },{
-  				    // spacer
-  					xtype: 'container',
-  					height: 10
+    		    	  xtype: 'button',
+    		    	  text: 'Neuladen',
+    		    	  handler: function() {
+    		    		  var sliderLayer = Ext.getCmp("slider_layer");
+    		    		  sliderLayer.hide();
+					
+    		    		  self.createActiveServiceTree();
+    		    		  self.treeActiveService.doLayout();
+    		    		  self.createServiceTree();
+    		    		  self.treeService.doLayout();
+    		    	  },
+    		    	  width: 75
 			      },
-			      form]
+			      {
+			    	  xtype: 'container',
+			    	  height: 10
+				  },
+				  form]
 			},{
                 columnWidth:.45,
                 border: false,
@@ -166,8 +178,6 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 		var self = this;
 		
 		var sliderService = Ext.getCmp("slider_service");
-		sliderService.setValue(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')), false);
-		
 		self.createActiveServiceTree();
 	    self.createServiceTree();
        
