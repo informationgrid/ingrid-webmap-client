@@ -40,6 +40,7 @@ public class PersistentConfiguration {
 	private List<AreaCategory> areaCategories;
 	private List<ServiceCategory> serviceCategories;
 	private List<WmsActiveService> wmsActiveServices;
+	private String activeServicesDefaultOpacity;
 	
 
 
@@ -59,6 +60,8 @@ public class PersistentConfiguration {
 		this.wmsServices = new ArrayList<WmsService>();
 		this.mapServiceCategories = new ArrayList<MapServiceCategory>();
 		this.setWmsActiveServices(new ArrayList<WmsActiveService>());
+		this.activeServicesDefaultOpacity = "";
+		
 	}
 
 	public List<ServiceCategory> getServiceCategories() {
@@ -173,5 +176,13 @@ public class PersistentConfiguration {
 
 	public void setWmsActiveServices(List<WmsActiveService> wmsActiveServices) {
 		this.wmsActiveServices = wmsActiveServices;
+	}
+
+	public String getActiveServicesDefaultOpacity() {
+		return activeServicesDefaultOpacity;
+	}
+
+	public void setActiveServicesDefaultOpacity(String activeServicesDefaultOpacity) {
+		this.activeServicesDefaultOpacity = activeServicesDefaultOpacity;
 	}
 }

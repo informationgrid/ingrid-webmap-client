@@ -35,6 +35,7 @@ import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsActiveService;
 import de.ingrid.mapclient.model.WmsServer;
 import de.ingrid.mapclient.model.WmsService;
+import de.ingrid.mapclient.model.WmsServiceLayer;
 
 /**
  * ConfigurationProvider gives access to the configuration of the map client.
@@ -240,6 +241,7 @@ public enum ConfigurationProvider {
 		xstream.alias("serviceCategory", ServiceCategory.class);
 		xstream.alias("service", WmsServer.class);
 		xstream.alias("wmsActiveService", WmsActiveService.class);
+		xstream.alias("wmsActiveServiceLayer", WmsServiceLayer.class);
 		
 
 

@@ -66,6 +66,7 @@ import de.ingrid.mapclient.model.Scale;
 import de.ingrid.mapclient.model.Setting;
 import de.ingrid.mapclient.model.WmsActiveService;
 import de.ingrid.mapclient.model.WmsService;
+import de.ingrid.mapclient.model.WmsServiceLayer;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.mapclient.utils.CapabilitiesUtils;
 import de.ingrid.utils.xml.XPathUtils;
@@ -484,11 +485,12 @@ public class ConfigurationResource {
 	@POST
 	@Path(DYNAMIC_PATH+"/activeServices")
 	@Consumes(MediaType.TEXT_PLAIN)
-	public void setActiveSettings(String activeServices, @Context HttpServletRequest req) {
+	public void setActiveSettings(String layerConfig, @Context HttpServletRequest req) {
 		try {
 			PersistentConfiguration config = ConfigurationProvider.INSTANCE.getPersistentConfiguration();
 			// convert json string to List<Setting>
-			JSONArray settingTmp = new JSONArray(activeServices);
+			JSONObject layerConfigObj = new JSONObject(layerConfig);
+			JSONArray settingTmp = new JSONArray(layerConfigObj.getString("activeServices"));
 			List<WmsActiveService> wmsActiveServices = new ArrayList<WmsActiveService>();
 			for (int j=0, count=settingTmp.length(); j<count; j++) {
 				JSONObject settingsObj = settingTmp.getJSONObject(j);
@@ -498,9 +500,15 @@ public class ConfigurationResource {
 		            String key = (String)keys.next();
 		            if(key.equals("serviceLayers")){
 		            	JSONArray serviceLayers = new JSONArray(settingsObj.get(key).toString());
-		    			List<String> serviceLayersList = new ArrayList<String>();
+		    			List<WmsServiceLayer> serviceLayersList = new ArrayList<WmsServiceLayer>();
 		    			for (int i = 0, count1 = serviceLayers.length(); i < count1; i++){
-		    				serviceLayersList.add(serviceLayers.getString(i));
+		    				serviceLayersList.add(
+		    						new WmsServiceLayer(
+		    								serviceLayers.getJSONObject(i).getString("layer"),
+		    								serviceLayers.getJSONObject(i).has("opacity") ? serviceLayers.getJSONObject(i).getString("opacity") : "",
+		    								serviceLayers.getJSONObject(i).getBoolean("checked")
+		    						)
+		    				);
 		    			}
 		    			wmsActiveService.setCheckedLayers(serviceLayersList);
 		            }else if(key.equals("serviceUrl")){
@@ -510,6 +518,10 @@ public class ConfigurationResource {
 		        wmsActiveServices.add(wmsActiveService);
 			}
 			config.setWmsActiveServices(wmsActiveServices);
+			
+			String activeServicesDefaultOpacity = layerConfigObj.getString("activeServicesDefaultOpacity");
+			config.setActiveServicesDefaultOpacity(activeServicesDefaultOpacity);
+			
 			ConfigurationProvider.INSTANCE.write(config);
 		}
 		catch (Exception ex) {
