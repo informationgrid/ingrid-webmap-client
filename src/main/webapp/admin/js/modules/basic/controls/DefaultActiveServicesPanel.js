@@ -113,14 +113,14 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             hidden:false,
             listeners:{
             	change: function(slider, value, obj){
-            		var node = self.treeActiveService.getSelectionModel().getSelectedNode();
+            		var node = self.treeActiveService.getSelectionModel().getSelection()[0];
             		if(node){
-        				if(node.attributes.opacity == undefined){
+        				if(node.raw.opacity == undefined){
         					var sliderLayer = Ext.getCmp("slider_layer");
     	        			sliderLayer.setValue(value, false);
             			}
             		}
-            		slider.label.update('Default: ' + value + '%');
+            		slider.labelEl.update('Default: ' + value + '%');
             	},
             	afterrender: function(slider){
             		slider.setValue(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')), false);
@@ -141,15 +141,15 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             hidden:true,
             listeners:{
             	change: function(slider, value, obj){
-            		var node = self.treeActiveService.getSelectionModel().getSelectedNode();
+            		var node = self.treeActiveService.getSelectionModel().getSelection()[0];
             		if(node){
             			if(obj.dragging){
-            				node.attributes.opacity = value;
+            				node.raw.opacity = value;
             			}
-            			if(node.attributes.opacity){
-            				slider.label.update('Layer: ' + value + '%');
+            			if(node.raw.opacity){
+            				slider.labelEl.update('Layer: ' + value + '%');
             			}else{
-            				slider.label.update('Layer: default');
+            				slider.labelEl.update('Layer: default');
             			}
             			slider.setValue(value, false);
             			
@@ -333,8 +333,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         		if(tmpNode){
         			if(tmpNode.data.checked != undefined){
             			sliderLayer.show();
-            			if(tmpNode.data.opacity){
-            				sliderLayer.setValue(tmpNode.data.opacity, false);
+            			if(tmpNode.raw.opacity){
+            				sliderLayer.setValue(tmpNode.raw.opacity, false);
             			}else{
             				sliderLayer.setValue(Ext.getCmp("slider_service").getValue(), false);
             			}
