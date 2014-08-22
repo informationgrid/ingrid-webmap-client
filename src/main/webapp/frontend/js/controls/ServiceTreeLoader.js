@@ -69,7 +69,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             
             if(!this.initialAdd){
             	// Check nodes by admin configuration
-                this.checkNodeByAddService(node);
+            	if(this.checkedLayers == undefined){
+            		this.checkNodeByAddService(node);            		
+            	}else{
+					for (var j = 0; j < this.checkedLayers.length; j++) {
+						var checkedLayer = this.checkedLayers[j];
+						this.checkNodes(checkedLayer, node);
+					}
+            	}
             }else{
             	if(node.hasChildNodes()){
             		this.checkNodeByState(node.childNodes);
@@ -131,7 +138,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     							var parent = node.parentNode;
     							if(parent){
     								if(parent.get("checked") != true){
-    									// TODO: Check nodes
     									parent.set("checked", true);
     								}
     							}
@@ -141,7 +147,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     				}
     			}
     		}
-    		if(node.hasChildNodes){
+    		if(node.hasChildNodes()){
         		this.checkSelectParentNode(node.childNodes);
     		}
     	}
@@ -170,9 +176,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
     		    var selectedLayer = this.selectedLayersByService[j];
     			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-    				if(selectedLayer.cls){
-    					node.set("checked", true);
-    				}
+					node.set("checked", true);
     			}
     		}
     		if(node.hasChildNodes()){
@@ -183,11 +187,24 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     checkNodes: function(layerName, node){
     	var self = this;
 		node.eachChild(function(n) {
-			if (layerName == n.get("layer").params.LAYERS){
-				n.set('checked', true);
+			if(layerName.layer){
+				if(layerName.layer == n.get("layer").params.LAYERS){
+					n.set('checked', true);
+					if(layerName.opacity != ""){
+						n.get("layer").setOpacity(parseInt(layerName.opacity)/100);
+					}else{
+						if(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')){
+							n.get("layer").setOpacity(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity'))/100);
+						}
+					}
+				}
+			}else{
+				if (layerName == n.get("layer").params.LAYERS){
+					n.set('checked', true);
+				}
 			}
 				
-			if (n.hasChildNodes) {
+			if (n.hasChildNodes()) {
 				self.checkNodes(layerName, n);
 			}
 		});

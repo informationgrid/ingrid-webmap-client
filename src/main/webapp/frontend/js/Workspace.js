@@ -1535,7 +1535,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 						var id = null;
 						var capabilitiesUrl = null;
 						var checked = null;
-						var cls = null;
 						var leaf = null;
 						for (var j = 0, countJ = selectedLayer.length; j < countJ; j++) {
 							var entry = selectedLayer[j];
@@ -1545,8 +1544,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 								capabilitiesUrl = entry[1];
 							}else if(entry[0] == "checked"){
 								checked = entry[1];
-							}else if(entry[0] == "cls"){
-								cls = entry[1];
 							}else if(entry[0] == "leaf"){
 								leaf = entry[1];
 							}
@@ -1555,7 +1552,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 							id:id,
 							capabilitiesUrl:capabilitiesUrl,
 							checked:checked,
-							cls:cls,
 							leaf:leaf
 						});
 					}

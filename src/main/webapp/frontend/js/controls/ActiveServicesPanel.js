@@ -106,6 +106,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 								var index = self.treeState.indexOf(state);
 								if (index > -1) {
 									self.treeState.splice(index, 1);
+									if(self.treeState.length > 0){
+										i--;
+									}
 								}
 							}
 						}
@@ -118,7 +121,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 							var index = self.selectedLayersByService.indexOf(layer);
 							if (index > -1) {
 								self.selectedLayersByService.splice(index, 1);
-								i--;
+								if(self.selectedLayersByService.length > 0){
+									i--;
+								}
 							}
 							
 						}
@@ -353,6 +358,40 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	              expanded: true
 	          },
 	          listeners: {
+	        	  	update: function(store, node, operation, modifiedFieldNames, eOpts ){
+	        	  		if(modifiedFieldNames[0] == "checked"){
+	        	  			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState") == true){
+	        	  				if(node.get("layer")){
+	    							var id = node.get("layer").params.LAYERS;
+	    							var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+	    							
+    								// Save selected tree nodes to session
+    								for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
+    									var selectedLayer = self.selectedLayersByService[j];
+    									if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+    										var index = self.selectedLayersByService.indexOf(selectedLayer);
+    										if (index > -1) {
+    											self.selectedLayersByService.splice(index, 1);
+    										}
+    										break;
+    									}
+    								}
+    								
+    								if(node.get("checked")){
+    									self.selectedLayersByService.push({
+    										id:id,
+    										capabilitiesUrl:capabilitiesUrl,
+    										checked:node.get("checked"),
+    										cls: node.get("cls") ? node.get("cls") : "x-tree-node-anchor",
+    										leaf:node.get("leaf")
+    										
+    									});
+    								}
+    							}
+    						}
+    						self.fireEvent('datachanged');
+	        	  		}
+	        	  	},
 			        collapse: function(node){
 			        	var cls = '';
 			        	if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
@@ -466,43 +505,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			allowNodeOver: true,
 			viewConfig: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop") ? { plugins: { ptype: 'treeviewdragdrop' } } : {},
 			plugins:[hoverActions],
-			buttonSpanElStyle:'width:12px;',
-			listeners: {
-				checkchange: function(node, checked, ev){
-					if (de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false) {
-						if(node.get("layer")){
-							var id = node.get("layer").params.LAYERS;
-							var capabilitiesUrl = node.raw.service.capabilitiesUrl;
-							
-							if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState") == true){
-								// Save selected tree nodes to session
-								for (var j = 0, count = self.selectedLayersByService.length; j < count; j++) {
-									var selectedLayer = self.selectedLayersByService[j];
-									if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-										var index = self.selectedLayersByService.indexOf(selectedLayer);
-										if (index > -1) {
-											self.selectedLayersByService.splice(index, 1);
-										}
-										break;
-									}
-								}
-								
-								if(node.get("checked")){
-									self.selectedLayersByService.push({
-										id:id,
-										capabilitiesUrl:capabilitiesUrl,
-										checked:node.get("checked"),
-										cls: node.get("cls") ? node.get("cls") : "x-tree-node-anchor",
-										leaf:node.get("leaf")
-										
-									});
-								}
-							}
-						}
-						self.fireEvent('datachanged');
-					}
-				}
-		    }
+			buttonSpanElStyle:'width:12px;'
 		});
 
 		Ext.apply(this, {
@@ -671,7 +674,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				service: service,
 				plugins: [{
 					ptype: 'gx_layercontainer',
-                    text: serviceTitle,
                     leaf: false,
 					service: service,
 					loader: Ext.create('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
@@ -683,6 +685,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 						panel: self,
 						selectedLayersByService: self.selectedLayersByService,
 						layersByURLService: self.layersByURLService,
+						checkedLayers: checkedLayers,
 						store: this.layerStore,
 						filter: function(record) {
 							var layer = record.get("layer");

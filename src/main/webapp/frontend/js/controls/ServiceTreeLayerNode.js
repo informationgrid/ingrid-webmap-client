@@ -17,7 +17,25 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         		target.set('checked', true);
         	}
         }else{
-        	target.set('checked', layer.getVisibility());
+        	if(target.get('checked')){
+        		target.set('checked', target.get('checked'));
+        		if(target.get('leaf')){
+        			layer.setVisibility(true);
+        		}else{
+        			if(layer.getVisibility()){
+        				var cls = '';
+			        	if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+			        		cls = 'x-tree-node-select';
+			        	}
+    					if(target.get("expanded")){
+    						cls = cls + ' ' + 'x-tree-expand';
+    					}
+    					target.set('cls', cls);
+        			}
+        		}
+        	}else{
+        		target.set('checked', layer.getVisibility());
+        	}
         }
         if (!target.get('checkedGroup') && layer.isBaseLayer) {
             target.set('checkedGroup', 'gx_baselayer');
@@ -70,7 +88,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
 							}
 						}else{
 							if(checked){
-								if(node.get("cls").indexof("x-tree-node-select") > -1){
+								if(node.get("cls").indexOf("x-tree-node-select") > -1){
 									layer.setVisibility(checked);
 								}
 								this.checkboxSelection(node, true, isParentsSelect);
@@ -88,9 +106,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         node.eachChild(function(n) {
 			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
     			// Selection of all childs
-				n.set("checked", checked);
-    		}else{
-    			// TODO: Checked group layer
+				n.set('checked', checked);
     		}
 	    });
         this.enforceOneVisible();

@@ -219,7 +219,6 @@ public class UserDataResource {
 					entry.put("id", jsonEntry.get("id").toString());
 					entry.put("capabilitiesUrl", jsonEntry.get("capabilitiesUrl").toString());
 					entry.put("checked", jsonEntry.get("checked").toString());
-					entry.put("cls", jsonEntry.get("cls").toString());
 					entry.put("leaf", jsonEntry.get("leaf").toString());
 					selectedLayersByService.add(entry);
 				}
@@ -372,7 +371,6 @@ public class UserDataResource {
 				Map<String, String> map = new HashMap<String, String>();
 				JSONObject obj = selectedLayersByServiceTmp.getJSONObject(i);
 				map.put("id", (String) obj.get("id"));
-				map.put("cls", (String) obj.get("cls"));
 				map.put("checked", (String) obj.get("checked").toString());
 				map.put("leaf", (String) obj.get("leaf").toString());
 				map.put("capabilitiesUrl", (String) obj.get("capabilitiesUrl"));
