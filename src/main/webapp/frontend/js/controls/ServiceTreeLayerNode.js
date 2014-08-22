@@ -20,7 +20,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         	if(target.get('checked')){
         		target.set('checked', target.get('checked'));
         		if(target.get('leaf')){
-        			layer.setVisibility(true);
+        			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
+        				layer.setVisibility(true);
+        			}
         		}else{
         			if(layer.getVisibility()){
         				var cls = '';
@@ -63,6 +65,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         }
     },
     onCheckChange: function() {
+    	var self = this;
         var node = this.target,
             checked = this.target.get('checked');
 
@@ -107,6 +110,17 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
 			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
     			// Selection of all childs
 				n.set('checked', checked);
+    		} else{
+    			var isParentsSelect = self.isParentsSelect(n);
+				var layer = n.get('layer');
+				var checkedLayer = n.get('checked');
+				if(isParentsSelect){
+					if(checkedLayer){
+						layer.setVisibility(checkedLayer);
+					}
+				}else{
+					layer.setVisibility(false);
+				}
     		}
 	    });
         this.enforceOneVisible();
