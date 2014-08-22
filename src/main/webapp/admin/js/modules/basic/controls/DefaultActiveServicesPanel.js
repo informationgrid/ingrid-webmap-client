@@ -159,7 +159,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         });
         
         var form = Ext.create('Ext.form.Panel', {
-            width : 170,
+            flex : 1,
             autoHeight: true,
             title: 'Sichtbarkeit',
             border: true,
