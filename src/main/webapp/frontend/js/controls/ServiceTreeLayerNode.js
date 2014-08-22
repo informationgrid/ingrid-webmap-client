@@ -18,22 +18,29 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
         	}
         }else{
         	if(target.get('checked')){
-        		target.set('checked', target.get('checked'));
-        		if(target.get('leaf')){
+        		if(layer.getVisibility() == false){
         			if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
         				layer.setVisibility(true);
+        			}else{
+        				var isParentsSelect = this.isParentsSelect(target);
+        				if(isParentsSelect){
+        					if(target.get('leaf')){
+        						layer.setVisibility(true);
+        					}
+        				}
         			}
-        		}else{
-        			if(layer.getVisibility()){
-        				var cls = '';
+        		}
+        		if(target.get('leaf') == false){
+	    			if(layer.getVisibility()){
+	    				var cls = '';
 			        	if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
 			        		cls = 'x-tree-node-select';
 			        	}
-    					if(target.get("expanded")){
-    						cls = cls + ' ' + 'x-tree-expand';
-    					}
-    					target.set('cls', cls);
-        			}
+						if(target.get("expanded")){
+							cls = cls + ' ' + 'x-tree-expand';
+						}
+						target.set('cls', cls);
+	    			}
         		}
         	}else{
         		target.set('checked', layer.getVisibility());
