@@ -201,10 +201,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
         self.treeService.on({
         	afterlayout: function(tree){
 	        	var moveServices = [];
-	        	var usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
-	        	if(usedServices){
-	        		for (var j = 0; j < usedServices.length; j++) {
-	    				var usedService = usedServices[j];
+	        	if(self.usedServices == undefined){
+	        		self.usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
+	        	}
+	        	if(self.usedServices){
+	        		for (var j = 0; j < self.usedServices.length; j++) {
+	    				var usedService = self.usedServices[j];
 	    				if(self.services){
 	    					for (var i=0, count=self.services.length; i<count; i++) {
 	        					var curService = self.services[i];
@@ -320,6 +322,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	},
 	getActiveServices: function(services, nodes){
 		var service = [];
+		this.usedServices = [];
 		for (var i=0, count=nodes.length; i<count; i++) {
 			var node = nodes[i];
 			var serviceUrl; 
@@ -331,6 +334,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 			this.getActiveServiceLayers(serviceLayers, node.childNodes);
 			
 			services.push({serviceUrl: serviceUrl, serviceLayers:serviceLayers });
+			this.usedServices.push({capabilitiesUrl: serviceUrl, checkedLayers:serviceLayers });
 		}
 	},
 	getActiveServiceLayers: function(serviceLayers, nodes){
