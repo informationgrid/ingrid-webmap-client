@@ -13,7 +13,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 	constrain: true,
 	resizable: false,
 	width: 500,
-	height: 500,
+	height: 560,
 	shadow: false,
 	initHidden: false,
 	ctrls:null,
@@ -223,14 +223,21 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        minLength: 1,
     		                        emptyText : data.km_von + "",
     		                        validator: function(value){
+    		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
 		                        		var v = parseFloat(value.replace("\,","."));
-		                        		if(v == data.km_bis){
-    		                        		return false;
-		                        		}else if(v < data.km_von || v > data.km_bis){
-    		                        		return false;
-    		                        	}else if(value == Ext.getCmp("textfield_singleQueryTo").getValue()){
-    		                        		return false;
-    		                        	}
+		                        		if(value.trim() != ""){
+			                        		if(v == data.km_bis){
+			                        			buttonSubmit.disable();
+	    		                        		return false;
+			                        		}else if(v < data.km_von || v > data.km_bis){
+			                        			buttonSubmit.disable();
+	    		                        		return false;
+	    		                        	}else if(value == Ext.getCmp("textfield_singleQueryTo").getValue()){
+	    		                        		buttonSubmit.disable();
+	    		                        		return false;
+	    		                        	}
+		                        		}
+		                        		buttonSubmit.enable();
     		                        	return true;
     		                        }
     		                    },
@@ -246,15 +253,22 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        minLength: 1,
     		                        emptyText: data.km_bis + "",
     		                        validator: function(value){
-		                        		var v = parseFloat(value.replace("\,","."));
-		                        		if(v == data.km_von){
-    		                        		return false;
-		                        		}else if(v < data.km_von || v > data.km_bis){
-    		                        		return false;
-    		                        	}else if(value == Ext.getCmp("textfield_singleQueryFrom").getValue()){
-    		                        		return false;
+    		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
+    		                        	if(value.trim() != ""){
+    		                        		var v = parseFloat(value.replace("\,","."));
+    		                        		if(v == data.km_von){
+    		                        			buttonSubmit.disable();
+        		                        		return false;
+    		                        		}else if(v < data.km_von || v > data.km_bis){
+    		                        			buttonSubmit.disable();
+        		                        		return false;
+        		                        	}else if(value == Ext.getCmp("textfield_singleQueryFrom").getValue()){
+        		                        		buttonSubmit.disable();
+        		                        		return false;
+        		                        	}
     		                        	}
-    		                        	return true;
+    		                        	buttonSubmit.enable();
+		                        		return true;
     		                        }
     		                    },
     		                    {
@@ -292,7 +306,9 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        	if(textfield_singleQueryFrom.getValue() == "" 
     		                        		&& textfield_singleQueryTo.getValue() == ""
     		                        		&& textfield_singleQueryOffset.getValue() == ""){
-    		                        		content = content + '"km_wert":'+ textfield_singleQueryFrom.emptyText;
+	                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+		                        			content = content + ',';
+		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText;
     		                        	}else{
     		                        		
     		                        		if(textfield_singleQueryFrom.getValue() != ""
@@ -451,7 +467,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    },
     		                    {
     		            			xtype: 'container',
-    		            			height: 20
+    		            			height: 10
     		            	    },
     		                    {
     		                        xtype: 'label',
@@ -460,7 +476,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    },
     		                    {
     		            			xtype: 'container',
-    		            			height: 20
+    		            			height: 10
     		            	    },
     		                    {
     		                        xtype: 'button',
@@ -658,7 +674,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		                        }
     	                    }
     	             ]
-                }]
+                },{
+                	html: '<p>Die Berechnung erfolgt nicht nach den Vorgaben der Verwaltungsvorschrift der Wasser- und Schifffahrtsverwaltung des Bundes \"Geod&auml;tische Grundlagen und Ordnungssysteme\" (VV-WSV 2601) zur Stationierung. Es sind jedoch keine Abweichungen zu erwarten\, wenn die berechneten Objekte auf der Gew&auml;ssernetzlinie liegen oder wenn die angrenzenden Ordnungsprofile die Gew&auml;ssernetzlinie <br>orthogonal schneiden.</p>',
+                	border: false,
+                	padding: 5,
+                	style: 'color:red; font-size:9px;'
+                }
+                ]
     		}]
     	});
         	
