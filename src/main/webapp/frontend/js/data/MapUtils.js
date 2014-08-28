@@ -142,6 +142,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 					map.layers[i].yx["EPSG:31467"] = true;
 					map.layers[i].yx["EPSG:31468"] = true;
 					map.layers[i].yx["EPSG:31469"] = true;
+					map.layers[i].yx["EPSG:2397"] = true;
+					map.layers[i].yx["EPSG:2398"] = true;
+					map.layers[i].yx["EPSG:2399"] = true;
 				}
 			}
 		}
