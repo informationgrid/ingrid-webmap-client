@@ -7,13 +7,14 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * @class DefaultExtendPanel is used to define the map's default extend.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel', { 
-	extend: 'Ext.panel.Panel',
+	extend: 'Ext.form.Panel',
 	id: 'defaultExtendPanel',
 	title: 'Eigenschaften',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
 	autoScroll: true,
 	bodyPadding: 10,
@@ -46,62 +47,26 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel', {
 		
 		
 		Ext.apply(this, {
-			items: [this.mapExtendPanel,
+			items: [
+			        this.mapExtendPanel,
 			        {
 						xtype: 'container',
 						height: 20
 			        },
-			        {
-						xtype: 'container',
-						layout: {
-						    type: 'vbox',
-						    align: 'right',
-						    pack: 'start'
-						},
-						anchor: '100%',
-					    items: [
-				            {
-								xtype: 'button',
-								id: 'btnMapExtendPanel',
-								text: 'Initiale Kartenausdehnung speichern',
-								anchor: '100%',
-								handler: function() {
-									if (self.mapExtendPanel.validate()) {
-										self.saveMapExtend();
-									}
-								}
-				            }
-				        ]
-			        },
-			        {
-						xtype: 'container',
-						height: 20
-			        },
-		            this.gridDefault,
-		            {
-						xtype: 'container',
-						height: 20
-			        },
-		            {
-						xtype: 'container',
-						layout: {
-						    type: 'vbox',
-						    align: 'right',
-						    pack: 'start'
-						},
-						anchor: '100%',
-					    items: [
-				            {
-								xtype: 'button',
-								id: 'btnGridDefault',
-								text: 'Einstellungen speichern',
-								anchor: '100%',
-								handler: function() {
-									self.saveSettings();
-								}
-				            }
-				         ]
-		            }
+			        this.gridDefault
+			],
+			buttons:[{
+				xtype: 'button',
+				id: 'btnGridDefault',
+				text: 'Einstellungen speichern',
+				anchor: '100%',
+				handler: function() {
+					if (self.mapExtendPanel.validate()) {
+						self.saveMapExtend();
+					}
+					self.saveSettings();
+				}
+            }
 			]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultExtendPanel.superclass.initComponent.call(this);

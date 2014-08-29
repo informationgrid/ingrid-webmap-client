@@ -8,11 +8,9 @@ var globalSelectedLayerCheckbox;
  * @class ServiceDetailLayerPanel is used to manage a list of map projections.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel', { 
-	extend:'Ext.Panel',
+	extend:'Ext.tree.Panel',
 	id: 'serviceDetailLayerPanel',
-	split: true,
     title: 'Layer',
-    autoScroll: true,
     activeNode: null,
 	selectedService: null,
 	mainPanel:null,
@@ -136,72 +134,66 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPane
 							}
 						});
 											
-					    // create the Grid
-					    var grid = Ext.create('Ext.tree.Panel', {
-					      id:'serviceDetailLayerPanelTree',
-					      store: self.store,
-					      layout: 'fit',
-					      border: false,
-					      useArrows: true,
-					      rootVisible: false,
-					      multiSelect: true,
-					      plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
-					            clicksToEdit: 2
-					      })],
-					      columns: {
-					    	  items: [
-					    	          {
-						            id:'title',
-						            header: "Name",
-						            width: 160, 
-						            sortable: false,
-						            dataIndex: 'text',
-						            xtype: 'treecolumn',
-						            editor:{
-						            	xtype:'textfield'
-					            	},
-						            flex: 1
-						        }, {
-						            header: "Verwerfen", 
-						            xtype: 'checkcolumn',
-						            align: 'center',
-						            width: 75, 
-						            sortable: false, 
-						            dataIndex: 'deactivated'
-						        }, {
-						            header: "Aktivieren", 
-						            xtype: 'checkcolumn',
-						            align: 'center',
-						            width: 75, 
-						            sortable: false, 
-						            dataIndex: 'checkedLayer'
-						        }, {
-						            header: "Feature Info",
-						            xtype: 'checkcolumn',
-						            align: 'center',
-						            width: 75, 
-						            sortable: false, 
-						            dataIndex: 'featureInfo'
-						        }
-						      ],
-						        columnsText: 'Spalten',
-					            sortAscText: 'A-Z sortieren',
-					            sortDescText: 'Z-A sortieren'
-					      },
-					      stripeRows: true,
-					      autoExpandColumn: 'title',
-					      viewConfig : {
-					      	enableRowBody : true,
-							columnsText: 'Spalten',
-				            sortAscText: 'A-Z sortieren',
-				            sortDescText: 'Z-A sortieren'
-					      },
-					    	tbar:[saveBtn, '->']
-					    });
 						// create the final layout
 						Ext.apply(this, {
-							items: [grid],
-							layout : 'fit'
+							id:'serviceDetailLayerPanelTree',
+						      store: self.store,
+						      border: true,
+						      autoScroll: true,
+						      useArrows: true,
+						      rootVisible: false,
+						      multiSelect: true,
+						      plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
+						            clicksToEdit: 2
+						      })],
+						      columns: {
+						    	  items: [
+						    	          {
+							            id:'title',
+							            header: "Name",
+							            sortable: false,
+							            dataIndex: 'text',
+							            xtype: 'treecolumn',
+							            editor:{
+							            	xtype:'textfield'
+						            	},
+							            flex: 1
+							        }, {
+							            header: "Verwerfen", 
+							            xtype: 'checkcolumn',
+							            align: 'center',
+							            sortable: false, 
+							            dataIndex: 'deactivated',
+							            flex: .1
+							        }, {
+							            header: "Aktivieren", 
+							            xtype: 'checkcolumn',
+							            align: 'center',
+							            sortable: false, 
+							            dataIndex: 'checkedLayer',
+							            flex: .1
+							        }, {
+							            header: "Feature Info",
+							            xtype: 'checkcolumn',
+							            align: 'center',
+							            sortable: false, 
+							            dataIndex: 'featureInfo',
+							            flex: .1
+							        }
+							      ],
+							        columnsText: 'Spalten',
+						            sortAscText: 'A-Z sortieren',
+						            sortDescText: 'Z-A sortieren'
+						      },
+						      stripeRows: true,
+						      autoExpandColumn: 'title',
+						      viewConfig : {
+						      	enableRowBody : true,
+								columnsText: 'Spalten',
+					            sortAscText: 'A-Z sortieren',
+					            sortDescText: 'Z-A sortieren'
+						      },
+						    	tbar:[saveBtn, '->']
 						});
 					}
 				}

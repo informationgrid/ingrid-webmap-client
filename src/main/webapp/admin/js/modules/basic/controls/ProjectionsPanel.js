@@ -10,10 +10,11 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 	extend: 'Ext.panel.Panel',
 	id: 'projectionsPanel',
 	title: 'Raumbezugssysteme',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
 	autoScroll: true,
 	bodyPadding: 10,
@@ -42,7 +43,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		editor: {
 		   xtype: 'textfield',
 		   allowBlank: false,
-		   labelAlign: 'top',
 		   labelSeparator: '',
 		   labelStyle: 'padding-bottom:5px;',
 		   columnWidth: 0.95
@@ -55,7 +55,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		editor: {
 		   xtype: 'textfield',
 		   allowBlank: false,
-		   labelAlign: 'top',
 		   labelSeparator: '',
 		   labelStyle: 'padding-bottom:5px;',
 		   columnWidth: 0.95

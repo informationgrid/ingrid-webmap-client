@@ -8,16 +8,18 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * and the default map layers provided by it.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', { 
-	extend: 'Ext.panel.Panel', 
+	extend: 'Ext.form.Panel', 
 	id: 'defaultServicePanel',
 	title: 'Hintergrundkarte',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
 	autoScroll: true,
 	bodyPadding: 10,
+	
 	/**
 	 * A simple ArrayStore for the map layer names of the current capabilities url
 	 */
@@ -53,6 +55,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			labelAlign: 'top',
 			labelSeparator: '',
 			labelStyle: 'padding-bottom:5px;',
+			width: '100%',
 			listeners:{
 				afterRender: function(){
 					var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
@@ -142,31 +145,34 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 
 		var self = this;
 		Ext.apply(this, {
-			items: [
-			this.wmsCapUrlField,
-			{
-				xtype: 'container',
-				layout: 'column',
-				anchor: '100%',
-			    items: [{
-					xtype: 'container',
-					columnWidth: 1
-				}, {
-					xtype: 'container',
-					layout: 'form',
-					width: 100,
-					items: {
-						xtype: 'button',
-						text: 'Laden',
-						width: '100%',
-						handler: function() {
-							if (self.wmsCapUrlField.validate()) {
-								self.loadCapUrl();
+			items: [{
+				border: false,
+				layout: {
+				    type: 'hbox',
+				    pack: 'start',
+				    align: 'bottom'
+				},
+				items:[{
+						flex:1,
+						border: false,
+						items:[this.wmsCapUrlField]
+					},{
+						width: 100,
+						border: false,
+						padding: '0 0 5 10',
+						items:[{
+							xtype: 'button',
+							text: 'Laden',
+							width: '100%',
+							handler: function() {
+								if (self.wmsCapUrlField.validate()) {
+									self.loadCapUrl();
+								}
 							}
-						}
+						}]
 					}
-				}]
-		    },
+				]
+			},
 		    {
 				xtype: 'container',
 				height: 10
@@ -189,31 +195,17 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 		    {
 				xtype: 'container',
 				height: 10
-	        },
-		    {
-				xtype: 'container',
-				layout: 'column',
-				anchor: '100%',
-			    items: [{
-					xtype: 'container',
-					columnWidth: 1
-				}, {
-					xtype: 'container',
-					layout: 'form',
-					width: 100,
-					items: {
-						xtype: 'button',
-						id: 'featureInfoBtn',
-						text: 'Speichern',
-						width: '100%',
-						handler: function() {
-							if (self.baseLayerCombo.validate() && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
-								self.save();
-							}
-						}
+	        }],
+	        buttons:[{
+				xtype: 'button',
+				id: 'featureInfoBtn',
+				text: 'Einstellungen speichern',
+				handler: function() {
+					if (self.baseLayerCombo.validate() && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
+						self.save();
 					}
-				}]
-		    }]
+				}
+			}]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel.superclass.initComponent.call(this);
 	},

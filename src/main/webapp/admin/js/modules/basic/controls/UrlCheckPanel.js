@@ -7,15 +7,17 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * @class UrlCheckPanel is used to manage a list of scales.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', { 
-	extend:'Ext.panel.Panel',
+	extend:'Ext.form.Panel',
 	id: 'urlCheckPanel',
 	title: 'URL-Check',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
-	bodyPadding: 10,
 	autoScroll: true,
+	bodyPadding: 10,
 	settingsStore: {},
 	grid: null,
 	propertyNames: {},
@@ -48,28 +50,17 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', {
 		        {
 					xtype: 'container',
 					height: 10
-		        },
-		        {
-					xtype: 'container',
-					layout: {
-					    type: 'vbox',
-					    align: 'right',
-					    pack: 'start'
-					},
-					anchor: '100%',
-				    items: [
-			            {
-							xtype: 'button',
-							id:'btnSaveUrlCheckPanel',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							handler: function() {
-								self.saveSettings();
-							}
-			            }
-		            ]
-			    }
-	        ]
+		        }
+	        ],
+	        buttons:[{
+				xtype: 'button',
+				id:'btnSaveUrlCheckPanel',
+				text: 'Einstellungen speichern',
+				anchor: '100%',
+				handler: function() {
+					self.saveSettings();
+				}
+            }]
 		});
 		de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.initComponent.call(this);
 	},

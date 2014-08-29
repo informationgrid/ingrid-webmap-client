@@ -11,7 +11,13 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	id: 'serviceGridPanel',
 	itemId: 'serviceGridPanel',
     title: 'Dienste',
-    autoScroll: true,
+    layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
+	border: false,
+	autoScroll: true,
 	/**
 	 * The ArrayStore for the services
 	 */
@@ -239,11 +245,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		        })
 	        ],
 	        features: [filters],
-			autoDestroy:false,
-			viewConfig: {
-				forceFit: true
-			},
-			height: 360
+	        autoScroll: true,
+	        flex:1
 		});
 		
 		self.serviceGrid.on("filterupdate", function() {
@@ -322,15 +325,23 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		
 		// create the final layout
 		Ext.apply(this, {
-			items: [self.serviceGrid],
-			tbar: items = [ self.addServiceBtn,
-			                '-',
-			                self.deleteServiceBtn,
-			                '-',
-			                self.copyServiceBtn,
-			                '-',
-			                self.reloadServiceBtn
-			              ]
+			items: [
+				       self.serviceGrid
+				    ,
+				  {
+					id: 'serviceDetailBorderPanelExtend',
+					border: false,
+					height: 350,
+					items:[]
+				}],
+			tbar: [ self.addServiceBtn,
+                '-',
+                self.deleteServiceBtn,
+                '-',
+                self.copyServiceBtn,
+                '-',
+                self.reloadServiceBtn
+             ]
 		});
 		
 		de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.superclass.initComponent.call(this);
@@ -805,30 +816,38 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 								});
 							}
 	            	  }
+	            	  var extend = Ext.getCmp('serviceDetailBorderPanelExtend');
 	            	  var extendPanel = Ext.create('Ext.panel.Panel', {
 							id: 'serviceDetailBorderPanel',
 							itemId: 'serviceDetailBorderPanel',
-						    height: 550,
 						    border: false,
-						    layout: 'border',
+						    layout: {
+							    type: 'hbox',
+							    pack: 'start',
+							    align: 'stretch'
+							},
 						    items: [
+								Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel', {
+									selectedService: serviceRecord,
+									flex: 0.5,
+									mainPanel: self,
+									height: extend.height
+								}),
 					            Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel', {
 					            	selectedService: serviceRecord,
-					            	layerRecord: layerRecord,
-							    	region:'center',
-							    	mainPanel: self
-								}),
-								Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel', {
-							    	selectedService: serviceRecord,
-							    	region:'west',
-									width: 400,
-							    	mainPanel: self
-							})]
+					            	autoScroll: true,
+									layerRecord: layerRecord,
+							    	flex: 2,
+							    	mainPanel: self,
+							    	height: extend.height
+								})
+							]
 						});
-						
-	            	self.remove(self.items.get('serviceDetailBorderPanel'));
-	            	self.add(extendPanel);
+					
+	            	extend.removeAll();
+	            	extend.add(extendPanel);
 					self.doLayout();
+	            	extend.doLayout();
 					self.selectedService = serviceRecord;
 					self.selectedService.data.jsonLayers = layerRecord;
 	               }

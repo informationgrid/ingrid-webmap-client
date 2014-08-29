@@ -7,11 +7,15 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * @class DefaultExtendPanel is used to configure the proxy server.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.ProxyPanel', { 
-	extend: 'Ext.panel.Panel',
+	extend: 'Ext.form.Panel',
 	title: 'Proxy Zugriff',
-	layout: 'form',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
+	autoScroll: true,
 	bodyPadding: 10,
 	
 	/**
@@ -48,25 +52,20 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProxyPanel', {
 					labelAlign: 'top',
 					labelSeparator: '',
 					height: 50,
-					items: this.proxyUrlField
-				}, {
-					xtype: 'container',
-					width: 100,
-					layout: 'form',
-					labelAlign: 'top',
-					labelSeparator: '',
-					height: 50,
-					items: {
-						xtype: 'button',
-						text: 'Speichern',
-						fieldLabel: '&nbsp;',
-						anchor: '100%',
-						handler: function() {
-							self.saveProxyUrl();
-						}
-					}
+					items: [this.proxyUrlField]
 				}]
-			}]
+			}],
+			buttons:[
+			    {
+					xtype: 'button',
+					text: 'Einstellungen speichern',
+					fieldLabel: '&nbsp;',
+					anchor: '100%',
+						handler: function() {
+						self.saveProxyUrl();
+						}
+			    }
+			]
 		});
 		de.ingrid.mapclient.admin.modules.basic.ProxyPanel.superclass.initComponent.call(this);
 	},

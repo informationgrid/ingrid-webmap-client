@@ -8,13 +8,14 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * and the default map layers provided by it.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel', { 
-	extend: 'Ext.panel.Panel', 
+	extend: 'Ext.form.Panel', 
 	id: 'defaultActiveServicesPanel',
 	title: 'Definition \'Aktive Dienste\'',
-	layout: 'column',
-	labelAlign: 'top',
-	labelSeparator: '',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'hbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
 	bodyPadding: 10,
 	
@@ -47,22 +48,18 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             animate:true,
             draggable:false,
             store: self.storeService,
-            autoScroll:true,
+            rowLines: false,
+            lines: true,
+            border: false,
             viewConfig: {
                 plugins: {
                     ptype: 'treeviewdragdrop',
                     ddGroup: 'defaultActiveServicesPanel-ddgroup',
                     appendOnly: false,
                     sortOnDrop: false,
-                    containerScroll: false,
                     nodeHighlightOnDrop: false
                 }
-            },
-            rowLines: false,
-            lines: true,
-            containerScroll: false,
-            border: false,
-            height: 600
+            }
             
         });
         
@@ -82,10 +79,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             draggable:false,
             store: self.storeActiveService,
             animate:true,
-            layout:'fit',
-            autoScroll:true,
             lines: true,
-            containerScroll: false,
             border: false,
             viewConfig: {
                 plugins: {
@@ -96,8 +90,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
                     containerScroll: false,
                     nodeHighlightOnDrop: false
                 }
-            },
-            height: 600
+            }
         });
         
         var sliderService = Ext.create('Ext.slider.Single', {
@@ -159,8 +152,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         });
         
         var form = Ext.create('Ext.form.Panel', {
-            flex : 1,
-            autoHeight: true,
             title: 'Sichtbarkeit',
             border: true,
             bodyStyle: 'padding: 5px;',
@@ -173,53 +164,41 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             
 		Ext.apply(this, {
 			items: [{
-                columnWidth:.1,
+                flex:.25,
                 border: false,
-                items:[{
-    				xtype: 'button',
-    				id: 'btnSaveDefaultActiveServicesPanel',
-					text: 'Speichern',
-    				handler: function() {
-    					self.save();
-    				},
-    				width: 75
-    		      },{
-    		    	  xtype: 'container',
-    		    	  height: 10
-       		      },{
-    		    	xtype: 'button',
-    		    	id: 'btnReloadDefaultActiveServicesPanel',
-					text: 'Neuladen',
-					handler: function() {
-						var sliderLayer = Ext.getCmp("slider_layer");
-	        			sliderLayer.hide();
-
-	        			self.createActiveServiceTree();
-						self.treeActiveService.doLayout();
-						self.createServiceTree();
-						self.treeService.doLayout();
-					},
-    				width: 75
-			      },{
-  				    // spacer
-  					xtype: 'container',
-  					height: 10
-			      },
-			      {
-			    	  xtype: 'container',
-			    	  height: 10
-				  },
-				  form]
+                items:[form]
 			},{
-                columnWidth:.45,
+				flex:1,
                 border: false,
+                autoScroll: true,
                 items:[self.treeActiveService]
 			},{
-                columnWidth:.45,
+				flex:1,
                 border: false,
+                autoScroll: true,
                 items:[self.treeService]
 			}],
-			bbar:[
+			buttons:[{
+		    	xtype: 'button',
+		    	id: 'btnReloadDefaultActiveServicesPanel',
+				text: 'Neuladen',
+				handler: function() {
+					var sliderLayer = Ext.getCmp("slider_layer");
+        			sliderLayer.hide();
+
+        			self.createActiveServiceTree();
+					self.treeActiveService.doLayout();
+					self.createServiceTree();
+					self.treeService.doLayout();
+				}
+		      },{
+				xtype: 'button',
+				id: 'btnSaveDefaultActiveServicesPanel',
+				text: 'Einstellungen speichern',
+				handler: function() {
+					self.save();
+				}
+		      }
 			]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel.superclass.initComponent.call(this);
@@ -246,10 +225,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		
         self.treeService.on('afterrender', function(tree){
         	var moveServices = [];
-        	var usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
-        	if(usedServices){
-        		for (var j = 0; j < usedServices.length; j++) {
-    				var usedService = usedServices[j];
+        	if(self.usedServices == undefined){
+        		self.usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
+        	}
+        	if(self.usedServices){
+        		for (var j = 0; j < self.usedServices.length; j++) {
+    				var usedService = self.usedServices[j];
     				if(self.services){
     					for (var i=0, count=self.services.length; i<count; i++) {
         					var curService = self.services[i];
@@ -355,6 +336,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 	},
 	getActiveServices: function(services, nodes){
 		var service = [];
+		this.usedServices = [];
 		for (var i=0, count=nodes.length; i<count; i++) {
 			var node = nodes[i];
 			var serviceUrl; 
@@ -366,6 +348,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 			this.getActiveServiceLayers(serviceLayers, node.childNodes);
 			
 			services.push({serviceUrl: serviceUrl, serviceLayers:serviceLayers });
+			this.usedServices.push({capabilitiesUrl: serviceUrl, checkedLayers:serviceLayers });
 		}
 	},
 	getActiveServiceLayers: function(serviceLayers, nodes){

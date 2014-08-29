@@ -7,28 +7,32 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.maintenance");
  * @class ServiceDetailCategoryPanel is used to manage a list of categories.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel',{ 
-	extend:'Ext.panel.Panel',
+	extend:'Ext.tree.Panel',
 	id: 'serviceDetailCategoryPanel',
 	title: 'Rubriken',
 	autoScroll: true,
 	selectedService: null,
 	mainPanel:null,
+	store: null,
 	/**
 	 * Initialize the component (called by Ext)
 	 */
 	initComponent: function() {
 		var self = this;
 		
-		this.tree = Ext.create('Ext.tree.Panel', {
-	        useArrows:true,
+		// create the final layout
+		Ext.apply(this, {
+			useArrows:true,
 	        animate:true,
-	        enableDD:true,
+	        autoScroll: true,
+	    	enableDD:true,
 	        containerScroll: true,
 	        rootVisible: false,
 	        draggable: false,
-	        enableDrag: false,
+	        autoScroll: true,
+			enableDrag: false,
 	        enableDrop: false,
-	        border: false,
+	        border: true,
 	        bodyStyle:'padding: 10px 0',
 	        listeners: {
 	            'checkchange': function(node, checked){
@@ -42,8 +46,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryP
 					self.mainPanel.isSave=false;
 				}
 	        }
-	    });
-		
+		});
+
+		de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.superclass.initComponent.call(this);
+	},
+	onRender: function(){
+		var self = this;
 		var categories = de.ingrid.mapclient.Configuration.getValue('mapServiceCategories');
 		var data = new Array(); 
 		
@@ -70,7 +78,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryP
 					        enableDrag: false,
 					        enableDrop: false, 
 					        checked: isCheck,
-					        id: subCategory.idx
+					        iconCls: 'iconNone',
+							id: subCategory.idx
 						});
 					}
 				}
@@ -86,16 +95,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryP
 			}
 		}
 		// set the root node
-		self.tree.setRootNode({
+		self.setRootNode({
 			children: data
 		});
-		
-		// create the final layout
-		Ext.apply(this, {
-			items: [self.tree]
-		});	
-		
-		de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.superclass.initComponent.call(this);
+		de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel.superclass.onRender.call(this);
 	},
 	/**
 	 * Save the services list on the server
@@ -105,8 +108,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryP
 		if(node){
 			var capabilitiesUrl = null;
 			var categories = [];
-			if(self.tree){
-				var checkedNodes = self.tree.getChecked();
+			if(self){
+				var checkedNodes = self.getChecked();
 				for (var i=0, countI=checkedNodes.length; i<countI; i++) {
 					var checkedNode = checkedNodes[i];
 					categories.push(checkedNode.data.id)

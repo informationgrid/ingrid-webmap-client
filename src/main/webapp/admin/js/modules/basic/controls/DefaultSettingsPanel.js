@@ -7,15 +7,17 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * @class DefaultSettingsPanel is used to manage a list of scales.
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel', { 
-	extend:'Ext.panel.Panel',
+	extend:'Ext.form.Panel',
 	id: 'defaultSettingsPanel',
 	title: 'Benutzeroberfl&auml;che',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
-	bodyPadding: 10,
 	autoScroll: true,
+	bodyPadding: 10,
 	settingsStore: {},
 	grid: null,
 	propertyNames: {},
@@ -50,64 +52,29 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel', {
 	        nameColumnWidth: 700
 		});
 		
-		// create the final layout
-		Ext.apply(this, {
-			items: [
+		var form = Ext.create('Ext.panel.Panel', {
+			border: false,
+			items:[
 		        this.grid,
 		        {
 					xtype: 'container',
 					height: 20
 		        },
-		        {
-					xtype: 'container',
-					layout: {
-					    type: 'vbox',
-					    align: 'right',
-					    pack: 'start'
-					},
-					anchor: '100%',
-				    items: [
-			            {
-							xtype: 'button',
-							id:'btnSaveDefaultSettingsPanel1',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							handler: function() {
-								self.saveSettings();
-							}
-			            }
-		            ]
-			    },
-			    {
-					xtype: 'container',
-					height: 20
-		        },
 			    this.gridSearch,
-			    {
-					xtype: 'container',
-					height: 20
-		        },
-			    {
-					xtype: 'container',
-					layout: {
-					    type: 'vbox',
-					    align: 'right',
-					    pack: 'start'
-					},
-					anchor: '100%',
-				    items: [
-			            {
-							xtype: 'button',
-							id:'btnSaveDefaultSettingsPanel2',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							handler: function() {
-								self.saveSettings();
-							}
-			            }
-		            ]
-			    }
 		    ]
+		});
+		
+		// create the final layout
+		Ext.apply(this, {
+			items: form,
+			buttons: [{
+				xtype: 'button',
+				id:'btnSaveDefaultSettingsPanel',
+				text: 'Einstellungen speichern',
+				handler: function() {
+					self.saveSettings();
+				}
+            }]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.initComponent.call(this);
 	},
