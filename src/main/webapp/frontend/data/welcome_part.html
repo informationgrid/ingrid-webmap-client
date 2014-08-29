@@ -109,8 +109,7 @@ Ext.onReady(function() {
             animate: true
         },
         defaults: {
-            autoScroll: true,
-            padding: 5
+            autoScroll: true
         },
         items: [chooseMapService, useMapService, printSaveFunctions, tips]
     });
@@ -120,7 +119,7 @@ Ext.onReady(function() {
         height: 286,
         //border: false,
         layout: 'border',
-        bodyStyle: "margin: 0 5px;",
+        padding: 5,
         items: [accordion]
     });
 });

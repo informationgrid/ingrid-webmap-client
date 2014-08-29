@@ -1260,6 +1260,10 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			div[0].appendChild(copyright);
 		}
 		
+		var welcomeDialog = Ext.getCmp("welcomeDialog");
+		if(welcomeDialog){
+			welcomeDialog.updateLayout();
+		}
 		// listen to session changing events (addLayer and removeLayer are
 		// signaled by datachange of activeServicesPanel)
 		this.map.events.register('moveend', self.map, function(evt) {
