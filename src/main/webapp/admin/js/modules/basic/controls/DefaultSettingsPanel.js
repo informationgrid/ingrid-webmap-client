@@ -6,167 +6,121 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
 /**
  * @class DefaultSettingsPanel is used to manage a list of scales.
  */
-de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel = Ext.extend(Ext.Panel, {
-
+Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel', { 
+	extend:'Ext.form.Panel',
+	id: 'defaultSettingsPanel',
 	title: 'Benutzeroberfl&auml;che',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
+	autoScroll: true,
+	bodyPadding: 10,
 	settingsStore: {},
 	grid: null,
 	propertyNames: {},
 	gridSearch: null,
 	settingsStoreSearch: {},
-	propertyNamesSearch: {}
-});
+	propertyNamesSearch: {},
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
+		var self = this;	
 
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.initComponent = function() {
+		// create the viewer grid
+		this.grid = Ext.create('Ext.grid.property.Grid', {
+			id:'gridDefaultSettingsPanel',
+			title: 'Kartenviewer',
+		    autoHeight: true,
+	        source:  this.settingsStore,
+	        forceFit: true,
+	        sortableColumns: false,
+	        nameColumnWidth: 700
+		});
 
-	var self = this;	
-
-	// create the viewer grid
-	this.grid = new Ext.grid.PropertyGrid({
-		title: 'Kartenviewer',
-	    autoHeight: true,
-        propertyNames: this.propertyNames,
-        source:  this.settingsStore,
-        viewConfig : {
-            forceFit: true,
-            scrollOffset: 2 // the grid will never have scrollbars
-        },
-        autoExpandColumn: {
-            forceFit: true
-        }
-	});
-
-	delete this.grid.getStore().sortInfo;
-	
-	// create the searcher grid
-	this.gridSearch = new Ext.grid.PropertyGrid({
-		title: 'Suche',
-	    autoHeight: true,
-        propertyNames: this.propertyNamesSearch,
-        source:  this.settingsStoreSearch,
-        viewConfig : {
-            forceFit: true,
-            scrollOffset: 2 // the grid will never have scrollbars
-        },
-        autoExpandColumn: {
-            forceFit: true
-        }
-	});
-	
-	delete this.gridSearch.getStore().sortInfo;
-	
-	// create the final layout
-	Ext.apply(this, {
-		items: [this.grid,
+		// create the searcher grid
+		this.gridSearch = Ext.create('Ext.grid.property.Grid', {
+			id:'gridSearchDefaultSettingsPanel',
+			title: 'Suche',
+		    autoHeight: true,
+	        source:  this.settingsStoreSearch,
+	        forceFit: true,
+	        sortableColumns: false,
+	        nameColumnWidth: 700
+		});
+		
+		var form = Ext.create('Ext.panel.Panel', {
+			border: false,
+			items:[
+		        this.grid,
 		        {
-		        	xtype: 'container',
-					height: 20
-			    },
-			    {
 					xtype: 'container',
-					layout: 'column',
-					anchor: '100%',
-				    items: [{
-						xtype: 'container',
-						columnWidth: 1,
-						height: 50
-					}, {
-						xtype: 'container',
-						layout: 'form',
-						height: 50,
-						items: {
-							xtype: 'button',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							style: {
-				                paddingTop: '10px'
-				            },
-							handler: function() {
-								self.saveSettings();
-							}
-						}
-					}]
-			    }, 
+					height: 20
+		        },
 			    this.gridSearch,
-			    {
-					xtype: 'container',
-					height: 20
-			    },
-			    {
-					xtype: 'container',
-					layout: 'column',
-					anchor: '100%',
-				    items: [{
-						xtype: 'container',
-						columnWidth: 1,
-						height: 50
-					}, {
-						xtype: 'container',
-						layout: 'form',
-						height: 50,
-						items: {
-							xtype: 'button',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							style: {
-				                paddingTop: '10px'
-				            },
-							handler: function() {
-								self.saveSettings();
-							}
-						}
-					}]
-			    }]
-	});
-	de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.initComponent.call(this);
-};
-
-/**
- * Render callback (called by Ext)
- */
-de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.onRender = function() {
-	de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.onRender.apply(this, arguments);
-
-	// initialize the settings list
-	var settings = de.ingrid.mapclient.Configuration.getValue('settings');
-	if(settings){
-		for (var i=0, count=settings.length; i<count; i++) {
-			var setting = settings[i];
-			var key = setting.key;
-			var value = setting.value;
-			
-			// Check if boolean value
-			if (value.toLowerCase()=='false'){
-				value = false;
-			} else if (value.toLowerCase()=='true'){
-			    value =  true;
+		    ]
+		});
+		
+		// create the final layout
+		Ext.apply(this, {
+			items: form,
+			buttons: [{
+				xtype: 'button',
+				id:'btnSaveDefaultSettingsPanel',
+				text: 'Einstellungen speichern',
+				handler: function() {
+					self.saveSettings();
+				}
+            }]
+		});
+		de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.initComponent.call(this);
+	},
+	/**
+	 * Render callback (called by Ext)
+	 */
+	onRender: function() {
+		// initialize the settings list
+		var settings = de.ingrid.mapclient.Configuration.getValue('settings');
+		if(settings){
+			for (var i=0, count=settings.length; i<count; i++) {
+				var setting = settings[i];
+				var key = setting.key;
+				var value = setting.value;
+				
+				// Check if boolean value
+				if (value.toLowerCase()=='false'){
+					value = false;
+				} else if (value.toLowerCase()=='true'){
+				    value =  true;
+				}
+				
+				if(setting.group == "view"){
+					this.settingsStore[key] = value;
+					var displayName = {};
+					displayName["displayName"] = setting.name;
+					this.propertyNames[key] = displayName;
+				}else if (setting.group == "search"){
+					this.settingsStoreSearch[key] = value;
+					var displayName = {};
+					displayName["displayName"] = setting.name;
+					this.propertyNamesSearch[key] = displayName;
+				}
 			}
-			
-			if(setting.group == "view"){
-				this.settingsStore[key] = value;
-				this.propertyNames[key] = setting.name;
-			}else if (setting.group == "search"){
-				this.settingsStoreSearch[key] = value;
-				this.propertyNamesSearch[key] = setting.name;
-			}
+			this.grid.setSource(this.settingsStore, this.propertyNames);
+			this.gridSearch.setSource(this.settingsStoreSearch, this.propertyNamesSearch);
 		}
+		de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.superclass.onRender.apply(this, arguments);
+	},
+	/**
+	 * Save the settings list on the server
+	 */
+	saveSettings: function() {
+		var settings = [];
+		settings.push(this.settingsStore);
+		settings.push(this.settingsStoreSearch);
+		de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
 	}
-};
-
-/**
- * Save the settings list on the server
- */
-de.ingrid.mapclient.admin.modules.basic.DefaultSettingsPanel.prototype.saveSettings = function() {
-	var settings = [];
-	settings.push(this.settingsStore);
-	settings.push(this.settingsStoreSearch);
-	de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
-};
-
+});

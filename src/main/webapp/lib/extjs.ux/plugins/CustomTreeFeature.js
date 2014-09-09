@@ -1,20 +1,31 @@
-Ext.tree.TreeNodeUI.prototype.onOver = Ext.tree.TreeNodeUI.prototype.onOver.createSequence(function (e) {
-    var tree = this.node.getOwnerTree();
-
-    if (tree.allowNodeOver || tree.allowNodeOver == undefined) {
-        tree.fireEvent('nodeover', this.node);
-        tree.allowNodeOver = false;
-    }       
+Ext.view.Table.prototype.processSpecialEvent =  Ext.Function.createSequence(Ext.view.Table.prototype.processSpecialEvent, function (e) {
+	var me       = this,
+    cellNode = e.getTarget(me.cellSelector),
+    rowNode  = e.getTarget(me.itemSelector),
+    record   = me.getRecord(rowNode),
+    header   = me.getHeaderByCell(cellNode);
+	if(this.node){
+		var tree = this.node.getOwnerTree();
+	    if (tree.allowNodeOver) {
+	    	if(record){
+	    		if(record.raw){
+	    			if(record.raw.plugins || record.raw.service){
+	    				if(e.type == "mouseover"){
+	    		    		tree.fireEvent('nodeover', me, e);
+	    		    	}else if(e.type == "mouseout"){
+	    		    		 tree.fireEvent('nodeout', me, e);
+	    		    	}
+	    			}
+	    		}
+	    	}
+	    }
+	}
 });
 
-Ext.tree.TreeNodeUI.prototype.onOut = Ext.tree.TreeNodeUI.prototype.onOut.createSequence(function (e) {
-    var tree = this.node.getOwnerTree();
-
-    tree.fireEvent('nodeout', this.node);
-    tree.allowNodeOver = true;    
-});
-
-Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
+Ext.define('Ext.ux.HoverActions', {
+	mixins:{
+		observable: 'Ext.util.Observable'
+	},
     defaults : {
         actions : []
     },
@@ -22,7 +33,7 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
     constructor : function (config) {
         Ext.apply(this, config || {}, this.defaults);
         this.addEvents('action');
-        Ext.ux.HoverActions.superclass.constructor.call(this);
+        this.superclass.constructor.call(this);
     },
 
     init : function (tree) {
@@ -50,13 +61,18 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
         this.extElement.on("click", this.onClick, this);
     },
 
-    onNodeOver : function (node, e) {
-    	if(node.attributes.service){
-    		var nodeEl = Ext.fly(node.ui.getEl()).child("div");
-    		nodeEl.first().insertFirst(this.element);
-            this.extElement.show();
-    	}
-        this.currentNode = node;
+    onNodeOver : function (me, e) {
+    	var cellNode = e.getTarget(me.cellSelector),
+        rowNode  = e.getTarget(me.itemSelector),
+        record   = me.getRecord(rowNode),
+        header   = me.getHeaderByCell(cellNode);
+    	
+		var nodeEl = Ext.fly(rowNode).child("td").child("div");
+		if(nodeEl){
+			nodeEl.first().insertFirst(this.element);
+	        this.extElement.show();
+		}
+		this.currentRecord = record;
     },
 
     onNodeOut : function (node, e) {
@@ -64,126 +80,78 @@ Ext.ux.HoverActions = Ext.extend(Ext.util.Observable, {
     },
 
     onClick : function (e) {
-        var node = this.currentNode,
+        var record = this.currentRecord,
             actionId = Ext.fly(e.getTarget()).getAttribute("id");
         Ext.each(this.actions, function (action) {
             if (action.id === actionId) {
-                action.handler(node, e);
+                action.handler(record, e);
             }
         });
-        this.tree.getSelectionModel().select(node);
     }
 });
 
-Ext.tree.TreeNodeUI.prototype.renderElements = function(n, a, targetNode, bulkRender){
-    this.indentMarkup = n.parentNode ? n.parentNode.ui.getChildIndent() : '';
+Ext.tree.Column.prototype.treeRenderer = function(value, metaData, record, rowIdx, colIdx, store, view){
+    var me = this,
+        cls = record.get('cls'),
+        renderer = me.origRenderer,
+        data = record.data,
+        parent = record.parentNode,
+        rootVisible = view.rootVisible,
+        lines = [],
+        parentData;
 
-	var cb = Ext.isBoolean(a.checked),
-    nel,
-    href = this.getHref(a.href),
-    buf = ['<li class="x-tree-node"><div ext:tree-node-id="',n.id,'" class="x-tree-node-el x-tree-node-leaf x-unselectable ', a.cls,'" unselectable="on">',
-           '<span class="x-tree-node-indent">',this.indentMarkup,"</span>",
-           '<img alt="" src="', this.emptyIcon, this.node.ownerTree ? (this.node.ownerTree.onlyServices ? '" class="x-tree-placeholder" />' : '" class="x-tree-ec-icon x-tree-elbow" />') : '" class="x-tree-ec-icon x-tree-elbow" />',
-           '<img alt="" src="', a.icon || this.emptyIcon, '" class="x-tree-node-icon',(a.icon ? " x-tree-node-inline-icon" : ""),(a.iconCls ? " "+a.iconCls : ""),'" unselectable="on" />',
-           cb ? ('<input class="x-tree-node-cb" type="checkbox" ' + (a.checked ? 'checked="checked" />' : '/>')) : '',
-           '<a hidefocus="on" class="x-tree-node-anchor" href="',href,'" tabIndex="1" ',
-            a.hrefTarget ? ' target="'+a.hrefTarget+'"' : "", '><span unselectable="on">',n.text,"</span></a></div>",
-           '<ul class="x-tree-node-ct" style="display:none;"></ul>',
-           "</li>"].join('');
-
-    if(bulkRender !== true && n.nextSibling && (nel = n.nextSibling.ui.getEl())){
-        this.wrap = Ext.DomHelper.insertHtml("beforeBegin", nel, buf);
-    }else{
-        this.wrap = Ext.DomHelper.insertHtml("beforeEnd", targetNode, buf);
+    if (cls) {
+        metaData.tdCls += ' ' + cls;
     }
 
-    this.elNode = this.wrap.childNodes[0];
-    this.ctNode = this.wrap.childNodes[1];
-    var cs = this.elNode.childNodes;
-    this.indentNode = cs[0];
-    this.ecNode = cs[1];
-    this.iconNode = cs[2];
-    var index = 3;
-    if(cb){
-        this.checkbox = cs[3];
-        
-        this.checkbox.defaultChecked = this.checkbox.checked;
-        index++;
+    while (parent && (rootVisible || parent.data.depth > 0)) {
+        parentData = parent.data;
+        lines[rootVisible ? parentData.depth : parentData.depth - 1] =
+                parentData.isLast ? 0 : 1;
+        parent = parent.parentNode;
     }
-    this.anchor = cs[index];
-    this.textNode = cs[index].firstChild;
-    // Add div for hover elements
-    if(a.service){
-    	var dv = document.createElement("div");
-    	dv.className = "buttonSpan";
-    	if(this.node.ownerTree.buttonSpanElStyle){
-    		dv.style.cssText = this.node.ownerTree.buttonSpanElStyle;
+
+    var tpl = me.getTpl('cellTpl').apply({
+        record: record,
+        baseIconCls: me.iconCls,
+        iconCls: data.iconCls,
+        icon: data.icon,
+        checkboxCls: me.checkboxCls,
+        checked: data.checked,
+        elbowCls: me.elbowCls,
+        expanderCls: me.expanderCls,
+        textCls: me.textCls,
+        leaf: data.leaf,
+        expandable: record.isExpandable(),
+        isLast: data.isLast,
+        blankUrl: Ext.BLANK_IMAGE_URL,
+        href: data.href,
+        hrefTarget: data.hrefTarget,
+        lines: lines,
+        metaData: metaData,
+        // subclasses or overrides can implement a getChildCls() method, which can
+        // return an extra class to add to all of the cell's child elements (icon,
+        // expander, elbow, checkbox).  This is used by the rtl override to add the
+        // "x-rtl" class to these elements.
+        childCls: me.getChildCls ? me.getChildCls() + ' ' : '',
+        value: renderer ? renderer.apply(me.origScope, arguments) : value
+    });
+    if(record.getOwnerTree().allowNodeOver){
+    	if(record.raw.service){
+    		return "<div class='buttonSpan' style="+ record.getOwnerTree().buttonSpanElStyle +"></div>" + tpl;
+    	}else if (record.getData().container){
+    		if(record.getData().container.service){
+    			return "<div class='buttonSpan' style="+ record.getOwnerTree().buttonSpanElStyle +"></div>" + tpl;
+    		}else{
+    			return tpl;
+    		}
+    	}else if (record.getData().layer){
+    		return "<div class='buttonSpan' style="+ record.getOwnerTree().buttonSpanElStyle +"></div>" + tpl;
+    	}else{
+    		return tpl;
     	}
-    	this.elNode.insertBefore(dv, this.elNode.firstChild);
+    }else{
+    	return tpl;
     }
-}
 
-Ext.tree.TreeNodeUI.prototype.updateExpandIcon = function(){
-    if(this.rendered){
-        var n = this.node,
-            c1,
-            c2,
-            cls = n.isLast() ? this.node.ownerTree ? (this.node.ownerTree.onlyServices ? "x-tree-elbow" : "x-tree-elbow-end") : "x-tree-elbow" : "x-tree-elbow",
-            hasChild = n.hasChildNodes();
-        if(hasChild || n.attributes.expandable){
-            if(n.expanded){
-                cls += "-minus";
-                c1 = "x-tree-node-collapsed";
-                c2 = "x-tree-node-expanded";
-            }else{
-                cls += "-plus";
-                c1 = "x-tree-node-expanded";
-                c2 = "x-tree-node-collapsed";
-            }
-            if(this.wasLeaf){
-                this.removeClass("x-tree-node-leaf");
-                this.wasLeaf = false;
-            }
-            if(this.c1 != c1 || this.c2 != c2){
-                Ext.fly(this.elNode).replaceClass(c1, c2);
-                this.c1 = c1; this.c2 = c2;
-            }
-        }else{
-            if(!this.wasLeaf){
-                Ext.fly(this.elNode).replaceClass("x-tree-node-expanded", "x-tree-node-collapsed");
-                delete this.c1;
-                delete this.c2;
-                this.wasLeaf = true;
-            }
-        }
-        var ecc = "x-tree-ec-icon "+cls;
-        if(this.ecc != ecc){
-            this.ecNode.className = ecc;
-            this.ecc = ecc;
-        }
-    }
-}
-
-
-Ext.tree.TreeNodeUI.prototype.getChildIndent = function(){
-    if(!this.childIndent){
-        var buf = [],
-            p = this.node;
-        while(p){
-            if(!p.isRoot || (p.isRoot && p.ownerTree.rootVisible)){
-                if(!p.isLast()) {
-                	if(this.node.ownerTree){
-                		if(!this.node.ownerTree.onlyServices){
-                    		buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-elbow-line" />');
-                    	}
-                	}
-                } else {
-                    buf.unshift('<img alt="" src="'+this.emptyIcon+'" class="x-tree-icon" />');
-                }
-            }
-            p = p.parentNode;
-        }
-        this.childIndent = buf.join("");
-    }
-    return this.childIndent;
 }

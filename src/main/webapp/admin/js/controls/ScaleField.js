@@ -6,11 +6,12 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
 /**
  * @class ScaleField is used to input scale values.
  */
-de.ingrid.mapclient.admin.controls.ScaleField = Ext.extend(Ext.form.NumberField, {
-
-	allowBlank: false,
+Ext.define('de.ingrid.mapclient.admin.controls.ScaleField', { 
+	extend: 'Ext.form.field.Number',
+	alias: 'widget.scalefield',
+	anchor: '100%',
+    allowBlank: false,
 	allowNegative: false,
- 	decimalPrecision: 16
+	hideTrigger: true,
+    decimalPrecision: 16
 });
-
-Ext.reg('scalefield', de.ingrid.mapclient.admin.controls.ScaleField);

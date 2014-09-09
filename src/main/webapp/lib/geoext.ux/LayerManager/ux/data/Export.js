@@ -124,7 +124,7 @@ GeoExt.ux.data.Export.isLayerSupported = function(className) {
  *
  */
 GeoExt.ux.data.Export.OpenWindowDownloadify = function() {
-    GeoExt.ux.data.Export.exportWindow = new GeoExt.ux.LayerManagerExportWindow({
+    GeoExt.ux.data.Export.exportWindow = Ext.create('GeoExt.ux.LayerManagerExportWindow', {
         filename: 'export.' + GeoExt.ux.data.Export.format.toLowerCase(),
         filecontent: GeoExt.ux.data.Export.content.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
     });

@@ -7,19 +7,24 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  * @class DefaultActiveServicesPanel is used to select a default WMS server
  * and the default map layers provided by it.
  */
-de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(Ext.Panel, {
-
+Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel', { 
+	extend: 'Ext.form.Panel', 
+	id: 'defaultActiveServicesPanel',
 	title: 'Definition \'Aktive Dienste\'',
-	layout: 'column',
-	labelAlign: 'top',
-	labelSeparator: '',
-	buttonAlign: 'right',
+	layout: {
+	    type: 'hbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
+	bodyPadding: 10,
 	
 	treeService: null,
 	services: null,
+	storeService: null,
 	treeActiveService: null,
 	activeServices: null,
+	storeActiveService: null,
 	
 	/**
 	 * Initialize the component (called by Ext)
@@ -27,32 +32,68 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	initComponent: function() {
 		var self = this;
 		
-		self.treeService = new Ext.tree.TreePanel({
+		self.storeService = Ext.create('Ext.data.TreeStore', {
+	    	model: 'DetailLayer',
+            root: {
+                text: 'Dienste',
+                id: 'rootService',
+                expanded: true,
+                children: [],
+                leaf: false
+            }
+	    });
+		
+		self.treeService = Ext.create('Ext.tree.Panel', {
 			id:'treeService',
             animate:true,
-            layout:'fit',
-            autoScroll:true,
-            enableDD:true,
-            lines: false,
-            containerScroll: false,
+            draggable:false,
+            store: self.storeService,
+            rowLines: false,
+            lines: true,
             border: false,
-            height: 600
+            viewConfig: {
+                plugins: {
+                    ptype: 'treeviewdragdrop',
+                    ddGroup: 'defaultActiveServicesPanel-ddgroup',
+                    appendOnly: false,
+                    sortOnDrop: false,
+                    nodeHighlightOnDrop: false
+                }
+            }
+            
         });
         
+       self.storeActiveService = Ext.create('Ext.data.TreeStore', {
+	    	model: 'DetailLayer',
+            root: {
+                text: 'Aktive Dienste', 
+                id: 'rootActiveService',
+                expanded: true,
+                children: [],
+                leaf: false
+            }
+	    });
        
-        self.treeActiveService = new Ext.tree.TreePanel({
+        self.treeActiveService = Ext.create('Ext.tree.Panel', {
         	id:'treeActiveService',
+            draggable:false,
+            store: self.storeActiveService,
             animate:true,
-            layout:'fit',
-            autoScroll:true,
-            lines: false,
-            containerScroll: false,
+            lines: true,
             border: false,
-            enableDD:true,
-            height: 600
+            viewConfig: {
+                plugins: {
+                    ptype: 'treeviewdragdrop',
+                    ddGroup: 'defaultActiveServicesPanel-ddgroup',
+                    appendOnly: false,
+                    sortOnDrop: false,
+                    containerScroll: false,
+                    nodeHighlightOnDrop: false
+                }
+            }
         });
         
-        var sliderService = new Ext.Slider({
+        var sliderService = Ext.create('Ext.slider.Single', {
             fieldLabel: 'Default',
             minValue: 0,
             maxValue: 100,
@@ -65,14 +106,14 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             hidden:false,
             listeners:{
             	change: function(slider, value, obj){
-            		var node = self.treeActiveService.getSelectionModel().getSelectedNode();
+            		var node = self.treeActiveService.getSelectionModel().getSelection()[0];
             		if(node){
-        				if(node.attributes.opacity == undefined){
+        				if(node.raw.opacity == undefined){
         					var sliderLayer = Ext.getCmp("slider_layer");
     	        			sliderLayer.setValue(value, false);
             			}
             		}
-            		slider.label.update('Default: ' + value + '%');
+            		slider.labelEl.update('Default: ' + value + '%');
             	},
             	afterrender: function(slider){
             		slider.setValue(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')), false);
@@ -80,7 +121,7 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             }
         });
         
-        var sliderLayer = new Ext.Slider({
+        var sliderLayer = Ext.create('Ext.slider.Single', {
             fieldLabel: 'Layer',
             minValue: 0,
             maxValue: 100,
@@ -93,15 +134,15 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             hidden:true,
             listeners:{
             	change: function(slider, value, obj){
-            		var node = self.treeActiveService.getSelectionModel().getSelectedNode();
+            		var node = self.treeActiveService.getSelectionModel().getSelection()[0];
             		if(node){
             			if(obj.dragging){
-            				node.attributes.opacity = value;
+            				node.raw.opacity = value;
             			}
-            			if(node.attributes.opacity){
-            				slider.label.update('Layer: ' + value + '%');
+            			if(node.raw.opacity){
+            				slider.labelEl.update('Layer: ' + value + '%');
             			}else{
-            				slider.label.update('Layer: default');
+            				slider.labelEl.update('Layer: default');
             			}
             			slider.setValue(value, false);
             			
@@ -110,14 +151,12 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             }
         });
         
-        var form = new Ext.form.FormPanel({
-            flex : 1,
-            autoHeight: true,
+        var form = Ext.create('Ext.form.Panel', {
             title: 'Sichtbarkeit',
             border: true,
             bodyStyle: 'padding: 5px;',
-            labelAlign: 'top',
-            defaults: {
+            fieldDefaults: {
+            	labelAlign: 'top',
                 anchor: '95%'
             },
             items: [sliderService,sliderLayer]
@@ -125,48 +164,41 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
             
 		Ext.apply(this, {
 			items: [{
-                columnWidth:.1,
+                flex:.25,
                 border: false,
-                items:[
-			      {
-					  xtype: 'button',
-					  text: 'Speichern',
-					  handler: function() {
-						  self.save();
-					  },
-					  width: 75
-    		      },{
-    		    	  xtype: 'container',
-    		    	  height: 10
-    		      },{
-    		    	  xtype: 'button',
-    		    	  text: 'Neuladen',
-    		    	  handler: function() {
-    		    		  var sliderLayer = Ext.getCmp("slider_layer");
-    		    		  sliderLayer.hide();
-					
-    		    		  self.createActiveServiceTree();
-    		    		  self.treeActiveService.doLayout();
-    		    		  self.createServiceTree();
-    		    		  self.treeService.doLayout();
-    		    	  },
-    		    	  width: 75
-			      },
-			      {
-			    	  xtype: 'container',
-			    	  height: 10
-				  },
-				  form]
+                items:[form]
 			},{
-                columnWidth:.45,
+				flex:1,
                 border: false,
+                autoScroll: true,
                 items:[self.treeActiveService]
 			},{
-                columnWidth:.45,
+				flex:1,
                 border: false,
+                autoScroll: true,
                 items:[self.treeService]
 			}],
-			bbar:[
+			buttons:[{
+		    	xtype: 'button',
+		    	id: 'btnReloadDefaultActiveServicesPanel',
+				text: 'Neuladen',
+				handler: function() {
+					var sliderLayer = Ext.getCmp("slider_layer");
+        			sliderLayer.hide();
+
+        			self.createActiveServiceTree();
+					self.treeActiveService.doLayout();
+					self.createServiceTree();
+					self.treeService.doLayout();
+				}
+		      },{
+				xtype: 'button',
+				id: 'btnSaveDefaultActiveServicesPanel',
+				text: 'Einstellungen speichern',
+				handler: function() {
+					self.save();
+				}
+		      }
 			]
 		});
 		de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel.superclass.initComponent.call(this);
@@ -185,56 +217,47 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	},
 	createServiceTree: function(){
 		var self = this;
+		
 		self.services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 		var node = this.transform(false);
 		
-		 // set the root node
-        var root = new Ext.tree.AsyncTreeNode({
-            text: 'Dienste', 
-            draggable:false, // disable root node dragging
-            expanded: true,
-            children: node.children,
-            cls: 'folder'
-        });
-        self.treeService.setRootNode(root);
-        
-        self.treeService.on({
-        	afterlayout: function(tree){
-	        	var moveServices = [];
-	        	if(self.usedServices == undefined){
-	        		self.usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
-	        	}
-	        	if(self.usedServices){
-	        		for (var j = 0; j < self.usedServices.length; j++) {
-	    				var usedService = self.usedServices[j];
-	    				if(self.services){
-	    					for (var i=0, count=self.services.length; i<count; i++) {
-	        					var curService = self.services[i];
-	        					var isInUsed = false;
-	        				
-	        					if(usedService.capabilitiesUrl == curService.capabilitiesUrl){
-	        						moveServices.push(usedService);
-	        					}
-	        				}    					
-	    				}
-	    			}
-	            	if(moveServices.length > 0){
-	            		for (var j = 0; j < moveServices.length; j++) {
-	            			var moveService = moveServices[j];
-	    	        		for (var i = 0; i < tree.root.childNodes.length; i++) {
-	    	            		var childNode = tree.root.childNodes[i];
-	    	            		if(childNode.attributes){
-	    	            			var curService = childNode.attributes.service;
-	                    			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
-	                    				self.treeActiveService.root.appendChild(childNode);
-	                    				self.checkedChildNodes(childNode, moveService.checkedLayers);
-	                            		break;
-	                    			}
-	                    		}
-	                		}
-	                	}
-	            	}
-	        	}
+		self.treeService.getRootNode().appendChild(node);
+		
+        self.treeService.on('afterrender', function(tree){
+        	var moveServices = [];
+        	if(self.usedServices == undefined){
+        		self.usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
+        	}
+        	if(self.usedServices){
+        		for (var j = 0; j < self.usedServices.length; j++) {
+    				var usedService = self.usedServices[j];
+    				if(self.services){
+    					for (var i=0, count=self.services.length; i<count; i++) {
+        					var curService = self.services[i];
+        					var isInUsed = false;
+        				
+        					if(usedService.capabilitiesUrl == curService.capabilitiesUrl){
+        						moveServices.push(usedService);
+        					}
+        				}    					
+    				}
+    			}
+            	if(moveServices.length > 0){
+            		for (var j = 0; j < moveServices.length; j++) {
+            			var moveService = moveServices[j];
+    	        		for (var i = 0; i < tree.getStore().getRootNode().childNodes.length; i++) {
+    	            		var childNode = tree.getStore().getRootNode().childNodes[i];
+    	            		if(childNode.raw){
+    	            			var curService = childNode.raw.service;
+                    			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
+                    				self.treeActiveService.getStore().getRootNode().appendChild(childNode);
+                    				self.checkedChildNodes(childNode, moveService.checkedLayers);
+                            		break;
+                    			}
+                    		}
+                		}
+                	}
+            	}
         	}
         });
 	},
@@ -244,10 +267,11 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 			var layerConfig = layers[i];
 			for (var j = 0; j < node.childNodes.length; j++) {
 				var childNode = node.childNodes[j];
-				if(layerConfig.layer == childNode.attributes.name){
-					childNode.getUI().toggleCheck(layerConfig.checked);
+
+				if(layerConfig.layer == childNode.raw.name){
+					childNode.set("checked", true);
 					if(layerConfig.opacity != ""){
-						childNode.attributes.opacity = layerConfig.opacity;
+						childNode.raw.opacity = layerConfig.opacity;
 					}
 				}
 				if(childNode.childNodes.length > 0){
@@ -258,49 +282,40 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	},
 	createActiveServiceTree: function(){
 		var self = this;
-		
 		var node2 = this.transform(true);
         
         // add the root node
-        var root2 = new Ext.tree.AsyncTreeNode({
-            text: 'Aktive Dienste', 
-            draggable:false,
-            expanded: true,
-            children: node2.children,
-            leaf: false
-        });
-        self.treeActiveService.setRootNode(root2);
-        
-        self.treeActiveService.on({
-        	movenode: function(tree, node, root){
-	        	if(node.childNodes.length == 0){
-	        		node.leaf = false;
-	            	
-	            	var service = node.attributes.service;
-	            	var url = service.capabilitiesUrl;
-	            	var xmlDoc = self.loadDoc(url);
-	            	var layers = xmlDoc.getElementsByTagName("Layer");
-	            	if(layers.length > 0){
-	            		self.createChildNodes(node, layers[0], true);
-	            	}
-	            	node.on("move", function(tree, thisNode, oldParent, newParent, index, nextNode) {
-	            		if(tree.id == "treeService"){
-	            			thisNode.removeAll();
-	            		}
-	            	});
-	            	root.expand(false, /*no anim*/ false);
-	        	}
+        self.storeActiveService.on('move', function(node, oldParent, newParent, index, eOpts){
+        	var service = node.raw.service;
+        	if(service){
+        		if(node.childNodes.length == 0){
+        			node.set('leaf', false);
+        			node.set('allowDrop', false);
+        			
+                	var url = service.capabilitiesUrl;
+                	var xmlDoc = self.loadDoc(url);
+                	var layers = xmlDoc.getElementsByTagName("Layer");
+                	if(layers.length > 0){
+                		self.createChildNodes(node, layers[0], true);
+                	}
+                	node.on("move", function(thisNode, oldParent, newParent, index, nextNode) {
+                		if(newParent.data.id == "rootService"){
+                			thisNode.removeAll();
+                		}
+                	});
+            	}
         	}
         });
         
         self.treeActiveService.getSelectionModel().on({
         	selectionchange: function (tree, node){
         		var sliderLayer = Ext.getCmp("slider_layer");
-        		if(node){
-        			if(node.attributes.checked != undefined){
+        		var tmpNode = node[0];
+        		if(tmpNode){
+        			if(tmpNode.data.checked != undefined){
             			sliderLayer.show();
-            			if(node.attributes.opacity){
-            				sliderLayer.setValue(node.attributes.opacity, false);
+            			if(tmpNode.raw.opacity){
+            				sliderLayer.setValue(tmpNode.raw.opacity, false);
             			}else{
             				sliderLayer.setValue(Ext.getCmp("slider_service").getValue(), false);
             			}
@@ -312,11 +327,10 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
         		}
         	}
         });
-        root2.expand(false, /*no anim*/ false);
 	},
 	save: function() {
 		var activeServices = [];
-		this.getActiveServices(activeServices, this.treeActiveService.root.childNodes);
+		this.getActiveServices(activeServices, this.storeActiveService.getRootNode().childNodes);
 		
 		de.ingrid.mapclient.Configuration.setValue('activeServices', Ext.encode({activeServicesDefaultOpacity: Ext.getCmp("slider_service").getValue(),activeServices: activeServices}), de.ingrid.mapclient.admin.DefaultSaveHandler);
 	},
@@ -327,8 +341,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 			var node = nodes[i];
 			var serviceUrl; 
 			var serviceLayers = [];
-			if(node.attributes.service){
-				serviceUrl = node.attributes.service.capabilitiesUrl;
+			if(node.raw.service){
+				serviceUrl = node.raw.service.capabilitiesUrl;
 			}
 			
 			this.getActiveServiceLayers(serviceLayers, node.childNodes);
@@ -340,8 +354,8 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	getActiveServiceLayers: function(serviceLayers, nodes){
 		for (var i=0, count=nodes.length; i<count; i++) {
 			var node = nodes[i];
-			if(node.attributes.checked != undefined){
-				serviceLayers.push({layer: node.attributes.name, opacity: node.attributes.opacity, checked: node.attributes.checked});
+			if(node.data.checked != undefined){
+				serviceLayers.push({layer: node.raw.name, opacity: node.raw.opacity, checked: node.raw.checked});
 			}
 			this.getActiveServiceLayers(serviceLayers, node.childNodes);
 		}
@@ -357,20 +371,14 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 						text: curService.name,
 						service: curService,
 						leaf: true,
-						cls: 'x-tree-noicon'
+						iconCls: 'iconNone',
+						
 					};
 					children.push(childNode);
 				}
 			}
 		}
-		var node = {
-			text: '',
-			children: children,
-			leaf: children.length == 0 ? true : false,
-			expanded: true,
-			expandable: true
-		};
-		return node;
+		return children;
 	},
 	loadDoc: function(url) {
 	    var xmlhttp = null;
@@ -385,7 +393,6 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 	},
 	createChildNodes: function (node, layer, createFirstNode) {
 		var self = this;
-		node.allowChildren = false;
 		var firstNode; 
 		if(createFirstNode){
 			if(layer.nodeName){
@@ -412,27 +419,32 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 		    			}
 		    		}
 					
-					firstNode = new Ext.tree.TreeNode({
+		    		var children = [];
+		    		self.getChildren(children, layer);
+		    		
+					firstNode = {
 						name: name,
 						text: title,
 						leaf: self.hasChildNodes(layer) ? false : true,
-						cls: 'x-tree-noicon',
+						iconCls: 'iconNone',
 						checked: false,
 						expanded: true,
 						allowDrop:false,
 						allowDrag:false,
-						allowChildren:false
-					});
-					
+						allowChildren:false,
+						children: children
+					};
 					node.appendChild(firstNode);
 					node.expand();
 				}
 			}
 		}
-		
-		var children = layer.children;
-		for (var i=0, count=children.length; i<count; i++) {
-			var child = children[i];
+	},
+	getChildren: function(children, layer){
+		var self = this;
+		var childrenLayer = layer.children;
+		for (var i=0, count=childrenLayer.length; i<count; i++) {
+			var child = childrenLayer[i];
 			if(child.nodeName){
 				var tagName = child.nodeName;
 				if(tagName == "Layer"){
@@ -456,27 +468,21 @@ de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel = Ext.extend(
 		    				}
 		    			}
 		    		}
-					
-					var childNode = new Ext.tree.TreeNode({
+					var childChildren = [];
+		    		self.getChildren(childChildren, child);
+		    		
+		    		children.push({
 						name: name,
 						text: title,
 						leaf: self.hasChildNodes(child) ? false : true,
-						cls: 'x-tree-noicon',
+						iconCls: 'iconNone',
 						checked: false,
 						expanded: true,
 						allowDrop:false,
 						allowDrag:false,
-						allowChildren:false
+						allowChildren:false,
+						children: []
 					});
-					
-					if(firstNode){
-						firstNode.appendChild(childNode);
-						firstNode.expand();
-					}else{
-						node.appendChild(childNode);
-						node.expand();
-					}
-					self.createChildNodes(childNode, child, false);
 				}
 			}
 		}

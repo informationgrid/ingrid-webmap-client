@@ -66,9 +66,6 @@
 						<exclude>**/lib/openlayers/**</exclude>
 						<exclude>**/lib/geoext/**</exclude>
 						<exclude>**/lib/proj4js/**</exclude>
-						<exclude>**/lib/geoext.ux/FeatureEditing/**</exclude>
-						<exclude>**/lib/geoext.ux/LayerManager/**</exclude>
-						<exclude>**/lib/geoext.ux/Styler/**</exclude>
 					</excludes>
 					<aggregations>
 						<aggregation>
@@ -79,16 +76,16 @@
 							<inputDir>${project.build.directory}/${project.build.finalName}/</inputDir>
 							<includes>
 								<include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
-								<include>lib/extjs.ux/gridfilters/GridFilters-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/Filter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/BooleanFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/StringFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/DateFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/ListFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/filter/NumericFilter-min.js</include>
-								<include>lib/extjs.ux/gridfilters/menu/ListMenu-min.js</include>
-								<include>lib/extjs.ux/gridfilters/menu/RangeMenu-min.js</include>
-								<include>lib/extjs.ux/tree/TreeGrid-min.js</include>
+								<include>lib/extjs.ux/grid/FiltersFeature-min.js</include>
+								<include>lib/extjs.ux/grid/filter/Filter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/BooleanFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/StringFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/DateFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/DateTimeFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/ListFilter-min.js</include>
+								<include>lib/extjs.ux/grid/filter/NumericFilter-min.js</include>
+								<include>lib/extjs.ux/grid/menu/ListMenu-min.js</include>
+								<include>lib/extjs.ux/grid/menu/RangeMenu-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>admin/js/*-min.js</include>
 								<include>admin/js/modules/*-min.js</include>
@@ -115,10 +112,12 @@
 								<include>lib/openlayers.addins/LoadingPanel-min.js</include>
                                 <include>lib/extjs.ux/Extjs.ux.Notification-min.js</include>
 								<include>lib/geoext.ux/SimplePrint-min.js</include>
-								<include>lib/geoext.ux/GeocoderComboBox-min.js</include>
 								<include>lib/geoext.ux/BWaStrLocatorComboBox-min.js</include>
 								<include>lib/geoext.ux/PortalSearchComboBox-min.js</include>
 								<include>lib/geoext.ux/AllSearchComboBox-min.js</include>
+								<include>lib/geoext.ux/FeatureEditing/ux/**/*-min.js</include>
+								<include>lib/geoext.ux/LayerManager/**/*-min.js</include>
+								<include>lib/geoext.ux/Styler/**/*-min.js</include>
 								<include>shared/**/*-min.js</include>
 								<include>frontend/**/*-min.js</include>
 							</includes>

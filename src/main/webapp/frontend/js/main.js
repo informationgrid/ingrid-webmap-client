@@ -63,32 +63,60 @@ Ext.onReady(function() {
 
 			// build the gui with the given configuration
 			if(viewConfig){
+				var config = null;
+				
 				if(viewConfig  == "search"){
-					new de.ingrid.mapclient.frontend.PanelWorkspace({
+					config = {
 						height: parseInt(de.ingrid.mapclient.Configuration.getSettings("searchPanelHeight").trim()),
 						mapUrl: mapUrl,
 						session: session,
 						viewConfig: viewConfig,
 						callbackHooks: callbackHooks,
 						callbackAreaId: callbackAreaId
-					});			
+					};
+					Ext.create('Ext.panel.Panel', {
+						renderTo:'openlayersDiv',
+						layout: 'fit',
+					    items: [Ext.create('de.ingrid.mapclient.frontend.Workspace', config)]
+					});
 				}else if(viewConfig  == "search-facets"){
-					new de.ingrid.mapclient.frontend.PanelWorkspace({
+					config = {
 						height: parseInt(de.ingrid.mapclient.Configuration.getSettings("searchPanelHeightFacets").trim()),
 						mapUrl: mapUrl,
 						session: session,
 						viewConfig: viewConfig,
 						callbackHooks: callbackHooks,
 						callbackAreaId: callbackAreaId
-					});			
+					};
+					Ext.create('Ext.panel.Panel', {
+						renderTo:'openlayersDiv',
+						layout: 'fit',
+					    items: [Ext.create('de.ingrid.mapclient.frontend.Workspace', config)]
+					});
 				}else {
-					new de.ingrid.mapclient.frontend.Workspace({
+					config = {
 						mapUrl: mapUrl,
 						viewConfig: viewConfig,
 						session: session,
 						callbackHooks: callbackHooks
-					});						
-				}	
+					}
+					var northPanel = Ext.create('Ext.panel.Panel', {
+						region : 'north',
+						baseCls : '',
+						height : de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop") && viewConfig != "default" ? parseInt(de.ingrid.mapclient.Configuration.getSettings("viewSpacerTop").trim()) : 0
+					});
+					
+					var centerPanel = Ext.create('Ext.panel.Panel', {
+						region : 'center',
+						layout : 'fit',
+						items : Ext.create('de.ingrid.mapclient.frontend.Workspace', config)
+					});
+					Ext.create('Ext.container.Viewport', {
+					    layout: 'border',
+					    monitorResize : true,
+					    items: [northPanel, centerPanel]
+					});
+				}
 			}
 			
 			if(typeof endLoadIcon !== 'undefined')

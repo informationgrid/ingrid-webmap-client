@@ -20,7 +20,9 @@ Ext.namespace('GeoExt.ux');
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Panel>`_
  */
 
-GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
+Ext.define('GeoExt.ux.LayerManagerExportPanel', {
+	extend: 'Ext.panel.Panel',
+	alias: 'gxux_layermanagerexportpanel',
     /** api: config[map]
      *  ``OpenLayers.Map``  A configured map
      */
@@ -68,7 +70,7 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
      */
     initComponent: function() {
 
-        this.formatCombo = new Ext.form.ComboBox({
+        this.formatCombo = Ext.create('Ext.form.ComboBox', {
             id: 'layermanagerexportformat',
             fieldLabel: OpenLayers.i18n('Format'),
             store: GeoExt.ux.data.FormatStore,
@@ -83,7 +85,7 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
 
         this.formatCombo.setValue(this.defaultFormat);
 
-        this.exportLinkBox = new Ext.BoxComponent({
+        this.exportLinkBox = Ext.create('Ext.Component', {
             id: 'exportlink',
             autoEl: {
                 html: '<a href=""></a>'
@@ -201,6 +203,3 @@ GeoExt.ux.LayerManagerExportPanel = Ext.extend(Ext.Panel, {
         GeoExt.ux.LayerManagerExportPanel.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerexportpanel */
-Ext.reg('gxux_layermanagerexportpanel', GeoExt.ux.LayerManagerExportPanel);

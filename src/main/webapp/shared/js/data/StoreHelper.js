@@ -33,12 +33,18 @@ de.ingrid.mapclient.data.StoreHelper.load = function(store, items, attributes, p
 		records.push(record);
 	}
 	// load the data into the store (avoid any events fired)
-	if(store){
-		if (preventEvents) {
+	if (preventEvents) {
+		if(store){
 			store.suspendEvents(false);
 		}
-		store.loadData(records);
-		if (preventEvents) {
+	}
+	
+	if(store){
+		store.loadData(records);	
+	}
+
+	if (preventEvents) {
+		if(store){
 			store.resumeEvents(false);
 		}
 	}

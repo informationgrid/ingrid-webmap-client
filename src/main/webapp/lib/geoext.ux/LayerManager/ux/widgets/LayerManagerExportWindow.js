@@ -32,7 +32,9 @@ var scriptSourceLayerManagerExportWindow = (function() {
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Window>`_
  */
 
-GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
+Ext.define('GeoExt.ux.LayerManagerExportWindow', {
+	extend: 'Ext.Window',
+	alias: 'gxux_layermanagerexportwindow',
     /** private: property[id]
      *  ``String``  id set to layermanagerexportwindow (don't change it)
      */
@@ -115,7 +117,7 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
      *  Private initComponent override.
      */
     initComponent: function() {
-        this.downloadBox = new Ext.Button({
+        this.downloadBox = Ext.create('Ext.Button', {
         	id:'saveExportBtn',
 			iconCls : 'iconSave',
 			x: 405,
@@ -126,19 +128,19 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
 				try {
 				    var isFileSaverSupported = !!new Blob();
 				    if(isFileSaverSupported){
-					    var blob = new Blob([document.getElementById('data').value], {
+					    var blob = new Blob([Ext.getCmp("data").value], {
 						    type: "text/plain;charset=utf-8;",
 						});
-						saveAs(blob, document.getElementById('filename').value);
+						saveAs(blob, Ext.getCmp("filename").value);
 				    }
 				} catch (e) {
 					w = window.open();
 					doc = w.document;
 					doc.open( "text/xml",'replace');
 					doc.charset = "utf-8";
-					doc.write(document.getElementById('data').value);
+					doc.write(Ext.getCmp("data").value);
 					doc.close();
-					doc.execCommand("SaveAs", true, document.getElementById('filename').value + ".xml");
+					doc.execCommand("SaveAs", true, Ext.getCmp("filename").value + ".xml");
 					w.close();
 				}
 				
@@ -171,6 +173,3 @@ GeoExt.ux.LayerManagerExportWindow = Ext.extend(Ext.Window, {
         GeoExt.ux.LayerManagerExportWindow.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerexportwindow */
-Ext.reg('gxux_layermanagerexportwindow', GeoExt.ux.LayerManagerExportWindow);

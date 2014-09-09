@@ -997,7 +997,7 @@ public class ConfigurationResource {
 				if (layers != null) {
 					for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
 						if(sortedLayerList.get(i).getBoolean("checked")){
-							String checked = sortedLayerList.get(i).getString("index");
+							String checked = sortedLayerList.get(i).getString("name");
 							checkLayers.add(checked);
 						}
 					}
@@ -1207,7 +1207,7 @@ public class ConfigurationResource {
 						JSONObject layer = layers.getJSONObject(i);
 						if (layer.getBoolean("deactivated")) {
 							
-							Node n = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
+							Node n = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("name") + "\"]");
 							if(n != null){
 								n.getParentNode().getParentNode().removeChild(n.getParentNode());
 							}
@@ -1217,7 +1217,7 @@ public class ConfigurationResource {
 							// TODO insert all other attibutes in wms
 			
 							// Title
-							Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
+							Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("name") + "\"]");
 							if(nameNode != null){
 								Node titleNode = XPathUtils.getNode(nameNode.getParentNode(), "./Title");
 								titleNode.setTextContent(layer.getString("title"));
@@ -1258,7 +1258,7 @@ public class ConfigurationResource {
 					for (int i = 0, count = layers.length(); i < count; i++) {
 						JSONObject layer = layers.getJSONObject(i);
 						// Title
-						Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("index") + "\"]");
+						Node nameNode = XPathUtils.getNode(doc, "//Name[text()=\"" + layer.getString("name") + "\"]");
 						if(nameNode != null){
 							Node titleNode = XPathUtils.getNode(nameNode.getParentNode(), "./Title");
 							titleNode.setTextContent(layer.getString("title"));
@@ -1432,7 +1432,7 @@ public class ConfigurationResource {
 			if (layers != null) {
 				for (int i = 0, count = sortedLayerList.size(); i < count; i++) {
 					if(sortedLayerList.get(i).getBoolean("checked")){
-						String checked = sortedLayerList.get(i).getString("index");
+						String checked = sortedLayerList.get(i).getString("name");
 						checkLayers.add(checked);
 					}
 				}

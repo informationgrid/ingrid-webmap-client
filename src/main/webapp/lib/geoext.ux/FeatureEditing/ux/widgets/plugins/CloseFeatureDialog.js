@@ -4,8 +4,8 @@ Ext.namespace("GeoExt.ux");
  * @include OpenLayers/Lang.js
  */
 
-GeoExt.ux.CloseFeatureDialog = Ext.extend(Ext.util.Observable, {
-
+Ext.define('GeoExt.ux.CloseFeatureDialog', {
+	extend: 'Ext.util.Observable',
     controler: null,
 
     editFeatureForm: null,
@@ -21,9 +21,9 @@ GeoExt.ux.CloseFeatureDialog = Ext.extend(Ext.util.Observable, {
 
         actionOptions.text = OpenLayers.i18n("Close");
 
-        var action = new Ext.Action(actionOptions);
+        var action = Ext.create('Ext.Action', actionOptions);
 
-        var bbar = form.getBottomToolbar();
+        var bbar = form.dockedItems.items[0];
         if (bbar.rendered || !bbar.buttons) {
             bbar.add('->');
             bbar.add(action);

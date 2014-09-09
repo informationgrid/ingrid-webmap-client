@@ -6,120 +6,100 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
 /**
  * @class UrlCheckPanel is used to manage a list of scales.
  */
-de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel = Ext.extend(Ext.Panel, {
-
+Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', { 
+	extend:'Ext.form.Panel',
+	id: 'urlCheckPanel',
 	title: 'URL-Check',
-	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	border: false,
+	autoScroll: true,
+	bodyPadding: 10,
 	settingsStore: {},
 	grid: null,
 	propertyNames: {},
 	gridUrlCheck: null,
 	settingsStoreUrlCheck: {},
-	propertyNamesUrlCheck: {}
-});
+	propertyNamesUrlCheck: {},
+	/**
+	 * Initialize the component (called by Ext)
+	 */
+	initComponent: function() {
 
-/**
- * Initialize the component (called by Ext)
- */
-de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.initComponent = function() {
+		var self = this;	
 
-	var self = this;	
-
-	// create the searcher grid
-	this.gridUrlCheck = new Ext.grid.PropertyGrid({
-		title: 'URL-Check',
-	    autoHeight: true,
-        propertyNames: this.propertyNamesUrlCheck,
-        source:  this.settingsStoreUrlCheck,
-        viewConfig : {
+		// create the searcher grid
+		this.gridUrlCheck = Ext.create('Ext.grid.property.Grid', {
+			id: 'gridUrlCheckUrlCheckPanel',
+			title: 'URL-Check',
+		    autoHeight: true,
+	        source:  this.settingsStoreUrlCheck,
             forceFit: true,
-            scrollOffset: 2 // the grid will never have scrollbars
-        },
-        autoExpandColumn: {
-            forceFit: true
-        }
-	});
+	        sortableColumns: false,
+	        nameColumnWidth: 700
+		});
 
-	
-	// create the final layout
-	Ext.apply(this, {
-		items: [
+		
+		// create the final layout
+		Ext.apply(this, {
+			items: [
 		        this.gridUrlCheck,
-			    {
+		        {
 					xtype: 'container',
-					height: 20
-			    },
-			    {
-					xtype: 'container',
-					layout: 'column',
-					anchor: '100%',
-				    items: [{
-						xtype: 'container',
-						columnWidth: 1,
-						height: 50
-					}, {
-						xtype: 'container',
-						layout: 'form',
-						height: 50,
-						items: {
-							xtype: 'button',
-							text: 'Einstellungen speichern',
-							anchor: '100%',
-							style: {
-				                paddingTop: '10px'
-				            },
-							handler: function() {
-								self.saveSettings();
-							}
-						}
-					}]
-			    },
-			    {
-					xtype: 'container',
-					height: 20
-			    }]
-	});
-	de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.initComponent.call(this);
-};
-
-/**
- * Render callback (called by Ext)
- */
-de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.onRender = function() {
-	de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.onRender.apply(this, arguments);
-
-	// initialize the settings list
-	var settings = de.ingrid.mapclient.Configuration.getValue('settings');
-	if(settings){
-		for (var i=0, count=settings.length; i<count; i++) {
-			var setting = settings[i];
-			var key = setting.key;
-			var value = setting.value;
-			
-			// Check if boolean value
-			if (value.toLowerCase()=='false'){
-				value = false;
-			} else if (value.toLowerCase()=='true'){
-			    value =  true;
+					height: 10
+		        }
+	        ],
+	        buttons:[{
+				xtype: 'button',
+				id:'btnSaveUrlCheckPanel',
+				text: 'Einstellungen speichern',
+				anchor: '100%',
+				handler: function() {
+					self.saveSettings();
+				}
+            }]
+		});
+		de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.initComponent.call(this);
+	},
+	/**
+	 * Render callback (called by Ext)
+	 */
+	onRender: function() {
+		// initialize the settings list
+		var settings = de.ingrid.mapclient.Configuration.getValue('settings');
+		if(settings){
+			for (var i=0, count=settings.length; i<count; i++) {
+				var setting = settings[i];
+				var key = setting.key;
+				var value = setting.value;
+				
+				// Check if boolean value
+				if (value.toLowerCase()=='false'){
+					value = false;
+				} else if (value.toLowerCase()=='true'){
+				    value =  true;
+				}
+				
+				if (setting.group == "urlCheck"){
+					this.settingsStoreUrlCheck[key] = value;
+					var displayName = {};
+					displayName["displayName"] = setting.name;
+					this.propertyNamesUrlCheck[key] = displayName;
+				}
 			}
-			
-			if (setting.group == "urlCheck"){
-				this.settingsStoreUrlCheck[key] = value;
-				this.propertyNamesUrlCheck[key] = setting.name;
-			}
+			this.gridUrlCheck.setSource(this.settingsStoreUrlCheck, this.propertyNamesUrlCheck);
 		}
+		de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.superclass.onRender.apply(this, arguments);
+	},
+	/**
+	 * Save the settings list on the server
+	 */
+	saveSettings: function() {
+		var settings = [];
+		settings.push(this.settingsStoreUrlCheck);
+		de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
 	}
-};
-
-/**
- * Save the settings list on the server
- */
-de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.saveSettings = function() {
-	var settings = [];
-	settings.push(this.settingsStoreUrlCheck);
-	de.ingrid.mapclient.Configuration.setValue('settings', Ext.encode(settings), de.ingrid.mapclient.admin.DefaultSaveHandler);
-};
-
+});

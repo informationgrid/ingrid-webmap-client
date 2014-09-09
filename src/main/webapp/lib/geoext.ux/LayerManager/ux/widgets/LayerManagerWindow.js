@@ -20,7 +20,9 @@ Ext.namespace('GeoExt.ux');
  *  base_link = `Ext.Panel <http://extjs.com/deploy/dev/docs/?class=Ext.Window>`_
  */
 
-GeoExt.ux.LayerManagerWindow = Ext.extend(Ext.Window, {
+Ext.define('GeoExt.ux.LayerManagerWindow', {
+	extend: 'Ext.Window',
+	alias: 'gxux_layermanagerwindow',
     /** api: config[map]
      *  ``OpenLayers.Map``  A configured map
      */
@@ -87,13 +89,13 @@ GeoExt.ux.LayerManagerWindow = Ext.extend(Ext.Window, {
      */
     initComponent: function() {
 
-        this.exportPanel = new GeoExt.ux.LayerManagerExportPanel({
+        this.exportPanel = Ext.create('GeoExt.ux.LayerManagerExportPanel', {
             map: this.map,
             downloadService: this.downloadService,
             defaultFormat: 'KML'
         });
 
-        this.importPanel = new GeoExt.ux.LayerManagerImportPanel({
+        this.importPanel = Ext.create('GeoExt.ux.LayerManagerImportPanel', {
             map: this.map,
             defaultFormat: 'KML'
         });
@@ -119,6 +121,3 @@ GeoExt.ux.LayerManagerWindow = Ext.extend(Ext.Window, {
         GeoExt.ux.LayerManagerWindow.superclass.initComponent.call(this);
     }
 });
-
-/** api: xtype = gxux_layermanagerwindow */
-Ext.reg('gxux_layermanagerwindow', GeoExt.ux.LayerManagerWindow);

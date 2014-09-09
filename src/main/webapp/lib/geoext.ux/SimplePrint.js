@@ -28,8 +28,8 @@ Ext.namespace("GeoExt.ux");
  *  and rotation are configurable in the form. A Print button is also added to
  *  the form.
  */
-GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
-    
+Ext.define('GeoExt.ux.SimplePrint', {
+    extend: 'Ext.form.FormPanel',
     /* begin i18n */
     /** api: config[layoutText] ``String`` i18n */
     layoutText: "Layout",
@@ -127,13 +127,17 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
         // the fbar as part of initComponent.
         this.fbar = this.fbar || [];
 
-        GeoExt.ux.SimplePrint.superclass.initComponent.call(this);
+        this.superclass.initComponent.call(this);
 
-        this.printPage = new GeoExt.data.PrintPage({
-            printProvider: this.initialConfig.printProvider
+        this.printPage = Ext.create('GeoExt.data.PrintPage', {
+            printProvider: this.initialConfig.printProvider,
+            customParams:{
+            	mapTitle: "",
+            	comment: ""
+            }
         });
         
-        this.printExtent = new GeoExt.plugins.PrintExtent({
+        this.printExtent = Ext.create('GeoExt.plugins.PrintExtent', {
             pages: [this.printPage],
             layer: this.initialConfig.layer
         });
@@ -194,9 +198,9 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
             store: p.layouts,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintProviderField({
+            plugins: Ext.create('GeoExt.plugins.PrintProviderField', {
                 printProvider: p
             })
         }, cbOptions));
@@ -206,9 +210,9 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
             store: p.dpis,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintProviderField({
+            plugins: Ext.create('GeoExt.plugins.PrintProviderField', {
                 printProvider: p
             })
         }, cbOptions));
@@ -218,9 +222,9 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
             store: p.scales,
             forceSelection: true,
             displayField: "name",
-            mode: "local",
+            queryMode: "local",
             triggerAction: "all",
-            plugins: new GeoExt.plugins.PrintPageField({
+            plugins: Ext.create('GeoExt.plugins.PrintPageField', {
                 printPage: this.printPage
             })
         }, cbOptions));
@@ -229,12 +233,13 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
             fieldLabel: this.rotationText,
             name: "rotation",
             enableKeyEvents: true,
-            plugins: new GeoExt.plugins.PrintPageField({
+            plugins: Ext.create('GeoExt.plugins.PrintPageField', {
                 printPage: this.printPage
             })
         });
 
-        this.addButton({
+        this.add({
+        	xtype: "button",
             text: this.printText,
             handler: function() {
                 this.printExtent.print(this.printOptions);
@@ -289,6 +294,3 @@ GeoExt.ux.SimplePrint = Ext.extend(Ext.form.FormPanel, {
         this.printExtent.hide();
     }
 });
-
-/** api: xtype = gxux_simpleprint */
-Ext.reg("gxux_simpleprint", GeoExt.ux.SimplePrint);

@@ -3,17 +3,14 @@
  */
 Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
-/**
- * @class ServiceTreeLoader asynchronously loads layers in a service.
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = function() {
-};
-
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = Ext.extend(GeoExt.tree.LayerLoader, {
+Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
+	extend: 'GeoExt.tree.LayerLoader',
+	requires: [
+       'GeoExt.tree.LayerNode'
+    ],
 	initComponent : function() {
 		Ext.apply(this, {});
-		de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.superclass.initComponent
-				.apply(this, arguments);
+		this.superclass.initComponent.apply(this, arguments);
 	},
 	
 	/** 
@@ -32,130 +29,275 @@ de.ingrid.mapclient.frontend.controls.ServiceTreeLoader = Ext.extend(GeoExt.tree
     onStoreRemove: function(store, record, index, node) {
 		// skip event handling of store
 		return;
-    }
-});
+    },
+    /**
+     * @param {GeoExt.data.LayerTreeModel} node The node to add children to.
+     * @private
+     */
+    load: function(node) {
+    	if (this.fireEvent("beforeload", this, node)) {
+            this.removeStoreHandlers();
+            while (node.firstChild) {
+                node.removeChild(node.firstChild);
+            }
 
-/**
- * Load children of the given node. This method is overridden in order to take layer
- * hierarchies into account.
- * @param node Ext.tree.TreeNode to load the children for
- * @param callback A function to be called after load
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.load = function(node, callback) {
-	if (this.fireEvent("beforeload", this, node)) {
-		this.removeStoreHandlers();
-		while (node.firstChild) {
-			node.removeChild(node.firstChild);
-		}
+            if (!this.store) {
+                this.store = GeoExt.MapPanel.guess().layers;
+            }
+            
+            if (!this.service) {
+    			throw "Service attribute is expected on node: "+node.text;
+    		}
 
-		if (!this.uiProviders) {
-			this.uiProviders = node.getOwnerTree().getLoader().uiProviders;
-		}
+            this.store.each(function(record) {
+            	var layer = record.getLayer();
+            	if (this.filter(record) === true) {
+            		var serviceLayer = this.service.getLayerByName(layer.params.LAYERS);
+            		if(serviceLayer.options.isRootLayer){
+            			if(serviceLayer.options.nestedLayers){
+                			if(serviceLayer.options.nestedLayers.length > 0){
+                				this.addLayerNode(node, record);
+                    			var lastChild = node.lastChild;
+                    			lastChild.set("allowDrag", false);
+                    			lastChild.set("allowDrop", false);
+                        		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
+                			}
+                    	}
+            		}
+            	}
+            }, this);
+            
+            if(!this.initialAdd){
+            	// Check nodes by admin configuration
+            	if(this.checkedLayers == undefined){
+            		this.checkNodeByAddService(node);            		
+            	}else{
+					for (var j = 0; j < this.checkedLayers.length; j++) {
+						var checkedLayer = this.checkedLayers[j];
+						this.checkNodes(checkedLayer, node);
+					}
+            	}
+            }else{
+            	if(node.hasChildNodes()){
+            		this.checkNodeByState(node.childNodes);
+            	}
+            }
+            
+            if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand")){
+            	// Expand nodes by default
+                this.expandNodeByDefault(node);
+            } else if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
+            	// Expand nodes by state
+            	if(this.initialAdd){
+            		this.expandNodeByState(node);
+            	}
+    		}
+            
+            if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection") == false){
+            	if(this.layersByURLService){
+                	if(node.childNodes){
+                		this.checkSelectParentNode(node.childNodes);
+                	}
+                }
+            }
+            
+            var serviceNodes = this.layerTree.getRootNode().childNodes;
+			var layers = [];
+			for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
+			 	var serviceNode = serviceNodes[i];
+			 	this.panel.getLayersFromTree(serviceNode, layers);
+			}
+		
+			// Change layer order on map
+			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+				for (var j = 0, count = layers.length; j < count; j++) {
+					var layer = layers[j];
+					this.map.raiseLayer(layer, layers.length);
+				}
+			}
+            this.addStoreHandlers(node);
 
-		if (!this.store) {
-			this.store = GeoExt.MapPanel.guess().layers;
-		}
-
-		// check if the current node is the service or a layer node
-		var service = node.attributes.service;
-		if (!service) {
-			throw "Service attribute is expected on node: "+node.text;
-		}
-		// problem is that node.text is at first the service title
-		// so we need a routine that checks what the node is i.e. layer/service
-		// if its a service we null it and look for the rootlayer
-		// otherwise its a layer and we have the info we need
-		var layer = null;
-		if(node.layer)
-			layer = service.getLayerByName(node.layer.params.LAYERS);// layer = node.layer does NOT work!
-		else if (node.text == service.getDefinition().title)
-			layer = null; // it is a service so we look for the rootlayer
-		else
-			layer = service.getLayerByTitle("");//not yet implemented since id are made with unique names not titles		
-		if (layer) {
-			// the node represents a layer -> get child layers
-			var nestedLayers = layer.options.nestedLayers;
-			this.store.each(function(record) {
-				if (this.filter(record) === true) {
-					var recordLayer = record.getLayer();
-					// NOTE: use params.LAYERS attribute instead of name for lookup,
-					// because name might differ from the definition in nestedLayers attribute
-					if (nestedLayers.indexOf(recordLayer.params.LAYERS) != -1) {
-						this.addLayerNode(node, record);
+            this.fireEvent("load", this, node);
+        }
+        
+    },
+    checkSelectParentNode: function (nodes){
+    	for(var j = 0; j < nodes.length; j++){
+    		var node = nodes[j];
+    		var layer = node.get("layer");
+    		if(layer){
+    			var id = layer.params.LAYERS;
+				var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+				
+    			if(layer.options.isRootLayer == false){
+    				for (var i = 0, count = this.layersByURLService.length; i < count; i++) {
+    					var urlLayer = this.layersByURLService[i];
+    					var urlLayerId = urlLayer.params.LAYERS;
+    					if(urlLayer.visibility){
+    						if(id == urlLayerId){
+    							var parent = node.parentNode;
+    							if(parent){
+    								if(parent.get("checked") != true){
+    									parent.set("checked", true);
+    								}
+    							}
+    							break;
+    						}
+    					}
+    				}
+    			}
+    		}
+    		if(node.hasChildNodes()){
+        		this.checkSelectParentNode(node.childNodes);
+    		}
+    	}
+    },
+    checkNodeByAddService: function (node){
+        var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
+		for(var i = 0; i < wmsServices.length; i++){
+			if(this.service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+				var cl = wmsServices[i].checkedLayers;
+				if(cl){
+					for(var j = 0; j < cl.length; j++){
+						var k = 0;
+						this.checkNodes(cl[j],node);
 					}
 				}
-			}, this);
+				break;
+			}
 		}
-		else if (node.text == service.getDefinition().title) {
-			// the node represents the service -> load root layers
-			this.store.each(function(record) {
-				if (this.filter(record) === true) {
-					var layer = service.getLayerByName(record.getLayer().params.LAYERS);
-					if (layer.options.isRootLayer) {
-						this.addLayerNode(node, record);
+    },
+    checkNodeByState: function (nodes){
+    	for(var i = 0; i < nodes.length; i++){
+    		var node = nodes[i];
+    		var id = node.get("layer").params.LAYERS;
+    		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+    		
+    		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
+    		    var selectedLayer = this.selectedLayersByService[j];
+    			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+					node.set("checked", true);
+    			}
+    		}
+    		if(node.hasChildNodes()){
+    			this.checkNodeByState(node.childNodes);
+    		}
+    	}
+    },
+    checkNodes: function(layerName, node){
+    	var self = this;
+		node.eachChild(function(n) {
+			if(layerName.layer){
+				if(layerName.layer == n.get("layer").params.LAYERS){
+					n.set('checked', true);
+					if(layerName.opacity != ""){
+						n.get("layer").setOpacity(parseInt(layerName.opacity)/100);
+					}else{
+						if(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')){
+							n.get("layer").setOpacity(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity'))/100);
+						}
 					}
 				}
-			}, this);
+			}else{
+				if (layerName == n.get("layer").params.LAYERS){
+					n.set('checked', true);
+				}
+			}
+				
+			if (n.hasChildNodes()) {
+				self.checkNodes(layerName, n);
+			}
+		});
+    },
+    expandNodeByDefault: function(node){
+    	node.expand(true);
+    },
+    expandNodeByState: function(node){
+    	for (var i = 0, count = this.treeState.length; i < count; i++) {
+			var state = this.treeState[i];
+			var name = node.get("text");
+			var capabilitiesUrl = this.service.capabilitiesUrl;
+			var isService = node.get("layer") ? "false" : "true";
+			var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
+			
+			if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+				node.expand(false);
+				break;
+			}
 		}
-
-		this.addStoreHandlers(node);
-
-		if (typeof callback == "function") {
-			callback();
+		if(node.hasChildNodes()){
+			for (var j = 0, count = node.childNodes.length; j < count; j++) {
+				var childNode = node.childNodes[j];
+				this.expandNodeByState(childNode, true);
+			}
 		}
+    },
+    addNestedLayerNodes: function(node, store, rootLayer, service) {
+    	var self = this;
+		if(node){
+			if(rootLayer){
+				var serviceLayer = service.getLayerByName(rootLayer.params.LAYERS);
+        		var nestedLayers = serviceLayer.options.nestedLayers;
+				for(var i = 0; i < nestedLayers.length; i++){
+					var nestedLayer = nestedLayers[i];
+					var layer = this.service.getLayerByName(nestedLayer);
+					store.each(function(record) {
+	            		if (de.ingrid.mapclient.frontend.data.Service.compareLayers(record.getLayer(), layer)) {
+	            			this.addLayerNode(node, record, i);
+	            			if(layer.options.nestedLayers){
+	            				if(layer.options.nestedLayers.length > 0){
+	            					var lastChild = node.lastChild;
+	            					lastChild.set("allowDrag", false);
+	    	            			lastChild.set("allowDrop", false);
+	    	            			lastChild.set("expandable", true);
+	    	                		this.addNestedLayerNodes(lastChild, store, layer, this.service);
+	            				}
+		                	}
+	            		}
+		            }, this);
+				}
+			}
+		}
+    },
+    /**
+     * Adds a child node representing a layer of the map
+     *
+     * @param {GeoExt.data.LayerTreeModel} node The node that the layer node
+     *     will be added to as child.
+     * @param {GeoExt.data.LayerModel} layerRecord The layer record containing
+     *     the layer to be added.
+     * @param {Integer} index Optional index for the new layer.  Default is 0.
+     * @private
+     */
+    addLayerNode: function(node, layerRecord, index) {
+    	index = index || 0;
+    	if (this.filter(layerRecord) === true) {
+            var layer = layerRecord.getLayer();
+            var child = this.createNode({
+            	plugins: [{
+                    ptype: 'gx_layer_ingrid'
+                }],
+                layer: layer,
+                text: layer.name,
+                allowDrop: false,
+                allowDrag: false,
+                leaf: layer.options.nestedLayers.length > 0 ? false : true,
+                checked: false,
+                cls: layer.inRange ? "" : "x-tree-node-disabled",
+                service: this.service,
+                // Expand nodes
+                expanded: false,
+                expandable: layer.options.nestedLayers.length > 0 ? true : false,
+                children: []
+            });
+            
+            node.set("allowDrop", false);
 
-		this.fireEvent("load", this, node);
-	}
-};
-
-/**
- * Add a node representing the given record as child of the given node. This method is overridden
- * in order to add custom information to the nodes
- * @param node The node to add to
- * @param layerRecord The record describing the layer to add
- * @param index
- */
-de.ingrid.mapclient.frontend.controls.ServiceTreeLoader.prototype.addLayerNode = function(node, layerRecord, index) {
-	index = index || 0;
-	var service = node.attributes.service;
-	var layer = service.getLayerByName(layerRecord.data.layer.params.LAYERS);
-	if (!layer) {
-		// something went wrong...
-		return;
-	}
-	var isLeaf = layer.options.nestedLayers.length == 0;
-	var loader = isLeaf ? undefined : this;
-	var child = this.createNode({
-		nodeType: 'gx_layer',
-		layer: layerRecord.getLayer(),
-		layerStore: this.store,
-		loader: loader,
-		isLeaf: isLeaf,
-		service: service,
-		allowDrop:false,
-		allowDrag:false 
-	});
-	
-	if(child){
-		node.allowChildren=false;
-		node.appendChild(child);
-	}
-	
-	child.on("move", this.onChildMove, this);
-	//on checkchange(we check the service) we expand the nodes of the service and check all layers
-	if (this.onCheckChangeCallback) {
-		child.on('checkchange', this.onCheckChangeCallback);
-	}
-};
-
-
-Ext.override(GeoExt.tree.LayerNodeUI, {
-    onDblClick: function(e) {
-        e.preventDefault();
-        if(e.getTarget('.x-tree-node-cb', 1)) {
-            this.toggleCheck(this.isChecked());
-        } else {
-            GeoExt.tree.LayerNodeUI.superclass.onClick.apply(this, arguments);
+            if (index !== undefined) {
+            	node.insertChild(index, child);
+            } else {
+                node.appendChild(child);
+            }
         }
     }
 });

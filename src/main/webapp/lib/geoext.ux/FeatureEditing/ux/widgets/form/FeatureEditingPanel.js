@@ -32,8 +32,9 @@ Ext.namespace("GeoExt.ux.form");
  *  So it's a convenience object to quickly generate a RedLining complete tool
  *  with all required controls and features.
  */
-GeoExt.ux.form.FeatureEditingPanel = Ext.extend(Ext.form.FormPanel, {
-
+Ext.define('GeoExt.ux.form.FeatureEditingPanel', {
+	extend: 'Ext.form.FormPanel',
+	alias: 'gx_featureeditingpanel',
     /** api: config[labelWidth]
      *  ``Number``  Default value.
      */
@@ -93,7 +94,7 @@ GeoExt.ux.form.FeatureEditingPanel = Ext.extend(Ext.form.FormPanel, {
      */
     initToolbar: function() {
         // Add buttons and toolbar
-        Ext.apply(this, {tbar: new Ext.Toolbar(this.controler.actions)});
+        Ext.apply(this, {tbar: Ext.create('Ext.toolbar.Toolbar', this.controler.actions)});
     },
 
     /** private: method[initForm]
@@ -118,6 +119,3 @@ GeoExt.ux.form.FeatureEditingPanel = Ext.extend(Ext.form.FormPanel, {
     }
     
 });
-
-/** api: xtype = gx_featureform */
-Ext.reg("gx_featureeditingpanel", GeoExt.ux.form.FeatureEditingPanel);

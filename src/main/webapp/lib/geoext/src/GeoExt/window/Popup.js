@@ -10,6 +10,7 @@
  * @include OpenLayers/Feature/Vector.js
  * @include OpenLayers/Geometry.js
  * @include GeoExt/panel/Map.js
+ * @requires GeoExt/Version.js
  */
 
 /**
@@ -19,6 +20,10 @@
  * When a popup is anchored to a {@link #location}, that means that
  * the popup will visibly point to the location on the map,
  * and move accordingly when the map is panned or zoomed.
+ *
+ * When you use the popup in an application, make sure to include the proper
+ * stylesheet depending on the Ext theme that you use: `popup-classic.css`,
+ * `popup-access.css`, 'popup-gray.css` or `popup-neptune.css`.
  *
  * Example:
  *
@@ -202,7 +207,7 @@ Ext.define('GeoExt.window.Popup', {
      */
     onRender: function(ct, position) {
         this.callParent(arguments);
-        this.addClass(this.popupCls);
+        this.addCls(this.popupCls);
         this.ancCls = this.popupCls + "-anc";
 
         //create anchor dom element.

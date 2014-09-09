@@ -22,8 +22,9 @@ Ext.namespace("GeoExt.ux.form");
  *
  *  Todo
  */
-GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
-
+Ext.define('GeoExt.ux.form.FeaturePanel', {
+	extend: 'Ext.form.FormPanel',
+	alias: 'gx_featurepanel',
     /** api: config[labelWidth]
      *  ``Number``  Default value.
      */
@@ -62,7 +63,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     /** api: config[defaults]
      *  ``Object``  Default value.
      */
-    defaults: {width: 145},
+    defaults: {},
 
     /** api: config[defaultType]
      *  ``String``  Default value.
@@ -153,7 +154,12 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
         this.initDeleteAction();
 
         // Add buttons and toolbar
-        Ext.apply(this, {bbar: new Ext.Toolbar(this.getActions())});
+        Ext.apply(this, {
+        	bbar: Ext.create('Ext.toolbar.Toolbar', {
+        			items: this.getActions()
+        		})
+        	}
+        );
     },
 
     /** private: method[initMyItems]
@@ -205,15 +211,18 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
             if (!GeoExt.ux.LayerStyleManager) {
                 break;
             }
-
-            var styleStore = new Ext.data.SimpleStore(Ext.ux.util.clone(
-                GeoExt.ux.data.FeatureEditingDefaultStyleStoreOptions));
+            
+            var styleStore = Ext.create('Ext.data.Store', Ext.ux.util.clone(
+                    GeoExt.ux.data.FeatureEditingDefaultStyleStoreOptions));
             styleStore.sort('name');
-            var styler = new GeoExt.ux.LayerStyleManager(
-                new GeoExt.ux.StyleSelectorComboBox({
+            
+            var styler = Ext.create('GeoExt.ux.LayerStyleManager',
+            	Ext.create('GeoExt.ux.StyleSelectorComboBox', {
                     store: styleStore,
                     comboBoxOptions: {
-                        emptyText: OpenLayers.i18n("select a color..."),
+                    	valueField: 'style',
+                    	displayField: 'name',
+                    	emptyText: OpenLayers.i18n("select a color..."),
                         fieldLabel: OpenLayers.i18n('color')
                     }
             }), {});
@@ -253,8 +262,8 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
             	  }
               }
               
-              var styler = new GeoExt.ux.LayerStyleManager(
-                  new GeoExt.ux.StyleSelectorPalette({
+              var styler = Ext.create('GeoExt.ux.LayerStyleManager' ,
+            		  Ext.create('GeoExt.ux.StyleSelectorPalette', {
                 	  fieldLabel: OpenLayers.i18n('color'),
                 	  defaultColor: defaultColor
               }), {});
@@ -298,7 +307,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
             actionOptions.text = OpenLayers.i18n('Delete');
         }
 
-        this.deleteAction = new Ext.Action(actionOptions);
+        this.deleteAction = Ext.create('Ext.Action', actionOptions);
     },
 
     /** private: method[deleteFeatures]
@@ -385,7 +394,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     parseFeatureAttributesToFormFields: function(feature) {
         var aoElements, nElements, fieldSet;
 
-        fieldSet = this.findById(this.attributeFieldSetId);
+        fieldSet = this.child('#' + this.attributeFieldSetId);
         aoElements = fieldSet.items.items;
         nElements = aoElements.length;
 
@@ -413,7 +422,7 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     parseFormFieldsToFeatureAttributes: function(feature) {
         var field, id, value, fieldSet;
 
-        fieldSet = this.findById(this.attributeFieldSetId);
+        fieldSet = this.child('#' + this.attributeFieldSetId);
 
         for (var i = 0; i < fieldSet.items.length; i++) {
             field = fieldSet.items.get(i);
@@ -445,6 +454,3 @@ GeoExt.ux.form.FeaturePanel = Ext.extend(Ext.form.FormPanel, {
     }
 
 });
-
-/** api: xtype = gx_featurepanel */
-Ext.reg("gx_featurepanel", GeoExt.ux.form.FeaturePanel);

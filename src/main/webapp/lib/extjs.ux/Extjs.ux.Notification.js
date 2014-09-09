@@ -15,7 +15,8 @@ Ext.ux.NotificationMgr = {
 	positions: []
 };
 
-Ext.ux.Notification = Ext.extend(Ext.Window, {
+Ext.define('Ext.ux.Notification', {
+	extend: 'Ext.Window',
 	displayTarget : this.displayTarget || document,
 	initComponent: function(){
 		Ext.apply(this, {
@@ -46,7 +47,7 @@ Ext.ux.Notification = Ext.extend(Ext.Window, {
 		Ext.ux.Notification.superclass.onRender.call(this, ct, position);
 	},
 	onDestroy: function(){
-		Ext.ux.NotificationMgr.positions.remove(this.pos);
+		//Ext.ux.NotificationMgr.positions.remove(this.pos);
 		Ext.ux.Notification.superclass.onDestroy.call(this);
 	},
 	cancelHiding: function(){

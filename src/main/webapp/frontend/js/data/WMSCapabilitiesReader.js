@@ -3,18 +3,13 @@
  */
 Ext.namespace("de.ingrid.mapclient.frontend.data");
 
-/**
- * @class WMSCapabilitiesReader extends GeoExt.data.WMSCapabilitiesReader in order
- * to keep layer hierarchy information in the loaded records.
- */
-de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader = function(meta, recordType) {
-	de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader.superclass.constructor.call(
-			this, meta, recordType
-	);
-};
-
-Ext.extend(de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader, GeoExt.data.WMSCapabilitiesReader, {
-
+Ext.define('de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader', {
+	extend: 'GeoExt.data.reader.WmsCapabilities',
+	require: [
+	          'GeoExt.data.WmsCapabilitiesLayerModel',
+	          'GeoExt.data.reader.WmsCapabilities'
+	],
+	model: 'GeoExt.data.WmsCapabilitiesLayerModel',
 	/**
 	 * @see GeoExt.data.WMSCapabilitiesReader.readRecords
 	 * This method is overwritten in order to add a nestedLayers attribute to the
@@ -22,12 +17,12 @@ Ext.extend(de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader, GeoExt.data.
 	 */
 	readRecords: function(data) {
 		// do parent class processing
-		var result = de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader.superclass.readRecords.call(this, data);
+		var result = this.superclass.readRecords.call(this, data);
 
 		// parse capabilities data to get the layers
 		// NOTE: this is actually done twice, but it seems to be a cheap operation
 		if(typeof data === "string" || data.nodeType) {
-			data = this.meta.format.read(data);
+			data = this.format.read(data);
 		}
 		var capability = data.capability || {};
 		var layers = capability.layers;
@@ -39,13 +34,14 @@ Ext.extend(de.ingrid.mapclient.frontend.data.WMSCapabilitiesReader, GeoExt.data.
 
 				var customOptions = {
 					nestedLayers: this.getNestedLayerNames(layer),
-					isRootLayer: this.isRootLayer(layer, layers)
+					isRootLayer: this.isRootLayer(layer, layers),
+					service: data.service
 				};
 
 				var record = result.records[i];
 				var recordLayer = record.getLayer();
 				recordLayer.options = Ext.apply(recordLayer.options, customOptions);
-				record.setLayer(recordLayer);
+				record.set("layer", recordLayer);
 			}
 		}
 
