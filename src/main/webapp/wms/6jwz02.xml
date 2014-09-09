@@ -21,7 +21,7 @@
         <Country>Deutschland</Country>
     </ContactAddress>
       <ContactVoiceTelephone>+49(3677)669-2299</ContactVoiceTelephone>
-  <ContactElectronicMailAddress>gdi-wsv.support@ba-dlz-it.bund.de</ContactElectronicMailAddress>
+  <ContactElectronicMailAddress>gdi-wsv.support@dlz-it-bvbs.bund.de</ContactElectronicMailAddress>
   </ContactInformation>
   <AccessConstraints>Die Wasser- und Schifffahrtsverwaltung des Bundes (WSV, www.wsv.de) betreibt eine Geodateninfrastruktur (GDI-WSV). In diesem Rahmen werden auch standardisierte Web-Dienste bereitgestellt. Einige Dienste der GDI-WSV sind im Internet kostenfrei verfügbar. Die WSV übernimmt keine Gewähr für die Richtigkeit und Vollständigkeit der Daten. Die Nutzer müssen bei Verwertungen der Dienste jeglicher Art einen deutlich sichtbaren Quellenvermerk an den Daten/Diensten anbringen: © Wasser- und Schifffahrtsverwaltung des Bundes (www.wsv.de). Eine Weiterleitung der hier angebotenen Dienste wie z.B. WMS (Web Mapping Services) darf nur nach Absprache mit der Bundesanstalt für IT-Dienstleistungen im Geschäftsbereich des BMVBS (DLZ-IT BMVBS, www.dlz-it.de) erfolgen. Die WSV besitzt alle Rechte an den von ihr hergestellten und aktuell gehaltenen Daten. Nur im BVBS-Intranet sichtbare Dienste sind ausschließlich für den Dienstgebrauch vorgesehen.
 </AccessConstraints>
