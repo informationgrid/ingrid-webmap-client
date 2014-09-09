@@ -783,9 +783,15 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 				positionControl.deactivate();
 				self.deactivateRedlining();
 		        if(!printActive){
+		        	var legendDialog = Ext.getCmp('legendDialog');
+					if(legendDialog == undefined){
+						legendDialog = Ext.create('de.ingrid.mapclient.frontend.controls.LegendDialog', {
+						});
+					}
+		        	
 					printDia = Ext.create('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 								mapPanel : mapPanel,
-								legendPanel : Ext.getCmp('legendDialog').legendPanel
+								legendPanel : legendDialog.legendPanel
 							});
 							printActive = true;
 							self.ctrls['keyboardControl'].deactivate();
