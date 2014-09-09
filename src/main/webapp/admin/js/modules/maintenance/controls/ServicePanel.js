@@ -238,7 +238,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 			store: self.serviceStore,
 			xtype: 'cell-editing',
 		    columns: self.columns,
-		    selector: Ext.create('Ext.selection.RowModel', {mode: "SINGLE"}),
+		    selModel: Ext.create('Ext.selection.RowModel', {mode: "SINGLE"}),
 		    plugins:[
 		        Ext.create('Ext.grid.plugin.CellEditing', {
 		        	clicksToEdit: 2

@@ -8,7 +8,6 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.services");
  */
 Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 	extend: 'de.ingrid.mapclient.admin.controls.CategoryPanel',
-	id: 'serviceCategoryPanel',
 	dropBoxTitle: 'Rubrik l&ouml;schen',
 	/**
 	 * Display the wms capabilities for the given url
@@ -62,6 +61,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 			}];
 
 			panel = Ext.create('Ext.grid.Panel', {
+				id:'categoryPanel-' + path,
+				path: path,
 				store: this.getStoreManager().getStore(path),
 				columns: { 
 					items:columns,
@@ -74,6 +75,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				autoWidth:true,
 				viewConfig: {
 					forceFit: true
+				},
+				listeners:{
+					afterrender: function(el){
+					}
 				}
 			});
 
@@ -142,7 +147,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				}, {
 					name: 'capabilitiesUrl',
 					type: 'string'
-				}]
+				}],
+				params: {
+					type: "services"
+				}
 			});
 			this.initializeStore(store, services);
 		}

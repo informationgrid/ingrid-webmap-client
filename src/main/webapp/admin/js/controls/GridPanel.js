@@ -13,10 +13,8 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
  * data should be saved to the server completely each time they are modified.
  */
 Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', { 
-	extend:'Ext.Panel',
+	extend:'Ext.panel.Panel',
 	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
 	border: false,
 
 	/**
@@ -87,15 +85,14 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 		// construct the grid
 		var gridConfig = {
 			store: this.store,
+			header: false,
 		    columns: { 
 		    	items: this.createColumnConfig(this.columns),
 		        columnsText: 'Spalten',
 	            sortAscText: 'A-Z sortieren',
 	            sortDescText: 'Z-A sortieren'
 		    },
-		    ddGroup: self.getId()+'GridDD',
-		    selector: Ext.create('Ext.selection.RowModel', {mode: "SINGLE"}),
-		    enableDragDrop: true,
+		    selModel: Ext.create('Ext.selection.CellModel', { mode: 'SINGLE'}),
 			autoHeight: true,
 			plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
 	            clicksToEdit: 1
@@ -104,7 +101,8 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 				autoFill: true,
 				forceFit: true,
 	            plugins: [{
-	                ptype: 'gridviewdragdrop'
+	                ptype: 'gridviewdragdrop',
+	                ddGroup: self.getId()+'GridDD'
 	            }]
 			}
 		};
@@ -113,45 +111,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 			gridConfig = this.gridConfigCb(gridConfig);
 		}
 	    this.gridPanel = Ext.create('Ext.grid.Panel', gridConfig);
-
-	    // set up grid events
-	    this.gridPanel.getView().addEvents('collapsebody', 'expandbody');
-	    // install a drop target and start listening to
-	    // drag/drop event to store the new record order
-	    this.gridPanel.on('render', function(e) {
-			new Ext.dd.DropTarget(self.gridPanel.container, {
-				ddGroup: self.getId()+'GridDD',
-				copy: false,
-				notifyDrop: function(dd, e, data) {
-					var ds = self.gridPanel.store;
-					var sm = self.gridPanel.getSelectionModel();
-					var rows = sm.getSelections();
-					if(dd.getDragData(e)) {
-						var cindex = dd.getDragData(e).rowIndex;
-						// since we have single selection, there is only one record
-						var movedRecord = data.selections[0];
-						if(cindex != undefined && cindex != ds.indexOf(movedRecord)) {
-							// don't fire any store events while sorting
-							ds.suspendEvents(false);
-							for(var i=0, count=rows.length; i<count; i++) {
-								ds.remove(ds.getById(rows[i].id));
-							}
-							ds.insert(cindex, movedRecord);
-							ds.resumeEvents();
-							sm.clearSelections();
-							// fire only one datachanged event for complete sorting
-							ds.fireEvent('datachanged');
-						}
-					}
-				}
-			});
-	    });
-
-	    // listen to afterEdit event to store the record on change
-	    this.gridPanel.on('afterEdit', function(e) {
-	    	e.record.data[e.field] = e.value;
-	    	e.record.commit();
-	    });
 
 	    // create the new record fields and form containers from the column model
 	    this.newRecordFields = new Ext.util.MixedCollection();
@@ -204,6 +163,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 			items: [{
 				iconCls: 'iconRemove',
                 scope: this,
+                tooltip: this.dropBoxTitle,
                 handler: this.onRemoveClick
             }]
 		});
@@ -220,9 +180,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 	    	var column = this.columns[i];
 	    	var container = Ext.create('Ext.panel.Panel', {
 	    		layout: 'column',
-				labelAlign: 'top',
-				labelSeparator: '',
-				height: 50,
 				border: false,
 				columnWidth: colWidth,
 				items: this.newRecordFields.get(column.dataIndex)
@@ -234,9 +191,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 	    for (var i=0, count=buttons.length; i<count; i++) {
 	    	var btnContainer = Ext.create('Ext.panel.Panel', {
 	    		layout: 'column',
-	    		labelAlign: 'top',
-	    		labelSeparator: '',
-	    		height: 50,
 	    		border: false,
 	    		bodyStyle: 'padding-left:10px',
 	    		items: buttons[i]

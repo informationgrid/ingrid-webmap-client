@@ -29,7 +29,7 @@ de.ingrid.mapclient.admin.modules.data.CategoryStoreManager = function(id) {
  * @param store Ext.data.DataStore instance
  */
 de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.registerStore = function(path, store) {
-	var key = Ext.encode(path);
+	var key = path instanceof Array ? Ext.encode(path) : path;
 	this.stores.add(key, store);
 };
 
@@ -38,7 +38,7 @@ de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.registerSt
  * @param path An array of category names locating the store
  */
 de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.removeStore = function(path) {
-	var key = Ext.encode(path);
+	var key = path instanceof Array ? Ext.encode(path) : path;
 	this.stores.removeAtKey(key);
 };
 
@@ -48,11 +48,37 @@ de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.removeStor
  * @param newPath The new path
  */
 de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.relocateStore = function(oldPath, newPath) {
+	var self = this;
 	var oldKey = Ext.encode(oldPath);
 	var newKey = Ext.encode(newPath);
 	var store = this.getStore(oldKey);
 	this.removeStore(oldKey);
 	this.registerStore(newKey, store);
+	
+	var pathLength = newPath.length;
+	
+	if(pathLength > 1){
+		var stores = [];
+		var keys = this.stores.keys.copy();
+		for (var i=0; i<keys.length; i++) {
+			var key = keys[i];
+			var storeOldKey = Ext.decode(key);
+			var storeNewKey = Ext.decode(key);
+			
+			if(storeOldKey.length >= pathLength){
+				var newKeyEdit = newPath[pathLength -1];
+				var keyTerm = storeOldKey[pathLength -1];
+				var changeKeyTerm = oldPath[pathLength -1];
+				if(keyTerm == changeKeyTerm){
+					storeNewKey[pathLength -1] = newKeyEdit;
+					var tmpStore = self.getStore(Ext.encode(storeOldKey));
+					self.removeStore(Ext.encode(storeOldKey));
+					self.registerStore(Ext.encode(storeNewKey), tmpStore);
+				}
+			}
+		}
+	}
+	
 };
 
 /**
@@ -61,7 +87,7 @@ de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.relocateSt
  * @return Ext.data.DataStore instance
  */
 de.ingrid.mapclient.admin.modules.data.CategoryStoreManager.prototype.getStore = function(path) {
-	var key = Ext.encode(path);
+	var key = path instanceof Array ? Ext.encode(path) : path;
 	if (this.stores.containsKey(key)) {
 		return this.stores.get(key);
 	}

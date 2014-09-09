@@ -13,8 +13,6 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
 Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', { 
 	extend:'Ext.panel.Panel',
 	layout: 'form',
-	labelAlign: 'top',
-	labelSeparator: '',
 	border: false,
 
 	/**
@@ -73,9 +71,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			editor: {
 			   xtype: 'textfield',
 			   allowBlank: false,
-			   labelAlign: 'top',
-			   labelSeparator: '',
-			   labelStyle: 'padding-bottom:5px;',
 			   columnWidth: 0.95
 			},
 			flex: 1
@@ -96,22 +91,27 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 		        }
 			)];
 			config.hideHeaders = true;
+			config.listeners = {
+					afterrender: function(el, ev){
+						el.getView().refresh();
+					}
+			}
 			return config;
 		};
 		
 		// create the grid
 		this.grid = Ext.create('de.ingrid.mapclient.admin.controls.GridPanel', {
-			id: 'categoryGrid',
 			store: store,
 			columns: columns,
 			gridConfigCb: self.gridConfigCb,
 			dropBoxTitle: self.dropBoxTitle
 		});
 		
-		this.grid.gridPanel.getView().on('expandbody', function(node, record, eNode) {
-			var element = Ext.get(eNode).down('.ux-row-expander-box');
-			self.getSubPanel(record, element);
-			this.resumeLayouts(true);
+		this.grid.gridPanel.getView().on({
+			expandbody: function(node, record, eNode) {
+				var element = Ext.get(eNode).down('.ux-row-expander-box');
+				self.getSubPanel(record, element);
+			}
 		});
 		
 		// listen to category stores in order to update the store registry on any change
@@ -138,7 +138,26 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 					var newPath = self.path.copy();
 					newPath.push(record.get('name'));
 					self.getStoreManager().relocateStore(oldPath, newPath);
+					this.panels.removeAtKey(record.id);
+
+					// Update path
+					var panel = Ext.getCmp('categoryPanel-'+oldPath);
+					if(panel){
+						panel.path[1] = record.get('name');
+						
+						var panels = this.panels.items.copy();
+						for(var i=0; i<panels.length; i++){
+							var panelTmp = panels[i];
+							if(panelTmp.path){
+								if(panelTmp.path[1] == record.modified.name){
+									this.panels.remove(panelTmp);
+								}
+							}
+						}
+					}
+					
 					self.save();
+					record.commit();
 				}
 			},
 			'remove': function(store, record, index) {
@@ -178,7 +197,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			panel.render(element);
 			this.panels.add(key, panel);
 		}
-
+		/*
 		// get the panel from the registry
 		panel = this.panels.get(key);
 
@@ -188,6 +207,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			panel = this.relocatePanel(panel, element);
 			this.panels.add(key, panel);
 		}
+		*/
 		panel = this.panels.get(key);
 		this.bindEventHandlers(panel);
 		return panel;
@@ -230,11 +250,15 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// create items of store record type from the store content
 			var items = [];
 			store.each(function(record) {
-				items.push(record.raw);
+				var item = record.raw;
+				if(record.get("name")){
+					item.name = record.get("name");
+				}
+				items.push(item);
 			}, this);
 			// create item
 			parent.name = path[path.length-1];
-			parent[categoriesName] = items;
+			parent[store.params.type] = items;
 			return parent;
 		},
 		// initial context
@@ -263,11 +287,15 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// create items of store record type from the store content
 			var items = [];
 			store.each(function(record) {
-				items.push(record.raw);
+				var item = record.raw;
+				if(record.get("name")){
+					item.name = record.get("name");
+				}
+				items.push(item);
 			}, this);
 			// create item
 			parent.name = path[path.length-1];
-			parent[categoriesName] = items;
+			parent[store.params.type] = items;
 			return parent;
 		},
 		// initial context
@@ -334,8 +362,14 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 	createPanel: function(path) {
 
 		var panel = this.createInstance({
+			id:'categoryPanel-' + path,
 			store: this.getStoreManager().getStore(path),
-			path: path
+			path: path,
+			listeners:{
+				afterrender: function(p, eOpts){
+					this.el.swallowEvent([ 'mouseover', 'mouseout', 'mousedown', 'click', 'dblclick', 'cellclick' ]);
+				}
+			}
 		});
 		return panel;
 	},
@@ -398,7 +432,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 
 		// iterate over sub-categories of a category store
 		var categoriesName = this.getCategoriesName();
-		//if (store.baseParams.type == categoriesName) {
+		if (store.params.type == categoriesName) {
 			var subCategories = category[categoriesName];
 			if (subCategories != undefined) {
 				for (var i=0, countI=subCategories.length; i<countI; i++) {
@@ -408,7 +442,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 					this.buildStore(subPath, subCategory);
 				}
 			}
-		//}
+		}
 
 		if (store) {
 			// register the store
@@ -428,16 +462,18 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 	 */
 	createStore: function(path, category) {
 
+		var categoriesName = this.getCategoriesName();
 		var store = Ext.create('Ext.data.ArrayStore', {
 			autoDestroy: false, // the component will be destroyed when categories are sorted, but the store should remain
 			fields: [{
 				name: 'name',
 				type: 'string'
-			}]
+			}],
+			params: {
+				type: categoriesName
+			}
 		});
-		var categoriesName = this.getCategoriesName();
 		this.initializeStore(store, category[categoriesName]);
-
 		return store;
 	},
 	/**
