@@ -146,7 +146,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
 			enableToggle : false,
 			style:{
-				marginLeft: typeof isFullScreen == "undefined" ? '-13px' : '-7px'
+				marginLeft: '-5px'
 			},
 			handleMouseEvents:false,
 			handler: function(btn) {
