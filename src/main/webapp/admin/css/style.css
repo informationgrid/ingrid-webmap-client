@@ -64,6 +64,7 @@ body {
 .x-notification .x-tool-close{display: none}
 .x-notification.fixed .x-tool-close{display: block}
 .x-notification p{margin: 0;padding:0;}
+.x-notification {font-size: 10px;}
 
 
 /*
