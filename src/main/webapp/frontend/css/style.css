@@ -1,6 +1,6 @@
 body {
-	font-family:helvetica,tahoma,verdana,sans-serif;
-	font-size:13px;
+    color: #111111 !important;
+    font: 100%/120% Verdana,Arial,sans-serif !important;
 }
 
 .iconInfo {
@@ -332,12 +332,12 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-tree-arrows .x-tree-elbow-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 6px !important;
+	background-position: 5px 10px !important;
 }
 
 .x-tree-arrows .x-tree-expand .x-tree-elbow-plus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 6px !important;
+	background-position: 5px 10px !important;
 }
 
 .x-tree-arrows .x-tree-elbow-end-plus {
@@ -347,11 +347,11 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-tree-arrows .x-tree-expand .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 6px !important;
+	background-position: 5px 8px !important;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {
-	background-position: 5px 6px !important;
+	background-position: 5px 10px !important;
 }
 
 .x-tree-view .x-tree-node-select div span{
@@ -427,7 +427,7 @@ ul .x-tree-node-ct li .x-tree-node {
 	font: normal 11px/16px verdana !important;
 }
 
-.font-nominatim h1 span {
+.x-boundlist h1 span {
 	font: bold 11px/16px verdana !important;
 }
 
@@ -484,4 +484,8 @@ ul .x-tree-node-ct li .x-tree-node {
 
 #west-placeholder-targetEl div.x-tool-pressed {
 	display: none;
+}
+
+.x-tree-checkbox {
+	 border: 0px solid #999999 !important;
 }
