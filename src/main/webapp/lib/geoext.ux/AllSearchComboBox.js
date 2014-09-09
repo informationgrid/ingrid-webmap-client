@@ -218,8 +218,8 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
 */
     handleSelect: function(combo, rec) {
     	var value = this.getValue();
-        if(rec.data){
-        	var group = rec.data.group;
+        if(rec[0].data){
+        	var group = rec[0].get("group");
             if(group == "bwastrlocator"){
                 var bWaStrDialog = Ext.getCmp("bWaStrDialog");
                 if(bWaStrDialog){
@@ -228,7 +228,7 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
                 
             	bWaStrDialog = new de.ingrid.mapclient.frontend.controls.BWaStr({
                 	id: 'bWaStrDialog',
-        			record: rec,
+        			record: rec[0],
         			map: this.map,
         			x: 20,
         			y: 100
@@ -239,9 +239,9 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
                     var mapProj = this.map.getProjectionObject();
                     delete this.center;
                     delete this.locationFeature;
-                    if (rec.data.bounds.length === 4) {
+                    if (rec[0].data.bounds.length === 4) {
                         this.map.zoomToExtent(
-                            OpenLayers.Bounds.fromArray(rec.data.bounds)
+                            OpenLayers.Bounds.fromArray(rec[0].data.bounds)
                                 .transform(this.srs, mapProj)
                         );
                         // Set zoom to 10
@@ -250,27 +250,21 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
                         }
                     } else {
                         this.map.setCenter(
-                            OpenLayers.LonLat.fromArray(rec.data.bounds)
+                            OpenLayers.LonLat.fromArray(rec[0].data.bounds)
                                 .transform(this.srs, mapProj),
                             Math.max(this.map.getZoom(), this.zoom)
                         );
                     }
                     this.center = this.map.getCenter();
 
-                    var lonlat = rec.get(this.locationField);
+                    var lonlat = rec[0].get(this.locationField);
                     if (this.layer && lonlat) {
                         var geom = new OpenLayers.Geometry.Point(
                             lonlat[0], lonlat[1]).transform(this.srs, mapProj);
-                        this.locationFeature = new OpenLayers.Feature.Vector(geom, rec.data);
+                        this.locationFeature = new OpenLayers.Feature.Vector(geom, rec[0].data);
                         this.layer.addFeatures([this.locationFeature]);
                     }
                 }
-                // blur the combo box
-                //TODO Investigate if there is a more elegant way to do this.
-                (function() {
-                    this.triggerBlur();
-                    this.el.blur();
-                }).defer(100, this);
             }else if(group == "portalsearch"){
             	var url = value;
                 if(url){
@@ -280,7 +274,7 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
             		 	url = url + "SERVICE=WMS&REQUEST=GetCapabilities";
             		var service = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(url);
             		var activeServicesPanel = Ext.getCmp("activeServices");
-            		var callback = Ext.util.Functions.createDelegate(activeServicesPanel.addService, activeServicesPanel);
+            		var callback = Ext.Function.bind(activeServicesPanel.addService, activeServicesPanel);
             		var showFlash = true;
             		de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback, showFlash, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"), de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeZoomToExtend"));
                 }

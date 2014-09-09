@@ -442,11 +442,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 						listeners : {
 							checkchange : function(item, checked) {
 								if (checked) {
-									var button = Ext.getCmp('measureButton');
-									var dom = button.getEl().dom;
-									if(!button.pressed){
-										dom.click();	
-									}
 									// Deactivate controls
 									featureInfoControl.deactivate();
 									
@@ -465,11 +460,6 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					listeners : {
 						checkchange : function(item, checked) {
 							if (checked) {
-								var button = Ext.getCmp('measureButton');
-								var dom = button.getEl().dom;
-								if(!button.pressed){
-									dom.click();	
-								}
 								// Deactivate controls
 								featureInfoControl.deactivate();
 								

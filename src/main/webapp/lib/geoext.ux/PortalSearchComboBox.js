@@ -112,7 +112,7 @@ Ext.define('GeoExt.form.PortalSearch', {
     		 	url = url + "SERVICE=WMS&REQUEST=GetCapabilities";
     		var service = de.ingrid.mapclient.frontend.data.Service.createFromCapabilitiesUrl(url);
     		var activeServicesPanel = Ext.getCmp("activeServices");
-    		var callback = Ext.util.Functions.createDelegate(activeServicesPanel.addService, activeServicesPanel);
+    		var callback = Ext.Function.bind(activeServicesPanel.addService, activeServicesPanel);
     		var showFlash = true;
     		de.ingrid.mapclient.frontend.data.Service.load(service.getCapabilitiesUrl(), callback, showFlash, de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpandAddNode"), de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeZoomToExtend"));
         }
