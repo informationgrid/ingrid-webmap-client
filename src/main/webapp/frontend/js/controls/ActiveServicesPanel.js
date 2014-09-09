@@ -469,9 +469,10 @@ de.ingrid.mapclient.frontend.controls.ActiveServicesPanel.prototype.containsServ
 			var addServiceCap = service.getCapabilitiesUrl();
 			var tmpServiceCap = tmpService.getCapabilitiesUrl();
 			if(addServiceCap && tmpServiceCap){
-				addServiceCap = addServiceCap.replace("http://","").replace("https://","");
-				tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","");
-				if(addServiceCap.split("?")[0] == tmpServiceCap.split("?")[0]){
+				addServiceCap = addServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+				tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+				
+				if(addServiceCap == tmpServiceCap){
 					return true;
 				}
 			}
