@@ -481,7 +481,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 						allowDrop:false,
 						allowDrag:false,
 						allowChildren:false,
-						children: []
+						children: childChildren
 					});
 				}
 			}
