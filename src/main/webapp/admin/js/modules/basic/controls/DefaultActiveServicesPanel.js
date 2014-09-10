@@ -187,9 +187,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         			sliderLayer.hide();
 
         			self.createActiveServiceTree();
-					self.treeActiveService.doLayout();
 					self.createServiceTree();
-					self.treeService.doLayout();
+					self.treeService.fireEvent("afterrender");
 				}
 		      },{
 				xtype: 'button',
@@ -221,9 +220,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		self.services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 		var node = this.transform(false);
 		
+		self.treeService.getRootNode().removeAll();
 		self.treeService.getRootNode().appendChild(node);
 		
-        self.treeService.on('afterrender', function(tree){
+        self.treeService.on('afterrender', function(){
         	var moveServices = [];
         	if(self.usedServices == undefined){
         		self.usedServices = de.ingrid.mapclient.Configuration.getValue('wmsActiveServices');
@@ -245,8 +245,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             	if(moveServices.length > 0){
             		for (var j = 0; j < moveServices.length; j++) {
             			var moveService = moveServices[j];
-    	        		for (var i = 0; i < tree.getStore().getRootNode().childNodes.length; i++) {
-    	            		var childNode = tree.getStore().getRootNode().childNodes[i];
+    	        		for (var i = 0; i < this.getStore().getRootNode().childNodes.length; i++) {
+    	            		var childNode = this.getStore().getRootNode().childNodes[i];
     	            		if(childNode.raw){
     	            			var curService = childNode.raw.service;
                     			if(moveService.capabilitiesUrl == curService.capabilitiesUrl){
@@ -282,8 +282,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 	},
 	createActiveServiceTree: function(){
 		var self = this;
-		var node2 = this.transform(true);
         
+		self.treeActiveService.getRootNode().removeAll();
+		
         // add the root node
         self.storeActiveService.on('move', function(node, oldParent, newParent, index, eOpts){
         	var service = node.raw.service;
