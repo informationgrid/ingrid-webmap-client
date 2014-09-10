@@ -69,12 +69,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 		        expanded: false
 			},
 			plugins:[hoverActions],
-			buttonSpanElStyle:'width:15px;',
+			buttonSpanElStyle: 'width:25px;',
 			allowNodeOver: true,
 			onlyServices: true,
 			useArrows:true,
 		    lines: false,
 		    frame : false,
+		    cls: 'x-tree-noicon',
 		    layout: 'fit',
 		    autoScroll: true,
 		    listeners: {
@@ -87,9 +88,10 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 			    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
 			        		var searchServiceCap = service.capabilitiesUrl;
 			        		if(activeServiceCap && searchServiceCap){
-			        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
-			        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
-			        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+			        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+			        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+								
+			        			if(activeServiceCap == searchServiceCap){
 			        				exist = true;
 			            			break;
 			            		}
@@ -206,9 +208,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 					var activeServiceCap = activeService.raw.service.capabilitiesUrl;
 	        		var searchServiceCap = childNode.raw.service.capabilitiesUrl;
 	        		if(activeServiceCap && searchServiceCap){
-	        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
-	        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
-	        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+	        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+	        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+						if(activeServiceCap == searchServiceCap){
 	        				childNode.set("cls", "x-tree-node-disabled");
 	        				break;
 	        			}

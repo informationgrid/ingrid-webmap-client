@@ -126,8 +126,6 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
-	font: bold 12px verdana !important;
-	color: #1B78B1 !important;
 }
 
 .iconSettings {
@@ -135,8 +133,6 @@ body {
 	background-repeat: no-repeat;
 	width: 16px;
 	height: 16px;
-	font: bold 12px verdana !important;
-	color: #1B78B1 !important;
 }
 
 .iconCollapseExpand {
@@ -267,16 +263,22 @@ padding: 1px 3px 1px 3px;
 #welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
 #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
 
-.x-panel .x-accordion-hd .x-tool {
+.x-accordion-hd .x-tool-collapse-top, .x-accordion-hd .x-tool-collapse-bottom {
 	background-image: url(../../shared/images/arrow_down.png);
+	background-position: 0 0 !important;
+	height: 12px;
+    width: 12px;
 }
 
 .x-panel .x-accordion-hd .x-tool-toggle {
 	background-position: 0;
 }
 
-.x-panel .x-panel-collapsed .x-accordion-hd  .x-tool {
+.x-accordion-hd .x-tool-expand-top, .x-accordion-hd .x-tool-expand-bottom {
 	background-image: url(../../shared/images/arrow_right.png);
+	background-position: 0 0 !important;
+	height: 12px;
+    width: 12px;
 }
 
 .x-panel-collapsed .x-accordion-hd .x-tool-toggle {
@@ -314,8 +316,20 @@ ul .x-tree-node-ct li .x-tree-node {
 	font: normal 12px/19px verdana;
 }
 
-.x-tree-node-el {
-	padding: 5px 0px 5px 5px;
+.x-grid-cell-inner {
+	padding: 5px 0px 5px 5px !important;
+}
+
+.x-grid-row-focused .x-grid-td {
+    border-bottom: 0px dotted #464646;
+}
+
+.x-grid-row-before-focused .x-grid-td {
+    border-bottom: 0px dotted #464646;
+}
+
+.x-grid-body .x-grid-table-focused-first {
+    border-top: 0px dotted #464646;
 }
 
 .x-tree-arrows {
@@ -404,7 +418,7 @@ ul .x-tree-node-ct li .x-tree-node {
 .buttonSpan {
 	height: 16px;
 	float:left;
-	padding: 2px 5px 0px 0px;
+	padding: 2px 5px 0 0;
 }
 
 .background {
@@ -489,4 +503,19 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-tree-checkbox {
 	 border: 0px solid #999999 !important;
+}
+
+input.x-form-text, textarea.x-form-text { border: 1px solid #999999 !important; }
+
+label.x-form-item-label {
+	 padding: 3px 3px 3px 0;
+}
+
+#centerPanel span.x-btn-inner {
+	font: bold 12px verdana !important;
+	color: #1B78B1 !important;
+}
+
+.x-tree-noicon .x-grid-tree-node-leaf .x-tree-elbow-img {
+	display: none;
 }

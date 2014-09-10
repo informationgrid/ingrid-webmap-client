@@ -505,7 +505,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			allowNodeOver: true,
 			viewConfig: de.ingrid.mapclient.Configuration.getSettings("defaultTreeDragDrop") ? { plugins: { ptype: 'treeviewdragdrop' } } : {},
 			plugins:[hoverActions],
-			buttonSpanElStyle:'width:12px;'
+			buttonSpanElStyle:'width:20px;'
 		});
 
 		Ext.apply(this, {
@@ -533,10 +533,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				var addServiceCap = service.getCapabilitiesUrl();
 				var tmpServiceCap = tmpService.getCapabilitiesUrl();
 				if(addServiceCap && tmpServiceCap){
-				addServiceCap = addServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-				tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-				
-				if(addServiceCap == tmpServiceCap){
+					addServiceCap = addServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+					tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+					if(addServiceCap == tmpServiceCap){
 						return true;
 					}
 				}
@@ -544,9 +543,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				var addServiceCap = service.getDefinition().href;
 				var tmpServiceCap = tmpService.getDefinition().href;
 				if(addServiceCap && tmpServiceCap){
-					addServiceCap = addServiceCap.replace("http://","").replace("https://","");
-					tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","");
-					if((addServiceCap.split("?")[0] == tmpServiceCap.split("?")[0]) 
+					addServiceCap = addServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+					tmpServiceCap = tmpServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+					if((addServiceCap == tmpServiceCap)
 						&& (service.getDefinition().name == tmpService.getDefinition().name) 
 						&& (service.definition["abstract"] == tmpService.definition["abstract"])){
 						return true;

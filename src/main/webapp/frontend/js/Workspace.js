@@ -10,6 +10,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 	extend : 'Ext.panel.Panel',
 	layout : 'border',
 	monitorResize : true,
+	border:false,
 
 	/**
 	 * @cfg The initial map url to load. This is typically a short url

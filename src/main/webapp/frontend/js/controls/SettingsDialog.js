@@ -16,7 +16,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 	constrain: true,
 	collapsible: false,
 	collapsed: true,
-	width: 320,
+	width: 250,
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
@@ -55,9 +55,10 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 		var projectionsCombo = Ext.create('Ext.form.field.ComboBox', {
 			id: 'settingsDialog_projectionsCombo',
 			fieldLabel: i18n('tRaumbezugssystem'),
-			labelWidth: 120,
+			labelAlign: 'top',
 			triggerAction: 'all',
 			queryMode: 'local',
+			flex: 1,
 			store: Ext.create('Ext.data.ArrayStore', {
 				autoDestroy: true,
 				fields: [ {
@@ -111,7 +112,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 		var scalesCombo = Ext.create('Ext.form.field.ComboBox', {
 			id: 'settingsDialog_scalesCombo',
 			fieldLabel: i18n('tMaszstab'),
-			labelWidth: 120,
+			labelAlign: 'top',
 			triggerAction: 'all',
 			queryMode: 'local',
 			store: Ext.create('Ext.data.ArrayStore', {
