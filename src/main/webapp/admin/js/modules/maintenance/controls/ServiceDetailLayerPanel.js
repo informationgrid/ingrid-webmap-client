@@ -127,6 +127,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPane
 						var saveBtn = Ext.create('Ext.Button', {
 							tooltip: 'Speichern',
 							text: 'Speichern',
+							id: 'serviceDetailLayerPanelBtnSave',
 							disabled: false,
 							buttonAlign:'right',
 							handler: function(btn) {

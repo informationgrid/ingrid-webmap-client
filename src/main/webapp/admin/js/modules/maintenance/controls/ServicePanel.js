@@ -93,6 +93,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		});
 		
 		var combo = Ext.create('Ext.form.ComboBox', {
+			id: 'servicePanelCombo',
 			typeAhead: true,
 		    triggerAction: 'all',
 		    lazyRender:true,
@@ -291,6 +292,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		});
 		
 		self.copyServiceBtn = Ext.create('Ext.Button', {
+			id: 'serviceGridPanelBtnCopy',
 			tooltip: 'Kopieren',
 			text: 'Kopieren',
 			disabled: true,
@@ -299,6 +301,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 			}
 		});
 		self.reloadServiceBtn = Ext.create('Ext.Button', {
+			id: 'serviceGridPanelBtnReload',
 			tooltip: 'Neu einlesen',
 			text: 'Neu einlesen',
 			disabled: true,
@@ -307,6 +310,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 			}
 		});
 		self.deleteServiceBtn = Ext.create('Ext.Button', {
+			id: 'serviceGridPanelBtnDelete',
 			tooltip: 'L&ouml;schen',
 			text: 'L&ouml;schen',
 			disabled: true,
@@ -315,6 +319,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 			}
 		});
 		self.addServiceBtn = Ext.create('Ext.Button', {
+			id: 'serviceGridPanelBtnAdd',
 			tooltip: 'Hinzuf&uuml;gen',
 			text: 'Hinzuf&uuml;gen',
 			disabled: false,

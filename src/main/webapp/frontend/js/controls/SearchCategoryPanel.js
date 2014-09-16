@@ -68,28 +68,31 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchCategoryPanel', {
 		    cls: 'x-tree-noicon',
 			autoScroll: true,
 			listeners: {
-		        click: function(service) {
-		        	var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
-		        	var exist = false;
-			        for(var j=0; j<activeServices.length; j++){
-			    		var activeService = activeServices[j];
-			    		if(activeService.raw.service && service){
-			    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
-			        		var searchServiceCap = service.capabilitiesUrl;
-			        		if(activeServiceCap && searchServiceCap){
-			        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-			        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-								if(activeServiceCap == searchServiceCap){
-			        				exist = true;
-			            			break;
-			            		}
-			        		}
-			    		}
-			    	}
-			        if(!exist){
-			        	self.activateService(service);
-		           		self.activeServicesPanel.expand();
-			        }
+				itemclick: function( view, record, item, index, e, eOpts) {
+		        	var service = record.raw.service;
+		        	if(service){
+		        		var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
+			        	var exist = false;
+				        for(var j=0; j<activeServices.length; j++){
+				    		var activeService = activeServices[j];
+				    		if(activeService.raw.service && service){
+				    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+				        		var searchServiceCap = service.capabilitiesUrl;
+				        		if(activeServiceCap && searchServiceCap){
+				        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+				        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+									if(activeServiceCap == searchServiceCap){
+				        				exist = true;
+				            			break;
+				            		}
+				        		}
+				    		}
+				    	}
+				        if(!exist){
+				        	self.activateService(service);
+			           		self.activeServicesPanel.expand();
+				        }
+		        	}
 		        }
 		    }
 		});

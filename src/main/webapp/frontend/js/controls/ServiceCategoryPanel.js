@@ -79,41 +79,44 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 		    layout: 'fit',
 		    autoScroll: true,
 		    listeners: {
-		        click: function(service) {
-		        	var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
-		        	var exist = false;
-			        for(var j=0; j<activeServices.length; j++){
-			    		var activeService = activeServices[j];
-			    		if(activeService.raw.service && service){
-			    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
-			        		var searchServiceCap = service.capabilitiesUrl;
-			        		if(activeServiceCap && searchServiceCap){
-			        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-			        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
-								
-			        			if(activeServiceCap == searchServiceCap){
-			        				exist = true;
-			            			break;
-			            		}
-			        		}
-			    		}
-			    	}
-			        if(!exist){
-			        	self.activateService(service);
-		           		self.activeServicesPanel.expand();
-			        }
+		        itemclick: function( view, record, item, index, e, eOpts) {
+		        	var service = record.raw.service;
+		        	if(service){
+		        		var activeServices = Ext.getCmp("activeServices").layerTree.store.tree.root.childNodes;
+			        	var exist = false;
+				        for(var j=0; j<activeServices.length; j++){
+				    		var activeService = activeServices[j];
+				    		if(activeService.raw.service && service){
+				    			var activeServiceCap = activeService.raw.service.capabilitiesUrl;
+				        		var searchServiceCap = service.capabilitiesUrl;
+				        		if(activeServiceCap && searchServiceCap){
+				        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+				        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+									
+				        			if(activeServiceCap == searchServiceCap){
+				        				exist = true;
+				            			break;
+				            		}
+				        		}
+				    		}
+				    	}
+				        if(!exist){
+				        	self.activateService(service);
+			           		self.activeServicesPanel.expand();
+				        }
+		        	}
 		        }
 		    }
 		});
 		
 		self.tree.store.on({
 			expand: function(node) {
-				node.set("cls", "x-tree-expand");
+				node.set("cls", "x-tree-node-service x-tree-expand");
 				var childNodes = node.childNodes;
 		        self.reloadTreeUI(childNodes);
 			},
 			collapse: function(node){
-				node.set("cls", "");
+				node.set("cls", "x-tree-node-service");
 			}
 		});
 		
@@ -193,7 +196,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 			children: children,
 			leaf: children.length == 0 ? true : false,
 			expanded: false,
-			expandable: true
+			expandable: true,
+			cls: 'x-tree-node-service'
 		};
 		return node;
 	},

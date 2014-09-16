@@ -58,7 +58,6 @@ Ext.define('Ext.ux.HoverActions', {
         this.element = tpl.append(document.body, this.actions);
         this.extElement = Ext.get(this.element);
         this.extElement.hide();
-        this.extElement.on("click", this.onClick, this);
     },
 
     onNodeOver : function (me, e) {
@@ -70,6 +69,8 @@ Ext.define('Ext.ux.HoverActions', {
 		var nodeEl = Ext.fly(rowNode).child("td").child("div");
 		if(nodeEl){
 			nodeEl.first().insertFirst(this.element);
+			this.extElement.un("click", this.onClick, this);
+	    	this.extElement.on("click", this.onClick, this);
 	        this.extElement.show();
 		}
 		this.currentRecord = record;
@@ -87,6 +88,7 @@ Ext.define('Ext.ux.HoverActions', {
                 action.handler(record, e);
             }
         });
+        e.stopEvent();
     }
 });
 

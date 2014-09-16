@@ -115,15 +115,5 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNodeView', {
 
             el.removeCls('gx-tree-component-off');
         }
-    },
-    onItemDblClick: function(record, item, index) {
-        if(record){
-        	if(record.raw){
-        		if(record.raw.service){
-            		var tree = record.getOwnerTree();
-            		tree.fireEvent("click", record.raw.service);
-            	}
-            }
-        }
     }
 });

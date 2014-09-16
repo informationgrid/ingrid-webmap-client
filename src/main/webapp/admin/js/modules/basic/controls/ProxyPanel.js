@@ -8,6 +8,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.basic");
  */
 Ext.define('de.ingrid.mapclient.admin.modules.basic.ProxyPanel', { 
 	extend: 'Ext.form.Panel',
+	id: 'proxyPanel',
 	title: 'Proxy Zugriff',
 	layout: {
 	    type: 'vbox',
@@ -22,6 +23,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProxyPanel', {
 	 * The field that contains the proxy url
 	 */
 	proxyUrlField: Ext.create('Ext.form.TextField', {
+		id: 'proxyPanelTextField',
 		fieldLabel: 'Proxy Url',
 		labelAlign: 'top',
 		labelSeparator: '',
@@ -57,6 +59,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProxyPanel', {
 			}],
 			buttons:[
 			    {
+			    	id: 'proxyPanelBtnSave',
 					xtype: 'button',
 					text: 'Einstellungen speichern',
 					fieldLabel: '&nbsp;',

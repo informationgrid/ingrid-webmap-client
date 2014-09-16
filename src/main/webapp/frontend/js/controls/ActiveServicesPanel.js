@@ -306,7 +306,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		});
 		
 		var hoverActions = Ext.create('Ext.ux.HoverActions', {
-			actions: [new Ext.Button({
+			actions: [
+			  Ext.create('Ext.Button', {
 		        iconCls: 'iconMenu',
 		        tooltip: i18n('tOptionen'),
 		        disabled: true,
@@ -399,6 +400,10 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				        		if(node.get("layer").getVisibility()){
 									cls = cls + ' ' + 'x-tree-node-select';
 								}
+				        	}else{
+				        		if(node.get("layer") == "" && node.get("checked") == null){
+				        			cls = cls + ' ' + 'x-tree-node-service';
+				        		}
 				        	}
 			        	}
 						node.set('cls', cls);
@@ -434,6 +439,10 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				        		if(node.get("layer").getVisibility()){
 									cls = cls + ' ' + 'x-tree-node-select';
 								}
+				        	}else{
+				        		if(node.get("layer") == "" && node.get("checked") == null){
+				        			cls = cls + ' ' + 'x-tree-node-service';
+				        		}
 				        	}
 						}
 						node.set('cls', cls);
@@ -671,11 +680,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			var appendChild = {
 				text: serviceTitle,
 				leaf: false,
+				cls: 'x-tree-node-service',
 				service: service,
 				plugins: [{
 					ptype: 'gx_layercontainer',
                     leaf: false,
-					service: service,
+                    service: service,
 					loader: Ext.create('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 						service: service,
 						initialAdd: initialAdd,
@@ -1303,18 +1313,20 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	 * Extract Bounding Box from Layer. Try to get it first from bbox and then from llbbox.
 	 */
 	_getBoundingBoxFromLayer: function(layer, currentProjection) {
-		if(layer.bbox[currentProjection]){
-			bbox = layer.bbox[currentProjection].bbox;
-			return new OpenLayers.Bounds.fromArray(bbox);
-		} else {
-			// try to get bounding box from LatLonBoundingBox property
-			var llbbox = layer.llbbox;
-			if (llbbox) {
-				var bounds = new OpenLayers.Bounds.fromArray(llbbox);
-				var projMap = new OpenLayers.Projection(currentProjection);
-				var projLayer = new OpenLayers.Projection("EPSG:4326"); // WGS84
-				bounds.transform(projLayer, projMap);
-				return bounds;
+		if(layer.bbox){
+			if(layer.bbox[currentProjection]){
+				bbox = layer.bbox[currentProjection].bbox;
+				return new OpenLayers.Bounds.fromArray(bbox);
+			} else {
+				// try to get bounding box from LatLonBoundingBox property
+				var llbbox = layer.llbbox;
+				if (llbbox) {
+					var bounds = new OpenLayers.Bounds.fromArray(llbbox);
+					var projMap = new OpenLayers.Projection(currentProjection);
+					var projLayer = new OpenLayers.Projection("EPSG:4326"); // WGS84
+					bounds.transform(projLayer, projMap);
+					return bounds;
+				}
 			}
 		}
 		return null;

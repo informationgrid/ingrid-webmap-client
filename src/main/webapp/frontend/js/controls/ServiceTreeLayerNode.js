@@ -126,7 +126,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
 						layer.setVisibility(checkedLayer);
 					}
 				}else{
-					layer.setVisibility(false);
+					if(!layer.isBaseLayer){
+						layer.setVisibility(false);
+					}
 				}
     		}
 	    });

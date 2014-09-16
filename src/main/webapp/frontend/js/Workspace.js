@@ -9,6 +9,7 @@ Ext.namespace("de.ingrid.mapclient.frontend");
 Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 	extend : 'Ext.panel.Panel',
 	layout : 'border',
+	cls: 'workspace', 
 	monitorResize : true,
 	border:false,
 
@@ -1227,7 +1228,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					if (e != null) {
 					OpenLayers.Event.stop(e);
 					}
-					var copyright = Ext.getCmp("copyright");
+					var copyright = Ext.getElementById("copyright");
 					if(copyright)
 						copyright.style.right =  "25px";
 				},
@@ -1237,7 +1238,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 					if (e != null) {
 					OpenLayers.Event.stop(e);
 					}
-					var copyright = Ext.getCmp("copyright");
+					var copyright = Ext.getElementById("copyright");
 					if(copyright)
 						copyright.style.right =  "220px";
 				},

@@ -51,7 +51,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchPanel', {
 				}
 		};
 		
-		var panel = new Ext.FormPanel({
+		var panel = Ext.create('Ext.form.Panel', {
 			bodyStyle: 'padding:5px; background: transparent;',
 			layout: 'form',
 			style: 'border-bottom: 0',
@@ -71,7 +71,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchPanel', {
 			}]
 		});
 		
-		var panelResult = new Ext.Panel({
+		var panelResult = Ext.create('Ext.panel.Panel', {
 			id: 'panelSearchResult',
 			border: false,
 			layout: 'fit'

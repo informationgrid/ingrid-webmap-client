@@ -1,7 +1,7 @@
 body {
-    color: #111111 !important;
+	color: #111111 !important;
     font: 100%/120% Verdana,Arial,sans-serif !important;
-}
+} 
 
 .iconInfo {
 	background-image: url(../../shared/images/icon_objektinformationen.png);
@@ -187,26 +187,51 @@ p.load_icon_webmap{   background-color: transparent;
     height: 1px;
     overflow: visible;
     visibility: visible;
-    display: block;}
-.webmapclient_searchpanel{margin:0px -150px;min-width:150px;}
+    display: block;
+}
+   
+.webmapclient_searchpanel {
+	margin:0px -150px;
+	min-width:150px;
+}
+
 .olControlOverviewMapElement {
-  background: #d9e7f8;
+  background-color: #d9e7f8 !important;
   border: 1px solid #8db2e3;
   border-radius: 0 !important;
   -moz-border-radius: 0 !important;
   padding: 5px 21px 0 5px ;
 }
+
+.olControlOverviewMapMinimizeButton {
+	bottom: 80px;
+    cursor: pointer;
+    height: 18px;
+    right: 0;
+    top: 1px;
+    width: 18px;
+}
+
 .olMap {
-  border-width: 1px 1px 0 !important;
+	border-width: 1px 1px 0 !important;
 }
-#olControlOverviewMapMaximizeButton_innerImage{bottom:-80px;}
-.x-item-disabled{opacity: .25 !important;}
+
+#olControlOverviewMapMaximizeButton_innerImage {
+	bottom:-80px;
+}
+
+.x-item-disabled {
+	opacity: .25 !important;
+}
+
 .x-tree-node-loading a span {
-font-style: inherit;
+	font-style: inherit;
 }
+
 .x-tree-node a span, .x-dd-drag-ghost a span {
-padding: 1px 3px 1px 3px;
+	padding: 1px 3px 1px 3px;
 }
+
 .mapclientLegendPanel div div div label {
 	background-color: #D0DEF0;
 }
@@ -255,12 +280,12 @@ padding: 1px 3px 1px 3px;
 #welcomePage .welcomeFooter, .welcomeHeader { background: rgb(217, 234, 250); margin: 5px; padding: 15px;}
 #welcomePage .odd { background-color: #EEE;}
 #welcomePage .iconTable { width: 16px; height: 16px; background-repeat: no-repeat;}
-#welcomePage .info_img {position: absolute;right: 12px !important;margin: 0px;top: 6px !important;}
+#welcomePage .info_img {position: absolute;right: 5px !important;margin: 0px;top: 6px !important;}
 #welcomePage .info_link { margin-bottom: 0.5em !important; font-size: 12px; }
 #welcomePage .title_extra_text {margin-top: 10px; color: rgb(100, 100, 100); font-size: 13px; }
 #welcomePage .welcomeTable { width: 100%; }
-#welcomePage .welcomeTable tr td { padding: 3px; font-size: 100%; }
-#welcomePage #tipsPanel .x-panel-body { padding: 10px; font-size: 14px; line-height: 18px; }
+#welcomePage .welcomeTable tr td { padding: 3px; font-size: 90%; }
+#welcomePage #tipsPanel .x-panel-body span { padding: 10px; font-size: 14px; line-height: 18px; }
 #welcomePage a {color: rgb(23, 103, 152); text-decoration: none;}
 
 .x-accordion-hd .x-tool-collapse-top, .x-accordion-hd .x-tool-collapse-bottom {
@@ -301,12 +326,12 @@ ul .x-tree-node-ct li .x-tree-node {
 	border: 0px solid #000000;
 }
 
-.x-header-text{
+.x-header-text {
 	font: bold 12px verdana;
 	color: #1C5679;
 }
 
-.x-panel-collapsed .x-accordion-hd{
+.x-panel-header-collapsed .x-header-text {
 	font: bold 12px verdana;
 	color: #1B78B1;
 }
@@ -314,6 +339,25 @@ ul .x-tree-node-ct li .x-tree-node {
 .x-tree-node-text {
 	color: #000000;
 	font: normal 12px/19px verdana;
+	text-decoration: none;
+}
+
+#activeServices .x-tree-node-text {
+	color: #000000;
+	font: normal 12px/19px verdana;
+	text-decoration: none;
+}
+
+.x-tree-panel .x-grid-table {
+    border-bottom: 1px solid #b4b4b4;
+}
+
+.x-tree-panel .x-tree-node-service {
+    border-top: 1px solid #b4b4b4;
+}
+
+.x-tree-panel .x-tree-expand.x-tree-node-service div.x-grid-cell-inner {
+    border-bottom: 1px solid #b4b4b4;
 }
 
 .x-grid-cell-inner {
