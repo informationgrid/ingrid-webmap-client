@@ -18,7 +18,7 @@ Ext.Loader.syncRequire([
  * @param store GeoExt.data.WMSCapabilitiesStore instance
  */
 de.ingrid.mapclient.frontend.data.Service = function(capabilitiesUrl, definition, layers, store) {
-	this.capabilitiesUrl = capabilitiesUrl;
+	this.capabilitiesUrl = decodeURIComponent(capabilitiesUrl);
 	this.definition = definition;
 	this.layers = layers;
 	this.capabilitiesStore = store;
