@@ -61,6 +61,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 					var capUrl = de.ingrid.mapclient.Configuration.getValue("wmsCapUrl");
 					this.setValue(capUrl);
 					self.loadLayers();
+				},
+				change: function(){
+					self.baseLayerCombo.reset();
+					self.layerStore.reload();
 				}
 			}
 		});
@@ -201,8 +205,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 				id: 'featureInfoBtn',
 				text: 'Einstellungen speichern',
 				handler: function() {
-					if (self.baseLayerCombo.validate() && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
+					if (self.baseLayerCombo.value && self.baseLayerCopyrightTextField.validate() && self.featureInfoTextField.validate() && self.wmsCapUrlField.validate()) {
 						self.save();
+					}else{
+						de.ingrid.mapclient.Message.showError('Speichern fehlgeschlagen.');
 					}
 				}
 			}]
