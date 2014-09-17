@@ -1054,6 +1054,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		this.mapConfig = {
 			containingViewport:self,
 			fractionalZoom : true,
+			allOverlays: false,
+            fallThrough: true,
 			projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 			displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 			controls : [new OpenLayers.Control.Navigation(),
@@ -1105,6 +1107,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 			this.mapConfig = {
 				fractionalZoom: true,
+				allOverlays: false,
+	            fallThrough: true,
 				projection: epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 				displayProjection: epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 				controls : [new OpenLayers.Control.Navigation(),
