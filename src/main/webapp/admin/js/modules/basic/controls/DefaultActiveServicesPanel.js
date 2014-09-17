@@ -136,10 +136,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
             	change: function(slider, value, obj){
             		var node = self.treeActiveService.getSelectionModel().getSelection()[0];
             		if(node){
-            			if(obj.dragging){
-            				node.raw.opacity = value;
-            			}
-            			if(node.raw.opacity){
+	            		node.raw.opacity = value;
+            			if(value != sliderService.getValue()){
             				slider.labelEl.update('Layer: ' + value + '%');
             			}else{
             				slider.labelEl.update('Layer: default');
