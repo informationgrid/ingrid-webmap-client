@@ -207,9 +207,9 @@ de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel.prototype.reloadTreeU
 				var activeServiceCap = activeService.attributes.service.capabilitiesUrl;
         		var searchServiceCap = childNode.attributes.service.capabilitiesUrl;
         		if(activeServiceCap && searchServiceCap){
-        			activeServiceCap = activeServiceCap.replace("http://", "").replace("https://", "");
-        			searchServiceCap = searchServiceCap.replace("http://", "").replace("https://", "");
-        			if(activeServiceCap.split("?")[0] == searchServiceCap.split("?")[0]){
+        			activeServiceCap = activeServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+        			searchServiceCap = searchServiceCap.replace("http://","").replace("https://","").toLowerCase().replace("version=", "").replace("service=wms", "").replace("request=getcapabilities", "");
+					if(activeServiceCap == searchServiceCap){
         				childNode.setCls("x-tree-node-disabled");
         				break;
         			}
