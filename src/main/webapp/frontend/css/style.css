@@ -401,12 +401,12 @@ ul .x-tree-node-ct li .x-tree-node {
 
 .x-tree-arrows .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_right.png);
-	background-position: 5px 6px !important;
+	background-position: 5px 10px !important;
 }
 
 .x-tree-arrows .x-tree-expand .x-tree-elbow-end-plus {
 	background-image: url(../../shared/images/arrow_small_down.png);
-	background-position: 5px 8px !important;
+	background-position: 5px 10px !important;
 }
 
 .x-tree-arrows .x-tree-ec-over .x-tree-elbow-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-plus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-minus, .x-tree-arrows .x-tree-ec-over .x-tree-elbow-end-minus {

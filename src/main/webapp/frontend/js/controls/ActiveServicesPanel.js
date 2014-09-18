@@ -400,12 +400,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				        		if(node.get("layer").getVisibility()){
 									cls = cls + ' ' + 'x-tree-node-select';
 								}
-				        	}else{
-				        		if(node.get("layer") == "" && node.get("checked") == null){
-				        			cls = cls + ' ' + 'x-tree-node-service';
-				        		}
 				        	}
 			        	}
+			        	
+			        	if(node.get("layer") == "" && node.get("checked") == null){
+		        			cls = cls + ' ' + 'x-tree-node-service';
+		        		}
+			        	
 						node.set('cls', cls);
 						// Save tree state by collapse node
 			        	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
@@ -439,12 +440,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				        		if(node.get("layer").getVisibility()){
 									cls = cls + ' ' + 'x-tree-node-select';
 								}
-				        	}else{
-				        		if(node.get("layer") == "" && node.get("checked") == null){
-				        			cls = cls + ' ' + 'x-tree-node-service';
-				        		}
 				        	}
 						}
+						
+						if(node.get("layer") == "" && node.get("checked") == null){
+		        			cls = cls + ' ' + 'x-tree-node-service';
+		        		}
+						
 						node.set('cls', cls);
 						// Save tree state by expand node
 			        	if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
