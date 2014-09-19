@@ -583,7 +583,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			
 			// Select layer by URL-parameter
 			if(typeof wms === 'string'){
-				if(wms == service.capabilitiesUrl){
+				if(decodeURIComponent(wms) == service.capabilitiesUrl){
 					var serviceLayers = service.layers;
 					if(serviceLayers){
 						var serviceLayersItem = serviceLayers.items;
