@@ -8,20 +8,35 @@ Ext.onReady(function() {
 	de.ingrid.mapclient.Configuration.load({
 		success: function() {
 			// Theme selection
-			document.getElementById("theme-all").disabled  = true;
-			document.getElementById("theme-gray").disabled  = true;
-			document.getElementById("theme-neptune").disabled  = true;
-			document.getElementById("theme-access").disabled  = true;
+			if(document.getElementById("theme-all")){
+				document.getElementById("theme-all").disabled  = true;
+			}
+			if(document.getElementById("theme-gray")){
+				document.getElementById("theme-gray").disabled  = true;
+			}
+			if(document.getElementById("theme-neptune")){
+				document.getElementById("theme-neptune").disabled  = true;
+			}
+			if(document.getElementById("theme-access")){
+				document.getElementById("theme-access").disabled  = true;
+			}
 			
 			var defaultTheme = de.ingrid.mapclient.Configuration.getSettings("defaultTheme");
 			if(defaultTheme == undefined){
+				defaultTheme = "all";
+			}else if(defaultTheme.trim() != "all" 
+				||  defaultTheme.trim() != "gray" 
+				||  defaultTheme.trim() != "neptune" 
+				||  defaultTheme.trim() != "access"){
 				defaultTheme = "all";
 			}
 			
 			Ext.themeName = defaultTheme.trim() == "" ? "all" : defaultTheme.trim();
 			Ext.getBody().addCls(Ext.baseCSSPrefix + 'theme-' + Ext.themeName);
 			
-			document.getElementById("theme-" + Ext.themeName).disabled  = false;
+			if(document.getElementById("theme-" + Ext.themeName)){
+				document.getElementById("theme-" + Ext.themeName).disabled  = false;
+			}
 			
 			// inject call back hooks from outer application
 			var callbackHooks = {};

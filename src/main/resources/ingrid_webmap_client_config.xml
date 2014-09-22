@@ -130,7 +130,7 @@
     </setting>
     <setting>
       <key>defaultTheme</key>
-      <name>Karten-Layout: Theme-Auswahl festlegen (classics, gray, neptune, access)</name>
+      <name>Karten-Layout: Theme-Auswahl festlegen (all, gray, neptune, access)</name>
       <value></value>
       <group>default</group>
     </setting>
