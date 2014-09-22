@@ -128,6 +128,12 @@
       <value>resize</value>
       <group>default</group>
     </setting>
+    <setting>
+      <key>defaultTheme</key>
+      <name>Karten-Layout: Theme-Auswahl festlegen (classics, gray, neptune, access)</name>
+      <value></value>
+      <group>default</group>
+    </setting>
     <!-- View -->
     <setting>
       <key>viewHasServicesPanel</key>
