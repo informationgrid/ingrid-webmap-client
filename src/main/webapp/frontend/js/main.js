@@ -25,9 +25,9 @@ Ext.onReady(function() {
 			if(defaultTheme == undefined){
 				defaultTheme = "all";
 			}else if(defaultTheme.trim() != "all" 
-				||  defaultTheme.trim() != "gray" 
-				||  defaultTheme.trim() != "neptune" 
-				||  defaultTheme.trim() != "access"){
+				&&  defaultTheme.trim() != "gray" 
+				&&  defaultTheme.trim() != "neptune" 
+				&&  defaultTheme.trim() != "access"){
 				defaultTheme = "all";
 			}
 			
