@@ -9,16 +9,14 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 
 Ext.define('de.ingrid.mapclient.frontend.controls.LegendDialog', {
 	extend: 'Ext.Window',
-	requires: [
-       'GeoExt.panel.Map',
-       'GeoExt.container.WmsLegend',
-       'GeoExt.container.UrlLegend',
-       'GeoExt.container.VectorLegend',
-       'GeoExt.panel.Legend'
-    ],
 	id: 'legendDialog',
 	bodyCls: 'mapclientLegendPanel',
 	title: i18n('tLegende'),
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	closable: true,
 	draggable: true,
 	resizable: true,
@@ -107,7 +105,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LegendDialog', {
 			autoScroll : true,
 			border : false,
 			dynamic : true,
-			cls: "mapclientLegendPanel"
+			cls: "mapclientLegendPanel",
+			flex: 1
 		});
 		
 		this.legendPanel.doLayout();

@@ -9,11 +9,18 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  */
 Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 	extend: 'Ext.Window',
+	id: 'loadDialog',
 	title: i18n('tKarteLaden'),
+	layout: {
+	    type: 'vbox',
+	    pack: 'start',
+	    align: 'stretch'
+	},
 	closable: true,
 	draggable: true,
 	resizable: true,
 	width: 600,
+	autoScroll: true,
 	autoHeight: true,
 	shadow: false,
 	initHidden: false,
@@ -73,6 +80,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 				forceFit: true,
 				emptyText: i18n('tKeineKartenVorhanden')
 			},
+			flex: 1,
 			columns: [{
 				id: 'title',
 				header: i18n('tTitle'),
@@ -155,21 +163,29 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 			border: false,
 			bodyStyle: 'padding: 10px',
 			labelAlign: 'top',
-			defaults: {
-				anchor: '100%'
-			},
+			flex: 1,
 			items: [ this.fileList ],
-			buttons: [{
-				text: i18n('tLaden'),
-				handler: function(btn) {
-					self.loadPressed = true;
-					self.close();
-				}
-			}, {
-				text: i18n('tAbbrechen'),
-				handler: function(btn) {
-					self.close();
-				}
+			dockedItems: [{
+			    xtype: 'toolbar',
+			    dock: 'bottom',
+			    ui: 'footer',
+			    cls : 'dialogToolbarBottom',
+			    defaults: {minWidth: 75},
+			    items: [
+			        '->',
+			        {
+						text: i18n('tLaden'),
+						handler: function(btn) {
+							self.loadPressed = true;
+							self.close();
+						}
+					}, {
+						text: i18n('tAbbrechen'),
+						handler: function(btn) {
+							self.close();
+						}
+					}
+			    ]
 			}]
 		});
 

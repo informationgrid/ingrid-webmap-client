@@ -82,21 +82,31 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SaveDialog', {
     		    this.titleField,
     		    this.descriptionField
     		],
-    		buttons: [{
-    			id: "saveButtonDialog",
-    			text: i18n('tSpeichern'),
-    			handler: function(btn) {
-    	        	if (self.titleField.validate() && self.descriptionField.validate()) {
-    		    		self.savePressed = true;
-    		        	self.close();
-    	        	}
-    	        }
-    		}, {
-    			text: i18n('tAbbrechen'),
-    	        handler: function(btn) {
-    	        	self.close();
-    	        }
-    		}],
+    		dockedItems: [{
+			    xtype: 'toolbar',
+			    dock: 'bottom',
+			    ui: 'footer',
+			    cls : 'dialogToolbarBottom',
+			    defaults: {minWidth: 75},
+			    items: [
+			        '->',
+			        {
+		    			id: "saveButtonDialog",
+		    			text: i18n('tSpeichern'),
+		    			handler: function(btn) {
+		    	        	if (self.titleField.validate() && self.descriptionField.validate()) {
+		    		    		self.savePressed = true;
+		    		        	self.close();
+		    	        	}
+		    	        }
+		    		}, {
+		    			text: i18n('tAbbrechen'),
+		    	        handler: function(btn) {
+		    	        	self.close();
+		    	        }
+		    		}
+			    ]
+			}],
     		listeners: {
             focus: function() {
                 // We deactivate keyboard control when in focus

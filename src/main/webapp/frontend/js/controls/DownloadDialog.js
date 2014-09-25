@@ -82,19 +82,29 @@ Ext.define('de.ingrid.mapclient.frontend.controls.DownloadDialog', {
 			items: [
 			    this.titleField
 			],
-			buttons: [{
-				text: i18n('tSpeichern'),
-				handler: function(btn) {
-		        	if (self.titleField.validate()) {
-			    		self.savePressed = true;
-			        	self.close();
-		        	}
-		        }
-			}, {
-				text: i18n('tAbbrechen'),
-		        handler: function(btn) {
-		        	self.close();
-		        }
+    		dockedItems: [{
+			    xtype: 'toolbar',
+			    dock: 'bottom',
+			    ui: 'footer',
+			    cls : 'dialogToolbarBottom',
+			    defaults: {minWidth: 75},
+			    items: [
+			        '->',
+			        {
+						text: i18n('tSpeichern'),
+						handler: function(btn) {
+				        	if (self.titleField.validate()) {
+					    		self.savePressed = true;
+					        	self.close();
+				        	}
+				        }
+					}, {
+						text: i18n('tAbbrechen'),
+				        handler: function(btn) {
+				        	self.close();
+				        }
+					}
+			    ]
 			}],
 			listeners: {
 		        focus: function() {
