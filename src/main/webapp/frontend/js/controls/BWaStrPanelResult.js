@@ -38,11 +38,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
               {name: 'rechtswert'},
               {name: 'hochwert'},
               {name: 'station'}
-            ],
-            sortInfo: {
-                field: 'station',
-                direction: 'ASC'
-            }
+            ]
         });
     	
     	var tableData = [];
@@ -65,7 +61,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         	    				if(measures[count]){
         	    					measure = measures[count];
         	    				}
-        	    				tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
+        	    				tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ",")]);
         	    				count++;
         	    			}		
     	    			}else{
@@ -74,7 +70,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	    					measure = measures[0];
     	    				}
 							lastPoint = [coordinates[0], coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinates[0], coordinates[1], measure], self)];
-							tableData.push([de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
+							tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ",")]);
     	    				break;
     	    			}
     	    		}
@@ -108,7 +104,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
 				lastPoint = [item.data.rechtswert, item.data.hochwert, de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([item.data.rechtswert, item.data.hochwert, item.data.station], self)];
 			}
 			
-    		vectorData.push(new OpenLayers.Geometry.Point(item.data.rechtswert, item.data.hochwert));
+    		vectorData.push(new OpenLayers.Geometry.Point(parseFloat(item.data.rechtswert.replace(",", ".")), parseFloat(item.data.hochwert.replace(",", "."))));
     	}
     	
     	var bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
@@ -243,17 +239,17 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
                         	},{
                             	columnWidth:.33,
                                 xtype: 'label',
-                                text: this.data.stationierung.km_von ? this.data.stationierung.km_von : "0",
+                                text: this.data.stationierung.km_von ? (this.data.stationierung.km_von + "").replace(".", ",") : "0",
                                 hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
-                                text: this.data.stationierung.km_bis,
+                                text: (this.data.stationierung.km_bis + "").replace(".", ","),
                                 hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:.33,
                                 xtype: 'label',
-        	                    text: this.data.stationierung.offset ? this.data.stationierung.offset : "0",
+        	                    text: this.data.stationierung.offset ? (this.data.stationierung.offset + "").replace(".", ",") : "0",
                                 hidden: this.data.stationierung.km_wert ? true : false
                         	},{
                         		columnWidth:1,

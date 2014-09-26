@@ -124,7 +124,7 @@ de.ingrid.mapclient.frontend.controls.PositionDialog.prototype.point = function(
         			var textarea_coordsToKmQuery = Ext.getCmp("textarea_coordsToKmQuery");
         			if(textarea_coordsToKmQuery){
         				var content = textarea_coordsToKmQuery.getRawValue().trim();
-        				var value = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lon) +  " " + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lat);
+        				var value = (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lon) + "").replace(".", ",") +  " " + (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(lonlat.lat) + "").replace(".", ",");
 
         				if(content == ""){
         					content = value;	
