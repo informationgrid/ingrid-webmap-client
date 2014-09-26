@@ -215,13 +215,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryFrom',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Von [km] (' + data.km_von + ')',
+    		                        fieldLabel: 'Von [km] (' + data.km_von.replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
-    		                        decimalSeparator: '.',
+    		                        decimalSeparator: ',',
     		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
-    		                        emptyText : data.km_von + "",
+    		                        emptyText : data.km_von.replace(".", ","),
     		                        validator: function(value){
     		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
 		                        		var v = parseFloat(value.replace("\,","."));
@@ -245,13 +245,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryTo',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Bis [km] (' + data.km_bis + ')',
+    		                        fieldLabel: 'Bis [km] (' + data.km_bis.replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
-    		                        decimalSeparator: '.',
+    		                        decimalSeparator: ',',
     		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
-    		                        emptyText: data.km_bis + "",
+    		                        emptyText: data.km_bis.replace(".", ","),
     		                        validator: function(value){
     		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
     		                        	if(value.trim() != ""){
@@ -278,7 +278,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        fieldLabel: 'Seitlicher Abstand [m]',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
-    		                        decimalSeparator: '.',
+    		                        decimalSeparator: ',',
     		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
     		                        emptyText: "0"
@@ -306,9 +306,9 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        	if(textfield_singleQueryFrom.getValue() == "" 
     		                        		&& textfield_singleQueryTo.getValue() == ""
     		                        		&& textfield_singleQueryOffset.getValue() == ""){
-	                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+	                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
 		                        			content = content + ',';
-		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText;
+		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText.replace(",", ".");
     		                        	}else{
     		                        		
     		                        		if(textfield_singleQueryFrom.getValue() != ""
@@ -321,7 +321,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        			
     		                        			if(textfield_singleQueryTo.getValue() != ""){
         		                        			if(textfield_singleQueryFrom.getValue() == ""){
-        		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+        		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
         		                        			}
         		                        			content = content + ',';
         		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.getValue();
@@ -330,11 +330,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        		
     		                        		if(textfield_singleQueryOffset.getValue() != ""){
     		                        			if(textfield_singleQueryFrom.getValue() == ""){
-    		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText;
+    		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
     		                        				content = content + ',';
     		                        			}
     		                        			if(textfield_singleQueryTo.getValue() == ""){
-    		                        				content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText;
+    		                        				content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText.replace(",", ".");
     		                        				content = content + ',';
     		                        			}
     		                        			content = content + ',';
@@ -390,21 +390,21 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		        		            	var label_multiQueryHelp = Ext.getCmp('label_multiQueryHelp');
     		        		            	if(label_multiQueryHelp){
     		        		            		if(comboBox.value == "1"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170.001&#8626;<br>185.255&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170,001&#8626;<br>185,255&#8626;</span>');
     			        		            	}else if(comboBox.value == "2"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170.001 2.5&#8626;<br>185.255 2.3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170,001 2,5&#8626;<br>185,255 2,3&#8626;</span>');
     			        		            	}else if(comboBox.value == "3"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170.001 173.445&#8626;<br>185.255 201.113&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>170,001 173,445&#8626;<br>185,255 201,113&#8626;</span>');
     			        		            	}else if(comboBox.value == "4"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170.001 173.445 2.5&#8626;<br>185.255 201.113 2.3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>170,001 173,445 2,5&#8626;<br>185,255 201,113 2,3&#8626;</span>');
     			        		            	}else if(comboBox.value == "5"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170.001&#8626;<br>3902 1.44&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170,001&#8626;<br>3902 1,44&#8626;</span>');
     			        		            	}else if(comboBox.value == "6"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170.001 2.5&#8626;<br>3902 1.44 2.3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 170,001 2,5&#8626;<br>3902 1,44 2,3&#8626;</span>');
     			        		            	}else if(comboBox.value == "7"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170.001 180.123&#8626;<br>3902 1.441 190.565&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170,001 180,123&#8626;<br>3902 1,441 190,565&#8626;</span>');
     			        		            	}else if(comboBox.value == "8"){
-    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170.001 180.123 2.5&#8626;<br>3902 1.441 190.565 2.3&#8626;</span>');
+    			        		            		label_multiQueryHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>3901 170,001 180,123 2,5&#8626;<br>3902 1,441 190,565 2,3&#8626;</span>');
     			        		            	}
     		        		            	}
     		        		            	var textarea_multiQuery = Ext.getCmp('textarea_multiQuery');
@@ -472,7 +472,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    {
     		                        xtype: 'label',
     		                        id: 'label_multiQueryHelp',
-    		                        html: '<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span>Beispieleingabe:<br>170.001&#8626;<br>185.255&#8626;</span>'
+    		                        html: '<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span>Beispieleingabe:<br>170,001&#8626;<br>185,255&#8626;</span>'
     		                    },
     		                    {
     		            			xtype: 'container',
@@ -559,11 +559,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	        		            	var label_coordsToKmHelp = Ext.getCmp('label_coordsToKmHelp');
     	        		            	if(label_coordsToKmHelp){
     	        		            		if(comboBox.value == "1"){
-    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
+    	        		            			label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + "").replace(".", ",") + ' '+ (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + "").replace(".", ",") + '&#8626;</span>');
     		        		            	}else if(comboBox.value == "2"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 ' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe: <br>3901 ' + (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + "").replace(".", ",") + ' '+ (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + "").replace(".", ",") + '&#8626;</span>');
     		        		            	}else if(comboBox.value == "3"){
-    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>');
+    		        		            		label_coordsToKmHelp.update('<div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + "").replace(".", ",") + ' '+ (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + "").replace(".", ",") + '&#8626;</span>');
     		        		            	}
     	        		            	}
     	        		            }
@@ -628,7 +628,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     	                    {
     	                        xtype: 'label',
     	                        id: 'label_coordsToKmHelp',
-    	                        html: '<div><div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + ' '+ de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + '&#8626;</span>'
+    	                        html: '<div><div>Eingabewerte werden durch ein Leerzeichen getrennt.</div><span >Beispieleingabe:<br>' + (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lon) + "").replace(".", ",") + ' '+ (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(exampleLonLat.lat) + "").replace(".", ",") + '&#8626;</span>'
     	                    },
     	                    {
     	            			xtype: 'container',
@@ -729,19 +729,19 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 							    			if(result.stationierung){
 												if(result.stationierung.km_von){
 													title = title + ' ';
-													title = title + result.stationierung.km_von;
+													title = title + (result.stationierung.km_von + "").replace(".", ",");
 												}
 												if(result.stationierung.km_bis){
 													title = title + ' ';
-													title = title + result.stationierung.km_bis;
+													title = title + (result.stationierung.km_bis + "").replace(".", ",");
 												}
 												if(result.stationierung.km_wert){
 													title = title + ' ';
-													title = title + result.stationierung.km_wert;
+													title = title + (result.stationierung.km_wert + "").replace(".", ",");
 												}
 												if(result.stationierung.offset){
 													title = title + ' ';
-													title = title + result.stationierung.offset;
+													title = title + (result.stationierung.offset + "").replace(".", ",");
 												}
 											}
 											
@@ -824,10 +824,10 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 							    	            entry.push(result.bwastrid);
 						    		    		entry.push(result.bwastr_name);
 						    		    		entry.push(result.strecken_name);
-						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[0]));
-						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[1]));
-						    		    		entry.push(result.stationierung.km_wert);
-						    		    		entry.push(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.stationierung.offset, 3));
+						    		    		entry.push((de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[0]) + "").replace(".", ","));
+						    		    		entry.push((de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.geometry.coordinates[1]) + "").replace(".", ","));
+						    		    		entry.push((result.stationierung.km_wert + "").replace(".", ","));
+						    		    		entry.push((de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(result.stationierung.offset, 3) + "").replace(".", ","));
 							    	            tableData.push(entry);
 							    	            pointData.push([result.geometry.coordinates[0], result.geometry.coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([result.geometry.coordinates[0], result.geometry.coordinates[1], result.stationierung.km_wert], self)]);
 					    		    		}

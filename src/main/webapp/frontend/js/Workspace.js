@@ -1062,7 +1062,29 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 						new OpenLayers.Control.PanZoomBar(),
 						new OpenLayers.Control.ScaleLine(),
 						//new OpenLayers.Control.LayerSwitcher(),
-						new OpenLayers.Control.MousePosition()]
+						new OpenLayers.Control.MousePosition({
+							formatOutput: function(lonLat) {
+								var digits = parseInt(this.numDigits);
+								var newHtml = "";
+								if(self.configBWaStrLocatorEnable){
+									newHtml =
+							            this.prefix +
+							            lonLat.lon.toFixed(digits).replace(".", ",") +
+							            " " + 
+							            lonLat.lat.toFixed(digits).replace(".", ",") +
+							            this.suffix;
+								}else{
+									newHtml =
+							            this.prefix +
+							            lonLat.lon.toFixed(digits) +
+							            this.separator + 
+							            lonLat.lat.toFixed(digits) +
+							            this.suffix;
+								}
+						        
+						        return newHtml;
+						    }
+						})]
 		};
 		
 		if(this.viewConfig  == "search" || this.viewConfig  == "search-facets"){
@@ -1114,7 +1136,29 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 				controls : [new OpenLayers.Control.Navigation(),
 							new OpenLayers.Control.PanZoomBar(),
 							new OpenLayers.Control.ScaleLine(),
-							new OpenLayers.Control.MousePosition()]
+							new OpenLayers.Control.MousePosition({
+								formatOutput: function(lonLat) {
+									var digits = parseInt(this.numDigits);
+									var newHtml = "";
+									if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+										newHtml =
+								            this.prefix +
+								            lonLat.lon.toFixed(digits).replace(".", ",") +
+								            " " + 
+								            lonLat.lat.toFixed(digits).replace(".", ",") +
+								            this.suffix;
+									}else{
+										newHtml =
+								            this.prefix +
+								            lonLat.lon.toFixed(digits) +
+								            this.separator + 
+								            lonLat.lat.toFixed(digits) +
+								            this.suffix;
+									}
+							        
+							        return newHtml;
+							    }
+							})]
 			};			
 		}
 	},
