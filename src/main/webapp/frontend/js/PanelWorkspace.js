@@ -66,10 +66,34 @@ de.ingrid.mapclient.frontend.PanelWorkspace.prototype.initComponent = function()
 		// if we dont add these controls on init
 		// we get the default controls plus the added ones
 		// adding controls at init impedes default controls
-		controls : [new OpenLayers.Control.Navigation(),
-					new OpenLayers.Control.PanZoomBar(),
-					new OpenLayers.Control.ScaleLine(),
-					new OpenLayers.Control.MousePosition()]
+		controls : [
+            new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.PanZoomBar(),
+			new OpenLayers.Control.ScaleLine(),
+			new OpenLayers.Control.MousePosition({
+				formatOutput: function(lonLat) {
+					var digits = parseInt(this.numDigits);
+					var newHtml = "";
+					if(de.ingrid.mapclient.Configuration.getSettings("viewBWaStrLocatorEnable")){
+						newHtml =
+				            this.prefix +
+				            lonLat.lon.toFixed(digits).replace(".", ",") +
+				            " " + 
+				            lonLat.lat.toFixed(digits).replace(".", ",") +
+				            this.suffix;
+					}else{
+						newHtml =
+				            this.prefix +
+				            lonLat.lon.toFixed(digits) +
+				            this.separator + 
+				            lonLat.lat.toFixed(digits) +
+				            this.suffix;
+					}
+			        
+			        return newHtml;
+			    }
+			})
+         ]
 	});
 
 	// create the map container
