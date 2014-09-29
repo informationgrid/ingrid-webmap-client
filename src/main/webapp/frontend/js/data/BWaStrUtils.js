@@ -178,6 +178,10 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker = function(map, name) 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue = function (value, index){
 	if(value){
 		if(index){
+			if(value.toString().indexOf(",") > -1){
+				value = value.toString().replace(",", ".");
+				value = parseFloat(value);
+			}
 			value = Math.round(value * Math.pow(10,index)) / Math.pow(10,index) ;
 		}else{
 			if(value.toString().indexOf(".") > -1){
@@ -216,7 +220,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (va
 	if(!(h instanceof String)){
 		h = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(h);
 	}
-	if(!(r instanceof String)){
+	if(!(s instanceof String)){
 		s = de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(s, 3);
 	}
 	
@@ -224,9 +228,9 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (va
 	var strH = self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]:' : 'Hochwert [m]:';
 	
 	var popUpTmp = "<table style=''>" +
-		"<tr><td>" + strR + "</td><td>" + r + "</td></tr>" +
-		"<tr><td>" + strH + "</td><td>" + h + "</td></tr>" +
-		"<tr><td>Station [km]:</td><td>" + s + "</td></tr>" +
+		"<tr><td>" + strR + "</td><td>" + r.toString().replace(".", ",") + "</td></tr>" +
+		"<tr><td>" + strH + "</td><td>" + h.toString().replace(".", ",") + "</td></tr>" +
+		"<tr><td>Station [km]:</td><td>" + s.toString().replace(".", ",") + "</td></tr>" +
 	"</table>";
 	return popUpTmp;
 };

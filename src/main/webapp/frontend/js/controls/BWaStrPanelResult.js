@@ -37,8 +37,13 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     		fields:[
               {name: 'rechtswert'},
               {name: 'hochwert'},
-              {name: 'station'}
-            ]
+              {name: 'station'},
+              {name: 'id'}
+            ],
+             sortInfo: {
+	            field: 'id',
+	                direction: 'ASC'
+	          }
         });
     	
     	var tableData = [];
@@ -61,7 +66,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
         	    				if(measures[count]){
         	    					measure = measures[count];
         	    				}
-        	    				tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ",")]);
+        	    				tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinatesValue[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ","), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
         	    				count++;
         	    			}		
     	    			}else{
@@ -70,7 +75,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	    					measure = measures[0];
     	    				}
 							lastPoint = [coordinates[0], coordinates[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinates[0], coordinates[1], measure], self)];
-							tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ",")]);
+							tableData.push([(de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[0]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(coordinates[1]) + "").replace(".", ","), (de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3) + "").replace(".", ","), de.ingrid.mapclient.frontend.data.BWaStrUtils.convertStringFloatValue(measure, 3)]);
     	    				break;
     	    			}
     	    		}
