@@ -215,13 +215,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryFrom',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Von [km] (' + data.km_von.replace(".", ",") + ')',
+    		                        fieldLabel: 'Von [km] (' + (data.km_von +  "").replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
     		                        decimalSeparator: ',',
     		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
-    		                        emptyText : data.km_von.replace(".", ","),
+    		                        emptyText : (data.km_von +  "").replace(".", ","),
     		                        validator: function(value){
     		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
 		                        		var v = parseFloat(value.replace("\,","."));
@@ -245,13 +245,13 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryTo',
     		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
-    		                        fieldLabel: 'Bis [km] (' + data.km_bis.replace(".", ",") + ')',
+    		                        fieldLabel: 'Bis [km] (' + (data.km_bis +  "").replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
     		                        decimalSeparator: ',',
     		                        invalidText: 'Dieser Wert liegt au&szlig;erhalb des g&uuml;ltigen Bereiches oder ist nicht g&uuml;ltig.',
     		                        minLength: 1,
-    		                        emptyText: data.km_bis.replace(".", ","),
+    		                        emptyText: (data.km_bis +  "").replace(".", ","),
     		                        validator: function(value){
     		                        	var buttonSubmit = Ext.getCmp('button_singleQuery');
     		                        	if(value.trim() != ""){
