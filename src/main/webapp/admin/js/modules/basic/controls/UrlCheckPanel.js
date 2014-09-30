@@ -43,6 +43,7 @@ de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel.prototype.initComponent = 
         }
 	});
 
+	delete this.gridUrlCheck.getStore().sortInfo;
 	
 	// create the final layout
 	Ext.apply(this, {

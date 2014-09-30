@@ -92,6 +92,30 @@
       <group>urlCheck</group>
     </setting>
     <setting>
+      <key>urlCheckMailUser</key>
+      <name>Email-User: Benutzername zur Authentifizierung am Mail-Server</name>
+      <value></value>
+      <group>urlCheck</group>
+    </setting>
+    <setting>
+      <key>urlCheckMailPassword</key>
+      <name>Email-Passwort: Passwort zur Authentifizierung am Mail-Server</name>
+      <value></value>
+      <group>urlCheck</group>
+    </setting>
+    <setting>
+      <key>urlCheckMailPort</key>
+      <name>Portangabe des Mail-Servers</name>
+      <value>25</value>
+      <group>urlCheck</group>
+    </setting>
+    <setting>
+      <key>urlCheckMailSSL</key>
+      <name>Benutzung von SSL zum Mail-Versand</name>
+      <value>false</value>
+      <group>urlCheck</group>
+    </setting>
+    <setting>
       <key>urlCheckMailHost</key>
       <name>Email-Server, von dem die Benachrichtigungs-Email gesendet wird</name>
       <value>localhost</value>
