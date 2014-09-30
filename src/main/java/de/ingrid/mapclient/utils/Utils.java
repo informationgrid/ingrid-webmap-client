@@ -28,8 +28,8 @@ public class Utils {
 
 	private static final Logger log = Logger.getLogger(Utils.class);
 	
-	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl) {
-		return sendEmail(from, subject, to, text, headers, host, port, user, password, ssl, null);
+	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, String protocol) {
+		return sendEmail(from, subject, to, text, headers, host, port, user, password, ssl, protocol, null);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class Utils {
 	 * @param headers
 	 * @return true if email was sent, else false
 	 */
-	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, File attachment) {
+	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, String protocol, File attachment) {
 
 		boolean debug = log.isDebugEnabled();
 		boolean emailSent = false;
@@ -55,8 +55,11 @@ public class Utils {
 			props.put("mail.smtp.port", port);
 		}
 	    
+		if(protocol != ""){
+			props.put("mail.transport.protocol", protocol);
+		}
+		
 		if(ssl){
-		    props.put("mail.transport.protocol", "smtps");
 		    props.put("mail.smtp.socketFactory.port", port);
 		    props.put("mail.smtp.ssl.enable", true);
 		    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");

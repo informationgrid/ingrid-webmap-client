@@ -104,6 +104,12 @@
       <group>urlCheck</group>
     </setting>
     <setting>
+      <key>urlCheckMailProtocol</key>
+      <name>Mail-Transport Protokoll</name>
+      <value>smtp</value>
+      <group>urlCheck</group>
+    </setting>
+    <setting>
       <key>urlCheckMailPort</key>
       <name>Portangabe des Mail-Servers</name>
       <value></value>

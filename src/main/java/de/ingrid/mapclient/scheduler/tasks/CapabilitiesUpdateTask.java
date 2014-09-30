@@ -68,6 +68,7 @@ public class CapabilitiesUpdateTask implements Runnable{
 										String port = "";
 										String user = "";
 										String password = "";
+										String protocol = "";
 										boolean ssl = false;
 										
 										// Get mail configuration
@@ -97,11 +98,13 @@ public class CapabilitiesUpdateTask implements Runnable{
 												password = setting.getValue();
 											}else if(setting.getKey().equals("urlCheckMailSSL")){
 												ssl = Boolean.getBoolean(setting.getValue());
+											}else if(setting.getKey().equals("urlCheckMailProtocol")){
+												protocol = setting.getValue();
 											}
 										}
 										
 										// Send mail
-										boolean isMailSend = Utils.sendEmail(from, emailSubject, new String[] { to }, text, null, host, port, user, password, ssl);
+										boolean isMailSend = Utils.sendEmail(from, emailSubject, new String[] { to }, text, null, host, port, user, password, ssl, protocol);
 										if(isMailSend){
 											// Set mail status to send
 											service.setCapabilitiesUpdateMailStatus(true);
