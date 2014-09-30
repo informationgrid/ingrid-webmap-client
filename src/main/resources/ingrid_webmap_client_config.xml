@@ -106,7 +106,7 @@
     <setting>
       <key>urlCheckMailPort</key>
       <name>Portangabe des Mail-Servers</name>
-      <value>25</value>
+      <value></value>
       <group>urlCheck</group>
     </setting>
     <setting>
