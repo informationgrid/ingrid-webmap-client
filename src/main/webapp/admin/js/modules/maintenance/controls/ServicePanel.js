@@ -418,7 +418,7 @@ de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.addService 
             handler: function(btn) {
             	var name = simple.items.get('name').el.dom.value;
             	var url = simple.items.get('url').el.dom.value;
-            	var update =  simple.items.get('update').el.dom.value;
+            	var update =  simple.items.get('update').value;
             	if(url != simple.items.get('url').emptyText && name != simple.items.get('name').emptyText){
             		var service = { 
             				title:name, 
