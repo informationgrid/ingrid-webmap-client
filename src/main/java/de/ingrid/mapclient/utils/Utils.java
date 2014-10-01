@@ -9,9 +9,11 @@ import java.util.Set;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -26,8 +28,8 @@ public class Utils {
 
 	private static final Logger log = Logger.getLogger(Utils.class);
 	
-	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host) {
-		return sendEmail(from, subject, to, text, headers, host, null);
+	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, String protocol) {
+		return sendEmail(from, subject, to, text, headers, host, port, user, password, ssl, protocol, null);
 	}
 	
 	/**
@@ -40,15 +42,41 @@ public class Utils {
 	 * @param headers
 	 * @return true if email was sent, else false
 	 */
-	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, File attachment) {
+	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, String protocol, File attachment) {
 
 		boolean debug = log.isDebugEnabled();
 		boolean emailSent = false;
+		Session session; 
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", host);
+		
+		if(!port.equals("")){
+			props.put("mail.smtp.port", port);
+		}
+	    
+		if(!protocol.equals("")){
+			props.put("mail.transport.protocol", protocol);
+		}
+		
+		if(ssl){
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.socketFactory.port", port);
+		    props.put("mail.smtp.ssl.enable", true);
+		    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+		    props.put("mail.smtp.socketFactory.fallback", "false"); 
+		}
 
-		Session session = Session.getDefaultInstance(props, null);
+		if(!user.equals("") && !password.equals("")){
+		    props.put("mail.smtp.auth", "true");
+			Authenticator auth = new MailAuthenticator(user, password);
+			// create some properties and get the default Session
+			session = Session.getDefaultInstance(props, auth);
+		}else{
+			// create some properties and get the default Session
+			session = Session.getDefaultInstance(props, null);
+		}
+		
 		session.setDebug(debug);
 		
 		// create a message
@@ -108,5 +136,19 @@ public class Utils {
 		}
 
 		return emailSent;
+	}
+}
+
+class MailAuthenticator extends Authenticator {
+	private String user; 
+	private String password;
+	
+	public MailAuthenticator(String user, String password) {
+		this.user = user;
+		this.password = password;
+	}
+
+	public PasswordAuthentication getPasswordAuthentication() {
+		return new PasswordAuthentication(this.user, this.password);
 	}
 }

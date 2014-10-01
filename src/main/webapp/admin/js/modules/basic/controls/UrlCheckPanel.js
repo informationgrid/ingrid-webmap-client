@@ -42,6 +42,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.UrlCheckPanel', {
 	        nameColumnWidth: 700
 		});
 
+		delete this.gridUrlCheck.getStore().sortInfo;
 		
 		// create the final layout
 		Ext.apply(this, {
