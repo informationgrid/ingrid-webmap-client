@@ -51,23 +51,23 @@ public class Utils {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", host);
 		
-		if(port != ""){
+		if(!port.equals("")){
 			props.put("mail.smtp.port", port);
 		}
 	    
-		if(protocol != ""){
+		if(!protocol.equals("")){
 			props.put("mail.transport.protocol", protocol);
 		}
 		
 		if(ssl){
-		    props.put("mail.smtp.socketFactory.port", port);
+			props.put("mail.smtp.starttls.enable","true");
+			props.put("mail.smtp.socketFactory.port", port);
 		    props.put("mail.smtp.ssl.enable", true);
 		    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
 		    props.put("mail.smtp.socketFactory.fallback", "false"); 
 		}
 
-		if(user != "" && password != ""){
-			props.put("mail.smtp.starttls.enable","true");
+		if(!user.equals("") && !password.equals("")){
 		    props.put("mail.smtp.auth", "true");
 			Authenticator auth = new MailAuthenticator(user, password);
 			// create some properties and get the default Session
