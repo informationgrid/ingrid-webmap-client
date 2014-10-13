@@ -66,7 +66,9 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 		// set up store listeners that will fire the datachange event
 		this.store.on({
 			'add': function(store, records, index) {
-				this.fireEvent('datachanged');
+				if(self.drop == false){
+					this.fireEvent('datachanged');
+				}
 			},
 			'update': function(store, record, operation) {
 				if (record.dirty) {
@@ -74,10 +76,14 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 				}
 			},
 			'remove': function(store, record, index) {
-				this.fireEvent('datachanged');
+				if(self.drop == false){
+					this.fireEvent('datachanged');
+				}
 			},
 			'datachanged': function(store) {
-				this.fireEvent('datachanged');
+				if(self.drop == false){
+					this.fireEvent('datachanged');
+				}
 			},
 			scope: this
 		});
@@ -111,7 +117,15 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 			gridConfig = this.gridConfigCb(gridConfig);
 		}
 	    this.gridPanel = Ext.create('Ext.grid.Panel', gridConfig);
-
+	    this.gridPanel.getView().on({
+	    	beforedrop: function(node, data, overModel, dropPosition, dropHandlers) {
+		    	self.drop = true;
+		    },
+		    drop: function(node, data, overModel, dropPosition) {
+		    	self.drop = false;
+		    	self.store.fireEvent('datachanged');
+		    }
+	    });
 	    // create the new record fields and form containers from the column model
 	    this.newRecordFields = new Ext.util.MixedCollection();
 	    for (var i=0, count=this.columns.length; i<count; i++) {

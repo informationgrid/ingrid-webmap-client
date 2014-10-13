@@ -53,6 +53,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryP
 	onRender: function(){
 		var self = this;
 		var categories = de.ingrid.mapclient.Configuration.getValue('mapServiceCategories');
+		if(typeof(categories) == "string"){
+			categories = JSON.parse(categories)['mapServiceCategories'];
+		}
 		var data = new Array(); 
 		
 		if(categories){

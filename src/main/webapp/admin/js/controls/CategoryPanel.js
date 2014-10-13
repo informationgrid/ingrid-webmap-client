@@ -37,6 +37,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 	/**
 	 * Render callback (called by Ext)
 	 */
+	drop: false,
 	onRender: function(container, position) {
 
 		// we build the ui in onRender, because this is the first time the configuration is available.
@@ -111,23 +112,32 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			expandbody: function(node, record, eNode) {
 				var element = Ext.get(eNode).down('.ux-row-expander-box');
 				self.getSubPanel(record, element);
-			}
+			},
+			beforedrop: function(node, data, overModel, dropPosition, dropHandlers) {
+				self.drop = true;
+		    },
+		    drop: function(node, data, overModel, dropPosition) {
+		    	self.drop = false;
+		    	store.fireEvent('datachanged');
+		    }
 		});
 		
 		// listen to category stores in order to update the store registry on any change
 		// and store the changes
 		store.on({
 			'add': function(store, records, index) {
-				// create a new store for the category and save
-				var path = self.path.copy();
-				var name = records[0].get("name");
-				path.push(name);
-				var initialCategory = self.createCategory(name);
-				self.buildStore(path, initialCategory);
-				if(initialCategory.mapServiceCategories != undefined){
-					self.saveAndReload(store, records);				
-				}else{
-					self.save();
+				if(self.drop == false){
+					// create a new store for the category and save
+					var path = self.path.copy();
+					var name = records[0].get("name");
+					path.push(name);
+					var initialCategory = self.createCategory(name);
+					self.buildStore(path, initialCategory);
+					if(initialCategory.mapServiceCategories != undefined){
+						self.saveAndReload(store, records);				
+					}else{
+						self.save();
+					}
 				}
 			},
 			'update': function(store, record, operation) {
@@ -161,15 +171,18 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 				}
 			},
 			'remove': function(store, record, index) {
-				// delete the store of the category and save
-				var path = self.path.copy();
-				var name = record.get("name");
-				path.push(name);
-				self.getStoreManager().removeStore(path);
-				self.save();
+				if(self.drop == false){// delete the store of the category and save
+					var path = self.path.copy();
+					var name = record.get("name");
+					path.push(name);
+					self.getStoreManager().removeStore(path);
+					self.save();
+				}
 			},
 			'datachanged': function(store) {
-				self.save();
+				if(self.drop == false){
+					self.save();
+				}
 			},
 			scope: self
 		});
