@@ -73,11 +73,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				autoScroll:true,
 				autoHeight: true,
 				autoWidth:true,
-				viewConfig: {
-					forceFit: true
-				},
 				listeners:{
 					afterrender: function(el){
+						this.getView().refresh();
 					}
 				}
 			});

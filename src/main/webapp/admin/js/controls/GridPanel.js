@@ -55,6 +55,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 	/**
 	 * Initialize the component (called by Ext)
 	 */
+	drop: false,
 	initComponent: function() {
 		var self = this;
 
@@ -99,7 +100,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.GridPanel', {
 	            sortDescText: 'Z-A sortieren'
 		    },
 		    selModel: Ext.create('Ext.selection.CellModel', { mode: 'SINGLE'}),
-			autoHeight: true,
 			plugins: [Ext.create('Ext.grid.plugin.CellEditing', {
 	            clicksToEdit: 1
 	        })],

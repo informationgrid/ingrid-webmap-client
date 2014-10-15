@@ -118,7 +118,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		
 		this.columns = {
 			items: [{
-				text: 'Name',
+				header: 'Name',
 				sortable: true,
 				dataIndex: 'name', 
 				editor:{
@@ -126,7 +126,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		        },
 		        flex: 1
 			}, {
-				text: 'URL',
+				header: 'URL',
 				sortable: true,
 				dataIndex: 'capabilitiesUrl', 
 				editor:{
@@ -134,7 +134,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		        },
 		        flex: 1
 			}, {
-				text: 'Original URL',
+				header: 'Original URL',
 				sortable: true,
 				dataIndex: 'originalCapUrl', 
 				editor:{
@@ -142,7 +142,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		        },
 		        flex: 1
 			},{
-		    	text: 'Info',
+				header: 'Info',
 		    	xtype: 'actioncolumn',
 	            sortable: false,
 				id: 'capabilities',
@@ -162,7 +162,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	    		    }
 	            }]
 			}, {
-				text: 'Status',
+				header: 'Status',
 				xtype: 'actioncolumn',
 	            sortable: true,
 				id: 'update',
@@ -205,7 +205,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	    		    }
 	            }]
 			}, {
-				text: 'autom. Update',
+				header: 'autom. Update',
 				sortable: true,
 				dataIndex: 'capabilitiesUpdateFlag', 
 				width: 100,

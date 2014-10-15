@@ -209,6 +209,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// initial rendering
 			panel.render(element);
 			this.panels.add(key, panel);
+			this.bindEventHandlers(panel);
 		}
 		/*
 		// get the panel from the registry
@@ -222,7 +223,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 		}
 		*/
 		panel = this.panels.get(key);
-		this.bindEventHandlers(panel);
 		return panel;
 	},
 	/**
@@ -378,7 +378,9 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			id:'categoryPanel-' + path,
 			store: this.getStoreManager().getStore(path),
 			path: path,
-			listeners:{
+			autoWidth: true,  
+	        autoHeight: true,  
+	        listeners:{
 				afterrender: function(p, eOpts){
 					this.el.swallowEvent([ 'mouseover', 'mouseout', 'mousedown', 'click', 'dblclick', 'cellclick' ]);
 				}
