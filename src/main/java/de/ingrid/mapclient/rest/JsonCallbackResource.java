@@ -180,7 +180,7 @@ public class JsonCallbackResource{
 						}
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.info("Search service unreachable: " + url);
 				continue;
 			}
