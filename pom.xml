@@ -145,6 +145,16 @@
 					</aggregations>
 				</configuration>
 			</plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>license-maven-plugin</artifactId>
+		        <configuration>
+		        	<excludes>
+		        		<exclude>**/webapp/lib/**</exclude>
+		        		<exclude>**/webapp/wms/**</exclude>
+		          	</excludes>
+		        </configuration>
+		    </plugin>
 		</plugins>
 	</build>
 
