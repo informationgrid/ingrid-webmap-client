@@ -115,6 +115,8 @@ prior to submitting your changes. Thanks.
 *   Run `jsduck --config jsduck.json` in the root of the repository
 *   Optional: If you want the documentation for ExtJS to be linked, edit
     `jsduck.json` to point to the proper source location (URLs will not work)
+*   Optional: To refresh screenshots in the example page run
+	`~$ . tools/screenshots.sh http://geoext.github.io/geoext2/examples/`
 *   Open the generated file `/path/to/your/geoext/docs/index.html` in your
     favorite browser
 *   Enjoy!
@@ -134,13 +136,14 @@ prior to submitting your changes. Thanks.
 
 ## Headless tests with casperjs
 
-You can also run the above tests headlessly through casperjs:
+You can also run the above tests headlessly through casperjs.
 
 ```bash
+# Install casperjs via npm in the GeoExt 2 clone dir (only first time)
+npm install casperjs@1.1.0-beta3
+
 # Run the suite in the root of the repository
-./tests/headless/casperjs-1.1-beta.1/bin/casperjs \
-  test \
-  tests/headless/run-testsuite.js
+./node_modules/casperjs/bin/casperjs test tests/headless/run-testsuite.js
 ```
 
 These tests are also run though [travis](https://travis-ci.org/geoext/geoext2).
