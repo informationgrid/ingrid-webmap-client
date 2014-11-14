@@ -167,6 +167,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 		
 		scalesCombo.on('select', function(comboBox, record, index) {
 			this.map.zoomToScale(record[0].getData().zoomLevel, true);
+			scalesCombo.setValue("1:"+self.addThousandSeparator(Math.floor(record[0].getData().zoomLevel), '.'));
 		}, this);
 		
 		// add items according to view configuration
