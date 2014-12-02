@@ -423,8 +423,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 					var name = "";
 		    		var title = "";
 		    			
-		    		for (var j = 0; j < layer.children.length; j++) {
-		    			var tmpchildren = layer.children[j];
+		    		for (var j = 0; j < layer.childNodes.length; j++) {
+		    			var tmpchildren = layer.childNodes[j];
 		    			if(tmpchildren.tagName == "Title"){
 		    				if(tmpchildren.textContent){
 		    					title = tmpchildren.textContent;
@@ -464,7 +464,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 	},
 	getChildren: function(children, layer){
 		var self = this;
-		var childrenLayer = layer.children;
+		var childrenLayer = layer.childNodes;
 		for (var i=0, count=childrenLayer.length; i<count; i++) {
 			var child = childrenLayer[i];
 			if(child.nodeName){
@@ -473,8 +473,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 					var name = "";
 		    		var title = "";
 		    		
-		    		for (var j = 0; j < child.children.length; j++) {
-		    			var tmpchildren = child.children[j];
+		    		for (var j = 0; j < child.childNodes.length; j++) {
+		    			var tmpchildren = child.childNodes[j];
 		    			if(tmpchildren.tagName == "Title"){
 		    				if(tmpchildren.textContent){
 		    					title = tmpchildren.textContent;
@@ -510,7 +510,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		}
 	},
 	hasChildNodes: function (child){
-		var children = child.children;
+		var children = child.childNodes;
 		for (var i=0, count=children.length; i<count; i++) {
 			var child = children[i];
 			if(child.nodeName){
