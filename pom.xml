@@ -152,6 +152,7 @@
 		        	<excludes>
 		        		<exclude>**/webapp/lib/**</exclude>
 		        		<exclude>**/webapp/wms/**</exclude>
+		        		<exclude>**/webapp/jsp/**</exclude>
 		          	</excludes>
 		        </configuration>
 		    </plugin>
