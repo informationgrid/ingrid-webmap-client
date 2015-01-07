@@ -33,6 +33,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 	id: 'settingsDialog',
 	title: i18n('tErweiterteEinstellungen'),
 	closable: true,
+	closeAction: 'hide',
 	draggable: true,
 	resizable: false,
 	constrain: true,
@@ -44,6 +45,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 	initHidden: false,
 	ctrls:null,
 	windowContent: null,
+	
 
 	/**
 	 * @cfg map The OpenLayers.Map instance to adjust
@@ -162,7 +164,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 		var scales = de.ingrid.mapclient.Configuration.getValue('scales');
 		de.ingrid.mapclient.data.StoreHelper.load(scalesCombo.getStore(), scales, ['name', 'zoomLevel']);
 
-		var scale = this.map.getScale();
+		var scale = Math.round(this.map.getScale());
 		scalesCombo.setValue("1:"+self.addThousandSeparator(Math.floor(scale), '.'));
 		
 		scalesCombo.on('select', function(comboBox, record, index) {
@@ -214,7 +216,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 
 		// bind scales list and projection to map
 		this.map.events.register('zoomend', this, function() {
-			var scale = this.map.getScale();
+			var scale = Math.round(this.map.getScale());
 			if(scalesCombo.store){
 				scalesCombo.setValue("1:"+self.addThousandSeparator(Math.floor(scale), '.'));
 			}

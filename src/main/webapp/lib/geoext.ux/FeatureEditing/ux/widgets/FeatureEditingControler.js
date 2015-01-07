@@ -672,6 +672,11 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
      *  FeaturePanel.
      */
     onModificationStart: function(event) {
+        
+    	if(this.popup){
+        	this.popup.destroy();
+        }
+    	
         var feature = (event.geometry) ? event : event.feature;
 
         // to keep the state before any modification, useful when hitting the

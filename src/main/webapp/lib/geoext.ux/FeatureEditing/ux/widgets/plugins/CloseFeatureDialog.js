@@ -36,7 +36,6 @@ Ext.define('GeoExt.ux.CloseFeatureDialog', {
     },
 
     closeFeatureDialog: function() {
-        this.controler.triggerAutoSave();
         if(this.controler.popup) {
             this.controler.popup.close();
         }
