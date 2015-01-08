@@ -99,7 +99,7 @@ GeoExt.ux.data.Import.KMLImport = function(map, layer) {
         id: 'importwindow',
         modal: true,
         title: OpenLayers.i18n('Import KML'),
-        height: 135,
+        height: 150,
         width: 290,
         items: [
             importPanel
