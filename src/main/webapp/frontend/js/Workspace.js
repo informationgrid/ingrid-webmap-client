@@ -1078,7 +1078,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			fractionalZoom : true,
 			allOverlays: false,
             fallThrough: true,
-			projection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
+			projection : new OpenLayers.Projection("EPSG:4326"),
 			displayProjection : epsg ? new OpenLayers.Projection(epsg) : new OpenLayers.Projection("EPSG:4326"),
 			controls : [new OpenLayers.Control.Navigation(),
 						new OpenLayers.Control.PanZoomBar(),
