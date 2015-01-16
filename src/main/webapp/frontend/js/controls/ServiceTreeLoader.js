@@ -211,7 +211,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 		node.eachChild(function(n) {
 			if(layerName.layer){
 				if(layerName.layer == n.get("layer").params.LAYERS){
-					n.set('checked', true);
+					if(layerName.checked != undefined){
+						n.set('checked', layerName.checked);
+					}else{
+						n.set('checked', true);
+					}
 					if(layerName.opacity != ""){
 						n.get("layer").setOpacity(parseInt(layerName.opacity)/100);
 					}else{

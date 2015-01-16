@@ -389,12 +389,10 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
-				ServiceException
 			}else if(response.responseText.indexOf('ServiceException') != -1){
 				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
-				ServiceException
 			}else if(response.responseText.length == 0){
 				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
