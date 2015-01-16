@@ -290,7 +290,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 				var childNode = node.childNodes[j];
 
 				if(layerConfig.layer == childNode.raw.name){
-					childNode.set("checked", true);
+					childNode.set("checked", layerConfig.checked);
 					if(layerConfig.opacity != ""){
 						childNode.raw.opacity = layerConfig.opacity;
 					}
@@ -377,7 +377,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		for (var i=0, count=nodes.length; i<count; i++) {
 			var node = nodes[i];
 			if(node.data.checked != undefined){
-				serviceLayers.push({layer: node.raw.name, opacity: node.raw.opacity, checked: node.raw.checked});
+				serviceLayers.push({layer: node.raw.name, opacity: node.raw.opacity, checked: node.data.checked});
 			}
 			this.getActiveServiceLayers(serviceLayers, node.childNodes);
 		}
