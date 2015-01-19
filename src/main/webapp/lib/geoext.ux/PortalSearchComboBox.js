@@ -60,13 +60,13 @@ Ext.define('GeoExt.form.PortalSearch', {
 */
     initComponent: function() {
         if (!this.store) {
-            this.store = new Ext.data.JsonStore({
+            this.store = Ext.create("Ext.data.JsonStore", {
             	root: null,
                 fields: [
                     {name: "name", mapping: "name"},
                     {name: "capabilitiesUrl", mapping: "capabilitiesUrl" }
                 ],
-                proxy: new Ext.data.ScriptTagProxy({
+                proxy: Ext.create("Ext.data.proxy.JsonP", {
                     url: this.url,
                     callbackKey: "json_callback"
                 })

@@ -601,7 +601,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		var bwastrlocator = Ext.create('GeoExt.form.BWaStrLocator', {
 			id:'bwastrlocator',
 			hideTrigger: true,
-			url: "/ingrid-webmap-client/rest/jsonCallback/query?searchID=searchterm&url=" + self.configBWaStrLocatorParams,
+			url: "/ingrid-webmap-client/rest/jsonCallback/query?searchID=searchterm&url=" + self.configBWaStrLocatorParams.split("&").join("%26"),
 			width: 300,
 			map: this.map,
 			emptyText: i18n("tBWaStrLocatorSearch"),

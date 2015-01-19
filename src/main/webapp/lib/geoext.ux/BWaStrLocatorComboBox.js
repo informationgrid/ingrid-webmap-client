@@ -112,7 +112,7 @@ Ext.define('GeoExt.form.BWaStrLocator', {
             this.srs = new OpenLayers.Projection(this.srs);
         }
         if (!this.store) {
-            this.store = new Ext.data.JsonStore({
+            this.store = Ext.create("Ext.data.JsonStore", {
                 root: "result",
                 fields: [
                     {name: "qid", mapping: "qid"},
@@ -126,9 +126,13 @@ Ext.define('GeoExt.form.BWaStrLocator', {
                     {name: "fehlkilometer", mapping: "fehlkilometer"},
                     {name: "fliessrichtung", mapping: "fliessrichtung"}
                 ],
-                proxy: new Ext.data.ScriptTagProxy({
-                    url: this.url.split("&").join("%26"),
-                    callbackKey: "json_callback"
+                proxy: Ext.create("Ext.data.proxy.JsonP", {
+                    url: this.url,
+                    callbackKey: "json_callback",
+                    reader: {
+                        type: 'json',
+                        root: 'result'
+                    }
                 })
             });
         }
@@ -174,7 +178,7 @@ Ext.define('GeoExt.form.BWaStrLocator', {
         
     	bWaStrDialog = new de.ingrid.mapclient.frontend.controls.BWaStr({
         	id: 'bWaStrDialog',
-			record: rec,
+			record: rec[0],
 			map: this.map,
 			x: 20,
 			y: 100

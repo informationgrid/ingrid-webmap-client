@@ -28,7 +28,8 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class BWaStr is the dialog used for BWaStr Locator.
  */
-de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
+Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
+	extend: 'Ext.Window',
 	title: 'BWaStr-Suche',
 	closable: true,
 	draggable: true,
@@ -58,7 +59,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
 		
     	var data = this.record.data;
     
-    	var panelCenter = new Ext.Panel({
+    	var panelCenter = Ext.create('Ext.Panel', {
 			id: 'panel_bwastrForm',
 			border: false,
 			region: 'center',
@@ -232,11 +233,18 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                     	id: 'fieldset_singleQuery',
                         autoHeight: true,
                         defaultType: 'textfield', 
-                        defaults: {width: 230},
+                        defaults: {
+                        	width: 230,
+                        	anchor: '100%',
+                        	labelWidth: 140,
+                        	hideTrigger: true,
+                            keyNavEnabled: false,
+                            mouseWheelEnabled: false
+                        },
                         items: [{
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryFrom',
-    		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
+    		                        labelStyle: 'font-weight:bold;font-size:11px;',
     		                        fieldLabel: 'Von [km] (' + (data.km_von +  "").replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
@@ -266,7 +274,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryTo',
-    		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
+    		                        labelStyle: 'font-weight:bold;font-size:11px;',
     		                        fieldLabel: 'Bis [km] (' + (data.km_bis +  "").replace(".", ",") + ')',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
@@ -296,7 +304,7 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                    {
     		                        xtype: 'numberfield',
     		                        id:'textfield_singleQueryOffset',
-    		                        labelStyle: 'width:150px !important;font-weight:bold;font-size:11px;',
+    		                        labelStyle: 'font-weight:bold;font-size:11px;',
     		                        fieldLabel: 'Seitlicher Abstand [m]',
     		                        allowNegative: false,
     		                        decimalPrecision: 3,
@@ -325,24 +333,24 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
     		                        		+ '"qid":1,'
     		                        		+ '"bwastrid":"'+ data.bwastrid +'",'
     		                        		+ '"stationierung":{';
-    		                        	if(textfield_singleQueryFrom.getValue() == "" 
-    		                        		&& textfield_singleQueryTo.getValue() == ""
-    		                        		&& textfield_singleQueryOffset.getValue() == ""){
+    		                        	if((textfield_singleQueryFrom.getValue() == "" || textfield_singleQueryFrom.getValue() == undefined) 
+    		                        		&& (textfield_singleQueryTo.getValue() == "" || textfield_singleQueryTo.getValue() == undefined) 
+    		                        		&& (textfield_singleQueryOffset.getValue() == "" || textfield_singleQueryOffset.getValue() == undefined) ){
 	                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
 		                        			content = content + ',';
 		                        			content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText.replace(",", ".");
     		                        	}else{
     		                        		
-    		                        		if(textfield_singleQueryFrom.getValue() != ""
-    		                        			&& textfield_singleQueryTo.getValue() == ""){
+    		                        		if((textfield_singleQueryFrom.getValue() != "" && textfield_singleQueryFrom.getValue() != undefined)
+    		                        			&& (textfield_singleQueryTo.getValue() == "" || textfield_singleQueryTo.getValue() == undefined)){
     		                        			content = content + '"km_wert":'+ textfield_singleQueryFrom.getValue();
     		                        		}else{
-    		                        			if(textfield_singleQueryFrom.getValue() != ""){
+    		                        			if(textfield_singleQueryFrom.getValue() != "" && textfield_singleQueryFrom.getValue() != undefined){
         		                        			content = content + '"km_von":'+ textfield_singleQueryFrom.getValue();
         		                        		}
     		                        			
-    		                        			if(textfield_singleQueryTo.getValue() != ""){
-        		                        			if(textfield_singleQueryFrom.getValue() == ""){
+    		                        			if(textfield_singleQueryTo.getValue() != "" && textfield_singleQueryTo.getValue() != undefined){
+        		                        			if((textfield_singleQueryFrom.getValue() == "" || textfield_singleQueryFrom.getValue() == undefined)){
         		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
         		                        			}
         		                        			content = content + ',';
@@ -350,12 +358,12 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
         		                        		}
     		                        		}
     		                        		
-    		                        		if(textfield_singleQueryOffset.getValue() != ""){
-    		                        			if(textfield_singleQueryFrom.getValue() == ""){
+    		                        		if(textfield_singleQueryOffset.getValue() != "" && textfield_singleQueryOffset.getValue() != undefined){
+    		                        			if((textfield_singleQueryFrom.getValue() == "" || textfield_singleQueryFrom.getValue() == undefined)){
     		                        				content = content + '"km_von":'+ textfield_singleQueryFrom.emptyText.replace(",", ".");
     		                        				content = content + ',';
     		                        			}
-    		                        			if(textfield_singleQueryTo.getValue() == ""){
+    		                        			if((textfield_singleQueryTo.getValue() == "" || textfield_singleQueryTo.getValue() == undefined)){
     		                        				content = content + '"km_bis":'+ textfield_singleQueryTo.emptyText.replace(",", ".");
     		                        				content = content + ',';
     		                        			}
@@ -385,7 +393,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                         autoHeight: true,
                         hidden: true,
                         defaultType: 'textfield', 
-                        defaults: {width: 230},
+                        defaults: {
+                        	width: 230,
+                        	anchor: '100%',
+                        	labelWidth: 140
+                        },
                         items: [{
     		                        xtype: 'combo',
     		                        id:'combo_multiQuery',
@@ -559,7 +571,11 @@ de.ingrid.mapclient.frontend.controls.BWaStr = Ext.extend(Ext.Window, {
                     autoHeight: true,
                     hidden:true,
                     defaultType: 'textfield', 
-                    defaults: {width: 230},
+                    defaults: {
+                    	width: 230,
+                    	anchor: '100%',
+                    	labelWidth: 140
+                    },
                     items: [{
     	                        xtype: 'combo',
     	                        id:'combo_coordsToKmQuery',

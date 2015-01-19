@@ -153,7 +153,7 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
     	data = data + '' + entry + ']}';
     	
         if (!this.store) {
-            this.store = new Ext.data.JsonStore({
+            this.store = Ext.create("Ext.data.JsonStore", {
                 fields: [
                     {name: "value_field", mapping: "value_field"},
                     {name: "display_field", mapping: "display_field"},
@@ -179,7 +179,7 @@ Ext.define('GeoExt.form.AllSearchComboBox', {
                     {name: "fehlkilometer", mapping: "fehlkilometer"},
                     {name: "fliessrichtung", mapping: "fliessrichtung"}
                 ],
-                proxy: new Ext.data.ScriptTagProxy({
+                proxy: Ext.create("Ext.data.proxy.JsonP", {
                     url: this.url + "&data=" + data,
                     callbackKey: "json_callback"
                 })

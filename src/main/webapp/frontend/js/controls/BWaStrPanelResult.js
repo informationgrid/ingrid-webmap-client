@@ -28,7 +28,8 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 /**
  * @class BWaStr is the dialog used for BWaStr Locator.
  */
-de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, {
+Ext.define('de.ingrid.mapclient.frontend.controls.BWaStrPanelResult', {
+	extend: 'Ext.Panel',
 	columns: null,
 	store: null,
 	data: null,
@@ -41,21 +42,24 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	this.columns = [{
                 header   : self.map.displayProjection.proj.units == "degrees" ? 'L&auml;nge [Dezimalgrad]' : 'Rechtswert [m]', 
                 sortable : false, 
-                dataIndex: 'rechtswert'
+                dataIndex: 'rechtswert',
+                flex: 1 
             },
             {
                 header   : self.map.displayProjection.proj.units == "degrees" ? 'Breite [Dezimalgrad]' : 'Hochwert [m]', 
                 sortable : true, 
-                dataIndex: 'hochwert'
+                dataIndex: 'hochwert',
+                flex: 1 
             },
             {
                 header   : 'Station [km]', 
                 sortable : true, 
-                dataIndex: 'station'
+                dataIndex: 'station',
+                flex: 1 
             }
     	];
     	
-    	this.store = new Ext.data.ArrayStore({
+    	this.store = Ext.create('Ext.data.ArrayStore', {
     		fields:[
               {name: 'rechtswert'},
               {name: 'hochwert'},
@@ -106,7 +110,7 @@ de.ingrid.mapclient.frontend.controls.BWaStrPanelResult = Ext.extend(Ext.Panel, 
     	}
     	this.store.loadData(tableData);
     	
-    	var table = new Ext.grid.GridPanel({
+    	var table = Ext.create('Ext.grid.Panel', {
             store: this.store,
             columns: this.columns,
             stripeRows: true,
