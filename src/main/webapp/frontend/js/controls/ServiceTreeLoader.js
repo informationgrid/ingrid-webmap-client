@@ -83,6 +83,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                     			lastChild.set("allowDrag", false);
                     			lastChild.set("allowDrop", false);
                         		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
+                			}else{
+                				this.addLayerNode(node, record);
                 			}
                     	}
             		}
