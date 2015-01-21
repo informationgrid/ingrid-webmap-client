@@ -116,7 +116,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 					    };
 					}
 					if(self.items.length == 0){
-						tabPanel = new Ext.TabPanel({
+						tabPanel = Ext.create('Ext.tab.Panel', {
 					        activeTab         : 0,
 					        enableTabScroll   : true
 					    });
@@ -172,7 +172,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 			success: function(response, request) {
 				var items = self.decodeResponse(response.responseText); 
 				if(items.length != 0){
-				var p = new Ext.FormPanel({
+				var p = Ext.create('Ext.tab.Panel', {
 						header:false,
 						border: false,
 						autoScroll: true,

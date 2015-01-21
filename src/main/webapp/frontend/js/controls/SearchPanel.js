@@ -148,7 +148,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SearchPanel', {
 				panel.add(searchCategoryPanel);
 				if(resp){
 					if(resp.length == 0){
-						searchCategoryPanel.add(new Ext.Panel({
+						searchCategoryPanel.add(Ext.create('Ext.panel.Panel', {
 							id: 'panelSearchNoHits',
 							bodyStyle: 'padding:8px; background: transparent;',
 							layout: 'form',

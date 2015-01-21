@@ -84,7 +84,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.NewServicePanel', {
     		height: 10
         };
     	
-    	var panel = new Ext.FormPanel({
+    	var panel = Ext.create('Ext.form.Panel', {
     		bodyStyle: 'padding:5px;',
     		bodyCssClass: 'background ',
     		layout: 'form',

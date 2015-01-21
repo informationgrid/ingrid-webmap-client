@@ -124,7 +124,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 			data.push([projection.epsgCode, projection.name]);
 		}
 		
-		var store = new Ext.data.ArrayStore({
+		var store = Ext.create('Ext.data.ArrayStore', {
 	        id: 0,
 	        fields: [
 	            'id',

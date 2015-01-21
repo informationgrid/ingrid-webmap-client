@@ -181,7 +181,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 			items.push(scalesCombo);
 		}
 
-		this.windowContent = new Ext.FormPanel({
+		this.windowContent = Ext.create('Ext.form.Panel', {
 			border: false,
 			bodyStyle: 'padding: 10px',
 			labelAlign: 'top',

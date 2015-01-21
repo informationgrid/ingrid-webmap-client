@@ -95,7 +95,7 @@ GeoExt.ux.data.Import.KMLImport = function(map, layer) {
         alert(OpenLayers.i18n("Data sucessfully imported! Number of imported features:") + " " + features.length);
         importWindow.close();
     });
-    var importWindow = new Ext.Window({
+    var importWindow = Ext.create('Ext.window.Window', {
         id: 'importwindow',
         modal: true,
         title: OpenLayers.i18n('Import KML'),

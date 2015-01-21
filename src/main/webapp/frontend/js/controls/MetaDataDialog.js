@@ -65,7 +65,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.MetaDataDialog', {
 	initComponent: function() {
 
 		// create the window layout
-		this.windowContent = new Ext.FormPanel({
+		this.windowContent = Ext.create('Ext.form.Panel', {
 			border: false,
 			bodyStyle: 'padding: 10px',
 			labelAlign: 'top',
@@ -245,7 +245,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.MetaDataDialog', {
 		// render the content
 		if (tpl != null) {
 
-			this.windowContent.add(new Ext.Panel({
+			this.windowContent.add(Ext.create('Ext.panel.Panel', {
 				html: html,
 				border: false
 			}));

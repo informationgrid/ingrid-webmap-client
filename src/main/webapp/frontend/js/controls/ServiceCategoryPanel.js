@@ -72,7 +72,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceCategoryPanel', {
 
 		var hoverActions = new Ext.ux.HoverActions({
 			actions: [
-			new Ext.Button({
+			Ext.create('Ext.Button', {
 		        iconCls: 'iconMetadata',
 		        tooltip: i18n('tFuerMetadatenErst'),
 		        disabled: true,

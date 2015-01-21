@@ -401,7 +401,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
                         items: [{
     		                        xtype: 'combo',
     		                        id:'combo_multiQuery',
-    		                        store: new Ext.data.ArrayStore({
+    		                        store: Ext.create('Ext.data.ArrayStore', {
     		                            fields: ['value', 'display'],
     		                            data : [['1','Km'],
     		                                    ['2','Km und Abstand'],
@@ -579,7 +579,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
                     items: [{
     	                        xtype: 'combo',
     	                        id:'combo_coordsToKmQuery',
-    	                        store: new Ext.data.ArrayStore({
+    	                        store: Ext.create('Ext.data.ArrayStore', {
     	                            fields: ['value', 'display'],
     	                            data : [['1','Koordinaten (BWaStr automatisch ermitteln)'],
     	                                    ['2','BWaStrId und Koordinaten'],
@@ -834,7 +834,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
 					    	            }
 					    	    	];
 				    				
-				    				var store = new Ext.data.ArrayStore({
+				    				var store = Ext.create('Ext.data.ArrayStore', {
 				    		    		fields:[
 		    		    	              {name: 'bwastrid'},
 		    		    	              {name: 'bwastr_name'},
@@ -873,7 +873,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
 				    				}
 				    		    	store.loadData(tableData);
 				    		    	
-				    		    	var resultPanel = new Ext.grid.GridPanel({
+				    		    	var resultPanel = Ext.create('Ext.grid.Panel', {
 				    					title: 'Treffer',
 				    		            store: store,
 				    		            columns: columns,
@@ -917,7 +917,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
 				    				}
 					    		}
 					    		if(isAddResult){
-					    			var win = new Ext.Window({
+					    			var win = Ext.create('Ext.window.Window', {
 					    				title: 'BWaStr-Suchergebnis',
 					    				resizable: false,
 					    				constrain: true,

@@ -59,7 +59,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.OpacityDialog', {
 		// set the value explicitly
 		slider.setValue(0, slider.value);
 
-		var panel = new Ext.Panel({
+		var panel = Ext.create('Ext.panel.Panel', {
 			border: false,
 			bodyStyle: 'padding: 10px',
 			items: slider

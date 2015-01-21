@@ -78,14 +78,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SaveDialog', {
      */
     initComponent: function() {
 
-    	this.titleField = new Ext.form.TextField({
+    	this.titleField = Ext.create('Ext.form.field.Text', {
     		id:"saveTitleDialog",
     		fieldLabel: i18n('tTitle'),
     		hideLabel: false,
     		allowBlank: false
     	});
 
-    	this.descriptionField = new Ext.form.TextArea({
+    	this.descriptionField = Ext.create('Ext.form.field.TextArea', {
     		id:"saveDescriptionDialog",
     		fieldLabel: i18n('tBeschreibung'),
     		hideLabel: false,
@@ -93,7 +93,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SaveDialog', {
     	});
 
     	var self = this;
-    	var windowContent = new Ext.FormPanel({
+    	var windowContent = Ext.create('Ext.form.Panel', {
     		border: false,
     		bodyStyle: 'padding: 10px',
     		labelAlign: 'top',

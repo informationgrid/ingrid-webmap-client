@@ -86,14 +86,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.DownloadDialog', {
     	    }
     	});
     	*/
-		this.titleField = new Ext.form.TextField({
+		this.titleField = Ext.create('Ext.form.field.Text', {
 			fieldLabel: i18n('tTitle'),
 			hideLabel: false,
 			allowBlank: false
 		});
 
 		var self = this;
-		var windowContent = new Ext.FormPanel({
+		var windowContent = Ext.create('Ext.form.Panel', {
 			border: false,
 			autoScroll:false,
 			bodyStyle: 'padding: 10px',
