@@ -239,10 +239,13 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		var self = this;
 		
 		self.services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
-		var node = this.transform(false);
-		
-		self.treeService.getRootNode().removeAll();
-		self.treeService.getRootNode().appendChild(node);
+		if(self.services.length > 0){
+			var node = this.transform(false);
+			if(node.length > 0){
+				self.treeService.getRootNode().removeAll();
+				self.treeService.getRootNode().appendChild(node);
+			}
+		}
 		
         self.treeService.on('afterrender', function(){
         	var moveServices = [];
