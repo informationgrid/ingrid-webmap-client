@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>de.ingrid</groupId>
 		<artifactId>ingrid-base-pom</artifactId>
-		<version>3.5.0-SNAPSHOT-R304</version>
+		<version>3.5.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ingrid</groupId>
@@ -150,6 +150,10 @@
 		        <artifactId>license-maven-plugin</artifactId>
 		        <configuration>
 		        	<excludes>
+		        		<exclude>**/*.properties</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/*.sql</exclude>
+                        <exclude>**/*.xml</exclude>
 		        		<exclude>**/webapp/lib/**</exclude>
 		        		<exclude>**/webapp/wms/**</exclude>
 		        		<exclude>**/webapp/jsp/**</exclude>
