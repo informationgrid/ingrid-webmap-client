@@ -8,13 +8,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.ingrid</groupId>
 	<artifactId>ingrid-webmap-client</artifactId>
-	<version>3.5.0-SNAPSHOT</version>
+	<version>3.5.0</version>
 	<packaging>war</packaging>
 	<name>InGrid Web Map Client</name>
 	<scm>
 		<connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection>
 		<developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection>
-	</scm>
+	  <tag>ingrid-webmap-client-3.5.0</tag>
+  </scm>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 
