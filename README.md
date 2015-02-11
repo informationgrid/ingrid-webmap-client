@@ -23,6 +23,7 @@ Requirements
 -------------
 
 - a running InGrid Software System
+- For standalone (without portal): an apache tomcat version >= 6.0.35
 
 Installation
 ------------
@@ -33,10 +34,24 @@ The Webmap Client can also run independent, but no installer support is added at
 
 Following the next steps to install the Webmap Client without the portal:
 
-- Create a folder to "WebMapClient" with subfolder "data" on your disk.
-- Create the folder "downloads", "tmp", "users" and "wms" as subfolders of the "data" folder.
-- Goto the project and copy the file "ingrid-webmap-client\_config.xml" under "<PROJECT\_PATH>/src/main/resources" to the "data" folder.
-- On the same folder "src/main/resources" edit the file "application.properties" 
+- Checkout the project and build project with maven command:
+```
+mvn clean install
+```
+- On your installed tomcat add the the configuration "ingrid-webmap-client.xml" for the project under "conf/Catalina/localhost".
+- Add the following content to the configuration file:
+
+```
+<Context path="/ingrid-webmap-client"
+         docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
+         workDir="<PROJECT_PATH>\work"
+         crossContext="true">
+</Context>
+```
+- Create a director "WebMapClient" with subdirectory "data" on your disk.
+- Create the directories "downloads", "tmp", "users" and "wms" as subdirectories of the "data" directory.
+- Go to the project and copy the file "ingrid-webmap-client\_config.xml" under "/src/main/resources" to the "data" directory.
+- On the same directory "src/main/resources" edit the file "application.properties" with the changes above.
 
 	 ```
 	 administration.file = 
@@ -45,6 +60,16 @@ Following the next steps to install the Webmap Client without the portal:
 	 frontend.userDataDir =
 	 wms.dir =
 	 ```
+- Start the tomcat. 
+- Open a browser and enter following URL:
+
+```
+Admin:
+http://localhost:8080/ingrid-webmap-client/admin/
+
+Frontend:
+http://localhost:8080/ingrid-webmap-client/frontend/
+```
 
 Obtain further information at https://dev.informationgrid.eu/
 
@@ -69,30 +94,12 @@ To debug the project, the project must integrate to a local tomcat.
 
 Following the next steps:
 
-- Install a local apache tomcat (version >= 6.0.35)
+- Install a local apache tomcat (if not exist)
 - Add to your eclipse the tomcat plugin "com.sysdeo.eclipse.tomcat_3.3.1" to start/stop the installed local tomcat from eclipse. (see http://www.eclipsetotale.com/tomcatPlugin.html#A3)
-- After restart your eclipse goto "Window -> Preferences -> Tomcat" and select the path of your installed tomcat.
+- After restart your eclipse go to "Window -> Preferences -> Tomcat" and select the path of your installed tomcat.
 - On your installed tomcat add the the configuration "ingrid-webmap-client.xml" for the project under "conf/Catalina/localhost".
-- Add the following content to the configuration file:
-
-```
-<Context path="/ingrid-webmap-client"
-         docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
-         workDir="<PROJECT_PATH>\work"
-         crossContext="true">
-</Context>
-```
-
-- Start the tomcat with the added eclipse plugin. 
-- Open a browser and enter following URL:
-
-```
-Admin:
-http://localhost:8080/ingrid-webmap-client/admin/
-
-Frontend:
-http://localhost:8080/ingrid-webmap-client/frontend/
-```
+- Then follow the step of **Following the next steps to install the Webmap Client without the portal** without checkout and build project.
+- Start the tomcat with eclipse plugin.
 
 Support
 -------
