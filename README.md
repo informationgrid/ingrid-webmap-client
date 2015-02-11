@@ -33,24 +33,18 @@ The Webmap Client can also run independent, but no installer support is added at
 
 Following the next steps to install the Webmap Client without the portal:
 
-* Create a folder to "WebMapClient" with subfolder "data" on your disk.
-* Create the folder "downloads", "tmp", "users" and "wms" as subfolders of the "data" folder.
-* Goto the project and copy the file "ingrid-webmap-client\_config.xml" under "<PROJECT\_PATH>/src/main/resources" to the "data" folder.
-
+- Create a folder to "WebMapClient" with subfolder "data" on your disk.
+- Create the folder "downloads", "tmp", "users" and "wms" as subfolders of the "data" folder.
+- Goto the project and copy the file "ingrid-webmap-client\_config.xml" under "<PROJECT\_PATH>/src/main/resources" to the "data" folder.
 - On the same folder "src/main/resources" edit the file "application.properties" 
 
 	 ```
 	 administration.file = 
-	 
 	 frontend.sessionDir = 
-	 
 	 mapdownload.dir = 
-	 
 	 frontend.userDataDir =
-	 
 	 wms.dir =
 	 ```
-	 	
 
 Obtain further information at https://dev.informationgrid.eu/
 
@@ -83,8 +77,8 @@ Following the next steps:
 
 ```
 <Context path="/ingrid-webmap-client"
-         docBase="<PROJECT\_PATH>\target\ingrid-webmap-client"
-         workDir="<PROJECT\_PATH>\work"
+         docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
+         workDir="<PROJECT_PATH>\work"
          crossContext="true">
 </Context>
 ```
@@ -94,11 +88,9 @@ Following the next steps:
 
 ```
 Admin:
-
 http://localhost:8080/ingrid-webmap-client/admin/
 
 Frontend:
-
 http://localhost:8080/ingrid-webmap-client/frontend/
 ```
 
