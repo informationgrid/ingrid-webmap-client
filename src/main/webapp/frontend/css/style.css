@@ -562,7 +562,7 @@ ul .x-tree-node-ct li .x-tree-node {
 	text-decoration: none !important;
 }
 
-#west-placeholder-targetEl div.x-tool-pressed {
+#west-placeholder div.x-tool {
 	display: none;
 }
 
