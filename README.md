@@ -54,7 +54,7 @@ Following the next steps to install the Webmap Client without the portal:
 - On the same directory "src/main/resources" edit the file "application.properties" with the changes above.
 
 	 ```
-	 administration.file = <WebMapClient>/data/ingrid-webmap-client\_config.xml
+	 administration.file = <WebMapClient>/data/ingrid-webmap-client_config.xml
 	 frontend.sessionDir = <WebMapClient>/data/ingrid-webmap-client/tmp
 	 mapdownload.dir = <WebMapClient>/data/downloads
 	 frontend.userDataDir = <WebMapClient>/data/users
