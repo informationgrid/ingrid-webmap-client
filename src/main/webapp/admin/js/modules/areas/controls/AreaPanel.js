@@ -1,5 +1,24 @@
 /*
- * Copyright (c) 2011 wemove digital solutions. All rights reserved.
+ * **************************************************-
+ * InGrid Web Map Client
+ * ==================================================
+ * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * ==================================================
+ * Licensed under the EUPL, Version 1.1 or – as soon they will be
+ * approved by the European Commission - subsequent versions of the
+ * EUPL (the "Licence");
+ * 
+ * You may not use this work except in compliance with the Licence.
+ * You may obtain a copy of the Licence at:
+ * 
+ * http://ec.europa.eu/idabc/eupl5
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ * **************************************************#
  */
 Ext.namespace("de.ingrid.mapclient.admin.modules.areas");
 
@@ -23,7 +42,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 		dataIndex: 'north',
 		editor: {
 		   xtype: 'coordinatefield',
-		   allowBlank: false
+		   allowBlank: false,
+		   hideLabel: true
 		}
 	}, {
 		header: 'Westen',
@@ -31,7 +51,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 		dataIndex: 'west',
 		editor: {
 		   xtype: 'coordinatefield',
-		   allowBlank: false
+		   allowBlank: false,
+		   hideLabel: true
 		}
 	}, {
 		header: 'Osten',
@@ -39,7 +60,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 		dataIndex: 'east',
 		editor: {
 		   xtype: 'coordinatefield',
-		   allowBlank: false
+		   allowBlank: false,
+		   hideLabel: true
 		}
 	}, {
 		header: 'S&uuml;den',
@@ -47,7 +69,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 		dataIndex: 'south',
 		editor: {
 		   xtype: 'coordinatefield',
-		   allowBlank: false
+		   allowBlank: false,
+		   hideLabel: true
 		}
 	}],
 	dropBoxTitle:'Vordefinierten Bereich l&ouml;schen',
@@ -59,10 +82,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 	    var newRecordFieldContainers = [];
 		var container = Ext.create('Ext.panel.Panel', {
             layout: 'form',
-			labelAlign: 'top',
-			labelSeparator: '',
-			height: 50,
 			border: false,
+			height: 50,
 			columnWidth: .7,
 			items: this.newRecordFields.get('name')
 		});
@@ -71,11 +92,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 	    var buttons = this.createButtons();
 	    for (var i=0, count=buttons.length; i<count; i++) {
 	    	var btnContainer = Ext.create('Ext.panel.Panel', {
-                layout: 'form',
-	    		labelAlign: 'top',
-	    		labelSeparator: '',
-	    		height: 50,
-	    		border: false,
+	    		columnWidth: .3,
+				layout: 'form',
+    			height: 50,
+        		border: false,
 	    		bodyStyle: 'padding-left:10px',
 	    		items: buttons[i]
 	    	});
@@ -83,7 +103,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 	    }
 	    // use a MapExtendPanel to layout the new record fields
 		var mapExtendPanel = Ext.create('de.ingrid.mapclient.admin.controls.MapExtendPanel', {
-            northField: this.newRecordFields.get('north'),
+			columnWidth: 1,
+			northField: this.newRecordFields.get('north'),
 			westField: this.newRecordFields.get('west'),
 			eastField: this.newRecordFields.get('east'),
 			southField: this.newRecordFields.get('south')
@@ -91,11 +112,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 		newRecordFieldContainers.push(mapExtendPanel);
 
 		var newRecordPanel = Ext.create('Ext.form.Panel', {
-			layout: {
-			    type: 'vbox',
-			    pack: 'start',
-			    align: 'stretch'
-			},
+			layout: 'column',
 			anchor: '100%',
 			border: false,
 	    	items: newRecordFieldContainers
