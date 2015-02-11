@@ -35,43 +35,43 @@ The Webmap Client can also run independent, but no installer support is added at
 Following the next steps to install the Webmap Client without the portal:
 
 - Checkout the project and build project with maven command:
-```
-mvn clean install
-```
+	```
+	mvn clean install
+	```
 - On your installed tomcat add for the project the configuration file "ingrid-webmap-client.xml" under "conf/Catalina/localhost".
 - Add the following content to the configuration file:
 
-```
-<Context path="/ingrid-webmap-client"
-         docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
-         workDir="<PROJECT_PATH>\work"
-         crossContext="true">
-</Context>
-```
-- Create a director "WebMapClient" with subdirectory "data" on your disk.
+	```
+	<Context path="/ingrid-webmap-client"
+	         docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
+	         workDir="<PROJECT_PATH>\work"
+	         crossContext="true">
+	</Context>
+	```
+- Create a directory "WebMapClient" with subdirectory "data" on your disk.
 - Create the directories "downloads", "tmp", "users" and "wms" as subdirectories of the "data" directory.
-- Go to the project and copy the file "ingrid-webmap-client\_config.xml" under "/src/main/resources" to the "data" directory.
+- Go to the project and copy the file "ingrid-webmap-client\_config.xml" from "/src/main/resources" to the "data" directory.
 - On the same directory "src/main/resources" edit the file "application.properties" with the changes above.
 
 	 ```
-	 administration.file = 
-	 frontend.sessionDir = 
-	 mapdownload.dir = 
-	 frontend.userDataDir =
-	 wms.dir =
+	 administration.file = <WebMapClient>/data/ingrid-webmap-client\_config.xml
+	 frontend.sessionDir = <WebMapClient>/data/ingrid-webmap-client/tmp
+	 mapdownload.dir = <WebMapClient>/data/downloads
+	 frontend.userDataDir = <WebMapClient>/data/users
+	 wms.dir = <WebMapClient>/data/wms
 	 ```
 - Start the tomcat. 
 - Open a browser and enter following URL:
 
-```
-Admin:
-http://localhost:8080/ingrid-webmap-client/admin/
+	```
+	Admin:
+	http://localhost:8080/ingrid-webmap-client/admin/
+	
+	Frontend:
+	http://localhost:8080/ingrid-webmap-client/frontend/
+	```
 
-Frontend:
-http://localhost:8080/ingrid-webmap-client/frontend/
-```
-
-Obtain further information at https://dev.informationgrid.eu/
+Obtain further information at http://www.ingrid-oss.eu/
 
 
 Contribute
