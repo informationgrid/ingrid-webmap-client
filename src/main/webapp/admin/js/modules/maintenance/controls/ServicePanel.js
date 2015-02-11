@@ -511,7 +511,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	            		};
 	            		// Add service
 	            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
-	                	win.close();
+	            		win.close();
 	            	}
 	    		}
 	        },{
@@ -529,7 +529,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		    height: 300,
 		    modal: true,
 		    closeAction: 'close',
-		    items: simple
+		    items: simple,
+		    listeners:{
+		    	close: function ( panel, eOpts ){
+		    		simple.destroy();
+		    	}
+		    }
 	    });
 		win.show();
 	},
@@ -588,18 +593,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 				   // Disable copy, reload, delete Button
 				   self.copyServiceBtn.disable();
 				   self.reloadServiceBtn.disable();
-				   self.deleteServiceBtn.disable(),
+				   self.deleteServiceBtn.disable();
 				   // Remove categories and layer panel
-				   self.remove(self.items.get('serviceDetailBorderPanel'));
-			   }else{
-				// Refresh service panel
-				   self.serviceGrid.getView().refresh();
-				   // Disable copy, reload, delete Button
-				   self.copyServiceBtn.disable();
-				   self.reloadServiceBtn.disable();
-				   self.deleteServiceBtn.disable(),
-				   // Remove categories and layer panel
-				   self.remove(self.items.get('serviceDetailBorderPanel'));
+				   var serviceDetailBorderPanelExtend = self.items.get('serviceDetailBorderPanelExtend');
+				   if(serviceDetailBorderPanelExtend){
+					   serviceDetailBorderPanelExtend.remove(serviceDetailBorderPanelExtend.items.get('serviceDetailBorderPanel'));					   
+				   }
 			   }
 		   	}
 		});
@@ -715,7 +714,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	        height: 300,
 	        modal: true,
 	        closeAction: 'close',
-	        items: simple
+	        items: simple,
+	        listeners:{
+		    	close: function ( panel, eOpts ){
+		    		simple.destroy();
+		    	}
+		    }
         });
 		win.show();
 	},

@@ -30,7 +30,6 @@ Ext.namespace("de.ingrid.mapclient.admin.controls");
  */
 Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', { 
 	extend: 'Ext.panel.Panel',
-	id: 'mapExtendPanel',
 	layout: {
 	    type: 'vbox',
 	    align: 'center',
@@ -68,7 +67,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', {
 		// create the input fields if not provided
 		if (this.northField == null) {
 			this.northField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
-					id:'northField',
 					listeners: {
 						afterRender: function(){
 							this.setValue(self.northFieldValue);
@@ -79,7 +77,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', {
 		}
 		if (this.westField == null) {
 			this.westField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
-					id:'westField',
 					listeners: {
 						afterRender: function(){
 							this.setValue(self.westFieldValue);
@@ -90,7 +87,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', {
 		}
 		if (this.eastField == null) {
 			this.eastField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
-					id:'eastField',
 					listeners: {
 						afterRender: function(){
 							this.setValue(self.eastFieldValue);
@@ -101,7 +97,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.MapExtendPanel', {
 		}
 		if (this.southField == null) {
 			this.southField = Ext.create('de.ingrid.mapclient.admin.controls.CoordinateField', {
-					id:'southField',
 					listeners: {
 						afterRender: function(){
 							this.setValue(self.southFieldValue);

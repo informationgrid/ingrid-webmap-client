@@ -58,7 +58,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 	 */
 	viewConfig: {
 		hasProjectionsList: true,
-		hasScaleList: true
+		hasScaleList: true,
+		hasAreasList: true
 	},
 
 	/**
@@ -181,6 +182,62 @@ Ext.define('de.ingrid.mapclient.frontend.controls.SettingsDialog', {
 			items.push(scalesCombo);
 		}
 
+		if (this.viewConfig.hasAreasList) {
+			var areaCategories = de.ingrid.mapclient.Configuration.getValue('areaCategories');
+			if (areaCategories) {
+				for (var i=0, count=areaCategories.length; i<count; i++) {
+					var category = areaCategories[i];
+
+					var combo = Ext.create('Ext.form.field.ComboBox', {
+						fieldLabel: i18n(category.name),
+						labelAlign: 'top',
+						triggerAction: 'all',
+						queryMode: 'local',
+						store: Ext.create('Ext.data.ArrayStore', {
+							autoDestroy: true,
+							fields: [{
+								name: 'name',
+								type: 'string'
+							}, {
+								name: 'area',
+								type: 'string'
+							}]
+						}),
+						valueField: 'area',
+						displayField: 'name',
+						editable: false
+					});
+					combo.on('expand', function(){
+						self.ctrls['keyboardControl'].deactivate();
+					});
+					combo.on('collapse', function(){
+						self.ctrls['keyboardControl'].activate();
+					});					
+					var areas = category.areas;
+					// convert item objects into record arrays
+					var records = [];
+					for (var j=0, count2=areas.length; j<count2; j++) {
+						var area = areas[j];
+						var record = [area.name, Ext.encode({'north': areas[j].north, 'east': areas[j].east, 'south': areas[j].south, 'west': areas[j].west})];
+						records.push(record);
+					};
+					combo.store.loadData(records);
+
+					// define select callback
+					combo.on('select', function(comboBox, record, index) {
+						// change map extend
+						var area = Ext.decode(record[0].getData().area);
+						var bounds = new OpenLayers.Bounds.fromArray([area.west, area.south, area.east, area.north]);
+						bounds.transform(new OpenLayers.Projection("EPSG:4326"), this.getMapProjection());
+						this.map.zoomToExtent(bounds, true);
+						this.resetAreaComboBoxes(comboBox);
+					}, this);
+
+					items.push(combo);
+					this.areaComboBoxes.add(category.name, combo);
+				}
+			}
+		}
 		this.windowContent = Ext.create('Ext.form.Panel', {
 			border: false,
 			bodyStyle: 'padding: 10px',

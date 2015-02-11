@@ -769,7 +769,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 						map : self.map,
 						viewConfig : {
 							hasProjectionsList: self.configProjectionsList,
-							hasScaleList: self.configScaleList
+							hasScaleList: self.configScaleList,
+							hasAreasList: true
 						},
 						ctrls: self.ctrls
 					});
