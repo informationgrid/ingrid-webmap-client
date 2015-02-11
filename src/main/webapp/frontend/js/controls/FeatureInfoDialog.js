@@ -39,7 +39,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 	width: 800,
 	height: 400,
 	hidden: true,
-	closeAction: 'hide',
+	closeAction: 'close',
     layout: 'fit',
     constrain: true,
 
@@ -84,7 +84,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 			queryVisible: true,
 			drillDown: true,
 			eventListeners: {
-				"getfeatureinfo": function(e) {
+				nogetfeatureinfo: function(e) {
+					de.ingrid.mapclient.Message.showInfo(i18n('tFeatureInfoNotAvailable'));
+					self.destroy();
+				},
+				getfeatureinfo: function(e) {
 					// create a panel for each response
 					var isAddTab = false;
 					if(e.layers){
@@ -125,14 +129,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 					}
 					tabPanel.add(tab);
 					self.add(tabPanel);
-					self.doLayout();							
+					self.doLayout();
+					self.show();
 				}
 			}
 		});
 		
 		featureInfoControl.setMap(this.map);
 		featureInfoControl.getInfoForClick(e);
-		this.show();
 	},
 	/**
 	 * Query the feature infos for the current map, if the control is activated

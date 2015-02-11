@@ -32,7 +32,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
 Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoControl', {
 	extend: 'OpenLayers.Control.WMSGetFeatureInfo',
 	constructor: function (config) {
-		this.initialize();
+		this.initialize(config);
 		this.initConfig(config);
 		this.callParent(arguments);
 	},
@@ -45,7 +45,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoControl', {
 		// only use queryable layers
 		var queryableLayers = [];
 		for (var i=0, count=layers.length; i<count; i++) {
-			if (layers[i].queryable == true) {
+			if (layers[i].queryable == true && layers[i].params.LAYERS.indexOf("INGRID-") < 0) {
 				queryableLayers.push(layers[i]);
 			}
 		}

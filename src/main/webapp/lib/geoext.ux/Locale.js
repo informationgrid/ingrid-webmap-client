@@ -82,6 +82,7 @@ Local = {
     	tErrorSavingMap : { en: 'Error saving map.', de: 'Beim Speichern der Karte ist ein Fehler aufgetreten.' },
     	tErrorSearching : { en: 'Error while performing search.', de: 'Beim Suchen ist ein Fehler aufgetreten.' },
     	tFeatureInfo: { en: 'Feature Info', de: 'Feature Info' },
+    	tFeatureInfoNotAvailable: { en: 'No feature info available!', de: 'Es sind keine Feature-Information vorhanden!' },
     	tFlaeche : { en: 'Area', de: 'Fl&auml;che' },
     	tFormat : { en: 'Format', de: 'Format' },
     	tFuerTransparenzErst : { en: 'Select a layer for transparency first.', de: 'F&uuml;r Transparenzfunktion einen Layer markieren.' },
@@ -280,5 +281,3 @@ if (!(Local.languageCode)) {
 if (!Local.supportedLanguages[Local.languageCode]) {
 	Local.languageCode = Local.languageCodeDefault;
 }
-
-
