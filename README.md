@@ -38,7 +38,7 @@ Following the next steps to install the Webmap Client without the portal:
 ```
 mvn clean install
 ```
-- On your installed tomcat add the the configuration "ingrid-webmap-client.xml" for the project under "conf/Catalina/localhost".
+- On your installed tomcat add for the project the configuration file "ingrid-webmap-client.xml" under "conf/Catalina/localhost".
 - Add the following content to the configuration file:
 
 ```
@@ -98,8 +98,8 @@ Following the next steps:
 - Add to your eclipse the tomcat plugin "com.sysdeo.eclipse.tomcat_3.3.1" to start/stop the installed local tomcat from eclipse. (see http://www.eclipsetotale.com/tomcatPlugin.html#A3)
 - After restart your eclipse go to "Window -> Preferences -> Tomcat" and select the path of your installed tomcat.
 - On your installed tomcat add the the configuration "ingrid-webmap-client.xml" for the project under "conf/Catalina/localhost".
-- Then follow the step of **Following the next steps to install the Webmap Client without the portal** without checkout and build project.
-- Start the tomcat with eclipse plugin.
+- Then follow the steps of **Following the next steps to install the Webmap Client without the portal** without checkout and build project.
+- Start the tomcat with the installed eclipse plugin.
 
 Support
 -------
