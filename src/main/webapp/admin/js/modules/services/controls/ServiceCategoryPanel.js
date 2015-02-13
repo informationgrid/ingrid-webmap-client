@@ -123,16 +123,18 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 		if (panel instanceof Ext.grid.GridPanel) {
 			var self = this;
 
-			panel.on('datachanged', function(e) {
-				self.save();
+			panel.on({
+				datachanged: function(e) {
+					self.save();
+				},
+				cellclick: function(grid, body, columnIndex, record) {
+					// show capabilities if clicking the capabilities icon
+					if(columnIndex == 2){
+			    		var url = record.get('capabilitiesUrl');
+						self.showCapabilities(url);
+			    	}
+			    }
 			});
-			// show capabilities if clicking the capabilities icon
-		    panel.on('cellclick', function(grid, body, columnIndex, record) {
-		    	if(columnIndex == 2){
-		    		var url = record.get('capabilitiesUrl');
-					self.showCapabilities(url);
-		    	}
-		    });
 			// prevent propagating events up to parent grid
 			panel.getEl().swallowEvent(['click', 'mousedown', 'keydown', 'mouseover', 'contextmenu', 'dblclick'], true);
 		}

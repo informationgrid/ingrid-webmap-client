@@ -248,7 +248,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// initial rendering
 			panel.render(element);
 			this.panels.add(key, panel);
-			this.bindEventHandlers(panel);
 		}
 		/*
 		// get the panel from the registry
@@ -262,6 +261,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 		}
 		*/
 		panel = this.panels.get(key);
+		this.bindEventHandlers(panel);
 		return panel;
 	},
 	/**
