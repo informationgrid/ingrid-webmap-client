@@ -166,6 +166,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// Collapse Tool
 		var collapseTool = Ext.create('Ext.button.Button', {
+		    id: 'btnServiceCollapse',
 			iconCls : (self.configServicePanel == false && self.configCollapseTool) ? 'iconCollapseExpand x-tool-img x-tool-expand-right' : 'iconCollapseExpand x-tool-img x-tool-expand-left',
 			tooltip : i18n('tServiceBereichAufUndZuKlappen'),
 			enableToggle : false,
@@ -196,6 +197,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// Legend tool
 		var legendTool = Ext.create('Ext.button.Button', {
+		    id: 'btnLegend',
 			iconCls : 'iconLegend',
 			tooltip : i18n('tLegendToolBar'),
 			text : i18n('tLegendToolBar'),
@@ -256,7 +258,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// b.1) area tool
 		var administrativeFeatureInfoControl = Ext.create('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
-			id: 'featureInfoControl',
+			id: 'featureInfoControlAdmin',
 			map: this.map,
 			title: i18n('tAdministrativeAuswahl'),
 			callbackAreaId:self.callbackAreaId
@@ -304,6 +306,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		});
 		
 		var dragSearchTool = Ext.create('Ext.button.Button', {
+		    id: 'btnDragSearch',
 			xtype : 'button',
 			iconCls : 'iconDefault',
 			tooltip : i18n('tKarteVerschieben'),
@@ -366,6 +369,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		});
 		
 		var infoTool = Ext.create('Ext.button.Button', {
+		    id: 'btnObjectInfo',
 			iconCls : 'iconInfo',
 			tooltip : i18n('tObjektinformationen'),
 			toggleGroup : 'toggleGroupMapPanel',
@@ -399,6 +403,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		var preHistoryTool = Ext.create('Ext.button.Button', 
 			Ext.create('GeoExt.Action', {
+			    id: 'btnHistoryPrev',
 				control : historyCtrl.previous,
 				hidden: self.configHistoryTool ? false : true,
 				disabled : true,
@@ -409,6 +414,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		var nextHistoryTool = Ext.create('Ext.button.Button', 
 			Ext.create('GeoExt.Action', {
+			    id: 'btnHistoryNext',
 				control : historyCtrl.next,
 				hidden: self.configHistoryTool ? false : true,
 				disabled : true,
@@ -418,6 +424,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		);
 
 		var zoomTool = Ext.create('Ext.button.Button', {
+		    id: 'btnMapZoom',
 			iconCls : 'iconZoom',
 			tooltip : i18n('tKarteZoomen'),
 			hidden: self.configZoomTool ? false : true,
@@ -757,6 +764,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// setting tool
 		var settingTool = Ext.create('Ext.button.Button', {
+		    id: 'btnSettings',
 			iconCls : 'iconSettings',
 			tooltip : i18n('tSettingsToolBar'),
 			text : i18n('tSettingsToolBar'),				
@@ -794,6 +802,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		var printActive = false;
 		var printDia = null;
 		var printTool = Ext.create('Ext.button.Button', {
+		    id: 'btnPrint',
 			enableToggle:false,
 			iconCls : 'iconPrint',
 			toggleGroup : self.configDragMapTool || self.configRedliningEnable ? 'toggleGroupMapPanel' : null,
@@ -834,6 +843,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// load tool
 		var loadTool = Ext.create('Ext.button.Button', {
+		    id: 'btnLoad',
 			iconCls : 'iconLoad',
 			tooltip : i18n('tLaden'),
 			disabled : !this.session.hasUserId(),
@@ -857,6 +867,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// save tool
 		var saveTool = Ext.create('Ext.button.Button', {
+		    id: 'btnSave',
 			iconCls : 'iconSave',
 			hidden: self.configSaveTool ? false : true,
 			tooltip : this.session.hasUserId() ? i18n('tSpeichern'):i18n('tZumSpeichernErstEinloggen') ,
@@ -877,6 +888,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		// download tool
 		var downloadTool = Ext.create('Ext.button.Button', {
+		    id: 'btnDownload',
 			iconCls : 'iconDownload',
 			hidden: self.configDownloadTool ? false : true,
 			tooltip : i18n('tKarteHerunterladen'),
@@ -896,6 +908,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// portal tool
 		var portalScreenTool = Ext.create('Ext.button.Button', {
+		    id: 'btnGoPortal',
 			iconCls : 'iconPortal',
 			hidden: typeof isFullScreen !== "undefined" ? (self.configPortalButton ? false : true) : true,
 			tooltip : i18n('tPortal'),
@@ -907,6 +920,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// fullscreen tool
 		var fullScreenTool = Ext.create('Ext.button.Button', {
+		    id: 'btnFullscreen',
 			iconCls : 'iconFullScreen',
 			hidden: typeof isFullScreen === "undefined" ? (self.configScreenButton ? false : true) : true,
 			tooltip : i18n('tFullScreen'),
@@ -924,6 +938,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		
 		// help tool
 		var helpTool = Ext.create('Ext.button.Button', {
+		    id: 'btnHelp',
 			iconCls : 'iconHelp',
 			hidden: self.configHelpTool ? false : true,
 			tooltip : i18n('tHilfe'),
