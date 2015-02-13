@@ -319,8 +319,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 	loadLayers: function(callback) {
 		// clear the store and show the loading mask
 	    this.layerStore.removeAll();
-	    this.getEl().mask('Layer werden geladen ...', 'x-mask-loading');
-		
+	    var myMask = new Ext.LoadMask({
+	        msg    : 'Layer werden geladen ...',
+	        target : this
+	    });
+
+	    myMask.show();
 	    // load the capabilities document to get the layer names
 		var capUrl = this.getCapabilitiesUrl();
 		var self = this;
@@ -330,6 +334,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			success: function(response, request) {
 			    var format = new OpenLayers.Format.WMSCapabilities();
 	            var capabilities = format.read(response.responseText);
+	            myMask.hide();
 	            if (capabilities.capability) {
 
 	                // set up store data
@@ -370,14 +375,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 	                if (self.layerStore.findExact('title', baseLayerName) != -1) {
 	                	self.baseLayerCombo.setValue(baseLayerName);
 	                }
-	                self.getEl().unmask();
 	            	if (callback instanceof Function) {
 	            		callback(true);
 	            	}
 	            }
 	            else {
 	            	de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
-	            	self.getEl().unmask();
 	            	if (callback instanceof Function) {
 	            		callback(false);
 	            	}
@@ -385,8 +388,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultServicePanel', {
 			},
 			failure: function(response, request) {
 				de.ingrid.mapclient.Message.showError('Das Laden des Capabilities Dokuments ist fehlgeschlagen.');
-				self.getEl().unmask();
-	        	if (callback instanceof Function) {
+				myMask.hide();
+	            if (callback instanceof Function) {
 	        		callback(false);
 	        	}
 			}

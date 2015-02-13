@@ -47,7 +47,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 	treeActiveService: null,
 	activeServices: null,
 	storeActiveService: null,
-	
+	task: null,
 	/**
 	 * Initialize the component (called by Ext)
 	 */
@@ -203,11 +203,14 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 				text: 'Neuladen',
 				handler: function() {
 					var sliderLayer = Ext.getCmp("slider_layer");
+					
+					if(self.task){
+						self.task.cancel();
+					}
         			sliderLayer.hide();
 
         			self.createActiveServiceTree();
 					self.createServiceTree();
-					self.treeService.fireEvent("afterrender");
 				}
 		      },{
 				xtype: 'button',
@@ -238,10 +241,24 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		
 		self.services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 		if(self.services.length > 0){
-			var node = this.transform(false);
-			if(node.length > 0){
+			var nodes = this.transform(false);
+			if(nodes.length > 0){
 				self.treeService.getRootNode().removeAll();
-				self.treeService.getRootNode().appendChild(node);
+				self.treeService.getRootNode().set("loading", true);
+				self.treeActiveService.getRootNode().set("loading", true);
+				self.task = new Ext.util.DelayedTask(function(){
+					if(nodes.length > 0){
+						self.treeService.getRootNode().appendChild(nodes[0]);
+						nodes.shift();
+						self.task.delay(5);
+					}else{
+						self.treeService.fireEvent("afterrender");
+						self.treeService.getRootNode().set("loading", false);
+						self.treeActiveService.getRootNode().set("loading", false);
+						
+					}
+				});      
+				self.task.delay(5);
 			}
 		}
 		
@@ -391,7 +408,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 			if(this.services){
 				for (var i=0, count=this.services.length; i<count; i++) {
 					var curService = this.services[i];
-					var isInUsed = false;
 					var childNode = {
 						text: curService.name,
 						service: curService,
