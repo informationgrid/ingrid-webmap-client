@@ -124,6 +124,26 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 			var self = this;
 
 			panel.on({
+				resize: function(){
+					var serviceModule = Ext.getCmp("services");
+					if(serviceModule){
+						var parentPanel = serviceModule.items;
+						if(parentPanel){
+							var parentPanelItem = parentPanel.items[0];
+							if(parentPanelItem){
+								var subPanel = parentPanelItem.items;
+								if(subPanel){
+									var subPanelItem = subPanel.items[0];
+									if(subPanelItem){
+										if(subPanelItem.gridPanel){
+											subPanelItem.gridPanel.doLayout();
+										}
+									}
+								}
+							}
+						}
+					}
+				},
 				datachanged: function(e) {
 					self.save();
 				},

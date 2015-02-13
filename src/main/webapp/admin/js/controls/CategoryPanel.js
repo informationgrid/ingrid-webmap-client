@@ -131,9 +131,14 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 		});
 		
 		this.grid.gridPanel.getView().on({
+			resize: function(node, record, eNode) {
+				if(self.panel){
+					self.panel.fireEvent("resize");
+				}
+			},
 			expandbody: function(node, record, eNode) {
 				var element = Ext.get(eNode).down('.ux-row-expander-box');
-				self.getSubPanel(record, element);
+				self.panel = self.getSubPanel(record, element);
 			},
 			beforedrop: function(node, data, overModel, dropPosition, dropHandlers) {
 				self.drop = true;
@@ -248,6 +253,7 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			// initial rendering
 			panel.render(element);
 			this.panels.add(key, panel);
+			this.bindEventHandlers(panel);
 		}
 		/*
 		// get the panel from the registry
@@ -261,7 +267,6 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 		}
 		*/
 		panel = this.panels.get(key);
-		this.bindEventHandlers(panel);
 		return panel;
 	},
 	/**
