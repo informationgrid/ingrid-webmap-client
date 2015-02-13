@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Slider which supports vertical or horizontal orientation, keyboard adjustments, configurable snapping, axis clicking
@@ -57,9 +54,11 @@ Ext.define('Ext.slider.Multi', {
 
     // note: {id} here is really {inputId}, but {cmpId} is available
     fieldSubTpl: [
-        '<div id="{id}" class="' + Ext.baseCSSPrefix + 'slider {fieldCls} {vertical}',
-        '{childElCls}',
-        '" aria-valuemin="{minValue}" aria-valuemax="{maxValue}" aria-valuenow="{value}" aria-valuetext="{value}">',
+        '<div id="{id}" role="{role}" {inputAttrTpl} class="' + Ext.baseCSSPrefix + 'slider {fieldCls} {vertical}',
+        '{childElCls}"',
+        '<tpl if="tabIdx != null"> tabIndex="{tabIdx}"</tpl>',
+        '<tpl if="isVertical"> aria-orientation="vertical"<tpl else> aria-orientation="horizontal"</tpl>',
+        '>',
             '<div id="{cmpId}-endEl" class="' + Ext.baseCSSPrefix + 'slider-end" role="presentation">',
                 '<div id="{cmpId}-innerEl" class="' + Ext.baseCSSPrefix + 'slider-inner" role="presentation">',
                     '{%this.renderThumbs(out, values)%}',
@@ -215,9 +214,9 @@ Ext.define('Ext.slider.Multi', {
         // Store for use in dirty check
         me.originalValue = values;
 
-        // Add a thumb for each value
+        // Add a thumb for each value, enforcing configured constraints
         for (; i < len; i++) {
-            me.addThumb(values[i]);
+            me.addThumb(me.normalizeValue(values[i]));
         }
     },
 
@@ -352,18 +351,20 @@ Ext.define('Ext.slider.Multi', {
      * @param {Ext.slider.Thumb} topThumb The thumb to move to the top
      */
     promoteThumb: function(topThumb) {
-        var thumbs = this.thumbs,
+        var thumbs = this.thumbStack || (this.thumbStack = Ext.Array.slice(this.thumbs)),
             ln = thumbs.length,
-            zIndex, thumb, i;
+            zIndex = 10000, i;
 
+        // Move topthumb to position zero
+        if (thumbs[0] !== topThumb) {
+            Ext.Array.remove(thumbs, topThumb);
+            thumbs.unshift(topThumb);
+        }
+
+        // Then shuffle the zIndices
         for (i = 0; i < ln; i++) {
-            thumb = thumbs[i];
-
-            if (thumb == topThumb) {
-                thumb.bringToFront();
-            } else {
-                thumb.sendToBack();
-            }
+            thumbs[i].el.setStyle('zIndex', zIndex);
+            zIndex -= 1000;
         }
     },
 
@@ -373,10 +374,12 @@ Ext.define('Ext.slider.Multi', {
 
         return Ext.apply(me.callParent(), {
             $comp: me,
+            isVertical: me.vertical,
             vertical: me.vertical ? Ext.baseCSSPrefix + 'slider-vert' : Ext.baseCSSPrefix + 'slider-horz',
             minValue: me.minValue,
             maxValue: me.maxValue,
             value: me.value,
+            tabIdx: me.tabIndex,
             childElCls: ''
         });
     },
@@ -594,9 +597,6 @@ Ext.define('Ext.slider.Multi', {
             thumb, i;
 
         me.minValue = val;
-        if (me.rendered) {
-            me.inputEl.dom.setAttribute('aria-valuemin', val);
-        }
 
         for (i = 0; i < len; ++i) {
             thumb = thumbs[i];
@@ -619,9 +619,6 @@ Ext.define('Ext.slider.Multi', {
             thumb, i;
 
         me.maxValue = val;
-        if (me.rendered) {
-            me.inputEl.dom.setAttribute('aria-valuemax', val);
-        }
 
         for (i = 0; i < len; ++i) {
             thumb = thumbs[i];
@@ -675,13 +672,6 @@ Ext.define('Ext.slider.Multi', {
         if (value !== thumb.value && me.fireEvent('beforechange', me, value, thumb.value, thumb) !== false) {
             thumb.value = value;
             if (me.rendered) {
-                // TODO this only handles a single value; need a solution for exposing multiple values to aria.
-                // Perhaps this should go on each thumb element rather than the outer element.
-                me.inputEl.set({
-                    'aria-valuenow': value,
-                    'aria-valuetext': value
-                });
-
                 thumb.move(me.calculateThumbPosition(value), Ext.isDefined(animate) ? animate !== false : me.animate);
 
                 me.fireEvent('change', me, value, thumb);
@@ -781,7 +771,10 @@ Ext.define('Ext.slider.Multi', {
                 me.innerEl.addCls(me.disabledCls).dom.disabled = true;
 
                 if (!me.thumbHolder) {
-                    me.thumbHolder = me.endEl.createChild({cls: Ext.baseCSSPrefix + 'slider-thumb ' + me.disabledCls});
+                    me.thumbHolder = me.endEl.createChild({
+                        role: 'presentation',
+                        cls: Ext.baseCSSPrefix + 'slider-thumb ' + me.disabledCls
+                    });
                 }
 
                 me.thumbHolder.show().setXY(xy);

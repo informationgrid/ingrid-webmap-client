@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.chart.series.Cartesian
@@ -144,16 +141,19 @@ Ext.define('Ext.chart.series.Cartesian', {
     getYValueAccessors: function() {
         var me = this,
             accessors = me.yValueAccessors,
-            yFields, yField, i, ln;
+            yFields, i, ln;
+
+        function getFieldAccessor(field) {
+            return function(record) {
+                return record.get(field);
+            }
+        }
+
         if (!accessors) {
             accessors = me.yValueAccessors = [];
             yFields = [].concat(me.yField);
-            
             for (i = 0, ln = yFields.length; i < ln; i++) {
-                yField = yFields[i];
-                accessors.push(function(record) {
-                    return record.get(yField);
-                });
+                accessors.push(getFieldAccessor(yFields[i]));
             }
         }
         return accessors;
@@ -278,6 +278,7 @@ Ext.define('Ext.chart.series.Cartesian', {
     getAxesForXAndYFields: function() {
         var me = this,
             axes = me.chart.axes,
+            reverse = me.reverse,
             axis = [].concat(me.axis),
             yFields = {}, yFieldList = [].concat(me.yField),
             xFields = {}, xFieldList = [].concat(me.xField),
@@ -303,14 +304,14 @@ Ext.define('Ext.chart.series.Cartesian', {
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (xFields[fields[i]]) {
                         xAxis = 'bottom';
-                        break
+                        break;
                     }
                 }
                 fields = [].concat(axes.get('top').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (xFields[fields[i]]) {
                         xAxis = 'top';
-                        break
+                        break;
                     }
                 }
             } else if (axes.get('top')) {
@@ -319,10 +320,11 @@ Ext.define('Ext.chart.series.Cartesian', {
                 xAxis = 'bottom';
             }
         }
+        
         if (Ext.Array.indexOf(axis, 'left') > -1) {
-            yAxis = 'left';
+            yAxis = flipXY ? 'right' : 'left';
         } else if (Ext.Array.indexOf(axis, 'right') > -1) {
-            yAxis = 'right';
+            yAxis = flipXY ? 'left' : 'right';
         } else {
             if (axes.get('left') && axes.get('right')) {
                 for (i = 0, ln = yFieldList.length; i < ln; i++) {
@@ -331,15 +333,14 @@ Ext.define('Ext.chart.series.Cartesian', {
                 fields = [].concat(axes.get('right').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (yFields[fields[i]]) {
-
-                        break
+                        break;
                     }
                 }
                 fields = [].concat(axes.get('left').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (yFields[fields[i]]) {
                         yAxis = 'left';
-                        break
+                        break;
                     }
                 }
             } else if (axes.get('left')) {

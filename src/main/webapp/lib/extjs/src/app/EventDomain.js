@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This class is a base class for an event domain. In the context of MVC, an "event domain"
@@ -52,8 +49,6 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * {@link Ext.direct.Provider}. Selectors are either Provider's {@link Ext.direct.Provider#id id}
  * or '*' wildcard for any Provider. This domain is optional and will be loaded only if
  * {@link Ext.direct.Manager} singleton is required in your application.
- *
- * @protected
  */
 
 Ext.define('Ext.app.EventDomain', {
@@ -101,7 +96,7 @@ Ext.define('Ext.app.EventDomain', {
     dispatch: function(target, ev, args) {
         var me = this,
             bus = me.bus,
-            selectors = bus[ev],
+            selectors = bus[ev.toLowerCase()],
             selector, controllers, id, events, event, i, ln;
 
         if (!selectors) {
@@ -184,6 +179,7 @@ Ext.define('Ext.app.EventDomain', {
                         options  = null;
                         listener = listeners[ev];
                         scope    = controller;
+                        ev       = ev.toLowerCase();
                         event    = new Ext.util.Event(controller, ev);
 
                         // Normalize the listener
@@ -283,6 +279,7 @@ Ext.define('Ext.app.EventDomain', {
             controllers, ev, selector, selectors;
 
         for (ev in bus) {
+            ev = ev.toLowerCase();
             if (bus.hasOwnProperty(ev) && (selectors = bus[ev])) {
                 for (selector in selectors) {
                     controllers = selectors[selector];

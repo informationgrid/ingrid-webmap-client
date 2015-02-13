@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This is a layout that will render form Fields, one under the other all stretched to the Container width.
@@ -91,10 +88,10 @@ Ext.define('Ext.layout.container.Form', {
 
     childEls: ['formTable'],
     
-    padRow: '<tr><td class="' + Ext.baseCSSPrefix + 'form-item-pad" colspan="3"></td></tr>',
+    padRow: '<tr role="presentation"><td class="' + Ext.baseCSSPrefix + 'form-item-pad" colspan="3" role="presentation"></td></tr>',
 
     renderTpl: [
-        '<table id="{ownerId}-formTable" class="{tableCls}" style="width:100%" cellpadding="0">',
+        '<table id="{ownerId}-formTable" class="{tableCls}" style="width:100%" cellpadding="0" role="presentation">',
             '{%this.renderBody(out,values)%}',
         '</table>',
         '{%this.renderPadder(out,values)%}'
@@ -154,6 +151,7 @@ Ext.define('Ext.layout.container.Form', {
 
         if (item.tag && item.tag == 'table') {
             item.tag = 'tbody';
+            item.role = 'presentation';
             delete item.cellspacing;
             delete item.cellpadding;
 
@@ -170,10 +168,13 @@ Ext.define('Ext.layout.container.Form', {
 
         return {
             tag: 'tbody',
+            role: 'presentation',
             cn: {
                 tag: 'tr',
+                role: 'presentation',
                 cn: {
                     tag: 'td',
+                    role: 'presentation',
                     colspan: 3,
                     style: 'width:100%',
                     cn: item
@@ -358,7 +359,7 @@ Ext.define('Ext.layout.container.Form', {
 
         if (me.manageOverflow) {
             if (scrollRangeFlags & 5) { // if (loses parent bottom and/or right padding)
-                out.push('<div id="',owner.id,'-overflowPadderEl" ',
+                out.push('<div id="',owner.id,'-overflowPadderEl" role="presentation"',
                     // the padder element must have a height of at least 1px, or its width will be ignored by the container.
                     // The extra height is adjusted for by adding a -1px top margin to the padder element
                     // A side effect of this approach is that click events will not register on bottom 1px of the container's
@@ -512,11 +513,13 @@ Ext.define('Ext.layout.container.Form', {
                 var div = Ext.getBody().createChild({
                         //cls: 'x-border-box x-hide-offsets',
                         cls: Ext.baseCSSPrefix + 'border-box',
+                        role: 'presentation',
                         style: {
                             width: '100px', height: '100px', padding: '10px',
                             overflow: 'auto'
                         },
                         children: [{
+                            role: 'presentation',
                             style: {
                                 border: '1px solid red',
                                 width: '150px', height: '150px',

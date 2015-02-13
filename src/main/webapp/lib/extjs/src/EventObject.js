@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 // @require EventManager.js
@@ -26,7 +23,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * @class Ext.EventObject
 
 Just as {@link Ext.Element} wraps around a native DOM node, Ext.EventObject
-wraps the browser's native event-object normalizing cross-browser differences,
+wraps the {@link #property-browserEvent} browser's native event object}, normalizing cross-browser differences,
 such as which mouse button is clicked, keys pressed, mechanisms to stop
 event-propagation along with a method to prevent default actions from taking place.
 
@@ -296,7 +293,7 @@ Ext.define('Ext.EventObjectImpl', {
         63275: 35 // end
     },
     // normalize button clicks, don't see any way to feature detect this.
-    btnMap: Ext.isIE ? {
+    btnMap: Ext.isIE9m ? {
         1: 0,
         4: 1,
         2: 2
@@ -319,6 +316,16 @@ Ext.define('Ext.EventObjectImpl', {
      * @property {Boolean} shiftKey
      * True if the shift key was down during the event.
      */
+    /**
+     * @property {DomEvent} browserEvent
+     * The raw browser event which this object wraps.
+     */
+
+    /** 
+     * @property {Boolean} isEvent
+     * `true` in this class to identify an object as an instantiated Event, or subclass thereof.
+     */
+    isEvent: true,
 
     constructor: function(event, freezeEvent){
         if (event) {
@@ -327,7 +334,7 @@ Ext.define('Ext.EventObjectImpl', {
     },
 
     setEvent: function(event, freezeEvent){
-        var me = this, button, options;
+        var me = this, button;
 
         if (event === me || (event && event.browserEvent)) { // already wrapped
             return event;
@@ -339,36 +346,39 @@ Ext.define('Ext.EventObjectImpl', {
             if (me.clickRe.test(event.type) && button == -1) {
                 button = 0;
             }
-            options = {
-                type: event.type,
-                button: button,
-                shiftKey: event.shiftKey,
-                // mac metaKey behaves like ctrlKey
-                ctrlKey: event.ctrlKey || event.metaKey || false,
-                altKey: event.altKey,
-                // in getKey these will be normalized for the mac
-                keyCode: event.keyCode,
-                charCode: event.charCode,
-                // cache the targets for the delayed and or buffered events
-                target: Ext.EventManager.getTarget(event),
-                relatedTarget: Ext.EventManager.getRelatedTarget(event),
-                currentTarget: event.currentTarget,
-                xy: (freezeEvent ? me.getXY() : null)
-            };
+            me.type = event.type;
+            me.button = button;
+            me.shiftKey = event.shiftKey;
+            // mac metaKey behaves like ctrlKey
+            me.ctrlKey = event.ctrlKey || event.metaKey || false;
+            me.altKey = event.altKey;
+            // in getKey these will be normalized for the mac
+            me.keyCode = event.keyCode;
+            me.charCode = event.charCode;
+            // cache the targets for the delayed and or buffered events
+            me.target = Ext.EventManager.getTarget(event);
+            me.relatedTarget = Ext.EventManager.getRelatedTarget(event);
+            me.currentTarget = event.currentTarget;
+            me.xy = (freezeEvent ? me.getXY() : null);
         } else {
-            options = {
-                button: -1,
-                shiftKey: false,
-                ctrlKey: false,
-                altKey: false,
-                keyCode: 0,
-                charCode: 0,
-                target: null,
-                xy: [0, 0]
-            };
+            me.button = -1;
+            me.shiftKey = false;
+            me.ctrlKey = false;
+            me.altKey = false;
+            me.keyCode = 0;
+            me.charCode = 0;
+            me.target = null;
+            me.xy = [0, 0];
         }
-        Ext.apply(me, options);
         return me;
+    },
+    
+    /**
+     * Clones this event.
+     * @return {Ext.EventObject} The cloned copy
+     */
+    clone: function() {
+        return new this.self(this.browserEvent, this);
     },
 
     /**
@@ -477,9 +487,11 @@ Ext.define('Ext.EventObjectImpl', {
 
     /**
      * Gets the target for the event.
-     * @param {String} selector (optional) A simple selector to filter the target or look for an ancestor of the target
-     * @param {Number/HTMLElement} maxDepth (optional) The max depth to search as a number or element (defaults to 10 || document.body)
-     * @param {Boolean} returnEl (optional) True to return a Ext.Element object instead of DOM node
+     * @param {String} selector (optional) A simple selector to filter the target or look for an ancestor of the target.
+     * See {@link Ext.dom.Query} for information about simple selectors.
+     * @param {Number/HTMLElement} maxDepth (optional) The max depth to search as a number or element (defaults to 10 || document.body).
+     * Passing 1 will return the first element, not 0.
+     * @param {Boolean} returnEl (optional) True to return a Ext.Element object instead of DOM node.
      * @return {HTMLElement}
      */
     getTarget : function(selector, maxDepth, returnEl){
@@ -491,9 +503,10 @@ Ext.define('Ext.EventObjectImpl', {
 
     /**
      * Gets the related target.
-     * @param {String} selector (optional) A simple selector to filter the target or look for an ancestor of the target
-     * @param {Number/HTMLElement} maxDepth (optional) The max depth to search as a number or element (defaults to 10 || document.body)
-     * @param {Boolean} returnEl (optional) True to return a Ext.Element object instead of DOM node
+     * @param {String} selector (optional) A simple selector to filter the target or look for an ancestor of the target.
+     * See {@link Ext.dom.Query} for information about simple selectors.
+     * @param {Number/HTMLElement} maxDepth (optional) The max depth to search as a number or element (defaults to 10 || document.body).
+     * @param {Boolean} returnEl (optional) True to return a Ext.Element object instead of DOM node.
      * @return {HTMLElement}
      */
     getRelatedTarget : function(selector, maxDepth, returnEl){
@@ -607,8 +620,21 @@ Ext.getBody().on('click', function(e,t){
     },
 
     /**
-     * Checks if the key pressed was a "navigation" key
-     * @return {Boolean} True if the press is a navigation keypress
+     * Checks if the key pressed was a "navigation" key. A navigation key is defined by these keys:
+     *
+     *  - Page Up
+     *  - Page Down
+     *  - End
+     *  - Home
+     *  - Left
+     *  - Up
+     *  - Right
+     *  - Down
+     *  - Return
+     *  - Tab
+     *  - Esc
+     *
+     * @return {Boolean} `true` if the press is a navigation keypress
      */
     isNavKeyPress : function(){
         var me = this,
@@ -621,8 +647,30 @@ Ext.getBody().on('click', function(e,t){
     },
 
     /**
-     * Checks if the key pressed was a "special" key
-     * @return {Boolean} True if the press is a special keypress
+     * Checks if the key pressed was a "special" key. A special key is defined as one of these keys:
+     *
+     *  - Page Up
+     *  - Page Down
+     *  - End
+     *  - Home
+     *  - Left arrow
+     *  - Up arrow
+     *  - Right arrow
+     *  - Down arrow
+     *  - Return
+     *  - Tab
+     *  - Esc
+     *  - Backspace
+     *  - Delete
+     *  - Shift
+     *  - Ctrl
+     *  - Alt
+     *  - Pause
+     *  - Caps Lock
+     *  - Print Screen
+     *  - Insert
+     *
+     * @return {Boolean} `true` if the press is a special keypress
      */
     isSpecialKey : function(){
         var k = this.normalizeKey(this.keyCode);
@@ -647,7 +695,8 @@ Ext.getBody().on('click', function(e,t){
     * @return {Boolean}
     */
     hasModifier : function(){
-        return this.ctrlKey || this.altKey || this.shiftKey || this.metaKey;
+        var me = this;
+        return !!(me.ctrlKey || me.altKey || me.shiftKey || me.metaKey);
     },
 
     /**

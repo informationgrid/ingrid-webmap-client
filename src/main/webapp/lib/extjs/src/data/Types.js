@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This is a static class containing the system-supplied data types
@@ -88,10 +85,10 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 Ext.define('Ext.data.Types', {
     singleton: true,
     requires: ['Ext.data.SortTypes']
-}, function() {
-    var st = Ext.data.SortTypes;
+}, function(Types) {
+    var SortTypes = Ext.data.SortTypes;
 
-    Ext.apply(Ext.data.Types, {
+    Ext.apply(Types, {
         /**
          * @property {RegExp} stripRe
          * A regular expression for stripping non-numeric characters from a numeric value.
@@ -104,7 +101,7 @@ Ext.define('Ext.data.Types', {
          * This data type means that no conversion is applied to the raw data before it is placed into a Record.
          */
         AUTO: {
-            sortType: st.none,
+            sortType: SortTypes.none,
             type: 'auto'
         },
 
@@ -117,7 +114,7 @@ Ext.define('Ext.data.Types', {
                 var defaultValue = this.useNull ? null : '';
                 return (v === undefined || v === null) ? defaultValue : String(v);
             },
-            sortType: st.asUCString,
+            sortType: SortTypes.asUCString,
             type: 'string'
         },
 
@@ -136,9 +133,9 @@ Ext.define('Ext.data.Types', {
                     return parseInt(v);
                 }
                 return v !== undefined && v !== null && v !== '' ?
-                    parseInt(String(v).replace(Ext.data.Types.stripRe, ''), 10) : (this.useNull ? null : 0);
+                    parseInt(String(v).replace(Types.stripRe, ''), 10) : (this.useNull ? null : 0);
             },
-            sortType: st.none,
+            sortType: SortTypes.none,
             type: 'int'
         },
 
@@ -154,9 +151,9 @@ Ext.define('Ext.data.Types', {
                     return v;
                 }
                 return v !== undefined && v !== null && v !== '' ?
-                    parseFloat(String(v).replace(Ext.data.Types.stripRe, ''), 10) : (this.useNull ? null : 0);
+                    parseFloat(String(v).replace(Types.stripRe, ''), 10) : (this.useNull ? null : 0);
             },
-            sortType: st.none,
+            sortType: SortTypes.none,
             type: 'float'
         },
 
@@ -177,7 +174,7 @@ Ext.define('Ext.data.Types', {
                 }
                 return v === 'true' || v == 1;
             },
-            sortType: st.none,
+            sortType: SortTypes.none,
             type: 'bool'
         },
 
@@ -206,35 +203,33 @@ Ext.define('Ext.data.Types', {
                 parsed = Date.parse(v);
                 return parsed ? new Date(parsed) : null;
             },
-            sortType: st.asDate,
+            sortType: SortTypes.asDate,
             type: 'date'
         }
     });
 
-    Ext.apply(Ext.data.Types, {
-        /**
-         * @property {Object} BOOLEAN
-         * This data type means that the raw data is converted into a boolean before it is placed into
-         * a Record. The string "true" and the number 1 are converted to boolean `true`.
-         *
-         * The synonym `BOOL` is equivalent.
-         */
-        BOOLEAN: this.BOOL,
+    /**
+     * @property {Object} BOOLEAN
+     * This data type means that the raw data is converted into a boolean before it is placed into
+     * a Record. The string "true" and the number 1 are converted to boolean `true`.
+     *
+     * The synonym `BOOL` is equivalent.
+     */
+    Types.BOOLEAN = Types.BOOL;
 
-        /**
-         * @property {Object} INTEGER
-         * This data type means that the raw data is converted into an integer before it is placed into a Record.
-         *
-         * The synonym `INT` is equivalent.
-         */
-        INTEGER: this.INT,
+    /**
+     * @property {Object} INTEGER
+     * This data type means that the raw data is converted into an integer before it is placed into a Record.
+     *
+     * The synonym `INT` is equivalent.
+     */
+    Types.INTEGER = Types.INT;
 
-        /**
-         * @property {Object} NUMBER
-         * This data type means that the raw data is converted into a number before it is placed into a Record.
-         *
-         * The synonym `FLOAT` is equivalent.
-         */
-        NUMBER: this.FLOAT
-    });
+    /**
+     * @property {Object} NUMBER
+     * This data type means that the raw data is converted into a number before it is placed into a Record.
+     *
+     * The synonym `FLOAT` is equivalent.
+     */
+    Types.NUMBER = Types.FLOAT;
 });

@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Simple header class which is used for on {@link Ext.panel.Panel} and {@link Ext.window.Window}.
@@ -54,14 +51,18 @@ Ext.define('Ext.panel.Header', {
     renderTpl: [
         '<div id="{id}-body" class="{headerCls}-body {baseCls}-body {bodyCls} {bodyTargetCls}',
         '<tpl for="uiCls"> {parent.baseCls}-body-{parent.ui}-{.}</tpl>"',
-        '<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
+        '<tpl if="bodyStyle"> style="{bodyStyle}"</tpl> role="presentation">',
             '{%this.renderContainer(out,values)%}',
         '</div>'
     ],
 
     headingTpl: [
         // unselectable="on" is required for Opera, other browsers inherit unselectability from the header
-        '<span id="{id}-textEl" class="{headerCls}-text {cls}-text {cls}-text-{ui}" unselectable="on">{title}</span>'
+        '<span id="{id}-textEl" class="{headerCls}-text {cls}-text {cls}-text-{ui}" unselectable="on"',
+            '<tpl if="headerRole">',
+                ' role="{headerRole}"',
+            '</tpl>',
+        '>{title}</span>'
     ],
 
     shrinkWrap: 3,
@@ -86,11 +87,15 @@ Ext.define('Ext.panel.Header', {
     /**
      * @cfg {String} iconCls
      * CSS class for an icon in the header. Used for displaying an icon to the left of a title.
+     *
+     * There are no default icon classes that come with Ext JS.
      */
 
     /**
      * @cfg {String} icon
      * Path to image for an icon in the header. Used for displaying an icon to the left of a title.
+     *
+     * There are no default icons that come with Ext JS.
      */
 
     /**
@@ -140,7 +145,8 @@ Ext.define('Ext.panel.Header', {
         me.orientation = me.orientation || 'horizontal';
         me.dock = (me.dock) ? me.dock : (me.orientation == 'horizontal') ? 'top' : 'left';
 
-        if (ownerCt ? (!ownerCt.border && !ownerCt.frame) : !me.border) {
+        // test for border === false is needed because undefined is the same as true
+        if (ownerCt ? (ownerCt.border === false && !ownerCt.frame) : me.border === false) {
             uiClasses.push(me.orientation + '-noborder');
         }
         me.addClsWithUI(uiClasses);
@@ -163,7 +169,7 @@ Ext.define('Ext.panel.Header', {
 
         // Add Title
         me.titleCmp = new Ext.Component({
-            ariaRole  : 'heading',
+            ariaRole  : 'presentation',
             focusable : false,
             noWrap    : true,
             flex      : 1,
@@ -178,6 +184,7 @@ Ext.define('Ext.panel.Header', {
                 title: me.title,
                 cls  : me.baseCls,
                 headerCls: me.headerCls,
+                headerRole: me.headerRole,
                 ui   : me.ui
             },
             childEls  : ['textEl'],
@@ -203,7 +210,7 @@ Ext.define('Ext.panel.Header', {
         // Add Tools
         Ext.Array.push(items, me.tools);
         // Clear the tools so we can have only the instances. Intentional mutation of passed in array
-        // Owning code in Panel uses this array as its pubic tools property.
+        // Owning code in Panel uses this array as its public tools property.
         me.tools.length = 0;
         me.callParent();
 
@@ -221,6 +228,17 @@ Ext.define('Ext.panel.Header', {
             element: 'el',
             scope: me
         });
+    },
+
+    /**
+     * Sets the position of the title in the header's items
+     * @param {Number} index
+     */
+    setTitlePosition: function(index) {
+        var me = this;
+    
+        me.titlePosition = index = Math.min(index, me.items.length - 1);
+        me.insert(index, me.titleCmp);
     },
 
     initIconCmp: function() {
@@ -599,7 +617,7 @@ Ext.define('Ext.panel.Header', {
         this.add(Ext.ComponentManager.create(tool, 'tool'));
     },
 
-    syncBeforeAfterTitleClasses: function() {
+    syncBeforeAfterTitleClasses: function(force) {
         var me = this,
             items = me.items,
             childItems = items.items,
@@ -609,7 +627,7 @@ Ext.define('Ext.panel.Header', {
             syncGen = me.syncBeforeAfterGen,
             afterCls, beforeCls, i, item;
 
-        if (syncGen === itemGeneration) {
+        if (!force && (syncGen === itemGeneration)) {
             return;
         }
         me.syncBeforeAfterGen = itemGeneration;
@@ -671,7 +689,7 @@ Ext.define('Ext.panel.Header', {
             cls = me.callParent(),
             owner = me.ownerCt;
             
-        if (!me.expanding && (owner && owner.collapsed) || me.isCollapsedExpander) {
+        if (!me.expanding && owner && (owner.collapsed || me.isCollapsedExpander)) {
             cls += '-' + owner.collapsedCls; 
         }
         return cls + '-' + me.dock;

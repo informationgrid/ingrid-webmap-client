@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Component layout for grid column headers which have a title element at the top followed by content.
@@ -31,29 +28,19 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
     setWidthInDom: true,
 
     beginLayout: function(ownerContext) {
-        var me = this;
-
-        me.callParent(arguments);
+        this.callParent(arguments);
         ownerContext.titleContext = ownerContext.getEl('titleEl');
         ownerContext.triggerContext = ownerContext.getEl('triggerEl');
     },
 
     beginLayoutCycle: function(ownerContext) {
-        var me = this,
-            owner = me.owner;
+        var owner = this.owner;
 
-        me.callParent(arguments);
+        this.callParent(arguments);
 
         // If shrinkwrapping, allow content width to stretch the element
         if (ownerContext.widthModel.shrinkWrap) {
             owner.el.setWidth('');
-        }
-
-        // When we are the last subheader, bordering is provided by our owning header, so we need
-        // to set border width to zero
-        var borderRightWidth = owner.isLast && owner.isSubHeader ? '0' : '';
-        if (borderRightWidth !== me.lastBorderRightWidth) {
-            owner.el.dom.style.borderRightWidth = me.lasBorderRightWidth = borderRightWidth;
         }
 
         owner.titleEl.setStyle({
@@ -64,20 +51,21 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
 
     // If not shrink wrapping, push height info down into child items
     publishInnerHeight: function(ownerContext, outerHeight) {
-        // TreePanels (and grids with hideHeaders: true) set their column container height to zero ti hide them.
-        // This is because they need to lay out in order to calculate widths for the columns (eg flexes).
-        // If there is no height to lay out, bail out early.
-        if (!outerHeight) {
-            return;
-        }
-
         var me = this,
             owner = me.owner,
-            innerHeight = outerHeight - ownerContext.getBorderInfo().height,
-            availableHeight = innerHeight,
-            textHeight,
-            titleHeight,
-            pt, pb;
+            innerHeight, availableHeight,
+            textHeight, titleHeight, paddingTop, paddingBottom;
+            
+        // TreePanels (and grids with hideHeaders: true) set their column container height to zero to hide them.
+        // This is because they need to lay out in order to calculate widths for the columns (eg flexes).
+        // If there is no height to lay out, bail out early.
+        if (owner.getOwnerHeaderCt().hiddenHeaders) {
+            ownerContext.setProp('innerHeight', 0);
+            return;
+        }
+        
+        innerHeight = outerHeight - ownerContext.getBorderInfo().height;
+        availableHeight = innerHeight;
 
         // We do not have enough information to get the height of the titleEl
         if (!owner.noWrap && !ownerContext.hasDomProp('width')) {
@@ -94,10 +82,10 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
             if (textHeight) {
                 availableHeight -= textHeight;
                 if (availableHeight > 0) {
-                    pt = Math.floor(availableHeight / 2);
-                    pb = availableHeight - pt;
-                    ownerContext.titleContext.setProp('padding-top', pt);
-                    ownerContext.titleContext.setProp('padding-bottom', pb);
+                    paddingTop = Math.floor(availableHeight / 2);
+                    paddingBottom = availableHeight - paddingTop;
+                    ownerContext.titleContext.setProp('padding-top', paddingTop);
+                    ownerContext.titleContext.setProp('padding-bottom', paddingBottom);
                 }
             }
         }
@@ -159,10 +147,17 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
     // Push content width outwards when we are shrinkwrapping
     calculateOwnerWidthFromContentWidth: function (ownerContext, contentWidth) {
         var owner = this.owner,
-            inner = Math.max(contentWidth, owner.textEl.getWidth() + ownerContext.titleContext.getPaddingInfo().width),
             padWidth = ownerContext.getPaddingInfo().width,
-            triggerOffset = this.getTriggerOffset(owner, ownerContext);
+            triggerOffset = this.getTriggerOffset(owner, ownerContext),
+            inner;
             
+        // Only measure the content if we're not grouped, otherwise
+        // the size should be governed by the children
+        if (owner.isGroupHeader) {
+            inner = contentWidth;
+        } else {
+            inner = Math.max(contentWidth, owner.textEl.getWidth() + ownerContext.titleContext.getPaddingInfo().width);
+        }
         return inner + padWidth + triggerOffset;
     },
     

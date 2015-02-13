@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.layout.container.Auto
@@ -238,11 +235,11 @@ Ext.define('Ext.layout.container.Auto', {
             // was changed to a span to work around an obscure firefox 3.6 bug where
             // placing a Container inside of a fieldset's legend element causes the legend
             // to blow up if the outerCt is a div.
-            '<span id="{ownerId}-outerCt" style="display:table;">',
+            '<span id="{ownerId}-outerCt" style="display:table;" role="presentation">',
                 // height:100% is required on the innerCt in order for percentage-height
                 // children to work in IE, firefox, and opera
                 '<div id="{ownerId}-innerCt" style="display:table-cell;height:100%;',
-                'vertical-align:top;{%this.renderPadding(out, values)%}" class="{innerCtCls}">',
+                'vertical-align:top;{%this.renderPadding(out, values)%}" class="{innerCtCls}" role="presentation">',
                     '{%this.renderBody(out,values)%}',
                 '</div>',
             '</span>',
@@ -250,16 +247,18 @@ Ext.define('Ext.layout.container.Auto', {
             // If the containers width is shrink wrapped a table-based outerCt/innerCt
             // is required in old IE.  See getRenderData() for more details on the criteria
             // used to determine if the container has shrink wrapped width.
-            '<table id="{ownerId}-outerCt" class="' + Ext.plainTableCls + '">',
-                '<tr>',
-                    '<td id="{ownerId}-innerCt" style="vertical-align:top;padding:0;',
-                        '{%this.renderPadding(out, values)%}" class="{innerCtCls}">',
-                        '{%this.renderBody(out,values)%}',
-                         // clear element to contain the bottom margin of floated last child item
-                        '<div id="{ownerId}-clearEl" class="', Ext.baseCSSPrefix,  'clear"',
-                            'role="presentation"></div>',
-                    '</td>',
-                '</tr>',
+            '<table id="{ownerId}-outerCt" class="' + Ext.plainTableCls + '" role="presentation">',
+                '<tbody role="presentation">',
+                    '<tr role="presentation">',
+                        '<td id="{ownerId}-innerCt" style="vertical-align:top;padding:0;',
+                            '{%this.renderPadding(out, values)%}" class="{innerCtCls}" role="presentation">',
+                            '{%this.renderBody(out,values)%}',
+                             // clear element to contain the bottom margin of floated last child item
+                            '<div id="{ownerId}-clearEl" class="', Ext.baseCSSPrefix,  'clear"',
+                                'role="presentation"></div>',
+                        '</td>',
+                    '</tr>',
+                '</tbody>',
             '</table>',
         '{% } else { %}',
             // If the container's width is not shrink wrapped, old IE can get by with
@@ -268,8 +267,8 @@ Ext.define('Ext.layout.container.Auto', {
             // This is to because if the padding was placed on the innerCt, the top
             // margin of the first child item would collapse into the top padding of
             // the innerCt.
-            '<div id="{ownerId}-outerCt" style="zoom:1;{%this.renderPadding(out, values)%}">',
-                '<div id="{ownerId}-innerCt" style="zoom:1;height:100%;" class="{innerCtCls}">',
+            '<div id="{ownerId}-outerCt" style="zoom:1;{%this.renderPadding(out, values)%}" role="presentation">',
+                '<div id="{ownerId}-innerCt" style="zoom:1;height:100%;" class="{innerCtCls}" role="presentation">',
                     '{%this.renderBody(out,values)%}',
                      // clear element to contain the bottom margin of floated last child item
                     '<div id="{ownerId}-clearEl" class="', Ext.baseCSSPrefix,  'clear"',
@@ -286,12 +285,14 @@ Ext.define('Ext.layout.container.Auto', {
     // does not have renderBody or clearEl.  It is an empty shell so that the contents
     // of an already existing innerCt can be moved into it.
     tableTpl: [
-        '<table id="{ownerId}-outerCt" class="' + Ext.plainTableCls + '">',
-            '<tr>',
-                '<td id="{ownerId}-innerCt" style="vertical-align:top;padding:0;',
-                    '{%this.renderPadding(out, values)%}" class="{innerCtCls}">',
-                '</td>',
-            '</tr>',
+        '<table id="{ownerId}-outerCt" class="' + Ext.plainTableCls + '" role="presentation">',
+            '<tbody role="presentation">',
+                '<tr role="presentation">',
+                    '<td id="{ownerId}-innerCt" style="vertical-align:top;padding:0;',
+                        '{%this.renderPadding(out, values)%}" class="{innerCtCls}" role="presentation">',
+                    '</td>',
+                '</tr>',
+            '</tbody>',
         '</table>'
     ],
 
@@ -774,7 +775,7 @@ Ext.define('Ext.layout.container.Auto', {
 
         // get the table-based renderTpl
         renderTpl = Ext.XTemplate.getTpl(this, 'tableTpl');
-        renderTpl.renderPadding = me.doRenderPadding
+        renderTpl.renderPadding = me.doRenderPadding;
 
         // To avoid unnecessary reflows, remove the innerCt from the dom
         // before operating on its children.
@@ -842,6 +843,19 @@ Ext.define('Ext.layout.container.Auto', {
                 dom.offsetWidth;
                 style.display = old;
             }    
+        }
+
+        if (Ext.isSafari) {
+            // EXTJS-12041: Safari needs a reflow of the outerCt to measure content width
+            // correctly in some cases. The circumstances which make this happen are
+            // very difficult to isolate, so we have to resort to always triggering a
+            // reflow before measuring. We switch between table-cell and table in hopes
+            // of minimizing the impact of the reflow on surrounding elements
+            dom = this.outerCt.dom;
+            style = dom.style;
+            style.display = 'table-cell';
+            dom.offsetWidth;
+            dom.style.display = 'table';
         }
         
         // contentWidth includes padding, but not border, framing or margins

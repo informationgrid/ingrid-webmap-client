@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  *
@@ -35,16 +32,21 @@ Ext.define('Ext.form.field.FileButton', {
     
     preventDefault: false,
 
+    autoEl: {
+        tag: 'div',
+        unselectable: 'on'
+    },
+
     renderTpl: [
-        '<span id="{id}-btnWrap" class="{baseCls}-wrap',
+        '<span id="{id}-btnWrap" role="presentation" class="{baseCls}-wrap',
             '<tpl if="splitCls"> {splitCls}</tpl>',
             '{childElCls}" unselectable="on">',
-            '<span id="{id}-btnEl" class="{baseCls}-button">',
+            '<span id="{id}-btnEl" class="{baseCls}-button" role="button">',
                 '<span id="{id}-btnInnerEl" class="{baseCls}-inner {innerCls}',
                     '{childElCls}" unselectable="on">',
                     '{text}',
                 '</span>',
-                '<span role="img" id="{id}-btnIconEl" class="{baseCls}-icon-el {iconCls}',
+                '<span role="presentation" id="{id}-btnIconEl" class="{baseCls}-icon-el {iconCls}',
                     '{childElCls} {glyphCls}" unselectable="on" style="',
                     '<tpl if="iconUrl">background-image:url({iconUrl});</tpl>',
                     '<tpl if="glyph && glyphFontFamily">font-family:{glyphFontFamily};</tpl>">',
@@ -52,13 +54,14 @@ Ext.define('Ext.form.field.FileButton', {
                 '</span>',
             '</span>',
         '</span>',
-        '<input id="{id}-fileInputEl" class="{childElCls} {inputCls}" type="file" size="1" name="{inputName}">'
+        '<input id="{id}-fileInputEl" class="{childElCls} {inputCls}" type="file" size="1" name="{inputName}" role="{role}" tabIndex="{tabIndex}">'
     ],
     
     getTemplateArgs: function(){
         var args = this.callParent();
         args.inputCls = this.inputCls;
         args.inputName = this.inputName;
+        args.tabIndex = this.ownerCt.tabIndex;
         return args;
     },
     
@@ -86,7 +89,8 @@ Ext.define('Ext.form.field.FileButton', {
             cls: me.inputCls,
             tag: 'input',
             type: 'file',
-            size: 1
+            size: 1,
+            role: 'button'
         });
         me.fileInputEl.on('change', me.fireChange, me);  
     },

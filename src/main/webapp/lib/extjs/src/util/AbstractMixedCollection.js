@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.util.AbstractMixedCollection
@@ -100,7 +97,7 @@ Ext.define('Ext.util.AbstractMixedCollection', {
          * @event remove
          * Fires when an item is removed from the collection.
          * @param {Object} o The item being removed.
-         * @param {String} key (optional) The key associated with the removed item.
+         * @param {String} key The key associated with the removed item.
          * @since 1.1.0
          */
 
@@ -126,6 +123,13 @@ Ext.define('Ext.util.AbstractMixedCollection', {
      * In this case just pass the new item in this parameter.
      *
      * @param {Object} [obj] The item to add.
+     *
+     * Note that when adding a value that is iterable, it must be wrapped in brackets, i.e.:
+     *
+     *     c.add([[1, 2]]);
+     *
+     * This will be needed for any value that is iterable, i.e., an array, arguments object,
+     * HTML collections, etc.
      *
      * @return {Object} The item added.
      * @since 1.1.0
@@ -216,7 +220,7 @@ Ext.define('Ext.util.AbstractMixedCollection', {
         }
         return o;
     },
-    
+
     /**
      * Change the key for an existing item in the collection. If the old key
      * does not exist this is a no-op.
@@ -226,10 +230,11 @@ Ext.define('Ext.util.AbstractMixedCollection', {
     updateKey: function(oldKey, newKey) {
         var me = this,
             map = me.map,
-            indexMap = me.indexMap,
             index = me.indexOfKey(oldKey),
+            // Important: Take reference to indexMap AFTER indexOf call which may rebuild it.
+            indexMap = me.indexMap,
             item;
-            
+
         if (index > -1) {
             item = map[oldKey];
             delete map[oldKey];
@@ -237,8 +242,10 @@ Ext.define('Ext.util.AbstractMixedCollection', {
             map[newKey] = item;
             indexMap[newKey] = index;
             me.keys[index] = newKey;
-            me.generation++;
-            
+
+            // indexGeneration will be in sync since we called indexOfKey
+            // And we kept it all in sync, so now generation changes we keep the indexGeneration matched
+            me.indexGeneration = ++me.generation;
         }
     },
 
@@ -410,7 +417,7 @@ Ext.define('Ext.util.AbstractMixedCollection', {
             }
         }
 
-        // First, remove duplicates of the keys. If a removal point is less than insertion index, decr insertion index
+        // First, remove duplicates of the keys. If a removal point is less than insertion index, decr insertion index.
         me.suspendEvents();
         for (i = 0; i < len; i++) {
             itemKey = keys[i];
@@ -962,17 +969,17 @@ Ext.define('Ext.util.AbstractMixedCollection', {
      * {@link Ext.util.Filter Filter} for an example of using Filter objects (preferred). Alternatively,
      * MixedCollection can be easily filtered by property like this:</p>
      *
-     *    //create a simple store with a few people defined
-     *    var people = new Ext.util.MixedCollection();
-     *    people.addAll([
-     *        {id: 1, age: 25, name: 'Ed'},
-     *        {id: 2, age: 24, name: 'Tommy'},
-     *        {id: 3, age: 24, name: 'Arne'},
-     *        {id: 4, age: 26, name: 'Aaron'}
-     *    ]);
+     *     //create a simple store with a few people defined
+     *     var people = new Ext.util.MixedCollection();
+     *     people.addAll([
+     *         {id: 1, age: 25, name: 'Ed'},
+     *         {id: 2, age: 24, name: 'Tommy'},
+     *         {id: 3, age: 24, name: 'Arne'},
+     *         {id: 4, age: 26, name: 'Aaron'}
+     *     ]);
      *    
-     *    //a new MixedCollection containing only the items where age == 24
-     *    var middleAged = people.filter('age', 24);
+     *     //a new MixedCollection containing only the items where age == 24
+     *     var middleAged = people.filter('age', 24);
      *
      * @param {Ext.util.Filter[]/String} property A property on your objects, or an array of {@link Ext.util.Filter Filter} objects
      * @param {String/RegExp} value Either string that the property values
@@ -1031,6 +1038,10 @@ Ext.define('Ext.util.AbstractMixedCollection', {
             }
         }
 
+        // The add using an external key will make the newMC think that keys cannot be reliably extracted
+        // from objects, so that an indexOf call will always have to do a linear search.
+        // If the flag is not set in this object, we know that the clone will not need it either.
+        newMC.useLinearSearch = me.useLinearSearch;
         return newMC;
     },
 
@@ -1116,9 +1127,14 @@ Ext.define('Ext.util.AbstractMixedCollection', {
      */
     clone : function() {
         var me = this,
-            copy = new this.self(me.initialConfig);
+            copy = new me.self(me.initialConfig);
 
         copy.add(me.keys, me.items);
+        
+        // The add using external keys will make the clone think that keys cannot be reliably extracted
+        // from objects, so that an indexOf call will always have to do a linear search.
+        // If the flag is not set in this object, we know that the clone will not need it either.
+        copy.useLinearSearch = me.useLinearSearch;
         return copy;
     }
 });

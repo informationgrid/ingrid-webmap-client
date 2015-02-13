@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @private
@@ -28,10 +25,13 @@ Ext.define('Ext.grid.header.DragZone', {
     maxProxyWidth: 120,
 
     constructor: function(headerCt) {
-        this.headerCt = headerCt;
-        this.ddGroup =  this.getDDGroup();
-        this.callParent([headerCt.el]);
-        this.proxy.el.addCls(Ext.baseCSSPrefix + 'grid-col-dd');
+        var me = this;
+        
+        me.headerCt = headerCt;
+        me.ddGroup =  me.getDDGroup();
+        me.autoGroup = true;
+        me.callParent([headerCt.el]);
+        me.proxy.el.addCls(Ext.baseCSSPrefix + 'grid-col-dd');
     },
     
     getDDGroup: function() {
@@ -48,6 +48,7 @@ Ext.define('Ext.grid.header.DragZone', {
                 headerCmp = Ext.getCmp(header.id);
                 if (!this.headerCt.dragging && headerCmp.draggable && !(headerCmp.isOnLeftEdge(e) || headerCmp.isOnRightEdge(e))) {
                     ddel = document.createElement('div');
+                    ddel.role = 'presentation';
                     ddel.innerHTML = Ext.getCmp(header.id).text;
                     return {
                         ddel: ddel,

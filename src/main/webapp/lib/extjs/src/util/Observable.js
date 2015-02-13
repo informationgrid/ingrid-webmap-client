@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag core
 /**
@@ -58,11 +55,12 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  */
 Ext.define('Ext.util.Observable', function(Observable) {
 
-    // Private Destroyable class which removes listeners
-    var emptyArray = [],
+    var emptyFn = Ext.emptyFn,
+        emptyArray = [],
         arrayProto = Array.prototype,
         arraySlice = arrayProto.slice,
         ExtEvent = Ext.util.Event,
+        // Private Destroyable class which removes listeners
         ListenerRemover = function(observable) {
 
             // Passed a ListenerRemover: return it
@@ -307,7 +305,7 @@ Ext.define('Ext.util.Observable', function(Observable) {
         *
         *  A `Destroyable` object. An object which implements the `destroy` method which removes all listeners added in this call. For example:
         *
-        *     this.btnListeners =  = myButton.mon({
+        *     this.btnListeners = myButton.mon({
         *         destroyable: true
         *         mouseover:   function() { console.log('mouseover'); },
         *         mouseout:    function() { console.log('mouseout'); },
@@ -354,20 +352,22 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                
-                managedListeners.push({
-                    item: item,
-                    ename: ename,
-                    fn: fn,
-                    scope: scope,
-                    options: options
-                });
 
-                item.on(ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    managedListeners.push({
+                        item: item,
+                        ename: ename,
+                        fn: fn,
+                        scope: scope,
+                        options: options
+                    });
 
-                // The 'noDestroy' flag is sent if we're looping through a hash of listeners passing each one to addManagedListener separately
-                if (!noDestroy && options && options.destroyable) {
-                    return new ListenerRemover(me, item, ename, fn, scope);
+                    item.on(ename, fn, scope, options);
+
+                    // The 'noDestroy' flag is sent if we're looping through a hash of listeners passing each one to addManagedListener separately
+                    if (!noDestroy && options && options.destroyable) {
+                        return new ListenerRemover(me, item, ename, fn, scope);
+                    }
                 }
             }
         },
@@ -387,7 +387,7 @@ Ext.define('Ext.util.Observable', function(Observable) {
                 config,
                 managedListeners,
                 length,
-                i, func;
+                i;
 
             if (typeof ename !== 'string') {
                 options = ename;
@@ -500,6 +500,8 @@ Ext.define('Ext.util.Observable', function(Observable) {
         },
 
         /**
+        * The {@link #on} method is shorthand for {@link #addListener}.
+        *
         * Appends an event handler to this object.  For example:
         *
         *     myGridPanel.on("mouseover", this.onMouseOver, this);
@@ -672,15 +674,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                event.addListener(fn, scope, options);
 
-                // If a new listener has been added (Event.addListener rejects duplicates of the same fn+scope)
-                // then increment the hasListeners counter
-                if (event.listeners.length !== prevListenerCount) {
-                    me.hasListeners._incr_(ename);
-                }
-                if (options && options.destroyable) {
-                    return new ListenerRemover(me, ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    event.addListener(fn, scope, options);
+
+                    // If a new listener has been added (Event.addListener rejects duplicates of the same fn+scope)
+                    // then increment the hasListeners counter
+                    if (event.listeners.length !== prevListenerCount) {
+                        me.hasListeners._incr_(ename);
+                    }
+                    if (options && options.destroyable) {
+                        return new ListenerRemover(me, ename, fn, scope, options);
+                    }
                 }
             }
         },
@@ -840,6 +845,22 @@ Ext.define('Ext.util.Observable', function(Observable) {
         hasListener: function(ename) {
             return !!this.hasListeners[ename.toLowerCase()];
         },
+        
+        /**
+         * Checks if all events, or a specific event, is suspended.
+         * @param {String} [event] The name of the specific event to check
+         * @return {Boolean} `true` if events are suspended
+         */
+        isSuspended: function(event) {
+            var suspended = this.eventsSuspended > 0;
+            if (!suspended && event) {
+                event = this.events[event];
+                if (event && event.isEvent) {
+                    return event.isSuspended();
+                }
+            }
+            return suspended;
+        },
 
         /**
         * Suspends the firing of all events. (see {@link #resumeEvents})
@@ -866,15 +887,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
          */
         suspendEvent: function(eventName) {
             var len = arguments.length,
-                i, event;
+                events = this.events,
+                i, event, ename;
 
             for (i = 0; i < len; i++) {
-                event = this.events[arguments[i]];
-
-                // If it exists, and is an Event object (not still a boolean placeholder), suspend it
-                if (event && event.suspend) {
-                    event.suspend();
+                ename = arguments[i];
+                event = events[ename];
+                if (!event || typeof event == 'boolean') {
+                    events[ename] = event = new ExtEvent(this, ename);
                 }
+
+                // Forcibly create the event, since we may not have anything bound when asking to suspend
+                event.suspend();
             }
         },
 
@@ -933,9 +957,11 @@ Ext.define('Ext.util.Observable', function(Observable) {
         *
         *     this.relayEvents(this.getStore(), ['load']);
         *
-        * The grid instance will then have an observable 'load' event which will be passed the
-        * parameters of the store's load event and any function fired with the grid's load event
-        * would have access to the grid using the `this` keyword.
+        * The grid instance will then have an observable 'load' event which will be passed 
+        * the parameters of the store's load event and any function fired with the grid's 
+        * load event would have access to the grid using the this keyword (unless the event 
+        * is handled by a controller's control/listen event listener in which case 'this' 
+        * will be the controller rather than the grid).
         *
         * @param {Object} origin The Observable whose events this object is to relay.
         * @param {String[]} events Array of event names to relay.
@@ -1121,7 +1147,6 @@ Ext.define('Ext.util.Observable', function(Observable) {
     Observable.createAlias({
         /**
          * @method
-         * Shorthand for {@link #addListener}.
          * @inheritdoc Ext.util.Observable#addListener
          */
         on: 'addListener',

@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This is a layout that manages multiple Panels in an expandable accordion style such that by default only
@@ -191,22 +188,17 @@ Ext.define('Ext.layout.container.Accordion', {
                     }
 
                     // If only one child Panel may be expanded, then intercept expand/show requests.
-                    owner.mon(comp, {
-                        show: me.onComponentShow,
-                        beforeexpand: me.onComponentExpand,
-                        beforecollapse: me.onComponentCollapse,
-                        scope: me
-                    });
+                    owner.mon(comp, 'show', me.onComponentShow, me);
                 }
                 // Need to still check this outside multi because we don't want
                 // a single item to be able to collapse
-                owner.mon(comp, 'beforecollapse', me.onComponentCollapse, me);
                 comp.headerOverCls = Ext.baseCSSPrefix + 'accordion-hd-over';
             }
         }
 
-        // If no collapsed:false Panels found, make the first one expanded.
-        if (!multi) {
+        // If no collapsed:false Panels found, make the first one expanded, only if we're
+        // not during an expand/collapse
+        if (!me.processing && !multi) {
             if (!expandedItem) {
                 if (ln) {
                     items[0].collapsed = false;
@@ -280,26 +272,25 @@ Ext.define('Ext.layout.container.Accordion', {
     // When a Component expands, adjust the heights of the other Components to be just enough to accommodate
     // their headers.
     // The expanded Component receives the only flex value, and so gets all remaining space.
-    onComponentExpand: function(toExpand) {
+    onBeforeComponentExpand: function(toExpand) {
         var me = this,
             owner = me.owner,
             multi = me.multi,
             animate = me.animate,
             moveToTop = !multi && !me.animate && me.activeOnTop,
             expanded,
-            expandedCount, i,
             previousValue;
 
         if (!me.processing) {
             me.processing = true;
             previousValue = owner.deferLayouts;
             owner.deferLayouts = true;
-            expanded = multi ? [] : me.getExpanded();
-            expandedCount = expanded.length;
             
-            // Collapse all other expanded child items (Won't loop if multi is true)
-            for (i = 0; i < expandedCount; i++) {
-                expanded[i].collapse();
+            if (!multi) {
+                expanded = me.getExpanded()[0];
+                if (expanded && expanded !== toExpand) {
+                    expanded.collapse();
+                }
             }
             
             if (moveToTop) {
@@ -314,7 +305,7 @@ Ext.define('Ext.layout.container.Accordion', {
         }
     },
 
-    onComponentCollapse: function(comp) {
+    onBeforeComponentCollapse: function(comp) {
         var me = this,
             owner = me.owner,
             toExpand,
@@ -352,8 +343,21 @@ Ext.define('Ext.layout.container.Accordion', {
     },
 
     onComponentShow: function(comp) {
-        // Showing a Component means that you want to see it, so expand it.
-        this.onComponentExpand(comp);
+        this.onBeforeComponentExpand(comp);
+    },
+
+    onRemove: function(panel, isDestroying){
+        var me = this,
+            item;
+            
+        me.callParent(arguments);
+        
+        if (!me.owner.destroying && !me.multi && !panel.collapsed) {
+            item = me.owner.items.first();
+            if (item) {
+                item.expand();
+            }
+        }
     },
     
     getExpanded: function(explicitCheck){
@@ -366,13 +370,16 @@ Ext.define('Ext.layout.container.Accordion', {
             
         for (; i < len; ++i) {
             item = items[i];
-            if (explicitCheck) {
-                add = item.hasOwnProperty('collapsed') && item.collapsed === false;
-            } else {
-                add = !item.collapsed;
-            }
-            if (add) {
-                out.push(item);
+
+            if (!item.hidden) {
+                if (explicitCheck) {
+                    add = item.hasOwnProperty('collapsed') && item.collapsed === false;
+                } else {
+                    add = !item.collapsed;
+                }
+                if (add) {
+                    out.push(item);
+                }
             }
         }
         return out;

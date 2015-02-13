@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * An abstract base class which provides shared methods for Containers across the Sencha product line.
@@ -36,7 +33,7 @@ Ext.define('Ext.container.AbstractContainer', {
         'Ext.layout.container.Auto',
         'Ext.ZIndexManager'
     ],
-    
+
     mixins: {
         queryable: 'Ext.Queryable'
     },
@@ -141,7 +138,7 @@ Ext.define('Ext.container.AbstractContainer', {
      *     // specifying a single item
      *     items: {...},
      *     layout: 'fit',    // The single items is sized to fit
-     *      
+     *
      *     // specifying multiple items
      *     items: [{...}, {...}],
      *     layout: 'hbox', // The items are arranged horizontally
@@ -231,7 +228,7 @@ Ext.define('Ext.container.AbstractContainer', {
       * @since 2.3.0
       */
     defaultType: 'panel',
-    
+
     /**
      * @cfg {Boolean} [detachOnRemove=true]
      * True to move any component to the {@link Ext#getDetachedBody detachedBody} when the component is
@@ -264,6 +261,8 @@ Ext.define('Ext.container.AbstractContainer', {
      */
 
     defaultLayoutType: 'auto',
+    
+    ariaRole: 'presentation',
 
     // @private
     initComponent : function(){
@@ -299,7 +298,7 @@ Ext.define('Ext.container.AbstractContainer', {
             /**
              * @event add
              * Fires after any {@link Ext.Component} is added or inserted into the container.
-             * 
+             *
              * **This event bubbles:** 'add' will also be fired when Component is added to any of
              * the child containers or their childern or ...
              * @param {Ext.container.Container} this
@@ -402,7 +401,7 @@ Ext.define('Ext.container.AbstractContainer', {
         var floaters = this.floatingItems.items,
             floaterCount = floaters.length,
             i, floater
-            
+
         this.callParent(arguments);
 
         // Contained, unrendered, autoShow items must be shown upon next layout of the Container
@@ -442,12 +441,12 @@ Ext.define('Ext.container.AbstractContainer', {
         this.callParent(arguments);
         this.getLayout().setupRenderTpl(renderTpl);
     },
-    
+
     // @private
     getDefaultContentTarget: function() {
         return this.el;
     },
-    
+
     // @private
     getContentTarget: function(){
         return this.getLayout().getContentTarget();
@@ -592,13 +591,13 @@ Ext.define('Ext.container.AbstractContainer', {
      *
      * **If** the Container was configured with a size-managing {@link #layout} manager,
      * the Container will recalculate its internal layout at this time too.
-     *  
+     *
      * Note that the default layout manager simply renders child Components sequentially
      * into the content area and thereafter performs no sizing.
-     *  
+     *
      * If adding multiple new child Components, pass them as an array to the `add` method,
      * so that only one layout recalculation is performed.
-     *  
+     *
      *     tb = new {@link Ext.toolbar.Toolbar}({
      *         renderTo: document.body
      *     });  // toolbar is rendered
@@ -627,7 +626,8 @@ Ext.define('Ext.container.AbstractContainer', {
             args = Ext.Array.slice(arguments),
             index = (typeof args[0] == 'number') ? args.shift() : -1,
             layout = me.getLayout(),
-            addingArray, items, i, length, item, pos, ret;
+            addingArray, items, i, length, item, pos, ret,
+            needsLayout = false;
 
         if (args.length == 1 && Ext.isArray(args[0])) {
             items = args[0];
@@ -672,6 +672,7 @@ Ext.define('Ext.container.AbstractContainer', {
                 me.onAdd(item, pos);
                 layout.onAdd(item, pos);
 
+                needsLayout = true;
                 if (me.hasListeners.add) {
                     me.fireEvent('add', me, item, pos);
                 }
@@ -679,7 +680,10 @@ Ext.define('Ext.container.AbstractContainer', {
         }
 
         // We need to update our layout after adding all passed items
-        me.updateLayout();
+        // Unless we only added floating items.
+        if (needsLayout) {
+            me.updateLayout();
+        }
         if (me.rendered) {
             Ext.resumeLayouts(true);
         }
@@ -723,7 +727,7 @@ Ext.define('Ext.container.AbstractContainer', {
      * @param {Number} index The index at which the Component will be inserted
      * into the Container's items collection
      *
-     * @param {Ext.Component/Object} component The child Component to insert.
+     * @param {Ext.Component/Object/Ext.Component[]/Object[]} component The child Component or config object to insert.
      *
      * Ext uses lazy rendering, and will only render the inserted Component should
      * it become necessary.
@@ -733,6 +737,8 @@ Ext.define('Ext.container.AbstractContainer', {
      * inserted Component will not be rendered immediately. To take advantage of
      * this 'lazy instantiation', set the {@link Ext.Component#xtype} config
      * property to the registered type of the Component wanted.
+     *
+     * You can pass an array of Component instances and config objects.
      *
      * For a list of all available xtypes, see {@link Ext.enums.Widget}.
      *
@@ -761,20 +767,23 @@ Ext.define('Ext.container.AbstractContainer', {
     move : function(fromIdx, toIdx) {
         var items = this.items,
             item;
-            
+
         if (fromIdx.isComponent) {
             fromIdx = items.indexOf(fromIdx);
         }
-        item = items.removeAt(fromIdx);
-        if (item === false) {
-            return false;
+        item = items.getAt(fromIdx);
+        if (fromIdx !== toIdx) {
+            item = items.removeAt(fromIdx);
+            if (item === false) {
+                return false;
+            }
+            items.insert(toIdx, item);
+            this.onMove(item, fromIdx, toIdx);
+            this.updateLayout();
         }
-        items.insert(toIdx, item);
-        this.onMove(item, fromIdx, toIdx);
-        this.updateLayout();
         return item;
     },
-    
+
     onMove: Ext.emptyFn,
 
     /**
@@ -790,8 +799,9 @@ Ext.define('Ext.container.AbstractContainer', {
      */
     onBeforeAdd : function(item) {
         // Remove from current container if it's not us.
-        if (item.ownerCt && item.ownerCt !== this) {
-            item.ownerCt.remove(item, false);
+        var owner = item.ownerCt;
+        if (owner && owner !== this) {
+            owner.remove(item, false);
         }
     },
 
@@ -872,14 +882,14 @@ Ext.define('Ext.container.AbstractContainer', {
         // Only have the layout perform remove postprocessing if the Component is not being destroyed
         else {
             if (hasLayout && !floating) {
-                layout.afterRemove(component);       
+                layout.afterRemove(component);
             }
             if (me.detachOnRemove && component.rendered) {
                 me.detachComponent(component);
             }
         }
     },
-    
+
     // Detach a component from the DOM
     detachComponent: function(component){
         Ext.getDetachedBody().appendChild(component.getEl());
@@ -921,7 +931,7 @@ Ext.define('Ext.container.AbstractContainer', {
      * @protected
      * Used by {@link Ext.ComponentQuery ComponentQuery}, {@link #child} and {@link #down} to retrieve all of the items
      * which can potentially be considered a child of this Container.
-     * 
+     *
      * This may be overriden by Components which have ownership of Components
      * that are not contained in the {@link #property-items} collection.
      *
@@ -990,7 +1000,7 @@ Ext.define('Ext.container.AbstractContainer', {
                     c.cascade(fn, scope, origArgs);
                 } else {
                     args[componentIndex] = c;
-                    fn.apply(scope || cs, args);
+                    fn.apply(scope || c, args);
                 }
             }
         }
@@ -1034,9 +1044,9 @@ Ext.define('Ext.container.AbstractContainer', {
         if (Ext.isObject(comp)) {
             comp = comp.getItemId();
         }
-        
+
         var c = this.items.get(comp);
-             
+
         // Only allow finding by index on the main items container
         if (!c && typeof comp != 'number') {
             c = this.floatingItems.get(comp);
@@ -1069,13 +1079,35 @@ Ext.define('Ext.container.AbstractContainer', {
         }
     },
 
+    /**
+     * A method to find a child component after the passed child parameter. If a selector is also provided,
+     * the first child component matching the selector will be returned.
+     *
+     * @param {Ext.Component} child The child to use as a starting point to find the next child.
+     * @param {String} [selector] A {@link Ext.ComponentQuery} selector to find the next child. This will return the next child matching this selector. This parameter is optional.
+     * @returns {Ext.Component} The next child found, `null` if no child found.
+     */
     nextChild: function(child, selector) {
         var me = this,
-            result,
-            childIndex = me.items.indexOf(child);
+            items = me.items,
+            childIndex = items.indexOf(child),
+            i = 0,
+            len = items.length,
+            result;
 
         if (childIndex !== -1) {
-            result = selector ? Ext.ComponentQuery(selector, me.items.items.slice(childIndex + 1)) : me.items.getAt(childIndex + 1);
+            if (selector) {
+                for (; i < len; i++) {
+                    result = items.getAt(childIndex + i);
+
+                    if (!result || Ext.ComponentQuery.is(result, selector)) {
+                        break;
+                    }
+                }
+            } else {
+                result = items.getAt(childIndex + 1);
+            }
+
             if (!result && me.ownerCt) {
                 result = me.ownerCt.nextChild(me, selector);
             }
@@ -1083,13 +1115,35 @@ Ext.define('Ext.container.AbstractContainer', {
         return result;
     },
 
+    /**
+     * A method to find a child component before the passed child parameter. If a selector is also provided,
+     * the first child component matching the selector will be returned.
+     *
+     * @param {Ext.Component} child The child to use as a starting point to find the previous child.
+     * @param {String} [selector] A {@link Ext.ComponentQuery} selector to find the previous child. This will return the first child matching this selector. This parameter is optional.
+     * @returns {Ext.Component} The previous child found, `null` if no child found.
+     */
     prevChild: function(child, selector) {
         var me = this,
-            result,
-            childIndex = me.items.indexOf(child);
+            items = me.items,
+            childIndex = items.indexOf(child),
+            i = 0,
+            len = items.length,
+            result;
 
         if (childIndex !== -1) {
-            result = selector ? Ext.ComponentQuery(selector, me.items.items.slice(childIndex + 1)) : me.items.getAt(childIndex + 1);
+            if (selector) {
+                for (; i < len; i++) {
+                    result = items.getAt(childIndex - i);
+
+                    if (!result || Ext.ComponentQuery.is(result, selector)) {
+                        break;
+                    }
+                }
+            } else {
+                result = items.getAt(childIndex - 1);
+            }
+
             if (!result && me.ownerCt) {
                 result = me.ownerCt.nextChild(me, selector);
             }
@@ -1097,9 +1151,10 @@ Ext.define('Ext.container.AbstractContainer', {
         return result;
     },
 
-    // @private
-    // Enable all immediate children that was previously disabled
-    // Override enable because onEnable only gets called when rendered
+    /**
+     * @override
+     * Enables all child input fields and buttons.
+     */
     enable: function() {
         this.callParent(arguments);
 
@@ -1118,9 +1173,10 @@ Ext.define('Ext.container.AbstractContainer', {
         return this;
     },
 
-    // Inherit docs
-    // Disable all immediate children that was previously disabled
-    // Override disable because onDisable only gets called when rendered
+    /**
+     * @override
+     * Disables all child input fields and buttons.
+     */
     disable: function() {
         this.callParent(arguments);
 
@@ -1139,7 +1195,7 @@ Ext.define('Ext.container.AbstractContainer', {
 
         return this;
     },
-    
+
     /**
      * Gets a list of child components to enable/disable when the container is
      * enabled/disabled
@@ -1163,7 +1219,7 @@ Ext.define('Ext.container.AbstractContainer', {
                 me.doRemove(c, true);
             }
         }
-        
+
         if (floatingItems) {
             while ((c = floatingItems.first())) {
                 me.doRemove(c, true);

@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 /**
@@ -93,7 +90,12 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * For working with collections of Elements, see {@link Ext.CompositeElement}
  *
  * @constructor
- * Creates new Element directly.
+ * Creates new Element directly by passing an id or the HTMLElement.
+ *
+ *     var el = new Ext.dom.Element('foo');
+ *
+ *     var el = Ext.create('Ext.dom.Element', document.getElementById('foo'));
+ *
  * @param {String/HTMLElement} element
  * @param {Boolean} [forceNew] By default the constructor checks to see if there is already an instance of this
  * element in the cache and if there is it returns the same instance. This will skip that check (useful for extending
@@ -149,6 +151,8 @@ Ext.define('Ext.dom.Element', function(Element) {
             'Ext.dom.Element_style'
         ],
         
+        isElement: true,
+
         tableTagRe: /^(?:tr|td|table|tbody)$/i,
 
         mixins: [
@@ -172,6 +176,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 if (Number(defer)) {
                     Ext.defer(me.focus, defer, me, [null, dom]);
                 } else {
+                    Ext.globalEvents.fireEvent('beforefocus', dom);
                     dom.focus();
                 }
             } catch(e) {
@@ -205,10 +210,11 @@ Ext.define('Ext.dom.Element', function(Element) {
         */
         isBorderBox: function() {
             var box = Ext.isBorderBox;
-            
-            // IE6/7 force input elements to content-box even if border-box is set explicitly
-            if (box && Ext.isIE7m) {
-                box = !((this.dom.tagName || "").toLowerCase() in noBoxAdjust);
+
+            // In IE6/7 "strict" when we cannot enforce border box model, certain
+            // elements still use border box model. These are enumerated in noBoxAdjust.
+            if (Ext.isIE7m && !box) {
+                box = ((this.dom.tagName || "").toLowerCase() in noBoxAdjust);
             }
             return box;
         },
@@ -378,12 +384,14 @@ Ext.define('Ext.dom.Element', function(Element) {
 
         /**
         * Puts a mask over this element to disable user interaction. Requires core.css.
-        * This method can only be applied to elements which accept child nodes.
+        * This method can only be applied to elements which accept child nodes. Use 
+        * {@link #unmask} to remove the mask.
+        * 
         * @param {String} [msg] A message to display in the mask
         * @param {String} [msgCls] A css class to apply to the msg element
         * @return {Ext.dom.Element} The mask element
         */
-        mask : function(msg, msgCls /* private - passed by AbstractComponent.mask to avoid the need to interrogate the DOM to get the height*/, elHeight) {
+        mask: function (msg, msgCls /* private - passed by AbstractComponent.mask to avoid the need to interrogate the DOM to get the height*/, elHeight) {
             var me            = this,
                 dom           = me.dom,
                 // In some cases, setExpression will exist but not be of a function type,
@@ -393,7 +401,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 maskShimEl    = data.maskShimEl,
                 maskEl        = data.maskEl,
                 maskMsg       = data.maskMsg,
-                widthExpression, heightExpression;
+                widthExpression, heightExpression, docElem, ie6DocElHeight;
 
             if (!(bodyRe.test(dom.tagName) && me.getStyle('position') == 'static')) {
                 me.addCls(XMASKEDRELATIVE);
@@ -415,6 +423,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             if (Ext.isIE6) {
                 maskShimEl = Ext.DomHelper.append(dom, {
                     tag: 'iframe',
+                    role: 'presentation',
                     cls : Ext.baseCSSPrefix + 'shim ' + Ext.baseCSSPrefix + 'mask-shim'
                 }, true);
                 data.maskShimEl = maskShimEl;
@@ -422,15 +431,19 @@ Ext.define('Ext.dom.Element', function(Element) {
             }
 
             Ext.DomHelper.append(dom, [{
+                role: 'presentation',
                 cls : Ext.baseCSSPrefix + "mask",
                 style: 'top:0;left:0;'
             }, {
+                role: 'presentation',
                 cls : msgCls ? EXTELMASKMSG + " " + msgCls : EXTELMASKMSG,
                 cn  : {
                     tag: 'div',
+                    role: 'presentation',
                     cls: Ext.baseCSSPrefix + 'mask-msg-inner',
                     cn: {
                         tag: 'div',
+                        role: 'presentation',
                         cls: Ext.baseCSSPrefix + 'mask-msg-text',
                         html: msg || ''
                     }
@@ -439,6 +452,7 @@ Ext.define('Ext.dom.Element', function(Element) {
 
             maskMsg = Ext.get(dom.lastChild);
             maskEl = Ext.get(maskMsg.dom.previousSibling);
+
             data.maskMsg = maskMsg;
             data.maskEl = maskEl;
 
@@ -451,41 +465,65 @@ Ext.define('Ext.dom.Element', function(Element) {
             } else {
                 maskMsg.setDisplayed(false);
             }
+
+            // Modern browsers will mask the body el using fixed positioning on the maskEl.
+            // Older IE browsers in quirks mode will not get the fixed-mask class but
+            // instead will use CSS expressions to achieve the same result (see below).
+            // See EXTJSIV-10726.
+            if (Ext.isStrict && !Ext.isIE6 && (dom === DOC.body)) {
+                maskEl.addCls(Ext.baseCSSPrefix + 'mask-fixed');
+            }
+
             // NOTE: CSS expressions are resource intensive and to be used only as a last resort
             // These expressions are removed as soon as they are no longer necessary - in the unmask method.
             // In normal use cases an element will be masked for a limited period of time.
             // Fix for https://sencha.jira.com/browse/EXTJSIV-19.
             // IE6 strict mode and IE6-9 quirks mode takes off left+right padding when calculating width!
-            if (!Ext.supports.IncludePaddingInWidthCalculation && setExpression) {
-                // In an occasional case setExpression will throw an exception
-                try {
-                    maskEl.dom.style.setExpression('width', 'this.parentNode.clientWidth + "px"');
-                    widthExpression = 'this.parentNode.clientWidth + "px"';
-                    if (maskShimEl) {
-                        maskShimEl.dom.style.setExpression('width', widthExpression);
-                    }
-                    maskEl.dom.style.setExpression('width', widthExpression);
-                } catch (e) {}
-            }
-
-            // Some versions and modes of IE subtract top+bottom padding when calculating height.
-            // Different versions from those which make the same error for width!
-            if (!Ext.supports.IncludePaddingInHeightCalculation && setExpression) {
-                // In an occasional case setExpression will throw an exception
-                try {
-                    heightExpression = 'this.parentNode.' + (dom == DOC.body ? 'scrollHeight' : 'offsetHeight') + ' + "px"';
-                    if (maskShimEl) {
-                        maskShimEl.dom.style.setExpression('height', heightExpression);
-                    }
-                    maskEl.dom.style.setExpression('height', heightExpression);
-                } catch (e) {}
-            }
-            // ie will not expand full height automatically
-            else if (Ext.isIE9m && !(Ext.isIE7 && Ext.isStrict) && me.getStyle('height') == 'auto') {
-                if (maskShimEl) {
-                    maskShimEl.setSize(undefined, elHeight || me.getHeight());
+            //
+            // Note that it's not necessary to compute height and width for IE browsers when it's in strict
+            // mode and the element to be masked is the body.
+            if (dom !== DOC.body || Ext.isIE6 || Ext.isIEQuirks) {
+                if (!Ext.supports.IncludePaddingInWidthCalculation && setExpression) {
+                    // In an occasional case setExpression will throw an exception
+                    try {
+                        maskEl.dom.style.setExpression('width', 'this.parentNode.clientWidth + "px"');
+                        widthExpression = 'this.parentNode.clientWidth + "px"';
+                        if (maskShimEl) {
+                            maskShimEl.dom.style.setExpression('width', widthExpression);
+                        }
+                        maskEl.dom.style.setExpression('width', widthExpression);
+                    } catch (e) {}
                 }
-                maskEl.setSize(undefined, elHeight || me.getHeight());
+
+                // Some versions and modes of IE subtract top+bottom padding when calculating height.
+                // Different versions from those which make the same error for width!
+                if (!Ext.supports.IncludePaddingInHeightCalculation && setExpression) {
+                    // In an occasional case setExpression will throw an exception
+                    try {
+                        heightExpression = 'this.parentNode.' + (dom == DOC.body ? 'scrollHeight' : 'offsetHeight') + ' + "px"';
+                        if (maskShimEl) {
+                            maskShimEl.dom.style.setExpression('height', heightExpression);
+                        }
+                        maskEl.dom.style.setExpression('height', heightExpression);
+                    } catch (e) {}
+                }
+                // ie will not expand full height automatically
+                else if (Ext.isIE9m && !(Ext.isIE7 && Ext.isStrict) && me.getStyle('height') == 'auto') {
+                    if (Ext.isIE6 && Ext.isStrict) {
+                        docElem = dom.parentNode;
+                        // Note in IE 6 Standards, the scrollHeight is on the DocumentElement not the body,
+                        // so reading height from the body el will return a very small value.
+                        //
+                        // Also, it appears that scrollHeight will not equal clientHeight when the browser
+                        // is not overflowing in IE 6 (it will be less), so getting the max height of either
+                        // will work.
+                        ie6DocElHeight = Math.max(docElem.clientHeight, docElem.scrollHeight);
+                    }
+                    if (maskShimEl) {
+                        maskShimEl.setSize(undefined, elHeight || ie6DocElHeight || me.getHeight());
+                    }
+                    maskEl.setSize(undefined, elHeight || ie6DocElHeight || me.getHeight());
+                }
             }
             return maskEl;
         },
@@ -567,6 +605,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             el.frameBorder = '0';
             el.className = Ext.baseCSSPrefix + 'shim';
             el.src = Ext.SSL_SECURE_URL;
+            el.setAttribute('role', 'presentation');
             shim = Ext.get(this.dom.parentNode.insertBefore(el, this.dom));
             shim.autoBoxAdjust = false;
             return shim;
@@ -845,9 +884,10 @@ Ext.define('Ext.dom.Element', function(Element) {
         /**
         * Appends an event handler to this element.
         *
-        * @param {String} eventName The name of event to handle.
+        * @param {String/Object} eventName The name of event to handle.
+        * May also be an object who's property names are event names.
         *
-        * @param {Function} fn The handler function the event invokes. This function is passed the following parameters:
+        * @param {Function} [fn] The handler function the event invokes. This function is passed the following parameters:
         *
         * - **evt** : EventObject
         *
@@ -967,7 +1007,7 @@ Ext.define('Ext.dom.Element', function(Element) {
         * event delegation. Event delegation is a technique that is used to reduce memory consumption and prevent exposure
         * to memory-leaks. By registering an event for a container element as opposed to each element within a container.
         * By setting this configuration option to a simple selector, the target element will be filtered to look for a
-        * descendant of the target. For example:
+        * descendant of the target. See {@link Ext.dom.Query} for information about simple selectors. Example:
         *
         *     // using this markup:
         *     <div id='elId'>
@@ -1059,7 +1099,23 @@ Ext.define('Ext.dom.Element', function(Element) {
         useDocForId     = !Ext.isIE8m,
         internalFly;
 
-    Element.boxMarkup = '<div class="{0}-tl"><div class="{0}-tr"><div class="{0}-tc"></div></div></div><div class="{0}-ml"><div class="{0}-mr"><div class="{0}-mc"></div></div></div><div class="{0}-bl"><div class="{0}-br"><div class="{0}-bc"></div></div></div>';
+    Element.boxMarkup = [
+        '<div class="{0}-tl" role="presentation">',
+            '<div class="{0}-tr" role="presentation">',
+                '<div class="{0}-tc" role="presentation"></div>',
+            '</div>',
+        '</div>',
+        '<div class="{0}-ml" role="presentation">',
+            '<div class="{0}-mr" role="presentation">',
+                '<div class="{0}-mc" role="presentation"></div>',
+            '</div>',
+        '</div>',
+        '<div class="{0}-bl" role="presentation">',
+            '<div class="{0}-br" role="presentation">',
+                '<div class="{0}-bc" role="presentation"></div>',
+            '</div>',
+        '</div>'
+    ].join('');
     //</!if>
 
     // private
@@ -1387,7 +1443,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             }
 
             id  = Ext.id();
-            html += '<span id="' + id + '"></span>';
+            html += '<span id="' + id + '" role="presentation"></span>';
 
             interval = setInterval(function() {
                 var hd,
@@ -1444,7 +1500,7 @@ Ext.define('Ext.dom.Element', function(Element) {
          * @return {Ext.dom.Element} The new proxy element
          */
         createProxy : function(config, renderTo, matchBox) {
-            config = (typeof config == 'object') ? config : {tag : "div", cls: config};
+            config = (typeof config == 'object') ? config : { tag: "div", role: 'presentation', cls: config };
 
             var me = this,
                 proxy = renderTo ? Ext.DomHelper.append(renderTo, config, true) :
@@ -1499,7 +1555,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 // A tabIndex of -1 means it has to be programatically focused, so that needs FocusManager,
                 // and it has to be the focus holding el of a Component within the Component tree.
                 if (tabIndex == -1) { // note that the value is a string
-                    canFocus = Ext.FocusManager && Ext.FocusManager.enabled && asFocusEl;
+                    canFocus = Ext.enableFocusManager && asFocusEl;
                 }
                 else {
                     // See if it's a naturally focusable element
@@ -1519,7 +1575,7 @@ Ext.define('Ext.dom.Element', function(Element) {
         }
     });
 
-    if (Ext.isIE) {
+    if (Ext.isIE9m) {
         Element.prototype.getById = function (id, asDom) {
             var dom = this.dom,
                 cacheItem, el, ret;
@@ -1594,7 +1650,7 @@ Ext.define('Ext.dom.Element', function(Element) {
     
     internalFly = new Element.Fly();
 
-    if (Ext.isIE) {
+    if (Ext.isIE9m) {
         Ext.getElementById = function (id) {
             var el = DOC.getElementById(id),
                 detachedBodyEl;

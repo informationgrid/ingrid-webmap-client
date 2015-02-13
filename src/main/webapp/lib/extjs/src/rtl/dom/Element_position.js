@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This override adds RTL positioning methods to Ext.dom.Element.
@@ -188,39 +185,6 @@ Ext.define('Ext.rtl.dom.Element_position', {
         }
     },
 
-    rtlSetX: function(x, animate) {
-        return this.rtlSetXY([x, this.getY()], animate);
-    },
-
-    rtlSetXY: function(xy, animate) {
-        var me = this,
-            pts, style, pos;
-
-        if (!animate || !me.anim) {
-            pts = me.rtlTranslatePoints(xy);
-            style = me.dom.style;
-
-            // left position may have been previously set by setXY or setLocalXY
-            // so clear it here just in case.
-            style.left = 'auto';
-            for (pos in pts) {
-                if (!isNaN(pts[pos])) {
-                    style[pos] = pts[pos] + "px";
-                }
-            }
-        } else {
-            if (!Ext.isObject(animate)) {
-                animate = {};
-            }
-            me.animate(Ext.applyIf({ to: { x: xy[0], y: xy[1] } }, animate));
-        }
-        return me;
-    },
-
-    rtlSetY: function(y, animate) {
-        return this.rtlSetXY([this.getX(), y], animate);
-    },
-
     rtlTranslatePoints: function(x, y) {
         var pos = this.rtlTranslateXY(x, y);
 
@@ -268,21 +232,6 @@ Ext.define('Ext.rtl.dom.Element_position', {
             x: right,
             y: top
         };
-    },
-
-    setX: function(x, animate) {
-        return Ext.rootHierarchyState.rtl ? this.rtlSetX(x, animate) :
-            this.callParent(arguments);
-    },
-
-    setXY: function(xy, animate) {
-        return Ext.rootHierarchyState.rtl ? this.rtlSetXY(xy, animate) :
-            this.callParent(arguments);
-    },
-
-    setY: function(y, animate) {
-        return Ext.rootHierarchyState.rtl ? this.rtlSetY(y, animate) :
-            this.callParent(arguments);
     },
 
     translatePoints: function(x, y) {

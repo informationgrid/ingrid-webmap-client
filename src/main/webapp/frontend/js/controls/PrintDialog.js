@@ -101,8 +101,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 	 */
 	onRender: function() {
 		this.superclass.onRender.apply(this, arguments);
-		this.loadMask = new Ext.LoadMask(this.body, {
-			msg:i18n('tLadeDruckkonfiguration')
+		this.loadMask = new Ext.LoadMask({
+			msg:i18n('tLadeDruckkonfiguration'),
+			target: this
 		});
 	},
 	/**
@@ -173,11 +174,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 		});
 		printForm.on("beforedestroy", function(form) {
 			// hide the busy mask in every case (also if an exception ocurred)
-			if (form.busyMask.hide) {
+			if (form.busyMask.hidden == false) {
 				form.busyMask.hide();
 			}
 		});
-	    this.printProvider.on({
+		this.printProvider.on({
 	    	// close this form after printing
 	        "print": self.close,
 	        scope: self

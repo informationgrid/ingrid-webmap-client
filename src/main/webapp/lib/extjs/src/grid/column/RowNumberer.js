@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A special type of Grid {@link Ext.grid.column.Column} that provides automatic
@@ -43,7 +40,7 @@ Ext.define('Ext.grid.column.RowNumberer', {
      * @cfg {String} text
      * Any valid text or HTML fragment to display in the header cell for the row number column.
      */
-    text: "&#160",
+    text: "&#160;",
 
     /**
      * @cfg {Number} width
@@ -71,7 +68,7 @@ Ext.define('Ext.grid.column.RowNumberer', {
 
     align: 'right',
 
-    constructor : function(config){
+    constructor: function (config) {
         var me = this;
 
         // Copy the prototype's default width setting into an instance property to provide
@@ -80,6 +77,19 @@ Ext.define('Ext.grid.column.RowNumberer', {
 
         me.callParent(arguments);
         me.scope = me;
+    },
+
+    beforeRender: function () {
+        var rowBody = this.up('tablepanel').view.findFeature('rowbody');
+
+        this.callParent(arguments);
+
+        // If there is a RowBody Feature, and this coliumn is index 1 (immediately after the expander)...
+        // the RowBody cell must not span this column, and this column must span into the expander row.
+        if (rowBody && this.ownerCt.items.indexOf(this) === 1) {
+            rowBody.colSpanDecrement = rowBody.colSpanDecrement + 1;
+            this.rowspan = 2;
+        }
     },
 
     // private
@@ -93,20 +103,17 @@ Ext.define('Ext.grid.column.RowNumberer', {
     rowspan: undefined,
 
     // private
-    renderer: function(value, metaData, record, rowIdx, colIdx, store) {
+    renderer: function(value, metaData, record, rowIdx, colIdx, dataSource, view) {
         var rowspan = this.rowspan,
-            page = store.currentPage,
-            result = record.index;
-            
+            page = dataSource.currentPage,
+            result = view.store.indexOf(record);
+
         if (rowspan) {
             metaData.tdAttr = 'rowspan="' + rowspan + '"';
         }
 
-        if (result == null) {
-            result = rowIdx;
-            if (page > 1) {
-                result += (page - 1) * store.pageSize; 
-            }
+        if (page > 1) {
+            result += (page - 1) * dataSource.pageSize; 
         }
         return result + 1;
     }

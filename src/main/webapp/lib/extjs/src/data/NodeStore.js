@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Node Store
@@ -119,6 +116,7 @@ Ext.define('Ext.data.NodeStore', {
                 bulkremove: me.onBulkRemove,
                 remove: me.onNodeRemove,
                 sort: me.onNodeSort,
+                filterchange: me.onNodeFilter,
                 scope: me
             });
             me.node = null;
@@ -141,6 +139,7 @@ Ext.define('Ext.data.NodeStore', {
                 bulkremove: me.onBulkRemove,
                 remove: me.onNodeRemove,
                 sort: me.onNodeSort,
+                filterchange: me.onNodeFilter,
                 scope: me
             });
             me.node = node;
@@ -149,7 +148,17 @@ Ext.define('Ext.data.NodeStore', {
             }
         }
     },
- 
+
+    onNodeFilter: function(root, childNodes) {
+        var me = this,
+            toAdd = [];
+
+        this.data.clear();
+        me.handleNodeExpand(root, childNodes, toAdd);
+        this.data.addAll(toAdd);
+        this.fireEvent('refresh', this);
+    },
+
     onNodeSort: function(node, childNodes) {
         var me = this;
 
@@ -210,20 +219,23 @@ Ext.define('Ext.data.NodeStore', {
             for (i = 0; i < ln; i++) {
                 record = records[i];
 
-                // Add to array being collected by recursion when child nodes are loaded.
-                // Must be done here in loop so that child nodes are inserted into the stream in place
-                // in recursive calls.
-                toAdd.push(record);
+                // If the TreePanel has not set its visible flag to false, add to new node array
+                if (record.get('visible')) {
+                    // Add to array being collected by recursion when child nodes are loaded.
+                    // Must be done here in loop so that child nodes are inserted into the stream in place
+                    // in recursive calls.
+                    toAdd.push(record);
 
-                if (record.isExpanded()) {
-                    if (record.isLoaded()) {
-                        // Take a shortcut - appends to toAdd array
-                        me.handleNodeExpand(record, record.childNodes, toAdd);
-                    }
-                    else {
-                        // Might be asynchronous if child nodes are not immediately available
-                        record.set('expanded', false);
-                        record.expand();
+                    if (record.isExpanded()) {
+                        if (record.isLoaded()) {
+                            // Take a shortcut - appends to toAdd array
+                            me.handleNodeExpand(record, record.childNodes, toAdd);
+                        }
+                        else {
+                            // Might be asynchronous if child nodes are not immediately available
+                            record.set('expanded', false);
+                            record.expand();
+                        }
                     }
                 }
             }
@@ -245,6 +257,10 @@ Ext.define('Ext.data.NodeStore', {
             return;
         }
 
+        if (parent.store.filterFn) {
+            records = Ext.Array.filter(records, me.filterVisible);
+        }
+
         // Used by the TreeView to bracket recursive expand & collapse ops.
         // The TreeViewsets up the animWrap object if we are animating.
         // It also caches the collapse callback to call when it receives the
@@ -264,7 +280,8 @@ Ext.define('Ext.data.NodeStore', {
             // exist at some level above the current node.
             node = parent;
             while (node.parentNode) {
-                sibling = node.nextSibling;
+                // Find the next visible sibling (filtering may have knocked out intervening nodes)
+                for (sibling = node.nextSibling; sibling && !sibling.get('visible'); sibling = sibling.nextSibling);
                 if (sibling) {
                     found = true;
                     lastNodeIndexPlus = me.indexOf(sibling); 
@@ -297,7 +314,8 @@ Ext.define('Ext.data.NodeStore', {
             if (index === 0) {
                 refNode = parent;
             } else {
-                sibling = node.previousSibling;
+                // Find the previous visible sibling (filtering may have knocked out intervening nodes)
+                for (sibling = node.previousSibling; sibling && !sibling.get('visible'); sibling = sibling.previousSibling);
                 while (sibling.isExpanded() && sibling.lastChild) {
                     sibling = sibling.lastChild;
                 }
@@ -314,6 +332,7 @@ Ext.define('Ext.data.NodeStore', {
                     // the children may not have been loaded yet, so only do this if we're
                     // not in the middle of populating the nodes.
                     node.set('expanded', false);
+                    node.join(me.treeStore);
                     node.expand();
                 }
             }
@@ -324,7 +343,7 @@ Ext.define('Ext.data.NodeStore', {
         var me = this,
             index = this.indexOf(refNode);
 
-        if (index != -1 && me.isVisible(node)) {
+        if (index !== -1 && me.isVisible(node)) {
             me.insert(index, node);
             if (!node.isLeaf() && node.isExpanded()) {
                 if (node.isLoaded()) {
@@ -333,6 +352,7 @@ Ext.define('Ext.data.NodeStore', {
                 }
                 else {
                     node.set('expanded', false);
+                    node.join(me.treeStore);
                     node.expand();
                 }
             }
@@ -360,22 +380,28 @@ Ext.define('Ext.data.NodeStore', {
         }
     },
 
+    filterVisible: function(node) {
+        return node.get('visible');
+    },
+
     isVisible: function(node) {
-        var parent = node.parentNode;
-        while (parent) {
-            // Hit root and it is expanded, the node is visible
-            if (parent === this.node && parent.data.expanded) {
-                return true;
-            }
+        if (node.get('visible')) {
+            var parent = node.parentNode;
+            while (parent) {
+                // Hit root and it is expanded, the node is visible
+                if (parent === this.node && parent.data.expanded) {
+                    return true;
+                }
 
-            // Hit a collapsed ancestor, the node is not visible
-            if (!parent.data.expanded) {
-                return false;
-            }
+                // Hit a collapsed ancestor, the node is not visible
+                if (!parent.data.expanded) {
+                    return false;
+                }
 
-            parent = parent.parentNode;
+                parent = parent.parentNode;
+            }
         }
-        // Walked off the top - the node is not part of the tree structure
+        // Walked off the top, or node was not visible: the node is not part of the tree structure
         return false;
     }
 });

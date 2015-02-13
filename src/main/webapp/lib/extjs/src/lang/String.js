@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag foundation,core
 // @require ../version/Version.js
@@ -32,7 +29,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 Ext.String = (function() {
     var trimRegex     = /^[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]+|[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]+$/g,
         escapeRe      = /('|\\)/g,
-        formatRe      = /\{(\d+)\}/g,
+        formatRe      = /\{\d+\}/,
         escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g,
         basicTrimRe   = /^\s+|\s+$/g,
         whitespaceRe  = /\s+/,
@@ -51,12 +48,32 @@ Ext.String = (function() {
             if (s === null || s === undefined || other === null || other === undefined) {
                 return false;
             }
-            
+
             return other.length <= s.length; 
+        },
+        // Flags for the template compile process.
+        // stringFormat means that token 0 consumes argument 1 etc.
+        // So that String.format does not have to slice the argument list.
+        formatTplConfig = {useFormat: false, compiled: true, stringFormat: true},
+        formatFns = {},
+        generateFormatFn = function(format) {
+            // Generate a function which substitutes value tokens
+            if (formatRe.test(format)) {
+                format = new Ext.Template(format, formatTplConfig);
+                return function() {
+                    return format.apply(arguments);
+                };
+            }
+            // No value tokens
+            else {
+                return function() {
+                    return format;
+                };
+            }
         };
 
     return {
-        
+
         /**
          * Inserts a substring into a string.
          * @param {String} s The original string.
@@ -125,7 +142,7 @@ Ext.String = (function() {
         /**
          * Checks if a string ends with a substring
          * @param {String} s The original string
-         * @param {String} start The substring to check
+         * @param {String} end The substring to check
          * @param {Boolean} [ignoreCase=false] True to ignore the case in the comparison
          */
         endsWith: function(s, end, ignoreCase){
@@ -171,6 +188,16 @@ Ext.String = (function() {
         htmlDecode: function(value) {
             return (!value) ? value : String(value).replace(entityToCharRegex, htmlDecodeReplaceFn);
         },
+        
+        /**
+         * Checks if a string has values needing to be html encoded.
+         * @private
+         * @param {String} s The string to test
+         * @return {Boolean} `true` if the string contains HTML characters
+         */
+        hasHtmlCharacters: function(s) {
+            return charToEntityRegex.test(s);
+        },
 
         /**
          * Adds a set of character entity definitions to the set used by
@@ -198,7 +225,7 @@ Ext.String = (function() {
          * The set of character entities may be reset back to the default state by using
          * the {@link Ext.String#resetCharacterEntities} method
          *
-         * @param {Object} entities The set of character entities to add to the current
+         * @param {Object} newEntities The set of character entities to add to the current
          * definitions.
          */
         addCharacterEntities: function(newEntities) {
@@ -288,16 +315,16 @@ Ext.String = (function() {
          * @param {Boolean} [word=false] `true` to try to find a common word break.
          * @return {String} The converted text.
          */
-        ellipsis: function(value, len, word) {
-            if (value && value.length > len) {
+        ellipsis: function(value, length, word) {
+            if (value && value.length > length) {
                 if (word) {
-                    var vs = value.substr(0, len - 2),
+                    var vs = value.substr(0, length - 2),
                     index = Math.max(vs.lastIndexOf(' '), vs.lastIndexOf('.'), vs.lastIndexOf('!'), vs.lastIndexOf('?'));
-                    if (index !== -1 && index >= (len - 15)) {
+                    if (index !== -1 && index >= (length - 15)) {
                         return vs.substr(0, index) + "...";
                     }
                 }
-                return value.substr(0, len - 3) + "...";
+                return value.substr(0, length - 3) + "...";
             }
             return value;
         },
@@ -376,10 +403,8 @@ Ext.String = (function() {
          * @return {String} The formatted string.
          */
         format: function(format) {
-            var args = Ext.Array.toArray(arguments, 1);
-            return format.replace(formatRe, function(m, i) {
-                return args[i];
-            });
+            var formatFn = formatFns[format] || (formatFns[format] = generateFormatFn(format));
+            return formatFn.apply(this, arguments);
         },
 
         /**

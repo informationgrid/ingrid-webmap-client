@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * FieldContainer is a derivation of {@link Ext.container.Container Container} that implements the
@@ -168,7 +165,11 @@ Ext.define('Ext.form.FieldContainer', {
     // child fields, let them handle themselves
     invalidCls: '',
 
-    fieldSubTpl: '<div id="{id}-containerEl" class="{containerElCls}">{%this.renderContainer(out,values)%}</div>',
+    fieldSubTpl: [
+        '<div id="{id}-containerEl" class="{containerElCls}" role="presentation">',
+            '{%this.renderContainer(out,values)%}',
+        '</div>'
+    ],
 
     initComponent: function() {
         var me = this;
@@ -189,19 +190,19 @@ Ext.define('Ext.form.FieldContainer', {
      * @protected Called when a {@link Ext.form.Labelable} instance is added to the container's subtree.
      * @param {Ext.form.Labelable} labelable The instance that was added
      */
-    onAdd: function(labelable) {
+    onAdd: function(item) {
         var me = this;
         
         // Fix for https://sencha.jira.com/browse/EXTJSIV-6424
         // In FF, positioning absolutely within a TD positions relative to the TR!
         // So we must add the width of a visible, left-aligned label cell to the x coordinate.
-        if (Ext.isGecko && me.layout.type === 'absolute' && !me.hideLabel && me.labelAlign !== 'top') {
-            labelable.x += (me.labelWidth + me.labelPad);
+        if (item.isLabelable && Ext.isGecko && me.layout.type === 'absolute' && !me.hideLabel && me.labelAlign !== 'top') {
+            item.x += (me.labelWidth + me.labelPad);
         }
         me.callParent(arguments);
-        if (me.combineLabels) {
-            labelable.oldHideLabel = labelable.hideLabel;
-            labelable.hideLabel = true;
+        if (item.isLabelable && me.combineLabels) {
+            item.oldHideLabel = item.hideLabel;
+            item.hideLabel = true;
         }
         me.updateLabel();
     },
@@ -210,12 +211,12 @@ Ext.define('Ext.form.FieldContainer', {
      * @protected Called when a {@link Ext.form.Labelable} instance is removed from the container's subtree.
      * @param {Ext.form.Labelable} labelable The instance that was removed
      */
-    onRemove: function(labelable, isDestroying) {
+    onRemove: function(item, isDestroying) {
         var me = this;
         me.callParent(arguments);
         if (!isDestroying) {
-            if (me.combineLabels) {
-                labelable.hideLabel = labelable.oldHideLabel;
+            if (item.isLabelable && me.combineLabels) {
+                item.hideLabel = item.oldHideLabel;
             }
             me.updateLabel();
         }   

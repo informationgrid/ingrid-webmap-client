@@ -55,7 +55,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
 		var self = this;
 		
 		self.storeService = Ext.create('Ext.data.TreeStore', {
-	    	model: 'DetailLayer',
             root: {
                 text: 'Dienste',
                 id: 'rootService',
@@ -86,7 +85,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         });
         
        self.storeActiveService = Ext.create('Ext.data.TreeStore', {
-	    	model: 'DetailLayer',
             root: {
                 text: 'Aktive Dienste', 
                 id: 'rootActiveService',
@@ -316,6 +314,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
         		if(node.childNodes.length == 0){
         			node.set('leaf', false);
         			node.set('allowDrop', false);
+        			node.set('expanded', true);
         			
                 	var url = service.capabilitiesUrl;
                 	var xmlDoc = self.loadDoc(url);
@@ -325,6 +324,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.DefaultActiveServicesPanel',
                 	}
                 	node.on("move", function(thisNode, oldParent, newParent, index, nextNode) {
                 		if(newParent.data.id == "rootService"){
+                			thisNode.set("expandable", false);
                 			thisNode.removeAll();
                 		}
                 	});

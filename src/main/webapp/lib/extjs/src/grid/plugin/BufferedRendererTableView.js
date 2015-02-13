@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @private
@@ -28,51 +25,50 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 Ext.define('Ext.grid.plugin.BufferedRendererTableView', {
     override: 'Ext.view.Table',
 
+    onReplace: function(store, startIndex, oldRecords, newRecords) {
+        var me = this,
+            bufferedRenderer = me.bufferedRenderer;
+
+        // If there's a buffered renderer and the removal range falls inside the current view...
+        if (me.rendered && bufferedRenderer) {
+            bufferedRenderer.onReplace(store, startIndex, oldRecords, newRecords);
+        } else {
+            me.callParent(arguments);
+        }
+    },
+
     // Listener function for the Store's add event
     onAdd: function(store, records, index) {
         var me = this,
-            bufferedRenderer = me.bufferedRenderer,
-            rows = me.all;
+            bufferedRenderer = me.bufferedRenderer;
 
-        // The newly added records will put us over the buffered view size, so we cannot just add as normal.
-        if (me.rendered && bufferedRenderer && (rows.getCount() + records.length) > bufferedRenderer.viewSize) {
-
-            // Index puts the new row(s) in the visible area, then we have to refresh the view
-            if (index < rows.startIndex + bufferedRenderer.viewSize && (index + records.length) > rows.startIndex) {
-                me.refreshView();
-            }
-            // New rows outside of visible area, just ensure that the scroll range is updated
-            else {
-                bufferedRenderer.stretchView(me, bufferedRenderer.getScrollHeight());
-            }
+        if (me.rendered && bufferedRenderer) {
+             bufferedRenderer.onReplace(store, index, [], records);
         }
         // No BufferedRenderer present
-        // or
-        // View has not yet reached the viewSize: we can add as normal.
         else {
             me.callParent([store, records, index]);
         }
     },
 
-    onRemove: function(store, records, indices) {
+    onRemove: function(store, records, indices, isMove, removeRange) {
         var me = this,
             bufferedRenderer = me.bufferedRenderer;
 
-        // Ensure all records are removed from the view
-        me.callParent([store, records, indices]);
-
-        // If there's a BufferedRenderer, the view must refresh to keep the view correct.
-        // Removing *may* have removed all of the rendered rows, leaving whitespace below the group header, 
-        // so the refresh will be needed to keep the buffer rendered zone valid - to pull records up from
-        // below the removed zone into visibility.
+        // If there's a BufferedRenderer...
         if (me.rendered && bufferedRenderer) {
-            if (me.dataSource.getCount() > bufferedRenderer.viewSize) {
-                me.refreshView();
+
+            // If it's a contiguous range, the replace processing can handle it.
+            if (removeRange) {
+                bufferedRenderer.onReplace(store, indices[0], records, []);
             }
-            // No overflow, still we have to ensure the scroll range is updated
+
+            // Otherwise it's a refresh
             else {
-                bufferedRenderer.stretchView(me, bufferedRenderer.getScrollHeight());
+                bufferedRenderer.refreshView();
             }
+        } else {
+            me.callParent([store, records, indices]);
         }
     },
 

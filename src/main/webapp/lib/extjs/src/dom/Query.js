@@ -1,25 +1,23 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 // @require Helper.js
+
 // @define Ext.dom.Query
 // @define Ext.core.DomQuery
 // @define Ext.DomQuery
@@ -42,6 +40,24 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * All selectors, attribute filters and pseudos below can be combined infinitely in any order. For example
  * `div.foo:nth-child(odd)[@foo=bar].bar:first` would be a perfectly valid selector. Node filters are processed
  * in the order in which they appear, which allows you to optimize your queries for your document structure.
+ * 
+ * ## Simple Selectors
+ * 
+ * For performance reasons, some query methods accept selectors that are termed as **simple selectors**. A simple
+ * selector is a selector that does not include contextual information about any parent/sibling elements.
+ * 
+ * Some examples of valid simple selectors:
+ * 
+ *     var simple = '.foo'; // Only asking for the class name on the element
+ *     var simple = 'div.bar'; // Only asking for the tag/class name on the element
+ *     var simple = '[href];' // Asking for an attribute on the element.
+ *     var simple = ':not(.foo)'; // Only asking for the non-matches against the class name
+ *     var simple = 'span:first-child'; // Doesn't require any contextual information about the parent node
+ * 
+ * Simple examples of invalid simple selectors:
+ * 
+ *     var notSimple = 'div.foo div.bar'; // Requires matching a parent node by class name
+ *     var notSimple = 'span + div'; //  Requires matching a sibling by tag name
  *
  * ## Element Selectors:
  *
@@ -106,9 +122,7 @@ Ext.ns('Ext.core');
 Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
     var DQ,
         doc = document,
-        cache = {},
-        simpleCache = {},
-        valueCache = {},
+        cache, simpleCache, valueCache,
         useClassList = !!doc.documentElement.classList,
         useElementPointer = !!doc.documentElement.firstElementChild,
         useChildrenCollection = (function() {
@@ -596,6 +610,12 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
     }
 
     return DQ = {
+        clearCache: function () {
+            cache && cache.clear();
+            valueCache && valueCache.clear();
+            simpleCache && simpleCache.clear();
+        },
+
         getStyle: function(el, name) {
             return Ext.fly(el, '_DomQuery').getStyle(name);
         },
@@ -703,36 +723,44 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
          * no matches, and empty Array is returned.
          */
         jsSelect: function(path, root, type) {
+            if (!cache) {
+                DQ._cache = cache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
             // set root to doc if not specified.
             root = root || doc;
 
             if (typeof root == "string") {
                 root = doc.getElementById(root);
             }
-            var paths = path.split(","),
+            var paths = Ext.splitAndUnescape(path, ","),
                 results = [],
+                query,
                 i, len, subPath, result;
 
             // loop over each selector
             for (i = 0, len = paths.length; i < len; i++) {
                 subPath = paths[i].replace(trimRe, "");
                 // compile and place in cache
-                if (!cache[subPath]) {
+                query = cache.get(subPath);
+                if (!query) {
                     // When we compile, escaping is handled inside the compile method
-                    cache[subPath] = DQ.compile(subPath, type);
-                    if (!cache[subPath]) {
+                    query = DQ.compile(subPath, type);
+                    if (!query) {
                         Ext.Error.raise({
                             sourceClass:'Ext.DomQuery',
                             sourceMethod:'jsSelect',
                             msg:subPath + ' is not a valid selector'
                         });
                     }
+                    cache.add(subPath, query);
                 } else {
                     // If we've already compiled, we still need to check if the
                     // selector has escaping and setup the appropriate flags
                     setupEscapes(subPath);
                 }
-                result = cache[subPath](root);
+                result = query(root);
                 if (result && result !== doc) {
                     results = results.concat(result);
                 }
@@ -818,15 +846,23 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
          * @return {String}
          */
         selectValue: function(path, root, defaultValue) {
+            if (!valueCache) {
+                DQ._valueCache = valueCache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
             path = path.replace(trimRe, "");
-            if (!valueCache[path]) {
-                valueCache[path] = DQ.compile(path, "select");
+            var query = valueCache.get(path),
+                n, v;
+
+            if (!query) {
+                query = DQ.compile(path, "select");
+                valueCache.add(path, query);
             } else {
                 setupEscapes(path);
             }
 
-            var n = valueCache[path](root),
-                v;
+            n = query(root);
 
             n = n[0] ? n[0] : n;
 
@@ -857,7 +893,6 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
         /**
          * Returns true if the passed element(s) match the passed simple selector
-         * (e.g. `div.some-class` or `span:first-child`)
          * @param {String/HTMLElement/HTMLElement[]} el An element id, element or array of elements
          * @param {String} selector The simple selector to test
          * @return {Boolean}
@@ -873,7 +908,6 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
         /**
          * Filters an array of elements to only include matches of a simple selector
-         * (e.g. `div.some-class` or `span:first-child`)
          * @param {HTMLElement[]} el An array of elements to filter
          * @param {String} selector The simple selector to test
          * @param {Boolean} nonMatches If true, it returns the elements that DON'T match the selector instead of the
@@ -883,13 +917,22 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
          */
         filter: function(els, ss, nonMatches) {
             ss = ss.replace(trimRe, "");
-            if (!simpleCache[ss]) {
-                simpleCache[ss] = DQ.compile(ss, "simple");
+            if (!simpleCache) {
+                DQ._simpleCache = simpleCache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
+            var query = simpleCache.get(ss),
+                result;
+
+            if (!query) {
+                query = DQ.compile(ss, "simple");
+                simpleCache.add(ss, query);
             } else {
                 setupEscapes(ss);
             }
 
-            var result = simpleCache[ss](els);
+            result = query(els);
             return nonMatches ? quickDiff(result, els) : result;
         },
 

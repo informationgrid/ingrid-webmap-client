@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This plugin provides drag and/or drop functionality for a {@link Ext.grid.View GridView}.
@@ -195,14 +192,14 @@ Ext.define('Ext.grid.plugin.DragDrop', {
     //</locale>
 
     /**
-     * @cfg {String} ddGroup
+     * @cfg {String} [ddGroup=gridDD]
      * A named drag drop group to which this object belongs. If a group is specified, then both the DragZones and
      * DropZone used by this plugin will only interact with other drag drop objects in the same group.
      */
     ddGroup : "GridDD",
 
     /**
-     * @cfg {String} dragGroup
+     * @cfg {String} [dragGroup]
      * The {@link #ddGroup} to which the DragZone will belong.
      *
      * This defines which other DropZones the DragZone will interact with. Drag/DropZones only interact with other
@@ -210,7 +207,7 @@ Ext.define('Ext.grid.plugin.DragDrop', {
      */
 
     /**
-     * @cfg {String} dropGroup
+     * @cfg {String} [dropGroup]
      * The {@link #ddGroup} to which the DropZone will belong.
      *
      * This defines which other DragZones the DropZone will interact with. Drag/DropZones only interact with other
@@ -235,6 +232,30 @@ Ext.define('Ext.grid.plugin.DragDrop', {
      * @cfg {Object/Boolean} containerScroll
      */
     containerScroll: false,
+
+    /**
+     * @cfg {Object} [dragZone]
+     * A config object to apply to the creation of the {@link #property-dragZone DragZone} which handles for drag start gestures.
+     *
+     * Template methods of the DragZone may be overridden using this config.
+     */
+
+    /**
+     * @cfg {Object} [dropZone]
+     * A config object to apply to the creation of the {@link #property-dropZone DropZone} which handles mouseover and drop gestures.
+     *
+     * Template methods of the DropZone may be overridden using this config.
+     */
+
+    /**
+     * @property {Ext.view.DragZone} dragZone
+     * An {@link Ext.view.DragZone DragZone} which handles mousedown and dragging of records from the grid.
+     */
+
+    /**
+     * @property {Ext.grid.ViewDropZone} dropZone
+     * An {@link Ext.grid.ViewDropZone DropZone} which handles mouseover and dropping records in any grid which shares the same {@link #dropGroup}.
+     */
 
     init : function(view) {
         view.on('render', this.onViewRender, this, {single: true});
@@ -278,21 +299,21 @@ Ext.define('Ext.grid.plugin.DragDrop', {
             if (me.containerScroll) {
                 scrollEl = view.getEl();
             }
-            
-            me.dragZone = new Ext.view.DragZone({
+
+            me.dragZone = new Ext.view.DragZone(Ext.apply({
                 view: view,
                 ddGroup: me.dragGroup || me.ddGroup,
                 dragText: me.dragText,
                 containerScroll: me.containerScroll,
                 scrollEl: scrollEl
-            });
+            }, me.dragZone));
         }
 
         if (me.enableDrop) {
-            me.dropZone = new Ext.grid.ViewDropZone({
+            me.dropZone = new Ext.grid.ViewDropZone(Ext.apply({
                 view: view,
                 ddGroup: me.dropGroup || me.ddGroup
-            });
+            }, me.dropZone));
         }
     }
 });

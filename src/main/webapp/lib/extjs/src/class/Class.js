@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag foundation,core
 // @require Base.js
@@ -468,38 +465,114 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
     //<feature classSystem.config>
     /**
      * @cfg {Object} config
-     * List of configuration options with their default values, for which automatically
-     * accessor methods are generated.  For example:
+     * List of configuration options with their default values.
      *
-     *     Ext.define('SmartPhone', {
-     *          config: {
-     *              hasTouchScreen: false,
-     *              operatingSystem: 'Other',
-     *              price: 500
-     *          },
-     *          constructor: function(cfg) {
-     *              this.initConfig(cfg);
-     *          }
+     * __Note:__ You need to make sure {@link Ext.Base#initConfig} is called from your constructor if you are defining
+     * your own class or singleton, unless you are extending a Component. Otherwise the generated getter and setter
+     * methods will not be initialized.
+     *
+     * Each config item will have its own setter and getter method automatically generated inside the class prototype
+     * during class creation time, if the class does not have those methods explicitly defined.
+     *
+     * As an example, let's convert the name property of a Person class to be a config item, then add extra age and
+     * gender items.
+     *
+     *     Ext.define('My.sample.Person', {
+     *         config: {
+     *             name: 'Mr. Unknown',
+     *             age: 0,
+     *             gender: 'Male'
+     *         },
+     *
+     *         constructor: function(config) {
+     *             this.initConfig(config);
+     *
+     *             return this;
+     *         }
+     *
+     *         // ...
      *     });
      *
-     *     var iPhone = new SmartPhone({
-     *          hasTouchScreen: true,
-     *          operatingSystem: 'iOS'
+     * Within the class, this.name still has the default value of "Mr. Unknown". However, it's now publicly accessible
+     * without sacrificing encapsulation, via setter and getter methods.
+     *
+     *     var jacky = new Person({
+     *         name: "Jacky",
+     *         age: 35
      *     });
      *
-     *     iPhone.getPrice(); // 500;
-     *     iPhone.getOperatingSystem(); // 'iOS'
-     *     iPhone.getHasTouchScreen(); // true;
+     *     alert(jacky.getAge());      // alerts 35
+     *     alert(jacky.getGender());   // alerts "Male"
      *
-     * NOTE for when configs are reference types, the getter and setter methods do not make copies.
+     *     jacky.walk(10);             // alerts "Jacky is walking 10 steps"
      *
-     * For example, when a config value is set, the reference is stored on the instance. All instances that set
-     * the same reference type will share it.
+     *     jacky.setName("Mr. Nguyen");
+     *     alert(jacky.getName());     // alerts "Mr. Nguyen"
      *
-     * In the case of the getter, the value with either come from the prototype if the setter was never called or from
-     * the instance as the last value passed to the setter.
+     *     jacky.walk(10);             // alerts "Mr. Nguyen is walking 10 steps"
      *
-     * For some config properties, the value passed to the setter is transformed prior to being stored on the instance.
+     * Notice that we changed the class constructor to invoke this.initConfig() and pass in the provided config object.
+     * Two key things happened:
+     *
+     *  - The provided config object when the class is instantiated is recursively merged with the default config object.
+     *  - All corresponding setter methods are called with the merged values.
+     *
+     * Beside storing the given values, throughout the frameworks, setters generally have two key responsibilities:
+     *
+     *  - Filtering / validation / transformation of the given value before it's actually stored within the instance.
+     *  - Notification (such as firing events) / post-processing after the value has been set, or changed from a
+     *    previous value.
+     *
+     * By standardize this common pattern, the default generated setters provide two extra template methods that you
+     * can put your own custom logics into, i.e: an "applyFoo" and "updateFoo" method for a "foo" config item, which are
+     * executed before and after the value is actually set, respectively. Back to the example class, let's validate that
+     * age must be a valid positive number, and fire an 'agechange' if the value is modified.
+     *
+     *     Ext.define('My.sample.Person', {
+     *         config: {
+     *             // ...
+     *         },
+     *
+     *         constructor: {
+     *             // ...
+     *         },
+     *
+     *         applyAge: function(age) {
+     *             if (typeof age !== 'number' || age < 0) {
+     *                 console.warn("Invalid age, must be a positive number");
+     *                 return;
+     *             }
+     *
+     *             return age;
+     *         },
+     *
+     *         updateAge: function(newAge, oldAge) {
+     *             // age has changed from "oldAge" to "newAge"
+     *             this.fireEvent('agechange', this, newAge, oldAge);
+     *         }
+     *
+     *         // ...
+     *     });
+     *
+     *     var jacky = new Person({
+     *         name: "Jacky",
+     *         age: 'invalid'
+     *     });
+     *
+     *     alert(jacky.getAge());      // alerts 0
+     *
+     *     alert(jacky.setAge(-100));  // alerts 0
+     *     alert(jacky.getAge());      // alerts 0
+     *
+     *     alert(jacky.setAge(35));    // alerts 0
+     *     alert(jacky.getAge());      // alerts 35
+     *
+     * In other words, when leveraging the config feature, you mostly never need to define setter and getter methods
+     * explicitly. Instead, "apply*" and "update*" methods should be implemented where necessary. Your code will be
+     * consistent throughout and only contain the minimal logic that you actually care about.
+     *
+     * When it comes to inheritance, the default config of the parent class is automatically, recursively merged with
+     * the child's default config. The same applies for mixins.
      */
     ExtClass.registerPreprocessor('config', function(Class, data) {
         //<debug>

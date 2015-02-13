@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @docauthor Jason Johnston <jason@sencha.com>
@@ -34,7 +31,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * 
  * # BasicForm
  * 
- * Although **not listed** as configuration options of FormPanel, the FormPanel class accepts all
+ * FormPanel class accepts all
  * of the config options supported by the {@link Ext.form.Basic} class, and will pass them along to
  * the internal BasicForm when it is created.
  * 
@@ -168,19 +165,33 @@ Ext.define('Ext.form.Panel', {
     ariaRole: 'form',
     
     basicFormConfigs: [
+        /** @cfg @inheritdoc Ext.form.Basic#api */
         'api', 
+        /** @cfg @inheritdoc Ext.form.Basic#baseParams */
         'baseParams', 
+        /** @cfg @inheritdoc Ext.form.Basic#errorReader */
         'errorReader', 
+        /** @cfg @inheritdoc Ext.form.Basic#jsonSubmit */
         'jsonSubmit',
+        /** @cfg @inheritdoc Ext.form.Basic#method */
         'method', 
+        /** @cfg @inheritdoc Ext.form.Basic#paramOrder */
         'paramOrder',
+        /** @cfg @inheritdoc Ext.form.Basic#paramsAsHash */
         'paramsAsHash',
+        /** @cfg @inheritdoc Ext.form.Basic#reader */
         'reader',
+        /** @cfg @inheritdoc Ext.form.Basic#standardSubmit */
         'standardSubmit',
+        /** @cfg @inheritdoc Ext.form.Basic#timeout */
         'timeout',
+        /** @cfg @inheritdoc Ext.form.Basic#trackResetOnLoad */
         'trackResetOnLoad',
+        /** @cfg @inheritdoc Ext.form.Basic#url */
         'url',
+        /** @cfg @inheritdoc Ext.form.Basic#waitMsgTarget */
         'waitMsgTarget',
+        /** @cfg @inheritdoc Ext.form.Basic#waitTitle */
         'waitTitle'
     ],
 
@@ -268,7 +279,8 @@ Ext.define('Ext.form.Panel', {
 
     /**
      * Loads an {@link Ext.data.Model} into this form (internally just calls {@link Ext.form.Basic#loadRecord})
-     * See also {@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}.
+     * See also {@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}. The fields in the model are mapped to 
+     * fields in the form by matching either the {@link Ext.form.field.Base#name} or {@link Ext.AbstractComponent#itemId}.  
      * @param {Ext.data.Model} record The record to load
      * @return {Ext.form.Basic} The Ext.form.Basic attached to this FormPanel
      */

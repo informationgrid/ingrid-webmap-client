@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A Provider implementation which saves and retrieves state via cookies. The CookieProvider supports the usual cookie
@@ -122,7 +119,7 @@ Ext.define('Ext.state.CookieProvider', {
         var me = this;
 
         document.cookie = me.prefix + name + "=" + me.encodeValue(value) +
-           ((me.expires == null) ? "" : ("; expires=" + me.expires.toGMTString())) +
+           ((me.expires == null) ? "" : ("; expires=" + me.expires.toUTCString())) +
            ((me.path == null) ? "" : ("; path=" + me.path)) +
            ((me.domain == null) ? "" : ("; domain=" + me.domain)) +
            ((me.secure == true) ? "; secure" : "");
@@ -132,7 +129,7 @@ Ext.define('Ext.state.CookieProvider', {
     clearCookie : function(name){
         var me = this;
 
-        document.cookie = me.prefix + name + "=null; expires=Thu, 01-Jan-70 00:00:01 GMT" +
+        document.cookie = me.prefix + name + "=null; expires=Thu, 01-Jan-1970 00:00:01 GMT" +
            ((me.path == null) ? "" : ("; path=" + me.path)) +
            ((me.domain == null) ? "" : ("; domain=" + me.domain)) +
            ((me.secure == true) ? "; secure" : "");

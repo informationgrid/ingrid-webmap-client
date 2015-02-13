@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 // @require Ext.Supports
@@ -381,8 +378,8 @@ myElement.dom.className = Ext.core.Element.removeCls(this.initialClasses, 'x-inv
     defaultUnit: "px",
 
     /**
-     * Returns true if this element matches the passed simple selector (e.g. div.some-class or span:first-child)
-     * @param {String} selector The simple selector to test
+     * Returns true if this element matches the passed simple selector.
+     * @param {String} selector The simple selector to test. See {@link Ext.dom.Query} for information about simple selectors.
      * @return {Boolean} True if this element matches the selector, else false
      */
     is: function(simpleSelector) {
@@ -420,19 +417,39 @@ myElement.dom.className = Ext.core.Element.removeCls(this.initialClasses, 'x-inv
     /**
      * Returns true if this element is an ancestor of the passed element
      * @param {HTMLElement/String} el The element to check
-     * @return {Boolean} True if this element is an ancestor of el, else false
+     * @return {Boolean} True if this element is an ancestor of el or the el itself, else false
      */
-    contains: function(el) {
-        if (!el) {
-            return false;
-        }
+    contains: (function () {
+        // In earlier versions of FF, the elements are XUL elements and are wrapped as an XPCNativeWrapper
+        // so that only certain properties and methods are accessible. We need to bail if it's determined
+        // that it's a XULElement (pre FF 3.5) or xpconnect wrapped object (FF > 3.5).
+        // This check should be removed once we no longer support FF 3.x. See EXTJSIV-8122.
+        var isXpc = function (el) {
+            var s;
 
-        var me = this,
-            dom = el.dom || el;
+            try {
+                el = el.dom || el;
+            } catch (e) {
+                return true;
+            }
 
-        // we need el-contains-itself logic here because isAncestor does not do that:
-        return (dom === me.dom) || Ext.dom.AbstractElement.isAncestor(me.dom, dom);
-    },
+            s = HTMLElement.prototype.toString.call(el);
+            return s === '[xpconnect wrapped native prototype]' || s === '[object XULElement]';
+        };
+
+        return function (el) {
+            if (!el || (Ext.isGecko3 && isXpc(el))) {
+                return false;
+            }
+
+            var me = this,
+                dom = el.dom || el;
+
+            // we need el-contains-itself logic here because isAncestor does not do that:
+            // https://developer.mozilla.org/en-US/docs/Web/API/Node.contains
+            return (dom === me.dom) || Ext.dom.AbstractElement.isAncestor(me.dom, dom);
+        };
+    }()),
 
     /**
      * Returns the value of an attribute from the element's underlying DOM node.
@@ -656,7 +673,7 @@ function() {
                 this.dom = dom;
                 // Use cached data if there is existing cached data for the referenced DOM element,
                 // otherwise it will be created when needed by getCache.
-                this.$cache = dom.id ? Ext.cache[dom.id] : null;
+                this.$cache = dom && dom.id ? Ext.cache[dom.id] : null;
                 return this;
             }
         }),

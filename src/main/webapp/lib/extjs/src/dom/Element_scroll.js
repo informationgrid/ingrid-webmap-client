@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 /**
@@ -196,6 +193,51 @@ Ext.define('Ext.dom.Element_scroll', {
 
     /**
      * Scrolls this element into view within the passed container.
+     *
+     *          
+     *       Ext.create('Ext.data.Store', {
+     *           storeId:'simpsonsStore',
+     *           fields:['name', 'email', 'phone'],
+     *           data:{'items':[
+     *               { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
+     *               { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
+     *               { 'name': 'Homer', "email":"homer@simpsons.com",  "phone":"555-222-1244"  },
+     *               { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  },
+     *               { 'name': 'Milhouse', "email":"milhouse@simpsons.com",  "phone":"555-222-1244"  },
+     *               { 'name': 'Willy', "email":"willy@simpsons.com", "phone":"555-222-1254"  },
+     *               { 'name': 'Skinner', "email":"skinner@simpsons.com",  "phone":"555-222-1244"  },
+     *               { 'name': 'Hank (last row)', "email":"hank@simpsons.com", "phone":"555-222-1254"  }
+     *           ]},
+     *           proxy: {
+     *               type: 'memory',
+     *               reader: {
+     *                   type: 'json',
+     *                   rootProperty: 'items'
+     *               }
+     *           }
+     *       });
+     *       
+     *       var grid = Ext.create('Ext.grid.Panel', {
+     *           title: 'Simpsons',
+     *           store: Ext.data.StoreManager.lookup('simpsonsStore'),
+     *           columns: [
+     *               { text: 'Name',  dataIndex: 'name', width: 125 },
+     *               { text: 'Email', dataIndex: 'email', flex: 1 },
+     *               { text: 'Phone', dataIndex: 'phone' }
+     *           ],
+     *           height: 190,
+     *           width: 400,
+     *           renderTo: Ext.getBody(),
+     *           tbar: [{
+     *               text: 'Scroll row 7 into view',
+     *               handler: function () {
+     *                   var view = grid.getView();
+     *                   
+     *                   Ext.get(view.getRow(7)).scrollIntoView(view.getEl(), null, true);
+     *               }
+     *           }]
+     *       });
+     * 
      * @param {String/HTMLElement/Ext.Element} [container=document.body] The container element
      * to scroll.  Should be a string (id), dom node, or Ext.Element.
      * @param {Boolean} [hscroll=true] False to disable horizontal scroll.
@@ -284,13 +326,17 @@ Ext.define('Ext.dom.Element_scroll', {
         if (!this.isScrollable()) {
             return false;
         }
+        
+        // Allow full word, or initial to be sent.
+        // (Ext.dd package uses full word)
+        direction = direction.charAt(0);
         var me = this,
             dom = me.dom,
             side = direction === 'r' || direction === 'l' ? 'left' : 'top',
             scrolled = false,
             currentScroll, constrainedScroll;
 
-        if (direction === 'r') {
+        if (direction === 'l' || direction === 't' || direction === 'u') {
             distance = -distance;
         }
 

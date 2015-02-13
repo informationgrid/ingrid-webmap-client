@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.draw.Draw
@@ -1147,17 +1144,22 @@ Ext.define('Ext.draw.Draw', {
      * there may be a smaller distance between the last step and the end value than between prior
      * steps, particularly when the `endsLocked` param is true. Therefore it is best to not use
      * the `steps` result when finding the axis tick points, instead use the `step`, `to`, and
-     * `from` to find the correct point for each tick.
+     * `from` to find the correct point for each tick. For Ext.Date.MONTH and Ext.Date.YEAR step unit,
+     * `steps` are always returned as array instead of number of steps; this is because months and years
+     * have uneven step distribution and dividing them in even intervals does not work correctly.
      */
 
     snapEndsByDateAndStep: function(from, to, step, lockEnds) {
         var fromStat = [from.getFullYear(), from.getMonth(), from.getDate(),
-                from.getHours(), from.getMinutes(), from.getSeconds(), from.getMilliseconds()],
-            steps, testFrom, testTo, date, year, month, day, fractionalMonth,
-            stepUnit = step[0], stepValue = step[1];
+            from.getHours(), from.getMinutes(), from.getSeconds(), from.getMilliseconds()],
+            testFrom, testTo, date, year, month, day, fractionalMonth, stepsArray,
+            stepUnit = step[0], stepValue = step[1],
+            steps = 0;
+        
         if (lockEnds) {
             testFrom = from;
-        } else {
+        }
+        else {
             switch (stepUnit) {
                 case Ext.Date.MILLI:
                     testFrom = new Date(fromStat[0], fromStat[1], fromStat[2], fromStat[3],
@@ -1181,15 +1183,18 @@ Ext.define('Ext.draw.Draw', {
                     break;
                 case Ext.Date.MONTH:
                     testFrom = new Date(fromStat[0], Math.floor(fromStat[1] / stepValue) * stepValue, 1, 0, 0, 0, 0);
+                    steps = [];
+                    stepsArray = true;
                     break;
                 default: // Ext.Date.YEAR
                     testFrom = new Date(Math.floor(fromStat[0] / stepValue) * stepValue, 0, 1, 0, 0, 0, 0);
+                    steps = [];
+                    stepsArray = true;
                     break;
             }
         }
 
         fractionalMonth = ((stepUnit === Ext.Date.MONTH) && (stepValue == 1/2 || stepValue == 1/3 || stepValue == 1/4));
-        steps = (fractionalMonth ? [] : 0);
 
         // TODO(zhangbei) : We can do it better somehow...
         testTo = new Date(testFrom);
@@ -1256,6 +1261,10 @@ Ext.define('Ext.draw.Draw', {
                 testTo.setDate(day);
                 steps.push(new Date(testTo));
             }
+            else if (stepsArray) {
+                testTo = Ext.Date.add(testTo, stepUnit, stepValue);
+                steps.push(new Date(testTo));
+            }
             else {
                 testTo = Ext.Date.add(testTo, stepUnit, stepValue);                
                 steps++;
@@ -1266,7 +1275,7 @@ Ext.define('Ext.draw.Draw', {
             testTo = to;
         }
         
-        if (fractionalMonth) {
+        if (stepsArray) {
             return {
                 from : +testFrom,
                 to : +testTo,
@@ -1291,8 +1300,23 @@ Ext.define('Ext.draw.Draw', {
         return degrees % 360 * Math.PI / 180;
     },
 
+    normalizeRadians: function(radian) {
+        var twoPi = 2 * Math.PI;
+        if (radian >= 0) {
+            return radian % twoPi;
+        }
+        return ((radian % twoPi) + twoPi) % twoPi;
+    },
+
     degrees: function(radian) {
         return radian * 180 / Math.PI % 360;
+    },
+
+    normalizeDegrees: function(degrees) {
+        if (degrees >= 0) {
+            return degrees % 360;
+        }
+        return ((degrees % 360) + 360) % 360;
     },
 
     withinBox: function(x, y, bbox) {

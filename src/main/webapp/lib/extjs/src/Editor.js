@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * The Editor class is used to provide inline editing for elements on the page. The editor
@@ -187,10 +184,8 @@ Ext.define('Ext.Editor', {
         var me = this,
             field = me.field = Ext.ComponentManager.create(me.field, 'textfield');
 
-        Ext.apply(field, {
-            inEditor: true,
-            msgTarget: field.msgTarget == 'title' ? 'title' :  'qtip'
-        });
+        field.inEditor = true;
+        field.msgTarget = field.msgTarget || 'qtip';
         me.mon(field, {
             scope: me,
             blur: me.onFieldBlur,
@@ -303,15 +298,13 @@ Ext.define('Ext.Editor', {
             // Must defer this slightly to prevent exiting edit mode before the field's own
             // key nav can handle the enter key, e.g. selecting an item in a combobox list
             Ext.defer(function() {
+                // Hide (which will blur) the editor.
                 if (complete) {
                     me.completeEdit();
                 } else {
                     me.cancelEdit();
                 }
-                if (field.triggerBlur) {
-                    field.triggerBlur(event);
-                }
-            }, 10);
+            }, 1);
         }
 
         me.fireEvent('specialkey', me, field, event);
@@ -325,22 +318,19 @@ Ext.define('Ext.Editor', {
      */
     startEdit : function(el, value) {
         var me = this,
-            field = me.field;
+            field = me.field,
+            dom;
 
         me.completeEdit();
         me.boundEl = Ext.get(el);
-        value = Ext.isDefined(value) ? value : Ext.String.trim(me.boundEl.dom.innerText || me.boundEl.dom.innerHTML);
+        dom = me.boundEl.dom;
+        value = Ext.isDefined(value) ? value : Ext.String.trim(dom.textContent || dom.innerText || dom.innerHTML);
 
-        if (!me.rendered) {
-            // Render to the ownerCt's element
-            // Being floating, we do not need to use the actual layout's target.
-            // Indeed, it's better if we do not so that we do not interfere with layout's child management,
-            // especially with CellEditors in the element of a TablePanel.
-            if (me.ownerCt) {
-                me.parentEl = me.ownerCt.el;
-                me.parentEl.position();
-            }
-            me.render(me.parentEl || document.body);
+        // If NOT configured with a renderTo, render to the ownerCt's element
+        // Being floating, we do not need to use the actual layout's target.
+        // Indeed, it's better if we do not so that we do not interfere with layout's child management.
+        if (!me.rendered && !me.renderTo && me.ownerCt) {
+            (me.renderTo = me.ownerCt.el).position();
         }
 
         if (me.fireEvent('beforestartedit', me, me.boundEl, value) !== false) {
@@ -352,7 +342,7 @@ Ext.define('Ext.Editor', {
             field.setValue(value);
             field.resumeEvents();
             me.realign(true);
-            field.focus();
+            field.focus([field.getRawValue().length]);
             if (field.autoSize) {
                 field.autoSize();
             }
@@ -437,13 +427,16 @@ Ext.define('Ext.Editor', {
             value;
 
         if (me.editing) {
-            value = me.getValue();
-            // temporarily suspend events on field to prevent the "change" event from firing when setValue() is called
-            field.suspendEvents();
-            me.setValue(startValue);
-            field.resumeEvents();
+            if (field) {
+                value = me.editedValue = me.getValue();
+                // temporarily suspend events on field to prevent the "change" event from firing when setValue() is called
+                field.suspendEvents();
+                me.setValue(startValue);
+                field.resumeEvents();
+            }
             me.hideEdit(remainVisible);
             me.fireEvent('canceledit', me, value, startValue);
+            delete me.editedValue;
         }
     },
 
@@ -517,7 +510,6 @@ Ext.define('Ext.Editor', {
 
         Ext.destroy(me.field);
         delete me.field;
-        delete me.parentEl;
         delete me.boundEl;
 
         me.callParent(arguments);

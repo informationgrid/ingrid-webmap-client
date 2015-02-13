@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.chart.series.Scatter
@@ -224,12 +221,14 @@ Ext.define('Ext.chart.series.Scatter', {
             boxHeight = bbox.height,
             items = me.items = [],
             attrs = [],
+            reverse = me.reverse,
             x, y, xValue, yValue, sprite;
 
         for (i = 0, ln = data.length; i < ln; i++) {
             record = data[i];
             xValue = record.get(me.xField);
             yValue = record.get(me.yField);
+            
             //skip undefined or null values
             if (typeof yValue == 'undefined' || (typeof yValue == 'string' && !yValue)
                 || xValue == null || yValue == null) {
@@ -247,8 +246,14 @@ Ext.define('Ext.chart.series.Scatter', {
             if (typeof yValue == 'string' || typeof yValue == 'object' && !Ext.isDate(yValue)) {
                 yValue = i;
             }
-            x = boxX + (xValue - minX) * xScale;
+            if (reverse) {
+                x = boxX + bbox.width - ((xValue - minX) * xScale);
+            } else {
+                x = boxX + (xValue - minX) * xScale;
+            }
+            
             y = boxY + boxHeight - (yValue - minY) * yScale;
+            
             attrs.push({
                 x: x,
                 y: y
@@ -379,8 +384,14 @@ Ext.define('Ext.chart.series.Scatter', {
             lnsh = shadowGroups.length,
             sprite, attrs, attr, ln, i, endMarkerStyle, shindex, type, shadows,
             rendererAttributes, shadowAttribute;
+        
+        if (!store || !store.getCount() || me.seriesIsHidden) {
+            me.hide();
+            me.items = [];
+            return;
+        }
 
-        endMarkerStyle = Ext.apply(me.markerStyle, me.markerConfig);
+        endMarkerStyle = Ext.apply({}, me.markerStyle, me.markerConfig);
         type = endMarkerStyle.type || 'circle';
         delete endMarkerStyle.type;
 

@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 /* ================================
@@ -79,9 +76,11 @@ Ext.define('Ext.dom.Element_anim', {
      */
     animate: function(config) {
         var me = this,
+            animId = me.dom.id || Ext.id(me.dom),
             listeners,
             anim,
-            animId = me.dom.id || Ext.id(me.dom);
+            end;
+            
 
         if (!Ext.fx.Manager.hasFxBlock(animId)) {
             // Bit of gymnastics here to ensure our internal listeners get bound first
@@ -93,11 +92,16 @@ Ext.define('Ext.dom.Element_anim', {
                 config.listeners = config.internalListeners;
                 delete config.internalListeners;
             }
+            end = config.autoEnd;
+            delete config.autoEnd;
             anim = new Ext.fx.Anim(me.anim(config));
             if (listeners) {
                 anim.on(listeners);
             }
             Ext.fx.Manager.queueFx(anim);
+            if (end) {
+                anim.jumpToEnd();
+            }
         }
         return me;
     },
@@ -229,6 +233,7 @@ Ext.define('Ext.dom.Element_anim', {
             }
 
             wrap = el.wrap({
+                role: 'presentation',
                 id: Ext.id() + '-anim-wrap-for-' + el.dom.id,
                 style: {
                     visibility: slideOut ? 'visible' : 'hidden'
@@ -661,6 +666,7 @@ Ext.define('Ext.dom.Element_anim', {
             el.show();
             box = el.getBox();
             proxy = Ext.getBody().createChild({
+                role: 'presentation',
                 id: el.dom.id + '-anim-proxy',
                 style: {
                     position : 'absolute',
@@ -828,7 +834,7 @@ Ext.define('Ext.dom.Element_anim', {
             from = {},
             restore, to, attr, lns, event, fn;
 
-        // Cannot set bckground-color on table elements. Find div elements to highlight.
+        // Cannot set background-color on table elements. Find div elements to highlight.
         if (dom.tagName.match(me.tableTagRe)) {
             return me.select('div').highlight(color, o);
         }

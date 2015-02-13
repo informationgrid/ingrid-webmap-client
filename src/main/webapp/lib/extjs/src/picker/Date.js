@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A date picker. This class is used by the Ext.form.field.Date field to allow browsing and selection of valid
@@ -88,7 +85,7 @@ Ext.define('Ext.picker.Date', {
                         '{#:this.isEndOfWeek}',
                         '<td role="gridcell" id="{[Ext.id()]}">',
                             // the href attribute is required for the :hover selector to work in IE6/7/quirks
-                            '<a role="presentation" hidefocus="on" class="{parent.baseCls}-date" href="#"></a>',
+                            '<a role="button" hidefocus="on" class="{parent.baseCls}-date" href="#"></a>',
                         '</td>',
                     '</tpl>',
                 '</tr></tbody>',
@@ -403,6 +400,26 @@ Ext.define('Ext.picker.Date', {
         me.initDisabledDays();
     },
 
+    // Keep the tree structure correct for Ext.form.field.Picker input fields which poke a 'pickerField' reference down into their pop-up pickers.
+    getRefOwner: function() {
+        return this.pickerField || this.callParent();
+    },
+
+    getRefItems: function() {
+        var results = [],
+            monthBtn = this.monthBtn,
+            todayBtn = this.todayBtn;
+
+        if (monthBtn) {
+            results.push(monthBtn);
+        }
+
+        if (todayBtn) {
+            results.push(todayBtn);
+        }
+        return results;
+    },
+
     beforeRender: function () {
         /*
          * days array for looping through 6 full weeks (6 weeks * 7 days)
@@ -413,10 +430,8 @@ Ext.define('Ext.picker.Date', {
             days = new Array(me.numDays),
             today = Ext.Date.format(new Date(), me.format);
 
-        // If there's a Menu among our ancestors, then add the menu class.
-        // This is so that the MenuManager does not see a mousedown in this Component as a document mousedown, outside the Menu
-        if (me.up('menu')) {
-            me.addCls(Ext.baseCSSPrefix + 'menu');
+        if (me.padding && !me.width) {
+            me.cacheWidth();
         }
 
         me.monthBtn = new Ext.button.Split({
@@ -425,8 +440,8 @@ Ext.define('Ext.picker.Date', {
             text: '',
             tooltip: me.monthYearText,
             listeners: {
-                click: me.showMonthPicker,
-                arrowclick: me.showMonthPicker,
+                click: me.doShowMonthPicker,
+                arrowclick: me.doShowMonthPicker,
                 scope: me
             }
         });
@@ -460,6 +475,18 @@ Ext.define('Ext.picker.Date', {
         me.protoEl.unselectable();
     },
 
+    cacheWidth: function() {
+        var me = this,
+            padding = me.parseBox(me.padding),
+            widthEl = Ext.getBody().createChild({
+                cls: me.baseCls + ' ' + me.borderBoxCls,
+                style: 'position:absolute;top:-1000px;left:-1000px;'
+            });
+
+        me.self.prototype.width = widthEl.getWidth() + padding.left + padding.right;
+        widthEl.remove();
+    },
+
     // Do the job of a container layout at this point even though we are not a Container.
     // TODO: Refactor as a Container.
     finishRenderChildren: function () {
@@ -481,7 +508,7 @@ Ext.define('Ext.picker.Date', {
 
         me.cells = me.eventEl.select('tbody td');
         me.textNodes = me.eventEl.query('tbody td a');
-        
+
         me.mon(me.eventEl, {
             scope: me,
             mousewheel: me.handleMouseWheel,
@@ -602,7 +629,16 @@ Ext.define('Ext.picker.Date', {
 
         // The following code is like handleDateClick without the e.stopEvent()
         if (!me.disabled && t.dateValue && !Ext.fly(t.parentNode).hasCls(me.disabledCellCls)) {
-            me.doCancelFocus = me.focusOnSelect === false;
+
+            // Tab must not navigate. The owning pickerField focuses itself upon select.
+            // TODO: Remove coupling here. The event does need stopping if the owning field
+            // focuses itself. But there should be no knowledge of that here.
+            if (me.pickerField) {
+                e.stopEvent();
+            }
+
+            // Tabbing out, we never want to focus on select
+            me.doCancelFocus = true;
             me.setValue(new Date(t.dateValue));
             delete me.doCancelFocus;
             me.fireEvent('select', me, me.value);
@@ -799,14 +835,10 @@ Ext.define('Ext.picker.Date', {
         var picker = this.monthPicker,
             options = {
                 duration: 200,
-                callback: function(){
-                    if (isHide) {
-                        picker.hide();
-                    } else {
-                        picker.show();
-                    }
+                callback: function() {
+                    picker.setVisible(!isHide);
                 }
-            };
+            }, visible = picker.isVisible();
 
         if (isHide) {
             picker.el.slideOut('t', options);
@@ -826,7 +858,7 @@ Ext.define('Ext.picker.Date', {
         var me = this,
             picker = me.monthPicker;
 
-        if (picker) {
+        if (picker && picker.isVisible()) {
             if (me.shouldAnimate(animate)) {
                 me.runAnimation(true);
             } else {
@@ -834,6 +866,18 @@ Ext.define('Ext.picker.Date', {
             }
         }
         return me;
+    },
+    
+    doShowMonthPicker: function(){
+        // Wrap in an extra call so we can prevent the button
+        // being passed as an animation parameter.
+        this.showMonthPicker();
+    },
+    
+    doHideMonthPicker: function() {
+        // Wrap in an extra call so we can prevent this
+        // being passed as an animation parameter
+        this.hideMonthPicker();
     },
 
     /**
@@ -845,17 +889,20 @@ Ext.define('Ext.picker.Date', {
      */
     showMonthPicker : function(animate){
         var me = this,
+            el = me.el,
             picker;
         
         if (me.rendered && !me.disabled) {
-            picker = me.createMonthPicker();
-            picker.setValue(me.getActive());
-            picker.setSize(me.getSize());
-            picker.setPosition(-1, -1);
-            if (me.shouldAnimate(animate)) {
-                me.runAnimation(false);
-            } else {
-                picker.show();
+            picker = me.createMonthPicker();            
+            if (!picker.isVisible()) {
+                picker.setValue(me.getActive());
+                picker.setSize(el.getSize());
+                picker.setPosition(-el.getBorderWidth('l'), -el.getBorderWidth('t'));
+                if (me.shouldAnimate(animate)) {
+                    me.runAnimation(false);
+                } else {
+                    picker.show();
+                }
             }
         }
         return me;
@@ -884,6 +931,7 @@ Ext.define('Ext.picker.Date', {
             me.monthPicker = picker = new Ext.picker.Month({
                 renderTo: me.el,
                 floating: true,
+                padding: me.padding,
                 shadow: false,
                 small: me.showToday === false,
                 listeners: {
@@ -898,7 +946,8 @@ Ext.define('Ext.picker.Date', {
                 // hide the element if we're animating to prevent an initial flicker
                 picker.el.setStyle('display', 'none');
             }
-            me.on('beforehide', Ext.Function.bind(me.hideMonthPicker, me, [false]));
+            picker.hide();
+            me.on('beforehide', me.doHideMonthPicker, me);
         }
         return picker;
     },

@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.slider.Thumb
@@ -26,12 +23,6 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  */
 Ext.define('Ext.slider.Thumb', {
     requires: ['Ext.dd.DragTracker', 'Ext.util.Format'],
-    /**
-     * @private
-     * @property {Number} topThumbZIndex
-     * The number used internally to set the z index of the top thumb (see promoteThumb for details)
-     */
-    topZIndex: 10000,
 
     /**
      * @cfg {Ext.slider.MultiSlider} slider (required)
@@ -85,7 +76,8 @@ Ext.define('Ext.slider.Thumb', {
         return {
             style: style,
             id  : this.id,
-            cls : this.cls
+            cls : this.cls,
+            role: 'presentation'
         };
     },
 
@@ -121,22 +113,6 @@ Ext.define('Ext.slider.Thumb', {
                 to: to
             });
         }
-    },
-
-    /**
-     * @private
-     * Bring thumb dom element to front.
-     */
-    bringToFront: function() {
-        this.el.setStyle('zIndex', this.topZIndex);
-    },
-
-    /**
-     * @private
-     * Send thumb dom element to back.
-     */
-    sendToBack: function() {
-        this.el.setStyle('zIndex', '');
     },
 
     /**
@@ -190,10 +166,20 @@ Ext.define('Ext.slider.Thumb', {
      * @return {Boolean} False if the slider is currently disabled
      */
     onBeforeDragStart : function(e) {
-        if (this.disabled) {
+        var me = this,
+            el = me.el,
+            trackerXY = me.tracker.getXY(),
+            delta = me.pointerOffset = el.getXY();
+
+        if (me.disabled) {
             return false;
         } else {
-            this.slider.promoteThumb(this);
+            // Work out the delta of the pointer from the dead centre of the thumb.
+            // Slider.getTrackPoint positions the centre of the slider at the reported
+            // pointer position, so we have to correct for that in getValueFromTracker.
+            delta[0] += Math.floor(el.getWidth() / 2) - trackerXY[0];
+            delta[1] += Math.floor(el.getHeight() / 2) - trackerXY[1];
+            me.slider.promoteThumb(me);
             return true;
         }
     },
@@ -249,7 +235,12 @@ Ext.define('Ext.slider.Thumb', {
 
     getValueFromTracker: function() {
         var slider = this.slider,
-            trackPoint = slider.getTrackpoint(this.tracker.getXY());
+            trackerXY = this.tracker.getXY(),
+            trackPoint;
+
+        trackerXY[0] += this.pointerOffset[0];
+        trackerXY[1] += this.pointerOffset[1];
+        trackPoint = slider.getTrackpoint(trackerXY);
 
         // If dragged out of range, value will be undefined
         if (trackPoint !== undefined) {

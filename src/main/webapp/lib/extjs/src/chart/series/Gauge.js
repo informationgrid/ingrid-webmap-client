@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.chart.series.Gauge
@@ -82,6 +79,11 @@ Ext.define('Ext.chart.series.Gauge', {
     alias: 'series.gauge',
 
     rad: Math.PI / 180,
+
+    /**
+     * @cfg {Array} colorSet An array to override the theme's colors array to show the sections in the Gauge in specified colors.
+     * The order of this array will be used in the order of sections so the first value will always be used for the first section.
+     */
 
     /**
      * @cfg {Number} highlightDuration
@@ -291,6 +293,8 @@ Ext.define('Ext.chart.series.Gauge', {
             colorArrayLength = colorArrayStyle && colorArrayStyle.length || 0,
             cos = Math.cos,
             sin = Math.sin,
+            defaultStart = -180,
+            reverse = me.reverse,
             rendererAttributes, centerX, centerY, slice, slices, sprite, value,
             item, ln, record, i, j, startAngle, endAngle, middleAngle, sliceLength, path,
             p, spriteOptions, bbox, splitAngle, sliceA, sliceB;
@@ -324,34 +328,39 @@ Ext.define('Ext.chart.series.Gauge', {
             me.value = record.get(field);
         }
         
-        value = me.value;
+        value = reverse ? maximum - me.value : me.value;
         if (me.needle) {
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: 0,
                 rho: me.radius
             };
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             slices.push(sliceA);
         } else {
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: splitAngle,
                 rho: me.radius
             };
             sliceB = {
                 series: me,
-                value: me.maximum - value,
+                value: maximum - value,
                 startAngle: splitAngle,
                 endAngle: 0,
                 rho: me.radius
             };
-            slices.push(sliceA, sliceB);
+            
+            if (reverse) {
+                slices.push(sliceB, sliceA);
+            } else {
+                slices.push(sliceA, sliceB);
+            }
         }
         
         //do pie slices after.

@@ -164,7 +164,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.LoadDialog', {
 		                	if (confirm(i18n('tSollDieKarteGeloeschtWerden'))) {
 		        				var record = grid.getStore().getAt(rowIndex);
 		        				var state = new de.ingrid.mapclient.frontend.data.SessionState({
-		        					id: record.id
+		        					id: record.get("id")
 		        				});
 		        				self.session.remove(state, {
 		        					success: function(response, request) {

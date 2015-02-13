@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.data.Tree
@@ -55,7 +52,7 @@ Ext.define('Ext.data.Tree', {
         if (root) {
             me.setRootNode(root);
         }
-        
+
         // All these events from tree nodes bubbble up and fire on this Tree
         me.on({
             scope: me,
@@ -70,7 +67,7 @@ Ext.define('Ext.data.Tree', {
      * Returns the root node for this tree.
      * @return {Ext.data.NodeInterface}
      */
-    getRootNode : function() {
+    getRootNode: function() {
         return this.root;
     },
 
@@ -79,7 +76,7 @@ Ext.define('Ext.data.Tree', {
      * @param {Ext.data.NodeInterface} node
      * @return {Ext.data.NodeInterface} The root node
      */
-    setRootNode : function(node) {
+    setRootNode: function(node) {
         var me = this;
 
         me.root = node;
@@ -235,15 +232,15 @@ Ext.define('Ext.data.Tree', {
     /**
      * Fired when a node's id changes.  Updates the node's id in the node hash.
      * @private
-     * @param {Ext.data.NodeInterface} node 
+     * @param {Ext.data.NodeInterface} node
      * @param {Number} oldId The old id
      * @param {Number} newId The new id
      */
     onNodeIdChanged: function(node, oldId, newId, oldInternalId) {
         var nodeHash = this.nodeHash;
-    
-        nodeHash[node.internalId] = node;
-        delete nodeHash[oldInternalId];
+
+        delete nodeHash[oldId || oldInternalId];
+        nodeHash[newId] = node;
     },
 
     /**
@@ -251,7 +248,7 @@ Ext.define('Ext.data.Tree', {
      * @param {String} id
      * @return {Ext.data.NodeInterface} The match node.
      */
-    getNodeById : function(id) {
+    getNodeById: function(id) {
         return this.nodeHash[id];
     },
 
@@ -261,11 +258,12 @@ Ext.define('Ext.data.Tree', {
      * @param {Ext.data.NodeInterface} node The node to register
      * @param {Boolean} [includeChildren] True to unregister any child nodes
      */
-    registerNode : function(node, includeChildren) {
+    registerNode: function(node, includeChildren) {
         var me = this,
             children, length, i;
 
-        me.nodeHash[node.internalId] = node;
+        // Key the node hash by the node's ID if possible.
+        me.nodeHash[node.getId() || node.internalId] = node;
         if (includeChildren === true) {
             children = node.childNodes;
             length = children.length;
@@ -281,11 +279,11 @@ Ext.define('Ext.data.Tree', {
      * @param {Ext.data.NodeInterface} node The node to unregister
      * @param {Boolean} [includeChildren] True to unregister any child nodes
      */
-    unregisterNode : function(node, includeChildren) {
+    unregisterNode: function(node, includeChildren) {
         var me = this,
             children, length, i;
 
-        delete me.nodeHash[node.internalId];
+        delete me.nodeHash[node.getId() || node.internalId];
         if (includeChildren === true) {
             children = node.childNodes;
             length = children.length;

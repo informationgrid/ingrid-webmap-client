@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 
 
@@ -42,8 +39,6 @@ Ext._startTime = new Date().getTime();
         nonWhitespaceRe = /\S/,
         ExtApp,
         iterableRe = /\[object\s*(?:Array|Arguments|\w*Collection|\w*List|HTML\s+document\.all\s+class)\]/;
-
-    Function.prototype.$extIsFunction = true;
 
     Ext.global = global;
 
@@ -105,6 +100,7 @@ Ext._startTime = new Date().getTime();
         
         emptyString: new String(),
 
+        
         baseCSSPrefix: Ext.buildSettings.baseCSSPrefix,
 
         
@@ -351,8 +347,13 @@ Ext._startTime = new Date().getTime();
         },
 
         
-        isFunction: function(value) {
-            return !!(value && value.$extIsFunction);
+        isFunction:
+        
+        
+        (typeof document !== 'undefined' && typeof document.getElementsByTagName('body') === 'function') ? function(value) {
+            return !!value && toString.call(value) === '[object Function]';
+        } : function(value) {
+            return !!value && typeof value === 'function';
         },
 
         
@@ -393,7 +394,7 @@ Ext._startTime = new Date().getTime();
         
         isIterable: function(value) {
             
-            if (!value || typeof value.length !== 'number' || typeof value === 'string' || value.$extIsFunction) {
+            if (!value || typeof value.length !== 'number' || typeof value === 'string' || Ext.isFunction(value)) {
                 return false;
             }
 
@@ -639,36 +640,126 @@ Ext.globalEval = Ext.global.execScript
 
 
 
-var version = '4.2.1.883', Version;
+var version = '4.2.3.1477',
+    
+    checkVerTemp = [''],
+    endOfVersionRe = /([^\d\.])/,
+    notDigitsRe = /[^\d]/g,
+    plusMinusRe = /[\-+]/g,
+    stripRe = /\s/g,
+    underscoreRe = /_/g,
+    Version;
+
     Ext.Version = Version = Ext.extend(Object, {
+        isVersion: true,
+
+        padModes: {
+            '~': NaN,
+            '^': Infinity
+        },
 
         
-        constructor: function(version) {
-            var parts, releaseStartIndex;
+        release: '',
 
-            if (version instanceof Version) {
+        
+        constructor: function (version, defaultMode) {
+            var me = this,
+                padModes = me.padModes,
+                ch, i, pad, parts, release, releaseStartIndex, ver;
+
+            if (version.isVersion) {
                 return version;
             }
 
-            this.version = this.shortVersion = String(version).toLowerCase().replace(/_/g, '.').replace(/[\-+]/g, '');
+            me.version = ver = String(version).toLowerCase().
+                                    replace(underscoreRe, '.').replace(plusMinusRe, '');
 
-            releaseStartIndex = this.version.search(/([^\d\.])/);
+            ch = ver.charAt(0);
+            if (ch in padModes) {
+                ver = ver.substring(1);
+                pad = padModes[ch];
+            } else {
+                pad = defaultMode ? padModes[defaultMode] : 0; 
+            }
+            me.pad = pad;
+
+            releaseStartIndex = ver.search(endOfVersionRe);
+            me.shortVersion = ver;
 
             if (releaseStartIndex !== -1) {
-                this.release = this.version.substr(releaseStartIndex, version.length);
-                this.shortVersion = this.version.substr(0, releaseStartIndex);
+                me.release = release = ver.substr(releaseStartIndex, version.length);
+                me.shortVersion = ver.substr(0, releaseStartIndex);
+                release = Version.releaseValueMap[release] || release;
             }
 
-            this.shortVersion = this.shortVersion.replace(/[^\d]/g, '');
+            me.releaseValue = release || pad;
+            me.shortVersion = me.shortVersion.replace(notDigitsRe, '');
 
-            parts = this.version.split('.');
+            
+            me.parts = parts = ver.split('.');
+            for (i = parts.length; i--; ) {
+                parts[i] = parseInt(parts[i], 10);
+            }
+            if (pad === Infinity) {
+                
+                parts.push(pad);
+            }
 
-            this.major = parseInt(parts.shift() || 0, 10);
-            this.minor = parseInt(parts.shift() || 0, 10);
-            this.patch = parseInt(parts.shift() || 0, 10);
-            this.build = parseInt(parts.shift() || 0, 10);
+            
+            me.major = parts[0] || pad;
 
-            return this;
+            
+            me.minor = parts[1] || pad;
+
+            
+            me.patch = parts[2] || pad;
+
+            
+            me.build = parts[3] || pad;
+
+            return me;
+        },
+
+        
+        compareTo: function (other) {
+             
+             
+            var me = this,
+                lhsPad = me.pad,
+                lhsParts = me.parts,
+                lhsLength = lhsParts.length,
+                rhsVersion = other.isVersion ? other : new Version(other),
+                rhsPad = rhsVersion.pad,
+                rhsParts = rhsVersion.parts,
+                rhsLength = rhsParts.length,
+                length = Math.max(lhsLength, rhsLength),
+                i, lhs, rhs;
+
+            for (i = 0; i < length; i++) {
+                lhs = (i < lhsLength) ? lhsParts[i] : lhsPad;
+                rhs = (i < rhsLength) ? rhsParts[i] : rhsPad;
+
+                
+                
+                if (lhs < rhs) {
+                    return -1;
+                }
+                if (lhs > rhs) {
+                    return 1;
+                }
+            }
+
+            
+            lhs = me.releaseValue;
+            rhs = rhsVersion.releaseValue;
+            if (lhs < rhs) {
+                return -1;
+            }
+            if (lhs > rhs) {
+                return 1;
+            }
+
+            return 0;
         },
 
         
@@ -683,52 +774,57 @@ var version = '4.2.1.883', Version;
 
         
         getMajor: function() {
-            return this.major || 0;
+            return this.major;
         },
 
         
         getMinor: function() {
-            return this.minor || 0;
+            return this.minor;
         },
 
         
         getPatch: function() {
-            return this.patch || 0;
+            return this.patch;
         },
 
         
         getBuild: function() {
-            return this.build || 0;
+            return this.build;
         },
 
         
         getRelease: function() {
-            return this.release || '';
+            return this.release;
+        },
+
+        
+        getReleaseValue: function() {
+            return this.releaseValue;
         },
 
         
         isGreaterThan: function(target) {
-            return Version.compare(this.version, target) === 1;
+            return this.compareTo(target) > 0;
         },
 
         
         isGreaterThanOrEqual: function(target) {
-            return Version.compare(this.version, target) >= 0;
+            return this.compareTo(target) >= 0;
         },
 
         
         isLessThan: function(target) {
-            return Version.compare(this.version, target) === -1;
+            return this.compareTo(target) < 0;
         },
 
         
         isLessThanOrEqual: function(target) {
-            return Version.compare(this.version, target) <= 0;
+            return this.compareTo(target) <= 0;
         },
 
         
         equals: function(target) {
-            return Version.compare(this.version, target) === 0;
+            return this.compareTo(target) === 0;
         },
 
         
@@ -739,7 +835,8 @@ var version = '4.2.1.883', Version;
 
         
         toArray: function() {
-            return [this.getMajor(), this.getMinor(), this.getPatch(), this.getBuild(), this.getRelease()];
+            var me = this;
+            return [me.getMajor(), me.getMinor(), me.getPatch(), me.getBuild(), me.getRelease()];
         },
 
         
@@ -748,38 +845,38 @@ var version = '4.2.1.883', Version;
         },
 
         
-        gt: function() {
-            return this.isGreaterThan.apply(this, arguments);
+        gt: function (target) {
+            return this.compareTo(target) > 0;
         },
 
         
-        lt: function() {
-            return this.isLessThan.apply(this, arguments);
+        lt: function (target) {
+            return this.compareTo(target) < 0;
         },
 
         
-        gtEq: function() {
-            return this.isGreaterThanOrEqual.apply(this, arguments);
+        gtEq: function (target) {
+            return this.compareTo(target) >= 0;
         },
 
         
-        ltEq: function() {
-            return this.isLessThanOrEqual.apply(this, arguments);
+        ltEq: function (target) {
+            return this.compareTo(target) <= 0;
         }
     });
 
     Ext.apply(Version, {
         
         releaseValueMap: {
-            'dev': -6,
-            'alpha': -5,
-            'a': -5,
-            'beta': -4,
-            'b': -4,
-            'rc': -3,
-            '#': -2,
-            'p': -1,
-            'pl': -1
+            dev:   -6,
+            alpha: -5,
+            a:     -5,
+            beta:  -4,
+            b:     -4,
+            rc:    -3,
+            '#':   -2,
+            p:     -1,
+            pl:    -1
         },
 
         
@@ -788,24 +885,9 @@ var version = '4.2.1.883', Version;
         },
 
         
-        compare: function(current, target) {
-            var currentValue, targetValue, i;
-
-            current = new Version(current).toArray();
-            target = new Version(target).toArray();
-
-            for (i = 0; i < Math.max(current.length, target.length); i++) {
-                currentValue = this.getComponentValue(current[i]);
-                targetValue = this.getComponentValue(target[i]);
-
-                if (currentValue < targetValue) {
-                    return -1;
-                } else if (currentValue > targetValue) {
-                    return 1;
-                }
-            }
-
-            return 0;
+        compare: function (current, target) {
+            var ver = current.isVersion ? current : new Version(current);
+            return ver.compareTo(target);
         }
     });
 
@@ -819,9 +901,7 @@ var version = '4.2.1.883', Version;
 
         
         setVersion: function(packageName, version) {
-            Ext.versions[packageName] = new Version(version);
-            Ext.lastRegisteredVersion = Ext.versions[packageName];
-
+            Ext.lastRegisteredVersion = Ext.versions[packageName] = new Version(version);
             return this;
         },
 
@@ -832,6 +912,99 @@ var version = '4.2.1.883', Version;
             }
 
             return Ext.versions[packageName];
+        },
+
+        
+        checkVersion: function (specs, matchAll) {
+            var isArray = Ext.isArray(specs),
+                compat = isArray ? specs : checkVerTemp,
+                length = compat.length,
+                versions = Ext.versions,
+                frameworkVer = versions.ext || versions.touch,
+                i, index, matches, minVer, maxVer, spec, range, ver;
+
+            if (!isArray) {
+                checkVerTemp[0] = specs;
+            }
+
+            for (i = 0; i < length; ++i) {
+                if (!Ext.isString(spec = compat[i])) {
+                    matches = Ext.checkVersion(spec.and || spec.or, !spec.or);
+                    if (spec.not) {
+                        matches = !matches;
+                    }
+                } else {
+                    if (spec.indexOf(' ') >= 0) {
+                        spec = spec.replace(stripRe, '');
+                    }
+
+                    
+                    
+                    index = spec.indexOf('@');
+                    if (index < 0) {
+                        range = spec;
+                        ver = frameworkVer;
+                    } else {
+                        if (!(ver = versions[spec.substring(0, index)])) {
+                            
+                            
+                            if (matchAll) {
+                                return false;
+                            }
+                            
+                            
+                            continue;
+                        }
+                        range = spec.substring(index+1);
+                    }
+
+                    
+                    index = range.indexOf('-');
+                    if (index < 0) {
+                        
+                        if (range.charAt(index = range.length - 1) === '+') {
+                            minVer = range.substring(0, index);
+                            maxVer = null;
+                        } else {
+                            minVer = maxVer = range;
+                        }
+                    } else if (index > 0) {
+                        
+                        minVer = range.substring(0, index);
+                        maxVer = range.substring(index+1); 
+                    } else {
+                        
+                        minVer = null;
+                        maxVer = range.substring(index+1);
+                    }
+
+                    matches = true;
+                    if (minVer) {
+                        minVer = new Version(minVer, '~'); 
+                        matches = minVer.ltEq(ver);
+                    }
+                    if (matches && maxVer) {
+                        maxVer = new Version(maxVer, '~'); 
+                        matches = maxVer.gtEq(ver);
+                    }
+                } 
+
+                if (matches) {
+                    
+                    if (!matchAll) {
+                        return true;
+                    }
+                } else if (matchAll) {
+                    
+                    return false;
+                }
+            }
+
+            
+            
+            
+            
+            return !!matchAll;
         },
 
         
@@ -855,7 +1028,7 @@ var version = '4.2.1.883', Version;
 Ext.String = (function() {
     var trimRegex     = /^[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]+|[\x09\x0a\x0b\x0c\x0d\x20\xa0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]+$/g,
         escapeRe      = /('|\\)/g,
-        formatRe      = /\{(\d+)\}/g,
+        formatRe      = /\{\d+\}/,
         escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g,
         basicTrimRe   = /^\s+|\s+$/g,
         whitespaceRe  = /\s+/,
@@ -874,12 +1047,32 @@ Ext.String = (function() {
             if (s === null || s === undefined || other === null || other === undefined) {
                 return false;
             }
-            
+
             return other.length <= s.length; 
+        },
+        
+        
+        
+        formatTplConfig = {useFormat: false, compiled: true, stringFormat: true},
+        formatFns = {},
+        generateFormatFn = function(format) {
+            
+            if (formatRe.test(format)) {
+                format = new Ext.Template(format, formatTplConfig);
+                return function() {
+                    return format.apply(arguments);
+                };
+            }
+            
+            else {
+                return function() {
+                    return format;
+                };
+            }
         };
 
     return {
-        
+
         
         insert: function(s, value, index) {
             if (!s) {
@@ -958,6 +1151,11 @@ Ext.String = (function() {
         htmlDecode: function(value) {
             return (!value) ? value : String(value).replace(entityToCharRegex, htmlDecodeReplaceFn);
         },
+        
+        
+        hasHtmlCharacters: function(s) {
+            return charToEntityRegex.test(s);
+        },
 
         
         addCharacterEntities: function(newEntities) {
@@ -1014,16 +1212,16 @@ Ext.String = (function() {
         },
 
         
-        ellipsis: function(value, len, word) {
-            if (value && value.length > len) {
+        ellipsis: function(value, length, word) {
+            if (value && value.length > length) {
                 if (word) {
-                    var vs = value.substr(0, len - 2),
+                    var vs = value.substr(0, length - 2),
                     index = Math.max(vs.lastIndexOf(' '), vs.lastIndexOf('.'), vs.lastIndexOf('!'), vs.lastIndexOf('?'));
-                    if (index !== -1 && index >= (len - 15)) {
+                    if (index !== -1 && index >= (length - 15)) {
                         return vs.substr(0, index) + "...";
                     }
                 }
-                return value.substr(0, len - 3) + "...";
+                return value.substr(0, length - 3) + "...";
             }
             return value;
         },
@@ -1055,10 +1253,8 @@ Ext.String = (function() {
 
         
         format: function(format) {
-            var args = Ext.Array.toArray(arguments, 1);
-            return format.replace(formatRe, function(m, i) {
-                return args[i];
-            });
+            var formatFn = formatFns[format] || (formatFns[format] = generateFormatFn(format));
+            return formatFn.apply(this, arguments);
         },
 
         
@@ -2272,6 +2468,18 @@ var TemplateClass = function(){},
     },
 
     
+    clear: function (object) {
+        var keys = ExtObject.getKeys(object),
+            n = keys.length;
+
+        while (n--) {
+            delete object[keys[n]];
+        }
+
+        return object;
+    },
+
+    
     toQueryObjects: function(name, value, recursive) {
         var self = ExtObject.toQueryObjects,
             objects = [],
@@ -2778,10 +2986,17 @@ Ext.Date = new function() {
                         
                         
                         
-                        "year = y || (new Date()).getFullYear(),",
-                        "jan4 = new Date(year, 0, 4, 0, 0, 0),",
-                        "week1monday = new Date(jan4.getTime() - ((jan4.getDay() - 1) * 86400000));",
-                        "v = Ext.Date.clearTime(new Date(week1monday.getTime() + ((W - 1) * 604800000)));",
+                        "year = y || (new Date()).getFullYear();",
+                        "jan4 = new Date(year, 0, 4, 0, 0, 0);",
+                        "d = jan4.getDay();", 
+                        
+                        
+                        "week1monday = new Date(jan4.getTime() - ((d === 0 ? 6 : d - 1) * 86400000));",
+                        
+                        
+                        
+                        
+                        "v = Ext.Date.clearTime(new Date(week1monday.getTime() + ((W - 1) * 604800000 + 43200000)));",
                     "} else {",
                         
                         
@@ -4074,7 +4289,7 @@ var noArgs = [],
                             member.$owner = me;
                             member.$name = name;
 
-                            previous = target[name];
+                            previous = target.hasOwnProperty(name) && target[name];
                             if (previous) {
                                 member.$previous = previous;
                             }
@@ -5365,6 +5580,7 @@ var noArgs = [],
                 overriddenClassName = data.override,
                 requires = data.requires,
                 uses = data.uses,
+                compat = data.compatibility,
                 classReady = function () {
                     var cls, temp;
 
@@ -5383,6 +5599,7 @@ var noArgs = [],
 
                         
                         delete data.override;
+                        delete data.compatibility;
                         delete data.requires;
                         delete data.uses;
 
@@ -5405,8 +5622,10 @@ var noArgs = [],
 
             me.existCache[className] = true;
 
-            
-            me.onCreated(classReady, me, overriddenClassName);
+            if (!compat || Ext.checkVersion(compat)) {
+                
+                me.onCreated(classReady, me, overriddenClassName);
+            }
 
             return me;
         },
@@ -5816,7 +6035,7 @@ var noArgs = [],
     Ext.ns = Ext.namespace;
 
     Class.registerPreprocessor('className', function(cls, data) {
-        if (data.$className) {
+        if ('$className' in data) {
             cls.$className = data.$className;
         }
         
@@ -6112,6 +6331,7 @@ Ext.Loader = new function() {
     var queue = [],
         isClassFileLoaded = {},
         isFileLoaded = {},
+        inFlight = {},
         classNameToFilePathMap = {},
         scriptElements = {},
         readyListeners = [],
@@ -6182,12 +6402,6 @@ Ext.Loader = new function() {
 
                 if (item) {
                     requires = item.requires;
-
-                    
-                    
-                    if (requires.length > Loader.numLoadedFiles) {
-                        continue;
-                    }
 
                     
                     for (j = 0; j < requires.length; ) {
@@ -6338,17 +6552,14 @@ Ext.Loader = new function() {
             Loader.scriptsLoading++;
 
             src = config.disableCaching ?
-                (url + '?' + config.disableCachingParam + '=' + Ext.Date.now()) : url;
+                
+                (url + (url.indexOf('?') === -1 ? '?' : '&') + config.disableCachingParam + '=' + Ext.Date.now()) : url;
 
             scriptElements[url] = Loader.injectScriptElement(src, onScriptLoad, onScriptError);
         },
 
         
         loadScriptFile: function(url, onLoad, onError, scope, synchronous) {
-            if (isFileLoaded[url]) {
-                return Loader;
-            }
-
             var config = Loader.getConfig(),
                 noCacheUrl = url + (config.disableCaching ? ('?' + config.disableCachingParam + '=' + Ext.Date.now()) : ''),
                 isCrossOriginRestricted = false,
@@ -6544,17 +6755,33 @@ Ext.Loader = new function() {
                 }
 
                 if (!isClassFileLoaded.hasOwnProperty(className)) {
-                    isClassFileLoaded[className] = false;
-                    classNameToFilePathMap[className] = filePath;
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    if (Loader.isFileLoaded[filePath] || inFlight[filePath]) {
+                        isClassFileLoaded[className] = true;
+                    } else {
+                        inFlight[filePath] = true;
+                        isClassFileLoaded[className] = false;
 
-                    Loader.numPendingFiles++;
-                    Loader.loadScriptFile(
-                        filePath,
-                        pass(Loader.onFileLoaded, [className, filePath], Loader),
-                        pass(Loader.onFileLoadError, [className, filePath], Loader),
-                        Loader,
-                        syncModeEnabled
-                    );
+                        Loader.numPendingFiles++;
+                        Loader.loadScriptFile(
+                            filePath,
+                            pass(Loader.onFileLoaded, [className, filePath], Loader),
+                            pass(Loader.onFileLoadError, [className, filePath], Loader),
+                            Loader,
+                            syncModeEnabled
+                        );
+                    }
+                    classNameToFilePathMap[className] = filePath;
                 }
             }
 
@@ -6576,6 +6803,7 @@ Ext.Loader = new function() {
 
             isClassFileLoaded[className] = true;
             isFileLoaded[filePath] = true;
+            delete inFlight[filePath];
 
             
             
@@ -7126,11 +7354,18 @@ Ext.apply(Ext, {
         return entry;
     },
 
-    updateCacheEntry: function(cacheItem, dom){
+    updateCacheEntry: function(cacheItem, dom) {
+        var oldDom = cacheItem.dom;
+        
+        
+        if (dom !== oldDom) {
+            Ext.EventManager.removeAll(oldDom);
+        }
         cacheItem.dom = dom;
         if (cacheItem.el) {
             cacheItem.el.dom = dom;
         }
+
         return cacheItem;
     },
 
@@ -7247,14 +7482,14 @@ Ext.apply(Ext, {
 
         return ret;
     },
-    
+
     
     resolveMethod: function(fn, scope) {
         if (Ext.isFunction(fn)) {
             return fn;
         }
-        
-        
+
+
         return scope[fn];
     },
 
@@ -7271,7 +7506,42 @@ Ext.apply(Ext, {
     
     urlAppend : function(url, s) {
         return Ext.String.urlAppend(url, s);
-    }
+    },
+    
+    
+    splitAndUnescape: (function() {
+        var cache = {};
+        
+        return function(origin, delimiter) {
+            if (!origin) {
+                return [];
+            }
+            else if (!delimiter) {
+                return [origin];
+            }
+        
+            var replaceRe = cache[delimiter] || (cache[delimiter] = new RegExp('\\\\' + delimiter, 'g')),
+                result = [],
+                parts, part;
+        
+            parts = origin.split(delimiter);
+        
+            while ((part = parts.shift()) !== undefined) {
+                
+                
+                while (part.charAt(part.length - 1) === '\\' && parts.length > 0) {
+                    part = part + delimiter + parts.shift();
+                }
+            
+                
+                part = part.replace(replaceRe, delimiter);
+            
+                result.push(part);
+            }
+        
+            return result;
+        }
+    })()
 });
 
 
@@ -7302,13 +7572,14 @@ window.undefined = window.undefined;
         isSafari4 = isSafari && check(/version\/4/),
         isSafari5_0 = isSafari && check(/version\/5\.0/),
         isSafari5 = isSafari && check(/version\/5/),
-        isIE = !isOpera && check(/msie/),
+        isIE = !isOpera && (check(/msie/) || check(/trident/)),
         isIE7 = isIE && ((check(/msie 7/) && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 7),
         isIE8 = isIE && ((check(/msie 8/) && docMode != 7 && docMode != 9 && docMode != 10) || docMode == 8),
         isIE9 = isIE && ((check(/msie 9/) && docMode != 7 && docMode != 8 && docMode != 10) || docMode == 9),
         isIE10 = isIE && ((check(/msie 10/) && docMode != 7 && docMode != 8 && docMode != 9) || docMode == 10),
+        isIE11 = isIE && ((check(/trident\/7\.0/) && docMode != 7 && docMode != 8 && docMode != 9 && docMode != 10) || docMode == 11),
         isIE6 = isIE && check(/msie 6/),
-        isGecko = !isWebKit && check(/gecko/),
+        isGecko = !isWebKit && !isIE && check(/gecko/), 
         isGecko3 = isGecko && check(/rv:1\.9/),
         isGecko4 = isGecko && check(/rv:2\.0/),
         isGecko5 = isGecko && check(/rv:5\./),
@@ -7328,7 +7599,7 @@ window.undefined = window.undefined;
         webKitVersion = version(isWebKit, /webkit\/(\d+\.\d+)/),
         isSecure = /^https/i.test(window.location.protocol),
         nullLog;
-
+        
     
     try {
         document.execCommand("BackgroundImageCache", false, true);
@@ -7340,16 +7611,17 @@ window.undefined = window.undefined;
     nullLog.info = nullLog.warn = nullLog.error = Ext.emptyFn;
 
     
-    Ext.setVersion('extjs', '4.2.1.883');
+    Ext.setVersion('ext', '4.2.3.1477');
+    Ext.setVersion('extjs', '4.2.3.1477');
     Ext.apply(Ext, {
         
         SSL_SECURE_URL : isSecure && isIE ? 'javascript:\'\'' : 'about:blank',
 
         
 
-        plainTableCls: Ext.buildSettings.baseCSSPrefix + 'table-plain', 
+        plainTableCls: Ext.buildSettings.baseCSSPrefix + 'table-plain',
 
-        plainListCls: Ext.buildSettings.baseCSSPrefix + 'list-plain', 
+        plainListCls: Ext.buildSettings.baseCSSPrefix + 'list-plain',
 
         
         enableNestedListenerRemoval : false,
@@ -7492,15 +7764,24 @@ window.undefined = window.undefined;
 
         
         isIE9p : isIE && !(isIE6 || isIE7 || isIE8),
+
         
-        
-        isIE10 : isIE10, 
- 
+        isIE10 : isIE10,
+
         
         isIE10m : isIE6 || isIE7 || isIE8 || isIE9 || isIE10,
- 
+
         
         isIE10p : isIE && !(isIE6 || isIE7 || isIE8 || isIE9),
+        
+        
+        isIE11: isIE11, 
+        
+        
+        isIE11m : isIE6 || isIE7 || isIE8 || isIE9 || isIE10 || isIE11,
+ 
+        
+        isIE11p : isIE && !(isIE6 || isIE7 || isIE8 || isIE9 || isIE10),
 
         
         isGecko : isGecko,
@@ -7755,18 +8036,25 @@ window.undefined = window.undefined;
 
 
 Ext.application = function(config) {
-    var App, paths, ns;
-    
+    var App, paths, ns,
+        
+        createApp = function() {
+            Ext.onReady(function() {
+                Ext.app.Application.instance = new App();
+            });
+        };
+
     if (typeof config === "string") {
-        Ext.require(config, function(){
+        Ext.require(config, function() {
             App = Ext.ClassManager.get(config);
+            createApp();
         });
     }
     else {
         
         
         Ext.Loader.setPath(config.name, config.appFolder || 'app');
-        
+
         if (paths = config.paths) {
             for (ns in paths) {
                 if (paths.hasOwnProperty(ns)) {
@@ -7774,25 +8062,19 @@ Ext.application = function(config) {
                 }
             }
         }
-        
+
         config['paths processed'] = true;
-        
-        
+
         
         Ext.define(config.name + ".$application", Ext.apply({
-                extend: 'Ext.app.Application' 
-            }, config),
-            
-            function () {
-                App = this;
-            });
+            extend: 'Ext.app.Application' 
+        }, config),
+        
+        function () {
+            App = this;
+            createApp();
+        });
     }
-
-    Ext.onReady(function() {
-        
-        
-        Ext.app.Application.instance = new App();
-    });
 };
 
 
@@ -7807,7 +8089,7 @@ Ext.application = function(config) {
         stripTagsRE    = /<\/?[^>]+>/gi,
         stripScriptsRe = /(?:<script.*?>)((\n|\r|.)*?)(?:<\/script>)/ig,
         nl2brRe        = /\r?\n/g,
-        allHashes      = /^#+$/,
+        hashRe         = /#+$/,
 
         
         formatPattern = /[\d,\.#]+/,
@@ -7818,6 +8100,7 @@ Ext.application = function(config) {
         
         
         I18NFormatCleanRe,
+        lastDecimalSeparator,
 
         
         formatFns = {};
@@ -7997,24 +8280,28 @@ Ext.application = function(config) {
                 var originalFormatString = formatString,
                     comma = UtilFormat.thousandSeparator,
                     decimalSeparator = UtilFormat.decimalSeparator,
+                    precision = 0,
+                    trimPart = '',
                     hasComma,
                     splitFormat,
                     extraChars,
-                    precision = 0,
                     multiplier,
                     trimTrailingZeroes,
-                    code;
+                    code, len;
 
                 
                 
                 
                 
                 if (formatString.substr(formatString.length - 2) == '/i') {
-                    if (!I18NFormatCleanRe) {
-                        I18NFormatCleanRe = new RegExp('[^\\d\\' + UtilFormat.decimalSeparator + ']','g');
+                    
+                    
+                    if (!I18NFormatCleanRe || lastDecimalSeparator !== decimalSeparator) {
+                        I18NFormatCleanRe = new RegExp('[^\\d\\' + decimalSeparator + ']','g');
+                        lastDecimalSeparator = decimalSeparator;
                     }
                     formatString = formatString.substr(0, formatString.length - 2);
-                    hasComma = formatString.indexOf(comma) != -1;
+                    hasComma = formatString.indexOf(comma) !== -1;
                     splitFormat = formatString.replace(I18NFormatCleanRe, '').split(decimalSeparator);
                 } else {
                     hasComma = formatString.indexOf(',') != -1;
@@ -8027,19 +8314,26 @@ Ext.application = function(config) {
                     precision = splitFormat[1].length;
 
                     
-                    trimTrailingZeroes = allHashes.test(splitFormat[1]);
+                    trimTrailingZeroes = splitFormat[1].match(hashRe);
+                    if (trimTrailingZeroes) {
+                        len = trimTrailingZeroes[0].length;
+                        
+                        trimPart = 'trailingZeroes=new RegExp(Ext.String.escapeRegex(utilFormat.decimalSeparator) + "*0{0,' + len + '}$")'
+                    }
                 }
                 
                 
                 code = [
-                    'var utilFormat=Ext.util.Format,extNumber=Ext.Number,neg,fnum,parts' +
+                    'var utilFormat=Ext.util.Format,extNumber=Ext.Number,neg,absVal,fnum,parts' +
                         (hasComma ? ',thousandSeparator,thousands=[],j,n,i' : '') +
                         (extraChars  ? ',formatString="' + formatString + '",formatPattern=/[\\d,\\.#]+/' : '') +
-                        (trimTrailingZeroes ? ',trailingZeroes=/\\.?0+$/;' : ';') +
+                        ',trailingZeroes;' +
                     'return function(v){' +
                     'if(typeof v!=="number"&&isNaN(v=extNumber.from(v,NaN)))return"";' +
                     'neg=v<0;',
-                    'fnum=Ext.Number.toFixed(Math.abs(v), ' + precision + ');'
+                    'absVal=Math.abs(v);',
+                    'fnum=Ext.Number.toFixed(absVal, ' + precision + ');',
+                    trimPart, ';'
                 ];
 
                 if (hasComma) {
@@ -8051,7 +8345,7 @@ Ext.application = function(config) {
                         code[code.length] = 'fnum=parts[0];';
                     }
                     code[code.length] =
-                        'if(v>=1000) {';
+                        'if(absVal>=1000) {';
                             code[code.length] = 'thousandSeparator=utilFormat.thousandSeparator;' +
                             'thousands.length=0;' +
                             'j=fnum.length;' +
@@ -8076,12 +8370,12 @@ Ext.application = function(config) {
                     '}';
                 }
 
+                
+                code[code.length] = 'if(neg&&fnum!=="' + (precision ? '0.' + Ext.String.repeat('0', precision) : '0') + '")fnum="-"+fnum;';
+
                 if (trimTrailingZeroes) {
                     code[code.length] = 'fnum=fnum.replace(trailingZeroes,"");';
                 }
-
-                
-                code[code.length] = 'if(neg&&fnum!=="' + (precision ? '0.' + Ext.String.repeat('0', precision) : '0') + '")fnum="-"+fnum;';
 
                 code[code.length] = 'return ';
 
@@ -8112,11 +8406,13 @@ Ext.application = function(config) {
                     name;
 
                 for (name in attributes) {
-                    result.push(name, '="', name === 'style' ? Ext.DomHelper.generateStyles(attributes[name]) : Ext.htmlEncode(attributes[name]), '"');
+                    if (attributes.hasOwnProperty(name)) {
+                        result.push(name, '="', name === 'style' ? Ext.DomHelper.generateStyles(attributes[name], null, true) : Ext.htmlEncode(attributes[name]), '"');
+                    }
                 }
                 attributes = result.join('');
             }
-            return attributes||'';
+            return attributes || '';
         },
 
         
@@ -9027,17 +9323,19 @@ Ext.is.init();
         return style[styleName];
     },
     supportsVectors = {
-        'IE6-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0],
-        'IE6-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,1,0,1,0,0,0],
-        'IE7-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0],
-        'IE7-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,1,0,0,1,0,1,0,0,0],
-        'IE8-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0],
-        'IE8-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,1,1,1,0,0,1,0,1,0,0,1],
-        'IE9-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0],
-        'IE9-strict':  [0,1,0,0,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,0,0,0,1],
-        'IE10-quirks': [1,1,0,0,1,1,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,1],
-        'IE10-strict': [1,1,0,0,1,1,1,1,0,1,1,1,0,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,1]
-    };
+        'IE6-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0],
+        'IE6-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,1,0,0,1,0,1,0,0,0,0,0],
+        'IE7-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0],
+        'IE7-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,0],
+        'IE8-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0],
+        'IE8-strict':  [0,1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,1,1,1,1,1,0,0,1,0,1,0,0,1,0,0],
+        'IE9-quirks':  [0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,1,0,0,1,0,1,0,0,0,0,0],
+        'IE9-strict':  [0,1,0,0,1,1,1,1,1,1,1,0,1,0,0,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,0,0,0,1,0,0],
+        'IE10-quirks': [1,1,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,1,0,0],
+        'IE10-strict': [1,1,0,0,1,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0,0,0,1,0,0]
+    },
+    doc = document,
+    div = doc.createElement('div');
 
 function getBrowserKey() {
     var browser = Ext.isIE6 ? 'IE6' : Ext.isIE7 ? 'IE7' : Ext.isIE8 ? 'IE8' :
@@ -9050,15 +9348,14 @@ Ext.supports = {
     
     init : function() {
         var me = this,
-            doc = document,
             toRun = me.toRun || me.tests,
             n = toRun.length,
-            div = n && Ext.isReady && doc.createElement('div'),
             notRun = [],
             browserKey = getBrowserKey(),
-            test, vector, value;
+            test, vector, value,
+            docReady = Ext.isReady;
 
-        if (div) {
+        if (docReady) {
             div.innerHTML = [
                 '<div style="height:30px;width:50px;">',
                     '<div style="height:20px;width:20px;"></div>',
@@ -9079,14 +9376,14 @@ Ext.supports = {
             value = vector && vector[n];
             if (value !== undefined) {
                 me[test.identity] = value;
-            } else if (div || test.early) {
+            } else if (docReady || test.early) {
                 me[test.identity] = test.fn.call(me, doc, div);
             } else {
                 notRun.push(test);
             }
         }
 
-        if (div) {
+        if (docReady) {
             doc.body.removeChild(div);
         }
 
@@ -9135,6 +9432,7 @@ Ext.supports = {
     tests: [
         
         {
+            
             identity: 'Transitions',
             fn: function(doc, div) {
                 var prefix = [
@@ -9170,6 +9468,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'RightMargin',
             fn: function(doc, div) {
                 var view = doc.defaultView;
@@ -9179,6 +9478,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'DisplayChangeInputSelectionBug',
             early: true,
             fn: function() {
@@ -9190,6 +9490,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'DisplayChangeTextAreaSelectionBug',
             early: true,
             fn: function() {
@@ -9202,6 +9503,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'TransparentColor',
             fn: function(doc, div, view) {
                 view = doc.defaultView;
@@ -9211,6 +9513,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'ComputedStyle',
             fn: function(doc, div, view) {
                 view = doc.defaultView;
@@ -9220,6 +9523,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'Svg',
             fn: function(doc) {
                 return !!doc.createElementNS && !!doc.createElementNS( "http:/" + "/www.w3.org/2000/svg", "svg").createSVGRect;
@@ -9228,57 +9532,82 @@ Ext.supports = {
 
         
         {
+            
             identity: 'Canvas',
             fn: function(doc) {
                 return !!doc.createElement('canvas').getContext;
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'Vml',
             fn: function(doc) {
                 var d = doc.createElement("div");
                 d.innerHTML = "<!--[if vml]><br/><br/><![endif]-->";
                 return (d.childNodes.length == 2);
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'Float',
-            fn: function(doc, div) {
-                return !!div.lastChild.style.cssFloat;
-            }
+            fn: function(doc) {
+                return 'cssFloat' in doc.documentElement.style;
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'AudioTag',
             fn: function(doc) {
                 return !!doc.createElement('audio').canPlayType;
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'History',
             fn: function() {
                 var history = window.history;
                 return !!(history && history.pushState);
-            }
+            },
+            early: true
         },
 
         
         {
+            
+            identity: 'Hashchange',
+            fn: function() {
+                
+                var docMode = document.documentMode;
+                return 'onhashchange' in window && (docMode === undefined || docMode > 7);
+            },
+            early: true
+        },
+
+        
+        {
+            
             identity: 'CSS3DTransform',
             fn: function() {
                 return (typeof WebKitCSSMatrix != 'undefined' && new WebKitCSSMatrix().hasOwnProperty('m41'));
-            }
+            },
+            early: true
         },
 
 		
         {
+            
             identity: 'CSS3LinearGradient',
             fn: function(doc, div) {
                 var property = 'background-image:',
@@ -9292,88 +9621,106 @@ Ext.supports = {
                 div.style.cssText = options.join(';');
 
                 return (("" + div.style.backgroundImage).indexOf('gradient') !== -1) && !Ext.isIE9;
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'CSS3BorderRadius',
-            fn: function(doc, div) {
+            fn: function(doc) {
                 var domPrefixes = ['borderRadius', 'BorderRadius', 'MozBorderRadius', 'WebkitBorderRadius', 'OBorderRadius', 'KhtmlBorderRadius'],
-                    pass = false,
                     i;
                 for (i = 0; i < domPrefixes.length; i++) {
-                    if (document.body.style[domPrefixes[i]] !== undefined) {
+                    if (domPrefixes[i] in doc.documentElement.style) {
                         return true;
                     }
                 }
-                return pass;
-            }
+                return false;
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'GeoLocation',
             fn: function() {
                 
                 return (typeof navigator != 'undefined' && 'geolocation' in navigator) || (typeof google != 'undefined' && typeof google.gears != 'undefined');
-            }
+            },
+            early: true
         },
         
         {
+            
             identity: 'MouseEnterLeave',
-            fn: function(doc, div){
-                return ('onmouseenter' in div && 'onmouseleave' in div);
-            }
+            fn: function(doc){
+                return ('onmouseenter' in doc.documentElement && 'onmouseleave' in doc.documentElement);
+            },
+            early: true
         },
         
         {
+            
             identity: 'MouseWheel',
-            fn: function(doc, div) {
-                return ('onmousewheel' in div);
-            }
+            fn: function(doc) {
+                return ('onmousewheel' in doc.documentElement);
+            },
+            early: true
         },
         
         {
+            
             identity: 'Opacity',
             fn: function(doc, div){
                 
                 if (Ext.isIE6 || Ext.isIE7 || Ext.isIE8) {
                     return false;
                 }
-                div.firstChild.style.cssText = 'opacity:0.73';
-                return div.firstChild.style.opacity == '0.73';
-            }
+                div.style.cssText = 'opacity:0.73';
+                return div.style.opacity == '0.73';
+            },
+            early: true
         },
         
         {
+            
             identity: 'Placeholder',
             fn: function(doc) {
                 return 'placeholder' in doc.createElement('input');
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'Direct2DBug',
-            fn: function() {
-                return Ext.isString(document.body.style.msTransformOrigin) && Ext.isIE10m;
-            }
+            fn: function(doc) {
+                return Ext.isString(doc.documentElement.style.msTransformOrigin) && Ext.isIE10m;
+            },
+            early: true
         },
         
         {
+            
+            
             identity: 'BoundingClientRect',
-            fn: function(doc, div) {
-                return Ext.isFunction(div.getBoundingClientRect);
-            }
+            fn: function(doc) {
+                return !Ext.isIEQuirks && 'getBoundingClientRect' in doc.documentElement;
+            },
+            early: true
         },
         
         {
+            
             identity: 'RotatedBoundingClientRect',
-            fn: function() {
-                var body = document.body,
+            fn: function(doc) {
+                var body = doc.body,
                     supports = false,
-                    el = document.createElement('div'),
+                    el = doc.createElement('div'),
                     style = el.style;
 
                 if (el.getBoundingClientRect) {
@@ -9381,7 +9728,7 @@ Ext.supports = {
                         style.OTransform = style.transform = 'rotate(90deg)';
                     style.width = '100px';
                     style.height = '30px';
-                    body.appendChild(el)
+                    body.appendChild(el);
 
                     supports = el.getBoundingClientRect().height !== 100;
                     body.removeChild(el);
@@ -9391,12 +9738,14 @@ Ext.supports = {
             }
         },
         {
+            
             identity: 'IncludePaddingInWidthCalculation',
             fn: function(doc, div){
                 return div.childNodes[1].firstChild.offsetWidth == 210;
             }
         },
         {
+            
             identity: 'IncludePaddingInHeightCalculation',
             fn: function(doc, div){
                 return div.childNodes[1].firstChild.offsetHeight == 210;
@@ -9405,49 +9754,60 @@ Ext.supports = {
 
         
         {
+            
             identity: 'ArraySort',
             fn: function() {
                 var a = [1,2,3,4,5].sort(function(){ return 0; });
                 return a[0] === 1 && a[1] === 2 && a[2] === 3 && a[3] === 4 && a[4] === 5;
-            }
+            },
+            early: true
         },
         
         {
+            
             identity: 'Range',
-            fn: function() {
-                return !!document.createRange;
-            }
+            fn: function(doc) {
+                return !!doc.createRange;
+            },
+            early: true
         },
         
         {
+            
             identity: 'CreateContextualFragment',
-            fn: function() {
-                var range = Ext.supports.Range ? document.createRange() : false;
+            fn: function(doc) {
+                var range = doc.createRange ? doc.createRange() : false;
 
                 return range && !!range.createContextualFragment;
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'WindowOnError',
             fn: function () {
                 
                 return Ext.isIE || Ext.isGecko || Ext.webKitVersion >= 534.16; 
-            }
+            },
+            early: true
         },
 
         
         {
+            
             identity: 'TextAreaMaxLength',
-            fn: function(){
-                var el = document.createElement('textarea');
+            fn: function(doc) {
+                var el = doc.createElement('textarea');
                 return ('maxlength' in el);
-            }
+            },
+            early: true
         },
         
         
         {
+            
             identity: 'GetPositionPercentage',
             fn: function(doc, div){
                return getStyle(div.childNodes[2], 'left') == '10%';
@@ -9455,6 +9815,7 @@ Ext.supports = {
         },
         
         {
+            
             identity: 'PercentageHeightOverflowBug',
             fn: function(doc) {
                 var hasBug = false,
@@ -9489,6 +9850,7 @@ Ext.supports = {
         },
         
         {
+            
             identity: 'xOriginBug',
             fn: function(doc, div) {
                div.innerHTML = '<div id="b1" style="height:100px;width:100px;direction:rtl;position:relative;overflow:scroll">' +
@@ -9506,6 +9868,7 @@ Ext.supports = {
 
         
         {
+            
             identity: 'ScrollWidthInlinePaddingBug',
             fn: function(doc) {
                 var hasBug = false,
@@ -9528,6 +9891,37 @@ Ext.supports = {
                 doc.body.removeChild(el);
                 
                 return hasBug;
+            }
+        },
+
+        
+        {
+            identity: 'rtlVertScrollbarOnRight',
+            fn: function(doc, div) {
+               div.innerHTML = '<div style="height:100px;width:100px;direction:rtl;overflow:scroll">' +
+                    '<div style="width:20px;height:200px;"></div>' +
+                '</div>';
+
+                var outerBox = div.firstChild,
+                    innerBox = outerBox.firstChild;
+
+                return (innerBox.offsetLeft + innerBox.offsetWidth !== outerBox.offsetLeft + outerBox.offsetWidth);
+            }
+        },
+
+        
+        {
+            identity: 'rtlVertScrollbarOverflowBug',
+            fn: function(doc, div) {
+               div.innerHTML = '<div style="height:100px;width:100px;direction:rtl;overflow:auto">' +
+                    '<div style="width:95px;height:200px;"></div>' +
+                '</div>';
+
+                
+                
+                
+                var outerBox = div.firstChild;
+                return outerBox.clientHeight === outerBox.offsetHeight;
             }
         }
     ]
@@ -9561,7 +9955,9 @@ Ext.util.DelayedTask = function(fn, scope, args, cancelOnDelay) {
         if (cancelOnDelay) {
             me.cancel();
         }
-        delay = newDelay || delay,
+        if (typeof newDelay === 'number') {
+            delay = newDelay;
+        }
         fn    = newFn    || fn;
         scope = newScope || scope;
         args  = newArgs  || args;
@@ -9788,13 +10184,17 @@ Ext.define('Ext.util.Event', function() {
     },
 
     suspend: function() {
-        this.suspended += 1;
+        ++this.suspended;
     },
 
     resume: function() {
         if (this.suspended) {
-            this.suspended--;
+            --this.suspended;
         }
+    },
+    
+    isSuspended: function() {
+        return this.suspended > 0;
     },
 
     fire: function() {
@@ -9875,6 +10275,7 @@ Ext.EventManager = new function() {
     var EventManager = this,
         doc = document,
         win = window,
+        supports = Ext.supports,
         escapeRx = /\\/g,
         prefix = Ext.baseCSSPrefix,
         
@@ -9883,11 +10284,16 @@ Ext.EventManager = new function() {
         initExtCss = function() {
             
             var bd = doc.body || doc.getElementsByTagName('body')[0],
-                cls = [prefix + 'body'],
+                cls = [],
                 htmlCls = [],
-                supportsLG = Ext.supports.CSS3LinearGradient,
-                supportsBR = Ext.supports.CSS3BorderRadius,
+                supportsLG = supports.CSS3LinearGradient,
+                supportsBR = supports.CSS3BorderRadius,
                 html;
+
+            
+            if (!Ext.scopeCss) {
+                cls.push(prefix + 'body');
+            }
 
             if (!bd) {
                 return false;
@@ -9987,7 +10393,7 @@ Ext.EventManager = new function() {
                     add('safari5');
                 }
                 if (Ext.isSafari5_0) {
-                    add('safari5_0')
+                    add('safari5_0');
                 }
             }
             if (Ext.isChrome) {
@@ -10102,7 +10508,7 @@ Ext.EventManager = new function() {
                 Ext._readyTime = new Date().getTime();
                 Ext.isReady = true;
 
-                Ext.supports.init();
+                supports.init();
                 EventManager.onWindowUnload();
                 readyEvent.onReadyChain = EventManager.onReadyChain;    
 
@@ -10131,7 +10537,7 @@ Ext.EventManager = new function() {
             }
             EventManager.isFiring = false;
             EventManager.hasFiredReady = true;
-            Ext.EventManager.idleEvent.fire();
+            EventManager.idleEvent.fire();
         },
 
         
@@ -10166,8 +10572,12 @@ Ext.EventManager = new function() {
 
             element = Ext.getDom(element);
 
-            if (element === doc || element === win) {
-                id = element === doc ? Ext.documentId : Ext.windowId;
+            if (element === doc) {
+                id = Ext.documentId;
+
+            
+            } else if (element == win) {
+                id = Ext.windowId;
             }
             else {
                 id = Ext.id(element);
@@ -10215,12 +10625,12 @@ Ext.EventManager = new function() {
 
         
         normalizeEvent: function(eventName, fn) {
-            if (EventManager.mouseEnterLeaveRe.test(eventName) && !Ext.supports.MouseEnterLeave) {
+            if (EventManager.mouseEnterLeaveRe.test(eventName) && !supports.MouseEnterLeave) {
                 if (fn) {
                     fn = Ext.Function.createInterceptor(fn, EventManager.contains);
                 }
                 eventName = eventName == 'mouseenter' ? 'mouseover' : 'mouseout';
-            } else if (eventName == 'mousewheel' && !Ext.supports.MouseWheel && !Ext.isOpera) {
+            } else if (eventName == 'mousewheel' && !supports.MouseWheel && !Ext.isOpera) {
                 eventName = 'DOMMouseScroll';
             }
             return {
@@ -10329,9 +10739,10 @@ Ext.EventManager = new function() {
         
         normalizeId: function(dom, force) {
             var id;
-            if (dom === document) {
+            if (dom === doc) {
                 id = Ext.documentId;
-            } else if (dom === window) {
+            
+            } else if (dom == win) {
                 id = Ext.windowId;
             } else {
                 id = dom.id;
@@ -10482,7 +10893,8 @@ Ext.EventManager = new function() {
         createListenerWrap : function(dom, ename, fn, scope, options) {
             options = options || {};
 
-            var f, gen, wrap = function(e, args) {
+            var gen, wrap = function(e, args) {
+                var f;
                 
                 if (!gen) {
                     f = ['if(!' + Ext.name + ') {return;}'];
@@ -10809,7 +11221,7 @@ Ext.EventManager = new function() {
         
         useKeyDown: Ext.isWebKit ?
                        parseInt(navigator.userAgent.match(/AppleWebKit\/(\d+)/)[1], 10) >= 525 :
-                       !((Ext.isGecko && !Ext.isWindows) || Ext.isOpera),
+                       !((Ext.isGecko && !Ext.isWindows) || (Ext.isOpera && Ext.operaVersion < 12)),
 
         
         getKeyEvent: function() {
@@ -10944,11 +11356,12 @@ Ext.EventManager = new function() {
 
 Ext.define('Ext.util.Observable', function(Observable) {
 
-    
-    var emptyArray = [],
+    var emptyFn = Ext.emptyFn,
+        emptyArray = [],
         arrayProto = Array.prototype,
         arraySlice = arrayProto.slice,
         ExtEvent = Ext.util.Event,
+        
         ListenerRemover = function(observable) {
 
             
@@ -11118,20 +11531,22 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                
-                managedListeners.push({
-                    item: item,
-                    ename: ename,
-                    fn: fn,
-                    scope: scope,
-                    options: options
-                });
 
-                item.on(ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    managedListeners.push({
+                        item: item,
+                        ename: ename,
+                        fn: fn,
+                        scope: scope,
+                        options: options
+                    });
 
-                
-                if (!noDestroy && options && options.destroyable) {
-                    return new ListenerRemover(me, item, ename, fn, scope);
+                    item.on(ename, fn, scope, options);
+
+                    
+                    if (!noDestroy && options && options.destroyable) {
+                        return new ListenerRemover(me, item, ename, fn, scope);
+                    }
                 }
             }
         },
@@ -11143,7 +11558,7 @@ Ext.define('Ext.util.Observable', function(Observable) {
                 config,
                 managedListeners,
                 length,
-                i, func;
+                i;
 
             if (typeof ename !== 'string') {
                 options = ename;
@@ -11262,15 +11677,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                event.addListener(fn, scope, options);
 
-                
-                
-                if (event.listeners.length !== prevListenerCount) {
-                    me.hasListeners._incr_(ename);
-                }
-                if (options && options.destroyable) {
-                    return new ListenerRemover(me, ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    event.addListener(fn, scope, options);
+
+                    
+                    
+                    if (event.listeners.length !== prevListenerCount) {
+                        me.hasListeners._incr_(ename);
+                    }
+                    if (options && options.destroyable) {
+                        return new ListenerRemover(me, ename, fn, scope, options);
+                    }
                 }
             }
         },
@@ -11375,6 +11793,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
         hasListener: function(ename) {
             return !!this.hasListeners[ename.toLowerCase()];
         },
+        
+        
+        isSuspended: function(event) {
+            var suspended = this.eventsSuspended > 0;
+            if (!suspended && event) {
+                event = this.events[event];
+                if (event && event.isEvent) {
+                    return event.isSuspended();
+                }
+            }
+            return suspended;
+        },
 
         
         suspendEvents: function(queueSuspended) {
@@ -11387,15 +11817,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
         
         suspendEvent: function(eventName) {
             var len = arguments.length,
-                i, event;
+                events = this.events,
+                i, event, ename;
 
             for (i = 0; i < len; i++) {
-                event = this.events[arguments[i]];
+                ename = arguments[i];
+                event = events[ename];
+                if (!event || typeof event == 'boolean') {
+                    events[ename] = event = new ExtEvent(this, ename);
+                }
 
                 
-                if (event && event.suspend) {
-                    event.suspend();
-                }
+                event.suspend();
             }
         },
 
@@ -11937,7 +12370,7 @@ Ext.define('Ext.EventObjectImpl', {
         63275: 35 
     },
     
-    btnMap: Ext.isIE ? {
+    btnMap: Ext.isIE9m ? {
         1: 0,
         4: 1,
         2: 2
@@ -11950,6 +12383,10 @@ Ext.define('Ext.EventObjectImpl', {
     
     
     
+    
+
+    
+    isEvent: true,
 
     constructor: function(event, freezeEvent){
         if (event) {
@@ -11958,7 +12395,7 @@ Ext.define('Ext.EventObjectImpl', {
     },
 
     setEvent: function(event, freezeEvent){
-        var me = this, button, options;
+        var me = this, button;
 
         if (event === me || (event && event.browserEvent)) { 
             return event;
@@ -11970,36 +12407,36 @@ Ext.define('Ext.EventObjectImpl', {
             if (me.clickRe.test(event.type) && button == -1) {
                 button = 0;
             }
-            options = {
-                type: event.type,
-                button: button,
-                shiftKey: event.shiftKey,
-                
-                ctrlKey: event.ctrlKey || event.metaKey || false,
-                altKey: event.altKey,
-                
-                keyCode: event.keyCode,
-                charCode: event.charCode,
-                
-                target: Ext.EventManager.getTarget(event),
-                relatedTarget: Ext.EventManager.getRelatedTarget(event),
-                currentTarget: event.currentTarget,
-                xy: (freezeEvent ? me.getXY() : null)
-            };
+            me.type = event.type;
+            me.button = button;
+            me.shiftKey = event.shiftKey;
+            
+            me.ctrlKey = event.ctrlKey || event.metaKey || false;
+            me.altKey = event.altKey;
+            
+            me.keyCode = event.keyCode;
+            me.charCode = event.charCode;
+            
+            me.target = Ext.EventManager.getTarget(event);
+            me.relatedTarget = Ext.EventManager.getRelatedTarget(event);
+            me.currentTarget = event.currentTarget;
+            me.xy = (freezeEvent ? me.getXY() : null);
         } else {
-            options = {
-                button: -1,
-                shiftKey: false,
-                ctrlKey: false,
-                altKey: false,
-                keyCode: 0,
-                charCode: 0,
-                target: null,
-                xy: [0, 0]
-            };
+            me.button = -1;
+            me.shiftKey = false;
+            me.ctrlKey = false;
+            me.altKey = false;
+            me.keyCode = 0;
+            me.charCode = 0;
+            me.target = null;
+            me.xy = [0, 0];
         }
-        Ext.apply(me, options);
         return me;
+    },
+    
+    
+    clone: function() {
+        return new this.self(this.browserEvent, this);
     },
 
     
@@ -12189,7 +12626,8 @@ Ext.define('Ext.EventObjectImpl', {
 
    
     hasModifier : function(){
-        return this.ctrlKey || this.altKey || this.shiftKey || this.metaKey;
+        var me = this;
+        return !!(me.ctrlKey || me.altKey || me.shiftKey || me.metaKey);
     },
 
     
@@ -12427,7 +12865,7 @@ Ext.define('Ext.dom.AbstractQuery', {
             root = document.getElementById(root);
         }
 
-        q = q.split(",");
+        q = Ext.splitAndUnescape(q, ",");
 
         for (i = 0,qlen = q.length; i < qlen; i++) {
             if (typeof q[i] == 'string') {
@@ -12515,7 +12953,7 @@ Ext.define('Ext.dom.AbstractHelper', {
                     if (!me.confRe.test(attr)) {
                         if (typeof val == "object") {
                             buffer.push(' ', attr, '="');
-                            me.generateStyles(val, buffer).push('"');
+                            me.generateStyles(val, buffer, true).push('"');
                         } else {
                             buffer.push(' ', me.attributeTransform[attr] || attr, '="', val, '"');
                         }
@@ -12550,13 +12988,21 @@ Ext.define('Ext.dom.AbstractHelper', {
     },
 
     
-    generateStyles: function (styles, buffer) {
+    generateStyles: function (styles, buffer, encode) {
         var a = buffer || [],
-            name;
+            name, val;
 
         for (name in styles) {
             if (styles.hasOwnProperty(name)) {
-                a.push(this.decamelizeName(name), ':', styles[name], ';');
+                val = styles[name];
+                
+                
+                
+                name = this.decamelizeName(name);
+                if (encode && Ext.String.hasHtmlCharacters(val)) {
+                    val = Ext.String.htmlEncode(val);
+                }
+                a.push(name, ':', val, ';');
             }
         }
 
@@ -12605,8 +13051,8 @@ Ext.define('Ext.dom.AbstractHelper', {
         where = where.toLowerCase();
 
         
-        hash['beforebegin'] = ['BeforeBegin', 'previousSibling'];
-        hash['afterend'] = ['AfterEnd', 'nextSibling'];
+        hash.beforebegin = ['BeforeBegin', 'previousSibling'];
+        hash.afterend = ['AfterEnd', 'nextSibling'];
 
         range = el.ownerDocument.createRange();
         setStart = 'setStart' + (this.endRe.test(where) ? 'After' : 'Before');
@@ -13710,8 +14156,9 @@ Ext.define('Ext.dom.AbstractElement_style', {
             }
 
             mask = me.createChild({
+                role: 'presentation',
                 cls: prefix + 'mask' + ((transparent !== false) ? '' : (' ' + prefix + 'mask-gray')),
-                html: msg ? ('<div class="' + (msgCls || (prefix + 'mask-message')) + '">' + msg + '</div>') : ''
+                html: msg ? ('<div class="' + (msgCls || (prefix + 'mask-message')) + '" role="presentation">' + msg + '</div>') : ''
             });
 
             size = me.getSize();
@@ -14255,17 +14702,37 @@ Ext.define('Ext.dom.AbstractElement', {
     },
 
     
-    contains: function(el) {
-        if (!el) {
-            return false;
-        }
-
-        var me = this,
-            dom = el.dom || el;
-
+    contains: (function () {
         
-        return (dom === me.dom) || Ext.dom.AbstractElement.isAncestor(me.dom, dom);
-    },
+        
+        
+        
+        var isXpc = function (el) {
+            var s;
+
+            try {
+                el = el.dom || el;
+            } catch (e) {
+                return true;
+            }
+
+            s = HTMLElement.prototype.toString.call(el);
+            return s === '[xpconnect wrapped native prototype]' || s === '[object XULElement]';
+        };
+
+        return function (el) {
+            if (!el || (Ext.isGecko3 && isXpc(el))) {
+                return false;
+            }
+
+            var me = this,
+                dom = el.dom || el;
+
+            
+            
+            return (dom === me.dom) || Ext.dom.AbstractElement.isAncestor(me.dom, dom);
+        };
+    }()),
 
     
     getAttribute: function(name, ns) {
@@ -14426,7 +14893,7 @@ function() {
                 this.dom = dom;
                 
                 
-                this.$cache = dom.id ? Ext.cache[dom.id] : null;
+                this.$cache = dom && dom.id ? Ext.cache[dom.id] : null;
                 return this;
             }
         }),
@@ -14814,6 +15281,11 @@ Ext.define('Ext.Template', {
     },
 
     
+    
+    
+    useEval: Ext.isGecko,
+
+    
 
     
     constructor: function(html) {
@@ -14864,32 +15336,49 @@ Ext.define('Ext.Template', {
     
     disableFormats: false,
 
-    re: /\{([\w\-]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?\}/g,
+    
+    re: /\{(?:(?:(\d*)|([\w\-]+))(?:\:([A-Za-z_\.]*)(?:\((.*?)?\))?)?)\}/g,
 
     
     apply: function(values) {
+        if (this.compiled) {
+            return this.compiled(values).join('');
+        }
+        return this.evaluate(values);
+    },
+
+    
+    
+    evaluate: function(values) {
         var me = this,
             useFormat = me.disableFormats !== true,
             fm = Ext.util.Format,
-            tpl = me,
-            ret;
+            tpl = me;
 
-        if (me.compiled) {
-            return me.compiled(values).join('');
-        }
-
-        function fn(m, name, format, args) {
-            if (format && useFormat) {
+        function fn(match, index, name, formatFn, args) {
+            
+            
+            if (name == null || name == '') {
+                name = index;
+            }
+            if (formatFn && useFormat) {
                 if (args) {
                     args = [values[name]].concat(Ext.functionFactory('return ['+ args +'];')());
                 } else {
                     args = [values[name]];
                 }
-                if (format.substr(0, 5) == "this.") {
-                    return tpl[format.substr(5)].apply(tpl, args);
+
+                
+                if (formatFn.substr(0, 5) === "this.") {
+                    return tpl[formatFn.substr(5)].apply(tpl, args);
                 }
+                
+                else if (fm[formatFn]) {
+                    return fm[formatFn].apply(fm, args);
+                }
+                
                 else {
-                    return fm[format].apply(fm, args);
+                    return match;
                 }
             }
             else {
@@ -14897,8 +15386,7 @@ Ext.define('Ext.Template', {
             }
         }
 
-        ret = me.html.replace(me.re, fn);
-        return ret;
+        return me.html.replace(me.re, fn);
     },
 
     
@@ -14937,31 +15425,59 @@ Ext.define('Ext.Template', {
      */
     compile: function() {
         var me = this,
-            fm = Ext.util.Format,
-            useFormat = me.disableFormats !== true,
-            body, bodyReturn;
+            code;
 
-        function fn(m, name, format, args) {
-            if (format && useFormat) {
-                args = args ? ',' + args: "";
-                if (format.substr(0, 5) != "this.") {
-                    format = "fm." + format + '(';
-                }
-                else {
-                    format = 'this.' + format.substr(5) + '(';
-                }
-            }
-            else {
-                args = '';
-                format = "(values['" + name + "'] == undefined ? '' : ";
-            }
-            return "'," + format + "values['" + name + "']" + args + ") ,'";
-        }
-
-        bodyReturn = me.html.replace(me.compileARe, '\\\\').replace(me.compileBRe, '\\n').replace(me.compileCRe, "\\'").replace(me.re, fn);
-        body = "this.compiled = function(values){ return ['" + bodyReturn + "'];};";
-        eval(body);
+        code = me.html.replace(me.compileARe, '\\\\').replace(me.compileBRe, '\\n').replace(me.compileCRe, "\\'").replace(me.re, Ext.Function.bind(me.regexReplaceFn, me));
+        code = (this.disableFormats !== true ? 'var fm=Ext.util.Format;' : '') +
+                (me.useEval ? '$=' : 'return') +
+                " function(v){return ['" + code + "'];};";
+        me.compiled = me.useEval ? me.evalCompiled(code) : (new Function('Ext', code))(Ext);
         return me;
+    },
+
+    // @private
+    evalCompiled: function($) {
+
+        // We have to use eval to realize the code block and capture the inner func we also
+        // don't want a deep scope chain. We only do this in Firefox and it is also unhappy
+        // with eval containing a return statement, so instead we assign to "$" and return
+        // that. Because we use "eval", we are automatically sandboxed properly.
+        eval($);
+        return $;
+    },
+
+    regexReplaceFn: function fn(match, index, name, formatFn, args) {
+        // Calculate the correct expression to use to index into the values object/array
+        // index may be a numeric string, or a quoted alphanumeric string.
+        // Certain browser pass unmatched parameters as undefined, some as an empty string.
+        if (index == null || index == '') {
+            index = '"' + name + '"';
+        }
+        // If we are being used as a formatter for Ext.String.format, we must skip the string itself in the argument list.
+        // Doing this enables String.format to omit the Array slice call.
+        else if (this.stringFormat) {
+            index = parseInt(index) + 1;
+        }
+        if (formatFn && this.disableFormats !== true) {
+            args = args ? ',' + args: "";
+
+            // Caller used '{0:this.bold}'. Create a call to member function
+            if (formatFn.substr(0, 5) === "this.") {
+                formatFn = formatFn + '(';
+            }
+            // Caller used '{0:number("0.00")}'. Create a call to Ext.util.Format function
+            else if (Ext.util.Format[formatFn]) {
+                formatFn = "fm." + formatFn + '(';
+            }
+            // Caller used '{0:someRandomText}'. We must pass it through unchanged
+            else {
+                return match;
+            }
+            return "'," + formatFn + "v[" + index + "]" + args + "),'";
+        }
+        else {
+            return "',v[" + index + "] == undefined ? '' : v[" + index + "],'";
+        }
     },
 
     /**
@@ -15175,7 +15691,7 @@ Ext.define('Ext.XTemplateParser', {
             topRe = me.topRe,
             actionsRe = me.actionsRe,
             index, stack, s, m, t, prev, frame, subMatch, begin, end, actions,
-            prop;
+            prop, expectTplNext;
 
         me.level = 0;
         me.stack = stack = [];
@@ -15193,8 +15709,16 @@ Ext.define('Ext.XTemplateParser', {
             end = topRe.lastIndex;
 
             if (index < begin) {
-                me.doText(str.substring(index, begin));
+                // In the case of a switch statement, we expect a tpl for each case.
+                // However, if we have spaces they will get matched as plaintext, so
+                // we want to skip over them here.
+                s = str.substring(index, begin);
+                if (!(expectTplNext && Ext.String.trim(s) === '')) {
+                    me.doText(s);
+                }
             }
+
+            expectTplNext = false;
 
             if (m[1]) {
                 end = str.indexOf('%}', begin+2);
@@ -15244,6 +15768,7 @@ Ext.define('Ext.XTemplateParser', {
                 else if (actions['switch']) {
                     me.doSwitch(actions['switch'], actions);
                     stack.push({ type: 'switch' });
+                    expectTplNext = true;
                 }
                 else if (actions['case']) {
                     me.doCase(actions['case'], actions);
@@ -15458,11 +15983,13 @@ Ext.define('Ext.XTemplateCompiler', {
     },
 
     doSwitch: function (action) {
-        var me = this;
+        var me = this,
+            key;
 
         
-        if (action === '.') {
-            me.body.push('switch (values) {\n');
+        if (action === '.' || action === '#') {
+            key = action === '.' ? 'values' : 'xindex';
+            me.body.push('switch (', key, ') {\n');
         } else if (me.propNameRe.test(action)) {
             me.body.push('switch (', me.parseTag(action), ') {\n');
         }
@@ -16151,6 +16678,7 @@ Ext.define('Ext.XTemplate', {
 
 // @tag dom,core
 // @require Helper.js
+
 // @define Ext.dom.Query
 // @define Ext.core.DomQuery
 // @define Ext.DomQuery
@@ -16173,6 +16701,24 @@ Ext.define('Ext.XTemplate', {
  * All selectors, attribute filters and pseudos below can be combined infinitely in any order. For example
  * `div.foo:nth-child(odd)[@foo=bar].bar:first` would be a perfectly valid selector. Node filters are processed
  * in the order in which they appear, which allows you to optimize your queries for your document structure.
+ * 
+ * ## Simple Selectors
+ * 
+ * For performance reasons, some query methods accept selectors that are termed as **simple selectors**. A simple
+ * selector is a selector that does not include contextual information about any parent/sibling elements.
+ * 
+ * Some examples of valid simple selectors:
+ * 
+ *     var simple = '.foo'; // Only asking for the class name on the element
+ *     var simple = 'div.bar'; // Only asking for the tag/class name on the element
+ *     var simple = '[href];' // Asking for an attribute on the element.
+ *     var simple = ':not(.foo)'; // Only asking for the non-matches against the class name
+ *     var simple = 'span:first-child'; // Doesn't require any contextual information about the parent node
+ * 
+ * Simple examples of invalid simple selectors:
+ * 
+ *     var notSimple = 'div.foo div.bar'; 
+ *     var notSimple = 'span + div'; 
  *
  * ## Element Selectors:
  *
@@ -16230,16 +16776,14 @@ Ext.define('Ext.XTemplate', {
  * ## XML Namespaces:
  *   - **`ns|E`** an element with tag E and namespace prefix ns
  *
- * [1]: http:
+ * [1]: http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#selectors
  */
 Ext.ns('Ext.core');
 
 Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
     var DQ,
         doc = document,
-        cache = {},
-        simpleCache = {},
-        valueCache = {},
+        cache, simpleCache, valueCache,
         useClassList = !!doc.documentElement.classList,
         useElementPointer = !!doc.documentElement.firstElementChild,
         useChildrenCollection = (function() {
@@ -16255,9 +16799,9 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
         nthRe = /(\d*)n\+?(\d*)/,
         nthRe2 = /\D/,
         startIdRe = /^\s*#/,
-        
-        
-        
+        // This is for IE MSXML which does not support expandos.
+        // IE runs the same speed using setAttribute, however FF slows way down
+        // and Safari completely fails so they need to continue to use expandos.
         isIE = window.ActiveXObject ? true : false,
         key = 30803,
         longHex = /\\([0-9a-fA-F]{6})/g,
@@ -16265,8 +16809,8 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
         nonHex = /\\([^0-9a-fA-F]{1})/g,
         escapes = /\\/g,
         num, hasEscapes,
-        
-        
+        // True if the browser supports the following syntax:
+        // document.getElementsByTagName('namespacePrefix:tagName')
         supportsColonNsSeparator = (function () {
             var xmlDoc,
                 xmlString = '<r><a:b xmlns:a="n"></a:b></r>';
@@ -16281,13 +16825,13 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return !!xmlDoc.getElementsByTagName('a:b').length;
         })(),
 
-        
-        
+        // replaces a long hex regex match group with the appropriate ascii value
+        // $args indicate regex match pos
         longHexToChar = function($0, $1) {
             return String.fromCharCode(parseInt($1, 16));
         },
 
-        
+        // converts a shortHex regex match to the long form
         shortToLongHex = function($0, $1) {
             while ($1.length < 6) {
                 $1 = '0' + $1;
@@ -16295,7 +16839,7 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return '\\' + $1;
         },
 
-        
+        // converts a single char escape to long escape form
         charToLongHex = function($0, $1) {
             num = $1.charCodeAt(0).toString(16);
             if (num.length === 1) {
@@ -16304,31 +16848,31 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return '\\0000' + num;
         },
 
-        
-        
-        
+        // Un-escapes an input selector string.  Assumes all escape sequences have been
+        // normalized to the css '\\0000##' 6-hex-digit style escape sequence :
+        // will not handle any other escape formats
         unescapeCssSelector = function(selector) {
             return (hasEscapes) ? selector.replace(longHex, longHexToChar) : selector;
         },
 
-        
+        // checks if the path has escaping & does any appropriate replacements
         setupEscapes = function(path) {
             hasEscapes = (path.indexOf('\\') > -1);
             if (hasEscapes) {
                 path = path
                     .replace(shortHex, shortToLongHex)
                     .replace(nonHex, charToLongHex)
-                    .replace(escapes, '\\\\');  
+                    .replace(escapes, '\\\\');  // double the '\' for js compilation
             }
             return path;
         };
 
-    
-    
+    // this eval is stop the compressor from
+    // renaming the variable to something shorter
     eval("var batch = 30803, child, next, prev, byClassName;");
 
-    
-    
+    // Retrieve the child node from a particular
+    // parent at the specified index.
     child = useChildrenCollection ?
         function child(parent, index) {
             return parent.children[index];
@@ -16347,7 +16891,7 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return null;
         };
 
-    
+    // retrieve the next element node
     next = useElementPointer ?
         function(n) {
             return n.nextElementSibling;
@@ -16357,7 +16901,7 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return n;
         };
 
-    
+    // retrieve the previous element node
     prev = useElementPointer ?
         function(n) {
             return n.previousElementSibling;
@@ -16367,8 +16911,8 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return n;
         };
 
-    
-    
+    // Mark each child node with a nodeIndex skipping and
+    // removing empty text nodes.
     function children(parent) {
         var n = parent.firstChild,
             nodeIndex = -1,
@@ -16376,11 +16920,11 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
         while (n) {
             nextNode = n.nextSibling;
-            
+            // clean worthless empty nodes.
             if (n.nodeType == 3 && !nonSpace.test(n.nodeValue)) {
                 parent.removeChild(n);
             } else {
-                
+                // add an expando nodeIndex
                 n.nodeIndex = ++nodeIndex;
             }
             n = nextNode;
@@ -16388,9 +16932,9 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
         return this;
     }
 
-    
-    
-    byClassName = useClassList ? 
+    // nodeSet - array of nodes
+    // cls - CSS Class
+    byClassName = useClassList ? // Use classList API where available: http://jsperf.com/classlist-vs-old-school-check/
         function (nodeSet, cls) {
             cls = unescapeCssSelector(cls);
             if (!cls) {
@@ -16406,8 +16950,8 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
                         result[++ri] = ci;
                     }
                 } else if ((' ' + ci.className + ' ').indexOf(cls) !== -1) {
-                    
-                    
+                    // Some elements types (SVG) may not always have a classList
+                    // in some browsers, so fallback to the old style here
                     result[++ri] = ci;
                 }
             }
@@ -16430,7 +16974,7 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
         };
 
     function attrValue(n, attr) {
-        
+        // if its an array, use the first node.
         if (!n.tagName && typeof n.length != "undefined") {
             n = n[0];
         }
@@ -16448,9 +16992,9 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
     }
 
-    
-    
-    
+    // ns - nodes
+    // mode - false, /, >, +, ~
+    // tagName - defaults to "*"
     function getNodes(ns, mode, tagName) {
         var result = [], ri = -1, cs,
             i, ni, j, ci, cn, utag, n, cj;
@@ -16458,21 +17002,21 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
             return result;
         }
         tagName = tagName.replace('|', ':') || "*";
-        
+        // convert to array
         if (typeof ns.getElementsByTagName != "undefined") {
             ns = [ns];
         }
 
-        
-        
+        // no mode specified, grab all elements by tagName
+        // at any depth
         if (!mode) {
             tagName = unescapeCssSelector(tagName);
             if (!supportsColonNsSeparator && DQ.isXml(ns[0]) &&
                 tagName.indexOf(':') !== -1) {
-                
-                
-                
-                
+                // Some browsers (e.g. WebKit and Opera do not support the following syntax
+                // in xml documents: getElementsByTagName('ns:tagName'). To work around
+                // this, we remove the namespace prefix from the tagName, get the elements
+                // by tag name only, and then compare each element's tagName property to
                 
                 
                 for (i = 0; ni = ns[i]; i++) {
@@ -16727,6 +17271,12 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
     }
 
     return DQ = {
+        clearCache: function () {
+            cache && cache.clear();
+            valueCache && valueCache.clear();
+            simpleCache && simpleCache.clear();
+        },
+
         getStyle: function(el, name) {
             return Ext.fly(el, '_DomQuery').getStyle(name);
         },
@@ -16820,36 +17370,44 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
         
         jsSelect: function(path, root, type) {
+            if (!cache) {
+                DQ._cache = cache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
             
             root = root || doc;
 
             if (typeof root == "string") {
                 root = doc.getElementById(root);
             }
-            var paths = path.split(","),
+            var paths = Ext.splitAndUnescape(path, ","),
                 results = [],
+                query,
                 i, len, subPath, result;
 
             
             for (i = 0, len = paths.length; i < len; i++) {
                 subPath = paths[i].replace(trimRe, "");
                 
-                if (!cache[subPath]) {
+                query = cache.get(subPath);
+                if (!query) {
                     
-                    cache[subPath] = DQ.compile(subPath, type);
-                    if (!cache[subPath]) {
+                    query = DQ.compile(subPath, type);
+                    if (!query) {
                         Ext.Error.raise({
                             sourceClass:'Ext.DomQuery',
                             sourceMethod:'jsSelect',
                             msg:subPath + ' is not a valid selector'
                         });
                     }
+                    cache.add(subPath, query);
                 } else {
                     
                     
                     setupEscapes(subPath);
                 }
-                result = cache[subPath](root);
+                result = query(root);
                 if (result && result !== doc) {
                     results = results.concat(result);
                 }
@@ -16896,15 +17454,23 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
 
         
         selectValue: function(path, root, defaultValue) {
+            if (!valueCache) {
+                DQ._valueCache = valueCache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
             path = path.replace(trimRe, "");
-            if (!valueCache[path]) {
-                valueCache[path] = DQ.compile(path, "select");
+            var query = valueCache.get(path),
+                n, v;
+
+            if (!query) {
+                query = DQ.compile(path, "select");
+                valueCache.add(path, query);
             } else {
                 setupEscapes(path);
             }
 
-            var n = valueCache[path](root),
-                v;
+            n = query(root);
 
             n = n[0] ? n[0] : n;
 
@@ -16939,13 +17505,22 @@ Ext.dom.Query = Ext.core.DomQuery = Ext.DomQuery = (function() {
         
         filter: function(els, ss, nonMatches) {
             ss = ss.replace(trimRe, "");
-            if (!simpleCache[ss]) {
-                simpleCache[ss] = DQ.compile(ss, "simple");
+            if (!simpleCache) {
+                DQ._simpleCache = simpleCache = new Ext.util.LruCache({
+                    maxSize: 200
+                });
+            }
+            var query = simpleCache.get(ss),
+                result;
+
+            if (!query) {
+                query = DQ.compile(ss, "simple");
+                simpleCache.add(ss, query);
             } else {
                 setupEscapes(ss);
             }
 
-            var result = simpleCache[ss](els);
+            result = query(els);
             return nonMatches ? quickDiff(result, els) : result;
         },
 
@@ -17239,9 +17814,11 @@ Ext.define('Ext.dom.Element_anim', {
     
     animate: function(config) {
         var me = this,
+            animId = me.dom.id || Ext.id(me.dom),
             listeners,
             anim,
-            animId = me.dom.id || Ext.id(me.dom);
+            end;
+            
 
         if (!Ext.fx.Manager.hasFxBlock(animId)) {
             
@@ -17253,11 +17830,16 @@ Ext.define('Ext.dom.Element_anim', {
                 config.listeners = config.internalListeners;
                 delete config.internalListeners;
             }
+            end = config.autoEnd;
+            delete config.autoEnd;
             anim = new Ext.fx.Anim(me.anim(config));
             if (listeners) {
                 anim.on(listeners);
             }
             Ext.fx.Manager.queueFx(anim);
+            if (end) {
+                anim.jumpToEnd();
+            }
         }
         return me;
     },
@@ -17366,6 +17948,7 @@ Ext.define('Ext.dom.Element_anim', {
             }
 
             wrap = el.wrap({
+                role: 'presentation',
                 id: Ext.id() + '-anim-wrap-for-' + el.dom.id,
                 style: {
                     visibility: slideOut ? 'visible' : 'hidden'
@@ -17720,6 +18303,7 @@ Ext.define('Ext.dom.Element_anim', {
             el.show();
             box = el.getBox();
             proxy = Ext.getBody().createChild({
+                role: 'presentation',
                 id: el.dom.id + '-anim-proxy',
                 style: {
                     position : 'absolute',
@@ -18820,13 +19404,17 @@ Ext.define('Ext.dom.Element_scroll', {
         if (!this.isScrollable()) {
             return false;
         }
+        
+        
+        
+        direction = direction.charAt(0);
         var me = this,
             dom = me.dom,
             side = direction === 'r' || direction === 'l' ? 'left' : 'top',
             scrolled = false,
             currentScroll, constrainedScroll;
 
-        if (direction === 'r') {
+        if (direction === 'l' || direction === 't' || direction === 'u') {
             distance = -distance;
         }
 
@@ -19012,7 +19600,7 @@ Element.override({
         
         
         
-        if (preciseWidth && Ext.supports.BoundingClientRect) {
+        if (Ext.supports.BoundingClientRect) {
             rect = dom.getBoundingClientRect();
             
             
@@ -19020,6 +19608,7 @@ Element.override({
             
             width = (me.vertical && !Ext.isIE9 && !Ext.supports.RotatedBoundingClientRect) ?
                     (rect.bottom - rect.top) : (rect.right - rect.left);
+            width = preciseWidth ? width : Math.ceil(width);
         } else {
             width = dom.offsetWidth;
         }
@@ -19309,7 +19898,7 @@ Element.override({
     
     boxWrap : function(cls) {
         cls = cls || Ext.baseCSSPrefix + 'box';
-        var el = Ext.get(this.insertHtml("beforeBegin", "<div class='" + cls + "'>" + Ext.String.format(Element.boxMarkup, cls) + "</div>"));
+        var el = Ext.get(this.insertHtml("beforeBegin", "<div class='" + cls + "' role='presentation'>" + Ext.String.format(Element.boxMarkup, cls) + "</div>"));
         Ext.DomQuery.selectNode('.' + cls + '-mc', el.dom).appendChild(this.dom);
         return el;
     },
@@ -19815,8 +20404,8 @@ Ext.define('Ext.util.Positionable', {
         anchor = (anchor || "tl").toLowerCase();
         mySize = mySize || {};
 
-        myWidth = mySize.width || isViewport ? Ext.Element.getViewWidth() : me.getWidth();
-        myHeight = mySize.height || isViewport ? Ext.Element.getViewHeight() : me.getHeight();
+        myWidth = mySize.width || (isViewport ? Ext.Element.getViewWidth() : me.getWidth());
+        myHeight = mySize.height || (isViewport ? Ext.Element.getViewHeight() : me.getHeight());
 
         
         
@@ -19852,13 +20441,8 @@ Ext.define('Ext.util.Positionable', {
     
     getAlignToXY: function(alignToEl, posSpec, offset) {
         var me = this,
-            viewportWidth = Ext.Element.getViewWidth() - 10, 
-            viewportHeight = Ext.Element.getViewHeight() - 10, 
-            doc = document,
-            docElement = doc.documentElement,
-            docBody = doc.body,
-            scrollX = (docElement.scrollLeft || docBody.scrollLeft || 0),
-            scrollY = (docElement.scrollTop  || docBody.scrollTop  || 0),
+            constrainToEl,
+            constrainTo,
             alignMatch, myPosition, alignToElPosition, myWidth, myHeight,
             alignToElRegion, swapY, swapX, constrain, align1, align2,
             p1y, p1x, p2y, p2x, x, y;
@@ -19891,6 +20475,15 @@ Ext.define('Ext.util.Positionable', {
 
         
         if (constrain) {
+            
+            
+            
+            
+            constrainToEl = me.constrainTo || me.container || me.el.parent();
+            constrainToEl = Ext.get(constrainToEl.el || constrainToEl)
+            constrainTo = constrainToEl.getViewRegion();
+            constrainTo.right = constrainTo.left + constrainToEl.el.dom.clientWidth;
+
             myWidth = me.getWidth();
             myHeight = me.getHeight();
             alignToElRegion = alignToEl.getRegion();
@@ -19902,20 +20495,40 @@ Ext.define('Ext.util.Positionable', {
             p1x = align1.charAt(align1.length - 1);
             p2y = align2.charAt(0);
             p2x = align2.charAt(align2.length - 1);
-            swapY = ((p1y == "t" && p2y == "b") || (p1y == "b" && p2y == "t"));
-            swapX = ((p1x == "r" && p2x == "l") || (p1x == "l" && p2x == "r"));
 
-            if (x + myWidth > viewportWidth + scrollX) {
-                x = swapX ? alignToElRegion.left - myWidth : viewportWidth + scrollX - myWidth;
+            
+            
+            swapY = (x < alignToElRegion.right && x + myWidth >= alignToElRegion.left) && ((p1y == "t" && p2y == "b") || (p1y == "b" && p2y == "t"));
+
+            
+            
+            swapX = (y < alignToElRegion.bottom && y + myHeight >= alignToElRegion.top) && ((p1x == "r" && p2x == "l") || (p1x == "l" && p2x == "r"));
+
+            if (x + myWidth > constrainTo.right) {
+                if (swapX) {
+                    x = alignToElRegion.left - myWidth;
+
+                    
+                    swapX = false;
+                } else {
+                    x = constrainTo.right - myWidth;
+                }
             }
-            if (x < scrollX) {
-                x = swapX ? alignToElRegion.right : scrollX;
+            if (x < constrainTo.left) {
+                x = swapX ? alignToElRegion.right : constrainTo.left;
             }
-            if (y + myHeight > viewportHeight + scrollY) {
-                y = swapY ? alignToElRegion.top - myHeight : viewportHeight + scrollY - myHeight;
+            if (y + myHeight > constrainTo.bottom) {
+                if (swapY) {
+                    y = alignToElRegion.top - myHeight;
+
+                    
+                    swapY = false;
+                } else {
+                    y = constrainTo.bottom - myHeight;
+                }
             }
-            if (y < scrollY) {
-                y = swapY ? alignToElRegion.bottom : scrollY;
+            if (y < constrainTo.top) {
+                y = swapY ? alignToElRegion.bottom : constrainTo.top;
             }
         }
         return [x,y];
@@ -20030,10 +20643,18 @@ Ext.define('Ext.util.Positionable', {
             vector = [0, 0],
             shadowSize = (this.shadow && this.constrainShadow && !this.shadowDisabled) ? this.shadow.getShadowSize() : undefined,
             overflowed = false,
+            constrainSize,
             constraintInsets = this.constraintInsets;
 
         if (!(constrainTo instanceof Ext.util.Region)) {
-            constrainTo = Ext.get(constrainTo.el || constrainTo).getViewRegion();
+            constrainTo = Ext.get(constrainTo.el || constrainTo);
+
+            
+            
+            constrainSize = constrainTo.getViewSize();
+            constrainTo = constrainTo.getViewRegion();
+            constrainTo.right = constrainTo.left + constrainSize.width;
+            constrainTo.bottom = constrainTo.top + constrainSize.height;
         }
 
         
@@ -20297,6 +20918,8 @@ Ext.define('Ext.dom.Element', function(Element) {
                                    
           
         
+        isElement: true,
+
         tableTagRe: /^(?:tr|td|table|tbody)$/i,
 
         mixins: [
@@ -20316,6 +20939,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 if (Number(defer)) {
                     Ext.defer(me.focus, defer, me, [null, dom]);
                 } else {
+                    Ext.globalEvents.fireEvent('beforefocus', dom);
                     dom.focus();
                 }
             } catch(e) {
@@ -20343,10 +20967,11 @@ Ext.define('Ext.dom.Element', function(Element) {
         
         isBorderBox: function() {
             var box = Ext.isBorderBox;
+
             
             
-            if (box && Ext.isIE7m) {
-                box = !((this.dom.tagName || "").toLowerCase() in noBoxAdjust);
+            if (Ext.isIE7m && !box) {
+                box = ((this.dom.tagName || "").toLowerCase() in noBoxAdjust);
             }
             return box;
         },
@@ -20470,7 +21095,7 @@ Ext.define('Ext.dom.Element', function(Element) {
         },
 
         
-        mask : function(msg, msgCls , elHeight) {
+        mask: function (msg, msgCls , elHeight) {
             var me            = this,
                 dom           = me.dom,
                 
@@ -20480,7 +21105,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 maskShimEl    = data.maskShimEl,
                 maskEl        = data.maskEl,
                 maskMsg       = data.maskMsg,
-                widthExpression, heightExpression;
+                widthExpression, heightExpression, docElem, ie6DocElHeight;
 
             if (!(bodyRe.test(dom.tagName) && me.getStyle('position') == 'static')) {
                 me.addCls(XMASKEDRELATIVE);
@@ -20502,6 +21127,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             if (Ext.isIE6) {
                 maskShimEl = Ext.DomHelper.append(dom, {
                     tag: 'iframe',
+                    role: 'presentation',
                     cls : Ext.baseCSSPrefix + 'shim ' + Ext.baseCSSPrefix + 'mask-shim'
                 }, true);
                 data.maskShimEl = maskShimEl;
@@ -20509,15 +21135,19 @@ Ext.define('Ext.dom.Element', function(Element) {
             }
 
             Ext.DomHelper.append(dom, [{
+                role: 'presentation',
                 cls : Ext.baseCSSPrefix + "mask",
                 style: 'top:0;left:0;'
             }, {
+                role: 'presentation',
                 cls : msgCls ? EXTELMASKMSG + " " + msgCls : EXTELMASKMSG,
                 cn  : {
                     tag: 'div',
+                    role: 'presentation',
                     cls: Ext.baseCSSPrefix + 'mask-msg-inner',
                     cn: {
                         tag: 'div',
+                        role: 'presentation',
                         cls: Ext.baseCSSPrefix + 'mask-msg-text',
                         html: msg || ''
                     }
@@ -20526,6 +21156,7 @@ Ext.define('Ext.dom.Element', function(Element) {
 
             maskMsg = Ext.get(dom.lastChild);
             maskEl = Ext.get(maskMsg.dom.previousSibling);
+
             data.maskMsg = maskMsg;
             data.maskEl = maskEl;
 
@@ -20538,41 +21169,65 @@ Ext.define('Ext.dom.Element', function(Element) {
             } else {
                 maskMsg.setDisplayed(false);
             }
+
             
             
             
             
-            
-            if (!Ext.supports.IncludePaddingInWidthCalculation && setExpression) {
-                
-                try {
-                    maskEl.dom.style.setExpression('width', 'this.parentNode.clientWidth + "px"');
-                    widthExpression = 'this.parentNode.clientWidth + "px"';
-                    if (maskShimEl) {
-                        maskShimEl.dom.style.setExpression('width', widthExpression);
-                    }
-                    maskEl.dom.style.setExpression('width', widthExpression);
-                } catch (e) {}
+            if (Ext.isStrict && !Ext.isIE6 && (dom === DOC.body)) {
+                maskEl.addCls(Ext.baseCSSPrefix + 'mask-fixed');
             }
 
             
             
-            if (!Ext.supports.IncludePaddingInHeightCalculation && setExpression) {
-                
-                try {
-                    heightExpression = 'this.parentNode.' + (dom == DOC.body ? 'scrollHeight' : 'offsetHeight') + ' + "px"';
-                    if (maskShimEl) {
-                        maskShimEl.dom.style.setExpression('height', heightExpression);
-                    }
-                    maskEl.dom.style.setExpression('height', heightExpression);
-                } catch (e) {}
-            }
             
-            else if (Ext.isIE9m && !(Ext.isIE7 && Ext.isStrict) && me.getStyle('height') == 'auto') {
-                if (maskShimEl) {
-                    maskShimEl.setSize(undefined, elHeight || me.getHeight());
+            
+            
+            
+            
+            
+            if (dom !== DOC.body || Ext.isIE6 || Ext.isIEQuirks) {
+                if (!Ext.supports.IncludePaddingInWidthCalculation && setExpression) {
+                    
+                    try {
+                        maskEl.dom.style.setExpression('width', 'this.parentNode.clientWidth + "px"');
+                        widthExpression = 'this.parentNode.clientWidth + "px"';
+                        if (maskShimEl) {
+                            maskShimEl.dom.style.setExpression('width', widthExpression);
+                        }
+                        maskEl.dom.style.setExpression('width', widthExpression);
+                    } catch (e) {}
                 }
-                maskEl.setSize(undefined, elHeight || me.getHeight());
+
+                
+                
+                if (!Ext.supports.IncludePaddingInHeightCalculation && setExpression) {
+                    
+                    try {
+                        heightExpression = 'this.parentNode.' + (dom == DOC.body ? 'scrollHeight' : 'offsetHeight') + ' + "px"';
+                        if (maskShimEl) {
+                            maskShimEl.dom.style.setExpression('height', heightExpression);
+                        }
+                        maskEl.dom.style.setExpression('height', heightExpression);
+                    } catch (e) {}
+                }
+                
+                else if (Ext.isIE9m && !(Ext.isIE7 && Ext.isStrict) && me.getStyle('height') == 'auto') {
+                    if (Ext.isIE6 && Ext.isStrict) {
+                        docElem = dom.parentNode;
+                        
+                        
+                        
+                        
+                        
+                        
+                        ie6DocElHeight = Math.max(docElem.clientHeight, docElem.scrollHeight);
+                    }
+                    if (maskShimEl) {
+                        maskShimEl.setSize(undefined, elHeight || ie6DocElHeight || me.getHeight());
+                    }
+                    maskEl.setSize(undefined, elHeight || ie6DocElHeight || me.getHeight());
+                }
             }
             return maskEl;
         },
@@ -20645,6 +21300,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             el.frameBorder = '0';
             el.className = Ext.baseCSSPrefix + 'shim';
             el.src = Ext.SSL_SECURE_URL;
+            el.setAttribute('role', 'presentation');
             shim = Ext.get(this.dom.parentNode.insertBefore(el, this.dom));
             shim.autoBoxAdjust = false;
             return shim;
@@ -20771,7 +21427,23 @@ Ext.define('Ext.dom.Element', function(Element) {
         useDocForId     = !Ext.isIE8m,
         internalFly;
 
-    Element.boxMarkup = '<div class="{0}-tl"><div class="{0}-tr"><div class="{0}-tc"></div></div></div><div class="{0}-ml"><div class="{0}-mr"><div class="{0}-mc"></div></div></div><div class="{0}-bl"><div class="{0}-br"><div class="{0}-bc"></div></div></div>';
+    Element.boxMarkup = [
+        '<div class="{0}-tl" role="presentation">',
+            '<div class="{0}-tr" role="presentation">',
+                '<div class="{0}-tc" role="presentation"></div>',
+            '</div>',
+        '</div>',
+        '<div class="{0}-ml" role="presentation">',
+            '<div class="{0}-mr" role="presentation">',
+                '<div class="{0}-mc" role="presentation"></div>',
+            '</div>',
+        '</div>',
+        '<div class="{0}-bl" role="presentation">',
+            '<div class="{0}-br" role="presentation">',
+                '<div class="{0}-bc" role="presentation"></div>',
+            '</div>',
+        '</div>'
+    ].join('');
     
 
     
@@ -21035,7 +21707,7 @@ Ext.define('Ext.dom.Element', function(Element) {
             }
 
             id  = Ext.id();
-            html += '<span id="' + id + '"></span>';
+            html += '<span id="' + id + '" role="presentation"></span>';
 
             interval = setInterval(function() {
                 var hd,
@@ -21086,7 +21758,7 @@ Ext.define('Ext.dom.Element', function(Element) {
 
         
         createProxy : function(config, renderTo, matchBox) {
-            config = (typeof config == 'object') ? config : {tag : "div", cls: config};
+            config = (typeof config == 'object') ? config : { tag: "div", role: 'presentation', cls: config };
 
             var me = this,
                 proxy = renderTo ? Ext.DomHelper.append(renderTo, config, true) :
@@ -21135,7 +21807,7 @@ Ext.define('Ext.dom.Element', function(Element) {
                 
                 
                 if (tabIndex == -1) { 
-                    canFocus = Ext.FocusManager && Ext.FocusManager.enabled && asFocusEl;
+                    canFocus = Ext.enableFocusManager && asFocusEl;
                 }
                 else {
                     
@@ -21155,7 +21827,7 @@ Ext.define('Ext.dom.Element', function(Element) {
         }
     });
 
-    if (Ext.isIE) {
+    if (Ext.isIE9m) {
         Element.prototype.getById = function (id, asDom) {
             var dom = this.dom,
                 cacheItem, el, ret;
@@ -21214,7 +21886,7 @@ Ext.define('Ext.dom.Element', function(Element) {
     
     internalFly = new Element.Fly();
 
-    if (Ext.isIE) {
+    if (Ext.isIE9m) {
         Ext.getElementById = function (id) {
             var el = DOC.getElementById(id),
                 detachedBodyEl;
@@ -21593,88 +22265,673 @@ Ext.define('Ext.dom.CompositeElement', {
 Ext.select = Ext.Element.select;
 
 Ext.ClassManager.addNameAlternateMappings({
-  "Ext.rtl.layout.container.boxOverflow.Menu": [],
-  "Ext.draw.engine.ImageExporter": [],
-  "Ext.layout.component.Auto": [],
-  "Ext.grid.property.Store": [
-    "Ext.grid.PropertyStore"
+  "Ext.AbstractComponent": [],
+  "Ext.AbstractManager": [],
+  "Ext.AbstractPlugin": [],
+  "Ext.Action": [],
+  "Ext.Ajax": [],
+  "Ext.Component": [],
+  "Ext.ComponentLoader": [],
+  "Ext.ComponentManager": [
+    "Ext.ComponentMgr"
   ],
-  "Ext.layout.container.Box": [
-    "Ext.layout.BoxLayout"
+  "Ext.ComponentQuery": [],
+  "Ext.Editor": [],
+  "Ext.ElementLoader": [],
+  "Ext.FocusManager": [
+    "Ext.FocusMgr"
   ],
-  "Ext.rtl.resizer.BorderSplitterTracker": [],
-  "Ext.direct.JsonProvider": [],
-  "Ext.tree.Panel": [
-    "Ext.tree.TreePanel",
-    "Ext.TreePanel"
+  "Ext.Img": [],
+  "Ext.LoadMask": [],
+  "Ext.ModelManager": [
+    "Ext.ModelMgr"
   ],
+  "Ext.PluginManager": [
+    "Ext.PluginMgr"
+  ],
+  "Ext.ProgressBar": [],
+  "Ext.Queryable": [],
+  "Ext.Shadow": [],
+  "Ext.ShadowPool": [],
+  "Ext.ZIndexManager": [
+    "Ext.WindowGroup"
+  ],
+  "Ext.app.Application": [],
+  "Ext.app.Controller": [],
+  "Ext.app.EventBus": [],
+  "Ext.app.EventDomain": [],
+  "Ext.app.domain.Component": [],
+  "Ext.app.domain.Controller": [],
+  "Ext.app.domain.Direct": [],
+  "Ext.app.domain.Global": [],
+  "Ext.app.domain.Store": [],
+  "Ext.button.Button": [
+    "Ext.Button"
+  ],
+  "Ext.button.Cycle": [
+    "Ext.CycleButton"
+  ],
+  "Ext.button.Manager": [
+    "Ext.ButtonToggleManager"
+  ],
+  "Ext.button.Split": [
+    "Ext.SplitButton"
+  ],
+  "Ext.chart.Callout": [],
+  "Ext.chart.Chart": [],
+  "Ext.chart.Highlight": [],
+  "Ext.chart.Label": [],
+  "Ext.chart.Legend": [],
+  "Ext.chart.LegendItem": [],
+  "Ext.chart.Mask": [],
+  "Ext.chart.MaskLayer": [],
+  "Ext.chart.Navigation": [],
+  "Ext.chart.Shape": [],
+  "Ext.chart.Tip": [],
+  "Ext.chart.TipSurface": [],
+  "Ext.chart.axis.Abstract": [],
+  "Ext.chart.axis.Axis": [
+    "Ext.chart.Axis"
+  ],
+  "Ext.chart.axis.Category": [
+    "Ext.chart.CategoryAxis"
+  ],
+  "Ext.chart.axis.Gauge": [],
+  "Ext.chart.axis.Numeric": [
+    "Ext.chart.NumericAxis"
+  ],
+  "Ext.chart.axis.Radial": [],
+  "Ext.chart.axis.Time": [
+    "Ext.chart.TimeAxis"
+  ],
+  "Ext.chart.series.Area": [],
+  "Ext.chart.series.Bar": [
+    "Ext.chart.BarSeries",
+    "Ext.chart.BarChart",
+    "Ext.chart.StackedBarChart"
+  ],
+  "Ext.chart.series.Cartesian": [
+    "Ext.chart.CartesianSeries",
+    "Ext.chart.CartesianChart"
+  ],
+  "Ext.chart.series.Column": [
+    "Ext.chart.ColumnSeries",
+    "Ext.chart.ColumnChart",
+    "Ext.chart.StackedColumnChart"
+  ],
+  "Ext.chart.series.Gauge": [],
+  "Ext.chart.series.Line": [
+    "Ext.chart.LineSeries",
+    "Ext.chart.LineChart"
+  ],
+  "Ext.chart.series.Pie": [
+    "Ext.chart.PieSeries",
+    "Ext.chart.PieChart"
+  ],
+  "Ext.chart.series.Radar": [],
+  "Ext.chart.series.Scatter": [],
+  "Ext.chart.series.Series": [],
+  "Ext.chart.theme.Base": [],
+  "Ext.chart.theme.Theme": [],
+  "Ext.container.AbstractContainer": [],
+  "Ext.container.ButtonGroup": [
+    "Ext.ButtonGroup"
+  ],
+  "Ext.container.Container": [
+    "Ext.Container"
+  ],
+  "Ext.container.DockingContainer": [],
+  "Ext.container.Monitor": [],
+  "Ext.container.Viewport": [
+    "Ext.Viewport"
+  ],
+  "Ext.data.AbstractStore": [],
+  "Ext.data.ArrayStore": [],
+  "Ext.data.Batch": [],
+  "Ext.data.BufferStore": [],
+  "Ext.data.Connection": [],
+  "Ext.data.DirectStore": [],
+  "Ext.data.Errors": [],
+  "Ext.data.Field": [],
+  "Ext.data.Group": [],
+  "Ext.data.IdGenerator": [],
+  "Ext.data.JsonP": [],
+  "Ext.data.JsonPStore": [],
+  "Ext.data.JsonStore": [],
   "Ext.data.Model": [
     "Ext.data.Record"
+  ],
+  "Ext.data.NodeInterface": [],
+  "Ext.data.NodeStore": [],
+  "Ext.data.Operation": [],
+  "Ext.data.PageMap": [],
+  "Ext.data.Request": [],
+  "Ext.data.ResultSet": [],
+  "Ext.data.SequentialIdGenerator": [],
+  "Ext.data.SortTypes": [],
+  "Ext.data.Store": [],
+  "Ext.data.StoreManager": [
+    "Ext.StoreMgr",
+    "Ext.data.StoreMgr",
+    "Ext.StoreManager"
+  ],
+  "Ext.data.Tree": [],
+  "Ext.data.TreeModel": [],
+  "Ext.data.TreeStore": [],
+  "Ext.data.Types": [],
+  "Ext.data.UuidGenerator": [],
+  "Ext.data.XmlStore": [],
+  "Ext.data.amf.Encoder": [],
+  "Ext.data.amf.Packet": [],
+  "Ext.data.amf.Proxy": [],
+  "Ext.data.amf.Reader": [],
+  "Ext.data.amf.RemotingMessage": [],
+  "Ext.data.amf.XmlDecoder": [],
+  "Ext.data.amf.XmlEncoder": [],
+  "Ext.data.association.Association": [
+    "Ext.data.Association"
+  ],
+  "Ext.data.association.BelongsTo": [
+    "Ext.data.BelongsToAssociation"
+  ],
+  "Ext.data.association.HasMany": [
+    "Ext.data.HasManyAssociation"
+  ],
+  "Ext.data.association.HasOne": [
+    "Ext.data.HasOneAssociation"
+  ],
+  "Ext.data.flash.BinaryXhr": [],
+  "Ext.data.proxy.Ajax": [
+    "Ext.data.HttpProxy",
+    "Ext.data.AjaxProxy"
+  ],
+  "Ext.data.proxy.Client": [
+    "Ext.data.ClientProxy"
+  ],
+  "Ext.data.proxy.Direct": [
+    "Ext.data.DirectProxy"
+  ],
+  "Ext.data.proxy.JsonP": [
+    "Ext.data.ScriptTagProxy"
+  ],
+  "Ext.data.proxy.LocalStorage": [
+    "Ext.data.LocalStorageProxy"
+  ],
+  "Ext.data.proxy.Memory": [
+    "Ext.data.MemoryProxy"
+  ],
+  "Ext.data.proxy.Proxy": [
+    "Ext.data.DataProxy",
+    "Ext.data.Proxy"
+  ],
+  "Ext.data.proxy.Rest": [
+    "Ext.data.RestProxy"
+  ],
+  "Ext.data.proxy.Server": [
+    "Ext.data.ServerProxy"
+  ],
+  "Ext.data.proxy.SessionStorage": [
+    "Ext.data.SessionStorageProxy"
+  ],
+  "Ext.data.proxy.WebStorage": [
+    "Ext.data.WebStorageProxy"
+  ],
+  "Ext.data.reader.Array": [
+    "Ext.data.ArrayReader"
+  ],
+  "Ext.data.reader.Json": [
+    "Ext.data.JsonReader"
   ],
   "Ext.data.reader.Reader": [
     "Ext.data.Reader",
     "Ext.data.DataReader"
   ],
-  "Ext.tab.Tab": [],
-  "Ext.button.Button": [
-    "Ext.Button"
+  "Ext.data.reader.Xml": [
+    "Ext.data.XmlReader"
   ],
-  "Ext.util.Grouper": [],
+  "Ext.data.soap.Proxy": [],
+  "Ext.data.soap.Reader": [],
+  "Ext.data.validations": [],
+  "Ext.data.writer.Json": [
+    "Ext.data.JsonWriter"
+  ],
+  "Ext.data.writer.Writer": [
+    "Ext.data.DataWriter",
+    "Ext.data.Writer"
+  ],
+  "Ext.data.writer.Xml": [
+    "Ext.data.XmlWriter"
+  ],
+  "Ext.dd.DD": [],
+  "Ext.dd.DDProxy": [],
+  "Ext.dd.DDTarget": [],
+  "Ext.dd.DragDrop": [],
+  "Ext.dd.DragDropManager": [
+    "Ext.dd.DragDropMgr",
+    "Ext.dd.DDM"
+  ],
+  "Ext.dd.DragSource": [],
+  "Ext.dd.DragTracker": [],
+  "Ext.dd.DragZone": [],
+  "Ext.dd.DropTarget": [],
+  "Ext.dd.DropZone": [],
+  "Ext.dd.Registry": [],
+  "Ext.dd.ScrollManager": [],
+  "Ext.dd.StatusProxy": [],
+  "Ext.direct.AmfRemotingProvider": [],
+  "Ext.direct.Event": [],
+  "Ext.direct.ExceptionEvent": [],
+  "Ext.direct.JsonProvider": [],
+  "Ext.direct.Manager": [],
+  "Ext.direct.PollingProvider": [],
+  "Ext.direct.Provider": [],
+  "Ext.direct.RemotingEvent": [],
+  "Ext.direct.RemotingMethod": [],
   "Ext.direct.RemotingProvider": [],
-  "Ext.data.NodeInterface": [],
-  "Ext.view.NodeCache": [],
-  "Ext.grid.column.Date": [
-    "Ext.grid.DateColumn"
+  "Ext.direct.Transaction": [
+    "Ext.Direct.Transaction"
+  ],
+  "Ext.dom.Layer": [
+    "Ext.Layer"
+  ],
+  "Ext.draw.Color": [],
+  "Ext.draw.Component": [],
+  "Ext.draw.CompositeSprite": [],
+  "Ext.draw.Draw": [],
+  "Ext.draw.Matrix": [],
+  "Ext.draw.Sprite": [],
+  "Ext.draw.SpriteDD": [],
+  "Ext.draw.Surface": [],
+  "Ext.draw.Text": [],
+  "Ext.draw.engine.ImageExporter": [],
+  "Ext.draw.engine.Svg": [],
+  "Ext.draw.engine.SvgExporter": [],
+  "Ext.draw.engine.Vml": [],
+  "Ext.env.Browser": [],
+  "Ext.env.FeatureDetector": [],
+  "Ext.env.OS": [],
+  "Ext.flash.Component": [
+    "Ext.FlashComponent"
+  ],
+  "Ext.form.Basic": [
+    "Ext.form.BasicForm"
+  ],
+  "Ext.form.CheckboxGroup": [],
+  "Ext.form.CheckboxManager": [],
+  "Ext.form.FieldAncestor": [],
+  "Ext.form.FieldContainer": [],
+  "Ext.form.FieldSet": [],
+  "Ext.form.Label": [],
+  "Ext.form.Labelable": [],
+  "Ext.form.Panel": [
+    "Ext.FormPanel",
+    "Ext.form.FormPanel"
+  ],
+  "Ext.form.RadioGroup": [],
+  "Ext.form.RadioManager": [],
+  "Ext.form.action.Action": [
+    "Ext.form.Action"
+  ],
+  "Ext.form.action.DirectLoad": [
+    "Ext.form.Action.DirectLoad"
+  ],
+  "Ext.form.action.DirectSubmit": [
+    "Ext.form.Action.DirectSubmit"
+  ],
+  "Ext.form.action.Load": [
+    "Ext.form.Action.Load"
+  ],
+  "Ext.form.action.StandardSubmit": [],
+  "Ext.form.action.Submit": [
+    "Ext.form.Action.Submit"
+  ],
+  "Ext.form.field.Base": [
+    "Ext.form.Field",
+    "Ext.form.BaseField"
+  ],
+  "Ext.form.field.Checkbox": [
+    "Ext.form.Checkbox"
+  ],
+  "Ext.form.field.ComboBox": [
+    "Ext.form.ComboBox"
+  ],
+  "Ext.form.field.Date": [
+    "Ext.form.DateField",
+    "Ext.form.Date"
+  ],
+  "Ext.form.field.Display": [
+    "Ext.form.DisplayField",
+    "Ext.form.Display"
+  ],
+  "Ext.form.field.Field": [],
+  "Ext.form.field.File": [
+    "Ext.form.FileUploadField",
+    "Ext.ux.form.FileUploadField",
+    "Ext.form.File"
+  ],
+  "Ext.form.field.FileButton": [],
+  "Ext.form.field.Hidden": [
+    "Ext.form.Hidden"
+  ],
+  "Ext.form.field.HtmlEditor": [
+    "Ext.form.HtmlEditor"
+  ],
+  "Ext.form.field.Number": [
+    "Ext.form.NumberField",
+    "Ext.form.Number"
+  ],
+  "Ext.form.field.Picker": [
+    "Ext.form.Picker"
+  ],
+  "Ext.form.field.Radio": [
+    "Ext.form.Radio"
+  ],
+  "Ext.form.field.Spinner": [
+    "Ext.form.Spinner"
+  ],
+  "Ext.form.field.Text": [
+    "Ext.form.TextField",
+    "Ext.form.Text"
+  ],
+  "Ext.form.field.TextArea": [
+    "Ext.form.TextArea"
+  ],
+  "Ext.form.field.Time": [
+    "Ext.form.TimeField",
+    "Ext.form.Time"
   ],
   "Ext.form.field.Trigger": [
     "Ext.form.TriggerField",
     "Ext.form.TwinTriggerField",
     "Ext.form.Trigger"
   ],
+  "Ext.form.field.VTypes": [
+    "Ext.form.VTypes"
+  ],
+  "Ext.fx.Anim": [],
+  "Ext.fx.Animator": [],
+  "Ext.fx.CubicBezier": [],
+  "Ext.fx.Easing": [],
+  "Ext.fx.Manager": [],
+  "Ext.fx.PropertyHandler": [],
+  "Ext.fx.Queue": [],
+  "Ext.fx.target.Component": [],
+  "Ext.fx.target.CompositeElement": [],
+  "Ext.fx.target.CompositeElementCSS": [],
+  "Ext.fx.target.CompositeSprite": [],
+  "Ext.fx.target.Element": [],
+  "Ext.fx.target.ElementCSS": [],
+  "Ext.fx.target.Sprite": [],
+  "Ext.fx.target.Target": [],
+  "Ext.grid.CellContext": [],
+  "Ext.grid.CellEditor": [],
+  "Ext.grid.ColumnComponentLayout": [],
+  "Ext.grid.ColumnLayout": [],
+  "Ext.grid.ColumnManager": [
+    "Ext.grid.ColumnModel"
+  ],
+  "Ext.grid.Panel": [
+    "Ext.list.ListView",
+    "Ext.ListView",
+    "Ext.grid.GridPanel"
+  ],
+  "Ext.grid.RowEditor": [],
+  "Ext.grid.RowEditorButtons": [],
+  "Ext.grid.View": [],
+  "Ext.grid.ViewDropZone": [],
+  "Ext.grid.column.Action": [
+    "Ext.grid.ActionColumn"
+  ],
+  "Ext.grid.column.Boolean": [
+    "Ext.grid.BooleanColumn"
+  ],
+  "Ext.grid.column.Check": [
+    "Ext.ux.CheckColumn",
+    "Ext.grid.column.CheckColumn"
+  ],
+  "Ext.grid.column.Column": [
+    "Ext.grid.Column"
+  ],
+  "Ext.grid.column.Date": [
+    "Ext.grid.DateColumn"
+  ],
+  "Ext.grid.column.Number": [
+    "Ext.grid.NumberColumn"
+  ],
+  "Ext.grid.column.RowNumberer": [
+    "Ext.grid.RowNumberer"
+  ],
+  "Ext.grid.column.Template": [
+    "Ext.grid.TemplateColumn"
+  ],
+  "Ext.grid.feature.AbstractSummary": [],
+  "Ext.grid.feature.Feature": [],
+  "Ext.grid.feature.GroupStore": [],
+  "Ext.grid.feature.Grouping": [],
+  "Ext.grid.feature.GroupingSummary": [],
+  "Ext.grid.feature.RowBody": [],
+  "Ext.grid.feature.RowWrap": [],
+  "Ext.grid.feature.Summary": [],
+  "Ext.grid.header.Container": [],
+  "Ext.grid.header.DragZone": [],
+  "Ext.grid.header.DropZone": [],
+  "Ext.grid.locking.HeaderContainer": [],
+  "Ext.grid.locking.Lockable": [
+    "Ext.grid.Lockable"
+  ],
+  "Ext.grid.locking.View": [
+    "Ext.grid.LockingView"
+  ],
+  "Ext.grid.plugin.BufferedRenderer": [],
+  "Ext.grid.plugin.BufferedRendererTableView": [],
+  "Ext.grid.plugin.BufferedRendererTreeView": [],
+  "Ext.grid.plugin.CellEditing": [],
+  "Ext.grid.plugin.DivRenderer": [],
+  "Ext.grid.plugin.DragDrop": [],
+  "Ext.grid.plugin.Editing": [],
+  "Ext.grid.plugin.HeaderReorderer": [],
+  "Ext.grid.plugin.HeaderResizer": [],
   "Ext.grid.plugin.RowEditing": [],
-  "Ext.tip.QuickTip": [
-    "Ext.QuickTip"
+  "Ext.grid.plugin.RowExpander": [],
+  "Ext.grid.property.Grid": [
+    "Ext.grid.PropertyGrid"
   ],
-  "Ext.rtl.grid.plugin.HeaderResizer": [],
-  "Ext.form.action.Load": [
-    "Ext.form.Action.Load"
+  "Ext.grid.property.HeaderContainer": [
+    "Ext.grid.PropertyColumnModel"
   ],
-  "Ext.form.field.ComboBox": [
-    "Ext.form.ComboBox"
+  "Ext.grid.property.Property": [
+    "Ext.PropGridProperty"
   ],
+  "Ext.grid.property.Store": [
+    "Ext.grid.PropertyStore"
+  ],
+  "Ext.layout.ClassList": [],
+  "Ext.layout.Context": [],
+  "Ext.layout.ContextItem": [],
+  "Ext.layout.Layout": [],
+  "Ext.layout.SizeModel": [],
+  "Ext.layout.component.Auto": [],
+  "Ext.layout.component.Body": [],
+  "Ext.layout.component.BoundList": [],
+  "Ext.layout.component.Button": [],
+  "Ext.layout.component.Component": [],
+  "Ext.layout.component.Dock": [
+    "Ext.layout.component.AbstractDock"
+  ],
+  "Ext.layout.component.Draw": [],
+  "Ext.layout.component.FieldSet": [],
+  "Ext.layout.component.ProgressBar": [],
+  "Ext.layout.component.field.ComboBox": [],
+  "Ext.layout.component.field.Field": [],
+  "Ext.layout.component.field.FieldContainer": [],
+  "Ext.layout.component.field.HtmlEditor": [],
+  "Ext.layout.component.field.Slider": [],
+  "Ext.layout.component.field.Text": [],
+  "Ext.layout.component.field.TextArea": [],
+  "Ext.layout.component.field.Trigger": [],
+  "Ext.layout.container.Absolute": [
+    "Ext.layout.AbsoluteLayout"
+  ],
+  "Ext.layout.container.Accordion": [
+    "Ext.layout.AccordionLayout"
+  ],
+  "Ext.layout.container.Anchor": [
+    "Ext.layout.AnchorLayout"
+  ],
+  "Ext.layout.container.Auto": [],
   "Ext.layout.container.Border": [
     "Ext.layout.BorderLayout"
   ],
-  "Ext.rtl.layout.container.Column": [],
-  "Ext.data.JsonPStore": [],
-  "Ext.layout.component.field.TextArea": [],
+  "Ext.layout.container.Box": [
+    "Ext.layout.BoxLayout"
+  ],
+  "Ext.layout.container.Card": [
+    "Ext.layout.CardLayout"
+  ],
+  "Ext.layout.container.CheckboxGroup": [],
+  "Ext.layout.container.Column": [
+    "Ext.layout.ColumnLayout"
+  ],
   "Ext.layout.container.Container": [
     "Ext.layout.ContainerLayout"
   ],
-  "Ext.util.Sortable": [],
+  "Ext.layout.container.Editor": [],
+  "Ext.layout.container.Fit": [
+    "Ext.layout.FitLayout"
+  ],
+  "Ext.layout.container.Form": [
+    "Ext.layout.FormLayout"
+  ],
+  "Ext.layout.container.HBox": [
+    "Ext.layout.HBoxLayout"
+  ],
+  "Ext.layout.container.Table": [
+    "Ext.layout.TableLayout"
+  ],
+  "Ext.layout.container.VBox": [
+    "Ext.layout.VBoxLayout"
+  ],
+  "Ext.layout.container.border.Region": [],
+  "Ext.layout.container.boxOverflow.Menu": [
+    "Ext.layout.boxOverflow.Menu"
+  ],
+  "Ext.layout.container.boxOverflow.None": [
+    "Ext.layout.boxOverflow.None"
+  ],
+  "Ext.layout.container.boxOverflow.Scroller": [
+    "Ext.layout.boxOverflow.Scroller"
+  ],
+  "Ext.menu.CheckItem": [],
+  "Ext.menu.ColorPicker": [],
+  "Ext.menu.DatePicker": [],
+  "Ext.menu.Item": [
+    "Ext.menu.TextItem"
+  ],
+  "Ext.menu.KeyNav": [],
+  "Ext.menu.Manager": [
+    "Ext.menu.MenuMgr"
+  ],
+  "Ext.menu.Menu": [],
+  "Ext.menu.Separator": [],
+  "Ext.panel.AbstractPanel": [],
+  "Ext.panel.DD": [],
+  "Ext.panel.Header": [],
+  "Ext.panel.Panel": [
+    "Ext.Panel"
+  ],
+  "Ext.panel.Proxy": [
+    "Ext.dd.PanelProxy"
+  ],
+  "Ext.panel.Table": [],
+  "Ext.panel.Tool": [],
+  "Ext.picker.Color": [
+    "Ext.ColorPalette"
+  ],
+  "Ext.picker.Date": [
+    "Ext.DatePicker"
+  ],
+  "Ext.picker.Month": [
+    "Ext.MonthPicker"
+  ],
+  "Ext.picker.Time": [],
+  "Ext.resizer.BorderSplitter": [],
+  "Ext.resizer.BorderSplitterTracker": [],
+  "Ext.resizer.Handle": [],
+  "Ext.resizer.ResizeTracker": [],
+  "Ext.resizer.Resizer": [
+    "Ext.Resizable"
+  ],
+  "Ext.resizer.Splitter": [],
+  "Ext.resizer.SplitterTracker": [],
+  "Ext.rtl.AbstractComponent": [],
+  "Ext.rtl.EventObjectImpl": [],
+  "Ext.rtl.button.Button": [],
+  "Ext.rtl.chart.Chart": [],
+  "Ext.rtl.chart.Legend": [],
+  "Ext.rtl.chart.LegendItem": [],
+  "Ext.rtl.chart.axis.Axis": [],
+  "Ext.rtl.chart.axis.Gauge": [],
+  "Ext.rtl.chart.series.Cartesian": [],
+  "Ext.rtl.chart.series.Gauge": [],
+  "Ext.rtl.dd.DD": [],
+  "Ext.rtl.dom.Element_anim": [],
+  "Ext.rtl.dom.Element_insertion": [],
+  "Ext.rtl.dom.Element_position": [],
+  "Ext.rtl.dom.Element_scroll": [],
+  "Ext.rtl.dom.Element_static": [],
+  "Ext.rtl.dom.Layer": [],
+  "Ext.rtl.draw.Component": [],
+  "Ext.rtl.draw.Sprite": [],
+  "Ext.rtl.form.Labelable": [],
+  "Ext.rtl.form.field.Checkbox": [],
+  "Ext.rtl.form.field.File": [],
+  "Ext.rtl.form.field.FileButton": [],
+  "Ext.rtl.form.field.Spinner": [],
+  "Ext.rtl.form.field.Trigger": [],
+  "Ext.rtl.grid.CellEditor": [],
+  "Ext.rtl.grid.ColumnLayout": [],
+  "Ext.rtl.grid.RowEditor": [],
+  "Ext.rtl.grid.column.Column": [],
+  "Ext.rtl.grid.feature.Summary": [],
+  "Ext.rtl.grid.plugin.HeaderResizer": [],
+  "Ext.rtl.grid.plugin.RowEditing": [],
+  "Ext.rtl.layout.ContextItem": [],
+  "Ext.rtl.layout.component.Dock": [],
+  "Ext.rtl.layout.component.field.Text": [],
+  "Ext.rtl.layout.component.field.Trigger": [],
+  "Ext.rtl.layout.container.Absolute": [],
+  "Ext.rtl.layout.container.Border": [],
+  "Ext.rtl.layout.container.Box": [],
+  "Ext.rtl.layout.container.CheckboxGroup": [],
+  "Ext.rtl.layout.container.Column": [],
+  "Ext.rtl.layout.container.HBox": [],
+  "Ext.rtl.layout.container.VBox": [],
+  "Ext.rtl.layout.container.boxOverflow.Menu": [],
+  "Ext.rtl.layout.container.boxOverflow.Scroller": [],
+  "Ext.rtl.panel.Header": [],
+  "Ext.rtl.panel.Panel": [],
+  "Ext.rtl.resizer.BorderSplitterTracker": [],
+  "Ext.rtl.resizer.ResizeTracker": [],
+  "Ext.rtl.resizer.SplitterTracker": [],
+  "Ext.rtl.selection.CellModel": [],
+  "Ext.rtl.selection.TreeModel": [],
+  "Ext.rtl.slider.Multi": [],
+  "Ext.rtl.tab.Bar": [],
+  "Ext.rtl.tip.QuickTipManager": [],
+  "Ext.rtl.tree.Column": [],
+  "Ext.rtl.util.Floating": [],
+  "Ext.rtl.util.Renderable": [],
+  "Ext.rtl.view.Table": [],
+  "Ext.selection.CellModel": [],
+  "Ext.selection.CheckboxModel": [],
+  "Ext.selection.DataViewModel": [],
   "Ext.selection.Model": [
     "Ext.AbstractSelectionModel"
   ],
-  "Ext.draw.CompositeSprite": [],
-  "Ext.fx.Queue": [],
-  "Ext.dd.StatusProxy": [],
-  "Ext.form.field.Checkbox": [
-    "Ext.form.Checkbox"
-  ],
-  "Ext.direct.Transaction": [
-    "Ext.Direct.Transaction"
-  ],
-  "Ext.util.Offset": [],
-  "Ext.container.Monitor": [],
-  "Ext.view.DragZone": [],
-  "Ext.util.KeyNav": [
-    "Ext.KeyNav"
-  ],
-  "Ext.rtl.dom.Element_static": [],
-  "Ext.form.field.File": [
-    "Ext.form.FileUploadField",
-    "Ext.ux.form.FileUploadField",
-    "Ext.form.File"
+  "Ext.selection.RowModel": [],
+  "Ext.selection.TreeModel": [],
+  "Ext.slider.Multi": [
+    "Ext.slider.MultiSlider"
   ],
   "Ext.slider.Single": [
     "Ext.Slider",
@@ -21682,1541 +22939,1031 @@ Ext.ClassManager.addNameAlternateMappings({
     "Ext.slider.SingleSlider",
     "Ext.slider.Slider"
   ],
-  "Ext.panel.Proxy": [
-    "Ext.dd.PanelProxy"
-  ],
-  "Ext.fx.target.Target": [],
-  "Ext.ComponentManager": [
-    "Ext.ComponentMgr"
-  ],
-  "Ext.grid.feature.GroupingSummary": [],
-  "Ext.grid.property.HeaderContainer": [
-    "Ext.grid.PropertyColumnModel"
-  ],
-  "Ext.layout.component.BoundList": [],
+  "Ext.slider.Thumb": [],
+  "Ext.slider.Tip": [],
+  "Ext.state.CookieProvider": [],
+  "Ext.state.LocalStorageProvider": [],
+  "Ext.state.Manager": [],
+  "Ext.state.Provider": [],
+  "Ext.state.Stateful": [],
   "Ext.tab.Bar": [],
-  "Ext.app.Application": [],
-  "Ext.layout.container.Accordion": [
-    "Ext.layout.AccordionLayout"
-  ],
-  "Ext.ShadowPool": [],
-  "Ext.grid.locking.HeaderContainer": [],
-  "Ext.resizer.ResizeTracker": [],
-  "Ext.panel.Tool": [],
-  "Ext.layout.container.boxOverflow.None": [
-    "Ext.layout.boxOverflow.None"
-  ],
-  "Ext.grid.CellContext": [],
-  "Ext.tree.View": [],
-  "Ext.ElementLoader": [],
-  "Ext.grid.ColumnComponentLayout": [],
-  "Ext.toolbar.Separator": [
-    "Ext.Toolbar.Separator"
-  ],
-  "Ext.dd.DragZone": [],
-  "Ext.layout.component.FieldSet": [],
-  "Ext.util.Renderable": [],
-  "Ext.util.Bindable": [],
-  "Ext.data.SortTypes": [],
-  "Ext.rtl.layout.container.HBox": [],
-  "Ext.util.Animate": [],
-  "Ext.data.flash.BinaryXhr": [],
-  "Ext.form.field.Date": [
-    "Ext.form.DateField",
-    "Ext.form.Date"
-  ],
-  "Ext.Component": [],
-  "Ext.chart.axis.Axis": [
-    "Ext.chart.Axis"
-  ],
-  "Ext.menu.DatePicker": [],
-  "Ext.fx.target.CompositeSprite": [],
-  "Ext.rtl.tip.QuickTipManager": [],
-  "Ext.form.field.Picker": [
-    "Ext.form.Picker"
-  ],
-  "Ext.fx.Animator": [],
-  "Ext.Ajax": [],
-  "Ext.layout.component.Dock": [
-    "Ext.layout.component.AbstractDock"
-  ],
-  "Ext.util.Filter": [],
-  "Ext.dd.DragDrop": [],
-  "Ext.view.View": [
-    "Ext.DataView"
-  ],
-  "Ext.data.association.BelongsTo": [
-    "Ext.data.BelongsToAssociation"
-  ],
-  "Ext.fx.target.Element": [],
-  "Ext.draw.Surface": [],
-  "Ext.dd.DDProxy": [],
-  "Ext.data.AbstractStore": [],
-  "Ext.grid.plugin.BufferedRendererTreeView": [],
-  "Ext.grid.locking.View": [
-    "Ext.grid.LockingView"
-  ],
-  "Ext.form.action.StandardSubmit": [],
-  "Ext.dd.Registry": [],
-  "Ext.picker.Month": [
-    "Ext.MonthPicker"
-  ],
-  "Ext.menu.Manager": [
-    "Ext.menu.MenuMgr"
-  ],
-  "Ext.container.Container": [
-    "Ext.Container"
-  ],
-  "Ext.rtl.form.field.Spinner": [],
-  "Ext.util.KeyMap": [
-    "Ext.KeyMap"
-  ],
-  "Ext.data.Batch": [],
-  "Ext.resizer.Handle": [],
-  "Ext.util.ElementContainer": [],
-  "Ext.grid.feature.Grouping": [],
   "Ext.tab.Panel": [
     "Ext.TabPanel"
   ],
-  "Ext.rtl.grid.CellEditor": [],
-  "Ext.layout.component.Body": [],
-  "Ext.layout.Context": [],
-  "Ext.layout.component.field.ComboBox": [],
-  "Ext.dd.DDTarget": [],
-  "Ext.chart.Chart": [],
-  "Ext.data.Field": [],
-  "Ext.form.field.FileButton": [],
-  "Ext.chart.series.Gauge": [],
-  "Ext.data.StoreManager": [
-    "Ext.StoreMgr",
-    "Ext.data.StoreMgr",
-    "Ext.StoreManager"
+  "Ext.tab.Tab": [],
+  "Ext.tip.QuickTip": [
+    "Ext.QuickTip"
   ],
-  "Ext.data.IdGenerator": [],
   "Ext.tip.QuickTipManager": [
     "Ext.QuickTips"
   ],
-  "Ext.grid.plugin.Editing": [],
-  "Ext.Queryable": [],
-  "Ext.state.LocalStorageProvider": [],
-  "Ext.grid.RowEditor": [],
-  "Ext.app.EventDomain": [],
-  "Ext.form.action.Action": [
-    "Ext.form.Action"
-  ],
-  "Ext.fx.Easing": [],
-  "Ext.ProgressBar": [],
-  "Ext.tree.ViewDragZone": [],
-  "Ext.data.reader.Array": [
-    "Ext.data.ArrayReader"
-  ],
-  "Ext.picker.Date": [
-    "Ext.DatePicker"
-  ],
-  "Ext.rtl.grid.column.Column": [],
-  "Ext.data.proxy.JsonP": [
-    "Ext.data.ScriptTagProxy"
-  ],
-  "Ext.chart.series.Area": [],
-  "Ext.fx.Anim": [],
-  "Ext.menu.Item": [
-    "Ext.menu.TextItem"
-  ],
-  "Ext.rtl.dom.Element_position": [],
-  "Ext.chart.Legend": [],
-  "Ext.grid.plugin.HeaderReorderer": [],
-  "Ext.rtl.view.Table": [],
-  "Ext.layout.container.VBox": [
-    "Ext.layout.VBoxLayout"
-  ],
-  "Ext.rtl.util.Floating": [],
-  "Ext.view.DropZone": [],
-  "Ext.rtl.tree.Column": [],
-  "Ext.layout.component.Button": [],
-  "Ext.form.field.Hidden": [
-    "Ext.form.Hidden"
-  ],
-  "Ext.form.FieldContainer": [],
-  "Ext.rtl.grid.plugin.RowEditing": [],
-  "Ext.data.proxy.Server": [
-    "Ext.data.ServerProxy"
-  ],
-  "Ext.chart.series.Cartesian": [
-    "Ext.chart.CartesianSeries",
-    "Ext.chart.CartesianChart"
-  ],
-  "Ext.rtl.layout.component.Dock": [],
-  "Ext.grid.column.Column": [
-    "Ext.grid.Column"
-  ],
-  "Ext.data.ResultSet": [],
-  "Ext.data.association.HasMany": [
-    "Ext.data.HasManyAssociation"
-  ],
-  "Ext.layout.container.Fit": [
-    "Ext.layout.FitLayout"
-  ],
-  "Ext.util.CSS": [],
-  "Ext.rtl.AbstractComponent": [],
-  "Ext.layout.component.field.Field": [],
-  "Ext.data.proxy.Ajax": [
-    "Ext.data.HttpProxy",
-    "Ext.data.AjaxProxy"
-  ],
-  "Ext.rtl.EventObjectImpl": [],
-  "Ext.app.domain.Component": [],
-  "Ext.form.Label": [],
-  "Ext.data.writer.Writer": [
-    "Ext.data.DataWriter",
-    "Ext.data.Writer"
-  ],
-  "Ext.view.BoundListKeyNav": [],
-  "Ext.form.FieldSet": [],
-  "Ext.form.field.VTypes": [
-    "Ext.form.VTypes"
-  ],
-  "Ext.fx.PropertyHandler": [],
-  "Ext.form.CheckboxGroup": [],
-  "Ext.data.JsonP": [],
-  "Ext.draw.engine.Vml": [],
-  "Ext.layout.container.CheckboxGroup": [],
-  "Ext.app.domain.Direct": [],
-  "Ext.panel.Header": [],
-  "Ext.app.Controller": [],
-  "Ext.rtl.dom.Layer": [],
-  "Ext.grid.plugin.CellEditing": [],
-  "Ext.form.field.Time": [
-    "Ext.form.TimeField",
-    "Ext.form.Time"
-  ],
-  "Ext.fx.CubicBezier": [],
-  "Ext.button.Cycle": [
-    "Ext.CycleButton"
-  ],
-  "Ext.app.domain.Global": [],
-  "Ext.data.Tree": [],
-  "Ext.ModelManager": [
-    "Ext.ModelMgr"
-  ],
-  "Ext.data.XmlStore": [],
-  "Ext.grid.ViewDropZone": [],
-  "Ext.rtl.slider.Multi": [],
-  "Ext.grid.header.DropZone": [],
-  "Ext.rtl.layout.component.field.Text": [],
-  "Ext.util.HashMap": [],
-  "Ext.grid.column.Template": [
-    "Ext.grid.TemplateColumn"
-  ],
-  "Ext.ComponentLoader": [],
-  "Ext.form.FieldAncestor": [],
-  "Ext.rtl.layout.container.Border": [],
-  "Ext.app.domain.Controller": [],
-  "Ext.chart.axis.Gauge": [],
-  "Ext.layout.container.border.Region": [],
-  "Ext.data.validations": [],
-  "Ext.data.Connection": [],
-  "Ext.resizer.Splitter": [],
-  "Ext.dd.DropZone": [],
-  "Ext.direct.ExceptionEvent": [],
-  "Ext.form.RadioManager": [],
-  "Ext.data.association.HasOne": [
-    "Ext.data.HasOneAssociation"
-  ],
-  "Ext.draw.Text": [],
-  "Ext.window.MessageBox": [],
-  "Ext.fx.target.CompositeElementCSS": [],
-  "Ext.rtl.selection.CellModel": [],
-  "Ext.rtl.layout.ContextItem": [],
-  "Ext.chart.series.Line": [
-    "Ext.chart.LineSeries",
-    "Ext.chart.LineChart"
-  ],
-  "Ext.view.Table": [],
-  "Ext.fx.target.CompositeElement": [],
-  "Ext.fx.Manager": [],
-  "Ext.data.writer.Json": [
-    "Ext.data.JsonWriter"
-  ],
-  "Ext.chart.Label": [],
-  "Ext.grid.View": [],
-  "Ext.Action": [],
-  "Ext.form.Basic": [
-    "Ext.form.BasicForm"
-  ],
-  "Ext.rtl.form.field.Checkbox": [],
-  "Ext.container.Viewport": [
-    "Ext.Viewport"
-  ],
-  "Ext.state.Stateful": [],
-  "Ext.grid.feature.RowBody": [],
-  "Ext.form.field.Text": [
-    "Ext.form.TextField",
-    "Ext.form.Text"
-  ],
-  "Ext.rtl.layout.component.field.Trigger": [],
-  "Ext.data.reader.Xml": [
-    "Ext.data.XmlReader"
-  ],
-  "Ext.grid.feature.AbstractSummary": [],
-  "Ext.chart.axis.Category": [
-    "Ext.chart.CategoryAxis"
-  ],
-  "Ext.rtl.layout.container.boxOverflow.Scroller": [],
-  "Ext.grid.plugin.BufferedRendererTableView": [],
-  "Ext.layout.container.Absolute": [
-    "Ext.layout.AbsoluteLayout"
-  ],
-  "Ext.rtl.layout.container.Box": [],
-  "Ext.data.reader.Json": [
-    "Ext.data.JsonReader"
-  ],
-  "Ext.util.TextMetrics": [],
-  "Ext.data.TreeStore": [],
-  "Ext.view.BoundList": [
-    "Ext.BoundList"
-  ],
-  "Ext.form.field.HtmlEditor": [
-    "Ext.form.HtmlEditor"
-  ],
-  "Ext.layout.container.Form": [
-    "Ext.layout.FormLayout"
-  ],
-  "Ext.chart.MaskLayer": [],
-  "Ext.resizer.BorderSplitterTracker": [],
-  "Ext.util.LruCache": [],
   "Ext.tip.Tip": [
     "Ext.Tip"
-  ],
-  "Ext.grid.column.CheckColumn": [
-    "Ext.ux.CheckColumn"
-  ],
-  "Ext.grid.column.RowNumberer": [
-    "Ext.grid.RowNumberer"
-  ],
-  "Ext.rtl.resizer.SplitterTracker": [],
-  "Ext.grid.feature.RowWrap": [],
-  "Ext.data.proxy.Client": [
-    "Ext.data.ClientProxy"
-  ],
-  "Ext.data.Types": [],
-  "Ext.draw.SpriteDD": [],
-  "Ext.layout.container.boxOverflow.Menu": [
-    "Ext.layout.boxOverflow.Menu"
-  ],
-  "Ext.LoadMask": [],
-  "Ext.rtl.grid.RowEditor": [],
-  "Ext.toolbar.Paging": [
-    "Ext.PagingToolbar"
-  ],
-  "Ext.data.association.Association": [
-    "Ext.data.Association"
-  ],
-  "Ext.tree.ViewDropZone": [],
-  "Ext.toolbar.Toolbar": [
-    "Ext.Toolbar"
   ],
   "Ext.tip.ToolTip": [
     "Ext.ToolTip"
   ],
-  "Ext.chart.Highlight": [],
-  "Ext.state.Manager": [],
-  "Ext.util.Inflector": [],
-  "Ext.grid.Panel": [
-    "Ext.list.ListView",
-    "Ext.ListView",
-    "Ext.grid.GridPanel"
-  ],
-  "Ext.data.NodeStore": [],
-  "Ext.Shadow": [],
-  "Ext.form.action.Submit": [
-    "Ext.form.Action.Submit"
-  ],
-  "Ext.form.Panel": [
-    "Ext.FormPanel",
-    "Ext.form.FormPanel"
-  ],
-  "Ext.chart.series.Series": [],
-  "Ext.data.Request": [],
-  "Ext.dd.DD": [],
   "Ext.toolbar.Fill": [
     "Ext.Toolbar.Fill"
   ],
-  "Ext.data.proxy.WebStorage": [
-    "Ext.data.WebStorageProxy"
-  ],
-  "Ext.util.Floating": [],
-  "Ext.form.action.DirectSubmit": [
-    "Ext.form.Action.DirectSubmit"
-  ],
-  "Ext.util.Cookies": [],
-  "Ext.data.UuidGenerator": [],
-  "Ext.util.Point": [],
-  "Ext.fx.target.Component": [],
-  "Ext.form.CheckboxManager": [],
-  "Ext.form.field.Field": [],
-  "Ext.form.field.Display": [
-    "Ext.form.DisplayField",
-    "Ext.form.Display"
-  ],
-  "Ext.layout.container.Anchor": [
-    "Ext.layout.AnchorLayout"
-  ],
-  "Ext.layout.component.field.Text": [],
-  "Ext.data.DirectStore": [],
-  "Ext.dom.Layer": [
-    "Ext.Layer"
-  ],
-  "Ext.grid.RowEditorButtons": [],
-  "Ext.data.BufferStore": [],
-  "Ext.grid.plugin.DivRenderer": [],
-  "Ext.grid.ColumnLayout": [],
-  "Ext.chart.series.Column": [
-    "Ext.chart.ColumnSeries",
-    "Ext.chart.ColumnChart",
-    "Ext.chart.StackedColumnChart"
-  ],
-  "Ext.AbstractComponent": [],
-  "Ext.flash.Component": [
-    "Ext.FlashComponent"
-  ],
-  "Ext.form.field.Base": [
-    "Ext.form.Field",
-    "Ext.form.BaseField"
-  ],
-  "Ext.grid.feature.GroupStore": [],
-  "Ext.data.SequentialIdGenerator": [],
-  "Ext.grid.header.Container": [],
-  "Ext.container.ButtonGroup": [
-    "Ext.ButtonGroup"
-  ],
-  "Ext.data.PageMap": [],
-  "Ext.grid.column.Action": [
-    "Ext.grid.ActionColumn"
-  ],
-  "Ext.layout.component.field.Trigger": [],
-  "Ext.layout.component.field.FieldContainer": [],
-  "Ext.chart.Shape": [],
-  "Ext.panel.DD": [],
-  "Ext.container.AbstractContainer": [],
-  "Ext.data.ArrayStore": [],
-  "Ext.rtl.layout.container.CheckboxGroup": [],
-  "Ext.window.Window": [
-    "Ext.Window"
-  ],
-  "Ext.picker.Color": [
-    "Ext.ColorPalette"
-  ],
-  "Ext.grid.feature.Feature": [],
-  "Ext.chart.theme.Theme": [],
-  "Ext.util.ClickRepeater": [],
-  "Ext.form.field.Spinner": [
-    "Ext.form.Spinner"
-  ],
-  "Ext.container.DockingContainer": [],
-  "Ext.selection.DataViewModel": [],
-  "Ext.rtl.selection.TreeModel": [],
-  "Ext.dd.DragTracker": [],
-  "Ext.data.Group": [],
-  "Ext.dd.DragDropManager": [
-    "Ext.dd.DragDropMgr",
-    "Ext.dd.DDM"
-  ],
-  "Ext.selection.CheckboxModel": [],
-  "Ext.menu.KeyNav": [],
-  "Ext.layout.container.Column": [
-    "Ext.layout.ColumnLayout"
-  ],
-  "Ext.draw.Matrix": [],
-  "Ext.form.field.Number": [
-    "Ext.form.NumberField",
-    "Ext.form.Number"
-  ],
-  "Ext.rtl.util.Renderable": [],
-  "Ext.data.proxy.Direct": [
-    "Ext.data.DirectProxy"
-  ],
-  "Ext.chart.Navigation": [],
-  "Ext.slider.Tip": [],
-  "Ext.chart.theme.Base": [],
-  "Ext.form.field.TextArea": [
-    "Ext.form.TextArea"
-  ],
-  "Ext.rtl.layout.container.VBox": [],
-  "Ext.form.field.Radio": [
-    "Ext.form.Radio"
-  ],
-  "Ext.layout.component.ProgressBar": [],
-  "Ext.chart.series.Pie": [
-    "Ext.chart.PieSeries",
-    "Ext.chart.PieChart"
-  ],
-  "Ext.tree.plugin.TreeViewDragDrop": [],
-  "Ext.direct.Provider": [],
-  "Ext.data.TreeModel": [],
-  "Ext.layout.Layout": [],
-  "Ext.toolbar.TextItem": [
-    "Ext.Toolbar.TextItem"
-  ],
-  "Ext.rtl.button.Button": [],
-  "Ext.util.AbstractMixedCollection": [],
-  "Ext.data.JsonStore": [],
-  "Ext.button.Split": [
-    "Ext.SplitButton"
-  ],
-  "Ext.dd.DropTarget": [],
-  "Ext.direct.RemotingEvent": [],
-  "Ext.draw.Sprite": [],
-  "Ext.fx.target.Sprite": [],
-  "Ext.data.proxy.LocalStorage": [
-    "Ext.data.LocalStorageProxy"
-  ],
-  "Ext.layout.component.Draw": [],
-  "Ext.AbstractPlugin": [],
-  "Ext.Editor": [],
-  "Ext.chart.axis.Radial": [],
-  "Ext.chart.Tip": [],
-  "Ext.layout.container.Table": [
-    "Ext.layout.TableLayout"
-  ],
-  "Ext.chart.axis.Abstract": [],
-  "Ext.data.proxy.Rest": [
-    "Ext.data.RestProxy"
-  ],
-  "Ext.rtl.layout.container.Absolute": [],
-  "Ext.util.Queue": [],
-  "Ext.state.CookieProvider": [],
-  "Ext.Img": [],
-  "Ext.dd.DragSource": [],
-  "Ext.grid.CellEditor": [],
-  "Ext.layout.ClassList": [],
-  "Ext.button.Manager": [
-    "Ext.ButtonToggleManager"
-  ],
-  "Ext.rtl.form.field.File": [],
-  "Ext.util.Sorter": [],
-  "Ext.resizer.SplitterTracker": [],
-  "Ext.panel.Table": [],
-  "Ext.draw.Color": [],
-  "Ext.chart.series.Bar": [
-    "Ext.chart.BarSeries",
-    "Ext.chart.BarChart",
-    "Ext.chart.StackedBarChart"
-  ],
-  "Ext.PluginManager": [
-    "Ext.PluginMgr"
-  ],
-  "Ext.util.ComponentDragger": [],
-  "Ext.chart.series.Scatter": [],
-  "Ext.chart.Callout": [],
-  "Ext.data.Store": [],
-  "Ext.grid.feature.Summary": [],
-  "Ext.util.ProtoElement": [],
-  "Ext.layout.component.Component": [],
-  "Ext.direct.Manager": [],
-  "Ext.data.proxy.Proxy": [
-    "Ext.data.DataProxy",
-    "Ext.data.Proxy"
-  ],
-  "Ext.menu.CheckItem": [],
-  "Ext.layout.container.Card": [
-    "Ext.layout.CardLayout"
-  ],
-  "Ext.draw.Component": [],
   "Ext.toolbar.Item": [
     "Ext.Toolbar.Item"
   ],
-  "Ext.form.RadioGroup": [],
-  "Ext.rtl.tab.Bar": [],
-  "Ext.rtl.form.field.Trigger": [],
-  "Ext.slider.Thumb": [],
-  "Ext.grid.header.DragZone": [],
-  "Ext.rtl.resizer.ResizeTracker": [],
-  "Ext.form.action.DirectLoad": [
-    "Ext.form.Action.DirectLoad"
+  "Ext.toolbar.Paging": [
+    "Ext.PagingToolbar"
   ],
-  "Ext.picker.Time": [],
-  "Ext.grid.plugin.BufferedRenderer": [],
-  "Ext.resizer.BorderSplitter": [],
-  "Ext.menu.ColorPicker": [],
-  "Ext.ZIndexManager": [
-    "Ext.WindowGroup"
+  "Ext.toolbar.Separator": [
+    "Ext.Toolbar.Separator"
   ],
-  "Ext.menu.Menu": [],
-  "Ext.chart.LegendItem": [],
   "Ext.toolbar.Spacer": [
     "Ext.Toolbar.Spacer"
   ],
-  "Ext.rtl.dd.DD": [],
-  "Ext.panel.Panel": [
-    "Ext.Panel"
+  "Ext.toolbar.TextItem": [
+    "Ext.Toolbar.TextItem"
   ],
-  "Ext.util.Memento": [],
-  "Ext.app.domain.Store": [],
-  "Ext.data.proxy.Memory": [
-    "Ext.data.MemoryProxy"
+  "Ext.toolbar.Toolbar": [
+    "Ext.Toolbar"
   ],
-  "Ext.chart.axis.Time": [
-    "Ext.chart.TimeAxis"
+  "Ext.tree.Column": [],
+  "Ext.tree.Panel": [
+    "Ext.tree.TreePanel",
+    "Ext.TreePanel"
   ],
-  "Ext.grid.plugin.DragDrop": [],
-  "Ext.ComponentQuery": [],
-  "Ext.draw.engine.SvgExporter": [],
-  "Ext.layout.container.Auto": [],
-  "Ext.grid.locking.Lockable": [
-    "Ext.grid.Lockable"
-  ],
-  "Ext.view.AbstractView": [],
-  "Ext.util.Region": [],
-  "Ext.draw.Draw": [],
-  "Ext.fx.target.ElementCSS": [],
-  "Ext.rtl.panel.Panel": [],
-  "Ext.layout.component.field.HtmlEditor": [],
-  "Ext.data.proxy.SessionStorage": [
-    "Ext.data.SessionStorageProxy"
-  ],
-  "Ext.app.EventBus": [],
-  "Ext.menu.Separator": [],
+  "Ext.tree.View": [],
+  "Ext.tree.ViewDragZone": [],
+  "Ext.tree.ViewDropZone": [],
+  "Ext.tree.plugin.TreeViewDragDrop": [],
+  "Ext.util.AbstractMixedCollection": [],
+  "Ext.util.Animate": [],
+  "Ext.util.Bindable": [],
+  "Ext.util.CSS": [],
+  "Ext.util.ClickRepeater": [],
+  "Ext.util.ComponentDragger": [],
+  "Ext.util.Cookies": [],
+  "Ext.util.ElementContainer": [],
+  "Ext.util.Filter": [],
+  "Ext.util.Floating": [],
+  "Ext.util.Grouper": [],
+  "Ext.util.HashMap": [],
   "Ext.util.History": [
     "Ext.History"
   ],
-  "Ext.direct.Event": [],
-  "Ext.direct.RemotingMethod": [],
-  "Ext.dd.ScrollManager": [],
-  "Ext.chart.Mask": [],
-  "Ext.rtl.dom.Element_anim": [],
-  "Ext.selection.CellModel": [],
+  "Ext.util.Inflector": [],
+  "Ext.util.KeyMap": [
+    "Ext.KeyMap"
+  ],
+  "Ext.util.KeyNav": [
+    "Ext.KeyNav"
+  ],
+  "Ext.util.LocalStorage": [],
+  "Ext.util.LruCache": [],
+  "Ext.util.Memento": [],
+  "Ext.util.MixedCollection": [],
+  "Ext.util.Offset": [],
+  "Ext.util.Point": [],
+  "Ext.util.ProtoElement": [],
+  "Ext.util.Queue": [],
+  "Ext.util.Region": [],
+  "Ext.util.Renderable": [],
+  "Ext.util.Sortable": [],
+  "Ext.util.Sorter": [],
+  "Ext.util.TextMetrics": [],
+  "Ext.view.AbstractView": [],
+  "Ext.view.BoundList": [
+    "Ext.BoundList"
+  ],
+  "Ext.view.BoundListKeyNav": [],
+  "Ext.view.DragZone": [],
+  "Ext.view.DropZone": [],
+  "Ext.view.NodeCache": [],
+  "Ext.view.Table": [],
   "Ext.view.TableLayout": [],
-  "Ext.rtl.panel.Header": [],
-  "Ext.rtl.dom.Element_scroll": [],
-  "Ext.state.Provider": [],
-  "Ext.layout.container.Editor": [],
-  "Ext.grid.ColumnManager": [
-    "Ext.grid.ColumnModel"
+  "Ext.view.View": [
+    "Ext.DataView"
   ],
-  "Ext.data.Errors": [],
-  "Ext.grid.plugin.RowExpander": [],
-  "Ext.selection.TreeModel": [],
-  "Ext.form.Labelable": [],
-  "Ext.grid.column.Number": [
-    "Ext.grid.NumberColumn"
-  ],
-  "Ext.draw.engine.Svg": [],
-  "Ext.grid.property.Grid": [
-    "Ext.grid.PropertyGrid"
-  ],
-  "Ext.FocusManager": [
-    "Ext.FocusMgr"
-  ],
-  "Ext.AbstractManager": [],
-  "Ext.chart.series.Radar": [],
-  "Ext.rtl.dom.Element_insertion": [],
-  "Ext.grid.property.Property": [
-    "Ext.PropGridProperty"
-  ],
-  "Ext.chart.TipSurface": [],
-  "Ext.layout.SizeModel": [],
-  "Ext.grid.column.Boolean": [
-    "Ext.grid.BooleanColumn"
-  ],
-  "Ext.direct.PollingProvider": [],
-  "Ext.grid.plugin.HeaderResizer": [],
-  "Ext.tree.Column": [],
-  "Ext.data.writer.Xml": [
-    "Ext.data.XmlWriter"
-  ],
-  "Ext.slider.Multi": [
-    "Ext.slider.MultiSlider"
-  ],
-  "Ext.panel.AbstractPanel": [],
-  "Ext.layout.component.field.Slider": [],
-  "Ext.chart.axis.Numeric": [
-    "Ext.chart.NumericAxis"
-  ],
-  "Ext.layout.container.boxOverflow.Scroller": [
-    "Ext.layout.boxOverflow.Scroller"
-  ],
-  "Ext.data.Operation": [],
-  "Ext.resizer.Resizer": [
-    "Ext.Resizable"
-  ],
-  "Ext.layout.container.HBox": [
-    "Ext.layout.HBoxLayout"
-  ],
-  "Ext.selection.RowModel": [],
-  "Ext.layout.ContextItem": [],
-  "Ext.util.MixedCollection": []
+  "Ext.window.MessageBox": [],
+  "Ext.window.Window": [
+    "Ext.Window"
+  ]
 });
 Ext.ClassManager.addNameAliasMappings({
-  "Ext.rtl.layout.container.boxOverflow.Menu": [],
-  "Ext.draw.engine.ImageExporter": [],
-  "Ext.layout.component.Auto": [
-    "layout.autocomponent"
+  "Ext.AbstractComponent": [],
+  "Ext.AbstractManager": [],
+  "Ext.AbstractPlugin": [],
+  "Ext.Action": [],
+  "Ext.Ajax": [],
+  "Ext.Component": [
+    "widget.box",
+    "widget.component"
   ],
-  "Ext.grid.property.Store": [],
-  "Ext.layout.container.Box": [
-    "layout.box"
+  "Ext.ComponentLoader": [],
+  "Ext.ComponentManager": [],
+  "Ext.ComponentQuery": [],
+  "Ext.Editor": [
+    "widget.editor"
   ],
-  "Ext.rtl.resizer.BorderSplitterTracker": [],
-  "Ext.direct.JsonProvider": [
-    "direct.jsonprovider"
+  "Ext.ElementLoader": [],
+  "Ext.FocusManager": [],
+  "Ext.Img": [
+    "widget.image",
+    "widget.imagecomponent"
   ],
-  "Ext.tree.Panel": [
-    "widget.treepanel"
+  "Ext.LoadMask": [
+    "widget.loadmask"
   ],
-  "Ext.data.Model": [],
-  "Ext.data.reader.Reader": [],
-  "Ext.tab.Tab": [
-    "widget.tab"
+  "Ext.ModelManager": [],
+  "Ext.PluginManager": [],
+  "Ext.ProgressBar": [
+    "widget.progressbar"
   ],
+  "Ext.Queryable": [],
+  "Ext.Shadow": [],
+  "Ext.ShadowPool": [],
+  "Ext.ZIndexManager": [],
+  "Ext.app.Application": [],
+  "Ext.app.Controller": [],
+  "Ext.app.EventBus": [],
+  "Ext.app.EventDomain": [],
+  "Ext.app.domain.Component": [],
+  "Ext.app.domain.Controller": [],
+  "Ext.app.domain.Direct": [],
+  "Ext.app.domain.Global": [],
+  "Ext.app.domain.Store": [],
   "Ext.button.Button": [
     "widget.button"
   ],
-  "Ext.util.Grouper": [],
+  "Ext.button.Cycle": [
+    "widget.cycle"
+  ],
+  "Ext.button.Manager": [],
+  "Ext.button.Split": [
+    "widget.splitbutton"
+  ],
+  "Ext.chart.Callout": [],
+  "Ext.chart.Chart": [
+    "widget.chart"
+  ],
+  "Ext.chart.Highlight": [],
+  "Ext.chart.Label": [],
+  "Ext.chart.Legend": [],
+  "Ext.chart.LegendItem": [],
+  "Ext.chart.Mask": [],
+  "Ext.chart.MaskLayer": [],
+  "Ext.chart.Navigation": [],
+  "Ext.chart.Shape": [],
+  "Ext.chart.Tip": [],
+  "Ext.chart.TipSurface": [],
+  "Ext.chart.axis.Abstract": [],
+  "Ext.chart.axis.Axis": [],
+  "Ext.chart.axis.Category": [
+    "axis.category"
+  ],
+  "Ext.chart.axis.Gauge": [
+    "axis.gauge"
+  ],
+  "Ext.chart.axis.Numeric": [
+    "axis.numeric"
+  ],
+  "Ext.chart.axis.Radial": [
+    "axis.radial"
+  ],
+  "Ext.chart.axis.Time": [
+    "axis.time"
+  ],
+  "Ext.chart.series.Area": [
+    "series.area"
+  ],
+  "Ext.chart.series.Bar": [
+    "series.bar"
+  ],
+  "Ext.chart.series.Cartesian": [],
+  "Ext.chart.series.Column": [
+    "series.column"
+  ],
+  "Ext.chart.series.Gauge": [
+    "series.gauge"
+  ],
+  "Ext.chart.series.Line": [
+    "series.line"
+  ],
+  "Ext.chart.series.Pie": [
+    "series.pie"
+  ],
+  "Ext.chart.series.Radar": [
+    "series.radar"
+  ],
+  "Ext.chart.series.Scatter": [
+    "series.scatter"
+  ],
+  "Ext.chart.series.Series": [],
+  "Ext.chart.theme.Base": [],
+  "Ext.chart.theme.Theme": [],
+  "Ext.container.AbstractContainer": [],
+  "Ext.container.ButtonGroup": [
+    "widget.buttongroup"
+  ],
+  "Ext.container.Container": [
+    "widget.container"
+  ],
+  "Ext.container.DockingContainer": [],
+  "Ext.container.Monitor": [],
+  "Ext.container.Viewport": [
+    "widget.viewport"
+  ],
+  "Ext.data.AbstractStore": [],
+  "Ext.data.ArrayStore": [
+    "store.array"
+  ],
+  "Ext.data.Batch": [],
+  "Ext.data.BufferStore": [
+    "store.buffer"
+  ],
+  "Ext.data.Connection": [],
+  "Ext.data.DirectStore": [
+    "store.direct"
+  ],
+  "Ext.data.Errors": [],
+  "Ext.data.Field": [
+    "data.field"
+  ],
+  "Ext.data.Group": [],
+  "Ext.data.IdGenerator": [],
+  "Ext.data.JsonP": [],
+  "Ext.data.JsonPStore": [
+    "store.jsonp"
+  ],
+  "Ext.data.JsonStore": [
+    "store.json"
+  ],
+  "Ext.data.Model": [],
+  "Ext.data.NodeInterface": [],
+  "Ext.data.NodeStore": [
+    "store.node"
+  ],
+  "Ext.data.Operation": [],
+  "Ext.data.PageMap": [],
+  "Ext.data.Request": [],
+  "Ext.data.ResultSet": [],
+  "Ext.data.SequentialIdGenerator": [
+    "idgen.sequential"
+  ],
+  "Ext.data.SortTypes": [],
+  "Ext.data.Store": [
+    "store.store"
+  ],
+  "Ext.data.StoreManager": [],
+  "Ext.data.Tree": [
+    "data.tree"
+  ],
+  "Ext.data.TreeModel": [],
+  "Ext.data.TreeStore": [
+    "store.tree"
+  ],
+  "Ext.data.Types": [],
+  "Ext.data.UuidGenerator": [
+    "idgen.uuid"
+  ],
+  "Ext.data.XmlStore": [
+    "store.xml"
+  ],
+  "Ext.data.amf.Encoder": [
+    "data.amf.Encoder"
+  ],
+  "Ext.data.amf.Packet": [],
+  "Ext.data.amf.Proxy": [
+    "proxy.amf"
+  ],
+  "Ext.data.amf.Reader": [
+    "reader.amf"
+  ],
+  "Ext.data.amf.RemotingMessage": [
+    "data.amf.remotingmessage"
+  ],
+  "Ext.data.amf.XmlDecoder": [
+    "data.amf.xmldecoder"
+  ],
+  "Ext.data.amf.XmlEncoder": [
+    "data.amf.xmlencoder"
+  ],
+  "Ext.data.association.Association": [],
+  "Ext.data.association.BelongsTo": [
+    "association.belongsto"
+  ],
+  "Ext.data.association.HasMany": [
+    "association.hasmany"
+  ],
+  "Ext.data.association.HasOne": [
+    "association.hasone"
+  ],
+  "Ext.data.flash.BinaryXhr": [],
+  "Ext.data.proxy.Ajax": [
+    "proxy.ajax"
+  ],
+  "Ext.data.proxy.Client": [],
+  "Ext.data.proxy.Direct": [
+    "proxy.direct"
+  ],
+  "Ext.data.proxy.JsonP": [
+    "proxy.jsonp",
+    "proxy.scripttag"
+  ],
+  "Ext.data.proxy.LocalStorage": [
+    "proxy.localstorage"
+  ],
+  "Ext.data.proxy.Memory": [
+    "proxy.memory"
+  ],
+  "Ext.data.proxy.Proxy": [
+    "proxy.proxy"
+  ],
+  "Ext.data.proxy.Rest": [
+    "proxy.rest"
+  ],
+  "Ext.data.proxy.Server": [
+    "proxy.server"
+  ],
+  "Ext.data.proxy.SessionStorage": [
+    "proxy.sessionstorage"
+  ],
+  "Ext.data.proxy.WebStorage": [],
+  "Ext.data.reader.Array": [
+    "reader.array"
+  ],
+  "Ext.data.reader.Json": [
+    "reader.json"
+  ],
+  "Ext.data.reader.Reader": [],
+  "Ext.data.reader.Xml": [
+    "reader.xml"
+  ],
+  "Ext.data.soap.Proxy": [
+    "proxy.soap"
+  ],
+  "Ext.data.soap.Reader": [
+    "reader.soap"
+  ],
+  "Ext.data.validations": [],
+  "Ext.data.writer.Json": [
+    "writer.json"
+  ],
+  "Ext.data.writer.Writer": [
+    "writer.base"
+  ],
+  "Ext.data.writer.Xml": [
+    "writer.xml"
+  ],
+  "Ext.dd.DD": [],
+  "Ext.dd.DDProxy": [],
+  "Ext.dd.DDTarget": [],
+  "Ext.dd.DragDrop": [],
+  "Ext.dd.DragDropManager": [],
+  "Ext.dd.DragSource": [],
+  "Ext.dd.DragTracker": [],
+  "Ext.dd.DragZone": [],
+  "Ext.dd.DropTarget": [],
+  "Ext.dd.DropZone": [],
+  "Ext.dd.Registry": [],
+  "Ext.dd.ScrollManager": [],
+  "Ext.dd.StatusProxy": [],
+  "Ext.direct.AmfRemotingProvider": [
+    "direct.amfremotingprovider"
+  ],
+  "Ext.direct.Event": [
+    "direct.event"
+  ],
+  "Ext.direct.ExceptionEvent": [
+    "direct.exception"
+  ],
+  "Ext.direct.JsonProvider": [
+    "direct.jsonprovider"
+  ],
+  "Ext.direct.Manager": [],
+  "Ext.direct.PollingProvider": [
+    "direct.pollingprovider"
+  ],
+  "Ext.direct.Provider": [
+    "direct.provider"
+  ],
+  "Ext.direct.RemotingEvent": [
+    "direct.rpc"
+  ],
+  "Ext.direct.RemotingMethod": [],
   "Ext.direct.RemotingProvider": [
     "direct.remotingprovider"
   ],
-  "Ext.data.NodeInterface": [],
-  "Ext.view.NodeCache": [],
-  "Ext.grid.column.Date": [
-    "widget.datecolumn"
+  "Ext.direct.Transaction": [
+    "direct.transaction"
   ],
-  "Ext.form.field.Trigger": [
-    "widget.trigger",
-    "widget.triggerfield"
+  "Ext.dom.Layer": [],
+  "Ext.draw.Color": [],
+  "Ext.draw.Component": [
+    "widget.draw"
   ],
-  "Ext.grid.plugin.RowEditing": [
-    "plugin.rowediting"
+  "Ext.draw.CompositeSprite": [],
+  "Ext.draw.Draw": [],
+  "Ext.draw.Matrix": [],
+  "Ext.draw.Sprite": [],
+  "Ext.draw.SpriteDD": [],
+  "Ext.draw.Surface": [],
+  "Ext.draw.Text": [
+    "widget.text"
   ],
-  "Ext.tip.QuickTip": [
-    "widget.quicktip"
+  "Ext.draw.engine.ImageExporter": [],
+  "Ext.draw.engine.Svg": [],
+  "Ext.draw.engine.SvgExporter": [],
+  "Ext.draw.engine.Vml": [],
+  "Ext.env.Browser": [],
+  "Ext.env.FeatureDetector": [],
+  "Ext.env.OS": [],
+  "Ext.flash.Component": [
+    "widget.flash"
   ],
-  "Ext.rtl.grid.plugin.HeaderResizer": [],
+  "Ext.form.Basic": [],
+  "Ext.form.CheckboxGroup": [
+    "widget.checkboxgroup"
+  ],
+  "Ext.form.CheckboxManager": [],
+  "Ext.form.FieldAncestor": [],
+  "Ext.form.FieldContainer": [
+    "widget.fieldcontainer"
+  ],
+  "Ext.form.FieldSet": [
+    "widget.fieldset"
+  ],
+  "Ext.form.Label": [
+    "widget.label"
+  ],
+  "Ext.form.Labelable": [],
+  "Ext.form.Panel": [
+    "widget.form"
+  ],
+  "Ext.form.RadioGroup": [
+    "widget.radiogroup"
+  ],
+  "Ext.form.RadioManager": [],
+  "Ext.form.action.Action": [],
+  "Ext.form.action.DirectLoad": [
+    "formaction.directload"
+  ],
+  "Ext.form.action.DirectSubmit": [
+    "formaction.directsubmit"
+  ],
   "Ext.form.action.Load": [
     "formaction.load"
+  ],
+  "Ext.form.action.StandardSubmit": [
+    "formaction.standardsubmit"
+  ],
+  "Ext.form.action.Submit": [
+    "formaction.submit"
+  ],
+  "Ext.form.field.Base": [
+    "widget.field"
+  ],
+  "Ext.form.field.Checkbox": [
+    "widget.checkbox",
+    "widget.checkboxfield"
   ],
   "Ext.form.field.ComboBox": [
     "widget.combo",
     "widget.combobox"
   ],
-  "Ext.layout.container.Border": [
-    "layout.border"
+  "Ext.form.field.Date": [
+    "widget.datefield"
   ],
-  "Ext.rtl.layout.container.Column": [],
-  "Ext.data.JsonPStore": [
-    "store.jsonp"
+  "Ext.form.field.Display": [
+    "widget.displayfield"
   ],
-  "Ext.layout.component.field.TextArea": [
-    "layout.textareafield"
-  ],
-  "Ext.layout.container.Container": [
-    "layout.container"
-  ],
-  "Ext.util.Sortable": [],
-  "Ext.selection.Model": [],
-  "Ext.draw.CompositeSprite": [],
-  "Ext.fx.Queue": [],
-  "Ext.dd.StatusProxy": [],
-  "Ext.form.field.Checkbox": [
-    "widget.checkbox",
-    "widget.checkboxfield"
-  ],
-  "Ext.direct.Transaction": [
-    "direct.transaction"
-  ],
-  "Ext.util.Offset": [],
-  "Ext.container.Monitor": [],
-  "Ext.view.DragZone": [],
-  "Ext.util.KeyNav": [],
-  "Ext.rtl.dom.Element_static": [],
+  "Ext.form.field.Field": [],
   "Ext.form.field.File": [
     "widget.filefield",
     "widget.fileuploadfield"
   ],
-  "Ext.slider.Single": [
-    "widget.slider",
-    "widget.sliderfield"
-  ],
-  "Ext.panel.Proxy": [],
-  "Ext.fx.target.Target": [],
-  "Ext.ComponentManager": [],
-  "Ext.grid.feature.GroupingSummary": [
-    "feature.groupingsummary"
-  ],
-  "Ext.grid.property.HeaderContainer": [],
-  "Ext.layout.component.BoundList": [
-    "layout.boundlist"
-  ],
-  "Ext.tab.Bar": [
-    "widget.tabbar"
-  ],
-  "Ext.app.Application": [],
-  "Ext.layout.container.Accordion": [
-    "layout.accordion"
-  ],
-  "Ext.ShadowPool": [],
-  "Ext.grid.locking.HeaderContainer": [],
-  "Ext.resizer.ResizeTracker": [],
-  "Ext.panel.Tool": [
-    "widget.tool"
-  ],
-  "Ext.layout.container.boxOverflow.None": [],
-  "Ext.grid.CellContext": [],
-  "Ext.tree.View": [
-    "widget.treeview"
-  ],
-  "Ext.ElementLoader": [],
-  "Ext.grid.ColumnComponentLayout": [
-    "layout.columncomponent"
-  ],
-  "Ext.toolbar.Separator": [
-    "widget.tbseparator"
-  ],
-  "Ext.dd.DragZone": [],
-  "Ext.layout.component.FieldSet": [
-    "layout.fieldset"
-  ],
-  "Ext.util.Renderable": [],
-  "Ext.util.Bindable": [],
-  "Ext.data.SortTypes": [],
-  "Ext.rtl.layout.container.HBox": [],
-  "Ext.util.Animate": [],
-  "Ext.data.flash.BinaryXhr": [],
-  "Ext.form.field.Date": [
-    "widget.datefield"
-  ],
-  "Ext.Component": [
-    "widget.box",
-    "widget.component"
-  ],
-  "Ext.chart.axis.Axis": [],
-  "Ext.menu.DatePicker": [
-    "widget.datemenu"
-  ],
-  "Ext.fx.target.CompositeSprite": [],
-  "Ext.rtl.tip.QuickTipManager": [],
-  "Ext.form.field.Picker": [
-    "widget.pickerfield"
-  ],
-  "Ext.fx.Animator": [],
-  "Ext.Ajax": [],
-  "Ext.layout.component.Dock": [
-    "layout.dock"
-  ],
-  "Ext.util.Filter": [],
-  "Ext.dd.DragDrop": [],
-  "Ext.view.View": [
-    "widget.dataview"
-  ],
-  "Ext.data.association.BelongsTo": [
-    "association.belongsto"
-  ],
-  "Ext.fx.target.Element": [],
-  "Ext.draw.Surface": [],
-  "Ext.dd.DDProxy": [],
-  "Ext.data.AbstractStore": [],
-  "Ext.grid.plugin.BufferedRendererTreeView": [],
-  "Ext.grid.locking.View": [],
-  "Ext.form.action.StandardSubmit": [
-    "formaction.standardsubmit"
-  ],
-  "Ext.dd.Registry": [],
-  "Ext.picker.Month": [
-    "widget.monthpicker"
-  ],
-  "Ext.menu.Manager": [],
-  "Ext.container.Container": [
-    "widget.container"
-  ],
-  "Ext.rtl.form.field.Spinner": [],
-  "Ext.util.KeyMap": [],
-  "Ext.data.Batch": [],
-  "Ext.resizer.Handle": [],
-  "Ext.util.ElementContainer": [],
-  "Ext.grid.feature.Grouping": [
-    "feature.grouping"
-  ],
-  "Ext.tab.Panel": [
-    "widget.tabpanel"
-  ],
-  "Ext.rtl.grid.CellEditor": [],
-  "Ext.layout.component.Body": [
-    "layout.body"
-  ],
-  "Ext.layout.Context": [],
-  "Ext.layout.component.field.ComboBox": [
-    "layout.combobox"
-  ],
-  "Ext.dd.DDTarget": [],
-  "Ext.chart.Chart": [
-    "widget.chart"
-  ],
-  "Ext.data.Field": [
-    "data.field"
-  ],
   "Ext.form.field.FileButton": [
     "widget.filebutton"
-  ],
-  "Ext.chart.series.Gauge": [
-    "series.gauge"
-  ],
-  "Ext.data.StoreManager": [],
-  "Ext.data.IdGenerator": [],
-  "Ext.tip.QuickTipManager": [],
-  "Ext.grid.plugin.Editing": [
-    "editing.editing"
-  ],
-  "Ext.Queryable": [],
-  "Ext.state.LocalStorageProvider": [
-    "state.localstorage"
-  ],
-  "Ext.grid.RowEditor": [
-    "widget.roweditor"
-  ],
-  "Ext.app.EventDomain": [],
-  "Ext.form.action.Action": [],
-  "Ext.fx.Easing": [],
-  "Ext.ProgressBar": [
-    "widget.progressbar"
-  ],
-  "Ext.tree.ViewDragZone": [],
-  "Ext.data.reader.Array": [
-    "reader.array"
-  ],
-  "Ext.picker.Date": [
-    "widget.datepicker"
-  ],
-  "Ext.rtl.grid.column.Column": [],
-  "Ext.data.proxy.JsonP": [
-    "proxy.jsonp",
-    "proxy.scripttag"
-  ],
-  "Ext.chart.series.Area": [
-    "series.area"
-  ],
-  "Ext.fx.Anim": [],
-  "Ext.menu.Item": [
-    "widget.menuitem"
-  ],
-  "Ext.rtl.dom.Element_position": [],
-  "Ext.chart.Legend": [],
-  "Ext.grid.plugin.HeaderReorderer": [
-    "plugin.gridheaderreorderer"
-  ],
-  "Ext.rtl.view.Table": [],
-  "Ext.layout.container.VBox": [
-    "layout.vbox"
-  ],
-  "Ext.rtl.util.Floating": [],
-  "Ext.view.DropZone": [],
-  "Ext.rtl.tree.Column": [],
-  "Ext.layout.component.Button": [
-    "layout.button"
   ],
   "Ext.form.field.Hidden": [
     "widget.hidden",
     "widget.hiddenfield"
   ],
-  "Ext.form.FieldContainer": [
-    "widget.fieldcontainer"
-  ],
-  "Ext.rtl.grid.plugin.RowEditing": [],
-  "Ext.data.proxy.Server": [
-    "proxy.server"
-  ],
-  "Ext.chart.series.Cartesian": [],
-  "Ext.rtl.layout.component.Dock": [],
-  "Ext.grid.column.Column": [
-    "widget.gridcolumn"
-  ],
-  "Ext.data.ResultSet": [],
-  "Ext.data.association.HasMany": [
-    "association.hasmany"
-  ],
-  "Ext.layout.container.Fit": [
-    "layout.fit"
-  ],
-  "Ext.util.CSS": [],
-  "Ext.rtl.AbstractComponent": [],
-  "Ext.layout.component.field.Field": [
-    "layout.field"
-  ],
-  "Ext.data.proxy.Ajax": [
-    "proxy.ajax"
-  ],
-  "Ext.rtl.EventObjectImpl": [],
-  "Ext.app.domain.Component": [],
-  "Ext.form.Label": [
-    "widget.label"
-  ],
-  "Ext.data.writer.Writer": [
-    "writer.base"
-  ],
-  "Ext.view.BoundListKeyNav": [],
-  "Ext.form.FieldSet": [
-    "widget.fieldset"
-  ],
-  "Ext.form.field.VTypes": [],
-  "Ext.fx.PropertyHandler": [],
-  "Ext.form.CheckboxGroup": [
-    "widget.checkboxgroup"
-  ],
-  "Ext.data.JsonP": [],
-  "Ext.draw.engine.Vml": [],
-  "Ext.layout.container.CheckboxGroup": [
-    "layout.checkboxgroup"
-  ],
-  "Ext.app.domain.Direct": [],
-  "Ext.panel.Header": [
-    "widget.header"
-  ],
-  "Ext.app.Controller": [],
-  "Ext.rtl.dom.Layer": [],
-  "Ext.grid.plugin.CellEditing": [
-    "plugin.cellediting"
-  ],
-  "Ext.form.field.Time": [
-    "widget.timefield"
-  ],
-  "Ext.fx.CubicBezier": [],
-  "Ext.button.Cycle": [
-    "widget.cycle"
-  ],
-  "Ext.app.domain.Global": [],
-  "Ext.data.Tree": [
-    "data.tree"
-  ],
-  "Ext.ModelManager": [],
-  "Ext.data.XmlStore": [
-    "store.xml"
-  ],
-  "Ext.grid.ViewDropZone": [],
-  "Ext.rtl.slider.Multi": [],
-  "Ext.grid.header.DropZone": [],
-  "Ext.rtl.layout.component.field.Text": [],
-  "Ext.util.HashMap": [],
-  "Ext.grid.column.Template": [
-    "widget.templatecolumn"
-  ],
-  "Ext.ComponentLoader": [],
-  "Ext.form.FieldAncestor": [],
-  "Ext.rtl.layout.container.Border": [],
-  "Ext.app.domain.Controller": [],
-  "Ext.chart.axis.Gauge": [
-    "axis.gauge"
-  ],
-  "Ext.layout.container.border.Region": [],
-  "Ext.data.validations": [],
-  "Ext.data.Connection": [],
-  "Ext.resizer.Splitter": [
-    "widget.splitter"
-  ],
-  "Ext.dd.DropZone": [],
-  "Ext.direct.ExceptionEvent": [
-    "direct.exception"
-  ],
-  "Ext.form.RadioManager": [],
-  "Ext.data.association.HasOne": [
-    "association.hasone"
-  ],
-  "Ext.draw.Text": [
-    "widget.text"
-  ],
-  "Ext.window.MessageBox": [
-    "widget.messagebox"
-  ],
-  "Ext.fx.target.CompositeElementCSS": [],
-  "Ext.rtl.selection.CellModel": [],
-  "Ext.rtl.layout.ContextItem": [],
-  "Ext.chart.series.Line": [
-    "series.line"
-  ],
-  "Ext.view.Table": [
-    "widget.tableview"
-  ],
-  "Ext.fx.target.CompositeElement": [],
-  "Ext.fx.Manager": [],
-  "Ext.data.writer.Json": [
-    "writer.json"
-  ],
-  "Ext.chart.Label": [],
-  "Ext.grid.View": [
-    "widget.gridview"
-  ],
-  "Ext.Action": [],
-  "Ext.form.Basic": [],
-  "Ext.rtl.form.field.Checkbox": [],
-  "Ext.container.Viewport": [
-    "widget.viewport"
-  ],
-  "Ext.state.Stateful": [],
-  "Ext.grid.feature.RowBody": [
-    "feature.rowbody"
-  ],
-  "Ext.form.field.Text": [
-    "widget.textfield"
-  ],
-  "Ext.rtl.layout.component.field.Trigger": [],
-  "Ext.data.reader.Xml": [
-    "reader.xml"
-  ],
-  "Ext.grid.feature.AbstractSummary": [
-    "feature.abstractsummary"
-  ],
-  "Ext.chart.axis.Category": [
-    "axis.category"
-  ],
-  "Ext.rtl.layout.container.boxOverflow.Scroller": [],
-  "Ext.grid.plugin.BufferedRendererTableView": [],
-  "Ext.layout.container.Absolute": [
-    "layout.absolute"
-  ],
-  "Ext.rtl.layout.container.Box": [],
-  "Ext.data.reader.Json": [
-    "reader.json"
-  ],
-  "Ext.util.TextMetrics": [],
-  "Ext.data.TreeStore": [
-    "store.tree"
-  ],
-  "Ext.view.BoundList": [
-    "widget.boundlist"
-  ],
   "Ext.form.field.HtmlEditor": [
     "widget.htmleditor"
   ],
-  "Ext.layout.container.Form": [
-    "layout.form"
-  ],
-  "Ext.chart.MaskLayer": [],
-  "Ext.resizer.BorderSplitterTracker": [],
-  "Ext.util.LruCache": [],
-  "Ext.tip.Tip": [],
-  "Ext.grid.column.CheckColumn": [
-    "widget.checkcolumn"
-  ],
-  "Ext.grid.column.RowNumberer": [
-    "widget.rownumberer"
-  ],
-  "Ext.rtl.resizer.SplitterTracker": [],
-  "Ext.grid.feature.RowWrap": [
-    "feature.rowwrap"
-  ],
-  "Ext.data.proxy.Client": [],
-  "Ext.data.Types": [],
-  "Ext.draw.SpriteDD": [],
-  "Ext.layout.container.boxOverflow.Menu": [],
-  "Ext.LoadMask": [
-    "widget.loadmask"
-  ],
-  "Ext.rtl.grid.RowEditor": [],
-  "Ext.toolbar.Paging": [
-    "widget.pagingtoolbar"
-  ],
-  "Ext.data.association.Association": [],
-  "Ext.tree.ViewDropZone": [],
-  "Ext.toolbar.Toolbar": [
-    "widget.toolbar"
-  ],
-  "Ext.tip.ToolTip": [
-    "widget.tooltip"
-  ],
-  "Ext.chart.Highlight": [],
-  "Ext.state.Manager": [],
-  "Ext.util.Inflector": [],
-  "Ext.grid.Panel": [
-    "widget.grid",
-    "widget.gridpanel"
-  ],
-  "Ext.data.NodeStore": [
-    "store.node"
-  ],
-  "Ext.Shadow": [],
-  "Ext.form.action.Submit": [
-    "formaction.submit"
-  ],
-  "Ext.form.Panel": [
-    "widget.form"
-  ],
-  "Ext.chart.series.Series": [],
-  "Ext.data.Request": [],
-  "Ext.dd.DD": [],
-  "Ext.toolbar.Fill": [
-    "widget.tbfill"
-  ],
-  "Ext.data.proxy.WebStorage": [],
-  "Ext.util.Floating": [],
-  "Ext.form.action.DirectSubmit": [
-    "formaction.directsubmit"
-  ],
-  "Ext.util.Cookies": [],
-  "Ext.data.UuidGenerator": [
-    "idgen.uuid"
-  ],
-  "Ext.util.Point": [],
-  "Ext.fx.target.Component": [],
-  "Ext.form.CheckboxManager": [],
-  "Ext.form.field.Field": [],
-  "Ext.form.field.Display": [
-    "widget.displayfield"
-  ],
-  "Ext.layout.container.Anchor": [
-    "layout.anchor"
-  ],
-  "Ext.layout.component.field.Text": [
-    "layout.textfield"
-  ],
-  "Ext.data.DirectStore": [
-    "store.direct"
-  ],
-  "Ext.dom.Layer": [],
-  "Ext.grid.RowEditorButtons": [
-    "widget.roweditorbuttons"
-  ],
-  "Ext.data.BufferStore": [
-    "store.buffer"
-  ],
-  "Ext.grid.plugin.DivRenderer": [
-    "plugin.divrenderer"
-  ],
-  "Ext.grid.ColumnLayout": [
-    "layout.gridcolumn"
-  ],
-  "Ext.chart.series.Column": [
-    "series.column"
-  ],
-  "Ext.AbstractComponent": [],
-  "Ext.flash.Component": [
-    "widget.flash"
-  ],
-  "Ext.form.field.Base": [
-    "widget.field"
-  ],
-  "Ext.grid.feature.GroupStore": [],
-  "Ext.data.SequentialIdGenerator": [
-    "idgen.sequential"
-  ],
-  "Ext.grid.header.Container": [
-    "widget.headercontainer"
-  ],
-  "Ext.container.ButtonGroup": [
-    "widget.buttongroup"
-  ],
-  "Ext.data.PageMap": [],
-  "Ext.grid.column.Action": [
-    "widget.actioncolumn"
-  ],
-  "Ext.layout.component.field.Trigger": [
-    "layout.triggerfield"
-  ],
-  "Ext.layout.component.field.FieldContainer": [
-    "layout.fieldcontainer"
-  ],
-  "Ext.chart.Shape": [],
-  "Ext.panel.DD": [],
-  "Ext.container.AbstractContainer": [],
-  "Ext.data.ArrayStore": [
-    "store.array"
-  ],
-  "Ext.rtl.layout.container.CheckboxGroup": [],
-  "Ext.window.Window": [
-    "widget.window"
-  ],
-  "Ext.picker.Color": [
-    "widget.colorpicker"
-  ],
-  "Ext.grid.feature.Feature": [
-    "feature.feature"
-  ],
-  "Ext.chart.theme.Theme": [],
-  "Ext.util.ClickRepeater": [],
-  "Ext.form.field.Spinner": [
-    "widget.spinnerfield"
-  ],
-  "Ext.container.DockingContainer": [],
-  "Ext.selection.DataViewModel": [],
-  "Ext.rtl.selection.TreeModel": [],
-  "Ext.dd.DragTracker": [],
-  "Ext.data.Group": [],
-  "Ext.dd.DragDropManager": [],
-  "Ext.selection.CheckboxModel": [
-    "selection.checkboxmodel"
-  ],
-  "Ext.menu.KeyNav": [],
-  "Ext.layout.container.Column": [
-    "layout.column"
-  ],
-  "Ext.draw.Matrix": [],
   "Ext.form.field.Number": [
     "widget.numberfield"
   ],
-  "Ext.rtl.util.Renderable": [],
-  "Ext.data.proxy.Direct": [
-    "proxy.direct"
+  "Ext.form.field.Picker": [
+    "widget.pickerfield"
   ],
-  "Ext.chart.Navigation": [],
-  "Ext.slider.Tip": [
-    "widget.slidertip"
-  ],
-  "Ext.chart.theme.Base": [],
-  "Ext.form.field.TextArea": [
-    "widget.textarea",
-    "widget.textareafield"
-  ],
-  "Ext.rtl.layout.container.VBox": [],
   "Ext.form.field.Radio": [
     "widget.radio",
     "widget.radiofield"
   ],
-  "Ext.layout.component.ProgressBar": [
-    "layout.progressbar"
+  "Ext.form.field.Spinner": [
+    "widget.spinnerfield"
   ],
-  "Ext.chart.series.Pie": [
-    "series.pie"
+  "Ext.form.field.Text": [
+    "widget.textfield"
   ],
-  "Ext.tree.plugin.TreeViewDragDrop": [
-    "plugin.treeviewdragdrop"
+  "Ext.form.field.TextArea": [
+    "widget.textarea",
+    "widget.textareafield"
   ],
-  "Ext.direct.Provider": [
-    "direct.provider"
+  "Ext.form.field.Time": [
+    "widget.timefield"
   ],
-  "Ext.data.TreeModel": [],
-  "Ext.layout.Layout": [],
-  "Ext.toolbar.TextItem": [
-    "widget.tbtext"
+  "Ext.form.field.Trigger": [
+    "widget.trigger",
+    "widget.triggerfield"
   ],
-  "Ext.rtl.button.Button": [],
-  "Ext.util.AbstractMixedCollection": [],
-  "Ext.data.JsonStore": [
-    "store.json"
-  ],
-  "Ext.button.Split": [
-    "widget.splitbutton"
-  ],
-  "Ext.dd.DropTarget": [],
-  "Ext.direct.RemotingEvent": [
-    "direct.rpc"
-  ],
-  "Ext.draw.Sprite": [],
+  "Ext.form.field.VTypes": [],
+  "Ext.fx.Anim": [],
+  "Ext.fx.Animator": [],
+  "Ext.fx.CubicBezier": [],
+  "Ext.fx.Easing": [],
+  "Ext.fx.Manager": [],
+  "Ext.fx.PropertyHandler": [],
+  "Ext.fx.Queue": [],
+  "Ext.fx.target.Component": [],
+  "Ext.fx.target.CompositeElement": [],
+  "Ext.fx.target.CompositeElementCSS": [],
+  "Ext.fx.target.CompositeSprite": [],
+  "Ext.fx.target.Element": [],
+  "Ext.fx.target.ElementCSS": [],
   "Ext.fx.target.Sprite": [],
-  "Ext.data.proxy.LocalStorage": [
-    "proxy.localstorage"
-  ],
-  "Ext.layout.component.Draw": [
-    "layout.draw"
-  ],
-  "Ext.AbstractPlugin": [],
-  "Ext.Editor": [
-    "widget.editor"
-  ],
-  "Ext.chart.axis.Radial": [
-    "axis.radial"
-  ],
-  "Ext.chart.Tip": [],
-  "Ext.layout.container.Table": [
-    "layout.table"
-  ],
-  "Ext.chart.axis.Abstract": [],
-  "Ext.data.proxy.Rest": [
-    "proxy.rest"
-  ],
-  "Ext.rtl.layout.container.Absolute": [],
-  "Ext.util.Queue": [],
-  "Ext.state.CookieProvider": [],
-  "Ext.Img": [
-    "widget.image",
-    "widget.imagecomponent"
-  ],
-  "Ext.dd.DragSource": [],
+  "Ext.fx.target.Target": [],
+  "Ext.grid.CellContext": [],
   "Ext.grid.CellEditor": [],
-  "Ext.layout.ClassList": [],
-  "Ext.button.Manager": [],
-  "Ext.rtl.form.field.File": [],
-  "Ext.util.Sorter": [],
-  "Ext.resizer.SplitterTracker": [],
-  "Ext.panel.Table": [
-    "widget.tablepanel"
+  "Ext.grid.ColumnComponentLayout": [
+    "layout.columncomponent"
   ],
-  "Ext.draw.Color": [],
-  "Ext.chart.series.Bar": [
-    "series.bar"
+  "Ext.grid.ColumnLayout": [
+    "layout.gridcolumn"
   ],
-  "Ext.PluginManager": [],
-  "Ext.util.ComponentDragger": [],
-  "Ext.chart.series.Scatter": [
-    "series.scatter"
+  "Ext.grid.ColumnManager": [],
+  "Ext.grid.Panel": [
+    "widget.grid",
+    "widget.gridpanel"
   ],
-  "Ext.chart.Callout": [],
-  "Ext.data.Store": [
-    "store.store"
+  "Ext.grid.RowEditor": [
+    "widget.roweditor"
+  ],
+  "Ext.grid.RowEditorButtons": [
+    "widget.roweditorbuttons"
+  ],
+  "Ext.grid.View": [
+    "widget.gridview"
+  ],
+  "Ext.grid.ViewDropZone": [],
+  "Ext.grid.column.Action": [
+    "widget.actioncolumn"
+  ],
+  "Ext.grid.column.Boolean": [
+    "widget.booleancolumn"
+  ],
+  "Ext.grid.column.Check": [
+    "widget.checkcolumn"
+  ],
+  "Ext.grid.column.Column": [
+    "widget.gridcolumn"
+  ],
+  "Ext.grid.column.Date": [
+    "widget.datecolumn"
+  ],
+  "Ext.grid.column.Number": [
+    "widget.numbercolumn"
+  ],
+  "Ext.grid.column.RowNumberer": [
+    "widget.rownumberer"
+  ],
+  "Ext.grid.column.Template": [
+    "widget.templatecolumn"
+  ],
+  "Ext.grid.feature.AbstractSummary": [
+    "feature.abstractsummary"
+  ],
+  "Ext.grid.feature.Feature": [
+    "feature.feature"
+  ],
+  "Ext.grid.feature.GroupStore": [],
+  "Ext.grid.feature.Grouping": [
+    "feature.grouping"
+  ],
+  "Ext.grid.feature.GroupingSummary": [
+    "feature.groupingsummary"
+  ],
+  "Ext.grid.feature.RowBody": [
+    "feature.rowbody"
+  ],
+  "Ext.grid.feature.RowWrap": [
+    "feature.rowwrap"
   ],
   "Ext.grid.feature.Summary": [
     "feature.summary"
   ],
-  "Ext.util.ProtoElement": [],
-  "Ext.layout.component.Component": [],
-  "Ext.direct.Manager": [],
-  "Ext.data.proxy.Proxy": [
-    "proxy.proxy"
+  "Ext.grid.header.Container": [
+    "widget.headercontainer"
   ],
-  "Ext.menu.CheckItem": [
-    "widget.menucheckitem"
-  ],
-  "Ext.layout.container.Card": [
-    "layout.card"
-  ],
-  "Ext.draw.Component": [
-    "widget.draw"
-  ],
-  "Ext.toolbar.Item": [
-    "widget.tbitem"
-  ],
-  "Ext.form.RadioGroup": [
-    "widget.radiogroup"
-  ],
-  "Ext.rtl.tab.Bar": [],
-  "Ext.rtl.form.field.Trigger": [],
-  "Ext.slider.Thumb": [],
   "Ext.grid.header.DragZone": [],
-  "Ext.rtl.resizer.ResizeTracker": [],
-  "Ext.form.action.DirectLoad": [
-    "formaction.directload"
-  ],
-  "Ext.picker.Time": [
-    "widget.timepicker"
-  ],
+  "Ext.grid.header.DropZone": [],
+  "Ext.grid.locking.HeaderContainer": [],
+  "Ext.grid.locking.Lockable": [],
+  "Ext.grid.locking.View": [],
   "Ext.grid.plugin.BufferedRenderer": [
     "plugin.bufferedrenderer"
   ],
-  "Ext.resizer.BorderSplitter": [
-    "widget.bordersplitter"
+  "Ext.grid.plugin.BufferedRendererTableView": [],
+  "Ext.grid.plugin.BufferedRendererTreeView": [],
+  "Ext.grid.plugin.CellEditing": [
+    "plugin.cellediting"
   ],
-  "Ext.menu.ColorPicker": [
-    "widget.colormenu"
-  ],
-  "Ext.ZIndexManager": [],
-  "Ext.menu.Menu": [
-    "widget.menu"
-  ],
-  "Ext.chart.LegendItem": [],
-  "Ext.toolbar.Spacer": [
-    "widget.tbspacer"
-  ],
-  "Ext.rtl.dd.DD": [],
-  "Ext.panel.Panel": [
-    "widget.panel"
-  ],
-  "Ext.util.Memento": [],
-  "Ext.app.domain.Store": [],
-  "Ext.data.proxy.Memory": [
-    "proxy.memory"
-  ],
-  "Ext.chart.axis.Time": [
-    "axis.time"
+  "Ext.grid.plugin.DivRenderer": [
+    "plugin.divrenderer"
   ],
   "Ext.grid.plugin.DragDrop": [
     "plugin.gridviewdragdrop"
   ],
-  "Ext.ComponentQuery": [],
-  "Ext.draw.engine.SvgExporter": [],
-  "Ext.layout.container.Auto": [
-    "layout.auto",
-    "layout.autocontainer"
+  "Ext.grid.plugin.Editing": [
+    "editing.editing"
   ],
-  "Ext.grid.locking.Lockable": [],
-  "Ext.view.AbstractView": [],
-  "Ext.util.Region": [],
-  "Ext.draw.Draw": [],
-  "Ext.fx.target.ElementCSS": [],
-  "Ext.rtl.panel.Panel": [],
-  "Ext.layout.component.field.HtmlEditor": [
-    "layout.htmleditor"
-  ],
-  "Ext.data.proxy.SessionStorage": [
-    "proxy.sessionstorage"
-  ],
-  "Ext.app.EventBus": [],
-  "Ext.menu.Separator": [
-    "widget.menuseparator"
-  ],
-  "Ext.util.History": [],
-  "Ext.direct.Event": [
-    "direct.event"
-  ],
-  "Ext.direct.RemotingMethod": [],
-  "Ext.dd.ScrollManager": [],
-  "Ext.chart.Mask": [],
-  "Ext.rtl.dom.Element_anim": [],
-  "Ext.selection.CellModel": [
-    "selection.cellmodel"
-  ],
-  "Ext.view.TableLayout": [
-    "layout.tableview"
-  ],
-  "Ext.rtl.panel.Header": [],
-  "Ext.rtl.dom.Element_scroll": [],
-  "Ext.state.Provider": [],
-  "Ext.layout.container.Editor": [
-    "layout.editor"
-  ],
-  "Ext.grid.ColumnManager": [],
-  "Ext.data.Errors": [],
-  "Ext.grid.plugin.RowExpander": [
-    "plugin.rowexpander"
-  ],
-  "Ext.selection.TreeModel": [
-    "selection.treemodel"
-  ],
-  "Ext.form.Labelable": [],
-  "Ext.grid.column.Number": [
-    "widget.numbercolumn"
-  ],
-  "Ext.draw.engine.Svg": [],
-  "Ext.grid.property.Grid": [
-    "widget.propertygrid"
-  ],
-  "Ext.FocusManager": [],
-  "Ext.AbstractManager": [],
-  "Ext.chart.series.Radar": [
-    "series.radar"
-  ],
-  "Ext.rtl.dom.Element_insertion": [],
-  "Ext.grid.property.Property": [],
-  "Ext.chart.TipSurface": [],
-  "Ext.layout.SizeModel": [],
-  "Ext.grid.column.Boolean": [
-    "widget.booleancolumn"
-  ],
-  "Ext.direct.PollingProvider": [
-    "direct.pollingprovider"
+  "Ext.grid.plugin.HeaderReorderer": [
+    "plugin.gridheaderreorderer"
   ],
   "Ext.grid.plugin.HeaderResizer": [
     "plugin.gridheaderresizer"
   ],
-  "Ext.tree.Column": [
-    "widget.treecolumn"
+  "Ext.grid.plugin.RowEditing": [
+    "plugin.rowediting"
   ],
-  "Ext.data.writer.Xml": [
-    "writer.xml"
+  "Ext.grid.plugin.RowExpander": [
+    "plugin.rowexpander"
+  ],
+  "Ext.grid.property.Grid": [
+    "widget.propertygrid"
+  ],
+  "Ext.grid.property.HeaderContainer": [],
+  "Ext.grid.property.Property": [],
+  "Ext.grid.property.Store": [],
+  "Ext.layout.ClassList": [],
+  "Ext.layout.Context": [],
+  "Ext.layout.ContextItem": [],
+  "Ext.layout.Layout": [],
+  "Ext.layout.SizeModel": [],
+  "Ext.layout.component.Auto": [
+    "layout.autocomponent"
+  ],
+  "Ext.layout.component.Body": [
+    "layout.body"
+  ],
+  "Ext.layout.component.BoundList": [
+    "layout.boundlist"
+  ],
+  "Ext.layout.component.Button": [
+    "layout.button"
+  ],
+  "Ext.layout.component.Component": [],
+  "Ext.layout.component.Dock": [
+    "layout.dock"
+  ],
+  "Ext.layout.component.Draw": [
+    "layout.draw"
+  ],
+  "Ext.layout.component.FieldSet": [
+    "layout.fieldset"
+  ],
+  "Ext.layout.component.ProgressBar": [
+    "layout.progressbar"
+  ],
+  "Ext.layout.component.field.ComboBox": [
+    "layout.combobox"
+  ],
+  "Ext.layout.component.field.Field": [
+    "layout.field"
+  ],
+  "Ext.layout.component.field.FieldContainer": [
+    "layout.fieldcontainer"
+  ],
+  "Ext.layout.component.field.HtmlEditor": [
+    "layout.htmleditor"
+  ],
+  "Ext.layout.component.field.Slider": [
+    "layout.sliderfield"
+  ],
+  "Ext.layout.component.field.Text": [
+    "layout.textfield"
+  ],
+  "Ext.layout.component.field.TextArea": [
+    "layout.textareafield"
+  ],
+  "Ext.layout.component.field.Trigger": [
+    "layout.triggerfield"
+  ],
+  "Ext.layout.container.Absolute": [
+    "layout.absolute"
+  ],
+  "Ext.layout.container.Accordion": [
+    "layout.accordion"
+  ],
+  "Ext.layout.container.Anchor": [
+    "layout.anchor"
+  ],
+  "Ext.layout.container.Auto": [
+    "layout.auto",
+    "layout.autocontainer"
+  ],
+  "Ext.layout.container.Border": [
+    "layout.border"
+  ],
+  "Ext.layout.container.Box": [
+    "layout.box"
+  ],
+  "Ext.layout.container.Card": [
+    "layout.card"
+  ],
+  "Ext.layout.container.CheckboxGroup": [
+    "layout.checkboxgroup"
+  ],
+  "Ext.layout.container.Column": [
+    "layout.column"
+  ],
+  "Ext.layout.container.Container": [
+    "layout.container"
+  ],
+  "Ext.layout.container.Editor": [
+    "layout.editor"
+  ],
+  "Ext.layout.container.Fit": [
+    "layout.fit"
+  ],
+  "Ext.layout.container.Form": [
+    "layout.form"
+  ],
+  "Ext.layout.container.HBox": [
+    "layout.hbox"
+  ],
+  "Ext.layout.container.Table": [
+    "layout.table"
+  ],
+  "Ext.layout.container.VBox": [
+    "layout.vbox"
+  ],
+  "Ext.layout.container.border.Region": [],
+  "Ext.layout.container.boxOverflow.Menu": [],
+  "Ext.layout.container.boxOverflow.None": [],
+  "Ext.layout.container.boxOverflow.Scroller": [],
+  "Ext.menu.CheckItem": [
+    "widget.menucheckitem"
+  ],
+  "Ext.menu.ColorPicker": [
+    "widget.colormenu"
+  ],
+  "Ext.menu.DatePicker": [
+    "widget.datemenu"
+  ],
+  "Ext.menu.Item": [
+    "widget.menuitem"
+  ],
+  "Ext.menu.KeyNav": [],
+  "Ext.menu.Manager": [],
+  "Ext.menu.Menu": [
+    "widget.menu"
+  ],
+  "Ext.menu.Separator": [
+    "widget.menuseparator"
+  ],
+  "Ext.panel.AbstractPanel": [],
+  "Ext.panel.DD": [],
+  "Ext.panel.Header": [
+    "widget.header"
+  ],
+  "Ext.panel.Panel": [
+    "widget.panel"
+  ],
+  "Ext.panel.Proxy": [],
+  "Ext.panel.Table": [
+    "widget.tablepanel"
+  ],
+  "Ext.panel.Tool": [
+    "widget.tool"
+  ],
+  "Ext.picker.Color": [
+    "widget.colorpicker"
+  ],
+  "Ext.picker.Date": [
+    "widget.datepicker"
+  ],
+  "Ext.picker.Month": [
+    "widget.monthpicker"
+  ],
+  "Ext.picker.Time": [
+    "widget.timepicker"
+  ],
+  "Ext.resizer.BorderSplitter": [
+    "widget.bordersplitter"
+  ],
+  "Ext.resizer.BorderSplitterTracker": [],
+  "Ext.resizer.Handle": [],
+  "Ext.resizer.ResizeTracker": [],
+  "Ext.resizer.Resizer": [],
+  "Ext.resizer.Splitter": [
+    "widget.splitter"
+  ],
+  "Ext.resizer.SplitterTracker": [],
+  "Ext.rtl.AbstractComponent": [],
+  "Ext.rtl.EventObjectImpl": [],
+  "Ext.rtl.button.Button": [],
+  "Ext.rtl.chart.Chart": [],
+  "Ext.rtl.chart.Legend": [],
+  "Ext.rtl.chart.LegendItem": [],
+  "Ext.rtl.chart.axis.Axis": [],
+  "Ext.rtl.chart.axis.Gauge": [],
+  "Ext.rtl.chart.series.Cartesian": [],
+  "Ext.rtl.chart.series.Gauge": [],
+  "Ext.rtl.dd.DD": [],
+  "Ext.rtl.dom.Element_anim": [],
+  "Ext.rtl.dom.Element_insertion": [],
+  "Ext.rtl.dom.Element_position": [],
+  "Ext.rtl.dom.Element_scroll": [],
+  "Ext.rtl.dom.Element_static": [],
+  "Ext.rtl.dom.Layer": [],
+  "Ext.rtl.draw.Component": [],
+  "Ext.rtl.draw.Sprite": [],
+  "Ext.rtl.form.Labelable": [],
+  "Ext.rtl.form.field.Checkbox": [],
+  "Ext.rtl.form.field.File": [],
+  "Ext.rtl.form.field.FileButton": [],
+  "Ext.rtl.form.field.Spinner": [],
+  "Ext.rtl.form.field.Trigger": [],
+  "Ext.rtl.grid.CellEditor": [],
+  "Ext.rtl.grid.ColumnLayout": [],
+  "Ext.rtl.grid.RowEditor": [],
+  "Ext.rtl.grid.column.Column": [],
+  "Ext.rtl.grid.feature.Summary": [],
+  "Ext.rtl.grid.plugin.HeaderResizer": [],
+  "Ext.rtl.grid.plugin.RowEditing": [],
+  "Ext.rtl.layout.ContextItem": [],
+  "Ext.rtl.layout.component.Dock": [],
+  "Ext.rtl.layout.component.field.Text": [],
+  "Ext.rtl.layout.component.field.Trigger": [],
+  "Ext.rtl.layout.container.Absolute": [],
+  "Ext.rtl.layout.container.Border": [],
+  "Ext.rtl.layout.container.Box": [],
+  "Ext.rtl.layout.container.CheckboxGroup": [],
+  "Ext.rtl.layout.container.Column": [],
+  "Ext.rtl.layout.container.HBox": [],
+  "Ext.rtl.layout.container.VBox": [],
+  "Ext.rtl.layout.container.boxOverflow.Menu": [],
+  "Ext.rtl.layout.container.boxOverflow.Scroller": [],
+  "Ext.rtl.panel.Header": [],
+  "Ext.rtl.panel.Panel": [],
+  "Ext.rtl.resizer.BorderSplitterTracker": [],
+  "Ext.rtl.resizer.ResizeTracker": [],
+  "Ext.rtl.resizer.SplitterTracker": [],
+  "Ext.rtl.selection.CellModel": [],
+  "Ext.rtl.selection.TreeModel": [],
+  "Ext.rtl.slider.Multi": [],
+  "Ext.rtl.tab.Bar": [],
+  "Ext.rtl.tip.QuickTipManager": [],
+  "Ext.rtl.tree.Column": [],
+  "Ext.rtl.util.Floating": [],
+  "Ext.rtl.util.Renderable": [],
+  "Ext.rtl.view.Table": [],
+  "Ext.selection.CellModel": [
+    "selection.cellmodel"
+  ],
+  "Ext.selection.CheckboxModel": [
+    "selection.checkboxmodel"
+  ],
+  "Ext.selection.DataViewModel": [],
+  "Ext.selection.Model": [],
+  "Ext.selection.RowModel": [
+    "selection.rowmodel"
+  ],
+  "Ext.selection.TreeModel": [
+    "selection.treemodel"
   ],
   "Ext.slider.Multi": [
     "widget.multislider"
   ],
-  "Ext.panel.AbstractPanel": [],
-  "Ext.layout.component.field.Slider": [
-    "layout.sliderfield"
+  "Ext.slider.Single": [
+    "widget.slider",
+    "widget.sliderfield"
   ],
-  "Ext.chart.axis.Numeric": [
-    "axis.numeric"
+  "Ext.slider.Thumb": [],
+  "Ext.slider.Tip": [
+    "widget.slidertip"
   ],
-  "Ext.layout.container.boxOverflow.Scroller": [],
-  "Ext.data.Operation": [],
-  "Ext.resizer.Resizer": [],
-  "Ext.layout.container.HBox": [
-    "layout.hbox"
+  "Ext.state.CookieProvider": [],
+  "Ext.state.LocalStorageProvider": [
+    "state.localstorage"
   ],
-  "Ext.selection.RowModel": [
-    "selection.rowmodel"
+  "Ext.state.Manager": [],
+  "Ext.state.Provider": [],
+  "Ext.state.Stateful": [],
+  "Ext.tab.Bar": [
+    "widget.tabbar"
   ],
-  "Ext.layout.ContextItem": [],
-  "Ext.util.MixedCollection": []
+  "Ext.tab.Panel": [
+    "widget.tabpanel"
+  ],
+  "Ext.tab.Tab": [
+    "widget.tab"
+  ],
+  "Ext.tip.QuickTip": [
+    "widget.quicktip"
+  ],
+  "Ext.tip.QuickTipManager": [],
+  "Ext.tip.Tip": [
+    "widget.tip"
+  ],
+  "Ext.tip.ToolTip": [
+    "widget.tooltip"
+  ],
+  "Ext.toolbar.Fill": [
+    "widget.tbfill"
+  ],
+  "Ext.toolbar.Item": [
+    "widget.tbitem"
+  ],
+  "Ext.toolbar.Paging": [
+    "widget.pagingtoolbar"
+  ],
+  "Ext.toolbar.Separator": [
+    "widget.tbseparator"
+  ],
+  "Ext.toolbar.Spacer": [
+    "widget.tbspacer"
+  ],
+  "Ext.toolbar.TextItem": [
+    "widget.tbtext"
+  ],
+  "Ext.toolbar.Toolbar": [
+    "widget.toolbar"
+  ],
+  "Ext.tree.Column": [
+    "widget.treecolumn"
+  ],
+  "Ext.tree.Panel": [
+    "widget.treepanel"
+  ],
+  "Ext.tree.View": [
+    "widget.treeview"
+  ],
+  "Ext.tree.ViewDragZone": [],
+  "Ext.tree.ViewDropZone": [],
+  "Ext.tree.plugin.TreeViewDragDrop": [
+    "plugin.treeviewdragdrop"
+  ],
+  "Ext.util.AbstractMixedCollection": [],
+  "Ext.util.Animate": [],
+  "Ext.util.Bindable": [],
+  "Ext.util.CSS": [],
+  "Ext.util.ClickRepeater": [],
+  "Ext.util.ComponentDragger": [],
+  "Ext.util.Cookies": [],
+  "Ext.util.ElementContainer": [],
+  "Ext.util.Filter": [],
+  "Ext.util.Floating": [],
+  "Ext.util.Grouper": [],
+  "Ext.util.HashMap": [],
+  "Ext.util.History": [],
+  "Ext.util.Inflector": [],
+  "Ext.util.KeyMap": [],
+  "Ext.util.KeyNav": [],
+  "Ext.util.LocalStorage": [],
+  "Ext.util.LruCache": [],
+  "Ext.util.Memento": [],
+  "Ext.util.MixedCollection": [],
+  "Ext.util.Offset": [],
+  "Ext.util.Point": [],
+  "Ext.util.ProtoElement": [],
+  "Ext.util.Queue": [],
+  "Ext.util.Region": [],
+  "Ext.util.Renderable": [],
+  "Ext.util.Sortable": [],
+  "Ext.util.Sorter": [],
+  "Ext.util.TextMetrics": [],
+  "Ext.view.AbstractView": [],
+  "Ext.view.BoundList": [
+    "widget.boundlist"
+  ],
+  "Ext.view.BoundListKeyNav": [],
+  "Ext.view.DragZone": [],
+  "Ext.view.DropZone": [],
+  "Ext.view.NodeCache": [],
+  "Ext.view.Table": [
+    "widget.tableview"
+  ],
+  "Ext.view.TableLayout": [
+    "layout.tableview"
+  ],
+  "Ext.view.View": [
+    "widget.dataview"
+  ],
+  "Ext.window.MessageBox": [
+    "widget.messagebox"
+  ],
+  "Ext.window.Window": [
+    "widget.window"
+  ]
 });

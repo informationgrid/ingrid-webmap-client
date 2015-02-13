@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.chart.series.Line
@@ -109,6 +106,47 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * an object as highlight so that markers animate smoothly to the properties in highlight
  * when hovered. The second series has `fill=true` which means that the line will also
  * have an area below it of the same color.
+ *
+ * In some uses, a line will not be continuous and may have gaps. In order to accomplish this,
+ * the data must return `false` and the series will not be continues for this data point.
+ *
+ *     @example
+ *     Ext.create('Ext.chart.Chart', {
+ *           renderTo: Ext.getBody(),
+ *           height: 300,
+ *           width: 500,
+ *           axes: [{
+ *               position: 'bottom',
+ *               title: 'X',
+ *               fields: ['x'],
+ *               type: 'Numeric'
+ *           }, {
+ *               position: 'left',
+ *               title: 'Y',
+ *               fields: ['y'],
+ *               type: 'Numeric'
+ *           }],
+ *           series: [{
+ *               xField: 'x',
+ *               yField: 'y',
+ *               type: 'line'
+ *           }],
+ *           store: {
+ *               fields: [
+ *                   'x', 'y'
+ *               ],
+ *               data: [
+ *                   { x: 0,   y: 0     },
+ *                   { x: 25,  y: 25    },
+ *                   { x: 50,  y: false },
+ *                   { x: 75,  y: 75    },
+ *                   { x: 100, y: 100   }
+ *               ]
+ *           }
+ *       });
+ *
+ * The third data point has a `y` value of `false` which will make the line not be drawn for this
+ * data point causing the line to be split into two different lines.
  *
  * **Note:** In the series definition remember to explicitly set the axis to bind the
  * values of the line series to. This can be done by using the `axis` configuration property.
@@ -306,10 +344,9 @@ Ext.define('Ext.chart.series.Line', {
             axes = [].concat(me.axis),
             shadowBarAttr,
             xValues = [],
-            xValueMap = {},
             yValues = [],
-            yValueMap = {},
             onbreak = false,
+            reverse = me.reverse,
             storeIndices = [],
             markerStyle = Ext.apply({}, me.markerStyle),
             seriesStyle = me.seriesStyle,
@@ -320,8 +357,10 @@ Ext.define('Ext.chart.series.Line', {
             boundAxes = me.getAxesForXAndYFields(),
             boundXAxis = boundAxes.xAxis,
             boundYAxis = boundAxes.yAxis,
-            xAxisType = boundXAxis ? chartAxes.get(boundXAxis).type : '',
-            yAxisType = boundYAxis ? chartAxes.get(boundYAxis).type : '',
+            xAxis = chartAxes && chartAxes.get(boundXAxis),
+            yAxis = chartAxes && chartAxes.get(boundYAxis),
+            xAxisType = boundXAxis ? xAxis && xAxis.type : '',
+            yAxisType = boundYAxis ? yAxis && yAxis.type : '',
             shadows, shadow, shindex, fromPath, fill, fillPath, rendererAttributes,
             x, y, prevX, prevY, firstX, firstY, markerCount, i, j, ln, axis, ends, marker, markerAux, item, xValue,
             yValue, coords, xScale, yScale, minX, maxX, minY, maxY, line, animation, endMarkerStyle,
@@ -398,14 +437,14 @@ Ext.define('Ext.chart.series.Line', {
         bbox = me.bbox;
         me.clipRect = [bbox.x, bbox.y, bbox.width, bbox.height];
 
-        if (axis = chartAxes.get(boundXAxis)) {
-            ends = axis.applyData();
+        if (xAxis) {
+            ends = xAxis.applyData();
             minX = ends.from;
             maxX = ends.to;
         }
 
-        if (axis = chartAxes.get(boundYAxis)) {
-            ends = axis.applyData();
+        if (yAxis) {
+            ends = yAxis.applyData();
             minY = ends.from;
             maxY = ends.to;
         }
@@ -438,31 +477,30 @@ Ext.define('Ext.chart.series.Line', {
         else {
             yScale = bbox.height / ((maxY - minY) || (storeCount - 1) || 1);
         }
+        
         // Extract all x and y values from the store
         for (i = 0, ln = data.length; i < ln; i++) {
             record = data[i];
             xValue = record.get(me.xField);
-            if (xAxisType == 'Time' && typeof xValue == "string") {
+            if (xAxisType === 'Time' && typeof xValue === "string") {
                 xValue = Date.parse(xValue);
             }
             // Ensure a value
-            if (typeof xValue == 'string' || typeof xValue == 'object' && !Ext.isDate(xValue)
+            if (typeof xValue === 'string' || typeof xValue === 'object' && !Ext.isDate(xValue)
                 //set as uniform distribution if the axis is a category axis.
-                || boundXAxis && chartAxes.get(boundXAxis) && chartAxes.get(boundXAxis).type == 'Category') {
-                    if (xValue in xValueMap) {
-                        xValue = xValueMap[xValue];
-                    } else {
-                        xValue = xValueMap[xValue] = i;
-                    }
+                || xAxisType === 'Category') {
+                    xValue = i;
             }
 
             // Filter out values that don't fit within the pan/zoom buffer area
             yValue = record.get(me.yField);
-            if (yAxisType == 'Time' && typeof yValue == "string") {
+            
+            if (yAxisType === 'Time' && typeof yValue === "string") {
                 yValue = Date.parse(yValue);
             }
+            
             //skip undefined values
-            if (typeof yValue == 'undefined' || (typeof yValue == 'string' && !yValue)) {
+            if (typeof yValue === 'undefined' || (typeof yValue === 'string' && !yValue)) {
                 //<debug warn>
                 if (Ext.isDefined(Ext.global.console)) {
                     Ext.global.console.warn("[Ext.chart.series.Line]  Skipping a store element with an undefined value at ", record, xValue, yValue);
@@ -470,10 +508,11 @@ Ext.define('Ext.chart.series.Line', {
                 //</debug>
                 continue;
             }
+            
             // Ensure a value
-            if (typeof yValue == 'string' || typeof yValue == 'object' && !Ext.isDate(yValue)
+            if (typeof yValue === 'string' || typeof yValue === 'object' && !Ext.isDate(yValue)
                 //set as uniform distribution if the axis is a category axis.
-                || boundYAxis && chartAxes.get(boundYAxis) && chartAxes.get(boundYAxis).type == 'Category') {
+                || yAxisType === 'Category') {
                 yValue = i;
             }
             storeIndices.push(i);
@@ -503,8 +542,13 @@ Ext.define('Ext.chart.series.Line', {
                 me.items.push(false);
                 continue;
             } else {
-                x = (bbox.x + (xValue - minX) * xScale).toFixed(2);
-                y = ((bbox.y + bbox.height) - (yValue - minY) * yScale).toFixed(2);
+                if (reverse) {
+                    x = bbox.x + bbox.width - ((xValue - minX) * xScale);
+                } else {
+                    x = (bbox.x + (xValue - minX) * xScale);
+                }
+                x = Ext.Number.toFixed(x, 2);
+                y = Ext.Number.toFixed((bbox.y + bbox.height) - (yValue - minY) * yScale, 2);
                 if (onbreak) {
                     onbreak = false;
                     path.push('M');
@@ -575,6 +619,7 @@ Ext.define('Ext.chart.series.Line', {
                     };
                 }
             }
+            
             me.items.push({
                 series: me,
                 value: [xValue, yValue],
@@ -901,9 +946,12 @@ Ext.define('Ext.chart.series.Line', {
                 x: x,
                 y: y
             }, true);
-            if (resizing && me.animation) {
-                me.animation.on('afteranimate', function() {
-                    label.show(true);
+            if (resizing && chart.animate) {
+                me.on({
+                    single: true,
+                    afterrender: function() {
+                        label.show(true);
+                    }
                 });
             } else {
                 label.show(true);

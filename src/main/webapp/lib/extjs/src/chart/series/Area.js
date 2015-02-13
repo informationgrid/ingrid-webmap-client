@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.chart.series.Area
@@ -316,13 +313,16 @@ Ext.define('Ext.chart.series.Area', {
             componentPath,
             count = 0,
             paths = [],
-            i, ln, x, y, xValue, yValue, acumY, areaIndex, prevAreaIndex, areaElem, path, startX;
+            reverse = me.reverse,
+            i, ln, x, y, xValue, yValue, acumY, areaIndex, 
+            prevAreaIndex, areaElem, path, startX, idx;
 
         ln = bounds.xValues.length;
         // Start the path
         for (i = 0; i < ln; i++) {
             xValue = bounds.xValues[i];
-            yValue = bounds.yValues[i];
+            idx = reverse ? ln - i - 1 : i;
+            yValue = bounds.yValues[idx];
             x = bbox.x + (xValue - bounds.minX) * bounds.xScale;
             if (startX === undefined) {
                 startX = x;
@@ -670,6 +670,7 @@ Ext.define('Ext.chart.series.Area', {
             abs = Math.abs,
             distChanged = false,
             last = false,
+            reverse = me.reverse,
             dist = Infinity, p, pln, point;
 
         for (p = 0, pln = pointsUp.length; p < pln; p++) {
@@ -689,10 +690,11 @@ Ext.define('Ext.chart.series.Area', {
             if (!distChanged || (distChanged && last)) {
                 point = pointsUp[p -1];
                 if (y >= point[1] && (!pointsDown.length || y <= (pointsDown[p -1][1]))) {
-                    item.storeIndex = p -1;
+                    idx = reverse ? pln - p : p - 1;
+                    item.storeIndex = idx;
                     item.storeField = me.yField[i];
-                    item.storeItem = me.chart.getChartStore().getAt(p -1);
-                    item._points = pointsDown.length? [point, pointsDown[p -1]] : [point];
+                    item.storeItem = me.chart.getChartStore().getAt(idx);
+                    item._points = pointsDown.length? [point, pointsDown[p - 1]] : [point];
                     return true;
                 } else {
                     break;
@@ -775,9 +777,14 @@ Ext.define('Ext.chart.series.Area', {
             this.highlightSeries();
             return;
         }
+        
         points = item._points;
-        path = points.length == 2? ['M', points[0][0], points[0][1], 'L', points[1][0], points[1][1]]
-                : ['M', points[0][0], points[0][1], 'L', points[0][0], me.bbox.y + me.bbox.height];
+        if (points.length === 2) {
+            path = ['M', points[0][0], points[0][1], 'L', points[1][0], points[1][1]];
+        } else {
+            path = ['M', points[0][0], points[0][1], 'L', points[0][0], me.bbox.y + me.bbox.height];
+        }
+        
         me.highlightSprite.setAttributes({
             path: path,
             hidden: false

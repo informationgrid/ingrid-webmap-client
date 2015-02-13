@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Charts provide a flexible way to achieve a wide range of data visualization capablitities.
@@ -202,7 +199,7 @@ Ext.define('Ext.chart.Chart', {
 
     /**
      * @cfg {Boolean/Object} legend
-     * True for the default legend display or a legend config object. Defaults to false.
+     * True for the default legend display or a {@link Ext.chart.Legend} config object.
      */
     legend: false,
 
@@ -333,6 +330,8 @@ Ext.define('Ext.chart.Chart', {
      *         title: 'Month of the Year'
      *     }]
      */
+    
+    refreshBuffer: 1,
 
     constructor: function(config) {
         var me = this,
@@ -360,8 +359,13 @@ Ext.define('Ext.chart.Chart', {
         }
 
         me.mixins.observable.constructor.call(me, config);
+        
+        if (config.mask) {
+            config = Ext.apply({ enableMask: true }, config);
+        }
+        
         if (config.enableMask) {
-            me.mixins.mask.constructor.call(me);
+            me.mixins.mask.constructor.call(me, config);
         }
         me.mixins.navigation.constructor.call(me);
         me.callParent([config]);
@@ -421,7 +425,9 @@ Ext.define('Ext.chart.Chart', {
             me.series.addAll(series);
         }
         if (me.legend !== false) {
-            me.legend = new Ext.chart.Legend(Ext.applyIf({chart:me}, me.legend));
+            me.legend = new Ext.chart.Legend(Ext.applyIf({
+                chart: me
+            }, me.legend));
         }
 
         me.on({
@@ -540,12 +546,17 @@ Ext.define('Ext.chart.Chart', {
 
     // @private set the store after rendering the chart.
     afterRender: function() {
-        var me = this;
+        var me = this,
+            legend = me.legend;
         
         me.callParent(arguments);
 
         if (me.categoryNames) {
             me.setCategoryNames(me.categoryNames);
+        }
+        
+        if (legend) {
+            legend.init();
         }
 
         me.bindStore(me.store, true);
@@ -574,11 +585,11 @@ Ext.define('Ext.chart.Chart', {
 
     // @private get x and y position of the mouse cursor.
     getEventXY: function(e) {
-        var me = this,
-            box = this.surface.getRegion(),
+        var box = this.surface.getRegion(),
             pageXY = e.getXY(),
             x = pageXY[0] - box.left,
             y = pageXY[1] - box.top;
+            
         return [x, y];
     },
     
@@ -830,9 +841,11 @@ Ext.define('Ext.chart.Chart', {
             x = chartBBox.x,
             y = chartBBox.y,
             themeAttrs = me.themeAttrs,
+            axes = me.axes,
             config = {
                 chart: me
             };
+            
         if (themeAttrs) {
             config.axisStyle = Ext.apply({}, themeAttrs.axis);
             config.axisLabelLeftStyle = Ext.apply({}, themeAttrs.axisLabelLeft);
@@ -843,7 +856,9 @@ Ext.define('Ext.chart.Chart', {
             config.axisTitleRightStyle = Ext.apply({}, themeAttrs.axisTitleRight);
             config.axisTitleTopStyle = Ext.apply({}, themeAttrs.axisTitleTop);
             config.axisTitleBottomStyle = Ext.apply({}, themeAttrs.axisTitleBottom);
+            me.configureAxisStyles(config);
         }
+        
         switch (axis.position) {
             case 'top':
                 Ext.apply(config, {
@@ -878,15 +893,18 @@ Ext.define('Ext.chart.Chart', {
                 });
             break;
         }
+        
         if (!axis.chart) {
             Ext.apply(config, axis);
-            axis = me.axes.replace(Ext.createByAlias('axis.' + axis.type.toLowerCase(), config));
+            axis = Ext.createByAlias('axis.' + axis.type.toLowerCase(), config);
+            axes.replace(axis);
         } else {
             Ext.apply(axis, config);
         }
         axis.initialized = true;
     },
-
+    
+    configureAxisStyles: Ext.emptyFn,
 
     /**
      * @private Get initial insets; override to provide different defaults.
@@ -941,7 +959,7 @@ Ext.define('Ext.chart.Chart', {
                 bbox = axis.bbox;
                 insets[edge] += (isVertical ? bbox.width : bbox.height);
             }
-        };
+        }
         
         return insets;
     },
@@ -978,7 +996,7 @@ Ext.define('Ext.chart.Chart', {
             axis.y = (pos === 'top' ? chartBBox.y : chartBBox.y + chartBBox.height);
             axis.width = (isVertical ? chartBBox.width : chartBBox.height);
             axis.length = (isVertical ? chartBBox.height : chartBBox.width);
-        };
+        }
     },
 
     // @private initialize the series.
@@ -1030,9 +1048,7 @@ Ext.define('Ext.chart.Chart', {
             }
         }
 
-        if (series.initialize) {
-            series.initialize();
-        }
+        series.initialize();
         series.initialized = true;
         return series;
     },
@@ -1075,7 +1091,7 @@ Ext.define('Ext.chart.Chart', {
         series.triggerafterrender = false;
         series.drawSeries();
         if (!this.animate) {
-            series.fireEvent('afterrender');
+            series.fireEvent('afterrender', series);
         }
     },
     /**
@@ -1116,8 +1132,16 @@ Ext.define('Ext.chart.Chart', {
     },
     // @private remove gently.
     destroy: function() {
-        Ext.destroy(this.surface);
-        this.bindStore(null);
-        this.callParent(arguments);
+        var me = this,
+            task = me.refreshTask;
+        
+        if (task) {
+            task.cancel();
+            me.refreshTask = null;
+        }
+        
+        Ext.destroy(me.surface);
+        me.bindStore(null);
+        me.callParent(arguments);
     }
 });

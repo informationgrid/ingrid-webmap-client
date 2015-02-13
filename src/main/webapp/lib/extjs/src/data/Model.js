@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @author Ed Spencer
@@ -54,8 +51,8 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *
  * To alter which field is the identifying field, use the {@link #idProperty} config.
  *
- * If the Model should not have any identifying field (for example if you are defining ab abstract base class for your
- * application models), configure the {@liknk #idProperty} as `null`.
+ * If the Model should not have any identifying field (for example if you are defining an abstract base class for your
+ * application models), configure the {@link #idProperty} as `null`.
  *
  * By default, the built in numeric and boolean field types have a {@link Ext.data.Field#convert} function which coerces string
  * values in raw data into the field's type. For better performance with {@link Ext.data.reader.Json Json} or {@link Ext.data.reader.Array Array}
@@ -215,6 +212,14 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *             console.log('The User was destroyed!');
  *         }
  *     });
+ *
+ * # HTTP Parameter names when using a {@link Ext.data.proxy.Ajax Ajax proxy}
+ *
+ * By default, the model ID is specified in an HTTP parameter named `id`. To change the name of this parameter
+ * use the Proxy's {@link Ext.data.proxy.Ajax#idParam idParam} configuration.
+ *
+ * Parameters for other commonly passed values such as {@link Ext.data.proxy.Ajax#pageParam page number} or {@link Ext.data.proxy.Ajax#startParam start row} may also be configured
+ *
  *
  * # Usage in Stores
  *
@@ -419,6 +424,24 @@ Ext.define('Ext.data.Model', {
             if (superAssociations) {
                 associationsConfigs = superAssociations.items.concat(associationsConfigs);
             }
+            
+            Ext.Array.forEach(Ext.ModelManager.associationStack, function(item) {           
+                var checkItem = function (item, Cls) {
+                    Cls = Cls;
+                    if (item.ownerModel === Cls.modelName) {
+                        return true;
+                    } else if (Cls.superclass) {
+                        return checkItem(item, Cls.superclass);
+                    }
+                    return false;                                          
+                }, newItem;
+            
+                if (checkItem(item, superCls)) {
+                    newItem = Ext.clone(item);
+                    newItem.ownerModel = this.modelName;
+                    associationsConfigs.push(newItem);
+                };            
+            }, this);
 
             for (i = 0, ln = associationsConfigs.length; i < ln; ++i) {
                 dependencies.push('association.' + associationsConfigs[i].type.toLowerCase());
@@ -438,29 +461,32 @@ Ext.define('Ext.data.Model', {
             }
 
             Ext.require(dependencies, function() {
-                Ext.ModelManager.registerType(name, cls);
 
-                for (i = 0, ln = associationsConfigs.length; i < ln; ++i) {
-                    associationConfig = associationsConfigs[i];
-                    if (associationConfig.isAssociation) {
-                        associationConfig = Ext.applyIf({
-                            ownerModel: name,
-                            associatedModel: associationConfig.model
-                        }, associationConfig.initialConfig);
-                    } else {
-                        Ext.apply(associationConfig, {
-                            ownerModel: name,
-                            associatedModel: associationConfig.model
-                        });
-                    }
+                // Anonymous Model classes are not registered and cannot have associations
+                if (name) {
+                    Ext.ModelManager.registerType(name, cls);
 
-                    if (Ext.ModelManager.getModel(associationConfig.model) === undefined) {
-                        Ext.ModelManager.registerDeferredAssociation(associationConfig);
-                    } else {
-                        associationsMixedCollection.add(Ext.data.association.Association.create(associationConfig));
+                    for (i = 0, ln = associationsConfigs.length; i < ln; ++i) {
+                        associationConfig = associationsConfigs[i];
+                        if (associationConfig.isAssociation) {
+                            associationConfig = Ext.applyIf({
+                                ownerModel: name,
+                                associatedModel: associationConfig.model
+                            }, associationConfig.initialConfig);
+                        } else {
+                            Ext.apply(associationConfig, {
+                                ownerModel: name,
+                                associatedModel: associationConfig.model
+                            });
+                        }
+
+                        if (Ext.ModelManager.getModel(associationConfig.model) === undefined) {
+                            Ext.ModelManager.registerDeferredAssociation(associationConfig);
+                        } else {
+                            associationsMixedCollection.add(Ext.data.association.Association.create(associationConfig));
+                        }
                     }
                 }
-
                 data.associations = associationsMixedCollection;
 
                 // onBeforeCreated may get called *asynchronously* if any of those required classes caused
@@ -476,7 +502,9 @@ Ext.define('Ext.data.Model', {
                 }
 
                 // Fire the onModelDefined template method on ModelManager
-                Ext.ModelManager.onModelDefined(cls);
+                if (name) {
+                    Ext.ModelManager.onModelDefined(cls);
+                }
             });
         };
     },
@@ -842,8 +870,8 @@ Ext.define('Ext.data.Model', {
     phantom : false,
 
     /**
-     * @cfg {String/Object/Ext.data.Field} idProperty
-     * The name of the field treated as this Model's unique id. Defaults to 'id'.
+     * @cfg {String/Object/Ext.data.Field} [idProperty='id']
+     * The name of the field treated as this Model's unique id.
      *
      * This may also be specified as a Field config object. This means that the identifying field can be calculated
      * using a {@link Ext.data.Field#convert convert} function which might aggregate several values from the
@@ -854,6 +882,8 @@ Ext.define('Ext.data.Model', {
      *
      * If defining an **abstract** base Model class, the `idProperty` may be configured as `null` which will mean that
      * no identifying field will be generated.
+     *
+     * The data values for this field must be unique or there will be id value collisions in the {@link Ext.data.Store Store}.
      */
     idProperty: 'id',
 
@@ -884,6 +914,8 @@ Ext.define('Ext.data.Model', {
      * {@link Ext.data.Field#convert custom conversion} of raw data, and a {@link Ext.data.Field#mapping mapping}
      * property to specify by name of index, how to extract a field's value from a raw data object, so it is best practice
      * to specify a full set of {@link Ext.data.Field Field} config objects.
+     *
+     * Note that if you extend a Model class, it will inherit all the fields from the subclass(es).
      */
     /**
      * @property {Ext.util.MixedCollection} fields
@@ -1047,7 +1079,7 @@ Ext.define('Ext.data.Model', {
         // The *unconverted* value is used as the internalId.
         if (passedId) {
             hasId = true;
-            persistenceProperty[idProperty] = idField && idField.convert ? idField.convert(id) : id;
+            persistenceProperty[idProperty] = idField && idField.convert ? idField.convert(id, me) : id;
         }
 
         // If there's no id, we are a phantom so we have to generate an id.
@@ -1638,15 +1670,13 @@ Ext.define('Ext.data.Model', {
                 for (storeCount = stores.length; i < storeCount; i++) {
                     store = stores[i];
 
-                    // If the store has a remove (it's not a TreeStore), then
-                    // remove this record from Store. Avoid Store handling anything by passing the "isMove" flag
+                    // If the store has a remove it's not a TreeStore
                     if (store.remove) {
                         store.remove(me, true);
+                    } else {
+                        store.fireEvent('bulkremove', store, [me], [store.indexOf(me)], false);    
                     }
-
-                    // Other parties may need to know that the record as gone
-                    // eg View SelectionModels
-                    store.fireEvent('bulkremove', store, [me], [store.indexOf(me)], false);
+                    
                     if (isNotPhantom) {
                         store.fireEvent('write', store, operation);
                     }

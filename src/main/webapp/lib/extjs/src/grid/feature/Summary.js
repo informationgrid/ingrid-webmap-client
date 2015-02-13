@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * This feature is used to place a summary row at the bottom of the grid. If using a grouping, 
@@ -115,6 +112,11 @@ Ext.define('Ext.grid.feature.Summary', {
     dockedSummaryCls: Ext.baseCSSPrefix + 'docked-summary',
 
     panelBodyCls: Ext.baseCSSPrefix + 'summary-',
+    
+    scrollPadProperty: 'padding-right',
+
+    // turn off feature events.
+    hasFeatureEvent: false,
 
     init: function(grid) {
         var me = this,
@@ -124,6 +126,7 @@ Ext.define('Ext.grid.feature.Summary', {
 
         if (me.dock) {
             grid.headerCt.on({
+                add: me.onStoreUpdate,
                 afterlayout: me.onStoreUpdate,
                 scope: me
             });
@@ -136,7 +139,7 @@ Ext.define('Ext.grid.feature.Summary', {
                     me.summaryBar = grid.addDocked({
                         childEls: ['innerCt'],
                         renderTpl: [
-                            '<div id="{id}-innerCt">',
+                            '<div id="{id}-innerCt" role="presentation">',
                                 '<table cellPadding="0" cellSpacing="0" class="' + tableCls.join(' ') + '">',
                                     '<tr class="' + me.summaryRowCls + '"></tr>',
                                 '</table>',
@@ -163,7 +166,16 @@ Ext.define('Ext.grid.feature.Summary', {
 
             // Stretch the innerCt of the summary bar upon headerCt layout
             grid.headerCt.afterComponentLayout = Ext.Function.createSequence(grid.headerCt.afterComponentLayout, function() {
-                me.summaryBar.innerCt.setWidth(this.getFullWidth() + Ext.getScrollbarSize().width);
+                var width = this.getTableWidth(),
+                    innerCt = me.summaryBar.innerCt,
+                    scrollWidth;
+                    
+                if (view.hasVerticalScroll()) {
+                    scrollWidth = Ext.getScrollbarSize().width;
+                    width -= scrollWidth;
+                    innerCt.down('table').setStyle(me.scrollPadProperty, scrollWidth + 'px');
+                }
+                innerCt.setWidth(width);
             });
         } else {
             me.view.addFooterFn(me.renderTFoot);
@@ -193,6 +205,17 @@ Ext.define('Ext.grid.feature.Summary', {
         }
     },
     
+    toggleSummaryRow: function(visible) {
+        var me = this,
+            bar = me.summaryBar;
+            
+        me.callParent(arguments);
+        if (bar) {
+            bar.setVisible(me.showSummaryRow);
+            me.onViewScroll();
+        }
+    },
+    
     vetoEvent: function(record, row, rowIndex, e) {
         return !e.getTarget(this.summaryRowSelector);
     },
@@ -201,13 +224,14 @@ Ext.define('Ext.grid.feature.Summary', {
         this.summaryBar.el.dom.scrollLeft = this.view.el.dom.scrollLeft;
     },
 
-    createSummaryRecord: function(view) {
+    createSummaryRecord: function (view) {
         var columns = view.headerCt.getVisibleGridColumns(),
             info = {
                 records: view.store.getRange()
             },
             colCount = columns.length, i, column,
-            summaryRecord = this.summaryRecord || (this.summaryRecord = new view.store.model(null, view.id + '-summary-record'));
+            summaryRecord = this.summaryRecord || (this.summaryRecord = new view.store.model(null, view.id + '-summary-record')),
+            dataIndex, summaryValue;
 
         // Set the summary field values
         summaryRecord.beginEdit();
@@ -216,12 +240,17 @@ Ext.define('Ext.grid.feature.Summary', {
 
             // In summary records, if there's no dataIndex, then the value in regular rows must come from a renderer.
             // We set the data value in using the column ID.
-            if (!column.dataIndex) {
-                column.dataIndex = column.id;
-            }
+            dataIndex = column.dataIndex || column.id;
 
-            summaryRecord.set(column.dataIndex, this.getSummary(view.store, column.summaryType, column.dataIndex, info));
+            // We need to capture this value because it could get overwritten when setting on the model if there
+            // is a convert() method on the model.
+            summaryValue = this.getSummary(view.store, column.summaryType, dataIndex, info);
+            summaryRecord.set(dataIndex, summaryValue);
+
+            // Capture the columnId:value for the summaryRenderer in the summaryData object.
+            this.setSummaryData(summaryRecord, column.id, summaryValue);
         }
+
         summaryRecord.endEdit(true);
         // It's not dirty
         summaryRecord.commit(true);
@@ -235,7 +264,7 @@ Ext.define('Ext.grid.feature.Summary', {
             view = me.view,
             record = me.createSummaryRecord(view),
             newRowDom = view.createRowElement(record, -1),
-            oldRowDom, partner,
+            oldRowDom,
             p;
 
         if (!view.rendered) {
@@ -256,15 +285,6 @@ Ext.define('Ext.grid.feature.Summary', {
             p = oldRowDom.parentNode;
             p.insertBefore(newRowDom, oldRowDom);
             p.removeChild(oldRowDom);
-
-            partner = me.lockingPartner;
-            // For locking grids...
-            // Update summary on other side (unless we have been called from the other side)
-            if (partner && partner.grid.rendered && !me.calledFromLockingPartner) {
-                partner.calledFromLockingPartner = true;
-                partner.onStoreUpdate();
-                partner.calledFromLockingPartner = false;
-            }
         }
         // If docked, the updated row will need sizing because it's outside the View
         if (me.dock) {

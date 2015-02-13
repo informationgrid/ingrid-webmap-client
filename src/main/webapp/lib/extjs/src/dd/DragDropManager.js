@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /*
  * This is a derivative of the similarly named class in the YUI Library.
@@ -174,14 +171,21 @@ Ext.define('Ext.dd.DragDropManager', {
      * @private
      */
     _execOnAll: function(sMethod, args) {
-        var i, j, oDD;
-        for (i in this.ids) {
-            for (j in this.ids[i]) {
-                oDD = this.ids[i][j];
-                if (! this.isTypeOfDD(oDD)) {
-                    continue;
+        var ids = this.ids,
+            i, j, oDD, item;
+            
+        for (i in ids) {
+            if (ids.hasOwnProperty(i)) {
+                item = ids[i];
+                for (j in item) {
+                    if (item.hasOwnProperty(j)) {
+                        oDD = item[j];
+                        if (! this.isTypeOfDD(oDD)) {
+                            continue;
+                        }
+                        oDD[sMethod].apply(oDD, args);
+                    }
                 }
-                oDD[sMethod].apply(oDD, args);
             }
         }
     },
@@ -323,13 +327,32 @@ Ext.define('Ext.dd.DragDropManager', {
      * DragDrop.unreg, use that method instead of calling this directly.
      * @private
      */
-    _remove: function(oDD) {
-        for (var g in oDD.groups) {
-            if (g && this.ids[g] && this.ids[g][oDD.id]) {
-                delete this.ids[g][oDD.id];
+    _remove: function(oDD, clearGroup) {
+        var me = this,
+            ids = me.ids,
+            groups = oDD.groups,
+            g;
+
+        // If we're clearing everything, we'll just end up wiping
+        // this.ids & this.handleIds
+        if (me.clearingAll) {
+            return;
+        }
+
+        if (me.dragCurrent === oDD) {
+            me.dragCurrent = null;
+        }
+
+        for (g in groups) {
+            if (groups.hasOwnProperty(g)) {
+                if (clearGroup) {
+                    delete ids[g];
+                } else if (ids[g]) {
+                    delete ids[g][oDD.id];
+                }
             }
         }
-        delete this.handleIds[oDD.id];
+        delete me.handleIds[oDD.id];
     },
 
     /**
@@ -463,6 +486,7 @@ Ext.define('Ext.dd.DragDropManager', {
             me.handleMouseUp(e);
         }
 
+        me.mousedownEvent = e.clone();
         me.currentTarget = e.getTarget();
         me.dragCurrent = oDD;
 
@@ -683,9 +707,12 @@ Ext.define('Ext.dd.DragDropManager', {
         if (!me.notifyOccluded && (!Ext.supports.PointerEvents || Ext.isIE10m || Ext.isOpera) && !(dragCurrent.deltaX < 0 || dragCurrent.deltaY < 0)) {
             dragEl = dragCurrent.getDragEl();
             oldDragElTop = dragEl.style.top;
-            dragEl.style.top = '-10000px';
+            // Temporarily hide the dragEl instead of moving it off the page. Moving the el off the page can cause
+            // problems when in an iframe with IE8 standards. See EXTJSIV-11728.
+            dragEl.style.visibility = 'hidden';
             xy = e.getXY();
             e.target = document.elementFromPoint(xy[0], xy[1]);
+            dragEl.style.visibility = 'visible';
             dragEl.style.top = oldDragElTop;
         }
 
@@ -694,8 +721,10 @@ Ext.define('Ext.dd.DragDropManager', {
         for (i in me.dragOvers) {
 
             overTarget = me.dragOvers[i];
+            delete me.dragOvers[i];
 
-            if (!me.isTypeOfDD(overTarget)) {
+            // Check to make sure that the component hasn't been destroyed in the middle of a drag operation.
+            if (!me.isTypeOfDD(overTarget) || overTarget.isDestroyed) {
                 continue;
             }
 
@@ -713,7 +742,6 @@ Ext.define('Ext.dd.DragDropManager', {
             }
 
             oldOvers[i] = true;
-            delete me.dragOvers[i];
         }
 
         // Collect all targets which are members of the same ddGoups that the dragCurrent is a member of, and which may recieve mouseover and drop notifications.
@@ -1116,20 +1144,26 @@ Ext.define('Ext.dd.DragDropManager', {
      * @private
      */
     unregAll: function() {
-
-        if (this.dragCurrent) {
-            this.stopDrag();
-            this.dragCurrent = null;
+        var me = this,
+            cache = me.elementCache,
+            i;
+            
+        if (me.dragCurrent) {
+            me.stopDrag();
+            me.dragCurrent = null;
         }
 
-        this._execOnAll("unreg", []);
+        me.clearingAll = true;
+        me._execOnAll("unreg", []);
+        delete me.clearingAll;
 
-        for (var i in this.elementCache) {
-            delete this.elementCache[i];
+        for (i in cache) {
+            delete cache[i];
         }
 
-        this.elementCache = {};
-        this.ids = {};
+        me.elementCache = {};
+        me.ids = {};
+        me.handleIds = {};
     },
 
     /**

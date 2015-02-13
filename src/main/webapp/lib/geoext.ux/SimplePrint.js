@@ -143,8 +143,9 @@ Ext.define('GeoExt.ux.SimplePrint', {
         });
 
         if (!this.busyMask) {
-            this.busyMask = new Ext.LoadMask(Ext.getBody(), {
-                msg: this.creatingPdfText
+            this.busyMask = new Ext.LoadMask({
+                msg: this.creatingPdfText,
+                target: this.mapPanel
             });
         }
 

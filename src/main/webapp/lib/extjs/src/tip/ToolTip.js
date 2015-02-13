@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * ToolTip is a {@link Ext.tip.Tip} implementation that handles the common case of displaying a
@@ -33,12 +30,11 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *
  * # Basic Example
  *
+ *     @example
  *     var tip = Ext.create('Ext.tip.ToolTip', {
  *         target: 'clearButton',
  *         html: 'Press this button to clear the form'
  *     });
- *
- * {@img Ext.tip.ToolTip/Ext.tip.ToolTip1.png Basic Ext.tip.ToolTip}
  *
  * # Delegation
  *
@@ -52,6 +48,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  * of the ToolTip based on each delegate element; you can do this by implementing a custom
  * listener for the {@link #beforeshow} event. Example:
  *
+ *     @example
  *     var store = Ext.create('Ext.data.ArrayStore', {
  *         fields: ['company', 'price', 'change'],
  *         data: [
@@ -94,8 +91,6 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *             }
  *         }
  *     });
- *
- * {@img Ext.tip.ToolTip/Ext.tip.ToolTip2.png Ext.tip.ToolTip with delegation}
  *
  * # Alignment
  *
@@ -197,9 +192,9 @@ Ext.define('Ext.tip.ToolTip', {
     /**
      * @cfg {String} delegate
      *
-     * A {@link Ext.DomQuery DomQuery} selector which allows selection of individual elements within the
+     * A {@link Ext.DomQuery DomQuery} simple selector which allows selection of individual elements within the
      * `{@link #target}` element to trigger showing and hiding the ToolTip as the mouse moves within the
-     * target.
+     * target. See {@link Ext.dom.Query} for information about simple selectors.
      *
      * When specified, the child element of the target which caused a show event is placed into the
      * `{@link #triggerElement}` property before the ToolTip is shown.
@@ -213,6 +208,8 @@ Ext.define('Ext.tip.ToolTip', {
     // @private
     targetCounter: 0,
     quickShowInterval: 250,
+
+    ariaRole: 'tooltip',
 
     // @private
     initComponent: function() {
@@ -228,7 +225,14 @@ Ext.define('Ext.tip.ToolTip', {
         var me = this;
         me.callParent(arguments);
         me.anchorCls = Ext.baseCSSPrefix + 'tip-anchor-' + me.getAnchorPosition();
+        //<debug>
+        if (me.sticky) {
+            // tell the spec runner to ignore this element when checking if the dom is clean 
+            me.el.dom.setAttribute('data-sticky', true);
+        }
+        //</debug>
         me.anchorEl = me.el.createChild({
+            role: 'presentation',
             cls: Ext.baseCSSPrefix + 'tip-anchor ' + me.anchorCls
         });
     },
@@ -485,23 +489,33 @@ Ext.define('Ext.tip.ToolTip', {
     },
 
     // @private
-    delayShow: function() {
-        var me = this;
+    delayShow: function (trackMouse) {
+        // When delaying, cache the XY coords of the mouse when this method was invoked, NOT when the deferred
+        // show is called because the mouse could then be in a completely different location. Only cache the
+        // coords when trackMouse is false.
+        //
+        // Note that the delayShow call could be coming from a caller which would internally be setting trackMouse
+        // (e.g., Ext.chart.Tip:showTip()). Because of this, the caller will pass along the original value for
+        // trackMouse (i.e., the value passed to the component constructor) to the delayShow method.
+        // See EXTJSIV-11292.
+        var me = this,
+            xy = me.el && (trackMouse === false || !me.trackMouse) && me.getTargetXY();
+
         if (me.hidden && !me.showTimer) {
             if (Ext.Date.getElapsed(me.lastActive) < me.quickShowInterval) {
                 me.show();
             } else {
-                me.showTimer = Ext.defer(me.showFromDelay, me.showDelay, me);
+                me.showTimer = Ext.defer(me.showFromDelay, me.showDelay, me, [xy]);
             }
         }
         else if (!me.hidden && me.autoHide !== false) {
-            me.show();
+            me.show(xy);
         }
     },
     
-    showFromDelay: function(){
+    showFromDelay: function (xy) {
         this.fromDelayShow = true;
-        this.show();
+        this.show(xy);
         delete this.fromDelayShow;
     },
     
@@ -558,7 +572,7 @@ Ext.define('Ext.tip.ToolTip', {
     /**
      * Shows this tooltip at the current event target XY position.
      */
-    show: function() {
+    show: function (xy) {
         var me = this;
 
         // Show this Component first, so that sizing can be calculated
@@ -572,7 +586,8 @@ Ext.define('Ext.tip.ToolTip', {
             }
             
             if (!me.calledFromShowAt) {
-                me.showAt(me.getTargetXY());
+                // If the caller was this.showFromDelay(), the XY coords may have been cached.
+                me.showAt(xy || me.getTargetXY());
             }
 
             if (me.anchor) {

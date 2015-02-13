@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @author Aaron Conran
@@ -36,7 +33,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *         data:{'items':[
  *             { 'name': 'Lisa',  "email":"lisa@simpsons.com",  "phone":"555-111-1224"  },
  *             { 'name': 'Bart',  "email":"bart@simpsons.com",  "phone":"555-222-1234" },
- *             { 'name': 'Homer', "email":"home@simpsons.com",  "phone":"555-222-1244"  },
+ *             { 'name': 'Homer', "email":"homer@simpsons.com",  "phone":"555-222-1244"  },
  *             { 'name': 'Marge', "email":"marge@simpsons.com", "phone":"555-222-1254"  }
  *         ]},
  *         proxy: {
@@ -220,7 +217,7 @@ Ext.define('Ext.grid.Panel', {
      * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
      * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
      * @param {Ext.data.Store} oldStore The store that will be replaced
-     * @param {Ext.grid.column.Column[]} The column headers that will be replaced.
+     * @param {Ext.grid.column.Column[]} oldColumns The column headers that will be replaced.
      */
 
     /**
@@ -230,14 +227,6 @@ Ext.define('Ext.grid.Panel', {
      * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
      * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
      * @param {Ext.data.Store} oldStore The store that was replaced
-     * @param {Ext.grid.column.Column[]} The column headers that were replaced.
-     */
-
-    /**
-     * @method reconfigure
-     * Reconfigures the grid with a new store/columns. Either the store or the columns can be omitted if you don't wish
-     * to change them.
-     * @param {Ext.data.Store} store (Optional) The new store.
-     * @param {Object[]} columns (Optional) An array of column configs
+     * @param {Ext.grid.column.Column[]} oldColumns The column headers that were replaced.
      */
 });

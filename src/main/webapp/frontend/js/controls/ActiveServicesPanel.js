@@ -117,7 +117,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	        iconCls: 'iconRemove',
 	        tooltip: i18n('tZumEntfernenErstEinenDienstMarkieren'),
 	        handler: function(){
-	        	var node = self.layerTree.selModel.getSelection()[0];
+	        	var node = self.activeNode;
 	        	var service = node.getData().container.service;
 	        	if (node) {
 					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState")){
@@ -382,7 +382,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	          },
 	          listeners: {
 	        	  	update: function(store, node, operation, modifiedFieldNames, eOpts ){
-	        	  		if(modifiedFieldNames[0] == "checked"){
 	        	  			if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeState") == true){
 	        	  				if(node.get("layer")){
 	    							var id = node.get("layer").params.LAYERS;
@@ -413,7 +412,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
     							}
     						}
     						self.fireEvent('datachanged');
-	        	  		}
 	        	  	},
 			        collapse: function(node){
 			        	var cls = '';

@@ -1,36 +1,42 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag foundation,core
 // @require ../Ext.js
 // @define Ext.Version
 
 /**
- * @author Jacky Nguyen <jacky@sencha.com>
- * @docauthor Jacky Nguyen <jacky@sencha.com>
  * @class Ext.Version
  *
- * A utility class that wrap around a string version number and provide convenient
- * method to perform comparison. See also: {@link Ext.Version#compare compare}. Example:
+ * A utility class that wraps around a version number string and provides convenient methods
+ * to perform comparisons. A version number is expressed in the following general format:
  *
- *     var version = new Ext.Version('1.0.2beta');
+ *     major[.minor[.patch[.build[release]]]]
+ * 
+ * The `Version` instance holds various readonly properties that contain the digested form
+ * of the version string. The numeric componnets of `major`, `minor`, `patch` and `build`
+ * as well as the textual suffix called `release`.
+ * 
+ * Not depicted in the above syntax are three possible prefixes used to control partial
+ * matching. These are '^' (the default), '>' and '~'. These are discussed below.
+ *
+ * Examples:
+ *
+ *     var version = new Ext.Version('1.0.2beta'); // or maybe "1.0" or "1.2.3.4RC"
  *     console.log("Version is " + version); // Version is 1.0.2beta
  *
  *     console.log(version.getMajor()); // 1
@@ -38,6 +44,26 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *     console.log(version.getPatch()); // 2
  *     console.log(version.getBuild()); // 0
  *     console.log(version.getRelease()); // beta
+ * 
+ * The understood values of `release` are assigned numberic equivalents for the sake of
+ * comparsion. The order of these from smallest to largest is as follows:
+ * 
+ *  * `"dev"`
+ *  * `"alpha"` or `"a"`
+ *  * `"beta"` or `"b"`
+ *  * `"RC"` or `"rc"`
+ *  * `"#"`
+ *  * `"pl"` or `"p"`
+ *
+ * Any other (unrecognized) suffix is consider greater than any of these.
+ * 
+ * ## Comparisons
+ * There are two forms of comparison that are commonly needed: full and partial. Full
+ * comparison is simpler and is also the default.
+ * 
+ * Example:
+ *
+ *     var version = new Ext.Version('1.0.2beta');
  *
  *     console.log(version.isGreaterThan('1.0.1')); // True
  *     console.log(version.isGreaterThan('1.0.2alpha')); // True
@@ -45,56 +71,238 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *     console.log(version.isGreaterThan('1.0.2')); // False
  *     console.log(version.isLessThan('1.0.2')); // True
  *
- *     console.log(version.match(1.0)); // True
- *     console.log(version.match('1.0.2')); // True
+ *     console.log(version.match(1.0)); // True (using a Number)
+ *     console.log(version.match('1.0.2')); // True (using a String)
+ * 
+ * These comparisons are ultimately implemented by {@link Ext.Version#compareTo compareTo}
+ * which returns -1, 0 or 1 depending on whether the `Version' instance is less than, equal
+ * to, or greater than the given "other" version.
+ * 
+ * For example:
+ * 
+ *      var n = version.compareTo('1.0.1');  // == 1  (because 1.0.2beta > 1.0.1)
+ *      
+ *      n = version.compareTo('1.1');  // == -1
+ *      n = version.compareTo(version); // == 0
+ * 
+ * ### Partial Comparisons
+ * By default, unspecified version number fields are filled with 0. In other words, the
+ * version number fields are 0-padded on the right or a "lower bound". This produces the
+ * most commonly used forms of comparsion:
+ * 
+ *      var ver = new Version('4.2');
  *
+ *      n = ver.compareTo('4.2.1'); // == -1  (4.2 promotes to 4.2.0 and is less than 4.2.1)
+ * 
+ * There are two other ways to interpret comparisons of versions of different length. The
+ * first of these is to change the padding on the right to be a large number (scuh as
+ * Infinity) instead of 0. This has the effect of making the version an upper bound. For
+ * example:
+ * 
+ *      var ver = new Version('^4.2'); // NOTE: the '^' prefix used
+ *
+ *      n = ver.compreTo('4.3'); // == -1  (less than 4.3)
+ *      
+ *      n = ver.compareTo('4.2'); // == 1   (greater than all 4.2's)
+ *      n = ver.compareTo('4.2.1'); // == 1
+ *      n = ver.compareTo('4.2.9'); // == 1
+ * 
+ * The second way to interpret this comparison is to ignore the extra digits, making the
+ * match a prefix match. For example:
+ * 
+ *      var ver = new Version('~4.2'); // NOTE: the '~' prefix used
+ *
+ *      n = ver.compreTo('4.3'); // == -1
+ *      
+ *      n = ver.compareTo('4.2'); // == 0
+ *      n = ver.compareTo('4.2.1'); // == 0
+ * 
+ * This final form can be useful when version numbers contain more components than are
+ * important for certain comparisons. For example, the full version of Ext JS 4.2.1 is
+ * "4.2.1.883" where 883 is the `build` number.
+ * 
+ * This is how to create a "partial" `Version` and compare versions to it:
+ * 
+ *      var version421ish = new Version('~4.2.1');
+ *      
+ *      n = version421ish.compareTo('4.2.1.883'); // == 0
+ *      n = version421ish.compareTo('4.2.1.2'); // == 0
+ *      n = version421ish.compareTo('4.2.1'); // == 0
+ *
+ *      n = version421ish.compareTo('4.2'); // == 1
+ *
+ * In the above example, '4.2.1.2' compares as equal to '4.2.1' because digits beyond the
+ * given "4.2.1" are ignored. However, '4.2' is less than the '4.2.1' prefix; its missing
+ * digit is filled with 0.
  */
 (function() {
 
 // Current core version
 // also fix Ext-more.js
-var version = '4.2.1.883', Version;
+var version = '4.2.3.1477',
+    // used by checkVersion to avoid temp arrays:
+    checkVerTemp = [''],
+    endOfVersionRe = /([^\d\.])/,
+    notDigitsRe = /[^\d]/g,
+    plusMinusRe = /[\-+]/g,
+    stripRe = /\s/g,
+    underscoreRe = /_/g,
+    Version;
+
     Ext.Version = Version = Ext.extend(Object, {
+        isVersion: true,
+
+        padModes: {
+            '~': NaN,
+            '^': Infinity
+        },
 
         /**
-         * @param {String/Number} version The version number in the following standard format:
-         *
-         *     major[.minor[.patch[.build[release]]]]
-         *
-         * Examples:
-         *
-         *     1.0
-         *     1.2.3beta
-         *     1.2.3.4RC
-         *
+         * @property {String} [release=""]
+         * The release level. The following values are understood:
+         * 
+         *  * `"dev"`
+         *  * `"alpha"` or `"a"`
+         *  * `"beta"` or `"b"`
+         *  * `"RC"` or `"rc"`
+         *  * `"#"`
+         *  * `"pl"` or `"p"`
+         * @readonly
+         */
+        release: '',
+
+        /**
+         * @param {String/Number} version The version number.
+         * @param {String} [defaultMode="^"] The padding mode (e.g., '^', '>' or '~').
+         * This is ignored if the `version` contains an explicit mode prefix.
          * @return {Ext.Version} this
          */
-        constructor: function(version) {
-            var parts, releaseStartIndex;
+        constructor: function (version, defaultMode) {
+            var me = this,
+                padModes = me.padModes,
+                ch, i, pad, parts, release, releaseStartIndex, ver;
 
-            if (version instanceof Version) {
+            if (version.isVersion) {
                 return version;
             }
 
-            this.version = this.shortVersion = String(version).toLowerCase().replace(/_/g, '.').replace(/[\-+]/g, '');
+            me.version = ver = String(version).toLowerCase().
+                                    replace(underscoreRe, '.').replace(plusMinusRe, '');
 
-            releaseStartIndex = this.version.search(/([^\d\.])/);
+            ch = ver.charAt(0);
+            if (ch in padModes) {
+                ver = ver.substring(1);
+                pad = padModes[ch];
+            } else {
+                pad = defaultMode ? padModes[defaultMode] : 0; // careful - NaN is falsey!
+            }
+            me.pad = pad;
+
+            releaseStartIndex = ver.search(endOfVersionRe);
+            me.shortVersion = ver;
 
             if (releaseStartIndex !== -1) {
-                this.release = this.version.substr(releaseStartIndex, version.length);
-                this.shortVersion = this.version.substr(0, releaseStartIndex);
+                me.release = release = ver.substr(releaseStartIndex, version.length);
+                me.shortVersion = ver.substr(0, releaseStartIndex);
+                release = Version.releaseValueMap[release] || release;
             }
 
-            this.shortVersion = this.shortVersion.replace(/[^\d]/g, '');
+            me.releaseValue = release || pad;
+            me.shortVersion = me.shortVersion.replace(notDigitsRe, '');
 
-            parts = this.version.split('.');
+            /**
+             * @property {Number[]} parts
+             * The split array of version number components found in the version string.
+             * For example, for "1.2.3", this would be `[1, 2, 3]`.
+             * @readonly
+             * @private
+             */
+            me.parts = parts = ver.split('.');
+            for (i = parts.length; i--; ) {
+                parts[i] = parseInt(parts[i], 10);
+            }
+            if (pad === Infinity) {
+                // have to add this to the end to create an upper bound:
+                parts.push(pad);
+            }
 
-            this.major = parseInt(parts.shift() || 0, 10);
-            this.minor = parseInt(parts.shift() || 0, 10);
-            this.patch = parseInt(parts.shift() || 0, 10);
-            this.build = parseInt(parts.shift() || 0, 10);
+            /**
+             * @property {Number} major
+             * The first numeric part of the version number string.
+             * @readonly
+             */
+            me.major = parts[0] || pad;
 
-            return this;
+            /**
+             * @property {Number} [minor]
+             * The second numeric part of the version number string.
+             * @readonly
+             */
+            me.minor = parts[1] || pad;
+
+            /**
+             * @property {Number} [patch]
+             * The third numeric part of the version number string.
+             * @readonly
+             */
+            me.patch = parts[2] || pad;
+
+            /**
+             * @property {Number} [build]
+             * The fourth numeric part of the version number string.
+             * @readonly
+             */
+            me.build = parts[3] || pad;
+
+            return me;
+        },
+
+        /**
+         * Compares this version instance to the specified `other` version.
+         *
+         * @param {String/Number/Ext.Version} other The other version to which to compare.
+         * @return {Number} -1 if this version is less than the target version, 1 if this
+         * version is greater, and 0 if they are equal.
+         */
+        compareTo: function (other) {
+             // "lhs" == "left-hand-side"
+             // "rhs" == "right-hand-side"
+            var me = this,
+                lhsPad = me.pad,
+                lhsParts = me.parts,
+                lhsLength = lhsParts.length,
+                rhsVersion = other.isVersion ? other : new Version(other),
+                rhsPad = rhsVersion.pad,
+                rhsParts = rhsVersion.parts,
+                rhsLength = rhsParts.length,
+                length = Math.max(lhsLength, rhsLength),
+                i, lhs, rhs;
+
+            for (i = 0; i < length; i++) {
+                lhs = (i < lhsLength) ? lhsParts[i] : lhsPad;
+                rhs = (i < rhsLength) ? rhsParts[i] : rhsPad;
+
+                // When one or both of the values are NaN these tests produce false
+                // and we end up treating NaN as equal to anything.
+                if (lhs < rhs) {
+                    return -1;
+                }
+                if (lhs > rhs) {
+                    return 1;
+                }
+            }
+
+            // same comments about NaN apply here...
+            lhs = me.releaseValue;
+            rhs = rhsVersion.releaseValue;
+            if (lhs < rhs) {
+                return -1;
+            }
+            if (lhs > rhs) {
+                return 1;
+            }
+
+            return 0;
         },
 
         /**
@@ -116,43 +324,51 @@ var version = '4.2.1.883', Version;
         },
 
         /**
-         * Returns the major component value
-         * @return {Number} major
+         * Returns the major component value.
+         * @return {Number}
          */
         getMajor: function() {
-            return this.major || 0;
+            return this.major;
         },
 
         /**
-         * Returns the minor component value
-         * @return {Number} minor
+         * Returns the minor component value.
+         * @return {Number}
          */
         getMinor: function() {
-            return this.minor || 0;
+            return this.minor;
         },
 
         /**
-         * Returns the patch component value
-         * @return {Number} patch
+         * Returns the patch component value.
+         * @return {Number}
          */
         getPatch: function() {
-            return this.patch || 0;
+            return this.patch;
         },
 
         /**
-         * Returns the build component value
-         * @return {Number} build
+         * Returns the build component value.
+         * @return {Number}
          */
         getBuild: function() {
-            return this.build || 0;
+            return this.build;
         },
 
         /**
-         * Returns the release component value
-         * @return {Number} release
+         * Returns the release component text (e.g., "beta").
+         * @return {String}
          */
         getRelease: function() {
-            return this.release || '';
+            return this.release;
+        },
+
+        /**
+         * Returns the release component value for comparison purposes.
+         * @return {Number/String}
+         */
+        getReleaseValue: function() {
+            return this.releaseValue;
         },
 
         /**
@@ -161,7 +377,7 @@ var version = '4.2.1.883', Version;
          * @return {Boolean} True if this version if greater than the target, false otherwise
          */
         isGreaterThan: function(target) {
-            return Version.compare(this.version, target) === 1;
+            return this.compareTo(target) > 0;
         },
 
         /**
@@ -170,7 +386,7 @@ var version = '4.2.1.883', Version;
          * @return {Boolean} True if this version if greater than or equal to the target, false otherwise
          */
         isGreaterThanOrEqual: function(target) {
-            return Version.compare(this.version, target) >= 0;
+            return this.compareTo(target) >= 0;
         },
 
         /**
@@ -179,7 +395,7 @@ var version = '4.2.1.883', Version;
          * @return {Boolean} True if this version if smaller than the target, false otherwise
          */
         isLessThan: function(target) {
-            return Version.compare(this.version, target) === -1;
+            return this.compareTo(target) < 0;
         },
 
         /**
@@ -188,7 +404,7 @@ var version = '4.2.1.883', Version;
          * @return {Boolean} True if this version if less than or equal to the target, false otherwise
          */
         isLessThanOrEqual: function(target) {
-            return Version.compare(this.version, target) <= 0;
+            return this.compareTo(target) <= 0;
         },
 
         /**
@@ -197,7 +413,7 @@ var version = '4.2.1.883', Version;
          * @return {Boolean} True if this version equals to the target, false otherwise
          */
         equals: function(target) {
-            return Version.compare(this.version, target) === 0;
+            return this.compareTo(target) === 0;
         },
 
         /**
@@ -218,11 +434,12 @@ var version = '4.2.1.883', Version;
         },
 
         /**
-         * Returns this format: [major, minor, patch, build, release]. Useful for comparison
+         * Returns this format: [major, minor, patch, build, release]. Useful for comparison.
          * @return {Number[]}
          */
         toArray: function() {
-            return [this.getMajor(), this.getMinor(), this.getPatch(), this.getBuild(), this.getRelease()];
+            var me = this;
+            return [me.getMajor(), me.getMinor(), me.getPatch(), me.getBuild(), me.getRelease()];
         },
 
         /**
@@ -235,53 +452,53 @@ var version = '4.2.1.883', Version;
 
         /**
          * Convenient alias to {@link Ext.Version#isGreaterThan isGreaterThan}
-         * @param {String/Number} target
+         * @param {String/Number/Ext.Version} target
          * @return {Boolean}
          */
-        gt: function() {
-            return this.isGreaterThan.apply(this, arguments);
+        gt: function (target) {
+            return this.compareTo(target) > 0;
         },
 
         /**
          * Convenient alias to {@link Ext.Version#isLessThan isLessThan}
-         * @param {String/Number} target
+         * @param {String/Number/Ext.Version} target
          * @return {Boolean}
          */
-        lt: function() {
-            return this.isLessThan.apply(this, arguments);
+        lt: function (target) {
+            return this.compareTo(target) < 0;
         },
 
         /**
          * Convenient alias to {@link Ext.Version#isGreaterThanOrEqual isGreaterThanOrEqual}
-         * @param {String/Number} target
+         * @param {String/Number/Ext.Version} target
          * @return {Boolean}
          */
-        gtEq: function() {
-            return this.isGreaterThanOrEqual.apply(this, arguments);
+        gtEq: function (target) {
+            return this.compareTo(target) >= 0;
         },
 
         /**
          * Convenient alias to {@link Ext.Version#isLessThanOrEqual isLessThanOrEqual}
-         * @param {String/Number} target
+         * @param {String/Number/Ext.Version} target
          * @return {Boolean}
          */
-        ltEq: function() {
-            return this.isLessThanOrEqual.apply(this, arguments);
+        ltEq: function (target) {
+            return this.compareTo(target) <= 0;
         }
     });
 
     Ext.apply(Version, {
         // @private
         releaseValueMap: {
-            'dev': -6,
-            'alpha': -5,
-            'a': -5,
-            'beta': -4,
-            'b': -4,
-            'rc': -3,
-            '#': -2,
-            'p': -1,
-            'pl': -1
+            dev:   -6,
+            alpha: -5,
+            a:     -5,
+            beta:  -4,
+            b:     -4,
+            rc:    -3,
+            '#':   -2,
+            p:     -1,
+            pl:    -1
         },
 
         /**
@@ -296,33 +513,17 @@ var version = '4.2.1.883', Version;
         },
 
         /**
-         * Compare 2 specified versions, starting from left to right. If a part contains special version strings,
-         * they are handled in the following order:
-         * 'dev' < 'alpha' = 'a' < 'beta' = 'b' < 'RC' = 'rc' < '#' < 'pl' = 'p' < 'anything else'
+         * Compare 2 specified versions by ensuring the first parameter is a `Version`
+         * instance and then calling the `compareTo` method.
          *
          * @static
          * @param {String} current The current version to compare to
          * @param {String} target The target version to compare to
          * @return {Number} Returns -1 if the current version is smaller than the target version, 1 if greater, and 0 if they're equivalent
          */
-        compare: function(current, target) {
-            var currentValue, targetValue, i;
-
-            current = new Version(current).toArray();
-            target = new Version(target).toArray();
-
-            for (i = 0; i < Math.max(current.length, target.length); i++) {
-                currentValue = this.getComponentValue(current[i]);
-                targetValue = this.getComponentValue(target[i]);
-
-                if (currentValue < targetValue) {
-                    return -1;
-                } else if (currentValue > targetValue) {
-                    return 1;
-                }
-            }
-
-            return 0;
+        compare: function (current, target) {
+            var ver = current.isVersion ? current : new Version(current);
+            return ver.compareTo(target);
         }
     });
 
@@ -332,6 +533,11 @@ var version = '4.2.1.883', Version;
     Ext.apply(Ext, {
         /**
          * @private
+         * 
+         * Object containing version information for all packages utilized by your 
+         * application. 
+         * 
+         * For a public getter, please see `Ext.getVersion()`.
          */
         versions: {},
 
@@ -343,23 +549,21 @@ var version = '4.2.1.883', Version;
         /**
          * Set version number for the given package name.
          *
-         * @param {String} packageName The package name, for example: 'core', 'touch', 'extjs'
-         * @param {String/Ext.Version} version The version, for example: '1.2.3alpha', '2.4.0-dev'
+         * @param {String} packageName The package name, e.g. 'core', 'touch', 'ext'.
+         * @param {String/Ext.Version} version The version, e.g. '1.2.3alpha', '2.4.0-dev'.
          * @return {Ext}
          */
         setVersion: function(packageName, version) {
-            Ext.versions[packageName] = new Version(version);
-            Ext.lastRegisteredVersion = Ext.versions[packageName];
-
+            Ext.lastRegisteredVersion = Ext.versions[packageName] = new Version(version);
             return this;
         },
 
         /**
-         * Get the version number of the supplied package name; will return the last registered version
-         * (last Ext.setVersion call) if there's no package name given.
+         * Get the version number of the supplied package name; will return the last
+         * registered version (last `Ext.setVersion` call) if there's no package name given.
          *
-         * @param {String} packageName (Optional) The package name, for example: 'core', 'touch', 'extjs'
-         * @return {Ext.Version} The version
+         * @param {String} [packageName] The package name, e.g., 'core', 'touch', 'ext'.
+         * @return {Ext.Version} The version.
          */
         getVersion: function(packageName) {
             if (packageName === undefined) {
@@ -367,6 +571,213 @@ var version = '4.2.1.883', Version;
             }
 
             return Ext.versions[packageName];
+        },
+
+        /**
+         * This method checks the registered package versions against the provided version
+         * `specs`. A `spec` is either a string or an object indicating a boolean operator.
+         * This method accepts either form or an array of these as the first argument. The
+         * second argument applies only when the first is an array and indicates whether
+         * all `specs` must match or just one.
+         * 
+         * ## Package Version Specifications
+         * The string form of a `spec` is used to indicate a version or range of versions
+         * for a particular package. This form of `spec` consists of three (3) parts:
+         * 
+         *  * Package name followed by "@". If not provided, the framework is assumed.
+         *  * Minimum version.
+         *  * Maximum version.
+         * 
+         * At least one version number must be provided. If both minimum and maximum are
+         * provided, these must be separated by a "-".
+         * 
+         * Some examples of package version specifications:
+         * 
+         *      4.2.2           (exactly version 4.2.2 of the framework)
+         *      4.2.2+          (version 4.2.2 or higher of the framework)
+         *      4.2.2-          (version 4.2.2 or higher of the framework)
+         *      4.2.1 - 4.2.3   (versions from 4.2.1 up to 4.2.3 of the framework)
+         *      - 4.2.2         (any version up to version 4.2.1 of the framework)
+         *      
+         *      foo@1.0         (exactly version 1.0 of package "foo")
+         *      foo@1.0-1.3     (versions 1.0 up to 1.3 of package "foo")
+         * 
+         * **NOTE:** This syntax is the same as that used in Sencha Cmd's package
+         * requirements declarations.
+         * 
+         * ## Boolean Operator Specifications
+         * Instead of a string, an object can be used to describe a boolean operation to
+         * perform on one or more `specs`. The operator is either **`and`** or **`or`**
+         * and can contain an optional **`not`**.
+         * 
+         * For example:
+         * 
+         *      {
+         *          not: true,  // negates boolean result
+         *          and: [
+         *              '4.2.2',
+         *              'foo@1.0.1 - 2.0.1'
+         *          ]
+         *      }
+         * 
+         * Each element of the array can in turn be a string or object spec. In other
+         * words, the value is passed to this method (recursively) as the first argument
+         * so these two calls are equivalent:
+         * 
+         *      Ext.checkVersion({
+         *          not: true,  // negates boolean result
+         *          and: [
+         *              '4.2.2',
+         *              'foo@1.0.1 - 2.0.1'
+         *          ]
+         *      });
+         *
+         *      !Ext.checkVersion([
+         *              '4.2.2',
+         *              'foo@1.0.1 - 2.0.1'
+         *          ], true);
+         * 
+         * ## Examples
+         * 
+         *      // A specific framework version
+         *      Ext.checkVersion('4.2.2');
+         * 
+         *      // A range of framework versions:
+         *      Ext.checkVersion('4.2.1-4.2.3');
+         * 
+         *      // A specific version of a package:
+         *      Ext.checkVersion('foo@1.0.1');
+         * 
+         *      // A single spec that requires both a framework version and package
+         *      // version range to match:
+         *      Ext.checkVersion({
+         *          and: [
+         *              '4.2.2',
+         *              'foo@1.0.1-1.0.2'
+         *          ]
+         *      });
+         * 
+         *      // These checks can be nested:
+         *      Ext.checkVersion({
+         *          and: [
+         *              '4.2.2',  // exactly version 4.2.2 of the framework *AND*
+         *              {
+         *                  // either (or both) of these package specs:
+         *                  or: [
+         *                      'foo@1.0.1-1.0.2',
+         *                      'bar@3.0+'
+         *                  ]
+         *              }
+         *          ]
+         *      });
+         * 
+         * ## Version Comparisons
+         * Version comparsions are assumed to be "prefix" based. That is to say, `"foo@1.2"`
+         * matches any version of "foo" that has a major version 1 and a minor version of 2.
+         * 
+         * This also applies to ranges. For example `"foo@1.2-2.2"` matches all versions
+         * of "foo" from 1.2 up to 2.2 regardless of the specific patch and build.
+         * 
+         * ## Use in Overrides
+         * This methods primary use is in support of conditional overrides on an
+         * `Ext.define` declaration.
+         * 
+         * @param {String/Array/Object} specs A version specification string, an object
+         * containing `or` or `and` with a value that is equivalent to `specs` or an array
+         * of either of these.
+         * @param {Boolean} [matchAll=false] Pass `true` to require all specs to match.
+         * @return {Boolean} True if `specs` matches the registered package versions.
+         */
+        checkVersion: function (specs, matchAll) {
+            var isArray = Ext.isArray(specs),
+                compat = isArray ? specs : checkVerTemp,
+                length = compat.length,
+                versions = Ext.versions,
+                frameworkVer = versions.ext || versions.touch,
+                i, index, matches, minVer, maxVer, spec, range, ver;
+
+            if (!isArray) {
+                checkVerTemp[0] = specs;
+            }
+
+            for (i = 0; i < length; ++i) {
+                if (!Ext.isString(spec = compat[i])) {
+                    matches = Ext.checkVersion(spec.and || spec.or, !spec.or);
+                    if (spec.not) {
+                        matches = !matches;
+                    }
+                } else {
+                    if (spec.indexOf(' ') >= 0) {
+                        spec = spec.replace(stripRe, '');
+                    }
+
+                    // For "name@..." syntax, we need to find the package by the given name
+                    // as a registered package.
+                    index = spec.indexOf('@');
+                    if (index < 0) {
+                        range = spec;
+                        ver = frameworkVer;
+                    } else {
+                        if (!(ver = versions[spec.substring(0, index)])) {
+                            // The package is not registered, so if we must matchAll then
+                            // we are done - FAIL:
+                            if (matchAll) {
+                                return false;
+                            }
+                            // Otherwise this spec is not a match so we can move on to the
+                            // next...
+                            continue;
+                        }
+                        range = spec.substring(index+1);
+                    }
+
+                    // Now look for a version, version range or partial range:
+                    index = range.indexOf('-');
+                    if (index < 0) {
+                        // just a version or "1.0+"
+                        if (range.charAt(index = range.length - 1) === '+') {
+                            minVer = range.substring(0, index);
+                            maxVer = null;
+                        } else {
+                            minVer = maxVer = range;
+                        }
+                    } else if (index > 0) {
+                        // a range like "1.0-1.5" or "1.0-"
+                        minVer = range.substring(0, index);
+                        maxVer = range.substring(index+1); // may be empty
+                    } else {
+                        // an upper limit like "-1.5"
+                        minVer = null;
+                        maxVer = range.substring(index+1);
+                    }
+
+                    matches = true;
+                    if (minVer) {
+                        minVer = new Version(minVer, '~'); // prefix matching
+                        matches = minVer.ltEq(ver);
+                    }
+                    if (matches && maxVer) {
+                        maxVer = new Version(maxVer, '~'); // prefix matching
+                        matches = maxVer.gtEq(ver);
+                    }
+                } // string spec
+
+                if (matches) {
+                    // spec matched and we are looking for any match, so we are GO!
+                    if (!matchAll) {
+                        return true;
+                    }
+                } else if (matchAll) {
+                    // spec does not match the registered package version
+                    return false;
+                }
+            }
+
+            // In the loop above, for matchAll we return FALSE on mismatch, so getting
+            // here with matchAll means we had no mismatches. On the other hand, if we
+            // are !matchAll, we return TRUE on match and so we get here only if we found
+            // no matches.
+            return !!matchAll;
         },
 
         /**

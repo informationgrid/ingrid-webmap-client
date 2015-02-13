@@ -1,29 +1,26 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A mixin to add floating capability to a Component.
  */
 Ext.define('Ext.util.Floating', {
 
-    uses: ['Ext.Layer', 'Ext.window.Window'],
+    uses: ['Ext.Layer', 'Ext.ZIndexManager'],
 
     /**
      * @cfg {Boolean} focusOnToFront
@@ -72,7 +69,6 @@ Ext.define('Ext.util.Floating', {
         me.el = new Ext.dom.Layer(Ext.apply({
             preventSync  : true,
             hideMode     : me.hideMode,
-            hidden       : me.hidden,
             shadow       : (typeof me.shadow != 'undefined') ? me.shadow : 'sides',
             shadowOffset : me.shadowOffset,
             constrain    : false,
@@ -82,7 +78,7 @@ Ext.define('Ext.util.Floating', {
 
         // If modal, and focus navigation not being handled by the FocusManager,
         // catch tab navigation, and loop back in on tab off first or last item.
-        if (me.modal && !(Ext.FocusManager && Ext.FocusManager.enabled)) {
+        if (me.modal && !(Ext.enableFocusManager)) {
             me.mon(me.el, {
                 keydown: me.onKeyDown,
                 scope: me
@@ -104,6 +100,17 @@ Ext.define('Ext.util.Floating', {
         me.registerWithOwnerCt();
 
         me.initHierarchyEvents();
+    },
+
+    initFloatConstrain: function () {
+        var me = this,
+            floatParent = me.floatParent;
+
+        // If a floating Component is configured to be constrained, but has no configured
+        // constrainTo setting, set its constrainTo to be it's ownerCt before rendering.
+        if ((me.constrain || me.constrainHeader) && !me.constrainTo) {
+            me.constrainTo = floatParent ? floatParent.getTargetEl() : me.container;
+        }
     },
 
     initHierarchyEvents: function() {
@@ -139,7 +146,8 @@ Ext.define('Ext.util.Floating', {
         // Set the floatParent to the ownertCt if one has been provided.
         // Otherwise use the zIndexParent.
         // Developers must only use ownerCt if there is really a containing relationship.
-        me.setFloatParent(ownerCt || zip);
+        me.floatParent = ownerCt || zip;
+        me.initFloatConstrain();
         delete me.ownerCt;
 
         if (zip) {
@@ -184,7 +192,7 @@ Ext.define('Ext.util.Floating', {
     // Mousedown brings to front, and programatically grabs focus *unless the mousedown was on a focusable element*
     onMouseDown: function (e) {
         var focusTask = this.focusTask;
-        
+
         if (this.floating &&
             // get out of here if there is already a pending focus.  This usually means
             // that the handler for a mousedown on a child element set the focus on some
@@ -195,32 +203,20 @@ Ext.define('Ext.util.Floating', {
         }
     },
 
-    setFloatParent: function(floatParent) {
-        var me = this;
-
-        me.floatParent = floatParent;
-
-        // If a floating Component is configured to be constrained, but has no configured
-        // constrainTo setting, set its constrainTo to be it's ownerCt before rendering.
-        if ((me.constrain || me.constrainHeader) && !me.constrainTo) {
-            me.constrainTo = floatParent ? floatParent.getTargetEl() : me.container;
-        }
-    },
-    
     // @private
     syncShadow : function() {
         if (this.floating) {
             this.el.sync(true);
         }
     },
-    
+
     onBeforeFloatLayout: function(){
         this.el.preventSync = true;
     },
-    
+
     onAfterFloatLayout: function(){
         delete this.el.preventSync;
-        this.syncShadow();   
+        this.syncShadow();
     },
 
     /**
@@ -327,6 +323,9 @@ Ext.define('Ext.util.Floating', {
                 // this will not receive focus.
                 me.focus(false, true);
             }
+            if (me.hasListeners.tofront) {
+                me.fireEvent('tofront', me, me.el.getZIndex());
+            }
         }
         
         // Restore to original setting
@@ -398,6 +397,10 @@ Ext.define('Ext.util.Floating', {
             this.center();    
         }
         delete this.needsCenter;
+
+        if (this.toFrontOnShow) {
+            this.toFront();
+        }
     },
 
     // @private

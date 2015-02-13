@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Provides a lightweight HTML Editor component. Some toolbar features are not supported by Safari and will be
@@ -243,6 +240,9 @@ Ext.define('Ext.form.field.HtmlEditor', {
     maskOnDisable: true,
 
     containerElCls: Ext.baseCSSPrefix + 'html-editor-container',
+
+    // This will strip any number of single or double quotes (in any order) from a string at the anchors.
+    reStripQuotes: /^['"]*|['"]*$/g,
 
     // @private
     initComponent: function(){
@@ -613,7 +613,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
         return Ext.String.format(
             (oldIE ? '' : '<!DOCTYPE html>')                        
             + '<html><head><style type="text/css">' 
-            + (Ext.isOpera ? 'p{margin:0}' : '')
+            + (Ext.isOpera ? 'p{margin:0;}' : '')
             + 'body{border:0;margin:0;padding:{0}px;direction:' + (me.rtl ? 'rtl;' : 'ltr;')
             + (oldIE ? Ext.emptyString : 'min-')
             + 'height:{1}px;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:text;background-color:white;' 
@@ -630,12 +630,18 @@ Ext.define('Ext.form.field.HtmlEditor', {
 
     // @private
     getDoc: function() {
-        return (!Ext.isIE && this.iframeEl.dom.contentDocument) || this.getWin().document;
+        return this.iframeEl.dom.contentDocument || this.getWin().document;
     },
 
     // @private
     getWin: function() {
-        return Ext.isIE ? this.iframeEl.dom.contentWindow : window.frames[this.iframeEl.dom.name];
+        // using window.frames[id] to access the the iframe's window object in FF creates
+        // a global variable with name == id in the global scope that references the iframe
+        // window.  This is undesirable for unit testing because that global variable
+        // is readonly and cannot be deleted.  To avoid this, we use contentWindow if it
+        // is available (and it is in all supported browsers at the time of this writing)
+        // and fall back to window.frames if contentWindow is not available.
+        return this.iframeEl.dom.contentWindow || window.frames[this.iframeEl.dom.name];
     },
     
     initDefaultFont: function(){
@@ -707,7 +713,6 @@ Ext.define('Ext.form.field.HtmlEditor', {
             scope: me,
             interval: 100
         });
-        me.relayCmd('fontName', me.defaultFont);
     },
 
     initFrameDoc: function() {
@@ -839,8 +844,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
         var me = this,
             textarea = me.textareaEl,
             inputCmp = me.inputCmp;
-            
-        me.mixins.field.setValue.call(me, value);
+        
         if (value === null || value === undefined) {
             value = '';
         }
@@ -852,6 +856,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
         if (!me.rendered && me.inputCmp) {
             me.inputCmp.data.value = value;
         }
+        me.mixins.field.setValue.call(me, value);
         
         return me;
     },
@@ -1125,6 +1130,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
             } catch(e) {
                 // ignore (why?)
             }
+            me.iframeEl.remove();
             delete me.iframeEl;
             delete me.textareaEl;
             delete me.toolbar;
@@ -1161,12 +1167,32 @@ Ext.define('Ext.form.field.HtmlEditor', {
     onFirstFocus: function(){
         var me = this,
             selection, range;
+
         me.activated = true;
         me.disableItems(me.readOnly);
         if (Ext.isGecko) { // prevent silly gecko errors
             me.win.focus();
             selection = me.win.getSelection();
-            if (!selection.focusNode || selection.focusNode.nodeType !== 3) {
+
+            // If the editor contains a <br> tag, clicking on the editor after the text where
+            // the <br> broke the line will produce nodeType === 1 (the body tag).
+            // It's better to check the length of the selection.focusNode's content.
+            //
+            // If htmleditor.value = ' ' (note the space)
+            // 1. nodeType === 1
+            // 2. nodeName === 'BODY'
+            // 3. selection.focusNode.textContent.length === 1
+            //
+            // If htmleditor.value = '' (no chars) nodeType === 3 && nodeName === '#text'
+            // 1. nodeType === 3
+            // 2. nodeName === '#text'
+            // 3. selection.focusNode.textContent.length === 1 (yes, that's right, 1)
+            //
+            // The editor inserts Unicode code point 8203, a zero-width space when
+            // htmleditor.value === '' (call selection.focusNode.textContent.charCodeAt(0))
+            // http://www.fileformat.info/info/unicode/char/200b/index.htm
+            // So, test with framework method to normalize.
+            if (selection.focusNode && !me.getValue().length) {
                 range = selection.getRangeAt(0);
                 range.selectNodeContents(me.getEditorBody());
                 range.collapse(true);
@@ -1251,7 +1277,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
             // When querying the fontName, Chrome may return an Array of font names
             // with those containing spaces being placed between single-quotes.
             queriedName = doc.queryCommandValue('fontName');
-            name = (queriedName ? queriedName.split(",")[0].replace(/^'/,'').replace(/'$/,'') : me.defaultFont).toLowerCase();
+            name = (queriedName ? queriedName.split(",")[0].replace(me.reStripQuotes, '') : me.defaultFont).toLowerCase();
             fontSelect = me.fontSelect.dom;
             if (name !== fontSelect.value || name != queriedName) {
                 fontSelect.value = name;
@@ -1385,7 +1411,9 @@ Ext.define('Ext.form.field.HtmlEditor', {
     },
 
     // @private
-    fixKeys: (function() { // load time branching for fastest keydown performance
+    fixKeys: (function () { // load time branching for fastest keydown performance
+        var tag;
+
         if (Ext.isIE) {
             return function(e){
                 var me = this,
@@ -1407,17 +1435,27 @@ Ext.define('Ext.form.field.HtmlEditor', {
                             me.deferFocus();
                         }
                     }
-                }
-                else if (k === e.ENTER) {
+                } else if (k === e.ENTER) {
                     if (!readOnly) {
-                        range = doc.selection.createRange();
-                        if (range) {
-                            target = range.parentElement();
-                            if(!target || target.tagName.toLowerCase() !== 'li'){
+                        if (Ext.isIE10m) {
+                            range = doc.selection.createRange();
+                            if (range) {
+                                target = range.parentElement();
+                                if (!target || target.tagName.toLowerCase() !== 'li') {
+                                    e.stopEvent();
+                                    range.pasteHTML('<br />');
+                                    range.collapse(false);
+                                    range.select();
+                                }
+                            }
+                        } else {
+                            // IE 11
+                            range = doc.getSelection().getRangeAt(0);
+                            if (range && range.commonAncestorContainer.parentNode.tagName.toLowerCase() !== 'li') {
+                                // Use divs so it doesn't double-space.
                                 e.stopEvent();
-                                range.pasteHTML('<br />');
-                                range.collapse(false);
-                                range.select();
+                                tag = doc.createElement('div');
+                                range.insertNode(tag);
                             }
                         }
                     }
@@ -1620,15 +1658,7 @@ Ext.define('Ext.form.field.HtmlEditor', {
      * @private
      */
     /**
-     * @cfg {String} msgFx
-     * @private
-     */
-    /**
      * @cfg {Boolean} allowDomMove
-     * @private
-     */
-    /**
-     * @cfg {String} applyTo
      * @private
      */
     /**

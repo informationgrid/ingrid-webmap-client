@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag dom,core
 /**
@@ -171,7 +168,7 @@ Element.override({
         // subpixel measurements so we can force them to always be rounded up. See
         // https://bugzilla.mozilla.org/show_bug.cgi?id=458617
         // Rounding up ensures that the width includes the full width of the text contents.
-        if (preciseWidth && Ext.supports.BoundingClientRect) {
+        if (Ext.supports.BoundingClientRect) {
             rect = dom.getBoundingClientRect();
             // IE9 is the only browser that supports getBoundingClientRect() and
             // uses a filter to rotate the element vertically.  When a filter
@@ -179,6 +176,7 @@ Element.override({
             // are not inverted (see setVertical).
             width = (me.vertical && !Ext.isIE9 && !Ext.supports.RotatedBoundingClientRect) ?
                     (rect.bottom - rect.top) : (rect.right - rect.left);
+            width = preciseWidth ? width : Math.ceil(width);
         } else {
             width = dom.offsetWidth;
         }
@@ -521,7 +519,7 @@ Element.override({
      */
     boxWrap : function(cls) {
         cls = cls || Ext.baseCSSPrefix + 'box';
-        var el = Ext.get(this.insertHtml("beforeBegin", "<div class='" + cls + "'>" + Ext.String.format(Element.boxMarkup, cls) + "</div>"));
+        var el = Ext.get(this.insertHtml("beforeBegin", "<div class='" + cls + "' role='presentation'>" + Ext.String.format(Element.boxMarkup, cls) + "</div>"));
         Ext.DomQuery.selectNode('.' + cls + '-mc', el.dom).appendChild(this.dom);
         return el;
     },

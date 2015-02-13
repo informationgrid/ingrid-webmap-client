@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // @tag extras,core
 // @require Format.js
@@ -31,14 +28,14 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *
  *      // Start a simple clock task that updates a div once per second
  *      var updateClock = function () {
- *          Ext.fly('clock').update(new Date().format('g:i:s A'));
- *      }
+ *          Ext.fly('clock').update(Ext.Date.format(new Date(), 'g:i:s A'));
+ *      };
  *
- *      var runner = new Ext.util.TaskRunner();
- *      var task = runner.start({
- *          run: updateClock,
- *          interval: 1000
- *      }
+ *      var runner = new Ext.util.TaskRunner(),
+ *          task = runner.start({
+ *              run: updateClock,
+ *              interval: 1000
+ *          });
  *
  * The equivalent using TaskManager:
  *
@@ -131,6 +128,9 @@ Ext.define('Ext.util.TaskRunner', {
      * be easily started and stopped.
      * @param {Object} config The config object. For details on the supported properties,
      * see {@link #start}.
+     *
+     * @return {Ext.util.TaskRunner.Task} 
+     * Ext.util.TaskRunner.Task instance, which can be useful for method chaining.
      */
     newTask: function (config) {
         var task = new Ext.util.TaskRunner.Task(config);

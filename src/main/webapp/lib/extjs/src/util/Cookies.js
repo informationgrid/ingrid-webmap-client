@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Utility class for setting/reading values from browser cookies.
@@ -51,7 +48,7 @@ Ext.define('Ext.util.Cookies', {
             domain = (argc > 4) ? argv[4] : null,
             secure = (argc > 5) ? argv[5] : false;
             
-        document.cookie = name + "=" + escape(value) + ((expires === null) ? "" : ("; expires=" + expires.toGMTString())) + ((path === null) ? "" : ("; path=" + path)) + ((domain === null) ? "" : ("; domain=" + domain)) + ((secure === true) ? "; secure" : "");
+        document.cookie = name + "=" + escape(value) + ((expires === null) ? "" : ("; expires=" + expires.toUTCString())) + ((path === null) ? "" : ("; path=" + path)) + ((domain === null) ? "" : ("; domain=" + domain)) + ((secure === true) ? "; secure" : "");
     },
 
     /**
@@ -64,21 +61,21 @@ Ext.define('Ext.util.Cookies', {
      * @return {Object} Returns the cookie value for the specified name;
      * null if the cookie name does not exist.
      */
-    get : function(name){
-        var arg = name + "=",
-            alen = arg.length,
-            clen = document.cookie.length,
-            i = 0,
-            j = 0;
-            
-        while(i < clen){
-            j = i + alen;
-            if(document.cookie.substring(i, j) == arg){
-                return this.getCookieVal(j);
-            }
-            i = document.cookie.indexOf(" ", i) + 1;
-            if(i === 0){
-                break;
+    get : function(name) {
+        var parts = document.cookie.split('; '),
+            len = parts.length,
+            item, i, ret;
+
+        // In modern browsers, a cookie with an empty string will be stored:
+        // MyName=
+        // In older versions of IE, it will be stored as:
+        // MyName
+        // So here we iterate over all the parts in an attempt to match the key.
+        for (i = 0; i < len; ++i) {
+            item = parts[i].split('=');
+            if (item[0] === name) {
+                ret = item[1];
+                return ret ? unescape(ret) : '';
             }
         }
         return null;
@@ -92,9 +89,9 @@ Ext.define('Ext.util.Cookies', {
      * This must be included if you included a path while setting the cookie.
      */
     clear : function(name, path){
-        if(this.get(name)){
+        if (this.get(name)) {
             path = path || '/';
-            document.cookie = name + '=' + '; expires=Thu, 01-Jan-70 00:00:01 GMT; path=' + path;
+            document.cookie = name + '=' + '; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=' + path;
         }
     },
     
@@ -102,10 +99,12 @@ Ext.define('Ext.util.Cookies', {
      * @private
      */
     getCookieVal : function(offset){
-        var endstr = document.cookie.indexOf(";", offset);
-        if(endstr == -1){
-            endstr = document.cookie.length;
+        var cookie = document.cookie,
+            endstr = cookie.indexOf(";", offset);
+
+        if (endstr == -1) {
+            endstr = cookie.length;
         }
-        return unescape(document.cookie.substring(offset, endstr));
+        return unescape(cookie.substring(offset, endstr));
     }
 });

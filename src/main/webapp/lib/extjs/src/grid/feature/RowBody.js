@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * The rowbody feature enhances the grid's markup to have an additional
@@ -69,18 +66,26 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *             setupRowData: function(record, rowIndex, rowValues) {
  *                 var headerCt = this.view.headerCt,
  *                     colspan = headerCt.getColumnCount();
+ *
  *                 // Usually you would style the my-body-class in CSS file
- *                 return {
+ *                 Ext.apply(rowValues, {
  *                     rowBody: '<div style="padding: 1em">'+record.get("desc")+'</div>',
  *                     rowBodyCls: "my-body-class",
  *                     rowBodyColspan: colspan
- *                 };
+ *                 });
  *             }
  *         }]
  *     });
+ *
+ *  # Cell Editing and Cell Selection Model
+ *
+ * Note that if {@link Ext.grid.plugin.CellEditing cell editing} or the {@link Ext.selection.CellModel cell selection model} are going
+ * to be used, then the {@link Ext.grid.feature.RowWrap RowWrap} feature, or {@link Ext.grid.plugin.RowExpander RowExpander} plugin MUST
+ * be used for intra-cell navigation to be correct.
+ *
  */
 Ext.define('Ext.grid.feature.RowBody', {
-    extend: 'Ext.grid.feature.Feature',
+    extend: 'Ext.grid.feature.RowWrap',
     alias: 'feature.rowbody',
 
     rowBodyCls: Ext.baseCSSPrefix + 'grid-row-body',
@@ -89,14 +94,29 @@ Ext.define('Ext.grid.feature.RowBody', {
     eventPrefix: 'rowbody',
     eventSelector: 'tr.' + Ext.baseCSSPrefix + 'grid-rowbody-tr',
 
+    // Turn on feature events so the 'rowbodyxxx' events will be fired in Ext.view.Table:processSpecialEvent().
+    hasFeatureEvent: true,
+
+    colSpanDecrement: 0,
+
     tableTpl: {
         before: function(values, out) {
+            // Since RowBody now extends RowWrap, we must only proceed if we're in the correct tpl.
+            if (!this.rowBody) {
+                return;
+            }
+
             var view = values.view,
                 rowValues = view.rowValues;
 
             this.rowBody.setup(values.rows, rowValues);
         },
         after: function(values, out) {
+            // Since RowBody now extends RowWrap, we must only proceed if we're in the correct tpl.
+            if (!this.rowBody) {
+                return;
+            }
+
             var view = values.view,
                 rowValues = view.rowValues;
 
@@ -110,9 +130,9 @@ Ext.define('Ext.grid.feature.RowBody', {
             'values.view.rowBodyFeature.setupRowData(values.record, values.recordIndex, values);',
             'this.nextTpl.applyOut(values, out, parent);',
         '%}',
-        '<tr class="' + Ext.baseCSSPrefix + 'grid-rowbody-tr {rowBodyCls}">',
-            '<td class="' + Ext.baseCSSPrefix + 'grid-cell-rowbody' + '" colspan="{rowBodyColspan}">',
-                '<div class="' + Ext.baseCSSPrefix + 'grid-rowbody' + ' {rowBodyDivCls}">{rowBody}</div>',
+        '<tr class="', Ext.baseCSSPrefix, 'grid-rowbody-tr {rowBodyCls}" {ariaRowAttr}>',
+            '<td class="', Ext.baseCSSPrefix, 'grid-cell-rowbody', '" colspan="{rowBodyColspan}" {ariaCellAttr}>',
+                '<div class="', Ext.baseCSSPrefix, 'grid-rowbody', ' {rowBodyDivCls}" {ariaCellInnerAttr}>{rowBody}</div>',
             '</td>',
         '</tr>', {
             priority: 100,
@@ -149,28 +169,24 @@ Ext.define('Ext.grid.feature.RowBody', {
 
     init: function(grid) {
         var me = this,
-            view = me.view;
+            view = me.view = grid.getView();
 
         view.rowBodyFeature = me;
 
-        // If we are not inside a wrapped row, we must listen for mousedown in the body row to trigger selection.
-        // Also need to remove the body row on removing a record.
-        if (!view.findFeature('rowwrap')) {
-            grid.mon(view, {
-                element: 'el',
-                mousedown: me.onMouseDown,
-                scope: me
-            });
-            
-            me.mon(grid.getStore(), 'remove', me.onStoreRemove, me);
-        }
+        // Need to remove the body row on removing a record.
+        me.mon(grid.getStore(), 'remove', me.onStoreRemove, me);
 
         view.headerCt.on({
             columnschanged: me.onColumnsChanged,
             scope: me
         });
+
         view.addTableTpl(me.tableTpl).rowBody = me;
         view.addRowTpl(Ext.XTemplate.getTpl(this, 'extraRowTpl'));
+
+        // Don't buffer the mouse event callbacks, doing so can cause a focus class to be applied after mouseout.
+        view.mouseOverOutBuffer = 0;
+
         me.callParent(arguments);
     },
     
@@ -186,18 +202,6 @@ Ext.define('Ext.grid.feature.RowBody', {
                     node.remove();
                 }
             }
-        }
-    },
-
-    // Needed when not used inside a RowWrap to select the data row when mousedown on the body row.
-    onMouseDown: function(e) {
-        var me = this,
-            tableRow = e.getTarget(me.eventSelector);
-
-        // If we have mousedowned on a row body TR and its previous sibling is a grid row, pass that onto the view for processing
-        if (tableRow && Ext.fly(tableRow = tableRow.previousSibling).is(me.view.getItemSelector())) {
-            e.target = tableRow;
-            me.view.handleEvent(e);
         }
     },
 
@@ -239,7 +243,7 @@ Ext.define('Ext.grid.feature.RowBody', {
 
     setup: function(rows, rowValues) {
         rowValues.rowBodyCls = this.rowBodyCls;
-        rowValues.rowBodyColspan = rowValues.view.getGridColumns().length;
+        rowValues.rowBodyColspan = rowValues.view.getGridColumns().length - this.colSpanDecrement;
     },
 
     cleanup: function(rows, rowValues) {

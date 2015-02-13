@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * Labels is a mixin to the Series class. Labels methods are implemented
@@ -130,7 +127,7 @@ Ext.define('Ext.chart.Label', {
      * Specifies the presence and position of the labels. The possible values depend on the chart type. 
      * For Line and Scatter charts: "under" | "over" | "rotate".
      * For Bar and Column charts: "insideStart" | "insideEnd" | "outside".
-     * For Pie charts: "outside" | "rotate".
+     * For Pie charts: "inside" | "outside" | "rotate".
      * For all charts: "none" hides the labels and "middle" is reserved for future use.
      * On stacked Bar and stacked Column charts, if 'stackedDisplay' is set, the values
      * "over" or "under" can be passed internally to {@link #onCreateLabel} and {@link #onPlaceLabel}
@@ -151,15 +148,15 @@ Ext.define('Ext.chart.Label', {
      *
      * @cfg {String} label.color
      *
-     * The color of the label text.
+     * The color of the label text. It can be specified in hex values 
+     * (eg. '#f00' or '#ff0000'), or as a CSS color name (eg. 'red').
      *
      * Default value: '#000' (black).
      *
      * @cfg {Boolean} label.contrast
      *
      * True to render the label in contrasting color with the backround of a column
-     * in a Bar chart or of a slice in a Pie chart. The label color should be specified
-     * in hex values (eg. '#f00' or '#ff0000'), not as a CSS color name (eg. 'red').
+     * in a Bar chart or of a slice in a Pie chart. 
      *
      * Default value: false.
      *
@@ -178,6 +175,40 @@ Ext.define('Ext.chart.Label', {
      * PieSeries width variable pie slice lengths.
      *
      * Default value: 50.
+     *
+     * @cfg {Number} label.padding
+     *
+     * The distance between the label and the chart when the label is displayed
+     * outside the chart.
+     *
+     * Default value: 20.
+     *
+     * @cfg {Boolean|Object} label.calloutLine
+     *
+     * True to draw a line between the label and the chart with the default settings,
+     * or an Object that defines the 'color', 'width' and 'length' properties of the line.
+     * This config is only applicable when the label is displayed outside the chart.
+     *
+     * Default value: false.
+     *
+     * @cfg {String} label.calloutLine.color
+     *
+     * The color of the line. It can be specified in hex values 
+     * (eg. '#f00' or '#ff0000'), or as a CSS color name (eg. 'red').
+     * By default, it uses the color of the pie slice.
+     *
+     * @cfg {Number} label.calloutLine.width
+     *
+     * The width of the line.
+     *
+     * Default value: 2.
+     *
+     * @cfg {Number} label.calloutLine.length
+     *
+     * The length of the line. By default, the length of the line is calculated taking
+     * into account the {@link #label.padding} and the width and height of the label.
+     * If specified, it should be larger than {@link #label.padding} otherwise the 
+     * line may cross the label itself.
      *
      * @cfg {String} label.font
      *

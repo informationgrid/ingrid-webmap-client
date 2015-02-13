@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @docauthor Jason Johnston <jason@sencha.com>
@@ -114,7 +111,7 @@ Ext.define('Ext.form.field.Base', {
      * @private
      */
     fieldSubTpl: [ // note: {id} here is really {inputId}, but {cmpId} is available
-        '<input id="{id}" type="{type}" {inputAttrTpl}',
+        '<input id="{id}" type="{type}" role="{role}" {inputAttrTpl}',
             ' size="1"', // allows inputs to fully respect CSS widths across all browsers
             '<tpl if="name"> name="{name}"</tpl>',
             '<tpl if="value"> value="{[Ext.util.Format.htmlEncode(values.value)]}"</tpl>',
@@ -221,6 +218,8 @@ Ext.define('Ext.form.field.Base', {
     checkChangeEvents: Ext.isIE && (!document.documentMode || document.documentMode < 9) ?
                         ['change', 'propertychange', 'keyup'] :
                         ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
+                        
+    ignoreChangeRe: /data\-errorqtip|style\.|className/,   
 
     /**
      * @cfg {Number} checkChangeBuffer
@@ -373,7 +372,8 @@ Ext.define('Ext.form.field.Base', {
             fieldStyle : me.getFieldStyle(),
             tabIdx     : me.tabIndex,
             inputCls   : me.inputCls,
-            typeCls    : Ext.baseCSSPrefix + 'form-' + (type === 'password' ? 'text' : type)
+            typeCls    : Ext.baseCSSPrefix + 'form-' + (type === 'password' ? 'text' : type),
+            role       : me.ariaRole
         }, me.subTplData);
 
         me.getInsertionRenderData(data, me.subTplInsertions);
@@ -431,7 +431,8 @@ Ext.define('Ext.form.field.Base', {
     },
 
     getFieldStyle: function() {
-        return Ext.isObject(this.fieldStyle) ? Ext.DomHelper.generateStyles(this.fieldStyle) : this.fieldStyle ||'';
+        var style = this.fieldStyle;
+        return Ext.isObject(style) ? Ext.DomHelper.generateStyles(style, null, true) : style || '';
     },
 
     // private
@@ -453,7 +454,7 @@ Ext.define('Ext.form.field.Base', {
         var me = this,
             data = null,
             val;
-        if (!me.disabled && me.submitValue && !me.isFileUpload()) {
+        if (!me.disabled && me.submitValue) {
             val = me.getSubmitValue();
             if (val !== null) {
                 data = {};
@@ -502,7 +503,9 @@ Ext.define('Ext.form.field.Base', {
 
         // Some Field subclasses may not render an inputEl
         if (me.inputEl) {
+            me.bindPropertyChange(false);
             me.inputEl.dom.value = value;
+            me.bindPropertyChange(true);
         }
         return value;
     },
@@ -589,7 +592,7 @@ Ext.define('Ext.form.field.Base', {
 
     onBoxReady: function() {
         var me = this;
-        me.callParent();
+        me.callParent(arguments);
         
         if (me.setReadOnlyOnBoxReady) {
             me.setReadOnly(me.readOnly);
@@ -663,17 +666,21 @@ Ext.define('Ext.form.field.Base', {
             onChangeTask,
             onChangeEvent,
             events = me.checkChangeEvents,
-            e,
-            eLen   = events.length,
-            event;
+            ignoreChangeRe = me.ignoreChangeRe,
+            eLen = events.length,
+            e, event;
 
         if (inputEl) {
             me.mon(inputEl, Ext.EventManager.getKeyEvent(), me.fireKey,  me);
 
             // listen for immediate value changes
             onChangeTask = new Ext.util.DelayedTask(me.checkChange, me);
-            me.onChangeEvent = onChangeEvent = function() {
-                onChangeTask.delay(me.checkChangeBuffer);
+            me.onChangeEvent = onChangeEvent = function(e) {
+                // When using propertychange, we want to skip out on various values, since they won't cause
+                // the underlying value to change.
+                if (!(e.type == 'propertychange' && ignoreChangeRe.test(e.browserEvent.propertyName))) {
+                    onChangeTask.delay(me.checkChangeBuffer);
+                }
             };
 
             for (e = 0; e < eLen; e++) {
@@ -690,21 +697,23 @@ Ext.define('Ext.form.field.Base', {
     },
 
     doComponentLayout: function() {
-        var me = this,
-            inputEl = me.inputEl,
-            usesPropertychange = me.usesPropertychange,
-            ename = 'propertychange',
-            onChangeEvent = me.onChangeEvent;
-
         // In IE if propertychange is one of the checkChangeEvents, we need to remove
         // the listener prior to layout and re-add it after, to prevent it from firing
         // needlessly for attribute and style changes applied to the inputEl.
+        this.bindPropertyChange(false);
+        this.callParent(arguments);
+        this.bindPropertyChange(true);
+    },
+    
+    /**
+     * @private
+     */
+    bindPropertyChange: function(active) {
+        var me = this,
+            usesPropertychange = me.usesPropertychange;
+            
         if (usesPropertychange) {
-            me.mun(inputEl, ename, onChangeEvent);
-        }
-        me.callParent(arguments);
-        if (usesPropertychange) {
-            me.mon(inputEl, ename, onChangeEvent);
+            me[active ? 'mon' : 'mun'](me.inputEl, 'propertychange', me.onChangeEvent);
         }
     },
 

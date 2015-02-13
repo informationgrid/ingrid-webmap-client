@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 // feature idea to enable Ajax loading and then the content
 // cache would actually make sense. Should we dictate that they use
@@ -31,39 +28,56 @@ Ext.define('Ext.grid.plugin.RowExpander', {
     extend: 'Ext.AbstractPlugin',
     lockableScope: 'normal',
 
-    requires: [
-        'Ext.grid.feature.RowBody',
-        'Ext.grid.feature.RowWrap'
-    ],
+    requires: 'Ext.grid.feature.RowBody',
 
     alias: 'plugin.rowexpander',
 
+    /**
+     * @cfg {Number} [columnWidth=24]
+     * The width of the row expander column which contains the [+]/[-] icons to toggle row expansion.
+     */
+    columnWidth: 24,
+
+    /**
+     * @cfg {Ext.XTemplate} rowBodyTpl
+     * An XTemplate which, when passed a record data object, produces HTML for the expanded row content.
+     *
+     * Note that if this plugin is applied to a lockable grid, the rowBodyTpl applies to the normal (unlocked) side.
+     * See {@link #lockedTpl}
+     *
+     */
     rowBodyTpl: null,
 
     /**
+     * @cfg {Ext.XTemplate} [lockedTpl]
+     * An XTemplate which, when passed a record data object, produces HTML for the expanded row content *on the locked side of a lockable grid*.
+     */
+    lockedTpl: null,
+
+    /**
      * @cfg {Boolean} expandOnEnter
-     * <tt>true</tt> to toggle selected row(s) between expanded/collapsed when the enter
-     * key is pressed (defaults to <tt>true</tt>).
+     * `true` to toggle selected row(s) between expanded/collapsed when the enter
+     * key is pressed (defaults to `true`).
      */
     expandOnEnter: true,
 
     /**
      * @cfg {Boolean} expandOnDblClick
-     * <tt>true</tt> to toggle a row between expanded/collapsed when double clicked
-     * (defaults to <tt>true</tt>).
+     * `true` to toggle a row between expanded/collapsed when double clicked
+     * (defaults to `true`).
      */
     expandOnDblClick: true,
 
     /**
      * @cfg {Boolean} selectRowOnExpand
-     * <tt>true</tt> to select a row when clicking on the expander icon
-     * (defaults to <tt>false</tt>).
+     * `true` to select a row when clicking on the expander icon
+     * (defaults to `false`).
      */
     selectRowOnExpand: false,
 
-    rowBodyTrSelector: '.x-grid-rowbody-tr',
-    rowBodyHiddenCls: 'x-grid-row-body-hidden',
-    rowCollapsedCls: 'x-grid-row-collapsed',
+    rowBodyTrSelector: '.' + Ext.baseCSSPrefix + 'grid-rowbody-tr',
+    rowBodyHiddenCls: Ext.baseCSSPrefix + 'grid-row-body-hidden',
+    rowCollapsedCls: Ext.baseCSSPrefix + 'grid-row-collapsed',
 
     addCollapsedCls: {
         before: function(values, out) {
@@ -92,8 +106,8 @@ Ext.define('Ext.grid.plugin.RowExpander', {
 
     setCmp: function(grid) {
         var me = this,
-            rowBodyTpl,
-            features;
+            features = [],
+            featuresCfg, rowBodyTpl;
 
         me.callParent(arguments);
 
@@ -104,23 +118,32 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         }
         // </debug>
 
-        me.rowBodyTpl = Ext.XTemplate.getTpl(me, 'rowBodyTpl');
-        rowBodyTpl = this.rowBodyTpl;
-        features = [{
+        rowBodyTpl = me.rowBodyTpl = Ext.XTemplate.getTpl(me, 'rowBodyTpl');
+
+        featuresCfg = {
             ftype: 'rowbody',
-            lockableScope: 'normal',
             recordsExpanded: me.recordsExpanded,
             rowBodyHiddenCls: me.rowBodyHiddenCls,
             rowCollapsedCls: me.rowCollapsedCls,
             setupRowData: me.getRowBodyFeatureData,
-            setup: me.setup,
-            getRowBodyContents: function(record) {
+            setup: me.setup
+        };
+
+        features.push(Ext.apply({
+            lockableScope: 'normal',
+            getRowBodyContents: function (record) {
                 return rowBodyTpl.applyTemplate(record.getData());
             }
-        },{
-            ftype: 'rowwrap',
-            lockableScope: 'normal'
-        }];
+        }, featuresCfg));
+
+        if (me.lockedTpl) {
+            features.push(Ext.apply({
+                lockableScope: 'locked',
+                getRowBodyContents: function (record) {
+                    return me.lockedTpl.applyTemplate(record.getData());
+                }
+            }, featuresCfg));
+        }
  
         if (grid.features) {
             grid.features = Ext.Array.push(features, grid.features);
@@ -133,7 +156,11 @@ Ext.define('Ext.grid.plugin.RowExpander', {
     init: function(grid) {
         var me = this,
             reconfigurable = grid,
-            view, lockedView;
+            view, normalView, lockedView;
+
+        if (grid.lockable) {
+            grid = grid.lockedGrid;
+        }
 
         me.callParent(arguments);
         me.grid = grid;
@@ -166,14 +193,6 @@ Ext.define('Ext.grid.plugin.RowExpander', {
             reconfigurable.mon(reconfigurable.store, 'datachanged', me.refreshRowHeights, me);
         }
         reconfigurable.on('beforereconfigure', me.beforeReconfigure, me);
-
-        if (grid.ownerLockable && !grid.rowLines) {
-            // grids without row lines can gain a border when focused.  When they do, the
-            // stylesheet adjusts the padding of the cells so that the height of the row
-            // does not change. It is necessary to refresh the row heights for lockable
-            // grids on focus to keep the height of the expander cells in sync.
-            view.on('rowfocus', me.refreshRowHeights, me);
-        }
     },
     
     beforeReconfigure: function(grid, store, columns, oldStore, oldColumns) {
@@ -197,12 +216,23 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         if (expanderGrid.ownerLockable) {
             expanderGrid = expanderGrid.ownerLockable.lockedGrid;
             expanderGrid.width += expanderHeader.width;
+            // If the ownerLockable is configured with `enableLocking` but no initial locked columns, Lockable
+            // will hide the locked grid so it won't call view.refresh. This is b/c of a bug with buffered rendering
+            // not being able to determine the height of the locked grid's rows (see EXTJS-11863). To be safe,
+            // whenever the rowexpander is used, set the locked grid to be shown. This works because the plugin adds
+            // a column and thus there will be a row height to measure (see EXTJS-13323).
+            expanderGrid.hidden = false;
         }
+
         expanderGrid.headerCt.insert(0, expanderHeader);
+
+        // If a CheckboxModel, it must now put its checkbox in at position one because this
+        // cell spans 2 columns.
+        expanderGrid.getSelectionModel().injectCheckbox = 1;
     },
 
     getRowBodyFeatureData: function(record, idx, rowValues) {
-        var me = this
+        var me = this;
         me.self.prototype.setupRowData.apply(me, arguments);
 
         rowValues.rowBody = me.getRowBodyContents(record);
@@ -249,33 +279,68 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         var me = this,
             view = me.view,
             rowNode = view.getNode(rowIdx),
-            row = Ext.fly(rowNode, '_rowExpander'),
-            nextBd = row.down(me.rowBodyTrSelector, true),
-            isCollapsed = row.hasCls(me.rowCollapsedCls),
-            addOrRemoveCls = isCollapsed ? 'removeCls' : 'addCls',
-            ownerLock, rowHeight, fireView;
+            normalRow = Ext.fly(rowNode, '_rowExpander'),
+            lockedRow,
+            nextBd = normalRow.down(me.rowBodyTrSelector, true),
+            wasCollapsed = normalRow.hasCls(me.rowCollapsedCls),
+            addOrRemoveCls = wasCollapsed ? 'removeCls' : 'addCls',
+            ownerLockable, fireView,
+            needsRefresh = view.getSizeModel().height.shrinkWrap,
+            lockedRowHeight,
+            normalRowHeight;
 
-        // Suspend layouts because of possible TWO views having their height change
+        // Suspend layouts because of possible TWO views having their height changed
         Ext.suspendLayouts();
-        row[addOrRemoveCls](me.rowCollapsedCls);
+        normalRow[addOrRemoveCls](me.rowCollapsedCls);
         Ext.fly(nextBd)[addOrRemoveCls](me.rowBodyHiddenCls);
-        me.recordsExpanded[record.internalId] = isCollapsed;
-        view.refreshSize();
+        me.recordsExpanded[record.internalId] = wasCollapsed;
+
+        // Only need to layout on row toggle if the view is shrinkwrapping the height
+        if (needsRefresh) {
+            view.refreshSize();
+        }
 
         // Sync the height and class of the row on the locked side
         if (me.grid.ownerLockable) {
-            ownerLock = me.grid.ownerLockable;
-            fireView = ownerLock.getView();
-            view = ownerLock.lockedGrid.view;
-            rowHeight = row.getHeight();
-            row = Ext.fly(view.getNode(rowIdx), '_rowExpander');
-            row.setHeight(rowHeight);
-            row[addOrRemoveCls](me.rowCollapsedCls);
-            view.refreshSize();
+            normalRow.setHeight('');
+            normalRowHeight = normalRow.getHeight();
+            ownerLockable = me.grid.ownerLockable;
+            fireView = ownerLockable.getView();
+            view = ownerLockable.lockedGrid.view;
+            // EXTJSIV-9848: in Firefox the offsetHeight of a row may not match
+            // it's actual rendered height due to sub-pixel rounding errors. To ensure
+            // the rows heights on both sides of the grid are the same, we have to set
+            // them both.
+            normalRow.setHeight(wasCollapsed ? normalRowHeight : '');
+
+            // Process the locked side.
+            lockedRow = Ext.fly(view.getNode(rowIdx), '_rowExpander');
+            lockedRow[addOrRemoveCls](me.rowCollapsedCls);
+
+            // If there is a template for expander content in the locked side, toggle that side too
+            if (me.lockedTpl) {
+                nextBd = lockedRow.down(me.rowBodyTrSelector, true);
+                Ext.fly(nextBd)[addOrRemoveCls](me.rowBodyHiddenCls);
+                lockedRowHeight = lockedRow.getHeight();
+                if (wasCollapsed) {
+                    if (lockedRowHeight > normalRowHeight) {
+                        normalRow.setHeight(lockedRowHeight);
+                    } else {
+                        lockedRow.setHeight(normalRowHeight);
+                    }
+                } else {
+                    lockedRow.setHeight('');
+                }
+            } else {
+                lockedRow.setHeight(wasCollapsed ? normalRowHeight : '');
+            }
+            if (needsRefresh) {
+                view.refreshSize();
+            }
         } else {
             fireView = view;
         }
-        fireView.fireEvent(isCollapsed ? 'expandbody' : 'collapsebody', row.dom, record, nextBd);
+        fireView.fireEvent(wasCollapsed ? 'expandbody' : 'collapsebody', normalRow.dom, record, nextBd);
         // Coalesce laying out due to view size changes
         Ext.resumeLayouts(true);
     },
@@ -326,7 +391,7 @@ Ext.define('Ext.grid.plugin.RowExpander', {
         var me = this;
 
         return {
-            width: 24,
+            width: me.columnWidth,
             lockable: false,
             sortable: false,
             resizable: false,
@@ -340,12 +405,14 @@ Ext.define('Ext.grid.plugin.RowExpander', {
                 if (!me.grid.ownerLockable) {
                     metadata.tdAttr += ' rowspan="2"';
                 }
-                return '<div class="' + Ext.baseCSSPrefix + 'grid-row-expander"></div>';
+                return '<div class="' + Ext.baseCSSPrefix + 'grid-row-expander" role="presentation"></div>';
             },
             processEvent: function(type, view, cell, rowIndex, cellIndex, e, record) {
-                if (type == "mousedown" && e.getTarget('.x-grid-row-expander')) {
-                    me.toggleRow(rowIndex, record);
-                    return me.selectRowOnExpand;
+                if (e.getTarget('.' + Ext.baseCSSPrefix + 'grid-row-expander')) {
+                    if (type == "click") {
+                        me.toggleRow(rowIndex, record);
+                        return me.selectRowOnExpand;
+                    }
                 }
             }
         };

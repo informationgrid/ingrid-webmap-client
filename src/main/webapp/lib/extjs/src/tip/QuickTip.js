@@ -1,27 +1,47 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A specialized tooltip class for tooltips that can be specified in markup and automatically managed
  * by the global {@link Ext.tip.QuickTipManager} instance.  See the QuickTipManager documentation for
  * additional usage details and examples.
+ *
+ *      @example     
+ *      Ext.tip.QuickTipManager.init(); // Instantiate the QuickTipManager 
+ *
+ *      Ext.create('Ext.Button', {
+ *
+ *          renderTo: Ext.getBody(),
+ *          text: 'My Button',
+ *          listeners: {
+ *
+ *              afterrender: function(me) {
+ *
+ *                  // Register the new tip with an element's ID
+ *                  Ext.tip.QuickTipManager.register({
+ *                      target: me.getId(), // Target button's ID
+ *                      title : 'My Tooltip',  // QuickTip Header
+ *                      text  : 'My Button has a QuickTip' // Tip content  
+ *                  });
+ *
+ *              }
+ *          }
+ *      });
+ *
  */
 Ext.define('Ext.tip.QuickTip', {
     extend: 'Ext.tip.ToolTip',
@@ -57,6 +77,8 @@ Ext.define('Ext.tip.QuickTip', {
         anchor : 'anchor',
         showDelay: 'qshowDelay'
     },
+    
+    shrinkWrapDock: true,
 
     // @private
     initComponent : function(){
@@ -317,11 +339,13 @@ Ext.define('Ext.tip.QuickTip', {
          if (target) {
              el = target.el;
              if (el) {
-                 text = el.getAttribute(cfg.namespace + cfg.attribute);
+                 // Note that if interceptTitles is set that we must assume the same as if data-qtip is set
+                 // on the target.
+                 text = el.getAttribute(cfg.namespace + cfg.attribute) || me.interceptTitles;
                  // Note that the quicktip could also have been registered with the QuickTipManager.
                  // If this was the case, then we don't want to veto showing it.
                  // Simply do a lookup in the registered targets collection.
-                 if (!text && !me.targets[target.target]) {
+                 if (!text && !me.targets[Ext.id(target.target)]) {
                      return true;
                  }
              }
@@ -348,7 +372,7 @@ Ext.define('Ext.tip.QuickTip', {
         var me = this,
             target = me.activeTarget,
             header = me.header,
-            cls;
+            dismiss, cls;
 
         if (target) {
             if (!me.rendered) {
@@ -364,7 +388,9 @@ Ext.define('Ext.tip.QuickTip', {
             }
             me.update(target.text);
             me.autoHide = target.autoHide;
-            me.dismissDelay = target.dismissDelay || me.dismissDelay;
+            dismiss = target.dismissDelay;
+            
+            me.dismissDelay = Ext.isNumber(dismiss) ? dismiss : me.dismissDelay;
             if (target.mouseOffset) {
                 xy[0] += target.mouseOffset[0];
                 xy[1] += target.mouseOffset[1];

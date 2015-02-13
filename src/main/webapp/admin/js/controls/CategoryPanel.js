@@ -137,6 +137,23 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			},
 			beforedrop: function(node, data, overModel, dropPosition, dropHandlers) {
 				self.drop = true;
+				var panelItems = self.panels.items;
+				if(self.path.length == 1){
+					for (var i = 0; i < panelItems.length; i++) {
+						var panelItem = panelItems[i];
+						if(panelItem.path){
+							if(panelItem.path.toString().indexOf(self.path.toString() + "," + data.records[0].get("name")) > -1){
+								self.panels.remove(panelItem);
+								i = i - 1;
+							}
+						}
+					}
+					if(self.panels.get(data.records[0].id)){
+						self.panels.removeAtKey(data.records[0].id);
+					}
+				}else{
+					self.panels.removeAtKey(data.records[0].id);
+				}
 		    },
 		    drop: function(node, data, overModel, dropPosition) {
 		    	self.drop = false;

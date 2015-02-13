@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * @class Ext.panel.AbstractPanel
@@ -140,12 +137,16 @@ bodyCls: ['foo', 'bar']
         // panel during things like portlet dragging where we want to avoid running a ton
         // of layouts during the drag operation.
         // This empty div also has to be relatively positioned, otherwise it crashes IE6-9 Quirks
-        // when panel is rendered in a table-based layout.
-        (Ext.isIE7m || Ext.isIEQuirks) ? '<div style="position:relative"></div>' : '',
+        // when panel is rendered in a table-based layout (see EXTJSIV-8800).  Unfortunately
+        // this relatively positioned div can cause the panel body to display ouside of the
+        // panel in some cases in RTL mode (EXTJSIV-9895), unless the div has something
+        // inside of it (hence the &nbsp;).
+        (Ext.isIE7m || Ext.isIEQuirks) ? '<div style="position:relative;font-size:0;line-height:0;" role="presentation">&nbsp;</div>' : '',
         '<div id="{id}-body" class="{baseCls}-body<tpl if="bodyCls"> {bodyCls}</tpl>',
             ' {baseCls}-body-{ui}<tpl if="uiCls">',
                 '<tpl for="uiCls"> {parent.baseCls}-body-{parent.ui}-{.}</tpl>',
             '</tpl>{childElCls}"',
+            '<tpl if="bodyRole"> role="{bodyRole}"<tpl else> role="presentation"</tpl>',
             '<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
             '{%this.renderContainer(out,values);%}',
         '</div>',
@@ -176,10 +177,18 @@ var panel = new Ext.panel.Panel({
 });</code></pre>
      */
 
-    // @since 2.3.0
-    border: true,
-
     /**
+     * @override
+     * @cfg {Boolean} [border=true]
+     * Specify as `false` to render the Panel with zero width borders.
+     *
+     * Leaving the value as `true` uses the selected theme's {@link Ext.panel.Panel#$panel-border-width}
+     *
+     * Defaults to `false` when using or extending Neptune. 
+     */    
+     border: true,
+    
+     /**
      * @private
      */
     emptyArray: [],

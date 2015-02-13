@@ -190,33 +190,28 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 //	}
 //	else {
 	
-		var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:i18n('tPleaseWaitCapabilities') });
-		loadingMask.show();
+		Ext.getBody().mask(i18n('tPleaseWaitCapabilities'));
 		// load the service
 		var ajax = Ext.Ajax.request({
 			url: de.ingrid.mapclient.model.WmsProxy.getCapabilitiesUrl(capabilitiesUrl),
 			method: 'GET',
 			success: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 				var type;
 				var format;
 				
 				if(response.responseText.indexOf('<ViewContext') != -1){
 					format = new OpenLayers.Format.WMC();
 				}else if(response.responseText.indexOf('<WFS_Capabilities') != -1 || response.responseText.indexOf('<wfs:') != -1){
-					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceWFS')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else if(response.responseText.indexOf('<csw:') != -1){
-					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else if(response.responseText.indexOf('ServiceException') != -1){
-					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else if(response.responseText.length == 0){
-					loadingMask.hide();
 					de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
 					return;
 				}else{
@@ -336,7 +331,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 				}
 			},
 			failure: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
 			}
 		});
@@ -354,7 +349,7 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 						if (btn == 'yes'){
 							if(ajax.conn){
 								ajax.conn.abort();
-								loadingMask.hide();
+								Ext.getBody().unmask();
 							}
 						}
 						if (btn == 'no'){
@@ -382,19 +377,15 @@ de.ingrid.mapclient.frontend.data.Service.loadDefault = function(capabilitiesUrl
 			if(response.responseText.indexOf('<ViewContext') != -1){
 				format = new OpenLayers.Format.WMC();
 			}else if(response.responseText.indexOf('<WFS_Capabilities') != -1 || response.responseText.indexOf('<wfs:') != -1){
-				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceWFS')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
 			}else if(response.responseText.indexOf('<csw:') != -1){
-				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceCSW')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
 			}else if(response.responseText.indexOf('ServiceException') != -1){
-				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceException')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
 			}else if(response.responseText.length == 0){
-				loadingMask.hide();
 				de.ingrid.mapclient.Message.showError(i18n('tLoadingFailServiceNoContent')+"<br />\nUrl: <br />"+capabilitiesUrl);
 				return;
 			}else{

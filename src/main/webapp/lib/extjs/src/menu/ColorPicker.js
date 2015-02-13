@@ -1,22 +1,19 @@
 /*
 This file is part of Ext JS 4.2
 
-Copyright (c) 2011-2013 Sencha Inc
+Copyright (c) 2011-2014 Sencha Inc
 
 Contact:  http://www.sencha.com/contact
 
-GNU General Public License Usage
-This file may be used under the terms of the GNU General Public License version 3.0 as
-published by the Free Software Foundation and appearing in the file LICENSE included in the
-packaging of this file.
-
-Please review the following information to ensure the GNU General Public License version 3.0
-requirements will be met: http://www.gnu.org/copyleft/gpl.html.
+Commercial Usage
+Licensees holding valid commercial licenses may use this file in accordance with the Commercial
+Software License Agreement provided with the Software or, alternatively, in accordance with the
+terms contained in a written agreement between you and Sencha.
 
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2014-09-02 11:12:40 (ef1fa70924f51a26dacbe29644ca3f31501a5fce)
 */
 /**
  * A menu containing a Ext.picker.Color Component.
@@ -38,20 +35,16 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *     });
  *
  *     Ext.create('Ext.menu.Menu', {
- *         width: 100,
- *         height: 90,
- *         floating: false,  // usually you want this set to True (default)
- *         renderTo: Ext.getBody(),  // usually rendered by it's containing component
  *         items: [{
- *             text: 'choose a color',
+ *             text: 'Choose a color',
  *             menu: colorPicker
  *         },{
  *             iconCls: 'add16',
- *             text: 'icon item'
+ *             text: 'Icon item'
  *         },{
- *             text: 'regular item'
+ *             text: 'Regular item'
  *         }]
- *     });
+ *     }).showAt([5, 5]);
  */
  Ext.define('Ext.menu.ColorPicker', {
      extend: 'Ext.menu.Menu',
@@ -98,8 +91,10 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
         Ext.apply(me, {
             plain: true,
             showSeparator: false,
+            bodyPadding: 0,
             items: Ext.applyIf({
                 cls: Ext.baseCSSPrefix + 'menu-color-item',
+                margin: 0,
                 id: me.pickerId,
                 xtype: 'colorpicker'
             }, cfg)
