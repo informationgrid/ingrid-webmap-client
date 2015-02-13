@@ -100,468 +100,468 @@
     </scale>
   </scales>
   <settings>
-  	<!-- Url-Check -->
-    <setting>
+    <!-- Url-Check -->
+    <setting key="urlCheckMailAddressTo">
       <key>urlCheckMailAddressTo</key>
       <name>Email-Adresse des Empfängers der Benachrichtigungs-Email</name>
       <value>webmaster@portalu.de</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailAddressFrom">
       <key>urlCheckMailAddressFrom</key>
       <name>Email-Adresse des Senders der Benachrichtigungs-Email</name>
       <value>portalu@portalu.de</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailUser">
       <key>urlCheckMailUser</key>
       <name>Email-User: Benutzername zur Authentifizierung am Mail-Server</name>
       <value></value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailPassword">
       <key>urlCheckMailPassword</key>
       <name>Email-Passwort: Passwort zur Authentifizierung am Mail-Server</name>
       <value></value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailProtocol">
       <key>urlCheckMailProtocol</key>
       <name>Mail-Transport Protokoll</name>
       <value>smtp</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailPort">
       <key>urlCheckMailPort</key>
       <name>Portangabe des Mail-Servers</name>
       <value></value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailSSL">
       <key>urlCheckMailSSL</key>
       <name>Benutzung von SSL zum Mail-Versand</name>
       <value>false</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailHost">
       <key>urlCheckMailHost</key>
       <name>Email-Server, von dem die Benachrichtigungs-Email gesendet wird</name>
       <value>localhost</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailUpdateText">
       <key>urlCheckMailUpdateText</key>
       <name>Erläuternder Text in Benachrichtigungs-Email (die entsprechende URL wird automatisch hinzugefügt)</name>
       <value>Nachfolgende GetCap-URL wurde aktualisiert. Um den Update in den Kartenviewer zu übernehmen, in der Kartenviewer-Administration bitte folgenden Dienst neu einlesen.</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckMailUpdateSubject">
       <key>urlCheckMailUpdateSubject</key>
       <name>Text in der Betreffzeile der Benachrichtigungs-Email</name>
       <value>Eingebundene Kartendienste: GetCap-Update erforderlich!</value>
       <group>urlCheck</group>
     </setting>
-    <setting>
+    <setting key="urlCheckCronPatternUpdateCapabilities">
       <key>urlCheckCronPatternUpdateCapabilities</key>
       <name>Automatisches Ausführungsintervall (Cron-Pattern)</name>
       <value>*/30 * * * *</value>
       <group>urlCheck</group>
     </setting>
-  	<!-- Karten-Einstellungen -->
-    <setting>
+    <!-- Karten-Einstellungen -->
+    <setting key="defaultSingleTile">
       <key>defaultSingleTile</key>
       <name>Single Tile: Darstellung der Karte in einer Kachel</name>
       <value>false</value>
       <group>default</group>
     </setting>
-    <setting>
+    <setting key="defaultTransitionEffect">
       <key>defaultTransitionEffect</key>
       <name>Transition Effekt</name>
       <value>resize</value>
       <group>default</group>
     </setting>
-    <setting>
+    <setting key="defaultTheme">
       <key>defaultTheme</key>
       <name>Karten-Layout: Theme-Auswahl festlegen (all, gray, neptune, access)</name>
       <value></value>
       <group>default</group>
     </setting>
     <!-- View -->
-    <setting>
+    <setting key="viewHasServicesPanel">
       <key>viewHasServicesPanel</key>
       <name>Dienste anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasActiveServiceTreeState">
       <key>viewHasActiveServiceTreeState</key>
       <name>Aktive Dienste: Baumstruktur wird in der Session gespeichert</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasActiveServiceTreeExpand">
       <key>viewHasActiveServiceTreeExpand</key>
       <name>Aktive Dienste: Layer-Baum wird immer komplett aufgeklappt dargestellt</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasActiveServiceTreeExpandAddNode">
       <key>viewHasActiveServiceTreeExpandAddNode</key>
       <name>Aktive Dienste: Layer-Baum klappt neu hinzugefügten Dienst auf</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasActiveServiceTreeZoomToExtend">
       <key>viewHasActiveServiceTreeZoomToExtend</key>
       <name>Aktive Dienste: Zoomen auf Dienst beim Hinzufügen aus den Rubriken</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="defaultLayerSelection">
       <key>defaultLayerSelection</key>
       <name>Aktive Dienste: Gruppenlayer wird dargestellt und automatische Selektierung von Unterlayer</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="defaultTreeDragDrop">
       <key>defaultTreeDragDrop</key>
       <name>Aktive Dienste: Dienste verschieben</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasActiveServiceAddReversal">
       <key>viewHasActiveServiceAddReversal</key>
       <name>Aktive Dienste: Dienste am Anfang hinzufügen und Layer-Darstellung in der Karte umkehren</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewActiveAccordionWestPanel">
       <key>viewActiveAccordionWestPanel</key>
       <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewMetadataShowPortalCapabilities">
       <key>viewMetadataShowPortalCapabilities</key>
       <name>Metadaten: Zeigt im Metadaten-Dialog nur die originale Capabilities an</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasCollapseTool">
       <key>viewHasCollapseTool</key>
       <name>Button zum Ein- und Ausblenden des Service-Bereiches</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasLegendTool">
       <key>viewHasLegendTool</key>
       <name>Legende-Button: Darstellung der Legende</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasDragMapTool">
       <key>viewHasDragMapTool</key>
       <name>Karte verschieben</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasInfoTool">
       <key>viewHasInfoTool</key>
       <name>Objektinformationen-Button: Feature Abfrage eines Dienstes</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasHistoryTool">
       <key>viewHasHistoryTool</key>
       <name>Vor-Zurück Buttons: Einen Kartenausschnitt vor- oder zurückgehen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasZoomTool">
       <key>viewHasZoomTool</key>
       <name>Button: Auf initiale Kartenausdehnung zoomen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasMeasureTool">
       <key>viewHasMeasureTool</key>
       <name>Messen-Button: Strecken und Flächen messen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewPositionButtonEnable">
       <key>viewPositionButtonEnable</key>
       <name>Positions-Button anzeigen</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewPortalSearchEnable">
       <key>viewPortalSearchEnable</key>
       <name>Dienstsuche in gemeinsames Suchfeld integrieren</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewPortalSearchParams">
       <key>viewPortalSearchParams</key>
       <name>Dienstsuche: URL festlegen</name>
       <value>http://portalu.de/ingrid-webmap-client/rest/search/query?</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewNominatimEnable">
       <key>viewNominatimEnable</key>
       <name>Ortssuche in gemeinsames Suchfeld integrieren</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewNominatimParams">
       <key>viewNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
       <value>http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewBWaStrLocatorEnable">
       <key>viewBWaStrLocatorEnable</key>
       <name>Eingabefeld: BWaStr</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewBWaStrLocatorParams">
       <key>viewBWaStrLocatorParams</key>
       <name>BWaStr-Locator: URL festlegen</name>
       <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/client?limit=200%26searchfield=all</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewBWaStrGeokodierung">
       <key>viewBWaStrGeokodierung</key>
       <name>BWaStr-Locator: URL Geokodierung</name>
       <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/geokodierung/query</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewBWaStrStationierung">
       <key>viewBWaStrStationierung</key>
       <name>BWaStr-Locator: URL Stationierung</name>
       <value>http://atlas.wsv.bvbs.bund.de/bwastr-locator-qs/rest/stationierung/query</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasSettings">
       <key>viewHasSettings</key>
       <name>Button Einstellungen: Fenster anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasProjectionsList">
       <key>viewHasProjectionsList</key>
       <name>Einstellungen: Auswahlfunktion Raumbezugssystem anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasScaleList">
       <key>viewHasScaleList</key>
       <name>Einstellungen: Auswahlfunktion Maßstab anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasPrintTool">
       <key>viewHasPrintTool</key>
       <name>Druck-Button: Kartenausschnitt drucken</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasLoadTool">
       <key>viewHasLoadTool</key>
       <name>Laden-Button: Gespeicherten Kartenausschnitt laden</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="defaultMailToSaveMaps">
       <key>defaultMailToSaveMaps</key>
       <name>Mailto Funktion: Link des gespeicherten Kartenausschnitts versenden</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasSaveTool">
       <key>viewHasSaveTool</key>
       <name>Speichern-Button: Aktuellen Kartenausschnitt speichern (Einloggen)</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasDownloadTool">
       <key>viewHasDownloadTool</key>
       <name>Karte als WMC abspeichern -Button: Download</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewPortalButton">
       <key>viewPortalButton</key>
       <name>Button zum öffnen des Portals</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewPortalURL">
       <key>viewPortalURL</key>
       <name>URL zum Portal</name>
       <value>/startseite</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewFullScreenButton">
       <key>viewFullScreenButton</key>
       <name>Fullscreen-Button für die Kartenkomponente</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewFullScreenURL">
       <key>viewFullScreenURL</key>
       <name>URL zur Kartenkomponente im Fullscreen</name>
       <value>/ingrid-webmap-client/frontend</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasHelpTool">
       <key>viewHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewRedliningEnable">
       <key>viewRedliningEnable</key>
       <name>Bereitstellung der Redlining-Tools</name>
       <value>false</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewRedliningStyleEnable">
       <key>viewRedliningStyleEnable</key>
       <name>Styling von Redlining-Objekten per Combobox (combobox) oder Farbpalette (palette)</name>
       <value>combobox</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewMinimapEnable">
       <key>viewMinimapEnable</key>
       <name>Minimap: Übersichtskarte anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-    <setting>
+    <setting key="viewHasWelcomeDialog">
       <key>viewHasWelcomeDialog</key>
       <name>Willkommens-Dialog: Willkommens-Dialog anzeigen</name>
       <value>true</value>
       <group>view</group>
     </setting>
-	<setting>
+    <setting key="viewSpacerTop">
       <key>viewSpacerTop</key>
       <name>Top-Abstand: Abstand zum oberen Browserrand im Portal</name>
       <value>142</value>
       <group>view</group>
     </setting>
     <!-- Suche -->
-    <setting>
+    <setting key="searchHasLegendTool">
       <key>searchHasLegendTool</key>
       <name>Legende-Button: Darstellung der Legende</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasBboxSelectTool">
       <key>searchHasBboxSelectTool</key>
       <name>Gebiet-Button: Gebiet auswählen</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasFeatureInfoTool">
       <key>searchHasFeatureInfoTool</key>
       <name>ID-Button: ID einer Administrativen Einheit auswählen</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasHistoryTool">
       <key>searchHasHistoryTool</key>
       <name>Vor-Zurück Buttons: Einen Kartenausschnitt vor- oder zurückgehen</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasMeasureTool">
       <key>searchHasMeasureTool</key>
       <name>Messen-Button: Strecken und Flächen messen</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchNominatimEnable">
       <key>searchNominatimEnable</key>
       <name>Eingabefeld: Ortssuche</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchNominatimParams">
       <key>searchNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
       <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasSettings">
       <key>searchHasSettings</key>
       <name>Button Einstellungen: Fenster anzeigen</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasProjectionsList">
       <key>searchHasProjectionsList</key>
       <name>Einstellungen: Auswahlfunktion Raumbezugssystem anzeigen</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasScaleList">
       <key>searchHasScaleList</key>
       <name>Einstellungen: Auswahlfunktion Maßstab anzeigen</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasPrintTool">
       <key>searchHasPrintTool</key>
       <name>Druck-Button: Kartenausschnitt drucken</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasLoadTool">
       <key>searchHasLoadTool</key>
       <name>Laden-Button: Gespeicherten Kartenausschnitt laden </name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasSaveTool">
       <key>searchHasSaveTool</key>
       <name>Speichern-Button: Aktuellen Kartenausschnitt speichern (Einloggen)</name>
       <value>false</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasHelpTool">
       <key>searchHasHelpTool</key>
       <name>Hilfe-Button: Hilfe für die Kartenkomponente</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchMinimapEnable">
       <key>searchMinimapEnable</key>
       <name>Minimap: Übersichtskarte anzeigen</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchHasInfoDialog">
       <key>searchHasInfoDialog</key>
       <name>Info-Dialog: Info-Dialog anzeigen</name>
       <value>true</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchPanelHeight">
       <key>searchPanelHeight</key>
       <name>Panel Höhe: Höhe der Kartenkomponente</name>
       <value>676</value>
       <group>search</group>
     </setting>
-    <setting>
+    <setting key="searchPanelHeightFacets">
       <key>searchPanelHeightFacets</key>
       <name>Panel Höhe: Höhe der Kartenkomponente für die Facettierung</name>
       <value>500</value>
       <group>search</group>
     </setting>
     <!-- 
-    <setting>
+    <setting key="">
       <key>searchHasServicesPanel</key>
       <name>Dienste und Legende anzeigen</name>
       <value>false</value>
