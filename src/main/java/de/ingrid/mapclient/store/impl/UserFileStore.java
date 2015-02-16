@@ -50,6 +50,8 @@ public class UserFileStore implements UserStore {
 	public UserFileStore(File basePath, FileMappingStrategy mappingStrategy) {
 		this.basePath = basePath;
 		this.mappingStrategy = mappingStrategy;
+		
+		if (!this.basePath.exists()) this.basePath.mkdirs();
 	}
 
 	@Override
@@ -93,8 +95,8 @@ public class UserFileStore implements UserStore {
 		String encodedId = FileUtils.encodeFileName(userId);
 		StringBuffer buf = new StringBuffer();
 		buf.append(this.basePath.getAbsolutePath()).
-		append(File.separatorChar).append(encodedId.substring(0, 1)).
-		append(File.separatorChar).append(encodedId);
+    		append(File.separatorChar).append(encodedId.substring(0, 1)).
+    		append(File.separatorChar).append(encodedId);
 		return new File(buf.toString());
 	}
 }

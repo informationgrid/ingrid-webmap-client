@@ -91,6 +91,12 @@ public enum StoreManager {
 	protected File getStoreDirectory(String configKey) throws IOException {
 		Properties props = ConfigurationProvider.INSTANCE.getProperties();
 		File rootPath = new File(props.getProperty(configKey));
+		// try to create directory if it does not exist
+		if (!rootPath.exists()) {
+		    rootPath.mkdirs();
+		}
+		        
+		// throw exception if the directory cannot be created/accessed
 		if (!rootPath.exists() || !rootPath.canWrite()) {
 			throw new IOException("The configured session dir "+rootPath.getAbsolutePath()+
 					" does not exist or is not writable.");

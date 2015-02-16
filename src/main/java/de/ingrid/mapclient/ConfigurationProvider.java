@@ -238,7 +238,12 @@ public enum ConfigurationProvider {
         Properties props = this.getProperties();
         String configFile = props.getProperty( CONFIGURATION_FILE_KEY );
         File file = new File( configFile );
+        if (!file.exists()) {
+            // make sure the path exists
+            file.getParentFile().mkdirs();
+        } else {
         file.delete();
+        }
         boolean result = tmpFile.renameTo( file );
         if (!result) {
             throw new IOException( "The configuration could not be stored. (Rename '" + tmpFile.getAbsolutePath() + "' to '" + file.getAbsolutePath() + "' failed.)" );
