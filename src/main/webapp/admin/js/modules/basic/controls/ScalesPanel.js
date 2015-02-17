@@ -63,11 +63,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ScalesPanel', {
 		sortable: false,
         dataIndex: 'name',
 		editor: {
-		   xtype: 'textfield',
-		   allowBlank: false,
-		   labelSeparator: '',
-		   labelStyle: 'padding-bottom:5px;',
-		   columnWidth: 0.95
+		    id: 'scaleNameInput',
+		    xtype: 'textfield',
+		    allowBlank: false,
+		    labelSeparator: '',
+		    labelStyle: 'padding-bottom:5px;',
+		    columnWidth: 0.95
 		},
 		flex:1
 	}, {
@@ -75,10 +76,11 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ScalesPanel', {
 		sortable: false,
         dataIndex: 'zoomLevel',
 		editor: {
-		   xtype: 'scalefield',
-		   labelSeparator: '',
-		   labelStyle: 'padding-bottom:5px;',
-		   columnWidth: 0.95
+		    id: 'scaleZoomInput',
+		    xtype: 'scalefield',
+		    labelSeparator: '',
+		    labelStyle: 'padding-bottom:5px;',
+		    columnWidth: 0.95
 		},
 		flex:1
 	}],
