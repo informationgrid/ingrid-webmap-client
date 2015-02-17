@@ -1485,6 +1485,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
 		}
 		Ext.create('Ext.window.Window', {
+		    id: 'measureInfoDialog',
 			title : title,
 			width : 120,
 			height : 60,
