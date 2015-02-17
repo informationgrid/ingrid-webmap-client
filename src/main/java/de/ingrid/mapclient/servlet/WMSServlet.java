@@ -61,6 +61,8 @@ public class WMSServlet extends HttpServlet {
 		String path = p.getWMSDir();
 		File file = new File(path + "/" + httpServletRequest.getPathInfo().replace("/", "").split("&")[0]);
 		
+		if (!file.getParentFile().exists()) file.getParentFile().mkdirs(); 
+		
 		StringBuilder type = new StringBuilder("attachment; filename=");
  		type.append(file.getName());
  				

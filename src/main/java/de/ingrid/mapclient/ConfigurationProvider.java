@@ -59,6 +59,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.tree.MergeCombiner;
 import org.apache.commons.configuration.tree.NodeCombiner;
+import org.apache.log4j.Logger;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -107,12 +108,14 @@ public enum ConfigurationProvider {
     private Properties properties = null;
     private Configuration configuration = null;
     private PersistentConfiguration persistentConfiguration = null;
+    
+    private Logger log = null;
 
     /**
      * Constructor. Reads the configuration from disk.
      */
     private ConfigurationProvider() {
-
+        log = Logger.getLogger( ConfigurationProvider.class );
         try {
 
             this.persistentConfiguration = getMergedConfiguration();
@@ -144,19 +147,29 @@ public enum ConfigurationProvider {
         confUser.setDelimiterParsingDisabled( true );
 
         InputStream stream = transformUserConf();
-        confUser.load( stream );
+        String output = null;
+        try {
+            confUser.load( stream );
+            
+            // Create and initialize the node combiner
+            NodeCombiner combiner = new MergeCombiner();
+            combiner.addListNode( "setting" );
+            
+            // Construct the combined configuration
+            CombinedConfiguration cc = new CombinedConfiguration( combiner );
+            // use settings from user first and then from system
+            cc.addConfiguration( confUser );
+            cc.addConfiguration( confSystem );
 
-        // Create and initialize the node combiner
-        NodeCombiner combiner = new MergeCombiner();
-        combiner.addListNode( "setting" );
-        
-        // Construct the combined configuration
-        CombinedConfiguration cc = new CombinedConfiguration( combiner );
-        // use settings from user first and then from system
-        cc.addConfiguration( confUser );
-        cc.addConfiguration( confSystem );
+            XMLConfiguration conf = new XMLConfiguration( cc );
+            output = getMergedXml( conf );
+            
+        } catch (ConfigurationException e) {
+            log.warn( "User config file was not found: " + this.getProperties().getProperty( CONFIGURATION_FILE_KEY ) );
+            // only use the system configuration in case no user configuration was found
+            output = getMergedXml( confSystem );
+        }
 
-        String output = getMergedXml( cc );
         // fix the starting tag, so that it can correctly matched to the POJO 
         output = output.replaceAll( "configuration>", "persistentConfiguration>" );
 
@@ -166,9 +179,7 @@ public enum ConfigurationProvider {
         return (PersistentConfiguration) xstream.fromXML( output );
     }
 
-    private String getMergedXml(CombinedConfiguration cc) throws TransformerFactoryConfigurationError, TransformerConfigurationException, ConfigurationException {
-        XMLConfiguration conf = new XMLConfiguration( cc );
-
+    private String getMergedXml(XMLConfiguration conf) throws TransformerFactoryConfigurationError, TransformerConfigurationException, ConfigurationException {
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer transformer = tf.newTransformer();
         transformer.setOutputProperty( OutputKeys.OMIT_XML_DECLARATION, "yes" );
@@ -178,6 +189,16 @@ public enum ConfigurationProvider {
         return output;
     }
 
+    /**
+     * We have to transform the user configuration in order to merge correctly. The problem is to
+     * merge lists, like "settings", which cannot be merged correctly when not having an ID. So we add 
+     * a new attribute "key" to each setting-tag, which suffice for identification. 
+     * @return
+     * @throws IOException
+     * @throws TransformerFactoryConfigurationError
+     * @throws TransformerConfigurationException
+     * @throws TransformerException
+     */
     private InputStream transformUserConf() throws IOException, TransformerFactoryConfigurationError, TransformerConfigurationException, TransformerException {
         StringWriter writer = new StringWriter();
         File xmlDocument = Paths.get( this.getProperties().getProperty( CONFIGURATION_FILE_KEY ) ).toFile();
@@ -238,7 +259,12 @@ public enum ConfigurationProvider {
         Properties props = this.getProperties();
         String configFile = props.getProperty( CONFIGURATION_FILE_KEY );
         File file = new File( configFile );
-        file.delete();
+        if (!file.exists()) {
+            // make sure the path exists
+            file.getParentFile().mkdirs();
+        } else {
+            file.delete();
+        }
         boolean result = tmpFile.renameTo( file );
         if (!result) {
             throw new IOException( "The configuration could not be stored. (Rename '" + tmpFile.getAbsolutePath() + "' to '" + file.getAbsolutePath() + "' failed.)" );

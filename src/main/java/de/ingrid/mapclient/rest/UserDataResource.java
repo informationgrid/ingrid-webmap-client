@@ -480,9 +480,10 @@ public class UserDataResource {
 			String wmcDocument = rootObj.getString("wmcDocument");
 			String title = rootObj.getString("title");
 			String mapDir = ConfigurationProvider.INSTANCE.getDownloadmapDir();
-			File f = new File(mapDir);
-			String s = f.getAbsolutePath();
-			File file = new File(s, title + ".xml");
+			File mapDirFile = new File(mapDir);
+			if (!mapDirFile.exists()) mapDirFile.mkdirs();
+			String absPathMapDir = mapDirFile.getAbsolutePath();
+			File file = new File(absPathMapDir, title + ".xml");
 			String filePath = file.getAbsolutePath();
 			BufferedWriter out;
 			out = new BufferedWriter(new OutputStreamWriter(
