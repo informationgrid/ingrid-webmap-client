@@ -86,7 +86,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 			eventListeners: {
 				nogetfeatureinfo: function(e) {
 					de.ingrid.mapclient.Message.showInfo(i18n('tFeatureInfoNotAvailable'));
-					self.destroy();
 				},
 				getfeatureinfo: function(e) {
 					// create a panel for each response
