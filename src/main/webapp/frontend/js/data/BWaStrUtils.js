@@ -258,13 +258,12 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate = function (va
 };
 
 de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url){
-	var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Layer wird erstellt ...' });
-	loadingMask.show();
+	Ext.getBody().mask('Layer wird erstellt ...');
 	var ajax = Ext.Ajax.request({
 		url: url,
 		method: 'GET',
 		success: function(response, request) {
-			loadingMask.hide();
+			Ext.getBody().unmask();
 			if(response){
 				if(response.responseText){
 					var data = JSON.parse(response.responseText);
@@ -317,7 +316,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			}
 		},
 		failure: function(response, request) {
-			loadingMask.hide();
+			Ext.getBody().unmask();
 		}
 	});
 };

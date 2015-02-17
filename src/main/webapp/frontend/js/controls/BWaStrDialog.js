@@ -740,13 +740,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
 	},
 	loadData: function(url, callback){
 		var self = this;
-		var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Daten werden berechnet ...' });
-		loadingMask.show();
+		Ext.getBody().mask('Daten werden berechnet ...');
 		var ajax = Ext.Ajax.request({
 			url: url,
 			method: 'GET',
 			success: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 				if(response){
 					if(response.responseText){
 						var data = JSON.parse(response.responseText);
@@ -939,7 +938,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
 				}
 			},
 			failure: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 			}
 		});
 	}

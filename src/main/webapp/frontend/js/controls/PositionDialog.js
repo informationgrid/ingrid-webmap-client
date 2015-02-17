@@ -285,13 +285,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 	},
 	loadData: function(url, callback){
 		var self = this;
-		var loadingMask = new Ext.LoadMask(Ext.getBody(), { msg:'Daten werden berechnet ...' });
-		loadingMask.show();
+		Ext.getBody().mask('Daten werden berechnet ...');
 		var ajax = Ext.Ajax.request({
 			url: url,
 			method: 'GET',
 			success: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 				if(response){
 					var data = JSON.parse(response.responseText);
 					if(data){
@@ -312,7 +311,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 				}
 			},
 			failure: function(response, request) {
-				loadingMask.hide();
+				Ext.getBody().unmask();
 			}
 		});
 	},
