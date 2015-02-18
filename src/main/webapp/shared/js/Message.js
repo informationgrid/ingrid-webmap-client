@@ -47,12 +47,17 @@ de.ingrid.mapclient.Message.showInfo = function(msg, params, sessionHide) {
 		displayTarget: Ext.select('div.x-panel-tbar')
 	});
 
-	note.on('destroy', function(){
-		if(sessionHide){
-			var date = new Date();
-			var nextDate = new Date();
-			nextDate.setFullYear(date.getFullYear()+1);
-			Ext.util.Cookies.set(sessionHide, true, nextDate);
+	note.on({
+		destroy: function(){
+			if(sessionHide){
+				var date = new Date();
+				var nextDate = new Date();
+				nextDate.setFullYear(date.getFullYear()+1);
+				Ext.util.Cookies.set(sessionHide, true, nextDate);
+			}
+		},
+		hide: function(){
+			this.close();
 		}
 	});
 	note.show(Ext.select('div.x-panel-tbar'));
