@@ -174,7 +174,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	        iconCls: 'iconMetadata',
 	        tooltip: i18n('tFuerMetadatenErst'),
 			handler: function() {
-				self.displayMetaData(self.layerTree.selModel.getSelection()[0]);
+				self.displayMetaData(self.activeNode);
 				self.menuNodeId = "";
 			},
 			cls: 'font-menu'
