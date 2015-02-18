@@ -63,11 +63,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		sortable: false,
 		dataIndex: 'name',
 		editor: {
-		   xtype: 'textfield',
-		   allowBlank: false,
-		   labelSeparator: '',
-		   labelStyle: 'padding-bottom:5px;',
-		   columnWidth: 0.95
+		    id: 'spatialNameInput',
+		    xtype: 'textfield',
+		    allowBlank: false,
+		    labelSeparator: '',
+		    labelStyle: 'padding-bottom:5px;',
+		    columnWidth: 0.95
 		},
 		flex:1
 	}, {
@@ -75,11 +76,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.basic.ProjectionsPanel', {
 		sortable: false,
 		dataIndex: 'epsgCode',
 		editor: {
-		   xtype: 'textfield',
-		   allowBlank: false,
-		   labelSeparator: '',
-		   labelStyle: 'padding-bottom:5px;',
-		   columnWidth: 0.95
+		    id: 'spatialEpsgInput',
+		    xtype: 'textfield',
+		    allowBlank: false,
+		    labelSeparator: '',
+		    labelStyle: 'padding-bottom:5px;',
+		    columnWidth: 0.95
 		},
 		flex:1
 	}],
