@@ -39,7 +39,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaCategoryPanel', {
 	 */
 	createPanel: function(path) {
 		var panel = null;
-
+		var self = this;
 		if (path.length == 2) {
 			// for paths of length 2 we build a AreaPanel instance for managing areas
 			panel = Ext.create('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
@@ -104,6 +104,9 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaCategoryPanel', {
 				listeners:{
 					afterrender: function(p, eOpts){
 						this.el.swallowEvent([ 'mouseover', 'mouseout', 'mousedown', 'click', 'dblclick', 'cellclick' ]);
+					},
+					resize: function(){
+						self.resizeMainLayout();
 					}
 				}
 			});
@@ -173,6 +176,26 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaCategoryPanel', {
 		}
 
 		return store;
+	},
+	resizeMainLayout: function(){
+		var areasModule = Ext.getCmp("areas");
+		if(areasModule){
+			var parentPanel = areasModule.items;
+			if(parentPanel){
+				var parentPanelItem = parentPanel.items[0];
+				if(parentPanelItem){
+					var subPanel = parentPanelItem.items;
+					if(subPanel){
+						var subPanelItem = subPanel.items[0];
+						if(subPanelItem){
+							if(subPanelItem.gridPanel){
+								subPanelItem.gridPanel.doLayout();
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 });
 

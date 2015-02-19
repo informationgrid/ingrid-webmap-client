@@ -49,10 +49,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 	 */
 	createPanel: function(path) {
 		var panel = null;
-
+		var self = this;
+		
 		if (path.length == 3) {
 			// for paths of length 3 we build a GridPanel instance for managing services
-			var self = this;
 			var columns = [{
 				header: 'Name',
 				sortable: true,
@@ -118,6 +118,11 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 		else {
 			// for other paths we build a CategoryPanel instance for managing sub categories
 			panel = de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel.superclass.createPanel.call(this, path);
+			panel.on({
+				resize: function(){
+					self.resizeMainLayout();
+				}
+			});
 		}
 
 		return panel;
@@ -137,24 +142,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 
 			panel.on({
 				resize: function(){
-					var serviceModule = Ext.getCmp("services");
-					if(serviceModule){
-						var parentPanel = serviceModule.items;
-						if(parentPanel){
-							var parentPanelItem = parentPanel.items[0];
-							if(parentPanelItem){
-								var subPanel = parentPanelItem.items;
-								if(subPanel){
-									var subPanelItem = subPanel.items[0];
-									if(subPanelItem){
-										if(subPanelItem.gridPanel){
-											subPanelItem.gridPanel.doLayout();
-										}
-									}
-								}
-							}
-						}
-					}
+					self.resizeMainLayout();
 				},
 				datachanged: function(e) {
 					self.save();
@@ -214,6 +202,26 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 		}
 
 		return store;
+	},
+	resizeMainLayout: function(){
+		var serviceModule = Ext.getCmp("services");
+		if(serviceModule){
+			var parentPanel = serviceModule.items;
+			if(parentPanel){
+				var parentPanelItem = parentPanel.items[0];
+				if(parentPanelItem){
+					var subPanel = parentPanelItem.items;
+					if(subPanel){
+						var subPanelItem = subPanel.items[0];
+						if(subPanelItem){
+							if(subPanelItem.gridPanel){
+								subPanelItem.gridPanel.doLayout();
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 });
 

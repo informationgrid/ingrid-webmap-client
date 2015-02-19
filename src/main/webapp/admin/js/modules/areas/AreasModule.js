@@ -27,6 +27,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.areas");
  */
 Ext.define('de.ingrid.mapclient.admin.modules.areas.AreasModule',  { 
 	extend:'de.ingrid.mapclient.admin.modules.ModuleBase',
+	id:'areas',
 	title: 'Vordefinierte Bereiche',
 	layout: 'form',
 	labelAlign: 'top',
@@ -49,7 +50,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreasModule',  {
 	 * @see de.ingrid.mapclient.admin.modules.ModuleBase.prototype.getId
 	 */
 	getId: function() {
-		return "areas";
+		return this.id;
 	}
 });
 
