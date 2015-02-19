@@ -59,7 +59,19 @@ Ext.define('de.ingrid.mapclient.admin.modules.services.ServiceCategoryPanel', {
 				dataIndex: 'name',
 				editor: {
 				   xtype: 'textfield',
-				   disabled: true
+				   disabled: true,
+				   validator: function(v) {
+					   var valid = true;
+					   store.each(function(record) {
+							if(v.trim() == record.get("name")){
+								valid = false;
+							}
+						}, this);
+					   if(!valid){
+						   return "Rubrik existiert schon!";
+					   }
+	                   return true;
+	               }
 				},
 				flex: 1
 			}, {

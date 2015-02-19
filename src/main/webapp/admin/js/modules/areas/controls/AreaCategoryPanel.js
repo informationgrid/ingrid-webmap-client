@@ -44,6 +44,63 @@ Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaCategoryPanel', {
 			// for paths of length 2 we build a AreaPanel instance for managing areas
 			panel = Ext.create('de.ingrid.mapclient.admin.modules.areas.AreaPanel', {
 				store: this.getStoreManager().getStore(path),
+				columns: [{
+					header: 'Name',
+					sortable: true,
+					dataIndex: 'name',
+					editor: {
+					   xtype: 'textfield',
+					   allowBlank: false,
+					   validator: function(v) {
+						   var valid = true;
+						   panel.store.each(function(record) {
+								if(v.trim() == record.get("name")){
+									valid = false;
+								}
+							}, this);
+						   if(!valid){
+							   return "Rubrik existiert schon!";
+						   }
+			               return true;
+			           }
+					}
+				}, {
+					header: 'Norden',
+					sortable: true,
+					dataIndex: 'north',
+					editor: {
+					   xtype: 'coordinatefield',
+					   allowBlank: false,
+					   hideLabel: true
+					}
+				}, {
+					header: 'Westen',
+					sortable: true,
+					dataIndex: 'west',
+					editor: {
+					   xtype: 'coordinatefield',
+					   allowBlank: false,
+					   hideLabel: true
+					}
+				}, {
+					header: 'Osten',
+					sortable: true,
+					dataIndex: 'east',
+					editor: {
+					   xtype: 'coordinatefield',
+					   allowBlank: false,
+					   hideLabel: true
+					}
+				}, {
+					header: 'S&uuml;den',
+					sortable: true,
+					dataIndex: 'south',
+					editor: {
+					   xtype: 'coordinatefield',
+					   allowBlank: false,
+					   hideLabel: true
+					}
+				}],
 				listeners:{
 					afterrender: function(p, eOpts){
 						this.el.swallowEvent([ 'mouseover', 'mouseout', 'mousedown', 'click', 'dblclick', 'cellclick' ]);

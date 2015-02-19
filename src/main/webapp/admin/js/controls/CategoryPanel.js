@@ -94,7 +94,19 @@ Ext.define('de.ingrid.mapclient.admin.controls.CategoryPanel', {
 			editor: {
 			   xtype: 'textfield',
 			   allowBlank: false,
-			   columnWidth: 0.95
+			   columnWidth: 0.95,
+			   validator: function(v) {
+				   var valid = true;
+				   store.each(function(record) {
+						if(v.trim() == record.get("name")){
+							valid = false;
+						}
+					}, this);
+				   if(!valid){
+					   return "Rubrik existiert schon!";
+				   }
+                   return true;
+               }
 			},
 			flex: 1
 		}];

@@ -28,51 +28,7 @@ Ext.namespace("de.ingrid.mapclient.admin.modules.areas");
 
 Ext.define('de.ingrid.mapclient.admin.modules.areas.AreaPanel', { 
 	extend: 'de.ingrid.mapclient.admin.controls.GridPanel',
-	columns: [{
-		header: 'Name',
-		sortable: true,
-		dataIndex: 'name',
-		editor: {
-		   xtype: 'textfield',
-		   allowBlank: false
-		}
-	}, {
-		header: 'Norden',
-		sortable: true,
-		dataIndex: 'north',
-		editor: {
-		   xtype: 'coordinatefield',
-		   allowBlank: false,
-		   hideLabel: true
-		}
-	}, {
-		header: 'Westen',
-		sortable: true,
-		dataIndex: 'west',
-		editor: {
-		   xtype: 'coordinatefield',
-		   allowBlank: false,
-		   hideLabel: true
-		}
-	}, {
-		header: 'Osten',
-		sortable: true,
-		dataIndex: 'east',
-		editor: {
-		   xtype: 'coordinatefield',
-		   allowBlank: false,
-		   hideLabel: true
-		}
-	}, {
-		header: 'S&uuml;den',
-		sortable: true,
-		dataIndex: 'south',
-		editor: {
-		   xtype: 'coordinatefield',
-		   allowBlank: false,
-		   hideLabel: true
-		}
-	}],
+	columns: [],
 	dropBoxTitle:'Vordefinierten Bereich l&ouml;schen',
 	/**
 	 * @see de.ingrid.mapclient.admin.controls.GridPanel.createNewRecordFieldContainer
