@@ -813,6 +813,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 				},
 	           listeners : {
 	               load: function(store, records, succesful, operation){
+	            	   Ext.getBody().mask('Dienst wird geladen', 'x-mask-loading');
 	            	   var layerRecord = [];
 	            	   if(records){
 	            		   for (var i=0, countI=records.length; i<countI; i++) {
@@ -868,6 +869,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 								}
 		            	  }
 	            	  }else{
+	            		  Ext.getBody().unmask();
 	            		  de.ingrid.mapclient.Message.showError('Das Laden des Dienstes ist fehlgeschlagen.');
 	            	  }
 	            	  var extend = Ext.getCmp('serviceDetailBorderPanelExtend');
@@ -897,7 +899,12 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 								    	mainPanel: self,
 								    	height: extend.height
 									})
-								]
+								],
+								listeners: {
+									afterrender: function(){
+										Ext.getBody().unmask();
+									}
+								}
 							});
 	            	  }
 	            	extend.removeAll();
