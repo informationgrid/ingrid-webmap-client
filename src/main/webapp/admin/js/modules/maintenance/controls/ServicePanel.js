@@ -272,28 +272,25 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	        flex:1
 		});
 		
-		self.serviceGrid.on("filterupdate", function() {
-			 // Remove categories and layer panel
-			 self.remove(self.items.get('serviceDetailBorderPanel'));
-		});
-		
-		self.serviceGrid.on("sortchange", function(grid) {
-			if(self.selectedService){
-				if(self.selectedService.data){
-					if(self.selectedService.data.capabilitiesUrl){
-						var capabilitiesUrl = self.selectedService.data.capabilitiesUrl;
-						var service = {
-							   title: self.selectedService.data.name,
-							   capabilitiesUrl: self.selectedService.data.capabilitiesUrl,
-							   originalCapUrl: self.selectedService.data.originalCapUrl
-						};
-						self.reloadServiceFromConfig(service);
+		self.serviceGrid.on({
+			filterupdate: function() {
+				 // Remove categories and layer panel
+				 self.remove(self.items.get('serviceDetailBorderPanel'));
+			},
+			sortchange: function(grid) {
+				// selected record
+				var selectedRecord = self.serviceGrid.getSelectionModel().getLastSelected();
+				if(selectedRecord){
+					// row HTMLElement
+					var node = self.serviceGrid.view.getNode(selectedRecord);
+					if(node){
+						node.scrollIntoView();
 					}
-				}else{
-					self.remove(self.items.get('serviceDetailBorderPanel'));
 				}
+				self.remove(self.items.get('serviceDetailBorderPanel'));
 			}
 		});
+		
 
 		self.serviceGrid.getSelectionModel().on('selectionchange', function(rowModel, selections) {
 			if(selections.length > 0){
@@ -381,8 +378,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 
 		// initialize the service list
 		this.services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
-		de.ingrid.mapclient.admin.modules.maintenance.ServicePanel.prototype.loadServices(this.serviceStore,
-				this.services, this.jsonColumn);
+		this.loadServices(this.serviceStore, this.services, this.jsonColumn);
 	},
 	loadServices: function(store, items, attributes, preventEvents) {
 		var self = this;
@@ -409,6 +405,26 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		store.loadData(records);
 		if (preventEvents) {
 			store.resumeEvents(false);
+		}
+		
+		if(records.length > 0){
+			var lastRecord = records[records.length - 1];
+			var returnRecord;
+			var storeRecords = store.getRange(); 
+			if(storeRecords){
+				for (var i = 0; i < storeRecords.length; i++) {
+					var storeRecord = storeRecords[i];
+					if(storeRecord.get("capabilitiesUrlOrg")){
+						if(lastRecord.indexOf(storeRecord.get("capabilitiesUrlOrg")) > -1){
+							returnRecord = storeRecord;
+							break;
+						}
+					}
+				}
+			}
+		}
+		if(returnRecord){
+			return returnRecord;
 		}
 	},
 	/**
@@ -482,11 +498,10 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	        	id: 'servicePanelAddServiceFormPanel_save',
                 text: 'Speichern',
 	            handler: function(btn) {
-	            	var name = Ext.getCmp('servicePanelAddServiceFormPanel_name').value;
-	            	var url = Ext.getCmp('servicePanelAddServiceFormPanel_url').value;
-	            	var update =  Ext.getCmp('servicePanelAddServiceFormPanel_update').value;
-	            	if(url != Ext.getCmp('servicePanelAddServiceFormPanel_url').emptyText 
-	            			&& name != Ext.getCmp('servicePanelAddServiceFormPanel_name').emptyText){
+	            	var name = Ext.getCmp('servicePanelAddServiceFormPanel_name').getValue().trim();
+	            	var url = Ext.getCmp('servicePanelAddServiceFormPanel_url').getValue().trim();
+	            	var update =  Ext.getCmp('servicePanelAddServiceFormPanel_update').getValue().trim();
+	            	if(url != "" && name != ""){
 	            		var service = { 
             				title:name, 
             				originalCapUrl:url, 
@@ -499,7 +514,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	            		// Add service
 	            		self.setValue ('addservice', service, 'Bitte warten! Dienst wird hinzugef&uuml;gt!', false, true);
 	                	win.close();
-	            	}else if(url != Ext.getCmp('servicePanelAddServiceFormPanel_url').emptyText){
+	            	}else if(url != ""){
 	            		var service = { 
             				title:null,
             				originalCapUrl:url,
@@ -632,8 +647,8 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	        buttons: [{
 	            text: 'Kopieren',
 	            handler: function(btn) {
-	            	var name = Ext.getCmp('servicePanelCopyServiceFormPanel_name').value;
-	            	if(name == undefined){
+	            	var name = Ext.getCmp('servicePanelCopyServiceFormPanel_name').getValue().trim();
+	            	if(name == ""){
 	            		name = Ext.getCmp('servicePanelCopyServiceFormPanel_name').emptyText;
 	            	}
 	            	if(name != ''){
@@ -727,7 +742,7 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		var self = this;
 		var services = de.ingrid.mapclient.Configuration.getValue('wmsServices');
 		// Set services to store
-		self.loadServices(self.serviceStore, services, self.jsonColumn);
+		var record = self.loadServices(self.serviceStore, services, self.jsonColumn);
 		// Refresh service panel
 		self.serviceGrid.getView().refresh();
 		var title = service.title;
@@ -737,9 +752,13 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 		
 		if(doServiceNew){
 			if(services){
-				var lastSelection = self.serviceGrid.getStore().getAt(self.serviceGrid.getStore().getCount() - 1);
-				if(lastSelection){
-					self.serviceGrid.getSelectionModel().select(lastSelection);
+				if(record){
+					// row HTMLElement
+					var node = self.serviceGrid.view.getNode(record);
+					if(node){
+						node.scrollIntoView();
+					}
+					self.serviceGrid.getSelectionModel().select(record);
 				}
 			}
 		}else{
@@ -795,89 +814,97 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	           listeners : {
 	               load: function(store, records, succesful, operation){
 	            	   var layerRecord = [];
-	            	   for (var i=0, countI=records.length; i<countI; i++) {
-							var layerObj = records[i];
-							// Get parent node name
-							var layerObjNode = layerObj.raw;
-							var parent = null; 
-							var leaf = true;
-							if(layerObjNode){
-								var layerObjParentNode = layerObjNode.parentNode;
-								if(layerObjParentNode){
-									if(layerObjParentNode.tagName == "Layer"){
-										var layerObjParentChildNodes = layerObjParentNode.childNodes;
-										if(layerObjParentChildNodes){
-											for (var j=0, countJ=layerObjParentChildNodes.length; j<countJ; j++) {
-												var node = layerObjParentChildNodes[j];
-												if(node.tagName == "Name"){
-													parent = node.textContent;
-													if(!parent){
-														parent = node.text;
+	            	   if(records){
+	            		   for (var i=0, countI=records.length; i<countI; i++) {
+								var layerObj = records[i];
+								// Get parent node name
+								var layerObjNode = layerObj.raw;
+								var parent = null; 
+								var leaf = true;
+								if(layerObjNode){
+									var layerObjParentNode = layerObjNode.parentNode;
+									if(layerObjParentNode){
+										if(layerObjParentNode.tagName == "Layer"){
+											var layerObjParentChildNodes = layerObjParentNode.childNodes;
+											if(layerObjParentChildNodes){
+												for (var j=0, countJ=layerObjParentChildNodes.length; j<countJ; j++) {
+													var node = layerObjParentChildNodes[j];
+													if(node.tagName == "Name"){
+														parent = node.textContent;
+														if(!parent){
+															parent = node.text;
+														}
 													}
 												}
 											}
 										}
 									}
 								}
-							}
-							
-							if(layerObjNode){
-								var childNodes = layerObjNode.childNodes;
-								if(childNodes){
-									for (var j=0, countJ=childNodes.length; j<countJ; j++) {
-										var childNode = childNodes[j];
-										if(childNode.tagName == "Layer"){
-											leaf = false;
-											break;
+								
+								if(layerObjNode){
+									var childNodes = layerObjNode.childNodes;
+									if(childNodes){
+										for (var j=0, countJ=childNodes.length; j<countJ; j++) {
+											var childNode = childNodes[j];
+											if(childNode.tagName == "Layer"){
+												leaf = false;
+												break;
+											}
 										}
 									}
 								}
-							}
-							if(layerObj.data){
-								layerRecord.push({ 
-									name: layerObj.data.name,
-									title: layerObj.data.title,
-									featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
-									deactivated: (layerObj.data.name) ? false : true,
-									checked: false,
-									legend: false,
-									id:layerObj.data.name,
-									parent: parent,
-									leaf: leaf
-								});
-							}
+								if(layerObj.data){
+									layerRecord.push({ 
+										name: layerObj.data.name,
+										title: layerObj.data.title,
+										featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
+										deactivated: (layerObj.data.name) ? false : true,
+										checked: false,
+										legend: false,
+										id:layerObj.data.name,
+										parent: parent,
+										leaf: leaf
+									});
+								}
+		            	  }
+	            	  }else{
+	            		  de.ingrid.mapclient.Message.showError('Das Laden des Dienstes ist fehlgeschlagen.');
 	            	  }
 	            	  var extend = Ext.getCmp('serviceDetailBorderPanelExtend');
-	            	  var extendPanel = Ext.create('Ext.panel.Panel', {
-							id: 'serviceDetailBorderPanel',
-							itemId: 'serviceDetailBorderPanel',
-						    border: false,
-						    layout: {
-							    type: 'hbox',
-							    pack: 'start',
-							    align: 'stretch'
-							},
-						    items: [
-								Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel', {
-									selectedService: serviceRecord,
-									flex: 0.5,
-									mainPanel: self,
-									height: extend.height
-								}),
-					            Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel', {
-					            	selectedService: serviceRecord,
-					            	autoScroll: true,
-									layerRecord: layerRecord,
-							    	flex: 2,
-							    	mainPanel: self,
-							    	height: extend.height
-								})
-							]
-						});
-					
+	            	  var extendPanel;
+	            	  if(layerRecord.length > 0){
+	            		  extendPanel = Ext.create('Ext.panel.Panel', {
+								id: 'serviceDetailBorderPanel',
+								itemId: 'serviceDetailBorderPanel',
+							    border: false,
+							    layout: {
+								    type: 'hbox',
+								    pack: 'start',
+								    align: 'stretch'
+								},
+							    items: [
+									Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailCategoryPanel', {
+										selectedService: serviceRecord,
+										flex: 0.5,
+										mainPanel: self,
+										height: extend.height
+									}),
+						            Ext.create('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPanel', {
+						            	selectedService: serviceRecord,
+						            	autoScroll: true,
+										layerRecord: layerRecord,
+								    	flex: 2,
+								    	mainPanel: self,
+								    	height: extend.height
+									})
+								]
+							});
+	            	  }
 	            	extend.removeAll();
-	            	extend.add(extendPanel);
-					self.doLayout();
+	            	if(extendPanel){
+	            		extend.add(extendPanel);
+	            	}
+	            	self.doLayout();
 	            	extend.doLayout();
 					self.selectedService = serviceRecord;
 					self.selectedService.data.jsonLayers = layerRecord;
