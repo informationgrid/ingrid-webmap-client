@@ -32,11 +32,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
 
         this.target = target;
         var layer = target.get('layer');
-
-        if(layer.params['LAYERS'].indexOf('INGRID-') > -1){
-        	if(layer.getVisibility()){
-        		layer.setVisibility(false);
-        		target.set('checked', true);
+        
+        if(layer.params){
+        	if(layer.params['LAYERS'].indexOf('INGRID-') > -1){
+            	if(layer.getVisibility()){
+            		layer.setVisibility(false);
+            		target.set('checked', true);
+            	}
         	}
         }else{
         	if(target.get('checked')){
@@ -109,28 +111,32 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
                 // Must prevent the unchecking of radio buttons
                 node.set('checked', layer.getVisibility());
             } else {
-        		if(layer.params['LAYERS'].indexOf('INGRID-') == -1){
-               		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
-               			layer.setVisibility(checked);
-               		}else{
-						var isParentsSelect = this.isParentsSelect(node);
-						if(node.childNodes.length == 0){
-							if(isParentsSelect){
-								layer.setVisibility(checked);
-							}
-						}else{
-							if(checked){
-								if(node.get("cls").indexOf("x-tree-node-select") > -1){
-									layer.setVisibility(checked);
-								}
-								this.checkboxSelection(node, true, isParentsSelect);
-					       	}else{
-		               			layer.setVisibility(checked);
-					       		this.checkboxSelection(node, false, isParentsSelect);
-					       	}
-						}
-               		}
-           	 	}
+            	if(layer.params){
+            		if(layer.params['LAYERS'].indexOf('INGRID-') == -1){
+                   		if(de.ingrid.mapclient.Configuration.getSettings("defaultLayerSelection")){
+                   			layer.setVisibility(checked);
+                   		}else{
+    						var isParentsSelect = this.isParentsSelect(node);
+    						if(node.childNodes.length == 0){
+    							if(isParentsSelect){
+    								layer.setVisibility(checked);
+    							}
+    						}else{
+    							if(checked){
+    								if(node.get("cls").indexOf("x-tree-node-select") > -1){
+    									layer.setVisibility(checked);
+    								}
+    								this.checkboxSelection(node, true, isParentsSelect);
+    					       	}else{
+    		               			layer.setVisibility(checked);
+    					       		this.checkboxSelection(node, false, isParentsSelect);
+    					       	}
+    						}
+                   		}
+               	 	}
+            	}else{
+            		layer.setVisibility(checked);
+            	}
             }
             delete node._visibilityChanging;
         }

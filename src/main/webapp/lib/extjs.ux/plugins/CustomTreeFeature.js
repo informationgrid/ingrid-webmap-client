@@ -144,6 +144,8 @@ Ext.tree.Column.prototype.treeRenderer = function(value, metaData, record, rowId
     	}else if (record.getData().container){
     		if(record.getData().container.service){
     			return "<div class='buttonSpan' style="+ record.getOwnerTree().buttonSpanElStyle +"></div>" + tpl;
+    		}else if(record.getData().cls.indexOf("x-tree-node-service") > -1){
+    			return "<div class='buttonSpan' style="+ record.getOwnerTree().buttonSpanElStyle +"></div>" + tpl;
     		}else{
     			return tpl;
     		}

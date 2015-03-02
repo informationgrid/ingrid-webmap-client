@@ -67,26 +67,26 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 this.store = GeoExt.MapPanel.guess().layers;
             }
             
-            if (!this.service) {
-    			throw "Service attribute is expected on node: "+node.text;
-    		}
-
             this.store.each(function(record) {
             	var layer = record.getLayer();
             	if (this.filter(record) === true) {
-            		var serviceLayer = this.service.getLayerByName(layer.params.LAYERS);
-            		if(serviceLayer.options.isRootLayer){
-            			if(serviceLayer.options.nestedLayers){
-                			if(serviceLayer.options.nestedLayers.length > 0){
-                				this.addLayerNode(node, record);
-                    			var lastChild = node.lastChild;
-                    			lastChild.set("allowDrag", false);
-                    			lastChild.set("allowDrop", false);
-                        		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
-                			}else{
-                				this.addLayerNode(node, record);
-                			}
-                    	}
+            		if (this.service) {
+	            		var serviceLayer = this.service.getLayerByName(layer.params.LAYERS);
+	            		if(serviceLayer.options.isRootLayer){
+	            			if(serviceLayer.options.nestedLayers){
+	                			if(serviceLayer.options.nestedLayers.length > 0){
+	                				this.addLayerNode(node, record);
+	                    			var lastChild = node.lastChild;
+	                    			lastChild.set("allowDrag", false);
+	                    			lastChild.set("allowDrop", false);
+	                        		this.addNestedLayerNodes(lastChild, this.store, layer, this.service);
+	                			}else{
+	                				this.addLayerNode(node, record);
+	                			}
+	                    	}
+	            		}
+            		} else {
+            			this.addLayerNode(node, record);
             		}
             	}
             }, this);
@@ -178,57 +178,65 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     },
     checkNodeByAddService: function (node){
         var wmsServices = de.ingrid.mapclient.Configuration.getValue("wmsServices");
-		for(var i = 0; i < wmsServices.length; i++){
-			if(this.service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
-				var cl = wmsServices[i].checkedLayers;
-				if(cl){
-					for(var j = 0; j < cl.length; j++){
-						var k = 0;
-						this.checkNodes(cl[j],node);
-					}
-				}
-				break;
-			}
-		}
+        if(this.service){
+        	for(var i = 0; i < wmsServices.length; i++){
+    			if(this.service.capabilitiesUrl == wmsServices[i].capabilitiesUrl){
+    				var cl = wmsServices[i].checkedLayers;
+    				if(cl){
+    					for(var j = 0; j < cl.length; j++){
+    						var k = 0;
+    						this.checkNodes(cl[j],node);
+    					}
+    				}
+    				break;
+    			}
+    		}
+        }
     },
     checkNodeByState: function (nodes){
     	for(var i = 0; i < nodes.length; i++){
     		var node = nodes[i];
-    		var id = node.get("layer").params.LAYERS;
-    		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
-    		
-    		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
-    		    var selectedLayer = this.selectedLayersByService[j];
-    			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-					node.set("checked", true);
-    			}
-    		}
-    		if(node.hasChildNodes()){
-    			this.checkNodeByState(node.childNodes);
+    		if(node.get("layer").params){
+    			var id = node.get("layer").params.LAYERS;
+        		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+        		
+        		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
+        		    var selectedLayer = this.selectedLayersByService[j];
+        			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
+    					node.set("checked", true);
+        			}
+        		}
+        		if(node.hasChildNodes()){
+        			this.checkNodeByState(node.childNodes);
+        		}
     		}
     	}
     },
     checkNodes: function(layerName, node){
     	var self = this;
 		node.eachChild(function(n) {
+			var layer = n.get("layer");
 			if(layerName.layer){
-				if(layerName.layer == n.get("layer").params.LAYERS){
+				if(layerName.layer == layer.params.LAYERS){
 					if(layerName.checked != undefined){
 						n.set('checked', layerName.checked);
+						layer.setVisibility(layerName.checked);
 					}else{
 						n.set('checked', true);
+						layer.setVisibility(true);
 					}
 					if(layerName.opacity != ""){
-						n.get("layer").setOpacity(parseInt(layerName.opacity)/100);
+						layer.setOpacity(parseInt(layerName.opacity)/100);
 					}else{
 						if(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity')){
-							n.get("layer").setOpacity(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity'))/100);
+							layer.setOpacity(parseInt(de.ingrid.mapclient.Configuration.getValue('activeServicesDefaultOpacity'))/100);
 						}
 					}
 				}
 			}else{
-				if (layerName == n.get("layer").params.LAYERS){
+				if (layerName == layer.params.LAYERS){
 					n.set('checked', true);
+					layer.setVisibility(true);
 				}
 			}
 				
@@ -309,13 +317,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 text: layer.name,
                 allowDrop: false,
                 allowDrag: false,
-                leaf: layer.options.nestedLayers.length > 0 ? false : true,
+                leaf: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? false : true) : true,
                 checked: false,
                 cls: layer.inRange ? "" : "x-tree-node-disabled",
                 service: this.service,
                 // Expand nodes
                 expanded: false,
-                expandable: layer.options.nestedLayers.length > 0 ? true : false,
+                expandable: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? true : false) : false,
                 children: []
             });
             

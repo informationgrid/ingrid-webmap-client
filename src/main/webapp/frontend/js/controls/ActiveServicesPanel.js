@@ -153,11 +153,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					
 					if(service != undefined){
 						self.removeService(service, null, node);
-					}else if (node.get("layer") != undefined){
-						// Remove "Zeige Punktkoordinaten" layers
-						if (node.get("layer").id != undefined){
-							self.removePointCoordinatesLayer(node);
-						}
 					}else{
 						// Remove "Zeige Punktkoordinaten" service
 						self.removePointCoordinatesService(node);
@@ -199,8 +194,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 						var service = node.getData().container.service;
 						bounds = self.bboxOfServiceExtent(service)
 						//minScale = self.activeNode.layer.minScale;
-						if (!bounds) bounds = self.getBoundsFromSubLayers(service);
-						minScale = self.getMinScaleFromSubLayers(service);
+						if (!bounds) bounds = self.getBoundsFromSubLayers(service, node);
+						minScale = self.getMinScaleFromSubLayers(service, node);
 					}
 					
 					self.map.zoomToExtent(bounds);
@@ -987,7 +982,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				metadataWindow.show();
 			}
 		} else {
-			console.error("Service could not be found!");
+			de.ingrid.mapclient.Message.showInfo(i18n('tNoInformationAvailable'));
 		}
 
 	},
@@ -1058,26 +1053,26 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					}
 				});
 
-				var layer = new OpenLayers.Layer.GML(kmlTitle, kmlUrl, {
-					   format: OpenLayers.Format.KML,
-					   formatOptions: {
-						 extractStyles: true,
-					     extractAttributes: true,
-					     maxDepth: 2
-					   },
-				       styleMap: styleMap,
-					   displayOutsideMaxExtent : false
-					}
-				);
-
 				var rule = new OpenLayers.Rule({
-					  title: kmlTitle,
-					  symbolizer: {pointRadius: 3, fontSize: "11px", fontColor: "#000000",
-					               labelAlign: "center", labelXOffset: 0,
-					               labelYOffset: 10, fillColor: kmlColor[countColor], strokeColor: "#000000" }
-					});
-
+				  title: kmlTitle,
+				  symbolizer: {pointRadius: 3, fontSize: "11px", fontColor: "#000000",
+				               labelAlign: "center", labelXOffset: 0,
+				               labelYOffset: 10, fillColor: kmlColor[countColor], strokeColor: "#000000" }
+				});
 				styleMap.styles["default"].addRules([rule]);
+				
+				var layer = new OpenLayers.Layer.Vector(kmlTitle, {
+		            strategies: [new OpenLayers.Strategy.Fixed()],
+		            protocol: new OpenLayers.Protocol.HTTP({
+		                url: kmlUrl,
+		                format: new OpenLayers.Format.KML({
+		                    extractStyles: true, 
+		                    extractAttributes: true,
+		                    maxDepth: 2
+		                })
+		            }),
+		            styleMap: styleMap
+		        });
 				countColor = countColor + 1;
 				if(countColor % 16 == 0){
 					countColor = 0;
@@ -1085,7 +1080,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 
 				var selectCtrl = new OpenLayers.Control.SelectFeature(layer);
 				function createPopup(feature) {
-					popup = new GeoExt.Popup({
+					var selection = feature;
+					popup = Ext.create('GeoExt.window.Popup', {
 				        title: feature.data.name,
 				        location: feature,
 				        unpinnable:false,
@@ -1096,10 +1092,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				    // is closed
 				    popup.on({
 				        close: function() {
-				            if(OpenLayers.Util.indexOf(layer.selectedFeatures,
-				                                       this.feature) > -1) {
-				                selectCtrl.unselect(this.feature);
-				            }
+				        	selectCtrl.unselect(selection);
 				        }
 				    });
 				    popup.show();
@@ -1121,16 +1114,28 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		    layers: layers
 		});
 
-		var overlayLayerNode = new GeoExt.tree.OverlayLayerContainer({
-			text: i18n('tZeigePunktkoordinaten'),
-			initDir:0,
-		    layerStore: store,
-		    leaf: false,
-		    expanded: false
-		});
+		var appendChild = {
+				text: i18n('tZeigePunktkoordinaten'),
+				leaf: false,
+				cls: 'x-tree-node-service',
+				plugins: [{
+					ptype: 'gx_layercontainer',
+                    leaf: false,
+					loader: Ext.create('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
+						initialAdd: true,
+						treeState: self.treeState,
+						map: self.map,
+						layerTree: self.layerTree,
+						panel: self,
+						selectedLayersByService: self.selectedLayersByService,
+						layersByURLService: self.layersByURLService,
+						store: store
+					})
+				}]
+			};
 
 		if(this.layerTree != null){
-			this.layerTree.getRootNode().appendChild(overlayLayerNode);
+			this.layerTree.getRootNode().appendChild(appendChild);
 		}
 	},
 	removePointCoordinatesLayer: function(activeNode) {
@@ -1211,23 +1216,25 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	},
 	removePointCoordinatesService: function(activeNode) {
 		// Remove from map
-		if(activeNode.attributes.layerStore.data.items){
-			for (var i=0, count1=activeNode.attributes.layerStore.data.items.length; i<count1; i++) {
-				var childNode = activeNode.attributes.layerStore.data.items[i];
-				if(childNode){
-					var layerId = childNode.id;
-					if(this.layerStore.data){
-						if(this.layerStore.data.items){
-							var items = this.layerStore.data.items;
-							var index = 0;
-							for (var j=0, count2=items.length; j<count2; j++) {
-								var item = items[j];
-								var itemId = item.id;
-								if(itemId){
-									if(itemId == layerId){
-										index = j;
-										this.layerStore.remove(this.layerStore.getAt(index));
-										break;
+		if(activeNode.get("plugins")){
+			if(activeNode.get("plugins")[0].loader.store.data.items){
+				for (var i=0, count1=activeNode.get("plugins")[0].loader.store.data.items.length; i<count1; i++) {
+					var childNode = activeNode.get("plugins")[0].loader.store.data.items[i];
+					if(childNode){
+						var layerId = childNode.id;
+						if(this.layerStore.data){
+							if(this.layerStore.data.items){
+								var items = this.layerStore.data.items;
+								var index = 0;
+								for (var j=0, count2=items.length; j<count2; j++) {
+									var item = items[j];
+									var itemId = item.id;
+									if(itemId){
+										if(itemId == layerId){
+											index = j;
+											this.layerStore.remove(this.layerStore.getAt(index));
+											break;
+										}
 									}
 								}
 							}
@@ -1235,22 +1242,20 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 					}
 				}
 			}
-		}
 
-		// Remove from tree
-		activeNode.removeAll();
-		this.layerTree.getRootNode().removeChild(activeNode);
+			// Remove from tree
+			activeNode.removeAll();
+			this.layerTree.getRootNode().removeChild(activeNode);
 
-		// Remove from session
-		if(this.kmlArray){
-			for (var i=0, count3=this.kmlArray.length; i<count3; i++) {
-				var kml = this.kmlArray[i];
-				this.kmlArray.remove(kml);
-				count3 = count3 - 1;
-				i--;
+			// Remove from session
+			if(this.kmlArray){
+				for (var i = 0; i < this.kmlArray.length; i++) {
+					this.kmlArray.splice(i);
+					i--;
+				}
 			}
+			this.fireEvent('datachanged');
 		}
-		this.fireEvent('datachanged');
 	},
 	/**
 	 * we set the map to the largest bounding box its layers contain 
@@ -1263,46 +1268,48 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		var self = this;
 		var bbox = null;
 		var srs = self.map.projection;
-		var bboxes = service.capabilitiesStore.data.items;	
-		var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils
-				.getMapProjection(self.map);
-		// default case, projection is 4326 and the service defines a lonlatbox
-		// we just take it as base zoomextent, should cover most cases
-		if (mapProjection.projCode == "EPSG:4326"
-				&& service.capabilitiesStore.data.items[0].data.llbbox) {
-			var bbox = service.capabilitiesStore.data.items[0].data.llbbox;
-					var bounds = new OpenLayers.Bounds.fromArray(bbox);
-					return bounds;
-			}	
-
-		//our service supports the map projection but the map is not in the default projection
-		// we look for bboxes, which might be defined in the service
-		if (supportsSRS && mapProjection.projCode != "EPSG:4326") {
-
-
-			for (var i = 0; i < bboxes.length; i++) {
-
-				if (typeof(bboxes[i].data.bbox[srs]) !== 'undefined') {
-					if (bboxes[i].data.bbox[srs].bbox) {
-						bbox = bboxes[i].data.bbox[srs].bbox;
+		if(service){
+			var bboxes = service.capabilitiesStore.data.items;	
+			var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils
+					.getMapProjection(self.map);
+			// default case, projection is 4326 and the service defines a lonlatbox
+			// we just take it as base zoomextent, should cover most cases
+			if (mapProjection.projCode == "EPSG:4326"
+					&& service.capabilitiesStore.data.items[0].data.llbbox) {
+				var bbox = service.capabilitiesStore.data.items[0].data.llbbox;
 						var bounds = new OpenLayers.Bounds.fromArray(bbox);
 						return bounds;
+				}	
+
+			//our service supports the map projection but the map is not in the default projection
+			// we look for bboxes, which might be defined in the service
+			if (supportsSRS && mapProjection.projCode != "EPSG:4326") {
+
+
+				for (var i = 0; i < bboxes.length; i++) {
+
+					if (typeof(bboxes[i].data.bbox[srs]) !== 'undefined') {
+						if (bboxes[i].data.bbox[srs].bbox) {
+							bbox = bboxes[i].data.bbox[srs].bbox;
+							var bounds = new OpenLayers.Bounds.fromArray(bbox);
+							return bounds;
+						}
 					}
 				}
 			}
-		}
-		// at this point we didnt get a bbox with our map projection so we have to transform 
-		// any bbox we get and try to fit it
+			// at this point we didnt get a bbox with our map projection so we have to transform 
+			// any bbox we get and try to fit it
 
-		for (var i = 0; i < bboxes.length; i++) {
-			if (bboxes[i].data.bbox) {
-				for (var srsIn in bboxes[i].data.bbox){
-					bbox = bboxes[i].data.bbox[srsIn].bbox;
-					var projMap = new OpenLayers.Projection(srs);
-					var projLayer = new OpenLayers.Projection(srsIn);
-					var bounds = new OpenLayers.Bounds.fromArray(bbox);
-					bounds.transform(projLayer, projMap);
-					return bounds;	
+			for (var i = 0; i < bboxes.length; i++) {
+				if (bboxes[i].data.bbox) {
+					for (var srsIn in bboxes[i].data.bbox){
+						bbox = bboxes[i].data.bbox[srsIn].bbox;
+						var projMap = new OpenLayers.Projection(srs);
+						var projLayer = new OpenLayers.Projection(srsIn);
+						var bounds = new OpenLayers.Bounds.fromArray(bbox);
+						bounds.transform(projLayer, projMap);
+						return bounds;	
+					}
 				}
 			}
 		}
@@ -1321,8 +1328,8 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			bounds = this._getBoundingBoxFromLayer(layer, srs);
 		} else {
 			// NON WMS Layer (KML Layer)
-			var srsIn = attributes.layer.projection.projCode;
-			bounds = attributes.layer.maxExtent;
+			var srsIn = layer.projection.projCode;
+			bounds = layer.maxExtent;
 			if (srsIn != srs) {
 				var projMap = new OpenLayers.Projection(srs);
 				var projLayer = new OpenLayers.Projection(srsIn);
@@ -1351,16 +1358,32 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				}
 			}
 		}
-		return null;
+		return layer.maxExtent;
 	},
 	/**
 	 * Check all layers of a service for the global bounding box
 	 */
-	getBoundsFromSubLayers: function(service) {
+	getBoundsFromSubLayers: function(service, node) {
 		var srs    = this.map.projection;
 		var maxBounds = null;
 		var self = this;
-		var layers = service.capabilitiesStore.data.items;
+		var layers = []; 
+		if(service){
+			layers = service.capabilitiesStore.data.items;
+		}else{
+			if(node.getData().plugins && node.getData().plugins.length > 0){
+				var plugins = node.getData().plugins[0];
+				if(plugins.loader){
+					if(plugins.loader.store){
+						var range = plugins.loader.store.getRange();
+						for (var i = 0; i < range.length; i++) {
+							var item = range[i];
+							layers.push(item.raw);
+						}
+					}
+				}
+			}
+		}
 		
 		Ext.each(layers, function(layer) {
 			var bounds = self._getBoundingBoxFromLayer(layer, srs);
@@ -1372,9 +1395,25 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	/**
 	 * Check all layers of a service for the minScale attribute
 	 */
-	getMinScaleFromSubLayers: function(service) {
+	getMinScaleFromSubLayers: function(service, node) {
 		var minScale = null;
-		var layers = service.capabilitiesStore.data.items;
+		var layers = []; 
+		if(service){
+			layers = service.capabilitiesStore.data.items;
+		}else{
+			if(node.getData().plugins && node.getData().plugins.length > 0){
+				var plugins = node.getData().plugins[0];
+				if(plugins.loader){
+					if(plugins.loader.store){
+						var range = plugins.loader.store.getRange();
+						for (var i = 0; i < range.length; i++) {
+							var item = range[i];
+							layers.push(item);
+						}
+					}
+				}
+			}
+		}
 		
 		Ext.each(layers, function(layer) {
 			if (minScale === null || minScale < layer.data.minScale) 

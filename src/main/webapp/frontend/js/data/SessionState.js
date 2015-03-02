@@ -93,7 +93,9 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.serialize = function() 
 	// serialize the active services
 	var capabilityUrls = [];
 	for (var i=0, count=this.activeServices.length; i<count; i++) {
-		capabilityUrls.push(this.activeServices[i].getCapabilitiesUrl());
+		if(this.activeServices[i]){
+			capabilityUrls.push(this.activeServices[i].getCapabilitiesUrl());
+		}
 	}
 
 	var selectedLayers = [];
