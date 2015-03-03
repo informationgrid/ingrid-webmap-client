@@ -292,50 +292,53 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             var layer = layerRecord.getLayer();
             var checked = false;
             var isLayerVisible = false;
-            
-            // Checked layer from session
-            for (var i = 0; i < this.selectedLayersByService.length; i++) {
-				var selectedLayer = this.selectedLayersByService[i];
-				if(selectedLayer.id == layer.params.LAYERS){
-					checked = true;
-					break;
-				}
-			}
-            if(layer.getVisibility()){
-            	checked = layer.getVisibility();
-            	isLayerVisible = layer.getVisibility();
-            }
-            
-            var child = this.createNode({
-            	plugins: [{
-                    ptype: 'gx_layer_ingrid'
-                }],
-                layer: layer,
-                text: layer.name,
-                allowDrop: false,
-                allowDrag: false,
-                leaf: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? false : true) : true,
-                checked: checked,
-                cls: layer.inRange ? "" : "x-tree-node-disabled",
-                service: this.service,
-                // Expand nodes
-                expanded: false,
-                expandable: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? true : false) : false,
-                children: []
-            });
-            
-            node.set("allowDrop", false);
+            if(layer){
+            	// Checked layer from session
+                if(layer.params){
+    	            for (var i = 0; i < this.selectedLayersByService.length; i++) {
+    					var selectedLayer = this.selectedLayersByService[i];
+    					if(selectedLayer.id == layer.params.LAYERS){
+    						checked = true;
+    						break;
+    					}
+    				}
+                }
+                if(layer.getVisibility()){
+                	checked = layer.getVisibility();
+                	isLayerVisible = layer.getVisibility();
+                }
+                
+                var child = this.createNode({
+                	plugins: [{
+                        ptype: 'gx_layer_ingrid'
+                    }],
+                    layer: layer,
+                    text: layer.name,
+                    allowDrop: false,
+                    allowDrag: false,
+                    leaf: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? false : true) : true,
+                    checked: checked,
+                    cls: layer.inRange ? "" : "x-tree-node-disabled",
+                    service: this.service,
+                    // Expand nodes
+                    expanded: false,
+                    expandable: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? true : false) : false,
+                    children: []
+                });
+                
+                node.set("allowDrop", false);
 
-            if (index !== undefined) {
-            	node.insertChild(index, child);
-            } else {
-                node.appendChild(child);
-            }
-            
-            if(isLayerVisible){
-            	if(node.get("layer")){
-            		node.set("checked", true);
-            	}
+                if (index !== undefined) {
+                	node.insertChild(index, child);
+                } else {
+                    node.appendChild(child);
+                }
+                
+                if(isLayerVisible){
+                	if(node.get("layer")){
+                		node.set("checked", true);
+                	}
+                }
             }
         }
     }
