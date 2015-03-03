@@ -150,25 +150,27 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     		var node = nodes[j];
     		var layer = node.get("layer");
     		if(layer){
-    			var id = layer.params.LAYERS;
-				var capabilitiesUrl = node.raw.service.capabilitiesUrl;
-				
-    			if(layer.options.isRootLayer == false){
-    				for (var i = 0, count = this.layersByURLService.length; i < count; i++) {
-    					var urlLayer = this.layersByURLService[i];
-    					var urlLayerId = urlLayer.params.LAYERS;
-    					if(urlLayer.visibility){
-    						if(id == urlLayerId){
-    							var parent = node.parentNode;
-    							if(parent){
-    								if(parent.get("checked") != true){
-    									parent.set("checked", true);
-    								}
-    							}
-    							break;
-    						}
-    					}
-    				}
+    			if(layer.params){
+    				var id = layer.params.LAYERS;
+    				var capabilitiesUrl = node.raw.service.capabilitiesUrl;
+    				
+        			if(layer.options.isRootLayer == false){
+        				for (var i = 0, count = this.layersByURLService.length; i < count; i++) {
+        					var urlLayer = this.layersByURLService[i];
+        					var urlLayerId = urlLayer.params.LAYERS;
+        					if(urlLayer.visibility){
+        						if(id == urlLayerId){
+        							var parent = node.parentNode;
+        							if(parent){
+        								if(parent.get("checked") != true){
+        									parent.set("checked", true);
+        								}
+        							}
+        							break;
+        						}
+        					}
+        				}
+        			}
     			}
     		}
     		if(node.hasChildNodes()){
@@ -252,13 +254,15 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     	for (var i = 0, count = this.treeState.length; i < count; i++) {
 			var state = this.treeState[i];
 			var name = node.get("text");
-			var capabilitiesUrl = this.service.capabilitiesUrl;
-			var isService = node.get("layer") ? "false" : "true";
-			var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
-			
-			if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
-				node.expand(false);
-				break;
+			if(this.service){
+				var capabilitiesUrl = this.service.capabilitiesUrl;
+				var isService = node.get("layer") ? "false" : "true";
+				var layer = node.get("layer") ? node.get("layer").params.LAYERS : "";
+				
+				if(name == state.name && capabilitiesUrl == state.capabilitiesUrl && isService + "" == state.isService && layer == state.layer){
+					node.expand(false);
+					break;
+				}
 			}
 		}
 		if(node.hasChildNodes()){
