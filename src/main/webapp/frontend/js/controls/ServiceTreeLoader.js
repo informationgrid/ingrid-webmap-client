@@ -101,10 +101,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
 						this.checkNodes(checkedLayer, node);
 					}
             	}
-            }else{
-            	if(node.hasChildNodes()){
-            		this.checkNodeByState(node.childNodes);
-            	}
             }
             
             if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceTreeExpand")){
@@ -194,25 +190,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     			}
     		}
         }
-    },
-    checkNodeByState: function (nodes){
-    	for(var i = 0; i < nodes.length; i++){
-    		var node = nodes[i];
-    		if(node.get("layer").params){
-    			var id = node.get("layer").params.LAYERS;
-        		var capabilitiesUrl = node.raw.service.capabilitiesUrl;
-        		
-        		for (var j = 0, count = this.selectedLayersByService.length; j < count; j++) {
-        		    var selectedLayer = this.selectedLayersByService[j];
-        			if(id == selectedLayer.id && capabilitiesUrl == selectedLayer.capabilitiesUrl){
-    					node.set("checked", true);
-        			}
-        		}
-        		if(node.hasChildNodes()){
-        			this.checkNodeByState(node.childNodes);
-        		}
-    		}
-    	}
     },
     checkNodes: function(layerName, node){
     	var self = this;
@@ -313,6 +290,22 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
     	index = index || 0;
     	if (this.filter(layerRecord) === true) {
             var layer = layerRecord.getLayer();
+            var checked = false;
+            var isLayerVisible = false;
+            
+            // Checked layer from session
+            for (var i = 0; i < this.selectedLayersByService.length; i++) {
+				var selectedLayer = this.selectedLayersByService[i];
+				if(selectedLayer.id == layer.params.LAYERS){
+					checked = true;
+					break;
+				}
+			}
+            if(layer.getVisibility()){
+            	checked = layer.getVisibility();
+            	isLayerVisible = layer.getVisibility();
+            }
+            
             var child = this.createNode({
             	plugins: [{
                     ptype: 'gx_layer_ingrid'
@@ -322,7 +315,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
                 allowDrop: false,
                 allowDrag: false,
                 leaf: layer.options.nestedLayers ? (layer.options.nestedLayers.length > 0 ? false : true) : true,
-                checked: false,
+                checked: checked,
                 cls: layer.inRange ? "" : "x-tree-node-disabled",
                 service: this.service,
                 // Expand nodes
@@ -337,6 +330,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLoader', {
             	node.insertChild(index, child);
             } else {
                 node.appendChild(child);
+            }
+            
+            if(isLayerVisible){
+            	if(node.get("layer")){
+            		node.set("checked", true);
+            	}
             }
         }
     }

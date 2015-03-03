@@ -237,7 +237,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				}else{
 					var isParentsSelect = self.isParentsSelect(node);
 					if(isParentsSelect){
-						layer.setVisibility(true);
+						layer.setVisibility(true);							
 					}
 					var cls = 'x-tree-node-select';
 					if(node.get("expanded")){
