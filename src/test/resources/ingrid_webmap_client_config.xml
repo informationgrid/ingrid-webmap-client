@@ -1,6 +1,6 @@
 <persistentConfiguration>
   <wmsCapUrl>http://sg.geodatenzentrum.de/wms_webatlasde.light?SERVICE=WMS%26REQUEST=GetCapabilities%26Version=1.1.1</wmsCapUrl>
-  <featureUrl>http://sg.geodatenzentrum.de/wms_vg250?SERVICE=WMS%26VERSION=1.1.1%26REQUEST=GetFeatureInfo%26LAYERS=8\\\,9\\\,10%26QUERY_LAYERS=8\\\,9\\\,10%26STYLES=\\\,\\\,%26BBOX=%LON%\\\,%LAT%\\\,%LON2%\\\,%LAT2%%26FEATURE_COUNT=10%26HEIGHT=508%26WIDTH=1711%26FORMAT=image/png%26INFO_FORMAT=text/xml%26SRS=%EPSG%%26X=1020%26Y=173</featureUrl>
+  <featureUrl>http://sg.geodatenzentrum.de/wms_vg250?SERVICE=WMS%26VERSION=1.1.1%26REQUEST=GetFeatureInfo%26LAYERS=8,9,10%26QUERY_LAYERS=8,9,10%26STYLES=,,%26BBOX=%LON%,%LAT%,%LON2%,%LAT2%%26FEATURE_COUNT=10%26HEIGHT=508%26WIDTH=1711%26FORMAT=image/png%26INFO_FORMAT=text/xml%26SRS=%EPSG%%26X=1020%26Y=173</featureUrl>
   <wmsCopyright>copyright</wmsCopyright>
   <layers>
     <layer>
@@ -97,14 +97,14 @@
     </setting>
     <setting>
       <key>urlCheckMailHost</key>
-      <name>Email-Server\\\, von dem die Benachrichtigungs-Email gesendet wird</name>
+      <name>Email-Server, von dem die Benachrichtigungs-Email gesendet wird</name>
       <value>localhost</value>
       <group>urlCheck</group>
     </setting>
     <setting>
       <key>urlCheckMailUpdateText</key>
       <name>Erläuternder Text in Benachrichtigungs-Email (die entsprechende URL wird automatisch hinzugefügt)</name>
-      <value>Nachfolgende GetCap-URL wurde aktualisiert. Um den Update in den Kartenviewer zu übernehmen\\\, in der Kartenviewer-Administration bitte folgenden Dienst neu einlesen.</value>
+      <value>Nachfolgende GetCap-URL wurde aktualisiert. Um den Update in den Kartenviewer zu übernehmen, in der Kartenviewer-Administration bitte folgenden Dienst neu einlesen.</value>
       <group>urlCheck</group>
     </setting>
     <setting>
@@ -133,7 +133,7 @@
     </setting>
     <setting>
       <key>defaultTheme</key>
-      <name>Karten-Layout: Theme-Auswahl festlegen (all\\\, gray\\\, neptune\\\, access)</name>
+      <name>Karten-Layout: Theme-Auswahl festlegen (all, gray, neptune, access)</name>
       <value></value>
       <group>default</group>
     </setting>
@@ -187,7 +187,7 @@
     </setting>
     <setting>
       <key>viewActiveAccordionWestPanel</key>
-      <name>Aktive Rubrik bestimmen (0=1.Rubrik\\\, 1=2.Rubrik\\\, ...)</name>
+      <name>Aktive Rubrik bestimmen (0=1.Rubrik, 1=2.Rubrik, ...)</name>
       <value>0</value>
       <group>view</group>
     </setting>

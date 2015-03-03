@@ -172,6 +172,7 @@ public enum ConfigurationProvider {
 
         // fix the starting tag, so that it can correctly matched to the POJO 
         output = output.replaceAll( "configuration>", "persistentConfiguration>" );
+        output = output.replaceAll( "\\\\,", ",");
 
         XStream xstream = new XStream();
         this.setXStreamAliases( xstream );
