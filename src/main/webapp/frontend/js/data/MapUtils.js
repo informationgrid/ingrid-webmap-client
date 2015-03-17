@@ -97,150 +97,97 @@ de.ingrid.mapclient.frontend.data.MapUtils.getBoundsYX = function(layer, newProj
 de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCode, map, container, zoomToExtent) {
 	var oldProjection = de.ingrid.mapclient.frontend.data.MapUtils.getMapProjection(map);
 	var newProjection = new OpenLayers.Projection(newProjCode);
-	var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
-	var newExtent;
-	var mapExtent = map.getExtent();
+	var initialExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
+	var mapExtent;
 	
-	if(newExtent == undefined){
-		newExtent = newMaxExtent;
-		if(map.baseLayer.bbox){
-			// Initial load
-			var hasNewExtent = false;
-			var bboxExtent;
-			var bboxProjection;
-			if(map.baseLayer.bbox[newProjCode]){
-				bboxExtent = this.getBoundsYX(map.baseLayer, newProjCode);
-				bboxProjection = new OpenLayers.Projection(newProjCode);
-				hasNewExtent=true;
+	if((oldProjection.projCode != newProjection.projCode) || zoomToExtent){
+		if(zoomToExtent == undefined || zoomToExtent == true){
+			var wgs84Proj = new OpenLayers.Projection("EPSG:4326");
+			var bbox = map.baseLayer.llbbox;
+			var bounds = null;
+			if(bbox){
+				bounds = new OpenLayers.Bounds.fromArray([bbox[0], bbox[1], bbox[2], bbox[3]]);
 			}else{
-				for(var k in map.baseLayer.bbox){
-					bboxExtent = OpenLayers.Bounds.fromArray(map.baseLayer.bbox[k].bbox);
-					bboxProjection = new OpenLayers.Projection(k);
-					break;
-				}
+				bounds = map.baseLayer.maxExtent;
 			}
-			
-			if(hasNewExtent){
-				newExtent = bboxExtent;
-			}else{
-				newExtent = bboxExtent.clone().transform(bboxProjection, newProjection);
-				if (!newExtent.containsBounds(bboxExtent, false, false)) {
-					newExtent = newMaxExtent;
-				}
-			}
-			
+			var extent = bounds.transform(wgs84Proj, newProjection);
+			mapExtent = extent;
 		}else{
-			// Reload
-			newExtent = map.getMaxExtent();
-			if(map.baseLayer.maxExtent){
-				newExtent = map.baseLayer.maxExtent;
-			}
-			// Projection change
-			if(zoomToExtent == undefined){
-				newExtent = newExtent.clone().transform(oldProjection, newProjection);
+			// Reload from session
+			if(container.map){
+				if(container.map.baseLayer){
+					mapExtent = container.map.baseLayer.maxExtent;
+				}
 			}
 		}
-	}
-	
-	var options = {
-		maxExtent: newExtent,
-		projection: newProjection.getCode(),
-		units: newProjection.getUnits(),
-		maxResolution: 'auto'
-	};
-
-	// reset map
-	map.setOptions(options);
-	// reset layers
-	for(var i=0,len=map.layers.length; i<len; i++) {
-		var layer = map.layers[i];
-		layer.addOptions(options);
-		if(layer){
-			if(layer.params){
-				var layerVersion = layer.params.VERSION;
-				if(layerVersion == "1.3.0"){
-					map.layers[i].yx["EPSG:4326"] = true;
-					map.layers[i].yx["EPSG:31466"] = true;
-					map.layers[i].yx["EPSG:31467"] = true;
-					map.layers[i].yx["EPSG:31468"] = true;
-					map.layers[i].yx["EPSG:31469"] = true;
-					map.layers[i].yx["EPSG:2397"] = true;
-					map.layers[i].yx["EPSG:2398"] = true;
-					map.layers[i].yx["EPSG:2399"] = true;
+		
+		if(mapExtent){
+			var options = {
+					maxExtent: mapExtent,
+					restrictedExtent: mapExtent,
+					projection: newProjection.getCode(),
+					units: newProjection.getUnits(),
+					maxResolution: 'auto'
+			};
+			// reset map
+			map.setOptions(options);
+			// reset layers
+			for(var i=0,len=map.layers.length; i<len; i++) {
+				var layer = map.layers[i];
+				layer.addOptions(options);
+			}
+			
+			// reproject map.layerContainerOrigin, in case the next
+			// call to moveTo does not change the zoom level and
+			// therefore centers the layer container
+			if(map.layerContainerOrigin) {
+				map.layerContainerOrigin.transform(oldProjection, newProjection);
+			}
+			// only zoom into extent if the map initially had an extent
+			if (zoomToExtent === undefined || zoomToExtent) {
+				if(zoomToExtent == undefined){
+					map.zoomToExtent(map.getExtent());
+				}else{
+					map.zoomToExtent(initialExtent);
+				}
+			}
+			map.displayProjection = newProjection;
+			var control = null;
+			if (container && container.controls) {
+				for (var k = 0; k < container.controls.length; k++) {
+					control = container.controls[k];
+					if (control.displayProjection) {
+						control.displayProjection = newProjection;
+					}
+					if (control instanceof OpenLayers.Control.OverviewMap) {
+						// reset map
+						control.ovmap.setOptions(options);
+						control.ovmap.baseLayer.addOptions(options);
+						control.ovmap.zoomToExtent(mapExtent);
+					}
+					if (control.redraw) {
+						control.redraw();
+					}
+				}
+			} else {
+				for (var i = 0; i < map.controls.length; i++) {
+					control = map.controls[i];
+					if (control.displayProjection) {
+						control.displayProjection = newProjection;
+					}
+					if (control instanceof OpenLayers.Control.OverviewMap) {
+						// reset map
+						control.ovmap.setOptions(options);
+						control.ovmap.baseLayer.addOptions(options);
+						control.ovmap.zoomToExtent(mapExtent);
+					}
+						if (control.redraw) {
+							control.redraw();
+						}
 				}
 			}
 		}
 	}
-	// reproject map.layerContainerOrigin, in case the next
-	// call to moveTo does not change the zoom level and
-	// therefore centers the layer container
-	if(map.layerContainerOrigin) {
-		map.layerContainerOrigin.transform(oldProjection, newProjection);
-	}
-	
-	// only zoom into extent if the map initially had an extent
-	if (zoomToExtent === undefined || zoomToExtent) {
-		var zoomExtent;
-		if(zoomToExtent == undefined){
-			var isOutside = false;
-			zoomExtent = mapExtent.clone().transform(oldProjection, newProjection);
-			
-			if(newMaxExtent.top < zoomExtent.top){
-				zoomExtent.top = newMaxExtent.top;
-			}
-			if(newMaxExtent.bottom > zoomExtent.bottom){
-				zoomExtent.bottom = newMaxExtent.bottom;
-			}
-			if(newMaxExtent.left > zoomExtent.left){
-				zoomExtent.left = newMaxExtent.left;
-			}
-			if(newMaxExtent.right < zoomExtent.right){
-				zoomExtent.right = newMaxExtent.right;
-			}
-			map.zoomToExtent(zoomExtent);
-		}else{
-			zoomExtent = newMaxExtent;
-			map.zoomToExtent(zoomExtent);
-		}
-	}
-	
-    map.displayProjection = newProjection;
-    
-    var control = null;
-    if (container && container.controls) {
-        for (var k = 0; k < container.controls.length; k++) {
-            control = container.controls[k];
-            if (control.displayProjection) {
-                control.displayProjection = newProjection;
-            }
-            if (control instanceof OpenLayers.Control.OverviewMap) {
-            	// reset map
-            	control.ovmap.setOptions(options);
-            	control.ovmap.baseLayer.addOptions(options);            	
-            	control.ovmap.zoomToExtent(newExtent);
-            }
-            if (control.redraw) {
-                control.redraw();
-            }
-        }
-
-    } else {
-        for (var i = 0; i < map.controls.length; i++) {
-            control = map.controls[i];
-            if (control.displayProjection) {
-                control.displayProjection = newProjection;
-            }
-            if (control instanceof OpenLayers.Control.OverviewMap) {
-            	// reset map
-            	control.ovmap.setOptions(options);            	
-            	control.ovmap.baseLayer.addOptions(options);            	
-            	control.ovmap.zoomToExtent(newExtent);
-            }
-            if (control.redraw) {
-                control.redraw();
-            }
-        }
-    }	
 };
 
 /**

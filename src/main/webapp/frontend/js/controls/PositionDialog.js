@@ -106,7 +106,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 		}
 		
 		if(fieldValue == ""){
-			fieldValue = lonlat.lat +  " " + lonlat.lon;
+			fieldValue = lonlat.lon +  " " + lonlat.lat;
 		}
 		
 		this.formPanel.add({
@@ -191,12 +191,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 					
 		        	if(self.isPoint){
 		        		position = self.getPosition();
-		        		
-		        		var content = "";
-	        			content = content + '{"limit":200,"queries":[';
-	        			content = content + '{"qid":1,"geometry":{"type":"Point","coordinates":['+ position.lon +','+ position.lat +'],"spatialReference":{"wkid":'+ self.map.getProjection().split(":")[1] +'}}}';
-	        			content = content + ']}';
-	        			self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content, self.addStationPin);
+		        		if(position){
+		        			var content = "";
+		        			content = content + '{"limit":200,"queries":[';
+		        			content = content + '{"qid":1,"geometry":{"type":"Point","coordinates":['+ position.lon +','+ position.lat +'],"spatialReference":{"wkid":'+ self.map.getProjection().split(":")[1] +'}}}';
+		        			content = content + ']}';
+		        			self.loadData("/ingrid-webmap-client/rest/jsonCallback/queryPost?url=" + de.ingrid.mapclient.Configuration.getSettings("viewBWaStrStationierung")+ "&data=" + content, self.addStationPin);
+		        		}
 		        	}
 		        }
 	        },{
@@ -207,8 +208,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 					
 		        	if(self.isPoint){
 		        		position = self.getPosition();
-		        		
-	        			self.map.setCenter(position);
+		        		if(position){
+		        			self.map.setCenter(position);
+		        		}
 		        	}
 		        }
 	        },{
@@ -219,20 +221,21 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 					
 		        	if(self.isPoint){
 		        		position = self.getPosition();
-
-		        		if(self.markers){
-		        			var markerList = self.markers.markers;
-		        			self.clearMarkers(markerList);
-		        			self.map.removeLayer(self.markers);
-	        			}
-	        			
-	        			self.markers = new OpenLayers.Layer.Markers( "Markers" );
-	        			self.map.addLayer(self.markers);
-
-	        			var size = new OpenLayers.Size(21,25);
-	        			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-	        			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_green.png', size, offset);
-	        			self.markers.addMarker(new OpenLayers.Marker(position,icon));
+		        		if(position){
+			        		if(self.markers){
+			        			var markerList = self.markers.markers;
+			        			self.clearMarkers(markerList);
+			        			self.map.removeLayer(self.markers);
+		        			}
+		        			
+		        			self.markers = new OpenLayers.Layer.Markers( "Markers" );
+		        			self.map.addLayer(self.markers);
+	
+		        			var size = new OpenLayers.Size(21,25);
+		        			var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		        			var icon = new OpenLayers.Icon('/ingrid-webmap-client/shared/images/icon_pin_green.png', size, offset);
+		        			self.markers.addMarker(new OpenLayers.Marker(position,icon));
+		        		}
 		        	}
 		        }
 	        },{
@@ -262,26 +265,40 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 	},
 	getPosition: function() {
 		var self = this;
-		var textfieldValue = Ext.getCmp('position').getValue();
+		var textfieldValue = Ext.getCmp('position').getValue().trim();
 		var positionLat = "";
 		var positionLon = "";
+		var splitValues = textfieldValue.replace(/\s{2,}/g, ' ');
+		
+		if(splitValues){
+			splitValues = splitValues.split(" ");
+		}
+		
+		if(splitValues && splitValues.length == 1){
+			splitValues = textfieldValue.split("\t");
+		}
 		
 		if(self.map.displayProjection.proj){
 			if(self.map.displayProjection.proj.projName == "tmerc"){
-				positionLat = textfieldValue.split(" ")[1];
-				positionLon = textfieldValue.split(" ")[0];
+				positionLat = splitValues[1];
+				positionLon = splitValues[0];
 			}else if(self.map.displayProjection.proj.projName == "utm"){
-				positionLat = textfieldValue.split(" ")[1];
-				positionLon = textfieldValue.split(" ")[0];
+				positionLat = splitValues[1];
+				positionLon = splitValues[0];
 			}else{
-				positionLat = textfieldValue.split(" ")[0];
-				positionLon = textfieldValue.split(" ")[1];
+				positionLat = splitValues[1];
+				positionLon = splitValues[0];
 			}
 		}else{
-			positionLat = textfieldValue.split(" ")[0];
-			positionLon = textfieldValue.split(" ")[1];
+			positionLat = splitValues[1];
+			positionLon = splitValues[0];
 		}
-		return new OpenLayers.LonLat(positionLon,positionLat);
+		
+		if(positionLat && positionLon){
+			return new OpenLayers.LonLat(positionLon.replace(",", "."),positionLat.replace(",", "."));
+		}else{
+			return null;
+		}
 	},
 	loadData: function(url, callback){
 		var self = this;
@@ -317,18 +334,17 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PositionDialog', {
 	},
 	addStationPin: function(result, self){
 		var position = self.getPosition();
-		
-		if(self.markers){
-			var markerList = self.markers.markers;
-			self.clearMarkers(markerList);
-			self.map.removeLayer(self.markers);
+		if(position){
+			if(self.markers){
+				var markerList = self.markers.markers;
+				self.clearMarkers(markerList);
+				self.map.removeLayer(self.markers);
+			}
+			
+			self.markers = new OpenLayers.Layer.Markers( "Markers" );
+			de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, self.markers, position.lon, position.lat, self.createPopUpTemplate(self, result), "blue", true);
+			self.map.addLayer(self.markers);
 		}
-		
-		self.markers = new OpenLayers.Layer.Markers( "Markers" );
-		
-		de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, self.markers, position.lon, position.lat, self.createPopUpTemplate(self, result), "blue", true);
-		
-		self.map.addLayer(self.markers);
 	},
 	createPopUpTemplate: function (self, result){
 		var popUpTmp = "";

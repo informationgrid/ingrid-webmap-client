@@ -276,6 +276,19 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 									layer.bbox = record.data.bbox;
 								}
 								
+								var layerVersion = layer.params.VERSION;
+								
+								if(layerVersion == "1.3.0"){
+									layer.yx["EPSG:4326"] = true;
+									layer.yx["EPSG:31466"] = true;
+									layer.yx["EPSG:31467"] = true;
+									layer.yx["EPSG:31468"] = true;
+									layer.yx["EPSG:31469"] = true;
+									layer.yx["EPSG:2397"] = true;
+									layer.yx["EPSG:2398"] = true;
+									layer.yx["EPSG:2399"] = true;
+								}
+								
 								//check if the config wants us to singleTile or not, but first we check if this property exists
 								var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");
 								if(isSingleTile){
@@ -571,6 +584,7 @@ de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams = function(layer) {
 		var serviceLayer = service.getLayerById(de.ingrid.mapclient.frontend.data.Service.getLayerId(layer));
 		if (serviceLayer) {
 			layer.mergeNewParams(serviceLayer.params);
+			layer.llbbox = serviceLayer.llbbox;
 		}
 	}
 };
