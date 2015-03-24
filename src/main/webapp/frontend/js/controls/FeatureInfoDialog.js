@@ -162,7 +162,11 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
 	    urlAppendix = urlAppendix.replace("%LON%", lonlat.lon);
 	    urlAppendix = urlAppendix.replace("%LAT2%", lonlat.lat+0.00005);
 	    urlAppendix = urlAppendix.replace("%LON2%", lonlat.lon+0.00005);
-	    urlAppendix = urlAppendix.replace("%EPSG%", self.map.projection);
+	    if(self.map.projection instanceof OpenLayers.Projection){
+	    	urlAppendix = urlAppendix.replace("%EPSG%", self.map.projection.projCode);
+	    }else{
+	    	urlAppendix = urlAppendix.replace("%EPSG%", self.map.projection);
+	    }
 
 	    var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix;			
 		Ext.Ajax.on('beforerequest', self.showSpinner, self);

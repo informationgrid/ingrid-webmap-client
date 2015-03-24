@@ -100,7 +100,7 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 	var initialExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 	var mapExtent;
 	
-	if((oldProjection.projCode != newProjection.projCode) || zoomToExtent){
+	if((oldProjection.projCode != newProjection.projCode) || zoomToExtent != undefined){
 		if(zoomToExtent == undefined || zoomToExtent == true){
 			var wgs84Proj = new OpenLayers.Projection("EPSG:4326");
 			var bbox = map.baseLayer.llbbox;

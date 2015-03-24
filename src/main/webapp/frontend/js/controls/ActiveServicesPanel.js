@@ -1276,7 +1276,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	bboxOfServiceExtent: function(service, supportsSRS) {
 		var self = this;
 		var bbox = null;
-		var srs = self.map.projection;
+		var srs;
+		if(self.map.projection instanceof OpenLayers.Projection){
+			srs = self.map.projection.projCode;
+		}else{
+			srs = self.map.projection;
+		}
 		if(service){
 			var bboxes = service.capabilitiesStore.data.items;	
 			var mapProjection = de.ingrid.mapclient.frontend.data.MapUtils
@@ -1313,12 +1318,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				if (bboxes[i].data.bbox) {
 					for (var srsIn in bboxes[i].data.bbox){
 						bbox = bboxes[i].data.bbox[srsIn].bbox;
-						var projMap;
-						if(srs.projCode){
-							projMap = new OpenLayers.Projection(srs.projCode);
-						}else{
-							projMap = new OpenLayers.Projection(srs);
-						}
+						projMap = new OpenLayers.Projection(srs);
 						var projLayer = new OpenLayers.Projection(srsIn);
 						var bounds = new OpenLayers.Bounds.fromArray(bbox);
 						bounds.transform(projLayer, projMap);
@@ -1333,7 +1333,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	 */
 	bboxOfLayerExtent: function(layer) {
 		var bbox = null;
-		var srs = this.map.projection;
+		var srs;
+		if(this.map.projection instanceof OpenLayers.Projection){
+			srs = this.map.projection.projCode;
+		}else{
+			srs = this.map.projection;
+		}
 		var bounds=null;
 		
 		// check for WMS Layers
@@ -1378,7 +1383,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 	 * Check all layers of a service for the global bounding box
 	 */
 	getBoundsFromSubLayers: function(service, node) {
-		var srs    = this.map.projection;
+		var srs;
+		if(this.map.projection instanceof OpenLayers.Projection){
+			srs = this.map.projection.projCode;
+		}else{
+			srs = this.map.projection;
+		}
 		var maxBounds = null;
 		var self = this;
 		var layers = []; 

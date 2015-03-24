@@ -430,7 +430,12 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			hidden: self.configZoomTool ? false : true,
 			enableToggle : false, 
 			handler : function(btn) {
-				var newProjection = self.map.projection;
+				var newProjection;
+				if(self.map.projection instanceof OpenLayers.Projection){
+					newProjection = self.map.projection;
+				}else{
+					newProjection = new OpenLayers.Projection(self.map.projection);
+				}
 				var newMaxExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
 				self.map.zoomToExtent(newMaxExtent);
 			}

@@ -325,7 +325,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
     		                        	var textfield_singleQueryFrom = Ext.getCmp("textfield_singleQueryFrom");
     		                        	var textfield_singleQueryTo = Ext.getCmp("textfield_singleQueryTo");
     		                        	var textfield_singleQueryOffset = Ext.getCmp("textfield_singleQueryOffset");
-    		                        	var projection = self.map.projection;
+    		                        	var projection;
+    		                        	if(self.map.projection instanceof OpenLayers.Projection){
+    		                        		projection = self.map.projection.projCode;
+    		                        	}else{
+    		                        		projection = self.map.projection;
+    		                        	}
     		                        	var content = '{'
     		                        		+ '"limit":200,'
     		                        		+ '"queries":['
@@ -519,8 +524,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
     		                        handler: function(btn, evt){
     		                        	var combo_multiQuery = Ext.getCmp("combo_multiQuery");
     		                        	var textarea_multiQuery = Ext.getCmp("textarea_multiQuery");
-    		                        	var projection = self.map.projection;
-    		                        	
+    		                        	var projection;
+    		                        	if(self.map.projection instanceof OpenLayers.Projection){
+    		                        		projection = self.map.projection.projCode;
+    		                        	}else{
+    		                        		projection = self.map.projection;
+    		                        	} 
     		                        	var selection = combo_multiQuery.getValue();
     		                        	var input = textarea_multiQuery.getValue();
                 						var inputList = input.trim().split("\n");
@@ -679,8 +688,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
     	                        handler: function(btn, evt){
     	                        	var combo_coordsToKmQuery = Ext.getCmp("combo_coordsToKmQuery");
 		                        	var textarea_coordsToKmQuery = Ext.getCmp("textarea_coordsToKmQuery");
-		                        	var projection = self.map.projection;
-		                        	
+		                        	var projection;
+		                        	if(self.map.projection instanceof OpenLayers.Projection){
+		                        		projection = self.map.projection.projCode;
+		                        	}else{
+		                        		projection = self.map.projection;
+		                        	}
 		                        	var selection = combo_coordsToKmQuery.getValue();
 		                        	var input = textarea_coordsToKmQuery.getValue();
             						var inputList = input.trim().split("\n");

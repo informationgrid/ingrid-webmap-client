@@ -223,7 +223,12 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.renderLayer = function(rec, self){
 	if(rec.data){
 		var km_von = rec.data.km_von;
     	var km_bis = rec.data.km_bis;
-    	var projection = self.map.projection;
+    	var projection;
+    	if(self.map.projection instanceof OpenLayers.Projection){
+    		projection = self.map.projection.projCode;
+    	}else{
+    		projection = self.map.projection;
+    	}
     	var content = '{"limit":200,"queries":[{"qid":1,"bwastrid":"'
     		+ rec.data.bwastrid +'","stationierung":{"km_von":'
     		+ km_von + ',"km_bis":'
