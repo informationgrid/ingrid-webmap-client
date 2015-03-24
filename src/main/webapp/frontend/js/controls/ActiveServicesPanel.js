@@ -1313,7 +1313,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 				if (bboxes[i].data.bbox) {
 					for (var srsIn in bboxes[i].data.bbox){
 						bbox = bboxes[i].data.bbox[srsIn].bbox;
-						var projMap = new OpenLayers.Projection(srs);
+						var projMap;
+						if(srs.projCode){
+							projMap = new OpenLayers.Projection(srs.projCode);
+						}else{
+							projMap = new OpenLayers.Projection(srs);
+						}
 						var projLayer = new OpenLayers.Projection(srsIn);
 						var bounds = new OpenLayers.Bounds.fromArray(bbox);
 						bounds.transform(projLayer, projMap);
