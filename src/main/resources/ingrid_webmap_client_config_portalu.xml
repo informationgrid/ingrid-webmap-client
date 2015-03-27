@@ -182,7 +182,7 @@
     </setting>
     <setting>
       <key>defaultNumZoomLevels</key>
-      <name>Anzahl der Zoom Levels für die Kartenansicht</name>
+      <name>Anzahl der Zoom-Stufen in der Kartenansicht</name>
       <value>16</value>
       <group>default</group>
     </setting>
