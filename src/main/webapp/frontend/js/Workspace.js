@@ -1092,6 +1092,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 		this.configSearchBBoxTool	= false;
 		this.configSearchFeatureInfoTool = false;
 		this.configSearchDragMapTool= false;
+		this.configNumZoomLevels 	= de.ingrid.mapclient.Configuration.getSettings("defaultNumZoomLevels");
 		
 		// Configuration variable
 		this.mapConfig = {
@@ -1307,7 +1308,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 			var mapOptions = {
 	            maxExtent: this.map.maxExtent, 
 	            maxResolution: 'auto',
-	            projection: this.map.projection
+	            projection: this.map.projection,
+	            numZoomLevels: parseInt(this.configNumZoomLevels.trim())
 	        };
 			var ov = new OpenLayers.Control.OverviewMap({
 				layers : [overviewLayer],

@@ -181,6 +181,12 @@
       <group>default</group>
     </setting>
     <setting>
+      <key>defaultNumZoomLevels</key>
+      <name>Anzahl der Zoom Levels für die Kartenansicht</name>
+      <value>16</value>
+      <group>default</group>
+    </setting>
+    <setting>
       <key>defaultTheme</key>
       <name>Karten-Layout: Theme-Auswahl festlegen (all, gray, neptune, access)</name>
       <value></value>
