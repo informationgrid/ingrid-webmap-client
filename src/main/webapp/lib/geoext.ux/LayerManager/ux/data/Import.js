@@ -72,9 +72,32 @@ GeoExt.ux.data.Import = function(map, layer, format, filecontent, features) {
         });
         map.addLayer(layer);
     }
-
+    
+    var context = {
+		getFillColor: function(feature) {
+			return feature.style ? feature.style.fillColor : "red";
+		},
+		getFillOpacity: function(feature) {
+			return feature.style ? feature.style.fillOpacity : 0.4;
+		},
+		getStrokeWidth: function(feature) {
+			return feature.style ? (feature.style.strokeWidth ? feature.style.strokeWidth : 1) : 1;
+		}
+    };
+    
+    var template = {
+		fillColor: "${getFillColor}",
+		fillOpacity: "${getFillOpacity}",
+		fontColor: "${getFillColor}",
+		strokeColor: "${getFillColor}",
+		strokeWidth: "${getStrokeWidth}"
+    };
+	    
+	var style = new OpenLayers.Style(template, {context: context});
+	layer.styleMap = new OpenLayers.StyleMap(style),
     layer.addFeatures(GeoExt.ux.data.importFeatures);
-    return layer;
+    
+	return layer;
 };
 
 /** static: method[GeoExt.ux.data.Import.KMLImport]

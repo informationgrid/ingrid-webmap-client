@@ -190,35 +190,37 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
         };
 
         for (var attribute in feature.attributes) {
-            field = {
-            	'xtype': attribute == 'description' ? 'textarea' : 'textfield',
-                'name': attribute,
-                'fieldLabel': OpenLayers.i18n(attribute),
-                'id': attribute,
-                'value': feature.attributes[attribute],
-                'listeners' : attribute == 'name' && feature.isLabel ? {
-	                	change: function(el, newValue, oldValue, eOpts){ 
-	                		var elExportDialogBtn = Ext.getCmp('elExportDialogBtn');
-	                		if(elExportDialogBtn){
-	                			if(newValue != ""){
-	                				elExportDialogBtn.enable();
-	                        	}else{
-	                        		elExportDialogBtn.disable();
-	                        	}
-	                		}
-	                    },
-	                    render: function(el, eOpts ){
-	                    	var elExportDialogBtn = Ext.getCmp('elExportDialogBtn');
-                    		if(el.value != ""){
-	                    		elExportDialogBtn.enable();
-	                    	}else{
-                        		elExportDialogBtn.disable();
-                        	}
-	                    }
-            
-	             } : {}
-            };
-            oGroupItems.push(field);
+        	if(attribute != "styleUrl"){
+        		field = {
+                	'xtype': attribute == 'description' ? 'textarea' : 'textfield',
+                    'name': attribute,
+                    'fieldLabel': OpenLayers.i18n(attribute),
+                    'id': attribute,
+                    'value': feature.attributes[attribute],
+                    'listeners' : attribute == 'name' && feature.isLabel ? {
+    	                	change: function(el, newValue, oldValue, eOpts){ 
+    	                		var elExportDialogBtn = Ext.getCmp('elExportDialogBtn');
+    	                		if(elExportDialogBtn){
+    	                			if(newValue != ""){
+    	                				elExportDialogBtn.enable();
+    	                        	}else{
+    	                        		elExportDialogBtn.disable();
+    	                        	}
+    	                		}
+    	                    },
+    	                    render: function(el, eOpts ){
+    	                    	var elExportDialogBtn = Ext.getCmp('elExportDialogBtn');
+                        		if(el.value != ""){
+    	                    		elExportDialogBtn.enable();
+    	                    	}else{
+                            		elExportDialogBtn.disable();
+                            	}
+    	                    }
+                
+    	             } : {}
+                };
+                oGroupItems.push(field);
+        	}
         }
 
         oGroup.items = oGroupItems;

@@ -61,9 +61,108 @@ GeoExt.ux.data.Export = function(map, format, layers, features) {
     }
 
     if (format == 'KML') {
-        var kmlWriter = new OpenLayers.Format.KML(OpenLayers.Util.extend(
-        {placemarksDesc:' ', externalProjection: new OpenLayers.Projection("EPSG:4326"),internalProjection: map.getProjectionObject()},
-                GeoExt.ux.data.formats.getFormatConfig(format)));
+        var kmlWriter = new OpenLayers.Format.KML(OpenLayers.Util.extend({
+			placemarksDesc:' ',
+			externalProjection: new OpenLayers.Projection("EPSG:4326"),
+			internalProjection: map.getProjectionObject(),
+			// Override Openlayers.KML write methode
+			write: function(features) {
+		        if(!(OpenLayers.Util.isArray(features))) {
+		            features = [features];
+		        }
+		        var kml = this.createElementNS(this.kmlns, "kml");
+		        var folder = this.createFolderXML();
+		        // Folder style
+		        for(var i=0, len=features.length; i<len; ++i) {
+		        	folder.appendChild(this.createStyleXML(features[i]));
+		        }
+		        
+		        // Folder placemark
+		        for(var i=0, len=features.length; i<len; ++i) {
+		            folder.appendChild(this.createPlacemarkXML(features[i]));
+		        }
+		        kml.appendChild(folder);
+		        return OpenLayers.Format.XML.prototype.write.apply(this, [kml]);
+		    },
+   			// Add createStyleXML methode
+		    createStyleXML: function(feature) {   
+		    	// Placemark PolyStyle
+		    	var stylePoly = this.createElementNS(this.kmlns, "PolyStyle");
+		    	
+		    	// PolyStyle fillColor
+		    	var tag = this.createElementNS(this.kmlns, "color");
+	    	    var value = feature.style["fillColor"];
+	    	    if(value.indexOf("#") > -1){
+	    	    	var rr = value.substr(1, 2);
+	    	    	var gg = value.substr(3, 2);
+	    	    	var bb = value.substr(5, 2);
+	    	    	value = "66" + bb + "" + gg + "" + rr;
+	    	    }
+	    	    tag.appendChild(this.createTextNode(value));
+	    	    stylePoly.appendChild(tag);
+	    	    
+	    	    // PolyStyle fill
+		    	tag = this.createElementNS(this.kmlns, "fill");
+	    	    tag.appendChild(this.createTextNode("1"));
+	    	    stylePoly.appendChild(tag);
+	    	    
+	    	    // PolyStyle outline
+		    	tag = this.createElementNS(this.kmlns, "outline");
+	    	    tag.appendChild(this.createTextNode("1"));
+	    	    stylePoly.appendChild(tag);
+	    	    
+		        // Placemark
+		        var styleNode = this.createElementNS(this.kmlns, "Style");
+		        if(feature.id != null) {
+		        	styleNode.setAttribute("id", feature.id);
+		        }
+		        styleNode.appendChild(stylePoly);
+		        
+		        return styleNode;
+		    },
+		    // Override Openlayers.KML createPlacemarkXML methode
+			createPlacemarkXML: function(feature) {   
+		    	// Placemark styleUrl
+		    	var placemarkStyleUrl = this.createElementNS(this.kmlns, "styleUrl");
+		    	var styleUrl = "#" + feature.id;
+		    	placemarkStyleUrl.appendChild(this.createTextNode(styleUrl));
+		    	
+		        // Placemark name
+		        var placemarkName = this.createElementNS(this.kmlns, "name");
+		        var label = (feature.style && feature.style.label) ? feature.style.label : feature.id;
+		        var name = feature.attributes.name || label;
+		        placemarkName.appendChild(this.createTextNode(name));
+
+		        // Placemark description
+		        var placemarkDesc = this.createElementNS(this.kmlns, "description");
+		        var desc = feature.attributes.description || this.placemarksDesc;
+		        placemarkDesc.appendChild(this.createTextNode(desc));
+		        
+		        // Placemark
+		        var placemarkNode = this.createElementNS(this.kmlns, "Placemark");
+		        if(feature.fid != null) {
+		            placemarkNode.setAttribute("id", feature.fid);
+		        }
+		        placemarkNode.appendChild(placemarkStyleUrl);
+		        placemarkNode.appendChild(placemarkName);
+		        placemarkNode.appendChild(placemarkDesc);
+
+		        // Geometry node (Point, LineString, etc. nodes)
+		        var geometryNode = this.buildGeometryNode(feature.geometry);
+		        placemarkNode.appendChild(geometryNode);        
+		        
+		        // output attributes as extendedData
+		        if (feature.attributes) {
+		            var edNode = this.buildExtendedData(feature.attributes);
+		            if (edNode) {
+		                placemarkNode.appendChild(edNode);
+		            }
+		        }
+		        
+		        return placemarkNode;
+		    }
+		},
+        GeoExt.ux.data.formats.getFormatConfig(format)));
         return kmlWriter.write(exportFeatures);
     } else if (format == 'GeoJSON') {
         var geojsonWriter = new OpenLayers.Format.GeoJSON(GeoExt.ux.data.formats.getFormatConfig(format));
