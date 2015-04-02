@@ -135,6 +135,13 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 			for(var i=0,len=map.layers.length; i<len; i++) {
 				var layer = map.layers[i];
 				layer.addOptions(options);
+				// Transform features by projection change
+				if(layer.features){
+					for(key in layer.features){
+						var feature = layer.features[key];
+						feature.geometry.transform(oldProjection, newProjection); 
+					}
+				}
 			}
 			
 			// reproject map.layerContainerOrigin, in case the next
