@@ -86,37 +86,66 @@ GeoExt.ux.data.Export = function(map, format, layers, features) {
 		    },
    			// Add createStyleXML methode
 		    createStyleXML: function(feature) {   
-		    	// Placemark PolyStyle
-		    	var stylePoly = this.createElementNS(this.kmlns, "PolyStyle");
-		    	
-		    	// PolyStyle fillColor
-		    	var tag = this.createElementNS(this.kmlns, "color");
-	    	    var value = feature.style["fillColor"];
-	    	    if(value.indexOf("#") > -1){
-	    	    	var rr = value.substr(1, 2);
-	    	    	var gg = value.substr(3, 2);
-	    	    	var bb = value.substr(5, 2);
-	    	    	value = "66" + bb + "" + gg + "" + rr;
-	    	    }
-	    	    tag.appendChild(this.createTextNode(value));
-	    	    stylePoly.appendChild(tag);
-	    	    
-	    	    // PolyStyle fill
-		    	tag = this.createElementNS(this.kmlns, "fill");
-	    	    tag.appendChild(this.createTextNode("1"));
-	    	    stylePoly.appendChild(tag);
-	    	    
-	    	    // PolyStyle outline
-		    	tag = this.createElementNS(this.kmlns, "outline");
-	    	    tag.appendChild(this.createTextNode("1"));
-	    	    stylePoly.appendChild(tag);
+		    	var style;
+		    	if(feature.isLabel){
+		    		// Placemark LabelStyle
+			    	style = this.createElementNS(this.kmlns, "LabelStyle");
+			    	
+			    	// LabelStyle fillColor
+			    	var tag = this.createElementNS(this.kmlns, "color");
+		    	    var value = feature.style["fontColor"];
+		    	    if(value.indexOf("#") > -1){
+		    	    	var rr = value.substr(1, 2);
+		    	    	var gg = value.substr(3, 2);
+		    	    	var bb = value.substr(5, 2);
+		    	    	value = "FF" + bb + "" + gg + "" + rr;
+		    	    }
+		    	    tag.appendChild(this.createTextNode(value));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // LabelStyle colorMode
+			    	tag = this.createElementNS(this.kmlns, "colorMode");
+		    	    tag.appendChild(this.createTextNode("normal"));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // LabelStyle scale
+			    	tag = this.createElementNS(this.kmlns, "scale");
+		    	    tag.appendChild(this.createTextNode("1"));
+		    	    style.appendChild(tag);
+		    	    
+		    	}else{
+		    		// Placemark PolyStyle
+			    	style = this.createElementNS(this.kmlns, "PolyStyle");
+			    	
+			    	// PolyStyle fillColor
+			    	var tag = this.createElementNS(this.kmlns, "color");
+		    	    var value = feature.style["fillColor"];
+		    	    if(value.indexOf("#") > -1){
+		    	    	var rr = value.substr(1, 2);
+		    	    	var gg = value.substr(3, 2);
+		    	    	var bb = value.substr(5, 2);
+		    	    	value = "66" + bb + "" + gg + "" + rr;
+		    	    }
+		    	    tag.appendChild(this.createTextNode(value));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // PolyStyle fill
+			    	tag = this.createElementNS(this.kmlns, "fill");
+		    	    tag.appendChild(this.createTextNode("1"));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // PolyStyle outline
+			    	tag = this.createElementNS(this.kmlns, "outline");
+		    	    tag.appendChild(this.createTextNode("1"));
+		    	    style.appendChild(tag);
+		    	}
 	    	    
 		        // Placemark
 		        var styleNode = this.createElementNS(this.kmlns, "Style");
 		        if(feature.id != null) {
 		        	styleNode.setAttribute("id", feature.id);
 		        }
-		        styleNode.appendChild(stylePoly);
+		        styleNode.appendChild(style);
 		        
 		        return styleNode;
 		    },

@@ -144,8 +144,8 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
      *   OpenLayers.Feature.Vector.style['default'] if no style was specified.
      */
     defaultStyle: {
-        fillColor: "red",
-        strokeColor: "red"
+        fillColor: "#FF0000",
+        strokeColor: "#FF0000"
     },
 
     /** api: config[layerOptions]
@@ -366,6 +366,7 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
         this.map.addControl(control);
 
         actionOptions = {
+        	id: "redliningEdit",
             control: control,
             map: this.map,
             // button options
@@ -427,24 +428,28 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
             switch (geometryType) {
                 case OpenLayers.i18n("LineString"):
                 case OpenLayers.i18n("MultiLineString"):
+                	id = "redliningMultiLineString";
                     handler = OpenLayers.Handler.Path;
                     iconCls = "gx-featureediting-draw-line";
                     tooltip = OpenLayers.i18n("Create line");
                     break;
                 case OpenLayers.i18n("Point"):
                 case OpenLayers.i18n("MultiPoint"):
-                    handler = OpenLayers.Handler.Point;
+                	id = "redliningMultiPoint";
+                	handler = OpenLayers.Handler.Point;
                     iconCls = "gx-featureediting-draw-point";
                     tooltip = OpenLayers.i18n("Create point");
                     break;
                 case OpenLayers.i18n("Polygon"):
                 case OpenLayers.i18n("MultiPolygon"):
-                    handler = OpenLayers.Handler.Polygon;
+                	id = "redliningMultiPolygon";
+                	handler = OpenLayers.Handler.Polygon;
                     iconCls = "gx-featureediting-draw-polygon";
                     tooltip = OpenLayers.i18n("Create polygon");
                     break;
                 case OpenLayers.i18n("Label"):
-                    handler = OpenLayers.Handler.Point;
+                	id = "redliningLabel";
+                	handler = OpenLayers.Handler.Point;
                     iconCls = "gx-featureediting-draw-label";
                     tooltip = OpenLayers.i18n("Create label");
                     break;
@@ -469,7 +474,8 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
             });
 
             actionOptions = {
-                control: control,
+        		id: id,
+            	control: control,
                 map: this.map,
                 // button options
                 toggleGroup: this.toggleGroup,
@@ -510,7 +516,8 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
      */
     initDeleteAllAction: function() {
         var actionOptions = {
-            handler: this.deleteAllFeatures,
+            id: "redliningDeleteAll",
+        	handler: this.deleteAllFeatures,
             scope: this,
             tooltip: OpenLayers.i18n('Delete all features')
         };
@@ -552,6 +559,7 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
     initImport: function(layer) {
         if(this['import'] === true) {
             var actionOptions = {
+        		id: "redliningImport",
                 handler: this.importFeatures,
                 scope: this,
                 tooltip: OpenLayers.i18n('Import KML')
@@ -575,6 +583,7 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
     initExport: function() {
         if(this['export'] === true) {
             var actionOptions = {
+        		id: "redliningExport",
                 handler: this.exportFeatures,
                 scope: this,
                 tooltip: OpenLayers.i18n('Export KML')
@@ -777,6 +786,23 @@ Ext.define('GeoExt.ux.FeatureEditingControler', {
      */
     parseFeatureStyle: function(feature) {
         var symbolizer = this.activeLayer.styleMap.createSymbolizer(feature);
+        var featureStyle = feature.style;
+        if(featureStyle){
+        	for (key in feature.style){
+        		symbolizer[key] = feature.style[key];
+        	}
+        	if(featureStyle.fontColor){
+        		feature.isLabel = true;
+        	}
+        	if(feature.isLabel){
+        		symbolizer.labelSelect = true;
+        		symbolizer.graphic = false;
+        		symbolizer.label = feature.attributes["name"];
+        	}else{
+        		symbolizer.labelSelect = false;
+        		symbolizer.graphic = true;
+        	}
+        }
         feature.style = symbolizer;
     },
 

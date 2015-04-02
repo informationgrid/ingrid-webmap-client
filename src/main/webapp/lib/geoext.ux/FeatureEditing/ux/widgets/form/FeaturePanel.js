@@ -280,9 +280,10 @@ Ext.define('GeoExt.ux.form.FeaturePanel', {
               }
               
               if(feature.style.fillColor){
-            	  if(feature.style.fillColor != "red"){
-            		  defaultColor = feature.style.fillColor.replace("#", "");
-            	  }
+        		  defaultColor = feature.style.fillColor.replace("#", "");
+        		  if(feature.isLabel){
+        			  defaultColor = feature.style.fontColor.replace("#", "");
+        		  }
               }
               
               var styler = Ext.create('GeoExt.ux.LayerStyleManager' ,

@@ -14,6 +14,7 @@ Ext.define('GeoExt.ux.CloseFeatureDialog', {
         this.controler = form.controler;
 
         var actionOptions = {
+        	id: "redliningCloseDialog",
             handler: this.closeFeatureDialog,
             scope: this,
             tooltip: OpenLayers.i18n('Close')
