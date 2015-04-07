@@ -324,6 +324,10 @@
       <name>InGrid Repo Maven</name>
       <url>https://dev.informationgrid.eu/archiva/repository/ingrid-all</url>
     </repository>
+    <repository>
+      <id>org.mapfish</id>
+      <url>http://dev.mapfish.org/maven/repository</url>
+    </repository>
   </repositories>
   <!-- LEADS TO ERRORS due to malformed files from repo ! 
     <pluginRepositories><pluginRepository><name>oss.sonatype.org</name><id>oss.sonatype.org</id><url>http://oss.sonatype.org/content/groups/public</url></pluginRepository></pluginRepositories>-->
