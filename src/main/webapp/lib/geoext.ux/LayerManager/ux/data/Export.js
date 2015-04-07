@@ -113,6 +113,31 @@ GeoExt.ux.data.Export = function(map, format, layers, features) {
 		    	    tag.appendChild(this.createTextNode("1"));
 		    	    style.appendChild(tag);
 		    	    
+		    	}else if(feature.geometry.id.toLowerCase().indexOf("linestring") > -1){
+		    		// Placemark LineStyle
+			    	style = this.createElementNS(this.kmlns, "LineStyle");
+			    	
+			    	// LabelStyle strokeColor
+			    	var tag = this.createElementNS(this.kmlns, "color");
+		    	    var value = feature.style["strokeColor"];
+		    	    if(value.indexOf("#") > -1){
+		    	    	var rr = value.substr(1, 2);
+		    	    	var gg = value.substr(3, 2);
+		    	    	var bb = value.substr(5, 2);
+		    	    	value = "FF" + bb + "" + gg + "" + rr;
+		    	    }
+		    	    tag.appendChild(this.createTextNode(value));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // LabelStyle colorMode
+			    	tag = this.createElementNS(this.kmlns, "colorMode");
+		    	    tag.appendChild(this.createTextNode("normal"));
+		    	    style.appendChild(tag);
+		    	    
+		    	    // LabelStyle width
+			    	tag = this.createElementNS(this.kmlns, "width");
+		    	    tag.appendChild(this.createTextNode("1"));
+		    	    style.appendChild(tag);
 		    	}else{
 		    		// Placemark PolyStyle
 			    	style = this.createElementNS(this.kmlns, "PolyStyle");
