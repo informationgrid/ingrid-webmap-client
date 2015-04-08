@@ -139,7 +139,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 				if(layer.features){
 					for(key in layer.features){
 						var feature = layer.features[key];
-						feature.geometry.transform(oldProjection, newProjection); 
+						if(feature.geometry){
+							feature.geometry.transform(oldProjection, newProjection); 
+						}
 					}
 				}
 			}
