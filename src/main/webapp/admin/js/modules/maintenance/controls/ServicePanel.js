@@ -816,58 +816,63 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServicePanel', {
 	            	   Ext.getBody().mask('Dienst wird geladen', 'x-mask-loading');
 	            	   var layerRecord = [];
 	            	   if(records){
-	            		   for (var i=0, countI=records.length; i<countI; i++) {
-								var layerObj = records[i];
-								// Get parent node name
-								var layerObjNode = layerObj.raw;
-								var parent = null; 
-								var leaf = true;
-								if(layerObjNode){
-									var layerObjParentNode = layerObjNode.parentNode;
-									if(layerObjParentNode){
-										if(layerObjParentNode.tagName == "Layer"){
-											var layerObjParentChildNodes = layerObjParentNode.childNodes;
-											if(layerObjParentChildNodes){
-												for (var j=0, countJ=layerObjParentChildNodes.length; j<countJ; j++) {
-													var node = layerObjParentChildNodes[j];
-													if(node.tagName == "Name"){
-														parent = node.textContent;
-														if(!parent){
-															parent = node.text;
+	            		   if(records.length > 0){
+	            			   for (var i=0, countI=records.length; i<countI; i++) {
+									var layerObj = records[i];
+									// Get parent node name
+									var layerObjNode = layerObj.raw;
+									var parent = null; 
+									var leaf = true;
+									if(layerObjNode){
+										var layerObjParentNode = layerObjNode.parentNode;
+										if(layerObjParentNode){
+											if(layerObjParentNode.tagName == "Layer"){
+												var layerObjParentChildNodes = layerObjParentNode.childNodes;
+												if(layerObjParentChildNodes){
+													for (var j=0, countJ=layerObjParentChildNodes.length; j<countJ; j++) {
+														var node = layerObjParentChildNodes[j];
+														if(node.tagName == "Name"){
+															parent = node.textContent;
+															if(!parent){
+																parent = node.text;
+															}
 														}
 													}
 												}
 											}
 										}
 									}
-								}
-								
-								if(layerObjNode){
-									var childNodes = layerObjNode.childNodes;
-									if(childNodes){
-										for (var j=0, countJ=childNodes.length; j<countJ; j++) {
-											var childNode = childNodes[j];
-											if(childNode.tagName == "Layer"){
-												leaf = false;
-												break;
+									
+									if(layerObjNode){
+										var childNodes = layerObjNode.childNodes;
+										if(childNodes){
+											for (var j=0, countJ=childNodes.length; j<countJ; j++) {
+												var childNode = childNodes[j];
+												if(childNode.tagName == "Layer"){
+													leaf = false;
+													break;
+												}
 											}
 										}
 									}
-								}
-								if(layerObj.data){
-									layerRecord.push({ 
-										name: layerObj.data.name,
-										title: layerObj.data.title,
-										featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
-										deactivated: (layerObj.data.name) ? false : true,
-										checked: false,
-										legend: false,
-										id:layerObj.data.name,
-										parent: parent,
-										leaf: leaf
-									});
-								}
-		            	  }
+									if(layerObj.data){
+										layerRecord.push({ 
+											name: layerObj.data.name,
+											title: layerObj.data.title,
+											featureInfo: (layerObj.data.featureInfo == "1") ? true : false,
+											deactivated: (layerObj.data.name) ? false : true,
+											checked: false,
+											legend: false,
+											id:layerObj.data.name,
+											parent: parent,
+											leaf: leaf
+										});
+									}
+			            	  }
+	            		   }else{
+	            			   Ext.getBody().unmask();
+	 	            		   de.ingrid.mapclient.Message.showError('Das Laden des Dienstes ist fehlgeschlagen.');
+	            		   }
 	            	  }else{
 	            		  Ext.getBody().unmask();
 	            		  de.ingrid.mapclient.Message.showError('Das Laden des Dienstes ist fehlgeschlagen.');

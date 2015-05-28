@@ -1112,6 +1112,11 @@ public class ConfigurationResource {
 				title = getNameFromXML(doc);
 				json.put("title", title);
 			}
+			
+			if(title.equals("")){
+				Exception ex = new Exception();
+				throw new WebApplicationException(ex, Response.Status.SERVICE_UNAVAILABLE);
+			}
 			if(!isCopy){
 				doc = changeXml(doc, json);
 			}
