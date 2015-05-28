@@ -25,11 +25,7 @@ package de.ingrid.mapclient.scheduler.tasks;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
-
 import org.apache.log4j.Logger;
-import org.w3c.dom.Document;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
