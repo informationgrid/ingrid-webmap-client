@@ -27,7 +27,6 @@ package de.ingrid.mapclient.rest;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +65,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
@@ -91,6 +89,7 @@ import de.ingrid.mapclient.model.WmsService;
 import de.ingrid.mapclient.model.WmsServiceLayer;
 import de.ingrid.mapclient.url.impl.DbUrlMapper;
 import de.ingrid.mapclient.utils.CapabilitiesUtils;
+import de.ingrid.mapclient.utils.Utils;
 import de.ingrid.utils.xml.XPathUtils;
 
 /**
@@ -782,10 +781,10 @@ public class ConfigurationResource {
 			
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
-			Document doc = stringToDom(response);
+			Document doc = Utils.stringToDom(response);
 			doc = CapabilitiesUtils.addIndexToLayers(doc);
 			
-			String title = getNameFromXML(doc);
+			String title = Utils.getNameFromXML(doc);
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			Transformer transformer = tFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -966,7 +965,7 @@ public class ConfigurationResource {
 		fileNames.put("urlOrg", path + "" + splitFileName[0]);
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
-		Document doc = stringToDom(response);
+		Document doc = Utils.stringToDom(response);
 		writeWmsCopyToFile(doc, req, title, fileNames, protocol);
 		
 		WmsService service = findService(jsonService);
@@ -995,7 +994,7 @@ public class ConfigurationResource {
 		String protocol = jsonService.getString("protocol"); 
 		
 		String response = HttpProxy.doRequest(originalCapUrl);
-		Document doc = stringToDom(response);
+		Document doc = Utils.stringToDom(response);
 		HashMap<String, String> url = writeWmsCopy(doc, req, title, protocol);
 		
 		WmsService service = findService(jsonService);
@@ -1107,9 +1106,9 @@ public class ConfigurationResource {
 			// get the wms document 
 			String response = HttpProxy.doRequest(capUrl);
 			log.debug(response);
-			Document doc = stringToDom(response);
+			Document doc = Utils.stringToDom(response);
 			if(title == null){
-				title = getNameFromXML(doc);
+				title = Utils.getNameFromXML(doc);
 				json.put("title", title);
 			}
 			
@@ -1307,33 +1306,6 @@ public class ConfigurationResource {
 		return doc;
 	}
 
-	/**
-	 * utility method for parsing xml strings 
-	 * @param xmlSource
-	 * @return
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 * @throws IOException
-	 */
-    public Document stringToDom(String xmlSource) throws SAXException {
-
-		try {
-	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-	        InputSource is = new InputSource();
-	        is.setCharacterStream(new StringReader(xmlSource));
-	        Document doc = db.parse(is);
-	        return doc;
-		} catch (ParserConfigurationException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			throw new WebApplicationException(e, Response.Status.CONFLICT);
-		} catch (SAXException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			throw new SAXException(e);
-		} catch (IOException e) {
-			log.error("error on parsing xml string: "+e.getMessage());
-			throw new WebApplicationException(e, Response.Status.CONFLICT);
-		}
-    }
 	private void deleteWmsFile(JSONObject json, HttpServletRequest req) {
 
 			try {
@@ -1522,20 +1494,4 @@ public class ConfigurationResource {
 
 
 	}
-	
-	private String getNameFromXML(Document doc) {
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		String name = "";
-		try {
-			Node n = (Node) xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);
-			if(n != null){
-				name = n.getTextContent();
-			}
-		} catch (XPathExpressionException e) {
-			log.error("XPathExpressionException on get xm name: ",e);
-		}
-		return name;
-	}
-	
-	
 }

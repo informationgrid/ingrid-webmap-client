@@ -25,7 +25,11 @@ package de.ingrid.mapclient.scheduler.tasks;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
@@ -54,6 +58,9 @@ public class CapabilitiesUpdateTask implements Runnable{
 			if(service.getCapabilitiesUpdateFlag() != null && !service.getCapabilitiesUpdateFlag().equals("aus")){
 				try {
 					String response = HttpProxy.doRequest(originalCapUrl);
+					if(response.indexOf("<Service>") < 0){
+						throw new Exception();
+					}
 					if(response != null){
 						String capabilitiesHashCode = CapabilitiesUtils.generateMD5String(response);
 						// Add hash code if not exist

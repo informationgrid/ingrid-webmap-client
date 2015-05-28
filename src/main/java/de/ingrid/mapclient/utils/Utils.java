@@ -23,6 +23,8 @@
 package de.ingrid.mapclient.utils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -43,8 +45,21 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class Utils {
 
@@ -53,6 +68,48 @@ public class Utils {
 	public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl, String protocol) {
 		return sendEmail(from, subject, to, text, headers, host, port, user, password, ssl, protocol, null);
 	}
+	
+	public static String getNameFromXML(Document doc) {
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		String name = "";
+		try {
+			Node n = (Node) xpath.evaluate("//Service/Title", doc, XPathConstants.NODE);
+			if(n != null){
+				name = n.getTextContent();
+			}
+		} catch (XPathExpressionException e) {
+			log.error("XPathExpressionException on get xm name: ",e);
+		}
+		return name;
+	}
+	
+	/**
+	 * utility method for parsing xml strings 
+	 * @param xmlSource
+	 * @return
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 */
+    public static Document stringToDom(String xmlSource) throws SAXException {
+
+		try {
+	        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	        InputSource is = new InputSource();
+	        is.setCharacterStream(new StringReader(xmlSource));
+	        Document doc = db.parse(is);
+	        return doc;
+		} catch (ParserConfigurationException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			throw new WebApplicationException(e, Response.Status.CONFLICT);
+		} catch (SAXException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			throw new SAXException(e);
+		} catch (IOException e) {
+			log.error("error on parsing xml string: "+e.getMessage());
+			throw new WebApplicationException(e, Response.Status.CONFLICT);
+		}
+    }
 	
 	/**
 	 * Send email
