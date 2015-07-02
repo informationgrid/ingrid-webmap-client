@@ -124,6 +124,7 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
 		if(mapExtent){
 			var options = {
 					maxExtent: mapExtent,
+					restrictedExtent: mapExtent,
 					projection: newProjection.getCode(),
 					units: newProjection.getUnits(),
 					maxResolution: 'auto',
