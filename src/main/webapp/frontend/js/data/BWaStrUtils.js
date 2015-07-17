@@ -30,12 +30,20 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils = function() {
 
 };
 
-de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self, points, firstPoint, lastPoint){
+de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self, points){
 	
 	// Clear draw
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVector");
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearVectorLayer(self.map, "bWaStrVectorTmp");
 	de.ingrid.mapclient.frontend.data.BWaStrUtils.clearMarker(self.map, "bWaStrVectorMarker");
+	
+	points.sort(function(a, b){
+	    var measureA = a.measure;
+	    var measureB = b.measure;
+	    if(measureA < measureB) return -1;
+	    if(measureA > measureB) return 1;
+	    return 0;
+	});
 	
 	// Textfield selection
 	var bWaStrVector = self.map.getLayersBy("id", "bWaStrVector");
@@ -64,7 +72,11 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
 		bWaStrVector = bWaStrVector[0];
 	}
 	bWaStrVector.setVisibility(true);
-	bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(points, null))]);
+	var linePoints = [];
+	points.forEach(function(entry) {
+		linePoints.push(entry.point);
+	});
+	bWaStrVector.addFeatures([new OpenLayers.Feature.Vector(new OpenLayers.Geometry.LineString(linePoints, null))]);
 	
 	// Custom lines
 	var bWaStrVectorTmp = self.map.getLayersBy("id", "bWaStrVectorTmp");
@@ -100,12 +112,16 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
 	bWaStrMarker.id = "bWaStrVectorMarker";
 	self.map.addLayer(bWaStrMarker);
 
-	if(firstPoint){
-		de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint[0],firstPoint[1],firstPoint[2], "red");
-	}
-	
-	if(lastPoint){
-		de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,lastPoint[0],lastPoint[1],lastPoint[2], "red");
+	if(points.length > 0){
+		if(points[0]){
+			var firstPoint = points[0].point;
+			de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint.x,firstPoint.y,de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([firstPoint.x, firstPoint.y, points[0].measure], self), "red");
+		}
+		
+		if(points[points.length - 1]){
+			var lastPoint = points[points.length - 1].point;
+			de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,lastPoint.x,lastPoint.y,de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([lastPoint.x, lastPoint.y, points[points.length - 1].measure], self), "red");
+		}
 	}
 	
 	if(bWaStrVector){
@@ -278,8 +294,6 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    			for(var i=0; i<results.length; i++){
 			    				var result = results[i];
 			    				var name = result.bwastr_name;
-			    				var firstPoint = null;
-			    				var lastPoint = null;
 			    				var geometry = result.geometry;
 			    				if(geometry){
 			    					if(geometry.type == "MultiLineString"){
@@ -297,13 +311,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    		        	    				if(measures[count]){
 			    		        	    					measure = measures[count];
 			    		        	    				}
-			    		        	    				if(k == 0){
-					    									if(firstPoint == null){
-							        	    					firstPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
-					    									}
-					    								}
-					        	    					lastPoint = [coordinateEntry[0],coordinateEntry[1], de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([coordinateEntry[0], coordinateEntry[1], measure], self)];
-					    								points.push(new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]));
+			    		        	    				points.push({"point": new OpenLayers.Geometry.Point(coordinateEntry[0], coordinateEntry[1]), "measure": measure});
 					    								count++;
 			    									}
 			    								}else{
@@ -311,7 +319,7 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.loadLayerData = function(self, url
 			    								}
 			    							}
 			    						}
-			    						de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer(self, points, firstPoint, lastPoint);
+			    						de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer(self, points);
 			    					}
 			    				}
 			    			}
