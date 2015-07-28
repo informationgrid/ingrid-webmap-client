@@ -298,7 +298,7 @@
     <dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>1.2-20120719-ingrid</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
