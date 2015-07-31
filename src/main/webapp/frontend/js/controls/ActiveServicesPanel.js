@@ -507,19 +507,28 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 							var serviceNodes = oldParent.childNodes;
 							var layers = [];
 							for (var i = 0, countI = serviceNodes.length; i < countI; i++) {
-							 	var serviceNode = serviceNodes[i];
-							 	self.getLayersFromTree(serviceNode, layers);
+								var serviceLayers = [];
+		 					 	var serviceNode = serviceNodes[i];
+							 	self.getLayersFromTree(serviceNode, serviceLayers, true);
+							 	layers.push(serviceLayers);
 							}
 						
-							if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
+							var countLayers = 0;
+		 					if(de.ingrid.mapclient.Configuration.getSettings("viewHasActiveServiceAddReversal") == false){
 								for (var j = 0, count = layers.length; j < count; j++) {
-									var layer = layers[j];
-									self.map.raiseLayer(layer, layers.length);
+									var layerList = layers[j];
+									layerList.forEach(function(layer) {
+										countLayers = countLayers + 1;
+										self.map.setLayerIndex(layer, countLayers);
+									});
 								}
 							}else{
 								for (var j = layers.length - 1; j >= 0; j--) {
-									var layer = layers[j];
-									self.map.raiseLayer(layer, layers.length);
+									var layerList = layers[j];
+									layerList.forEach(function(layer) {
+										countLayers = countLayers + 1;
+										self.map.setLayerIndex(layer, countLayers);
+									});
 								}
 							}
 		             	}
@@ -815,25 +824,26 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			}
 			
 			// Set vector layers to the end
-			if(de.ingrid.mapclient.Configuration.getSettings("viewRedliningEnable") == true){
-				if(this.map){
-					var cosmeticLayer;
-					var layers = this.map.layers;
-					for (var i = 0, count = layers.length; i < count; i++) {
-						var layer = layers[i];
-						if(layer){
-							if(layer.name){
-								if(layer.name == "Cosmetic"){
-									cosmeticLayer = layer;
-									this.map.removeLayer(layer);
-								}
-							}
-						}
-					}
-					if(cosmeticLayer){
-						this.map.addLayer(cosmeticLayer);
-					}
-				}
+			var vectorLayer;
+			vectorLayer = self.map.getLayersBy("name", "Cosmetic")[0];
+			if(vectorLayer){
+				this.map.removeLayer(vectorLayer);
+				this.map.addLayer(vectorLayer);
+			}
+			vectorLayer = self.map.getLayersBy("id", "bWaStrVector")[0];
+			if(vectorLayer){
+				this.map.removeLayer(vectorLayer);
+				this.map.addLayer(vectorLayer);
+			}
+			vectorLayer = self.map.getLayersBy("id", "bWaStrVectorTmp")[0];
+			if(vectorLayer){
+				this.map.removeLayer(vectorLayer);
+				this.map.addLayer(vectorLayer);
+			}
+			vectorLayer = self.map.getLayersBy("id", "bWaStrVectorMarker")[0];
+			if(vectorLayer){
+				this.map.removeLayer(vectorLayer);
+				this.map.addLayer(vectorLayer);
 			}
 		}
 	},
@@ -868,7 +878,14 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 		}
 		return isAddedVisibilityLayer; 
 	},
-	getLayersFromTree: function(node, layers){
+	getLayersFromTree: function(node, layers, doExpand){
+		var isExpanded = false;
+		if(doExpand){
+			if(node.expanded == false && node.leaf == false && node.childNodes.length == 0){
+				isExpanded = true;
+				node.expand();
+			}
+		}
 		var layerNodes = node.childNodes;
 		for (var i = 0, countI = layerNodes.length; i < countI; i++) {
 			var layerNode = layerNodes[i];
@@ -876,8 +893,12 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
 			if(layer){
 				layers.push(layer);
 			}
-			this.getLayersFromTree(layerNode, layers);
+			this.getLayersFromTree(layerNode, layers, doExpand);
 		}
+		if(isExpanded){
+			isExpanded = false;
+			node.collapse();
+	 	}
 	},
 	/**
 	 * Remove a service from the panel
