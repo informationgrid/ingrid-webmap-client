@@ -130,7 +130,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
                                 }
                             }else{
                                 if(checked){
-                                    if(node.get("cls").indexOf("x-tree-node-select") > -1){
+                                    if((node.get("cls").indexOf("x-tree-node-select") > - 1 || node.get("leaf") == true) && isParentsSelect){
                                         layer.setVisibility(checked);
                                     }
                                     this.checkboxSelection(node, true, isParentsSelect);
@@ -163,7 +163,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ServiceTreeLayerNode', {
                 var checkedLayer = n.get('checked');
                 if(isParentsSelect){
                     if(checkedLayer){
-                        if(n.get("cls").indexOf("x-tree-node-select") > - 1 || n.get("leaf") == true){
+                        if((n.get("cls").indexOf("x-tree-node-select") > - 1 || n.get("leaf") == true) && isParentsSelect){
                             layer.setVisibility(checkedLayer);
                         }
                     }
