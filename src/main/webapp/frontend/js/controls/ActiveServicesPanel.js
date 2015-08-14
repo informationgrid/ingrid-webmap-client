@@ -237,10 +237,13 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
                 }else{
                     var isParentsSelect = self.isParentsSelect(node);
                     var cls = 'x-tree-node-select';
-                    if(node.get("expanded")){
+                    if(node.get('expanded')){
                         cls = cls + ' ' + 'x-tree-expand';
                     }
                     node.set('cls', cls);
+                    if(node.get('checked')){
+                        node.set('checked', false);
+                    }
                     node.set('checked', true);
                 }
             },
