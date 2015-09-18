@@ -152,6 +152,7 @@
             <exclude>**/*.json</exclude>
             <exclude>**/*.sql</exclude>
             <exclude>**/*.xml</exclude>
+            <exclude>**/*.xsl</exclude>
             <exclude>**/webapp/lib/**</exclude>
             <exclude>**/webapp/wms/**</exclude>
             <exclude>**/webapp/jsp/**</exclude>
