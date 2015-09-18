@@ -3,12 +3,12 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-base-pom</artifactId>
-    <version>3.5.1</version>
+    <version>3.6.0.3</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
   <artifactId>ingrid-webmap-client</artifactId>
-  <version>3.6.1-SNAPSHOT</version>
+  <version>3.6.0.3</version>
   <packaging>war</packaging>
   <name>InGrid Web Map Client</name>
   <scm>
@@ -152,10 +152,20 @@
             <exclude>**/*.json</exclude>
             <exclude>**/*.sql</exclude>
             <exclude>**/*.xml</exclude>
+            <exclude>**/*.xsl</exclude>
             <exclude>**/webapp/lib/**</exclude>
             <exclude>**/webapp/wms/**</exclude>
             <exclude>**/webapp/jsp/**</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>external.atlassian.jgitflow</groupId>
+        <artifactId>jgitflow-maven-plugin</artifactId>
+        <version>1.0-m5.1</version>
+        <configuration>
+          <defaultOriginUrl>https://github.com/informationgrid/ingrid-webmap-client</defaultOriginUrl>
+          <noDeploy>true</noDeploy>
         </configuration>
       </plugin>
     </plugins>
@@ -298,7 +308,7 @@
     <dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>1.2-20120719-ingrid</version>
+      <version>1.2.0</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

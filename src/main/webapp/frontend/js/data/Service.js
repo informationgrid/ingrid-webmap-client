@@ -287,6 +287,8 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 									layer.yx["EPSG:2397"] = true;
 									layer.yx["EPSG:2398"] = true;
 									layer.yx["EPSG:2399"] = true;
+									layer.yx["EPSG:3034"] = true;
+									layer.yx["EPSG:3035"] = true;
 								}
 								
 								//check if the config wants us to singleTile or not, but first we check if this property exists
