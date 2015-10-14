@@ -148,27 +148,27 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.unserialize = function(
 	// unserialize map state (must be applied)
 	this.wmcDocument = data.wmcDocument;
 
-	// define exit condition (unserialization is finished, when the last service is loaded)
-	var numServices = data.activeServices.length;
-	var lastCapUrl = data.activeServices[numServices-1];
-
 	// unserialize active services
 	var self = this;
 	this.activeServices = [];
-	var callbackCount = 0;
-	for (var i=0;i<numServices; i++) {
-		// the service needs to be loaded
-		var capabilitiesUrl = data.activeServices[i];
+	
+	self.loadServices(data.activeServices, 0, callback);
+};
+
+de.ingrid.mapclient.frontend.data.SessionState.prototype.loadServices = function(capabilitiesUrls, entry, callback) {
+	var self = this;
+	var capabilitiesUrl = capabilitiesUrls[entry];
+	if(capabilitiesUrl){
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
-			callbackCount++;
 			self.activeServices.push(service);
-			if (callbackCount == numServices) {
+			if (entry == capabilitiesUrls.length - 1) {
 				//formerly
 				//lastCapUrl == service.getCapabilitiesUrl()
 				if (callback instanceof Function) {
 					callback();
 				}
 			}
+			self.loadServices(capabilitiesUrls, entry + 1, callback);
 		});
 	}
 };
