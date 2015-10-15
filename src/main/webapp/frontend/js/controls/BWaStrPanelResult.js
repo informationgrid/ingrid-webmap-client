@@ -30,6 +30,7 @@ Ext.namespace("de.ingrid.mapclient.frontend.controls");
  */
 Ext.define('de.ingrid.mapclient.frontend.controls.BWaStrPanelResult', {
     extend: 'Ext.Panel',
+    cls: 'bWaStrPanelResult',
     columns: null,
     store: null,
     data: null,

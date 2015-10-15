@@ -726,7 +726,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.BWaStr', {
     	                    }
     	             ]
                 },{
-                	html: '<p style="font-size:9px;">Die Berechnung erfolgt nicht nach den Vorgaben der Verwaltungsvorschrift der Wasser- und Schifffahrtsverwaltung des Bundes \"Geod&auml;tische Grundlagen und Ordnungssysteme\" (VV-WSV 2601) zur Stationierung. Es sind jedoch keine Abweichungen zu erwarten\, wenn die berechneten Objekte auf der Gew&auml;ssernetzlinie liegen oder wenn die angrenzenden Ordnungsprofile die Gew&auml;ssernetzlinie <br>orthogonal schneiden.</p>',
+                	html: '<p class="bWaStrDialog_info">Die Berechnung erfolgt nicht nach den Vorgaben der Verwaltungsvorschrift der Wasser- und Schifffahrtsverwaltung des Bundes \"Geod&auml;tische Grundlagen und Ordnungssysteme\" (VV-WSV 2601) zur Stationierung. Es sind jedoch keine Abweichungen zu erwarten\, wenn die berechneten Objekte auf der Gew&auml;ssernetzlinie liegen oder wenn die angrenzenden Ordnungsprofile die Gew&auml;ssernetzlinie <br>orthogonal schneiden.</p>',
                 	border: false,
                 	padding: 5,
                 	style: 'color:red;'
