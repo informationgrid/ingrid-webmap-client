@@ -184,14 +184,22 @@ public class WmsResource {
 
 			for (int i = 0; i < fields.getLength(); i++) {
 				AdministrativeInfo aInfo = new AdministrativeInfo();
-				if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("2"))
-				aInfo.setType("Bundesland");
-				else if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("4"))
-				aInfo.setType("Kreis");
-				else if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("3"))
-				aInfo.setType("Regierungsbezirk");
-				aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
-				aInfo.setRs(fields.item(i).getAttributes().getNamedItem("AGS").getNodeValue());
+				if(fields.item(i).getAttributes().getNamedItem("ADE") != null){
+				    if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("2"))
+		                aInfo.setType("Bundesland");
+	                else if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("4"))
+		                aInfo.setType("Kreis");
+	                else if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("3"))
+		                aInfo.setType("Regierungsbezirk");
+				}else{
+				    aInfo.setType("Name");
+				}
+				if(fields.item(i).getAttributes().getNamedItem("GEN") != null){
+				    aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
+				}
+				if(fields.item(i).getAttributes().getNamedItem("AGS") != null){
+				    aInfo.setRs(fields.item(i).getAttributes().getNamedItem("AGS").getNodeValue());
+                }
 				adminInfos.add(aInfo);
 			}
 		} catch (XPathExpressionException e) {
