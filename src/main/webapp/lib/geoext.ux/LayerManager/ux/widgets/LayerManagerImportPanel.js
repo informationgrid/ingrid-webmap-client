@@ -155,6 +155,9 @@ Ext.define('GeoExt.ux.LayerManagerImportPanel', {
                                                 var objFSO = new ActiveXObject("Scripting.FileSystemObject");
                                                 if (objFSO.FileExists(document.getElementById('fileselector').value)) {
                                                     filecontent = objFSO.OpenTextFile(document.getElementById('fileselector').value, 1).ReadAll();
+                                                    self.fireEvent('beforedataimported', self, self.formatCombo.getValue(), filecontent);
+                                                	self.layer = GeoExt.ux.data.Import(self.map, self.layer, self.formatCombo.getValue(), filecontent, null);
+                                                	self.fireEvent('dataimported', self, self.formatCombo.getValue(), filecontent, GeoExt.ux.data.importFeatures);
                                                 }
                                             }
                                             catch (e)
