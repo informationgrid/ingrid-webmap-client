@@ -150,7 +150,7 @@ Ext.define('GeoExt.ux.LayerManagerImportPanel', {
                                     } else {
                                     	var filecontent;
                                     	
-                                    	if (Ext.isIE) {
+                                    	if (Ext.isIE && !Ext.isIE11) {
                                             try {
                                                 var objFSO = new ActiveXObject("Scripting.FileSystemObject");
                                                 if (objFSO.FileExists(document.getElementById('fileselector').value)) {
