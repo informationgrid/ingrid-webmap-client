@@ -567,6 +567,25 @@
       <group>search</group>
     </setting>
     <!-- 
+    searchFeatureInfoAGSKey:
+    Für die Suche im Portal gibt es einen Unterschied bei der Verwendung des Gazetters WFS BKG und SNS InnoQ.
+    Hierbei liefert der Gazetter WFS BKG einen anderen AGS (Amtlicher Gemeindeschlüssel) als der SNS von InnoQ. 
+    
+    Beispiel: Niedersachsen
+    SNS InnoQ -> 03
+    WFS BKG -> 03000000
+    
+    Beim Aufruf der URL unter der Eigenschaft 'featureUrl' werden beide Werte in verschiedenen Attribute geliefert.
+    Mit der Eigenschaft 'searchFeatureInfoAGSKey' kann das Attribut je nach verwendeten Gazetter angepasst
+    werden.
+    -->
+    <setting key="searchFeatureInfoAGSKey">
+      <key>searchFeatureInfoAGSKey</key>
+      <name>AGS Schlüssel: Attribut für die Administrative Einheit aus der FeatureInfo-Abfrage</name>
+      <value>AGS</value>
+      <group>search</group>
+    </setting>
+    <!-- 
     <setting key="">
       <key>searchHasServicesPanel</key>
       <name>Dienste und Legende anzeigen</name>
