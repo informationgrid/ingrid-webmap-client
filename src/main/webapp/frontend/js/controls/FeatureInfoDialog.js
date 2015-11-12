@@ -168,9 +168,9 @@ Ext.define('de.ingrid.mapclient.frontend.controls.FeatureInfoDialog', {
             urlAppendix = urlAppendix.replace("%EPSG%", self.map.projection);
         }
 
-        var ags_params = '&ags_params=' + de.ingrid.mapclient.Configuration.getSettings("searchFeatureInfoAGSKey");
+        var regional_key = '&regional_key=' + de.ingrid.mapclient.Configuration.getSettings("searchFeatureInfoRegionalKey");
 
-        var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix + ags_params;         
+        var url = de.ingrid.mapclient.WMS_ADMIN_INFO_PROXY_URL+urlAppendix + regional_key;         
         Ext.Ajax.on('beforerequest', self.showSpinner, self);
         Ext.Ajax.on('requestcomplete', self.hideSpinner, self);
         Ext.Ajax.on('requestexception', self.hideSpinner, self);

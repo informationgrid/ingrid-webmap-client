@@ -162,7 +162,7 @@ public class WmsResource {
 	@GET
 	@Path("proxyAdministrativeInfos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url, @QueryParam("ags_params") String ags_params) {
+	public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url, @QueryParam("regional_key") String regional_key) {
 		// check if the url string is valid
 		if (!SERVICE_PATTERN.matcher(url).find() && !REQUEST_PATTERN.matcher(url).find()) {
 			throw new IllegalArgumentException("The url is not a valid wms request: "+url);
@@ -195,8 +195,8 @@ public class WmsResource {
 				if(fields.item(i).getAttributes().getNamedItem("GEN") != null){
 				    aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
 				}
-				if(fields.item(i).getAttributes().getNamedItem(ags_params) != null){
-				    aInfo.setRs(fields.item(i).getAttributes().getNamedItem(ags_params).getNodeValue());
+				if(fields.item(i).getAttributes().getNamedItem(regional_key) != null){
+				    aInfo.setRs(fields.item(i).getAttributes().getNamedItem(regional_key).getNodeValue());
                 }
 				adminInfos.add(aInfo);
 			}
