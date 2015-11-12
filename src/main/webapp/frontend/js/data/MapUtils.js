@@ -99,10 +99,19 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
     var newProjection = new OpenLayers.Projection(newProjCode);
     var initialExtent = de.ingrid.mapclient.frontend.data.MapUtils.getMaxExtent(newProjection);
     var mapExtent;
+    var currentMapExtent;
     var wgs84Proj = new OpenLayers.Projection("EPSG:4326");
-    var currentMapExtent = map.getExtent().transform(oldProjection, wgs84Proj);
-    currentMapExtent = currentMapExtent.transform(wgs84Proj, newProjection);
-    
+    if(map.getExtent()){
+        if(oldProjection.projCode != "EPSG:4326"){
+            currentMapExtent = map.getExtent().transform(oldProjection, wgs84Proj);
+        }else{
+            currentMapExtent = map.getExtent();
+        }
+        if(newProjCode != "EPSG:4326"){
+            currentMapExtent = currentMapExtent.transform(wgs84Proj, newProjection);
+        }
+    }
+     
     if((oldProjection.projCode != newProjection.projCode) || zoomToExtent != undefined){
         if(zoomToExtent == undefined || zoomToExtent == true){
             var bbox = map.baseLayer.llbbox;
@@ -158,7 +167,13 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
             // only zoom into extent if the map initially had an extent
             if (zoomToExtent === undefined || zoomToExtent) {
                 if(zoomToExtent == undefined){
-                    map.zoomToExtent(currentMapExtent);
+                    if(currentMapExtent){
+                        var zoom = map.zoom;
+                        map.zoomToExtent(currentMapExtent);
+                        if(zoom){
+                            map.zoomTo(zoom);
+                        }
+                    }
                 }else{
                     map.zoomToExtent(initialExtent);
                 }
