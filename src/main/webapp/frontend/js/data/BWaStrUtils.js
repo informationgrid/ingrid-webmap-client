@@ -113,12 +113,17 @@ de.ingrid.mapclient.frontend.data.BWaStrUtils.createVectorLayer = function (self
     bWaStrVectorTmp.setVisibility(false);
     
     // Markers
-    var bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker", {
-        displayInLayerSwitcher: false
-    });
-    bWaStrMarker.id = "bWaStrVectorMarker";
-    self.map.addLayer(bWaStrMarker);
-
+    var bWaStrMarker = self.map.getLayersByName("bWaStrVectorMarker");
+    if(bWaStrMarker.length == 0){
+    	bWaStrMarker = new OpenLayers.Layer.Markers( "bWaStrVectorMarker", {
+    		displayInLayerSwitcher: false
+    	});
+    	bWaStrMarker.id = "bWaStrVectorMarker";
+    	self.map.addLayer(bWaStrMarker);
+    }else{
+    	bWaStrMarker = bWaStrMarker[0];
+    }
+   
     if(firstPoint){
         de.ingrid.mapclient.frontend.data.BWaStrUtils.addMarker(self, bWaStrMarker ,firstPoint.point.x,firstPoint.point.y,de.ingrid.mapclient.frontend.data.BWaStrUtils.createPopUpTemplate([firstPoint.point.x, firstPoint.point.y, firstPoint.measure], self), "red");
     }

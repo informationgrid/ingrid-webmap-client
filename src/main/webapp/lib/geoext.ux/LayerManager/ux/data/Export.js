@@ -144,15 +144,17 @@ GeoExt.ux.data.Export = function(map, format, layers, features) {
 			    	
 			    	// PolyStyle fillColor
 			    	var tag = this.createElementNS(this.kmlns, "color");
-		    	    var value = feature.style["fillColor"];
-		    	    if(value.indexOf("#") > -1){
-		    	    	var rr = value.substr(1, 2);
-		    	    	var gg = value.substr(3, 2);
-		    	    	var bb = value.substr(5, 2);
-		    	    	value = "66" + bb + "" + gg + "" + rr;
-		    	    }
-		    	    tag.appendChild(this.createTextNode(value));
-		    	    style.appendChild(tag);
+			    	if(feature.style){
+			    		var value = feature.style["fillColor"];
+			    	    if(value.indexOf("#") > -1){
+			    	    	var rr = value.substr(1, 2);
+			    	    	var gg = value.substr(3, 2);
+			    	    	var bb = value.substr(5, 2);
+			    	    	value = "66" + bb + "" + gg + "" + rr;
+			    	    }
+			    	    tag.appendChild(this.createTextNode(value));
+			    	    style.appendChild(tag);
+			    	}
 		    	    
 		    	    // PolyStyle fill
 			    	tag = this.createElementNS(this.kmlns, "fill");

@@ -68,7 +68,6 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
-import de.ingrid.iplug.opensearch.communication.OSCommunication;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.model.AdministrativeInfo;
 import de.ingrid.mapclient.utils.CapabilitiesUtils;
@@ -163,35 +162,42 @@ public class WmsResource {
 	@GET
 	@Path("proxyAdministrativeInfos")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url) {
+	public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url, @QueryParam("regional_key") String regional_key) {
 		// check if the url string is valid
 		if (!SERVICE_PATTERN.matcher(url).find() && !REQUEST_PATTERN.matcher(url).find()) {
 			throw new IllegalArgumentException("The url is not a valid wms request: "+url);
 		}
-
-		OSCommunication comm = new OSCommunication();
-		InputStream result = null;
-		result = comm.sendRequest(url);
-		Document doc = null;
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		NodeList fields = null;
-
 		List<AdministrativeInfo> adminInfos = new ArrayList<AdministrativeInfo>();
+        
 		try {
-			doc = getDocumentFromStream(result);
+    		String response = HttpProxy.doRequest(url);
+    		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            docFactory.setValidating(false);
+            Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
+    		XPath xpath = XPathFactory.newInstance().newXPath();
+    		NodeList fields = null;
+    
 			fields = (NodeList) xpath.evaluate("/FeatureInfoResponse/FIELDS",
 					doc, XPathConstants.NODESET);
 
 			for (int i = 0; i < fields.getLength(); i++) {
 				AdministrativeInfo aInfo = new AdministrativeInfo();
-				if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("2"))
-				aInfo.setType("Bundesland");
-				else if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("4"))
-				aInfo.setType("Kreis");
-				else if(fields.item(i).getAttributes().getNamedItem("USE").getNodeValue().trim().equals("3"))
-				aInfo.setType("Regierungsbezirk");
-				aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
-				aInfo.setRs(fields.item(i).getAttributes().getNamedItem("AGS").getNodeValue());
+				if(fields.item(i).getAttributes().getNamedItem("ADE") != null){
+				    if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("2"))
+		                aInfo.setType("Bundesland");
+	                else if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("4"))
+		                aInfo.setType("Kreis");
+	                else if(fields.item(i).getAttributes().getNamedItem("ADE").getNodeValue().trim().equals("3"))
+		                aInfo.setType("Regierungsbezirk");
+				}else{
+				    aInfo.setType("Name");
+				}
+				if(fields.item(i).getAttributes().getNamedItem("GEN") != null){
+				    aInfo.setName(fields.item(i).getAttributes().getNamedItem("GEN").getNodeValue());
+				}
+				if(fields.item(i).getAttributes().getNamedItem(regional_key) != null){
+				    aInfo.setRs(fields.item(i).getAttributes().getNamedItem(regional_key).getNodeValue());
+                }
 				adminInfos.add(aInfo);
 			}
 		} catch (XPathExpressionException e) {
@@ -206,9 +212,11 @@ public class WmsResource {
 		} catch (IOException e) {
 			log.error("Error while performing xpath.evaluate on a document!");
 			e.printStackTrace();
-		}
+		} catch (Exception e) {
+		    log.error("Error while url request!");
+            e.printStackTrace();
+        }
 
-		comm.releaseConnection();
 		XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
 			@Override
 			public HierarchicalStreamWriter createWriter(Writer writer) {

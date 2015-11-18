@@ -172,7 +172,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPane
 						      columns: {
 						    	  items: [
 						    	          {
-							            id:'title',
 							            header: "Name",
 							            sortable: false,
 							            dataIndex: 'text',
@@ -209,7 +208,6 @@ Ext.define('de.ingrid.mapclient.admin.modules.maintenance.ServiceDetailLayerPane
 						            sortDescText: 'Z-A sortieren'
 						      },
 						      stripeRows: true,
-						      autoExpandColumn: 'title',
 						      viewConfig : {
 						      	enableRowBody : true,
 								columnsText: 'Spalten',

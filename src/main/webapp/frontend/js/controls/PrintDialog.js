@@ -35,7 +35,6 @@ Ext.define('de.ingrid.mapclient.frontend.controls.PrintDialog', {
 	draggable: true,
 	resizable: false,
 	width: 250,
-	height: 300,
 	shadow: false,
 	initHidden: false,
 	modal: false,

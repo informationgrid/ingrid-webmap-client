@@ -20,9 +20,7 @@
  * limitations under the Licence.
  * **************************************************#
  */
-/*
- * Copyright (c) 2011 wemove digital solutions. All rights reserved.
- */
+
 Ext.namespace("de.ingrid.mapclient.frontend");
 
 /**
@@ -191,7 +189,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
 
 		var collapseToolSpacer = {
 			xtype: 'tbspacer', 
-			width: 50,
+			cls: 'tbspacer_centerToolbar',
 			hidden: self.configCollapseTool ? false : true
 		};
 		
