@@ -160,14 +160,21 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.loadServices = function
 	var capabilitiesUrl = capabilitiesUrls[entry];
 	if(capabilitiesUrl){
 		de.ingrid.mapclient.frontend.data.Service.load(capabilitiesUrl, function(service) {
-			self.activeServices.push(service);
-			if (entry == capabilitiesUrls.length - 1) {
-				//formerly
-				//lastCapUrl == service.getCapabilitiesUrl()
-				if (callback instanceof Function) {
-					callback();
-				}
-			}
+		    if(service){
+		        self.activeServices.push(service);
+	            if (entry == capabilitiesUrls.length - 1) {
+	                //formerly
+	                //lastCapUrl == service.getCapabilitiesUrl()
+	                if (callback instanceof Function) {
+	                    callback();
+	                }
+	            }
+	             
+		    }else if(entry == capabilitiesUrls.length - 1){
+		        if (callback instanceof Function) {
+                    callback();
+                }
+		    }
 			self.loadServices(capabilitiesUrls, entry + 1, callback);
 		});
 	}
