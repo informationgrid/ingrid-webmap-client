@@ -132,8 +132,33 @@ Ext.define('GeoExt.ux.SimplePrint', {
         this.printPage = Ext.create('GeoExt.data.PrintPage', {
             printProvider: this.initialConfig.printProvider,
             customParams:{
-            	mapTitle: "",
-            	comment: ""
+                mapTitle: "",
+                comment: ""
+            },
+            fitCenter: function(fitTo, options) {
+                options = options || {};
+
+                var map = fitTo, extent;
+                if(fitTo instanceof GeoExt.panel.Map) {
+                    map = fitTo.map;
+                } else if(fitTo instanceof OpenLayers.Feature.Vector) {
+                    map = fitTo.layer.map;
+                    extent = fitTo.geometry.getBounds();
+                }
+                if(!extent) {
+                    extent = map.getExtent();
+                    if(!extent) {
+                        return;
+                    }
+                }
+                this._updating = true;
+                var center = extent.getCenterLonLat();
+                this.setCenter(center);
+
+                delete this._updating;
+                this.updateFeature(this.feature.geometry, {
+                    center: center
+                });
             }
         });
         
@@ -240,7 +265,7 @@ Ext.define('GeoExt.ux.SimplePrint', {
         });
 
         this.add({
-        	xtype: "button",
+            xtype: "button",
             text: this.printText,
             handler: function() {
                 this.printExtent.print(this.printOptions);
@@ -263,7 +288,7 @@ Ext.define('GeoExt.ux.SimplePrint', {
      *  Handler for the map's moveend event
      */
     onMoveend: function() {
-        this.printPage.fit(this.mapPanel.map, {mode: "screen"});
+        this.printPage.fitCenter(this.mapPanel.map, {mode: "screen"});
     },
     
     /** private: method[beforeDestroy]
