@@ -348,6 +348,9 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 			failure: function(response, request) {
 				Ext.getBody().unmask();
 				de.ingrid.mapclient.Message.showError(de.ingrid.mapclient.Message.LOAD_CAPABILITIES_FAILURE+"<br />\nUrl: "+capabilitiesUrl);
+				if(callback instanceof Function){
+				    callback();
+				}
 			}
 		});
 		
