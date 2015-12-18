@@ -146,6 +146,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
             // reset layers
             for(var i=0,len=map.layers.length; i<len; i++) {
                 var layer = map.layers[i];
+                if(layer.yx){
+                	options.yx = layer.yx;
+                }
                 layer.addOptions(options);
                 // Transform features by projection change
                 if(layer.features){

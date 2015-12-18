@@ -279,16 +279,18 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 								var layerVersion = layer.params.VERSION;
 								
 								if(layerVersion == "1.3.0"){
-									layer.yx["EPSG:4326"] = true;
-									layer.yx["EPSG:31466"] = true;
-									layer.yx["EPSG:31467"] = true;
-									layer.yx["EPSG:31468"] = true;
-									layer.yx["EPSG:31469"] = true;
-									layer.yx["EPSG:2397"] = true;
-									layer.yx["EPSG:2398"] = true;
-									layer.yx["EPSG:2399"] = true;
-									layer.yx["EPSG:3034"] = true;
-									layer.yx["EPSG:3035"] = true;
+									layer.yx = { 
+										'EPSG:4326': true,
+										'EPSG:31466': true,
+										'EPSG:31467': true,
+										'EPSG:31468': true,
+										'EPSG:31469': true,
+										'EPSG:2397': true,
+										'EPSG:2398': true,
+										'EPSG:2399': true,
+										'EPSG:3034': true,
+										'EPSG:3035': true
+									};
 								}
 								
 								//check if the config wants us to singleTile or not, but first we check if this property exists
