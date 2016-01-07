@@ -276,22 +276,8 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 									layer.bbox = record.data.bbox;
 								}
 								
-								var layerVersion = layer.params.VERSION;
-								
-								if(layerVersion == "1.3.0"){
-									layer.yx = { 
-										'EPSG:4326': true,
-										'EPSG:31466': true,
-										'EPSG:31467': true,
-										'EPSG:31468': true,
-										'EPSG:31469': true,
-										'EPSG:2397': true,
-										'EPSG:2398': true,
-										'EPSG:2399': true,
-										'EPSG:3034': true,
-										'EPSG:3035': true
-									};
-								}
+								// Add axis order
+								de.ingrid.mapclient.frontend.data.MapUtils.addLayerAxisOrder(layer);
 								
 								//check if the config wants us to singleTile or not, but first we check if this property exists
 								var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");

@@ -322,3 +322,23 @@ de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter = function (
     
     return capabilities;
 };
+
+de.ingrid.mapclient.frontend.data.MapUtils.addLayerAxisOrder = function (layer){
+	var layerVersion = layer.params.VERSION;
+	if(layerVersion){
+		if(layerVersion == "1.3.0"){
+			layer.yx = { 
+				'EPSG:4326': true,
+				'EPSG:31466': true,
+				'EPSG:31467': true,
+				'EPSG:31468': true,
+				'EPSG:31469': true,
+				'EPSG:2397': true,
+				'EPSG:2398': true,
+				'EPSG:2399': true,
+				'EPSG:3034': true,
+				'EPSG:3035': true
+			};
+		}
+	}
+};
