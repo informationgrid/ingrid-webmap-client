@@ -322,7 +322,7 @@
     <setting key="viewNominatimParams">
       <key>viewNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
-      <value>http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json&amp;countrycodes=de</value>
       <group>view</group>
     </setting>
     <setting key="viewBWaStrLocatorEnable">
@@ -497,7 +497,7 @@
     <setting key="searchNominatimParams">
       <key>searchNominatimParams</key>
       <name>Ortssuche: URL und Ländereinstellung bzw. Gebiet festlegen</name>
-      <value>http://nominatim.openstreetmap.org/search?format=json&amp;amp;countrycodes=de</value>
+      <value>http://nominatim.openstreetmap.org/search?format=json&amp;countrycodes=de</value>
       <group>search</group>
     </setting>
     <setting key="searchHasSettings">
