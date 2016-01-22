@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -276,20 +276,8 @@ de.ingrid.mapclient.frontend.data.Service.load = function(capabilitiesUrl, callb
 									layer.bbox = record.data.bbox;
 								}
 								
-								var layerVersion = layer.params.VERSION;
-								
-								if(layerVersion == "1.3.0"){
-									layer.yx["EPSG:4326"] = true;
-									layer.yx["EPSG:31466"] = true;
-									layer.yx["EPSG:31467"] = true;
-									layer.yx["EPSG:31468"] = true;
-									layer.yx["EPSG:31469"] = true;
-									layer.yx["EPSG:2397"] = true;
-									layer.yx["EPSG:2398"] = true;
-									layer.yx["EPSG:2399"] = true;
-									layer.yx["EPSG:3034"] = true;
-									layer.yx["EPSG:3035"] = true;
-								}
+								// Add axis order
+								de.ingrid.mapclient.frontend.data.MapUtils.addLayerAxisOrder(layer);
 								
 								//check if the config wants us to singleTile or not, but first we check if this property exists
 								var isSingleTile = de.ingrid.mapclient.Configuration.getSettings("defaultSingleTile");

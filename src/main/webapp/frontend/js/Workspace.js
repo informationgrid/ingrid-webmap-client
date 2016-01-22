@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -861,7 +861,9 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
                 dlg.on('close', function(p) {
                     if (dlg.isLoad()) {
                         var supressMsgs = true;
-                        self.load(undefined, dlg.getFileId(), supressMsgs);
+                        if(dlg.getFileId() != ""){
+                        	self.load(undefined, dlg.getFileId(), supressMsgs);
+                        }
                     }
                     self.ctrls.keyboardControl.activate();
                 });
@@ -1377,7 +1379,8 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
             var cntrPanel = Ext.getCmp('centerPanel');
             var cntrPanelBbar = Ext.getCmp('cntrPanelBBar');
             
-            this.redliningControler = Ext.create('GeoExt.ux.FeatureEditingControler', {
+            if(this.redliningControler == null){
+            	this.redliningControler = Ext.create('GeoExt.ux.FeatureEditingControler', {
                     cosmetic: true,
                     map: this.map,
                     toggleGroup : 'toggleGroupMapPanel',
@@ -1463,7 +1466,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
                 });
                 cntrPanelBbar.add(this.redliningControler.actions);
                 cntrPanelBbar.doLayout();
-            
+            }
             if(self.kmlRedlining){
                 GeoExt.ux.data.Import(self.map, this.redliningControler.activeLayer, 'KML', self.kmlRedlining, null);
             }
@@ -1821,18 +1824,22 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
                                         for (var i = 0; i < mapLayers.length; i++) {
                                             var mapLayer = mapLayers[i];
                                             var name = mapLayer.name;
-                                            var paramsLayers = mapLayer.params.LAYERS;
                                             var isExist = false;
-                                            for (var j = 0; j < syncLayers.length; j++) {
-                                                var syncLayer = syncLayers[j];
-                                                if(name == syncLayer.name && paramsLayers == syncLayer.params.LAYERS){
-                                                    isExist = true;
-                                                    break;
+                                            if(mapLayer.params){
+                                            	if(mapLayer.params.LAYERS){
+	                                                var paramsLayers = mapLayer.params.LAYERS;
+	                                            	for (var j = 0; j < syncLayers.length; j++) {
+	                                                    var syncLayer = syncLayers[j];
+	                                                    if(name == syncLayer.name && paramsLayers == syncLayer.params.LAYERS){
+	                                                        isExist = true;
+	                                                        break;
+	                                                    }
+	                                                }
+                                            	}
+                                            	if(isExist == false){
+                                                    self.map.removeLayer(mapLayer);
+                                                    i--;
                                                 }
-                                            }
-                                            if(isExist == false){
-                                                self.map.removeLayer(mapLayer);
-                                                i--;
                                             }
                                         }
                                     }

@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -146,6 +146,9 @@ de.ingrid.mapclient.frontend.data.MapUtils.changeProjection = function(newProjCo
             // reset layers
             for(var i=0,len=map.layers.length; i<len; i++) {
                 var layer = map.layers[i];
+                if(layer.yx){
+                	options.yx = layer.yx;
+                }
                 layer.addOptions(options);
                 // Transform features by projection change
                 if(layer.features){
@@ -318,4 +321,24 @@ de.ingrid.mapclient.frontend.data.MapUtils.addCapabilitiesParameter = function (
     }
     
     return capabilities;
+};
+
+de.ingrid.mapclient.frontend.data.MapUtils.addLayerAxisOrder = function (layer){
+	var layerVersion = layer.params.VERSION;
+	if(layerVersion){
+		if(layerVersion == "1.3.0"){
+			layer.yx = { 
+				'EPSG:4326': true,
+				'EPSG:31466': true,
+				'EPSG:31467': true,
+				'EPSG:31468': true,
+				'EPSG:31469': true,
+				'EPSG:2397': true,
+				'EPSG:2398': true,
+				'EPSG:2399': true,
+				'EPSG:3034': true,
+				'EPSG:3035': true
+			};
+		}
+	}
 };

@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2015 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2016 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -199,22 +199,25 @@ de.ingrid.mapclient.frontend.data.SessionState.prototype.restoreMapState = funct
 	var context = format.read(this.wmcDocument);
 	var layers = format.getLayersFromContext(context.layersContext);
 	// merge default params from layers already loaded for the service
+	var layerToMap = [];
 	for (var i=0, count=layers.length; i<count; i++) {
 		var layer = layers[i];
 		de.ingrid.mapclient.frontend.data.Service.mergeDefaultParams(layer);
 		de.ingrid.mapclient.frontend.data.Service.fixLayerProperties(layer);
+		// Add axis order
+		de.ingrid.mapclient.frontend.data.MapUtils.addLayerAxisOrder(layer);
+		
 		// add base layers first, because the map needs it to
 		// obtain the maxExtent
 		if (layer.isBaseLayer == true) {
 			this.map.addLayer(layer);
+		}else{
+			layerToMap.push(layer);
 		}
 	}
 	// add other layers later
-	for (var i=0, count=layers.length; i<count; i++) {
-		if (!layer.isBaseLayer) {
-			this.map.addLayer(layers[i]);
-		}
-	}
+	this.map.addLayers(layerToMap);
+	
 	de.ingrid.mapclient.frontend.data.MapUtils.assureProj4jsDef(context.projection, function() {
 		self.changeProjection(context.projection);
 		self.map.zoomToExtent(context.bounds);
