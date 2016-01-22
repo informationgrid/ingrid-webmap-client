@@ -11,7 +11,8 @@ goog.require('ga_urlutils_service');
   ]);
 
   module.controller('GaImportWmsDirectiveController',
-      function($scope, $http, $q, $translate, gaUrlUtils, gaWms) {
+      // INGRID: Add parameters 'gaMapUtils', 'gaGlobalOptions'
+      function($scope, $http, $q, $translate, gaUrlUtils, gaWms, gaMapUtils, gaGlobalOptions) {
 
           // List of layers available in the GetCapabilities.
           // The layerXXXX properties use layer objects from the parsing of
@@ -189,7 +190,8 @@ goog.require('ga_urlutils_service');
             if (!layer.isInvalid) {
               layer.wmsUrl = $scope.fileUrl;
               layer.wmsVersion = wmsVersion;
-              layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name;
+              // INGRID: Add layer WMS version
+              layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name + '||' + layer.wmsVersion;
               layer.extent = getLayerExtentFromGetCap(layer);
             }
 
@@ -235,7 +237,12 @@ goog.require('ga_urlutils_service');
                 layer.LatLonBoundingBox;
             if (extent) {
               return ol.proj.transformExtent(extent, 'EPSG:4326', projCode);
+            }else{
+                // INGRID: Set extent to default extent (WMS 1.1.1 not supported yet)
+                // (wait for https://github.com/openlayers/ol3/pull/2944)
+                return ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
             }
+            
          };
   });
 

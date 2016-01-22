@@ -59,6 +59,9 @@ goog.require('ga_topic');
 goog.require('ga_translation');
 goog.require('ga_translation_controller');
 goog.require('ga_waitcursor_service');
+// INGRID: Add requires
+goog.require('ga_searchtool');
+goog.require('ga_searchtool_controller');
 (function() {
 
 
@@ -120,7 +123,10 @@ goog.require('ga_waitcursor_service');
     'ga_featuretree_controller',
     'ga_draw_controller',
     'ga_query_controller',
-    'ga_tilt3d'
+    'ga_tilt3d',
+     // INGRID: Add modules
+    'ga_searchtool',
+    'ga_searchtool_controller'
   ]);
 
 })();

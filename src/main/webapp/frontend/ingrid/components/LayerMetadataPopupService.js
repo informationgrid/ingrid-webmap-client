@@ -25,11 +25,12 @@ goog.require('ga_popup');
           // Called to update the content
           var updateContent = function() {
             var promise;
-            if (layer.bodId) {
-              promise = gaLayers.getMetaDataOfLayer(layer.bodId);
-            } else if (gaMapUtils.isExternalWmsLayer(layer)) {
+            // INGRID: Disable intern legend service
+            //if (layer.bodId) {
+            //  promise = gaLayers.getMetaDataOfLayer(layer.bodId);
+            //} else if (gaMapUtils.isExternalWmsLayer(layer)) {
               promise = gaWms.getLegend(layer);
-            }
+            //}
             return promise.then(function(resp) {
               result.html = $sce.trustAsHtml(resp.data);
             }, function() {

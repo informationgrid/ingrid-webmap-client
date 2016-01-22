@@ -404,8 +404,10 @@ goog.require('ga_urlutils_service');
           });
 
           var layer = new ol.layer.Image({
+            // INGRID: Add layer WMS version because default is just version 1.3.0
+            // (Parsing WMS version 1.1.1 no yet supported)
             id: 'WMS||' + options.label + '||' + options.url + '||' +
-                params.LAYERS,
+                params.LAYERS + '||' + params.VERSION,
             url: options.url,
             type: 'WMS',
             opacity: options.opacity,
@@ -454,8 +456,19 @@ goog.require('ga_urlutils_service');
         this.getLegend = function(layer) {
           var defer = $q.defer();
           var params = layer.getSource().getParams();
+          // INGRID: Get legend for all layer (intern and extern)
+          var url = layer.url;
+          if(url == undefined){
+              if(layer.getSource()){
+                  if(layer.getSource().urls){
+                      if(layer.getSource().urls.length > 0){
+                          url = layer.getSource().urls[0];
+                      }
+                  }
+              }
+          }
           var html = '<img alt="No legend available" src="' +
-              gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
+              gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
             request: 'GetLegendGraphic',
             layer: params.LAYERS,
             style: params.style || 'default',
@@ -467,6 +480,30 @@ goog.require('ga_urlutils_service');
           defer.resolve({data: html});
           return defer.promise;
         };
+        
+        // INGRID: Add function to get the layer legend url
+        this.getLegendURL = function(layer) {
+            var params = layer.getSource().getParams();
+            var url = layer.url;
+            if(url == undefined){
+                if(layer.getSource()){
+                    if(layer.getSource().urls){
+                        if(layer.getSource().urls.length > 0){
+                            url = layer.getSource().urls[0];
+                        }
+                    }
+                }
+            }
+            return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
+              request: 'GetLegendGraphic',
+              layer: params.LAYERS,
+              style: params.style || 'default',
+              service: 'WMS',
+              version: params.version || '1.3.0',
+              format: 'image/png',
+              sld_version: '1.1.0'
+            }));
+          };
       };
       return new Wms();
     };
@@ -1196,7 +1233,10 @@ goog.require('ga_urlutils_service');
           } else if (layer.type == 'wms') {
             var wmsParams = {
               LAYERS: layer.wmsLayers,
-              FORMAT: 'image/' + layer.format
+              FORMAT: 'image/' + layer.format,
+              // INGRID: Add verion to get getMap request for WMS version 1.1.1.
+              // Version is define on layers.json.
+              VERSION: layer.version != undefined ? layer.version : '1.3.0'
             };
             if (timestamp) {
               wmsParams['TIME'] = timestamp;
@@ -1206,7 +1246,8 @@ goog.require('ga_urlutils_service');
                 olSource = layer.olSource = new ol.source.ImageWMS({
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
-                  crossOrigin: crossOrigin,
+                  // TODO INGRID: Check functions
+                  //crossOrigin: crossOrigin,
                   ratio: 1
                 });
               }
@@ -1215,7 +1256,8 @@ goog.require('ga_urlutils_service');
                 maxResolution: layer.maxResolution,
                 opacity: layer.opacity || 1,
                 source: olSource,
-                extent: extent
+                // INGRID: Set extent by defaultProjection
+                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
               });
             } else {
               if (!olSource) {
@@ -1224,9 +1266,10 @@ goog.require('ga_urlutils_service');
                   urls: getImageryUrls(getWmsTpl(layer.wmsUrl), subdomains),
                   params: wmsParams,
                   gutter: layer.gutter || 0,
-                  crossOrigin: crossOrigin,
-                  tileGrid: gaTileGrid.get(layer.resolutions,
-                      layer.minResolution, 'wms'),
+                  // TODO INGRID: Check functions
+                  //crossOrigin: crossOrigin,
+                  //tileGrid: gaTileGrid.get(layer.resolutions,
+                  //    layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
                   wrapX: false
                 });
@@ -1238,7 +1281,9 @@ goog.require('ga_urlutils_service');
                 source: olSource,
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
                 useInterimTilesOnError: gaNetworkStatus.offline,
-                extent: extent
+                // INGRID: Set extent by defaultProjection
+                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                
               });
             }
           } else if (layer.type == 'aggregate') {
@@ -1657,7 +1702,8 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                olLayerOrId.split('||').length == 4;
+                // INGRID: Length now 5 because adding WMS version
+                olLayerOrId.split('||').length == 5;
           }
           return olLayerOrId.type == 'WMS';
         },
@@ -2155,14 +2201,17 @@ goog.require('ga_urlutils_service');
               try {
                 gaWms.addWmsToMap(map,
                   {
-                    LAYERS: infos[3]
+                    LAYERS: infos[3],
+                    // INGRID: Add version
+                    VERSION: infos[4]
                   },
                   {
                     url: infos[2],
                     label: infos[1],
                     opacity: opacity || 1,
                     visible: visible,
-                    extent: gaGlobalOptions.defaultExtent
+                    // INGRID: Add default extent by default projection
+                    extent: ol.proj.transformExtent(gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
                   },
                   index + 1);
               } catch (e) {

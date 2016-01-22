@@ -5,16 +5,19 @@ goog.provide('ga_print_controller');
 
   module.controller('GaPrintController',
     function($scope, gaGlobalOptions) {
-      var printPath = gaGlobalOptions.apiUrl + '/print';
+      // INGRID: Change print path
+      var printPath = '/ingrid-mf-geoadmin3/pdf';
       var printCachedPath = gaGlobalOptions.cachedApiUrl + '/print';
 
       $scope.options = {
         printPath: printPath,
-        printConfigUrl: printCachedPath + '/info.json?url=' +
-            encodeURIComponent(printPath),
-        legendUrl: gaGlobalOptions.apiUrl + '/static/images/legends/',
+        // INGRID: Change print config URL
+        printConfigUrl: '/ingrid-mf-geoadmin3/pdf/info.json',
+        // INGRID: Disable legend URL service
+        legendUrl: '',
         qrcodeUrl: gaGlobalOptions.apiUrl + '/qrcodegenerator?url=',
-        shortenUrl: gaGlobalOptions.apiUrl + '/shorten.json',
+        // INGRID: Disable shorten URL service
+        shortenUrl: '',
         markerUrl: gaGlobalOptions.resourceUrl + 'img/marker.png',
         bubbleUrl: gaGlobalOptions.resourceUrl + 'img/bubble.png',
         heightMargin: $('#header').height(),

@@ -28,8 +28,9 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
   var rotateOnEnable = true;
 
   // the maxium extent in EPSG:4326 and radians
+  // INGRID: Set default projection
   var extent4326 = ol.proj.transformExtent(gaGlobalOptions.defaultExtent,
-      'EPSG:21781', 'EPSG:4326');
+      gaGlobalOptions.defaultEpsg, 'EPSG:4326');
   extent4326 = extent4326.map(function(angle) {
     return angle * Math.PI / 180;
   });

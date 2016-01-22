@@ -1,5 +1,7 @@
 goog.provide('ga_print_directive');
 
+// INGRID: Add 'ga_map_service'
+goog.require('ga_map_service');
 goog.require('ga_attribution_service');
 goog.require('ga_browsersniffer_service');
 goog.require('ga_print_style_service');
@@ -8,6 +10,8 @@ goog.require('ga_time_service');
 (function() {
 
   var module = angular.module('ga_print_directive', [
+    // INGRID: Add 'ga_map_service'
+    'ga_map_service',
     'ga_browsersniffer_service',
     'pascalprecht.translate',
     'ga_print_style_service',
@@ -15,10 +19,11 @@ goog.require('ga_time_service');
     'ga_attribution_service'
   ]);
 
+  // INGRID: Add parameter 'gaWms'
   module.controller('GaPrintDirectiveController', function($rootScope, $scope,
       $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils, 
       gaPermalink, gaBrowserSniffer, gaWaitCursor, gaPrintStyleService,
-      gaTime, gaAttribution) {
+      gaTime, gaAttribution, gaWms) {
 
     var pdfLegendsToDownload = [];
     var pdfLegendString = '_big.pdf';
@@ -566,8 +571,8 @@ goog.require('ga_time_service');
           var enc = $scope.encoders.legends.base.call(this, config);
           enc.classes.push({
             name: '',
-            icon: $scope.options.legendUrl +
-                layer.bodId + '_' + $translate.use() + format
+            // INGRID: Get legend by getLegend request
+            icon: gaWms.getLegendURL(layer)
           });
           return enc;
         },
@@ -654,10 +659,12 @@ goog.require('ga_time_service');
       var lang = $translate.use();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;
+      /* INGRID: Disable QRCode
       var qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(gaPermalink.getHref());
       var print_zoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + print_zoom);
+      */
       var encLayers = [];
       var encLegends;
       var attributions = [];
@@ -799,6 +806,7 @@ goog.require('ga_time_service');
 
 
       // Get the short link
+      /* INGRID: Disabled short link
       var shortLink;
       canceller = $q.defer();
       var promise = $http.get($scope.options.shortenUrl, {
@@ -815,7 +823,7 @@ goog.require('ga_time_service');
         if (!$scope.options.printing) {
           return;
         }
-
+       */
         // Build the correct copyright text to display
         var dataOwner = attributions.join();
         var thirdPartyDataOwner = thirdPartyAttributions.join();
@@ -833,14 +841,16 @@ goog.require('ga_time_service');
           srs: proj.getCode(),
           units: proj.getUnits() || 'm',
           rotation: -((view.getRotation() * 180.0) / Math.PI),
-          app: 'config',
+          // INGRID: Set to comment app
+          //app: 'config',
           lang: lang,
           //use a function to get correct dpi according to layout (A4/A3)
           dpi: getDpi($scope.layout.name, $scope.dpi),
           layers: encLayers,
           legends: encLegends,
           enableLegends: (encLegends && encLegends.length > 0),
-          qrcodeurl: qrcodeUrl,
+          // INGRID: Set to comment rcodeurl
+          //rcodeurl: qrcodeUrl,
           movie: movieprint,
           pages: [
             angular.extend({
@@ -849,9 +859,13 @@ goog.require('ga_time_service');
               display: [$scope.layout.map.width, $scope.layout.map.height],
               // scale has to be one of the advertise by the print server
               scale: $scope.scale.value,
+              // INGRID: Add comment and title for print
+              comment: $scope.comment ? $scope.comment : "",
+              title: $scope.title ? $scope.title :"",
               dataOwner: dataOwner,
               thirdPartyDataOwner: thirdPartyDataOwner,
-              shortLink: shortLink || '',
+              // INGRID: Set to comment shortLink
+              //shortLink: shortLink || '',
               rotation: -((view.getRotation() * 180.0) / Math.PI)
             }, defaultPage)
           ]
@@ -922,7 +936,8 @@ goog.require('ga_time_service');
           printUrl = printUrl.replace('/print/', '/printmulti/');
         }
         canceller = $q.defer();
-        var http = $http.post(printUrl + '?url=' + encodeURIComponent(printUrl),
+        // INGRID: Change print URL
+        var http = $http.post(printUrl ,
           spec, {
           timeout: canceller.promise
         }).success(function(data) {
@@ -940,7 +955,7 @@ goog.require('ga_time_service');
         }).error(function() {
           $scope.options.printing = false;
         });
-      });
+      //});
     };
 
     var getDpi = function(layoutName, dpiConfig) {
@@ -1086,7 +1101,8 @@ goog.require('ga_time_service');
           options: '=gaPrintOptions',
           active: '=gaPrintActive'
         },
-        templateUrl: 'components/print/partials/print.html',
+        // INGRID: Change HTML template path
+        templateUrl: 'ingrid/components/print/partials/print.html',
         controller: 'GaPrintDirectiveController',
         link: function(scope, elt, attrs, controller) {
           scope.isIE = gaBrowserSniffer.msie;
