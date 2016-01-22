@@ -39,7 +39,7 @@ goog.require('ga_styles_service');
       }
     };
   });
-
+  // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaMap', function($window, $rootScope, $timeout, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
       gaMapUtils, gaGlobalOptions) {
@@ -110,7 +110,8 @@ goog.require('ga_styles_service');
             false));
 
         map.setTarget(element[0]);
-        
+
+        // INGRID: Add default zoom
         // Zoom to default extent
         var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
         var size = map.getSize();

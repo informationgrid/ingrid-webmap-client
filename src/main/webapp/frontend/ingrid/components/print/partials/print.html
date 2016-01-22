@@ -1,10 +1,12 @@
 <form class="form-horizontal" ng-class="{ie: isIE}" >
+  <!-- INGRID: Add title input -->
   <div class="form-group">
     <label class="col-xs-4 control-label" translate>print_title</label>
     <div class="col-xs-8">
     	<input type="text" placeholder="{{'print_title_placeholder' | translate}}" ng-model="title" />
     </div>
   </div>
+  <!-- INGRID: Add comment input -->
   <div class="form-group">
     <label class="col-xs-4 control-label" translate>print_comment</label>
     <div class="col-xs-8">
@@ -32,7 +34,7 @@
         </label>
       </div>
     </div>
-<!-- 
+<!-- INGRID: Remove graticule checkbox
     <div class="col-xs-8">
       <div class="checkbox">
         <label class="ga-checkbox" >

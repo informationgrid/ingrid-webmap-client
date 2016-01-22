@@ -6,6 +6,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!--![if !HTML5]>
     <meta http-equiv="X-UA-Compatible" content="IE=9,IE=10,IE=edge,chrome=1"/>
     <![endif]-->
+    <!-- INGRID: Change title --> 
     <title translate="page_title">InGrid Map Client</title>
     <meta charset="utf-8"/>
     <!-- verification for google webmaster tools -->
@@ -43,6 +44,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta property="og:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <meta property="og:type" content="WebApplication"/>
     <meta property="og:url" content="https://map.geo.admin.ch"/>
+    <!-- INGRID: Change icon --> 
     <meta property="og:image" content="ingrid/img/ingrid_logo_icn.png"/>
 
     <!-- Twitter Card Infos -->
@@ -51,6 +53,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="twitter:creator" content="@swiss_geoportal"/>
     <meta name="twitter:title" content="geo.admin.ch"/>
     <meta name="twitter:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
+    <!-- INGRID: Change icon --> 
     <meta name="twitter:image" content="ingrid/img/ingrid_logo_icn.png"/>
     <meta name="twitter:url" content="https://map.geo.admin.ch"/>
 
@@ -59,6 +62,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- Google+ Specific Tags -->
     <meta itemprop="name" content="geo.admin.ch"/>
     <meta itemprop="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
+    <!-- INGRID: Change icon --> 
     <meta itemprop="image" content="ingrid/img/ingrid_logo_icn.png"/>
 
     <script>
@@ -95,7 +99,9 @@ itemscope itemtype="http://schema.org/WebApplication"
       })();
     </script>
     <link href="style/app.css" rel="stylesheet"/>
+    <!-- INGRID: Add ingrid style --> 
     <link href="ingrid/style/app.ingrid.css" rel="stylesheet"/>
+    <!-- INGRID: Change icon --> 
     <link rel="shortcut icon" type="image/x-icon" href="ingrid/img/ingrid_logo_icn.png"/>
   </head>
 
@@ -133,7 +139,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         IE9Fix.call(this);
       </script>
     <![endif]-->
-	<!-- 
+	<!-- INGRID: Remove icon
     <div ng-cloak class="corner-ribbon 
     bottom-left
     sticky red shadow" ng-show="globals.is3dActive">
@@ -185,8 +191,9 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
 
       <div id='buttonGroup' ng-cloak translate-cloak>
-        <!-- <div ga-geolocation ga-geolocation-map="::map" ga-geolocation-ol3d="::ol3d"></div> -->
+        <div ga-geolocation ga-geolocation-map="::map" ga-geolocation-ol3d="::ol3d"></div>
         <div id="zoomButtons"></div>
+        <!-- INGRID: Add zoom to extent button -->
         <div id="zoomToExtentButton"></div>
         <div ga-tilt3d ng-if="globals.dev3d"></div>
         <div ga-time-selector-bt ga-time-selector-bt-map="map"></div> 
@@ -357,7 +364,7 @@ itemscope itemtype="http://schema.org/WebApplication"
                     <span  ng-class="{'selected': globals.isFeatureTreeActive}" translate>object_information</span>
                   </a>
                 </li>
-                <li><!-- Search Tools -->
+                <li><!-- INGRID: Add search tool entry -->
                   <a href=""  ng-click="globals.isSearchToolActive = !globals.isSearchToolActive;globals.isDrawActive = false;globals.isMeasureActive = false;"
                      data-original-title="{{'search_tool_tooltip' | translate}}"
                      class="ga-custom-tooltip" data-placement="bottom"
@@ -513,7 +520,7 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
     </div><!-- end Feature Tree -->
 
-    <!-- Popup: Search Tool -->
+    <!-- INGRID: Search tool popup -->
     <div ga-popup="globals.isSearchToolActive"
          ga-popup-options="{title:'searchtool', help:'67'}"
          ga-draggable=".popover-title"
@@ -565,6 +572,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!--<script src="lib/closure/base.js"></script>-->
     <!-- ol3 and ol3-cesium are built together in debug mode --> 
     <script src="lib/ol3cesium-debug.js"></script>
+    <!-- INGRID: Change deps -->
     <script src="deps.ingrid.js"></script>
     <script>
       goog.require('geoadmin');
@@ -580,10 +588,12 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         var module = angular.module('geoadmin');
         var cacheAdd = '' != '' ? '/' + '' : '';
+        <!-- INGRID: Change html pages -->
         var pathname = location.pathname.replace(/(index.ingrid.dev|mobile.ingrid.dev|embed.ingrid.dev)\.html$/g, '');
 
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
+          // INGRID: Disabled dev3d
           dev3d: false,
           buildMode: '',
           pegman: !!window.location.search.match(/(pegman=true)/),
@@ -594,18 +604,23 @@ itemscope itemtype="http://schema.org/WebApplication"
           adminUrlRegexp: new RegExp('^(ftp|http|https):\/\/(.*(\.bgdi|\.geo\.admin)\.ch)'),
           cachedApiUrl: location.protocol + '//mf-chsdi3.dev.bgdi.ch' + cacheAdd,
           resourceUrl: location.origin + pathname + '',
+          // INGRID: Change REST service URL
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-mf-geoadmin3' + '/rest/wms/proxy/?url=',
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
+          // INGRID: Change default topic
           defaultTopicId: 'themen',
           translationFallbackCode: 'de',
+          // INGRID: Change default extent
           defaultExtent: JSON.parse('[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'),
           defaultResolution: 500.0,
           defaultLod: 7 ,
           resolutions: JSON.parse('[650.0, 500.0, 250.0, 100.0, 50.0, 20.0, 10.0, 5.0, 2.5, 2.0, 1.0, 0.5, 0.25, 0.1]'),
           lods: JSON.parse('[6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 16, 17, 18, 18]' ),
+          // INGRID: Change default epsg
           defaultEpsg: 'EPSG:3857',
+          // INGRID: Change default epsg extent
           defaultEpsgExtent: JSON.parse('[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'),
           defaultElevationModel: 'COMB',
           defaultTerrain: 'ch.swisstopo.terrain.3d',
@@ -614,6 +629,7 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         module.config(function($translateProvider, gaGlobalOptions) {
           $translateProvider.useStaticFilesLoader({
+            // INGRID: Change locales path
             prefix: 'ingrid/locales/',
             suffix: '.json'
           });
@@ -632,10 +648,13 @@ itemscope itemtype="http://schema.org/WebApplication"
           gaLayersProvider.wmtsGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{y}/{x}.{Format}';
           gaLayersProvider.wmtsMapProxyGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
           gaLayersProvider.terrainTileUrlTemplate = '//3d.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
+          // INGRID: Change layer service URL
           gaLayersProvider.layersConfigUrlTemplate = './ingrid/data/layers.json';
+          // INGRID: Change legend service URL
           gaLayersProvider.legendUrlTemplate = gaGlobalOptions.apiUrl + '/rest/services/{Topic}/MapServer/{Layer}/legend?lang={Lang}';
         });
         module.config(function(gaTopicProvider, gaGlobalOptions) {
+          // INGRID: Change topic service URL
           gaTopicProvider.topicsUrl = './ingrid/data/topics.json';
         });
 

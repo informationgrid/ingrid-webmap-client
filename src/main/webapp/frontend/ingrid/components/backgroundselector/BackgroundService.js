@@ -19,14 +19,20 @@ goog.require('ga_permalink');
       var bg; // The current background
       var bgs = []; // The list of backgrounds available
       var voidLayer = {id: 'voidLayer', label: 'void_layer'};
-      var osmLayer = {id: 'osmLayer', label: 'bg_osm'};
       var predefinedBgs = {
         'voidLayer': voidLayer,
-        'osmLayer': osmLayer,
-        'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light': {
-          id: 'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light',
-          label: 'bg_bkg',
+        'ch.swisstopo.swissimage': {
+          id: 'ch.swisstopo.swissimage',
+          label: 'bg_luftbild',
           disable3d: true
+        },
+        'ch.swisstopo.pixelkarte-farbe': {
+          id: 'ch.swisstopo.pixelkarte-farbe',
+          label: 'bg_pixel_color'
+        },
+        'ch.swisstopo.pixelkarte-grau': {
+          id: 'ch.swisstopo.pixelkarte-grau',
+          label: 'bg_pixel_grey'
         }
       };
       var getBgById = function(id) {
@@ -64,9 +70,6 @@ goog.require('ga_permalink');
           }
           bgs.push(bgLayer);
         });
-        if (bgs.indexOf(osmLayer) === -1) {
-            bgs.push(osmLayer);
-        }
         if (bgs.indexOf(voidLayer) === -1) {
           bgs.push(voidLayer);
         }
@@ -119,17 +122,6 @@ goog.require('ga_permalink');
                     layers.item(0).background === true) {
                   layers.removeAt(0);
                 }
-              } else if (bg.id == 'osmLayer') {
-                  var layer = new ol.layer.Tile({
-                      source: new ol.source.OSM()
-                  });
-                  layer.background = true;
-                  layer.displayInLayerManager = false;
-                  if (layers.item(0) && layers.item(0).background) {
-                    layers.setAt(0, layer);
-                  } else {
-                    layers.insertAt(0, layer);
-                  }
               } else {
                 var layer = gaLayers.getOlLayerById(bg.id);
                 layer.background = true;

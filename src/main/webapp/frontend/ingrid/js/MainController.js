@@ -30,8 +30,10 @@ goog.require('ga_topic_service');
 
     var createMap = function() {
       var toolbar = $('#zoomButtons')[0];
+      // INGRID: Add zoom to extent button
       var zoomToExtentButton = $('#zoomToExtentButton')[0];
       var defaultProjection = ol.proj.get(gaGlobalOptions.defaultEpsg);
+      // INGRID: Disable defaultProjection extent
       //defaultProjection.setExtent(gaGlobalOptions.defaultEpsgExtent);
 
       var map = new ol.Map({
@@ -45,6 +47,7 @@ goog.require('ga_topic_service');
             zoomInTipLabel: ' ',
             zoomOutTipLabel: ' '
           }
+        // INGRID: Configuration of zoom to extent button
         }).extend([
         new ol.control.ZoomToExtent({
            target: zoomToExtentButton,
@@ -63,12 +66,12 @@ goog.require('ga_topic_service');
         ]),
         renderer: 'canvas',
         view: new ol.View({
+            // INGRID: Configuration of map
             projection: defaultProjection,
             center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg),
             //extent: ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
             //resolution: gaMapUtils.defaultResolution
-            //resolutions: gaMapUtils.viewResolutions,
-            //zoom: 2
+            //resolutions: gaMapUtils.viewResolutions
         }),
         logo: false
       });

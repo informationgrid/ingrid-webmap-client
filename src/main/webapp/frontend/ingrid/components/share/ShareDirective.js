@@ -81,6 +81,7 @@ goog.require('ga_permalink');
           active: '=gaShareActive',
           options: '=gaShareOptions'
         },
+        // INGRID: Change HTML template URL
         templateUrl: 'ingrid/components/share/partials/share.html',
         link: function(scope, element, attrs) {
           var permalinkInput = $('.ga-share-permalink input');

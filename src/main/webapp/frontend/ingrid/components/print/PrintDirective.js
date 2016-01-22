@@ -1,6 +1,5 @@
 goog.provide('ga_print_directive');
 
-goog.require('ga_map_service');
 goog.require('ga_attribution_service');
 goog.require('ga_browsersniffer_service');
 goog.require('ga_print_style_service');
@@ -9,7 +8,6 @@ goog.require('ga_time_service');
 (function() {
 
   var module = angular.module('ga_print_directive', [
-    'ga_map_service',
     'ga_browsersniffer_service',
     'pascalprecht.translate',
     'ga_print_style_service',
@@ -20,7 +18,7 @@ goog.require('ga_time_service');
   module.controller('GaPrintDirectiveController', function($rootScope, $scope,
       $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils, 
       gaPermalink, gaBrowserSniffer, gaWaitCursor, gaPrintStyleService,
-      gaTime, gaAttribution, gaWms) {
+      gaTime, gaAttribution) {
 
     var pdfLegendsToDownload = [];
     var pdfLegendString = '_big.pdf';
@@ -568,7 +566,8 @@ goog.require('ga_time_service');
           var enc = $scope.encoders.legends.base.call(this, config);
           enc.classes.push({
             name: '',
-            icon: gaWms.getLegendURL(layer)
+            icon: $scope.options.legendUrl +
+                layer.bodId + '_' + $translate.use() + format
           });
           return enc;
         },
@@ -655,12 +654,10 @@ goog.require('ga_time_service');
       var lang = $translate.use();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;
-      /*
       var qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(gaPermalink.getHref());
       var print_zoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + print_zoom);
-      */
       var encLayers = [];
       var encLegends;
       var attributions = [];
@@ -802,7 +799,6 @@ goog.require('ga_time_service');
 
 
       // Get the short link
-      /*
       var shortLink;
       canceller = $q.defer();
       var promise = $http.get($scope.options.shortenUrl, {
@@ -819,7 +815,7 @@ goog.require('ga_time_service');
         if (!$scope.options.printing) {
           return;
         }
-       */
+
         // Build the correct copyright text to display
         var dataOwner = attributions.join();
         var thirdPartyDataOwner = thirdPartyAttributions.join();
@@ -837,14 +833,14 @@ goog.require('ga_time_service');
           srs: proj.getCode(),
           units: proj.getUnits() || 'm',
           rotation: -((view.getRotation() * 180.0) / Math.PI),
-          //app: 'config',
+          app: 'config',
           lang: lang,
           //use a function to get correct dpi according to layout (A4/A3)
           dpi: getDpi($scope.layout.name, $scope.dpi),
           layers: encLayers,
           legends: encLegends,
           enableLegends: (encLegends && encLegends.length > 0),
-          //rcodeurl: qrcodeUrl,
+          qrcodeurl: qrcodeUrl,
           movie: movieprint,
           pages: [
             angular.extend({
@@ -853,11 +849,9 @@ goog.require('ga_time_service');
               display: [$scope.layout.map.width, $scope.layout.map.height],
               // scale has to be one of the advertise by the print server
               scale: $scope.scale.value,
-              comment: $scope.comment ? $scope.comment : "",
-              title: $scope.title ? $scope.title :"",
               dataOwner: dataOwner,
               thirdPartyDataOwner: thirdPartyDataOwner,
-              //shortLink: shortLink || '',
+              shortLink: shortLink || '',
               rotation: -((view.getRotation() * 180.0) / Math.PI)
             }, defaultPage)
           ]
@@ -928,7 +922,7 @@ goog.require('ga_time_service');
           printUrl = printUrl.replace('/print/', '/printmulti/');
         }
         canceller = $q.defer();
-        var http = $http.post(printUrl ,
+        var http = $http.post(printUrl + '?url=' + encodeURIComponent(printUrl),
           spec, {
           timeout: canceller.promise
         }).success(function(data) {
@@ -946,7 +940,7 @@ goog.require('ga_time_service');
         }).error(function() {
           $scope.options.printing = false;
         });
-      //});
+      });
     };
 
     var getDpi = function(layoutName, dpiConfig) {
@@ -1092,7 +1086,7 @@ goog.require('ga_time_service');
           options: '=gaPrintOptions',
           active: '=gaPrintActive'
         },
-        templateUrl: 'ingrid/components/print/partials/print.html',
+        templateUrl: 'components/print/partials/print.html',
         controller: 'GaPrintDirectiveController',
         link: function(scope, elt, attrs, controller) {
           scope.isIE = gaBrowserSniffer.msie;

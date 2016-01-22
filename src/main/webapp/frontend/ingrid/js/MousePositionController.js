@@ -18,7 +18,7 @@ goog.provide('ga_mouseposition_controller');
             replace(/\B(?=(\d{3})+(?!\d))/g, "'");
           return coord + ' ' + zone;
         };
-        // TODO INGRID: Create by admin
+        // TODO INGRID: Change projections. Create by admin/json.
         $scope.mousePositionProjections = [{
           value: 'EPSG:3857',
           label: 'Mercator (Breite/Länge)',

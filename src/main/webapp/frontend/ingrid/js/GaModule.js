@@ -59,8 +59,6 @@ goog.require('ga_topic');
 goog.require('ga_translation');
 goog.require('ga_translation_controller');
 goog.require('ga_waitcursor_service');
-goog.require('ga_searchtool');
-goog.require('ga_searchtool_controller');
 (function() {
 
 
@@ -122,9 +120,7 @@ goog.require('ga_searchtool_controller');
     'ga_featuretree_controller',
     'ga_draw_controller',
     'ga_query_controller',
-    'ga_tilt3d',
-    'ga_searchtool',
-    'ga_searchtool_controller'
+    'ga_tilt3d'
   ]);
 
 })();

@@ -150,6 +150,7 @@ goog.require('ga_translation_service');
                                 [position, position], true);
           } else {
             // Standard query then
+            // INGRID: Change search query key
             var url = gaUrlUtils.append($scope.options.searchUrl,
                                         'q=' + encodeURIComponent(q));
             url = gaUrlUtils.append(url, 'lang=' + gaLang.get());

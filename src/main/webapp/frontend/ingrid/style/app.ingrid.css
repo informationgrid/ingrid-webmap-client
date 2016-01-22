@@ -32,7 +32,7 @@
   #logo[class^="ga-logo-"],
   #logo[class*=" ga-logo-"] {
     width: 44px;
-    background-image: url("../ingrid/img/ingrid_logo_icn.png");
+    background-image: url("../img/ingrid_logo_icn.png");
     background-position: center;
   }
 }

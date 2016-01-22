@@ -7,6 +7,7 @@ goog.addDependency('components/DraggableDirective.js', ['ga_draggable_directive'
 goog.addDependency('components/ExportKmlService.js', ['ga_export_kml_service'], ['ga_browsersniffer_service'], false);
 goog.addDependency('components/FileReaderService.js', ['ga_filereader_service'], [], false);
 goog.addDependency('components/FileStorageService.js', ['ga_file_storage_service'], [], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/LayerMetadataPopupService.js', ['ga_layer_metadata_popup_service'], ['ga_map_service', 'ga_popup'], false);
 goog.addDependency('components/MarkerOverlayService.js', ['ga_marker_overlay_service'], ['ga_map_service', 'ga_styles_service'], false);
 goog.addDependency('components/ModalDirective.js', ['ga_modal_directive'], [], false);
@@ -24,8 +25,10 @@ goog.addDependency('components/attribution/AttributionModule.js', ['ga_attributi
 goog.addDependency('components/attribution/AttributionService.js', ['ga_attribution_service'], ['ga_map_service', 'ga_translation_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/backgroundselector/BackgroundSelectorDirective.js', ['ga_backgroundselector_directive'], ['ga_background_service', 'ga_map', 'ga_permalink', 'ga_topic_service'], false);
 goog.addDependency('components/backgroundselector/BackgroundSelectorModule.js', ['ga_backgroundselector'], ['ga_background_service', 'ga_backgroundselector_directive'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/backgroundselector/BackgroundService.js', ['ga_background_service'], ['ga_map_service', 'ga_permalink'], false);
 goog.addDependency('components/catalogtree/CatalogitemDirective.js', ['ga_catalogitem_directive'], ['ga_catalogtree_directive', 'ga_layer_metadata_popup_service'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/catalogtree/CatalogtreeDirective.js', ['ga_catalogtree_directive'], ['ga_catalogtree_service', 'ga_map_service', 'ga_permalink', 'ga_topic_service', 'ga_translation_service'], false);
 goog.addDependency('components/catalogtree/CatalogtreeModule.js', ['ga_catalogtree'], ['ga_catalogitem_directive', 'ga_catalogtree_directive'], false);
 goog.addDependency('components/catalogtree/CatalogtreeService.js', ['ga_catalogtree_service'], ['ga_map_service'], false);
@@ -49,12 +52,15 @@ goog.addDependency('components/help/HelpModule.js', ['ga_help'], ['ga_help_direc
 goog.addDependency('components/help/HelpService.js', ['ga_help_service'], [], false);
 goog.addDependency('components/importkml/ImportKmlDirective.js', ['ga_importkml_directive'], ['ga_browsersniffer_service', 'ga_filereader_service', 'ga_map_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/importkml/ImportKmlModule.js', ['ga_importkml'], ['ga_importkml_directive'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/importwms/ImportWmsDirective.js', ['ga_importwms_directive'], ['ga_map_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/importwms/ImportWmsModule.js', ['ga_importwms'], ['ga_importwms_directive'], false);
 goog.addDependency('components/layermanager/LayermanagerDirective.js', ['ga_layermanager_directive'], ['ga_attribution_service', 'ga_layer_metadata_popup_service', 'ga_map_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/layermanager/LayermanagerModule.js', ['ga_layermanager'], ['ga_layermanager_directive'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/map/MapDirective.js', ['ga_map_directive'], ['ga_browsersniffer_service', 'ga_debounce_service', 'ga_offline_service', 'ga_permalink', 'ga_styles_service'], false);
 goog.addDependency('components/map/MapModule.js', ['ga_map'], ['ga_map_directive', 'ga_map_service'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/map/MapService.js', ['ga_map_service'], ['ga_measure_service', 'ga_networkstatus_service', 'ga_storage_service', 'ga_styles_from_literals_service', 'ga_styles_service', 'ga_time_service', 'ga_topic_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/measure/MeasureDirective.js', ['ga_measure_directive'], ['ga_debounce_service', 'ga_export_kml_service', 'ga_map_service', 'ga_measure_service'], false);
 goog.addDependency('components/measure/MeasureModule.js', ['ga_measure'], ['ga_measure_directive', 'ga_measure_service'], false);
@@ -69,6 +75,7 @@ goog.addDependency('components/permalink/PermalinkService.js', ['ga_permalink_se
 goog.addDependency('components/popup/PopupDirective.js', ['ga_popup_directive'], ['ga_browsersniffer_service', 'ga_print_service'], false);
 goog.addDependency('components/popup/PopupModule.js', ['ga_popup'], ['ga_popup_directive', 'ga_popup_service'], false);
 goog.addDependency('components/popup/PopupService.js', ['ga_popup_service'], ['ga_draggable_directive'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/print/PrintDirective.js', ['ga_print_directive'], ['ga_map_service', 'ga_attribution_service', 'ga_browsersniffer_service', 'ga_print_style_service', 'ga_time_service'], false);
 goog.addDependency('components/print/PrintModule.js', ['ga_print'], ['ga_print_directive', 'ga_print_style_service'], false);
 goog.addDependency('components/print/PrintStyleService.js', ['ga_print_style_service'], [], false);
@@ -82,13 +89,16 @@ goog.addDependency('components/rotate/RotateDirective.js', ['ga_rotate_directive
 goog.addDependency('components/rotate/RotateModule.js', ['ga_rotate'], ['ga_rotate_directive'], false);
 goog.addDependency('components/scaleline/ScaleLineDirective.js', ['ga_scaleline_directive'], [], false);
 goog.addDependency('components/scaleline/ScaleLineModule.js', ['ga_scaleline'], ['ga_scaleline_directive'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/search/SearchDirective.js', ['ga_search_directive'], ['ga_map_service', 'ga_marker_overlay_service', 'ga_permalink', 'ga_search_service', 'ga_search_type_directives', 'ga_topic_service', 'ga_translation_service'], false);
 goog.addDependency('components/search/SearchModule.js', ['ga_search'], ['ga_search_directive', 'ga_search_service', 'ga_search_type_directives'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/search/SearchService.js', ['ga_search_service'], [], false);
 goog.addDependency('ingrid/components/search/SearchTypesDirectives.js', ['ga_search_type_directives'], ['ga_browsersniffer_service', 'ga_debounce_service', 'ga_layer_metadata_popup_service', 'ga_map_service', 'ga_marker_overlay_service', 'ga_search_service', 'ga_topic_service', 'ga_urlutils_service'], false);
 goog.addDependency('components/seo/SeoDirective.js', ['ga_seo_directive'], ['ga_map_service', 'ga_seo_service'], false);
 goog.addDependency('components/seo/SeoModule.js', ['ga_seo'], ['ga_seo_directive'], false);
 goog.addDependency('components/seo/SeoService.js', ['ga_seo_service'], ['ga_permalink_service'], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/share/ShareDirective.js', ['ga_share_directive'], ['ga_browsersniffer_service', 'ga_permalink'], false);
 goog.addDependency('components/share/ShareModule.js', ['ga_share'], ['ga_share_directive'], false);
 goog.addDependency('components/slider/SliderDirective.js', ['ga_slider_directive'], ['ga_debounce_service'], false);
@@ -114,20 +124,24 @@ goog.addDependency('js/ContextPopupController.js', ['ga_contextpopup_controller'
 goog.addDependency('js/DrawController.js', ['ga_draw_controller'], ['ga_browsersniffer_service', 'ga_print_service', 'ga_styles_service'], false);
 goog.addDependency('js/FeaturetreeController.js', ['ga_featuretree_controller'], ['ga_print_service'], false);
 goog.addDependency('js/FeedbackController.js', ['ga_feedback_controller'], [], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/js/GaCesium.js', ['ga_cesium'], [], false);
 goog.addDependency('ingrid/js/GaModule.js', ['geoadmin'], ['ga_attribution', 'ga_backgroundselector', 'ga_catalogtree', 'ga_catalogtree_controller', 'ga_cesium', 'ga_collapsible_directive', 'ga_contextpopup', 'ga_contextpopup_controller', 'ga_controls3d', 'ga_draggable_directive', 'ga_draw', 'ga_draw_controller', 'ga_featuretree', 'ga_featuretree_controller', 'ga_feedback', 'ga_feedback_controller', 'ga_fullscreen', 'ga_geolocation', 'ga_help', 'ga_importkml', 'ga_importkml_controller', 'ga_importwms', 'ga_importwms_controller', 'ga_layermanager', 'ga_main_controller', 'ga_map', 'ga_measure', 'ga_modal_directive', 'ga_mouseposition', 'ga_mouseposition_controller', 'ga_offline', 'ga_placeholder_directive', 'ga_popup', 'ga_print_controller', 'ga_print_directive', 'ga_profile', 'ga_query', 'ga_query_controller', 'ga_rotate', 'ga_scaleline', 'ga_search', 'ga_search_controller', 'ga_seo', 'ga_seo_controller', 'ga_share', 'ga_share_controller', 'ga_styles_from_literals_service', 'ga_swipe', 'ga_tilt3d', 'ga_timeselector', 'ga_timeselector_controller', 'ga_timestamp_control', 'ga_tooltip', 'ga_tooltip_controller', 'ga_topic', 'ga_translation', 'ga_translation_controller', 'ga_waitcursor_service'], false);
 goog.addDependency('js/ImportKmlController.js', ['ga_importkml_controller'], [], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/js/ImportWmsController.js', ['ga_importwms_controller'], [], false);
 goog.addDependency('ingrid/js/MainController.js', ['ga_main_controller'], ['ga_background_service', 'ga_cesium', 'ga_map', 'ga_networkstatus_service', 'ga_storage_service', 'ga_topic_service'], false);
 goog.addDependency('ingrid/js/MousePositionController.js', ['ga_mouseposition_controller'], [], false);
 goog.addDependency('ingrid/js/PrintController.js', ['ga_print_controller'], [], false);
 goog.addDependency('js/QueryController.js', ['ga_query_controller'], [], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/js/SearchController.js', ['ga_search_controller'], [], false);
 goog.addDependency('js/SeoController.js', ['ga_seo_controller'], [], false);
 goog.addDependency('js/ShareController.js', ['ga_share_controller'], [], false);
 goog.addDependency('js/TimeSelectorController.js', ['ga_timeselector_controller'], [], false);
 goog.addDependency('js/TooltipController.js', ['ga_tooltip_controller'], [], false);
 goog.addDependency('js/TranslationController.js', ['ga_translation_controller'], [], false);
+// INGRID: Change for INGRID
 goog.addDependency('ingrid/components/searchtool/SearchtoolDirective.js', ['ga_searchtool_directive'], false);
 goog.addDependency('ingrid/components/searchtool/SearchtoolModule.js', ['ga_searchtool'], ['ga_searchtool_directive'], false);
 goog.addDependency('ingrid/js/SearchtoolController.js', ['ga_searchtool_controller'], [], false);

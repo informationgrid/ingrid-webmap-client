@@ -405,7 +405,7 @@ goog.require('ga_urlutils_service');
 
           var layer = new ol.layer.Image({
             id: 'WMS||' + options.label + '||' + options.url + '||' +
-                params.LAYERS + '||' + params.VERSION,
+                params.LAYERS,
             url: options.url,
             type: 'WMS',
             opacity: options.opacity,
@@ -454,18 +454,8 @@ goog.require('ga_urlutils_service');
         this.getLegend = function(layer) {
           var defer = $q.defer();
           var params = layer.getSource().getParams();
-          var url = layer.url;
-          if(url == undefined){
-              if(layer.getSource()){
-                  if(layer.getSource().urls){
-                      if(layer.getSource().urls.length > 0){
-                          url = layer.getSource().urls[0];
-                      }
-                  }
-              }
-          }
           var html = '<img alt="No legend available" src="' +
-              gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
+              gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
             request: 'GetLegendGraphic',
             layer: params.LAYERS,
             style: params.style || 'default',
@@ -477,29 +467,6 @@ goog.require('ga_urlutils_service');
           defer.resolve({data: html});
           return defer.promise;
         };
-        
-        this.getLegendURL = function(layer) {
-            var params = layer.getSource().getParams();
-            var url = layer.url;
-            if(url == undefined){
-                if(layer.getSource()){
-                    if(layer.getSource().urls){
-                        if(layer.getSource().urls.length > 0){
-                            url = layer.getSource().urls[0];
-                        }
-                    }
-                }
-            }
-            return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
-              request: 'GetLegendGraphic',
-              layer: params.LAYERS,
-              style: params.style || 'default',
-              service: 'WMS',
-              version: params.version || '1.3.0',
-              format: 'image/png',
-              sld_version: '1.1.0'
-            }));
-          };
       };
       return new Wms();
     };
@@ -1229,8 +1196,7 @@ goog.require('ga_urlutils_service');
           } else if (layer.type == 'wms') {
             var wmsParams = {
               LAYERS: layer.wmsLayers,
-              FORMAT: 'image/' + layer.format,
-              VERSION: layer.version
+              FORMAT: 'image/' + layer.format
             };
             if (timestamp) {
               wmsParams['TIME'] = timestamp;
@@ -1240,8 +1206,7 @@ goog.require('ga_urlutils_service');
                 olSource = layer.olSource = new ol.source.ImageWMS({
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
-                  // TODO INGRID: Check functions
-                  //crossOrigin: crossOrigin,
+                  crossOrigin: crossOrigin,
                   ratio: 1
                 });
               }
@@ -1250,7 +1215,7 @@ goog.require('ga_urlutils_service');
                 maxResolution: layer.maxResolution,
                 opacity: layer.opacity || 1,
                 source: olSource,
-                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                extent: extent
               });
             } else {
               if (!olSource) {
@@ -1259,10 +1224,9 @@ goog.require('ga_urlutils_service');
                   urls: getImageryUrls(getWmsTpl(layer.wmsUrl), subdomains),
                   params: wmsParams,
                   gutter: layer.gutter || 0,
-                  // TODO INGRID: Check functions
-                  //crossOrigin: crossOrigin,
-                  //tileGrid: gaTileGrid.get(layer.resolutions,
-                  //    layer.minResolution, 'wms'),
+                  crossOrigin: crossOrigin,
+                  tileGrid: gaTileGrid.get(layer.resolutions,
+                      layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
                   wrapX: false
                 });
@@ -1274,7 +1238,7 @@ goog.require('ga_urlutils_service');
                 source: olSource,
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
                 useInterimTilesOnError: gaNetworkStatus.offline,
-                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                extent: extent
               });
             }
           } else if (layer.type == 'aggregate') {
@@ -1693,7 +1657,7 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                olLayerOrId.split('||').length == 5;
+                olLayerOrId.split('||').length == 4;
           }
           return olLayerOrId.type == 'WMS';
         },
@@ -2191,15 +2155,14 @@ goog.require('ga_urlutils_service');
               try {
                 gaWms.addWmsToMap(map,
                   {
-                    LAYERS: infos[3],
-                    VERSION: infos[4]
+                    LAYERS: infos[3]
                   },
                   {
                     url: infos[2],
                     label: infos[1],
                     opacity: opacity || 1,
                     visible: visible,
-                    extent: ol.proj.transformExtent(gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                    extent: gaGlobalOptions.defaultExtent
                   },
                   index + 1);
               } catch (e) {

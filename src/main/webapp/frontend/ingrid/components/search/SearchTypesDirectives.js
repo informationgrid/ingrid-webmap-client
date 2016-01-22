@@ -16,6 +16,7 @@ goog.require('ga_urlutils_service');
     gazetteer: 10
   };
 
+  // INGRID: Edit parseExtent for nominatim
   var parseExtent = function(stringBox2D, gaGlobalOptions) {
       var extentString = stringBox2D.split(" ");
       var extent = [];
@@ -26,6 +27,7 @@ goog.require('ga_urlutils_service');
     return $.map(extent, parseFloat);
   };
 
+  // INGRID: Edit addOverlay for nominatim
   var addOverlay = function(gaOverlay, map, res, gaGlobalOptions) {
     var visible = originToZoomLevel.hasOwnProperty(res.attrs.origin);
    var extentString = res.attrs.geom_st_box2d.split(" ");
@@ -191,6 +193,7 @@ goog.require('ga_urlutils_service');
    * directive's code.
    */
 
+  // INGRID: Add parameter 'gaGlobalOptions'
   module.controller('GaSearchTypesController',
     function($scope, $http, $q, $sce, gaUrlUtils, gaSearchLabels,
              gaBrowserSniffer, gaMarkerOverlay, gaDebounce, gaGlobalOptions) {
@@ -218,6 +221,7 @@ goog.require('ga_urlutils_service');
 
         canceler = $q.defer();
 
+        // INGRID: Add search URL
         var url = gaUrlUtils.append($scope.options.baseUrl,
                                     'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
         url = $scope.typeSpecificUrl(url);
@@ -225,6 +229,7 @@ goog.require('ga_urlutils_service');
         $http.get(url, {
           cache: true,
           timeout: canceler.promise,
+          // INGRID: Add search params
           params: $scope.searchParams
         }).success(function(data) {
           $scope.results = data.results;
@@ -283,6 +288,7 @@ goog.require('ga_urlutils_service');
         if (gaBrowserSniffer.mobile) {
           return;
         }
+        // INGRID: Add parameter 'gaGlobalOptions' to function
         addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
       };
 
@@ -317,6 +323,7 @@ goog.require('ga_urlutils_service');
     }
   );
 
+  // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLocations',
       function($http, $q, $sce, $translate, gaUrlUtils, gaBrowserSniffer,
                gaMarkerOverlay, gaSearchLabels, gaMapUtils, gaDebounce, gaGlobalOptions) {
@@ -332,6 +339,7 @@ goog.require('ga_urlutils_service');
           link: function($scope, element, attrs) {
             $scope.type = 'locations';
             $scope.tabstart = tabStarts[0];
+            // INGRID: Add nominatim search URL
             $scope.searchUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
 
             // Can be removed onnce real type contains gazetter
@@ -341,6 +349,7 @@ goog.require('ga_urlutils_service');
 
             $scope.select = function(res) {
               var isGazetteerPoly = false;
+              // INGRID: Add parameter 'gaGlobalOptions'
               var e = parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions);
               unregisterMove();
               //Gazetteer results that are not points zoom to full bbox extent
@@ -352,6 +361,7 @@ goog.require('ga_urlutils_service');
               var ol3d = $scope.ol3d;
               if (originToZoomLevel.hasOwnProperty(res.attrs.origin) &&
                   !isGazetteerPoly) {
+                // INGRID: Change selection handling of nominatim
                 var extentString = res.attrs.geom_st_box2d.split(" ");
                 var extent = [];
                 for(entry in extentString){
@@ -367,6 +377,7 @@ goog.require('ga_urlutils_service');
               } else {
                 gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, e);
               }
+              // INGRID: Add parameter 'gaGlobalOptions'
               addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
               $scope.options.valueSelected(
                   gaSearchLabels.cleanLabel(res.attrs.label));
@@ -528,6 +539,8 @@ goog.require('ga_urlutils_service');
           link: function($scope, element, attrs) {
             $scope.type = 'layers';
             $scope.tabstart = tabStarts[2];
+            // INGRID: Change search URL for layer search
+            // TODO: Search layer service not existing yet
             $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-mf-geoadmin3/frontend/ingrid/data/layers.json';
 
             $scope.preview = function(res) {
