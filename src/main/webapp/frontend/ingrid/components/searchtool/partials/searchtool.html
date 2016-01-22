@@ -1,0 +1,24 @@
+<div>
+	<div class="ga-searchtool-buttons">
+		<button ng-repeat="tool in options.tools"
+			ng-click="toggleTool($event, tool)"
+			title="{{tool.description | translate}}" class="{{tool.cssClass}}"
+			ng-class="{'active': options[tool.activeKey]}">
+			<!-- <i class="{{tool.iconClass}}"></i> -->
+			<div translate>{{tool.title}}</div>
+		</button>
+	</div>
+	<div class="ga-searchtool-modify" ng-if="aToolIsActive()">
+		<br>
+		<div ng-if="options.isPointActive">
+			<label translate>searchtool_point_label</label>:
+			<br>
+			<label id="searchtool_point_value" translate>searchtool_point_value_help</label>
+		</div>
+		<div ng-if="options.isAreaActive">
+			<label translate>searchtool_area_label</label>:
+			<br>
+			<label id="searchtool_area_value" translate>searchtool_area_value_help</label>
+		</div>
+	</div>
+</div>

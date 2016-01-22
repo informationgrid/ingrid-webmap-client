@@ -94,14 +94,14 @@ public class JsonCallbackResource{
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response searchPost(@QueryParam("data") String data, @QueryParam("url") String paramURL) throws IOException {
 
-		String content = data.trim();
+		String content = "content=" + URLEncoder.encode(data.trim(), "UTF-8");
 		
 		URL url = new URL(paramURL);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.setRequestMethod("POST");
 		con.setDoInput(true);
 		con.setDoOutput(true);
-		con.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
+		con.setRequestProperty("Content-Type", MediaType.APPLICATION_FORM_URLENCODED);
 		con.setRequestProperty("Content-Length", String.valueOf(content.length()));
 		
 		OutputStreamWriter writer = new OutputStreamWriter( con.getOutputStream() );

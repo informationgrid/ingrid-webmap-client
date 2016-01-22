@@ -1,0 +1,18 @@
+{
+	"topics": [{
+		"defaultBackground" : "sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light",
+		"langs": "de,fr,it,rm,en",
+		"selectedLayers": [],
+		"activatedLayers" : [],
+	    "backgroundLayers": ["sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light"],
+		"id": "themen"
+	},
+	{
+		"defaultBackground" : "sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light",
+		"langs": "de,fr,it,rm,en",
+		"selectedLayers": [],
+		"activatedLayers" : [],
+	    "backgroundLayers": ["sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light"],
+		"id": "anbieter"
+	}]
+}

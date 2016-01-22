@@ -1,0 +1,236 @@
+{
+	"results": {
+		"root": {
+			"category": "root",
+			"staging": "prod",
+			"id": 1000000,
+			"children": [{
+				"category": "cat71",
+				"staging": "prod",
+				"selectedOpen": false,
+				"label": "Bund",
+				"id": 10000000,
+				"children": [{
+					"category": "cat72",
+					"staging": "prod",
+					"selectedOpen": false,
+					"label": "Bundeswasserstraßen",
+					"layerBodId": "atlas_wsv_bund_de_bwastr_wms_gewassernetz",
+					"id": 10000001,
+					"children": [{
+						"category": "layer",
+						"staging": "prod",
+						"label": "Gewaessernetz",
+						"layerBodId": "atlas_wsv_bund_de_bwastr_wms_gewassernetz",
+						"id": 10000002
+					},
+					{
+						"category": "layer",
+						"staging": "prod",
+						"label": "Organisation",
+						"layerBodId": "atlas_wsv_bund_de_bwastr_wms_organisation",
+						"id": 10000003,
+						"children": [{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Außenstellen",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_direktionen",
+							"id": 10000004
+						},
+						{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Aemter",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_aemter",
+							"id": 10000005
+						},
+						{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Aussenbezirke",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_aussenbezirke",
+							"id": 10000006
+						}]
+					},
+					{
+						"category": "layer",
+						"staging": "prod",
+						"label": "Wasserstrassenklassen",
+						"layerBodId": "atlas_wsv_bund_de_bwastr_wms_wasserstrassenklassen",
+						"id": 10000007
+					},
+					{
+						"category": "layer",
+						"staging": "prod",
+						"label": "Text",
+						"layerBodId": "atlas_wsv_bund_de_bwastr_wms_text",
+						"id": 10000008,
+						"children": [{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Gewaessernamen",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_gewaessernamen",
+							"id": 10000009
+						},
+						{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Fliessrichtung",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_fliessrichtung",
+							"id": 10000010
+						},
+						{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Kilometermarken",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_kilometermarken",
+							"id": 10000011
+						},
+						{
+							"category": "layer",
+							"staging": "prod",
+							"label": "Ortschaften",
+							"layerBodId": "atlas_wsv_bund_de_bwastr_wms_ortschaften",
+							"id": 10000012
+						}]
+					},
+					{
+						"category": "layer",
+						"staging": "prod",
+						"label": "copyright",
+						"layerBodId": "atlas_wsv_bund_de_bwastr_wms_copyright",
+						"id": 10000013
+					}]
+				}]
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Baden-Württemberg",
+			"id": 20000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Bayern",
+			"id": 30000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Berlin",
+			"id": 40000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Brandenburg",
+			"id": 50000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Bremen",
+			"id": 60000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Hamburg",
+			"id": 70000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Hessen",
+			"id": 80000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Niedersachsen",
+			"id": 90000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Mecklenburg-Vorpommern",
+			"id": 100000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Nordrhein-Westfalen",
+			"id": 110000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Rheinland-Pfalz",
+			"id": 120000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Saarland",
+			"id": 130000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Sachsen-Anhalt",
+			"id": 140000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Sachsen",
+			"id": 150000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Schleswig-Holstein",
+			"id": 160000000,
+			"children": []
+			},
+			{
+			"category": "cat71",
+			"staging": "prod",
+			"selectedOpen": false,
+			"label": "Thüringen",
+			"id": 170000000,
+			"children": []
+			}]
+		}
+	}
+}

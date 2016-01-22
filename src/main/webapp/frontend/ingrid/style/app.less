@@ -1,0 +1,36 @@
+@import "../components/map/style/map.less";
+@import "../components/searchtool/style/searchtool.less";
+
+.logo-small(){
+  background-image: data-uri('../img/ingrid_logo_icn.png');
+}
+
+#logo {
+  display: inline-block;
+  width: 329px;
+  height: 100%;
+
+  &.ga-logo-de {
+    background-image: data-uri('../img/ingrid_logo_icn_big.png');
+  }
+  &.ga-logo-fr {
+    background-image: data-uri('../img/ingrid_logo_icn_big.png');
+  }
+  &.ga-logo-it {
+    background-image: data-uri('../img/ingrid_logo_icn_big.png');
+  }
+  &.ga-logo-rm {
+    background-image: data-uri('../img/ingrid_logo_icn_big.png');
+  }
+  &.ga-logo-en {
+    background-image: data-uri('../img/ingrid_logo_icn_big.png');
+  }
+
+  &[class^="ga-logo-"], &[class*=" ga-logo-"] {
+    @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+      width: 44px;
+      .logo-small();
+      background-position: center;
+    }
+  }
+}
