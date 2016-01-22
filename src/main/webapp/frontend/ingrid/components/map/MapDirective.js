@@ -113,9 +113,11 @@ goog.require('ga_styles_service');
 
         // INGRID: Add default zoom
         // Zoom to default extent
-        var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
-        var size = map.getSize();
-        view.fit(extent, size);
+        if(gaPermalink.getParams().X == undefined && gaPermalink.getParams().Y == undefined){
+            var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
+            var size = map.getSize();
+            view.fit(extent, size);
+        }
         
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
