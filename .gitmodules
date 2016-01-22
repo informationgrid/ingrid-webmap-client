@@ -1,0 +1,3 @@
+[submodule "mf-geoadmin3"]
+	path = mf-geoadmin3
+	url = https://github.com/geoadmin/mf-geoadmin3.git
