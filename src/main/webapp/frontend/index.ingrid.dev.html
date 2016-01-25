@@ -94,7 +94,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         if (m=='false' || (!onMobile && p=='mobile') ) {
           redirectToDesktop();
         } else if (m=='true' || (onMobile && p=='desktop') ) {
-          redirectToMobile();
+          // INGRID: Disabled mobile version
+          // redirectToMobile();
         }
       })();
     </script>
@@ -169,7 +170,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
       </div>
       <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
-      <div class="alert alert-danger" translate>offline_sorry</div>
+      <!-- <div class="alert alert-danger" translate>offline_sorry</div>  -->
     </div> <!-- #header -->
 
     <div id="drawModeHeader" class="navbar navbar-fixed-top">

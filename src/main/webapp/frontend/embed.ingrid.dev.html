@@ -94,7 +94,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         if (m=='false' || (!onMobile && p=='mobile') ) {
           redirectToDesktop();
         } else if (m=='true' || (onMobile && p=='desktop') ) {
-          redirectToMobile();
+          // INGRID: Disabled mobile version
+          // redirectToMobile();
         }
       })();
     </script>
