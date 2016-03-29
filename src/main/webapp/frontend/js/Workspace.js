@@ -862,7 +862,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
                     if (dlg.isLoad()) {
                         var supressMsgs = true;
                         if(dlg.getFileId() != ""){
-                        	self.load(undefined, dlg.getFileId(), supressMsgs);
+                            self.load(undefined, dlg.getFileId(), supressMsgs);
                         }
                     }
                     self.ctrls.keyboardControl.activate();
@@ -1380,7 +1380,7 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
             var cntrPanelBbar = Ext.getCmp('cntrPanelBBar');
             
             if(this.redliningControler == null){
-            	this.redliningControler = Ext.create('GeoExt.ux.FeatureEditingControler', {
+                this.redliningControler = Ext.create('GeoExt.ux.FeatureEditingControler', {
                     cosmetic: true,
                     map: this.map,
                     toggleGroup : 'toggleGroupMapPanel',
@@ -1492,6 +1492,12 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
             title += i18n('tFlaeche');
             content += measure.toFixed(3) + " " + units + "<sup>2</" + "sup>";
         }
+        
+        var measureInfoDialog = Ext.getCmp("measureInfoDialog");
+        if(measureInfoDialog){
+            measureInfoDialog.close();
+        }
+        
         Ext.create('Ext.window.Window', {
             id: 'measureInfoDialog',
             title : title,
@@ -1826,17 +1832,17 @@ Ext.define('de.ingrid.mapclient.frontend.Workspace', {
                                             var name = mapLayer.name;
                                             var isExist = false;
                                             if(mapLayer.params){
-                                            	if(mapLayer.params.LAYERS){
-	                                                var paramsLayers = mapLayer.params.LAYERS;
-	                                            	for (var j = 0; j < syncLayers.length; j++) {
-	                                                    var syncLayer = syncLayers[j];
-	                                                    if(name == syncLayer.name && paramsLayers == syncLayer.params.LAYERS){
-	                                                        isExist = true;
-	                                                        break;
-	                                                    }
-	                                                }
-                                            	}
-                                            	if(isExist == false){
+                                                if(mapLayer.params.LAYERS){
+                                                    var paramsLayers = mapLayer.params.LAYERS;
+                                                    for (var j = 0; j < syncLayers.length; j++) {
+                                                        var syncLayer = syncLayers[j];
+                                                        if(name == syncLayer.name && paramsLayers == syncLayer.params.LAYERS){
+                                                            isExist = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if(isExist == false){
                                                     self.map.removeLayer(mapLayer);
                                                     i--;
                                                 }
