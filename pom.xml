@@ -5,13 +5,13 @@
         <version>3.5.1</version> </parent> -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.ingrid</groupId>
-    <artifactId>ingrid-mf-geoadmin3</artifactId>
+    <artifactId>ingrid-webmap-client</artifactId>
     <version>3.7.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
-        <connection>scm:git:git@github.com:informationgrid/ingrid-mf-geoadmin3.git</connection> 
-        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-mf-geoadmin3.git</developerConnection> 
+        <connection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</connection> 
+        <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
         <tag>HEAD</tag>
     </scm>
     <build>
