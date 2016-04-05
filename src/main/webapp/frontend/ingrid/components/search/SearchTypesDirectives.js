@@ -541,7 +541,7 @@ goog.require('ga_urlutils_service');
             $scope.tabstart = tabStarts[2];
             // INGRID: Change search URL for layer search
             // TODO: Search layer service not existing yet
-            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-mf-geoadmin3/frontend/ingrid/data/layers.json';
+            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/ingrid/data/layers.json';
 
             $scope.preview = function(res) {
               if (gaBrowserSniffer.mobile) {

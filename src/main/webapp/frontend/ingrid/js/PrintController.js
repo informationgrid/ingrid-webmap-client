@@ -6,13 +6,13 @@ goog.provide('ga_print_controller');
   module.controller('GaPrintController',
     function($scope, gaGlobalOptions) {
       // INGRID: Change print path
-      var printPath = '/ingrid-mf-geoadmin3/pdf';
+      var printPath = '/ingrid-webmap-client/pdf';
       var printCachedPath = gaGlobalOptions.cachedApiUrl + '/print';
 
       $scope.options = {
         printPath: printPath,
         // INGRID: Change print config URL
-        printConfigUrl: '/ingrid-mf-geoadmin3/pdf/info.json',
+        printConfigUrl: '/ingrid-webmap-client/pdf/info.json',
         // INGRID: Disable legend URL service
         legendUrl: '',
         qrcodeUrl: gaGlobalOptions.apiUrl + '/qrcodegenerator?url=',
