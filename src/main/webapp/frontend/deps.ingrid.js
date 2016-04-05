@@ -70,8 +70,9 @@ goog.addDependency('components/mouseposition/MousePositionModule.js', ['ga_mouse
 goog.addDependency('components/offline/OfflineDirective.js', ['ga_offline_directive'], ['ga_map_service', 'ga_networkstatus_service'], false);
 goog.addDependency('components/offline/OfflineModule.js', ['ga_offline'], ['ga_offline_directive', 'ga_offline_service'], false);
 goog.addDependency('components/offline/OfflineService.js', ['ga_offline_service'], ['ga_background_service', 'ga_storage_service', 'ga_styles_service'], false);
-goog.addDependency('components/permalink/PermalinkModule.js', ['ga_permalink'], ['ga_permalink_service'], false);
-goog.addDependency('components/permalink/PermalinkService.js', ['ga_permalink_service'], ['ga_urlutils_service'], false);
+//INGRID: Change for INGRID
+goog.addDependency('ingrid/components/permalink/PermalinkModule.js', ['ga_permalink'], ['ga_permalink_service'], false);
+goog.addDependency('ingrid/components/permalink/PermalinkService.js', ['ga_permalink_service'], ['ga_urlutils_service'], false);
 goog.addDependency('components/popup/PopupDirective.js', ['ga_popup_directive'], ['ga_browsersniffer_service', 'ga_print_service'], false);
 goog.addDependency('components/popup/PopupModule.js', ['ga_popup'], ['ga_popup_directive', 'ga_popup_service'], false);
 goog.addDependency('components/popup/PopupService.js', ['ga_popup_service'], ['ga_draggable_directive'], false);
