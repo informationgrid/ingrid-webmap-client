@@ -48,6 +48,7 @@ Ext.define('de.ingrid.mapclient.frontend.controls.ActiveServicesPanel', {
         'GeoExt.data.LayerStore',
         'GeoExt.tree.LayerLoader',
         'GeoExt.tree.LayerContainer',
+        'GeoExt.container.LayerLegend',
         'GeoExt.container.WmsLegend',
         'GeoExt.container.UrlLegend',
         'GeoExt.container.VectorLegend',
