@@ -48,3 +48,109 @@
 .icon-user {
 	display: none !important;
 }
+
+.navbar-fixed-top {
+	box-shadow:none;
+}
+
+#header {
+  background-color: transparent;
+  left:329px;
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+  #header {
+    background: transparent;
+    left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  #header [ga-help] {
+    display: none;
+  }
+  #header .ga-menu-bt {
+    display: inline-block;
+  }
+}
+#pulldown-content {
+	top: 0;
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+  #pulldown-content {
+    top: 0;
+  }
+}
+@media (max-width: 768px) {
+  #pulldown-content {
+    z-index: 1100;
+    top: 0;
+    right: 0;
+    width: 0;
+    overflow: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  #pulldown-content #shareHeading {
+    display: none;
+  }
+  #pulldown-content #share {
+    display: block!important;
+    visibility: visible!important;
+    height: auto!important;
+  }
+}
+
+@media (max-width: 768px) {
+  .ga-pulldown-shown #pulldown-content {
+    width: 96%;
+    -webkit-transition-delay: 0.1s;
+    transition-delay: 0.1s;
+    /* delay of .1s needed for Safari */
+  }
+}
+
+@media (max-width: 768px) {
+  #menu-button {
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 50px;
+    margin: 0;
+    padding: 0 5px;
+  }
+  #menu-button .ga-visible-mobile {
+    display: inline;
+  }
+  #menu-button .ga-hidden-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  #menu-button {
+    top: 0;
+    right: 0;
+    width: auto;
+    height: 50px;
+    margin: 0;
+    padding: 0 5px;
+  }
+  #menu-button .ga-visible-mobile {
+    display: inline;
+  }
+  #menu-button .ga-hidden-mobile {
+    display: none;
+  }
+}
+
+#header .ga-menu-bt {
+  right: unset;
+}
+
+@media (max-width: 768px), (max-height: 600px) {
+  #search-container {
+    left: 60px;
+  }
+}

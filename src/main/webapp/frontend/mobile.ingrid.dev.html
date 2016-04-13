@@ -151,13 +151,10 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div ga-seo ga-seo-options="options" ga-seo-map="map"></div>
     </div>
     <div ng-cloak translate-cloak id="header" class="navbar navbar-fixed-top">
-      <a href="?topic={{topicId}}&lang={{langId}}">
-        <div id="logo" class="pull-left ga-logo ga-logo-{{langId}}"></div>
-      </a>
+      <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
       <div id="search-container" ng-controller="GaSearchController">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
       </div>
-      <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
       <!-- <div class="alert alert-danger" translate>offline_sorry</div>  -->
     </div> <!-- #header -->
 
