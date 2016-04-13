@@ -8,49 +8,20 @@
   background-image: url("../components/map/style/zoomExtent.png");
 }
 
-#logo.ga-logo-de {
-  background-image: url("../img/ingrid_logo_icn_big.png");
-}
-
-#logo.ga-logo-fr {
-  background-image: url("../img/ingrid_logo_icn_big.png");
-}
-
-#logo.ga-logo-it {
-  background-image: url("../img/ingrid_logo_icn_big.png");
-}
-
-#logo.ga-logo-rm {
-  background-image: url("../img/ingrid_logo_icn_big.png");
-}
-
-#logo.ga-logo-en {
-  background-image: url("../img/ingrid_logo_icn_big.png");
-}
-
-@media (max-width: 768px), (max-height: 600px) {
-  #logo[class^="ga-logo-"],
-  #logo[class*=" ga-logo-"] {
-    width: 44px;
-    background-image: url("../img/ingrid_logo_icn.png");
-    background-position: center;
-  }
-}
-
 .ga-osmLayer {
-	background-image: url("../img/bg/ga-osmLayer.png") !important;
+    background-image: url("../img/bg/ga-osmLayer.png") !important;
 }
 
 .ga-sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light {
-	background-image: url("../img/bg/ga-light.png") !important;
+    background-image: url("../img/bg/ga-light.png") !important;
 }
 
 .icon-user {
-	display: none !important;
+    display: none !important;
 }
 
 .navbar-fixed-top {
-	box-shadow:none;
+    box-shadow:none;
 }
 
 #header {
@@ -74,7 +45,7 @@
   }
 }
 #pulldown-content {
-	top: 0;
+    top: 0;
 }
 
 @media (max-width: 768px), (max-height: 600px) {
