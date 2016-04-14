@@ -20,7 +20,7 @@ goog.require('ga_urlutils_service');
   var parseExtent = function(stringBox2D, gaGlobalOptions) {
       var extentString = stringBox2D.split(" ");
       var extent = [];
-      for(entry in extentString){
+      for(var entry in extentString){
           extent.push(parseFloat(extentString[entry]));
       }
       extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg));
@@ -32,7 +32,7 @@ goog.require('ga_urlutils_service');
     var visible = originToZoomLevel.hasOwnProperty(res.attrs.origin);
    var extentString = res.attrs.geom_st_box2d.split(" ");
     var extent = [];
-    for(entry in extentString){
+    for(var entry in extentString){
         extent.push(parseFloat(extentString[entry]));
     }
     var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
@@ -364,7 +364,7 @@ goog.require('ga_urlutils_service');
                 // INGRID: Change selection handling of nominatim
                 var extentString = res.attrs.geom_st_box2d.split(" ");
                 var extent = [];
-                for(entry in extentString){
+                for(var entry in extentString){
                     extent.push(parseFloat(extentString[entry]));
                 }
                 var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
@@ -541,7 +541,7 @@ goog.require('ga_urlutils_service');
             $scope.tabstart = tabStarts[2];
             // INGRID: Change search URL for layer search
             // TODO: Search layer service not existing yet
-            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/ingrid/data/layers.json';
+            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/data/layers.json';
 
             $scope.preview = function(res) {
               if (gaBrowserSniffer.mobile) {

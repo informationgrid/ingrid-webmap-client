@@ -94,7 +94,7 @@ goog.require('ga_urlutils_service');
 
           this.updateParams = function(p) {
             angular.extend(params, p);
-            // INGRID: Update URL outside of iFrame 
+            // INGRID: Update URL outside of iFrame
             if(parent.onParamChange != undefined){
                 parent.onParamChange(params, p);
             }

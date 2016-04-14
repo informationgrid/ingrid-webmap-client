@@ -45,7 +45,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta property="og:type" content="WebApplication"/>
     <meta property="og:url" content="https://map.geo.admin.ch"/>
     <!-- INGRID: Change icon --> 
-    <meta property="og:image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta property="og:image" content="img/ingrid_logo_icn.png"/>
 
     <!-- Twitter Card Infos -->
     <meta name="twitter:card" content="summary"/>
@@ -54,7 +54,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="twitter:title" content="geo.admin.ch"/>
     <meta name="twitter:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta name="twitter:image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta name="twitter:image" content="img/ingrid_logo_icn.png"/>
     <meta name="twitter:url" content="https://map.geo.admin.ch"/>
 
     <!-- Facebook Specific fb:admins and fb.appid -->
@@ -63,11 +63,11 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta itemprop="name" content="geo.admin.ch"/>
     <meta itemprop="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta itemprop="image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta itemprop="image" content="img/ingrid_logo_icn.png"/>
 
     <script>
       (function(){
-        var w = window, l = w.location, n = w.navigator, pathname, p = 'desktop',
+        var w = window, l = w.location, n = w.navigator, pathname, p = 'mobile',
           m = l.search.match(/(?:mobile=(true|false))/);
 
         if (!l.origin) { l.origin = l.protocol + "//" + l.hostname } // IE fix
@@ -79,12 +79,12 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
 
         var redirectToMobile = function() {
-          pathname = !/(index|embed)\.ingrid.dev.html$/.test(l.pathname) ?
-            l.pathname + 'mobile.ingrid.dev.html' : l.pathname.replace(/(index|embed)\.ingrid.dev.html$/, 'mobile.ingrid.dev.html');
+          pathname = !/(index|embed)\.ingrid.html$/.test(l.pathname) ?
+            l.pathname + 'mobile.ingrid.html' : l.pathname.replace(/(index|embed)\.ingrid.html$/, 'mobile.ingrid.html');
           l.href = l.origin + pathname + l.search;
         }
         var redirectToDesktop = function() {
-          l.href = l.origin + l.pathname.replace(/(mobile|embed)\.ingrid.dev.html$/, 'index.ingrid.dev.html') + l.search;
+          l.href = l.origin + l.pathname.replace(/(mobile|embed)\.ingrid.html$/, 'index.ingrid.html') + l.search;
         }
 
         var onMobile = ((('ontouchstart' in w) ||
@@ -100,10 +100,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       })();
     </script>
     <link href="style/app.css" rel="stylesheet"/>
-    <!-- INGRID: Add ingrid style --> 
-    <link href="ingrid/style/app.ingrid.css" rel="stylesheet"/>
     <!-- INGRID: Change icon --> 
-    <link rel="shortcut icon" type="image/x-icon" href="ingrid/img/ingrid_logo_icn.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
   </head>
 
   <body class="{{topicId}}" 
@@ -142,7 +140,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <![endif]-->
 	<!-- INGRID: Remove icon
     <div ng-cloak class="corner-ribbon 
-    bottom-left
+    top-left    
     sticky red shadow" ng-show="globals.is3dActive">
       2.5D - ALPHA
     </div>
@@ -154,18 +152,6 @@ itemscope itemtype="http://schema.org/WebApplication"
       <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
       <div id="search-container" ng-controller="GaSearchController">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
-        <span ga-help="24,31,25" ga-help-options="{showOnHover:true}"></span>
-      </div>
-      <div id="toptools">
-        <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
-        <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
-          <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
-        </a>&nbsp;&nbsp;
-        <a target="_blank" href="//help.geo.admin.ch/?lang={{langId}}" translate>help_label</a>&nbsp;&nbsp;
-        <a href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
-        <div ng-controller="GaTranslationController">
-          <div ga-translation-selector ga-translation-selector-options="options"></div>
-        </div>
       </div>
       <!-- <div class="alert alert-danger" translate>offline_sorry</div>  -->
     </div> <!-- #header -->
@@ -196,6 +182,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         <div ga-tilt3d ng-if="globals.dev3d"></div>
         <div ga-time-selector-bt ga-time-selector-bt-map="map"></div> 
         <div ga-rotate ga-rotate-map="map"></div>
+        <div ga-offline-bt></div>
       </div>
       <div ga-swipe 
            ga-swipe-map="map" 
@@ -203,9 +190,9 @@ itemscope itemtype="http://schema.org/WebApplication"
            style="display:none;">
       </div>
     </div> <!-- #map -->
-    <div ng-cloak ng-show="globals.is3dActive"
-         ga-cesium-inspector
-         ga-cesium-inspector-ol3d="::ol3d"></div>
+    <div ga-offline-selector
+         ga-offline-selector-map="map">
+    </div>
 
     <div ga-controls3d ga-controls3d-ol3d="::ol3d" ng-if="ol3d" ng-show="globals.is3dActive" ga-controls3d-pegman="globals.pegman"></div>
 
@@ -222,20 +209,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom">
       <div  class="pull-left" ga-scale-line ga-scale-line-map="map" ng-show="!globals.is3dActive"></div>
 
-      <div id="mouseposition" class="pull-left hidden-xs" ng-controller="GaMousePositionController">
-        <select ng-model="options.projection"
-                ng-options="p.label for p in mousePositionProjections">
-        </select>
-        <div ga-mouse-position
-             ga-mouse-position-map="map"
-             ga-mouse-position-ol3d="::ol3d"
-             ga-mouse-position-options="options"></div>
-      </div>
      <div class="pull-right">
         <a target="_blank" href="http://www.geo.admin.ch/internet/geoportal/{{langId}}/home/geoadmin/contact.html#copyright" translate>copyright_label</a>
-      </div>
-      <div class="pull-right">
-        <a target="_blank" translate="{{topicId + '_service_link_label'}}" translate-attr-href="{{topicId + '_service_link_href'}}"></a>
       </div>
     </div><!-- #footer -->
 
@@ -283,120 +258,23 @@ itemscope itemtype="http://schema.org/WebApplication"
           </div>
         </div> <!-- .panel -->
 
-        <!-- Print -->
-        <div class="panel" ng-show="!globals.is3dActive">
-          <a id="printHeading" class="panel-heading accordion-toggle collapsed"
-             data-toggle="collapse" data-parent="#pulldown-content" href="#print"
-             ga-collapsible-show="globals.printShown">
-            <i class="icon-caret-down"></i>
-            <span translate>print</span>
-          </a>
-          <div id="print" class="panel-collapse collapse">
-            <div class="panel-body" ng-controller="GaPrintController">
-              <div ga-print
-                   ga-print-map="map"
-                   ga-print-options="options"
-                   ga-print-active="globals.printShown"></div>
-            </div>
-          </div>
-        </div>  <!-- .panel -->
- 
-        <!-- Draw -->
-        <div class="panel" ng-show="!globals.is3dActive">
-          <a id="drawHeading" class="panel-heading accordion-toggle collapsed"
-             data-toggle="collapse" data-parent="#pulldown-content" href="#draw"
-             ga-collapsible-show="globals.isDrawActive" accesskey="r">
-            <i class="icon-caret-down"></i>
-            <span translate>draw_panel_title</span>
-          </a>
-          <div id="draw" class="panel-collapse collapse">
-            <div class="panel-body" ng-controller="GaDrawController">
-              <div ga-draw 
-                   ga-draw-map="map" 
-                   ga-draw-options="options"
-                   ga-draw-active="globals.isDrawActive">
-              </div>
-            </div>
-          </div>
-        </div> <!-- .panel -->
-        
-        <!-- Tools -->
-        <div class="panel"> 
-          <a id="toolsHeading" class="panel-heading accordion-toggle collapsed"
-             data-toggle="collapse" data-parent="#pulldown-content" href="#tools">
-            <i class="icon-caret-down"></i>
-            <span translate>map_tools</span>
-          </a>
-          <div id="tools" class="collapse">
-            <div class="panel-body panel-body-wide panel-cursor">
-              <ul>
-                <li><!-- Import WMS -->
-                  <a href="" ng-click="globals.importWmsPopupShown = !globals.importWmsPopupShown"
-                     data-original-title="{{'wmsimport_tooltip' | translate}}"
-                     class="ga-custom-tooltip" data-placement="bottom"
-                     accesskey="w">
-                    <span ng-class="{'selected': globals.importWmsPopupShown}" translate>import_wms</span>
-                  </a>
-                </li>
-                <li><!-- Import KML -->
-                  <a href=""  ng-click="globals.importKmlPopupShown = !globals.importKmlPopupShown"
-                     data-original-title="{{'kmlimport_tooltip' | translate}}"
-                     class="ga-custom-tooltip" data-placement="bottom"
-                     accesskey="k">
-                    <span ng-class="{'selected': globals.importKmlPopupShown}" translate>import_kml</span>
-                  </a>
-                </li>
-                <li ng-show="!globals.is3dActive"><!-- Compare -->
-                  <a href=""  ng-click="globals.isSwipeActive = !globals.isSwipeActive"
-                     data-original-title="{{'swipe_tooltip' | translate}}"
-                     class="ga-custom-tooltip" data-placement="bottom"
-                     accesskey="c">
-                    <span ng-class="{'selected': globals.isSwipeActive}" translate>swipe</span>
-                  </a>
-                </li>
-                <li ng-show="!globals.is3dActive"><!-- Feature Tree -->
-                  <a href=""  ng-click="globals.isFeatureTreeActive = !globals.isFeatureTreeActive"
-                     data-original-title="{{'featuretree_tooltip' | translate}}"
-                     class="ga-custom-tooltip" data-placement="top"
-                     accesskey="s">
-                    <span  ng-class="{'selected': globals.isFeatureTreeActive}" translate>object_information</span>
-                  </a>
-                </li>
-                <li><!-- INGRID: Add search tool entry -->
-                  <a href=""  ng-click="globals.isSearchToolActive = !globals.isSearchToolActive;globals.isDrawActive = false;globals.isMeasureActive = false;"
-                     data-original-title="{{'search_tool_tooltip' | translate}}"
-                     class="ga-custom-tooltip" data-placement="bottom"
-                     accesskey="r">
-                    <span  ng-class="{'selected': globals.isSearchToolActive}" translate>searchtool</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div> <!-- .panel -->
 
         <!-- Catalog -->
         <div class="panel" ng-hide="globals.isDrawActive">
-          <div class="theme-toggle">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <span translate>choose_theme</span>
-              <i class="icon-chevron-sign-right"></i>
-            </a>
-            <div class="dropdown-menu">
-              <div ga-topic ga-topic-ui="list"></div>
-            </div>
-          </div>
           <a id="catalogHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" href="#catalog"
              ga-collapsible-show="globals.catalogShown">
             <i class="icon-caret-down"></i>
             <span>{{topicId | translate}}</span>
   
-            <span ga-help="32,37,39" ga-help-options="{showOnHover:true}"></span>
 
           </a>
           <div id="catalog" class="collapse" ng-controller="GaCatalogtreeController">
   
+            <label class="topic-container">
+              <span translate>change_topic</span>
+              <div ga-topic ga-topic-ui="select"></div>
+            </label>
             <div class="panel-body panel-body-wide accordion-inner-catalog" ng-if="!globals.offline" ga-catalogtree ga-catalogtree-map="map" ga-catalogtree-options="options">
             </div>
           </div>
@@ -410,12 +288,12 @@ itemscope itemtype="http://schema.org/WebApplication"
             <i class="icon-caret-down"></i>
             <span translate>layers_displayed</span>
 
-            <span ga-help="34,35,36" ga-help-options="{showOnHover:true}"></span>
           </a>
           <div id="selection" class="collapse">
             <div class="panel-body panel-body-wide" ga-layermanager ga-layermanager-map="map">
             </div>
             <div class="ga-more-layers"
+                 ng-click="globals.pulldownShown = !globals.phone"
             >
               <a href="" ga-help-highlight=".ga-search-input-container input" translate>
                 help_search_data_link
@@ -424,6 +302,36 @@ itemscope itemtype="http://schema.org/WebApplication"
           </div>
         </div> <!-- .panel -->
 
+        <div class="panel">
+          <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings">
+            <i class="icon-caret-down"></i>
+            <span translate>settings</span>
+          </a>
+          <div id="settings" class="collapse">
+            <div class="panel-body">
+              <p>
+                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+                  <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
+                </a>
+              </p>
+              <p>
+                <a href="{{deviceSwitcherHref}}" translate>desktop_redirect</a>
+              </p>
+              <div class="options">
+                <label ng-controller="GaTranslationController">
+                  <span translate>lang_chooser_label</span>
+                  <div ga-translation-selector ga-translation-selector-options="options"></div>
+                </label>
+              </div>
+              <hr>
+              <p>
+                <a target="_blank" translate translate-attr-href="{{topicId + '_service_link_href'}}" >{{topicId + '_service_link_label'}}</a>
+                <br>
+                <a target="_blank" href="http://www.geo.admin.ch/internet/geoportal/{{langId}}/home/geoadmin/contact.html#copyright" translate>copyright_label</a>
+              </p>
+            </div>
+          </div>
+        </div> <!-- .panel -->
         <button id="menu-button" class="btn btn-default"
                 ng-click="globals.pulldownShown=!globals.pulldownShown">
           <span class="ga-hidden-mobile"> 
@@ -436,6 +344,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div> <!-- #pulldown-content -->
     </div> <!-- #pulldown -->
 
+    <!-- offline dialog -->
+    <div ng-cloak translate-cloak ga-offline-menu ga-offline-menu-map="map"></div>
     <!-- Popup: Feedback -->
     <div ga-popup="globals.feedbackPopupShown"
          ga-popup-options="{title:'problem_announcement', help:'70'}"
@@ -450,31 +360,6 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
     </div> <!-- end Feedback -->
 
-    <!-- Popup: Import WMS -->
-    <div ga-popup="globals.importWmsPopupShown"
-         ga-popup-options="{title:'import_wms', help:'62'}"
-         ga-draggable=".popover-title"
-         id="import-wms-popup" >
-      <div ng-controller="GaImportWmsController">
-        <div ga-import-wms
-             ga-import-wms-map="map"
-             ga-import-wms-options="options">
-        </div>
-      </div>
-    </div> <!-- end Import WMS -->
-
-    <!-- Popup: Import KML -->
-    <div ga-popup="globals.importKmlPopupShown"
-         ga-popup-options="{title:'import_kml', help:'63'}"
-         ga-draggable=".popover-title"
-         id="import-kml-popup" >
-      <div ng-controller="GaImportKmlController">
-        <div ga-import-kml
-             ga-import-kml-map="map"
-             ga-import-kml-options="options">
-        </div>
-      </div>
-    </div><!-- end Import KML -->
     <!-- Popup: Feature Tree -->
     <div ng-controller="GaFeaturetreeController">
       <div ga-popup="globals.isFeatureTreeActive"
@@ -518,18 +403,23 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
     </div><!-- end Feature Tree -->
 
-    <!-- INGRID: Search tool popup -->
-    <div ga-popup="globals.isSearchToolActive"
-         ga-popup-options="{title:'searchtool', help:'67'}"
-         ga-draggable=".popover-title"
-         id="searchtool-popup" >
-      <div ng-controller="GaSearchtoolController">
-      	<div ga-searchtool 
-             ga-searchtool-map="map" 
-             ga-searchtool-options="options"
-             ga-searchtool-active="globals.isSearchToolActive && options.hasPopupFocus"></div>
+    <div ng-if="globals.homescreen" class="popover homescreen"
+         ng-class="{
+           'visible': globals.homescreen, 
+           'bottom': globals.tablet,
+           'top': !globals.tablet,
+           'tr': (globals.ios >= 8)
+         }">
+      <div class="arrow"></div>
+      <div class="popover-title">
+        <span translate>homescreen_title</span>
+        <button type="button" class="ga-icon ga-btn icon-remove" ng-click="globals.homescreen=false"></button>
       </div>
-    </div><!-- end Search Tool -->
+      <div class="popover-content">
+        <i class=icon-share></i>&nbsp;
+        <span translate>homescreen_content</span>
+      </div>
+    </div>
 
     <!-- in source, we need to load it here because IE9 ignores it in
          the comments for reasons unknown to me. In prod, it's only
@@ -571,11 +461,16 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- ol3 and ol3-cesium are built together in debug mode --> 
     <script src="lib/ol3cesium-debug.js"></script>
     <!-- INGRID: Change deps -->
-    <script src="deps.ingrid.js"></script>
+    <script src="deps.js"></script>
     <script>
       goog.require('geoadmin');
     </script>
 
+    <script>
+      window.addEventListener('load', function() {
+        FastClick.attach(document.body);
+      }, false);
+    </script>
 
     <script>
       (function() {
@@ -587,7 +482,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         var module = angular.module('geoadmin');
         var cacheAdd = '' != '' ? '/' + '' : '';
         <!-- INGRID: Change html pages -->
-        var pathname = location.pathname.replace(/(index|mobile|embed)\.ingrid.dev.html$/g, '');
+        var pathname = location.pathname.replace(/(index|mobile|embed)\.ingrid.html$/g, '');
 
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
@@ -628,7 +523,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         module.config(function($translateProvider, gaGlobalOptions) {
           $translateProvider.useStaticFilesLoader({
             // INGRID: Change locales path
-            prefix: 'ingrid/locales/',
+            prefix: './locales/',
             suffix: '.json'
           });
           $translateProvider.cloakClassName('ng-cloak');
@@ -647,13 +542,13 @@ itemscope itemtype="http://schema.org/WebApplication"
           gaLayersProvider.wmtsMapProxyGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
           gaLayersProvider.terrainTileUrlTemplate = '//3d.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
           // INGRID: Change layer service URL
-          gaLayersProvider.layersConfigUrlTemplate = './ingrid/data/layers.json';
+          gaLayersProvider.layersConfigUrlTemplate = '../data/layers.json';
           // INGRID: Change legend service URL
           gaLayersProvider.legendUrlTemplate = gaGlobalOptions.apiUrl + '/rest/services/{Topic}/MapServer/{Layer}/legend?lang={Lang}';
         });
         module.config(function(gaTopicProvider, gaGlobalOptions) {
           // INGRID: Change topic service URL
-          gaTopicProvider.topicsUrl = './ingrid/data/topics.json';
+          gaTopicProvider.topicsUrl = '../data/topics.json';
         });
 
         module.config(function(gaExportKmlProvider, gaGlobalOptions) {
@@ -693,6 +588,16 @@ itemscope itemtype="http://schema.org/WebApplication"
 
       })();
 
+      (function(){
+        $(window).bind("orientationchange", function(){
+          $('#header').hide();
+          setTimeout(function(){
+            $('#header').show(); 
+            // iOS 7 minimal-ui meta tag bug
+            window.scrollTo(0, 0);
+          }, 0);
+        });
+      })();
     </script>
   </body>
 </html>

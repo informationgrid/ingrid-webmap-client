@@ -14,8 +14,33 @@
         <developerConnection>scm:git:git@github.com:informationgrid/ingrid-webmap-client.git</developerConnection> 
         <tag>HEAD</tag>
     </scm>
+    <profiles>
+      <profile>
+        <id>Windows</id>
+        <activation>
+          <os>
+            <family>Windows</family>
+          </os>
+        </activation>
+        <properties>
+          <script.extension>.bat</script.extension>
+        </properties>
+      </profile>
+      <profile>
+        <id>unix</id>
+        <activation>
+          <os>
+            <family>unix</family>
+          </os>
+        </activation>
+        <properties>
+          <script.extension>.sh</script.extension>
+        </properties>
+      </profile>
+    </profiles>
     <build>
         <finalName>${project.artifactId}</finalName>
+        
         <!-- ==================== PLUGINS ==================== -->
         <plugins>
             <plugin>
@@ -34,7 +59,7 @@
                 <configuration>
                     <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES 
                         needed at runtime in classes-path -->
-                    <!-- <packagingExcludes>wms/*.xml</packagingExcludes> -->
+                    <packagingExcludes>frontend/ingrid/*</packagingExcludes>
                     <archiveClasses>false</archiveClasses>
                     <archive>
                         <manifestEntries>
@@ -53,26 +78,23 @@
                     <downloadSources>1.5</downloadSources>
                 </configuration>
             </plugin>
-            <!-- 
             <plugin>
-                <groupId>biz.gabrys.maven.plugins</groupId>
-                <artifactId>lesscss-maven-plugin</artifactId>
-                <version>1.1</version>
+              <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
                 <executions>
                     <execution>
-                        <id>lesscss-ingrid</id>
+                        <id>compile-jni</id>
+                        <phase>compile</phase>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/webapp/frontend/ingrid/style</sourceDirectory>
-                            <outputDirectory>${project.build.directory}/${project.build.finalName}/frontend/ingrid/style</outputDirectory>
-                            <outputFileFormat>app.css</outputFileFormat>
+                            <executable>${project.basedir}/compile${script.extension}</executable>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-             -->
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <executions>
@@ -82,39 +104,46 @@
                             <tasks>
                                 <echo>Copy mf-geoadmin 'src/components'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/components">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/components">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/components/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/img'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/img">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/img">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/img/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/js'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/js">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/js">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/js/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/lib'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/lib">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/lib">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/lib/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/locales'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/locales">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/locales">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/locales/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/style'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/style">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/style">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/style/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/'</echo>
                                 <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/">
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/" />
                                 </copy>
+                                <!-- 
+                                <echo>Copy mf-geoadmin 'prd/'</echo>
+                                <copy
+                                    todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
+                                    <fileset dir="${project.basedir}/mf-geoadmin3/prd/" />
+                                </copy>
+                                 -->
                             </tasks>
                         </configuration>
                         <goals>

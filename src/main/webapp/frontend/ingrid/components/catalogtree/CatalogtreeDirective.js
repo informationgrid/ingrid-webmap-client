@@ -111,7 +111,7 @@ goog.require('ga_translation_service');
               }
               var labelsOnly = false;
               // INGRID: Change topic URL
-              var url = './ingrid/data/catalog-' + topic.id + '.json';
+              var url = '../data/catalog-' + topic.id + '.json';
               /*
               var url = scope.options.catalogUrlTemplate
                   .replace('{Topic}', topic.id);

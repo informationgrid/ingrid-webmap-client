@@ -82,7 +82,7 @@ goog.require('ga_permalink');
           options: '=gaShareOptions'
         },
         // INGRID: Change HTML template URL
-        templateUrl: 'ingrid/components/share/partials/share.html',
+        templateUrl: 'components/share/partials/share.html',
         link: function(scope, element, attrs) {
           var permalinkInput = $('.ga-share-permalink input');
           var shortenUrl = scope.options.shortenUrl;

@@ -45,7 +45,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta property="og:type" content="WebApplication"/>
     <meta property="og:url" content="https://map.geo.admin.ch"/>
     <!-- INGRID: Change icon --> 
-    <meta property="og:image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta property="og:image" content="img/ingrid_logo_icn.png"/>
 
     <!-- Twitter Card Infos -->
     <meta name="twitter:card" content="summary"/>
@@ -54,7 +54,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="twitter:title" content="geo.admin.ch"/>
     <meta name="twitter:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta name="twitter:image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta name="twitter:image" content="img/ingrid_logo_icn.png"/>
     <meta name="twitter:url" content="https://map.geo.admin.ch"/>
 
     <!-- Facebook Specific fb:admins and fb.appid -->
@@ -63,7 +63,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta itemprop="name" content="geo.admin.ch"/>
     <meta itemprop="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta itemprop="image" content="ingrid/img/ingrid_logo_icn.png"/>
+    <meta itemprop="image" content="img/ingrid_logo_icn.png"/>
 
     <script>
       (function(){
@@ -79,12 +79,12 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
 
         var redirectToMobile = function() {
-          pathname = !/(index|embed)\.ingrid.dev.html$/.test(l.pathname) ?
-            l.pathname + 'mobile.ingrid.dev.html' : l.pathname.replace(/(index|embed)\.ingrid.dev.html$/, 'mobile.ingrid.dev.html');
+          pathname = !/(index|embed)\.ingrid.html$/.test(l.pathname) ?
+            l.pathname + 'mobile.ingrid.html' : l.pathname.replace(/(index|embed)\.ingrid.html$/, 'mobile.ingrid.html');
           l.href = l.origin + pathname + l.search;
         }
         var redirectToDesktop = function() {
-          l.href = l.origin + l.pathname.replace(/(mobile|embed)\.ingrid.dev.html$/, 'index.ingrid.dev.html') + l.search;
+          l.href = l.origin + l.pathname.replace(/(mobile|embed)\.ingrid.html$/, 'index.ingrid.html') + l.search;
         }
 
         var onMobile = ((('ontouchstart' in w) ||
@@ -100,10 +100,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       })();
     </script>
     <link href="style/app.css" rel="stylesheet"/>
-    <!-- INGRID: Add ingrid style --> 
-    <link href="ingrid/style/app.ingrid.css" rel="stylesheet"/>
     <!-- INGRID: Change icon --> 
-    <link rel="shortcut icon" type="image/x-icon" href="ingrid/img/ingrid_logo_icn.png"/>
+    <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
   </head>
 
   <body class="{{topicId}}" 
@@ -237,7 +235,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- ol3 and ol3-cesium are built together in debug mode --> 
     <script src="lib/ol3cesium-debug.js"></script>
     <!-- INGRID: Change deps -->
-    <script src="deps.ingrid.js"></script>
+    <script src="deps.js"></script>
     <script>
       goog.require('geoadmin');
     </script>
@@ -260,7 +258,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         var module = angular.module('geoadmin');
         var cacheAdd = '' != '' ? '/' + '' : '';
         <!-- INGRID: Change html pages -->
-        var pathname = location.pathname.replace(/(index.ingrid.dev|mobile.ingrid.dev|embed.ingrid.dev)\.html$/g, '');
+        var pathname = location.pathname.replace(/(index.ingrid|mobile.ingrid|embed.ingrid)\.html$/g, '');
 
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
@@ -301,7 +299,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         module.config(function($translateProvider, gaGlobalOptions) {
           $translateProvider.useStaticFilesLoader({
             // INGRID: Change locales path
-            prefix: 'ingrid/locales/',
+            prefix: './locales/',
             suffix: '.json'
           });
           $translateProvider.cloakClassName('ng-cloak');
@@ -320,13 +318,13 @@ itemscope itemtype="http://schema.org/WebApplication"
           gaLayersProvider.wmtsMapProxyGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
           gaLayersProvider.terrainTileUrlTemplate = '//3d.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
           // INGRID: Change layer service URL
-          gaLayersProvider.layersConfigUrlTemplate = './ingrid/data/layers.json';
+          gaLayersProvider.layersConfigUrlTemplate = '../data/layers.json';
           // INGRID: Change legend service URL
           gaLayersProvider.legendUrlTemplate = gaGlobalOptions.apiUrl + '/rest/services/{Topic}/MapServer/{Layer}/legend?lang={Lang}';
         });
         module.config(function(gaTopicProvider, gaGlobalOptions) {
           // INGRID: Change topic service URL
-          gaTopicProvider.topicsUrl = './ingrid/data/topics.json';
+          gaTopicProvider.topicsUrl = '../data/topics.json';
         });
 
         module.config(function(gaExportKmlProvider, gaGlobalOptions) {

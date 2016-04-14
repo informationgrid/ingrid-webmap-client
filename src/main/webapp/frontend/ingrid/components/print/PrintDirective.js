@@ -1102,7 +1102,7 @@ goog.require('ga_time_service');
           active: '=gaPrintActive'
         },
         // INGRID: Change HTML template path
-        templateUrl: 'ingrid/components/print/partials/print.html',
+        templateUrl: 'components/print/partials/print.html',
         controller: 'GaPrintDirectiveController',
         link: function(scope, elt, attrs, controller) {
           scope.isIE = gaBrowserSniffer.msie;
