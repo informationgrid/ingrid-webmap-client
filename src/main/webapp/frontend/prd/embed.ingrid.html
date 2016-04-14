@@ -95,7 +95,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           redirectToDesktop();
         } else if (m=='true' || (onMobile && p=='desktop') ) {
           // INGRID: Disabled mobile version
-          // redirectToMobile();
+          redirectToMobile();
         }
       })();
     </script>
@@ -195,52 +195,13 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
 
 
-    <!-- in source, we need to load it here because IE9 ignores it in
-         the comments for reasons unknown to me. In prod, it's only
-         loaded in IE9 -->
-    <script src="lib/IE9Fixes.js"></script>
     <script>
-      //This call only affects browser <= IE9
-      IE9Fix.call(this);
-    </script>
-    <script src="lib/jquery-2.0.3.js"></script>
-    <script src="lib/jQuery.XDomainRequest.js"></script>
-    <script src="lib/angular.js"></script>
-    <script src="lib/angular-translate.js"></script>
-    <script src="lib/angular-translate-loader-static-files.js"></script>
-    <script src="lib/d3-3.3.1.js"></script>
-    <script src="lib/bootstrap-3.3.1.js"></script>
-    <script src="lib/typeahead-0.9.3.js"></script>
-    <script src="lib/proj4js-compressed.js"></script>
-    <script src="lib/EPSG21781.js"></script>
-    <script src="lib/EPSG2056.js"></script>
-    <script src="lib/EPSG32631.js"></script>
-    <script src="lib/EPSG32632.js"></script>
-    <script src="lib/fastclick.js"></script>
-    <script src="lib/localforage.js"></script>
-    <script src="lib/filesaver.js"></script>
-    <script src="lib/moment-with-customlocales.js"></script>
-    <script src="lib/Cesium/Cesium.js"></script>
-   
-
-    <!-- Use Closure to load the application scripts -->
-    <script>
-      window.CLOSURE_NO_DEPS = true;
-    </script>
-
-    <!-- ol-debug.js includes Closure's base.js code, so we don't
-         need to load base.js ourselves. We keep Closure's base.js file
-         around in case we need to test with ol.js or ol-simple.js. -->
-    <!--<script src="lib/closure/base.js"></script>-->
-    <!-- ol3 and ol3-cesium are built together in debug mode --> 
-    <script src="lib/ol3cesium-debug.js"></script>
-    <!-- INGRID: Change deps -->
-    <script src="deps.js"></script>
-    <script>
-      goog.require('geoadmin');
-    </script>
-
-    <script>
+      window.CESIUM_BASE_URL="./lib/Cesium/";
+    </script> <script src="./lib/build.js"></script> <!--[if IE]>
+    <script src="./lib/bootstrap-datetimepicker.min.js"></script>
+    <script src="./lib/d3-3.3.1.min.js"></script>
+    <script src="./lib/jQuery.XDomainRequest.js"></script>
+    <![endif]--> <script>
       window.addEventListener('load', function() {
         if (window.name !== "embed" && window.location == window.parent.location) {
           document.body.innerHTML = "The map.geo.admin.ch embed page must be used in an iframe."
