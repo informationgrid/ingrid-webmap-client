@@ -103,7 +103,8 @@ public class ConvertConfig {
             System.out.println( "Error Services for Projection '" + defaultEPSG + "':" );
             if(projectionErrorServices.size() > 0){
                 for (int i = 0; i < projectionErrorServices.size(); i++) {
-                    System.out.println( projectionErrorServices.get( i ) );
+                    int num = i + 1;
+                    System.out.println( projectionErrorServices.get( i ) + " (" + num + ")");
                 }
             }else{
                 System.out.println( "No errors !!!" );
@@ -112,12 +113,13 @@ public class ConvertConfig {
             System.out.println( "Success Services for Projection '" + defaultEPSG + "':" );
             if(projectionSuccessServices.size() > 0){
                 for (int i = 0; i < projectionSuccessServices.size(); i++) {
-                    System.out.println( projectionSuccessServices.get( i ) );
+                    int num = i + 1;
+                    System.out.println( projectionSuccessServices.get( i ) + " (" + num + ")");
                 }
             }else{
                 System.out.println( "No success services !!!" );
             }
-            
+            System.out.println( "*********************************************************************" );
         }
     }
 
