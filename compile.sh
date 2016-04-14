@@ -9,6 +9,5 @@ cp -r ../src/main/webapp/frontend/ingrid/js src/
 cp -r ../src/main/webapp/frontend/ingrid/style src/
 cp -r ../src/main/webapp/frontend/ingrid/img src/
 cp -r ../src/main/webapp/frontend/ingrid/locales src/
-make ol3cesium
 make dev
 make prod
