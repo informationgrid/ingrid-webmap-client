@@ -99,7 +99,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
       })();
     </script>
-    <link href="style/app.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style/font-awesome-3.2.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style/app.css"/>
     <!-- INGRID: Change icon --> 
     <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
   </head>
@@ -149,7 +150,7 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div ga-seo ga-seo-options="options" ga-seo-map="map"></div>
     </div>
     <div ng-cloak translate-cloak id="header" class="navbar navbar-fixed-top">
-      <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
+      <button class="btn btn-default ga-menu-bt" ng-click="globals.pulldownShown=true" translate><i class="icon-reorder" style="font-size: 2em"></i></button>
       <div id="search-container" ng-controller="GaSearchController">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
         <span ga-help="24,31,25" ga-help-options="{showOnHover:true}"></span>
