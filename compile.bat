@@ -1,3 +1,3 @@
-set PATH=C:\cygwin64\bin;%PATH%
+set PATH=%CYGWIN_HOME%\bin;%PATH%
 
 bash compile.sh
