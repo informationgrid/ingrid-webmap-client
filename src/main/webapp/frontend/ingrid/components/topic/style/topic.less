@@ -1,0 +1,84 @@
+[ga-topic] {
+
+  .ga-topics-sprite {
+    margin-left: auto;
+    margin-right: auto;
+    width : 110px;
+    height: 60px;
+    background: url('../../../img/topics.png');
+  }
+
+  .ga-topics-sprite-themen {
+    background: data-uri('themen.png');
+    width: 140px;
+  }
+
+  .ga-topics-sprite-anbieter {
+    background: data-uri('anbieter.png');
+    width: 140px;
+  }
+
+  .ga-topics-sprite-dev {
+    .animation(~"play1 2.45s steps(7) infinite, play2 0.35s steps(4) infinite");
+  }
+
+  .play1-frames () {
+    0%   { background-position-y: 0px; }
+    100% { background-position-y: -420px; }
+  }
+
+  .play2-frames () {
+    0%   { background-position-x: 0px }
+    100% { background-position-x: -440px}
+  }
+
+  @-webkit-keyframes play1 {.play1-frames;}
+ 
+  @keyframes play1 {.play1-frames;}  
+  
+  @-webkit-keyframes play2 {.play2-frames;}
+
+  @keyframes play2 {.play2-frames;}
+
+  &:not([ga-topic-ui='select']) {
+    width: 640px;
+    padding: 0px 4px;
+    transition: width 1s ease, height 1s ease;
+
+    & > div {
+      float: left;
+      margin: 2px;
+      padding: 3px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      width: 154px;
+      text-align: center;
+
+      &.ga-topic-active, &:hover {
+        border: 1px solid #c6c6c6;
+        background-color: #efefef;
+      }
+    }
+
+    // Transform to a simple list when screen is really too small
+    @media (max-width: 910px), (max-height: @screen-sm-max-height) {
+      width: 160px;
+      height: 250px;
+      padding: 0px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      
+      & > div {
+        width: 140px;
+
+        .ga-topics-sprite {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &[ga-topic-ui='select'] {
+    width: 100%;
+  }
+}
