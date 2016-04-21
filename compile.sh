@@ -1,14 +1,13 @@
+# remove mf-geoadmin3
+rm -r mf-geoadmin3
+
+# clone repo
+git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
+
 cd ./mf-geoadmin3
 
 # checkout mf-geoadmin3 state
 git checkout 3a43911a12584353a6ea2422e5282ade258369b3
-
-# reset mf-geoadmin3 changes
-git reset
-git clean -f
-
-# clean mf-geoadmin3 build path
-make cleanall
 
 # copy ingrid files to mf-geoadmin3/src
 cp -r ../src/main/webapp/frontend/ingrid/scripts ./
@@ -27,3 +26,8 @@ make debug
 
 # make prod version
 make release
+
+cd ..
+
+# remove mf-geoadmin3
+rm -r mf-geoadmin3
