@@ -1,5 +1,5 @@
 # remove mf-geoadmin3
-rm -r mf-geoadmin3
+rm -rf mf-geoadmin3
 
 # clone repo
 git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
@@ -26,8 +26,3 @@ make debug
 
 # make prod version
 make release
-
-cd ..
-
-# remove mf-geoadmin3
-rm -r mf-geoadmin3
