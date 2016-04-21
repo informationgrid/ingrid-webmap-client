@@ -14,10 +14,12 @@ goog.require('ga_permalink');
    * Backgrounds manager
    */
   module.provider('gaBackground', function() {
-    this.$get = function($rootScope, $q, gaTopic, gaLayers, gaPermalink) {
+    this.$get = function($rootScope, $q, gaTopic, gaLayers, gaPermalink,
+        gaUrlUtils) {
       var isOfflineToOnline = false;
       var bg; // The current background
       var bgs = []; // The list of backgrounds available
+      var bgsP; // Promise resolved when the background service is initialized.
       var voidLayer = {id: 'voidLayer', label: 'void_layer'};
       // INGRID: Add OSM layer 
       var osmLayer = {id: 'osmLayer', label: 'bg_osm'};
@@ -48,7 +50,12 @@ goog.require('ga_permalink');
       };
 
       var getBgByTopic = function(topic) {
-        var topicBg = getBgById(topic.defaultBackground) || bgs[0];
+        var topicBg = null;
+        if (topic.plConfig) {
+          var p = gaUrlUtils.parseKeyValue(topic.plConfig);
+          topicBg = getBgById(p.bgLayer);
+        }
+        topicBg = topicBg || getBgById(topic.defaultBackground) || bgs[0];
         if (topicBg && !isOfflineToOnline) {
            return topicBg;
         }
@@ -89,7 +96,7 @@ goog.require('ga_permalink');
           var that = this;
           // Initialize the service when topics and layers config are
           // loaded
-          $q.all([gaTopic.loadConfig(), gaLayers.loadConfig()]).
+          bgsP = $q.all([gaTopic.loadConfig(), gaLayers.loadConfig()]).
               then(function() {
             updateDefaultBgOrder(gaTopic.get().backgroundLayers);
             var initBg = getBgById(gaPermalink.getParams().bgLayer);
@@ -107,6 +114,8 @@ goog.require('ga_permalink');
               isOfflineToOnline = !offline;
             });
           });
+
+          return bgsP;
         };
 
         this.getBackgrounds = function() {
@@ -155,6 +164,10 @@ goog.require('ga_permalink');
               broadcast();
              }
           }
+        };
+
+        this.loadConfig = function() {
+          return bgsP;
         };
 
         this.get = function() {

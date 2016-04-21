@@ -1,7 +1,7 @@
 cd ./mf-geoadmin3
 
 # checkout mf-geoadmin3 state
-git checkout 1014736cfb539665bf1f8c5ebc0e4ae7ffdb2745
+git checkout 3a43911a12584353a6ea2422e5282ade258369b3
 
 # reset mf-geoadmin3 changes
 git reset
@@ -19,8 +19,11 @@ cp -r ../src/main/webapp/frontend/ingrid/style src/
 cp -r ../src/main/webapp/frontend/ingrid/img src/
 cp -r ../src/main/webapp/frontend/ingrid/locales src/
 
+# make libs
+make libs
+
 # make dev version
-make dev
+make debug
 
 # make prod version
-make prod
+make release

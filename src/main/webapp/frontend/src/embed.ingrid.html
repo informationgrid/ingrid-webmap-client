@@ -94,8 +94,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         if (m=='false' || (!onMobile && p=='mobile') ) {
           redirectToDesktop();
         } else if (m=='true' || (onMobile && p=='desktop') ) {
-          // INGRID: Disabled mobile version
-          // redirectToMobile();
+          redirectToMobile();
         }
       })();
     </script>
@@ -104,7 +103,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
   </head>
 
-  <body class="{{topicId}}" 
+  <body class="{{topicId}} {{langId}}" 
         ng-class="{
           'search-focused': globals.searchFocused,
           'touch': globals.touch, 
@@ -181,7 +180,10 @@ itemscope itemtype="http://schema.org/WebApplication"
          ga-cesium-inspector-ol3d="::ol3d"></div>
 
     <div ga-controls3d ga-controls3d-ol3d="::ol3d" ng-if="ol3d" ng-show="globals.is3dActive" ga-controls3d-pegman="globals.pegman"></div>
-
+    <div ga-attribution-warning
+         ga-attribution-warning-ol3d="::ol3d">
+      <span translate>3d_overlay_warning</span>
+    </div>
 
     <div ga-timestamp-control ga-timestamp-control-map="map"></div>
 
@@ -191,25 +193,27 @@ itemscope itemtype="http://schema.org/WebApplication"
            ga-tooltip-map="::map"
            ga-tooltip-ol3d="::ol3d" 
            ga-tooltip-options="options"
-           ga-tooltip-active="!globals.isDrawActive"></div>
+           ga-tooltip-active="!globals.feedbackPopupShown && !globals.isDrawActive"></div>
     </div>
 
 
     <!-- in source, we need to load it here because IE9 ignores it in
          the comments for reasons unknown to me. In prod, it's only
          loaded in IE9 -->
+    <script src="lib/polyfill.js"></script>
     <script src="lib/IE9Fixes.js"></script>
     <script>
       //This call only affects browser <= IE9
       IE9Fix.call(this);
     </script>
-    <script src="lib/jquery-2.0.3.js"></script>
+    <script src="lib/jquery.js"></script>
     <script src="lib/jQuery.XDomainRequest.js"></script>
+    <script src="lib/slip.js"></script>
     <script src="lib/angular.js"></script>
     <script src="lib/angular-translate.js"></script>
     <script src="lib/angular-translate-loader-static-files.js"></script>
-    <script src="lib/d3-3.3.1.js"></script>
-    <script src="lib/bootstrap-3.3.1.js"></script>
+    <script src="lib/d3.js"></script>
+    <script src="lib/bootstrap.js"></script>
     <script src="lib/typeahead-0.9.3.js"></script>
     <script src="lib/proj4js-compressed.js"></script>
     <script src="lib/EPSG21781.js"></script>
@@ -234,7 +238,6 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!--<script src="lib/closure/base.js"></script>-->
     <!-- ol3 and ol3-cesium are built together in debug mode --> 
     <script src="lib/ol3cesium-debug.js"></script>
-    <!-- INGRID: Change deps -->
     <script src="deps.js"></script>
     <script>
       goog.require('geoadmin');
@@ -265,9 +268,12 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Disabled dev3d
           dev3d: false,
           buildMode: '',
+          version: '',
           pegman: !!window.location.search.match(/(pegman=true)/),
           mapUrl : location.origin + '/wemove',
           apiUrl : location.protocol + '//mf-chsdi3.dev.bgdi.ch',
+          mapproxyUrl : location.protocol + '//wmts{s}.dev.bgdi.ch',
+          shopUrl : location.protocol + '//shop-bgdi.dev.bgdi.ch',
           publicUrl : location.protocol + '//public.dev.bgdi.ch',
           publicUrlRegexp: new RegExp('^https?:\/\/public\..*\.(bgdi|admin)\.ch\/.*'),
           adminUrlRegexp: new RegExp('^(ftp|http|https):\/\/(.*(\.bgdi|\.geo\.admin)\.ch)'),
@@ -315,7 +321,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           gaLayersProvider.dfltWmtsMapProxySubdomains = ['20', '21', '22', '23', '24'];
           gaLayersProvider.wmsUrlTemplate = '//wms{s}.geo.admin.ch/';
           gaLayersProvider.wmtsGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{y}/{x}.{Format}';
-          gaLayersProvider.wmtsMapProxyGetTileUrlTemplate = '//wmts{s}.geo.admin.ch/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
+          gaLayersProvider.wmtsMapProxyGetTileUrlTemplate =  gaGlobalOptions.mapproxyUrl + '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
           gaLayersProvider.terrainTileUrlTemplate = '//3d.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
           // INGRID: Change layer service URL
           gaLayersProvider.layersConfigUrlTemplate = '../data/layers.json';
@@ -344,7 +350,7 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         module.config(function(gaProfileProvider, gaGlobalOptions) {
           gaProfileProvider.d3libUrl =
-              gaGlobalOptions.resourceUrl + 'lib/d3-3.3.1.min.js';
+              gaGlobalOptions.resourceUrl + 'lib/d3.min.js';
           gaProfileProvider.profileUrl =
               gaGlobalOptions.apiUrl + '/rest/services/profile.json';
         });

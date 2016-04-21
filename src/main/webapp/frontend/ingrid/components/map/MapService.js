@@ -2,25 +2,19 @@ goog.provide('ga_map_service');
 
 goog.require('ga_measure_service');
 goog.require('ga_networkstatus_service');
-goog.require('ga_storage_service');
-goog.require('ga_styles_from_literals_service');
-goog.require('ga_styles_service');
+goog.require('ga_stylesfromliterals_service');
 goog.require('ga_time_service');
-goog.require('ga_topic_service');
 goog.require('ga_urlutils_service');
+
 (function() {
 
   var module = angular.module('ga_map_service', [
-    'pascalprecht.translate',
     'ga_networkstatus_service',
-    'ga_offline_service',
     'ga_storage_service',
-    'ga_styles_from_literals_service',
-    'ga_styles_service',
+    'ga_stylesfromliterals_service',
+    'ga_time_service',
     'ga_urlutils_service',
-    'ga_measure_service',
-    'ga_topic_service',
-    'ga_time_service'
+    'pascalprecht.translate'
   ]);
 
   module.provider('gaTileGrid', function() {
@@ -349,512 +343,7 @@ goog.require('ga_urlutils_service');
     };
   });
 
-  /**
-   * Manage external WMS layers
-   */
-  module.provider('gaWms', function() {
-    this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
-        gaGlobalOptions, $q) {
-      var getCesiumImageryProvider = function(layer) {
-        var params = layer.getSource().getParams();
-        var proxy;
-        if (!gaUrlUtils.isAdminValid(layer.url)) {
-          proxy = {
-            getURL: function(resource) {
-               return gaGlobalOptions.ogcproxyUrl +
-                   encodeURIComponent(resource);
-            }
-          };
-        }
-        var wmsParams = {
-          layers: params.LAYERS,
-          format: 'image/png',
-          service: 'WMS',
-          version: '1.3.0',
-          request: 'GetMap',
-          crs: 'CRS:84',
-          bbox: '{westProjected},{southProjected},' +
-                '{eastProjected},{northProjected}',
-          width: '256',
-          height: '256',
-          styles: 'default',
-          transparent: 'true'
-        };
-        var extent = gaGlobalOptions.defaultExtent;
-        return new Cesium.UrlTemplateImageryProvider({
-          minimumRetrievingLevel: window.minimumRetrievingLevel,
-          url: gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue(wmsParams)),
-          rectangle: gaMapUtils.extentToRectangle(extent),
-          proxy: proxy,
-          tilingScheme: new Cesium.GeographicTilingScheme(),
-          hasAlphaChannel: true,
-          availableLevels: window.imageryAvailableLevels
-        });
-      };
-
-      var Wms = function() {
-
-        var createWmsLayer = function(params, options, index) {
-          options = options || {};
-
-          var source = new ol.source.ImageWMS({
-            params: params,
-            url: options.url,
-            ratio: options.ratio || 1
-          });
-
-          var layer = new ol.layer.Image({
-            // INGRID: Add layer WMS version because default is just version 1.3.0
-            // (Parsing WMS version 1.1.1 no yet supported)
-            id: 'WMS||' + options.label + '||' + options.url + '||' +
-                params.LAYERS + '||' + params.VERSION,
-            url: options.url,
-            type: 'WMS',
-            opacity: options.opacity,
-            visible: options.visible,
-            attribution: options.attribution,
-            extent: options.extent,
-            source: source
-          });
-          gaDefinePropertiesForLayer(layer);
-          layer.preview = options.preview;
-          layer.displayInLayerManager = !layer.preview;
-          layer.useThirdPartyData = gaUrlUtils.isThirdPartyValid(options.url);
-          layer.label = options.label;
-          layer.getCesiumImageryProvider = function() {
-            return getCesiumImageryProvider(layer);
-          };
-          return layer;
-        };
-
-        // Create an ol WMS layer from GetCapabilities informations
-        this.getOlLayerFromGetCapLayer = function(getCapLayer) {
-          var wmsParams = {
-            LAYERS: getCapLayer.Name,
-            VERSION: getCapLayer.wmsVersion
-          };
-          var wmsOptions = {
-            url: getCapLayer.wmsUrl,
-            label: getCapLayer.Title,
-            extent: gaMapUtils.intersectWithDefaultExtent(getCapLayer.extent)
-          };
-          return createWmsLayer(wmsParams, wmsOptions);
-        };
-
-        // Create a WMS layer and add it to the map
-        this.addWmsToMap = function(map, layerParams, layerOptions, index) {
-          var olLayer = createWmsLayer(layerParams, layerOptions);
-          if (index) {
-            map.getLayers().insertAt(index, olLayer);
-          } else {
-            map.addLayer(olLayer);
-          }
-          return olLayer;
-        };
-
-        // Make a GetLegendGraphic request
-        this.getLegend = function(layer) {
-          var defer = $q.defer();
-          var params = layer.getSource().getParams();
-          // INGRID: Get legend for all layer (intern and extern)
-          var url = layer.url;
-          if(url == undefined){
-              if(layer.getSource()){
-                  if(layer.getSource().urls){
-                      if(layer.getSource().urls.length > 0){
-                          url = layer.getSource().urls[0];
-                      }
-                  }
-              }
-          }
-          var html = '<img alt="No legend available" src="' +
-              gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
-            request: 'GetLegendGraphic',
-            layer: params.LAYERS,
-            style: params.style || 'default',
-            service: 'WMS',
-            version: params.version || '1.3.0',
-            format: 'image/png',
-            sld_version: '1.1.0'
-          })) + '"></img>';
-          defer.resolve({data: html});
-          return defer.promise;
-        };
-        
-        // INGRID: Add function to get the layer legend url
-        this.getLegendURL = function(layer) {
-            var params = layer.getSource().getParams();
-            var url = layer.url;
-            if(url == undefined){
-                if(layer.getSource()){
-                    if(layer.getSource().urls){
-                        if(layer.getSource().urls.length > 0){
-                            url = layer.getSource().urls[0];
-                        }
-                    }
-                }
-            }
-            return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
-              request: 'GetLegendGraphic',
-              layer: params.LAYERS,
-              style: params.style || 'default',
-              service: 'WMS',
-              version: params.version || '1.3.0',
-              format: 'image/png',
-              sld_version: '1.1.0'
-            }));
-          };
-      };
-      return new Wms();
-    };
-  });
-
-  /**
-   * Manage KML layers
-   */
-  module.provider('gaKml', function() {
-
-    // Ensure linear rings are closed
-    var closeLinearRing = function(linearRing) {
-      if (linearRing.getFirstCoordinate() != linearRing.getLastCoordinate()) {
-        var coords = linearRing.getCoordinates();
-        coords.push(linearRing.getFirstCoordinate());
-        linearRing.setCoordinates(coords);
-      }
-    };
-    var closePolygon = function(polygon) {
-      var coords = [];
-      var linearRings = polygon.getLinearRings();
-      for (var i = 0, ii = linearRings.length; i < ii; i++) {
-        closeLinearRing(linearRings[i]);
-        coords.push(linearRings[i].getCoordinates());
-      }
-      polygon.setCoordinates(coords);
-    };
-    var closeMultiPolygon = function(multiPolygon) {
-      var coords = [];
-      var polygons = multiPolygon.getPolygons();
-      for (var i = 0, ii = polygons.length; i < ii; i++) {
-        closePolygon(polygons[i]);
-        coords.push(polygons[i].getCoordinates());
-      }
-      multiPolygon.setCoordinates(coords);
-    };
-    var closeGeometries = function(geometries) {
-      for (var i = 0, ii = geometries.length; i < ii; i++) {
-        var geometry = geometries[i];
-        if (geometry instanceof ol.geom.MultiPolygon) {
-          closeMultiPolygon(geometry);
-        } else if (geometry instanceof ol.geom.Polygon) {
-          closePolygon(geometry);
-        } else if (geometry instanceof ol.geom.LinearRing) {
-          closeLinearRing(geometry);
-        }
-      }
-    };
-
-    this.$get = function($http, $q, $rootScope, $timeout, $translate,
-        gaDefinePropertiesForLayer, gaGlobalOptions, gaMapClick, gaMapUtils,
-        gaNetworkStatus, gaStorage, gaStyleFactory, gaUrlUtils, gaMeasure) {
-
-      // Create the parser
-      var kmlFormat = new ol.format.KML({
-        extractStyles: true,
-        extractAttributes: true,
-        defaultStyle: [gaStyleFactory.getStyle('kml')]
-      });
-
-      // Read a kml string then return a list of features.
-      var readFeatures = function(kml) {
-        // Replace all hrefs to prevent errors if image doesn't have
-        // CORS headers. Exception for *.geo.admin.ch, *.bgdi.ch and google
-        // markers icons (lightblue.png, ltblue-dot.png, ltblu-pushpin.png, ...)
-        // to keep the OL3 magic for anchor origin.
-        // Test regex here: http://regex101.com/r/tF3vM0/3
-        // List of google icons: http://www.lass.it/Web/viewer.aspx?id=4
-        kml = kml.replace(
-          /<href>http(?!(s?):\/\/(maps\.(?:google|gstatic)\.com.*(blue|green|orange|pink|purple|red|yellow|pushpin).*\.png|.*(bgdi|geo.admin)\.ch))/g,
-          '<href>' + gaGlobalOptions.ogcproxyUrl + 'http'
-        );
-
-        // Replace all http hrefs from *.geo.admin.ch or *.bgdi.ch by https
-        // Test regex here: http://regex101.com/r/fY7wB3/3
-        kml = kml.replace(
-          /<href>http(?!(s))(?=:\/\/(.*(bgdi|geo.admin)\.ch))/g,
-          '<href>https'
-        );
-
-        var all = [];
-        var features = kmlFormat.readFeatures(kml);
-        var networkLinks = kmlFormat.readNetworkLinks(kml);
-        if (networkLinks.length) {
-          angular.forEach(networkLinks, function(networkLink) {
-            if (gaUrlUtils.isValid(networkLink.href)) {
-              all.push($http.get(networkLink.href).success(function(data) {
-                return readFeatures(data).then(function(newFeatures) {
-                  features = features.concat(newFeatures);
-                });
-              }));
-            }
-          });
-        }
-        return $q.all(all).then(function() {
-          return features;
-        });
-      };
-
-      // Sanitize the feature's properties (id, geometry, style).
-      var sanitizeFeature = function(feature, projection) {
-        var geometry = feature.getGeometry();
-        // Remove feature without geometry.
-        if (!geometry) {
-          return;
-        }
-        // Ensure polygons are closed.
-        // Reason: print server failed when polygons are not closed.
-        closeGeometries((geometry instanceof ol.geom.GeometryCollection) ?
-            geometry.getGeometries() : [geometry]);
-
-        // Replace empty id by undefined.
-        // Reason: If 2 features have their id empty, an assertion error
-        // occurs when we add them to the source
-        if (feature.getId() === '') {
-          feature.setId(undefined);
-        }
-        if (feature.getGeometry()) {
-          feature.getGeometry().transform('EPSG:4326', projection);
-        }
-        var geom = feature.getGeometry();
-        var styles = feature.getStyleFunction().call(feature);
-        var style = styles[0];
-
-        // if the feature is a Point and we are offline, we use default kml
-        // style.
-        // if the feature is a Point and has a name with a text style, we
-        // create a correct text style.
-        // TODO Handle GeometryCollection displaying name on the first Point
-        // geometry.
-        if (style && (geom instanceof ol.geom.Point ||
-            geom instanceof ol.geom.MultiPoint)) {
-          var image = style.getImage();
-          var text = null;
-
-          if (gaNetworkStatus.offline) {
-            image = gaStyleFactory.getStyle('kml').getImage();
-          }
-
-          // If the feature has name we display it on the map as Google does
-          if (feature.get('name') && style.getText() &&
-              style.getText().getScale() != 0) {
-            if (image && image.getScale() == 0) {
-              // transparentCircle is used to allow selection
-              image = gaStyleFactory.getStyle('transparentCircle');
-            }
-            text = new ol.style.Text({
-              font: gaStyleFactory.FONT,
-              text: feature.get('name'),
-              fill: style.getText().getFill(),
-              stroke: gaStyleFactory.getTextStroke(
-                  style.getText().getFill().getColor()),
-              scale: style.getText().getScale()
-            });
-          }
-
-          styles = [new ol.style.Style({
-            fill: style.getFill(),
-            stroke: style.getStroke(),
-            image: image,
-            text: text,
-            zIndex: style.getZIndex()
-          })];
-          feature.setStyle(styles);
-        }
-        if (feature.getId()) {
-          var split = feature.getId().split('_');
-          if (split.length == 2) {
-            feature.set('type', split[0]);
-          }
-        }
-
-        // Apply the good style (with azimuth drawn) for measure feature
-        if (style && gaMapUtils.isMeasureFeature(feature)) {
-          feature.set('type', 'measure');
-          feature.setStyle(gaStyleFactory.getFeatureStyleFunction('measure'));
-        // Remove image and text styles for polygons and lines
-        } else if (!(geom instanceof ol.geom.Point ||
-            geom instanceof ol.geom.MultiPoint ||
-            geom instanceof ol.geom.GeometryCollection)) {
-          styles = [new ol.style.Style({
-            fill: style.getFill(),
-            stroke: style.getStroke(),
-            image: null,
-            text: null,
-            zIndex: style.getZIndex()
-          })];
-          feature.setStyle(styles);
-        }
-        return feature;
-      };
-
-      var Kml = function() {
-
-        // Create a vector layer from a kml string.
-        var createKmlLayer = function(kml, options) {
-          options = options || {};
-          options.id = 'KML||' + options.url;
-
-          // Update data stored for offline or use it if kml is null
-          var offlineData = gaStorage.getItem(options.id);
-          if (offlineData) {
-            if (kml) {
-              gaStorage.setItem(options.id, kml);
-            } else {
-              kml = offlineData;
-            }
-          } else if (!kml) {
-            var deferred = $q.defer();
-            deferred.reject('No KML data found');
-            return deferred.promise;
-          }
-
-          // Read features available in a kml string, then create an ol layer.
-          return readFeatures(kml).then(function(features) {
-            var sanitizedFeatures = [];
-            for (var i = 0, ii = features.length; i < ii; i++) {
-              var feat = sanitizeFeature(features[i], options.projection);
-              if (feat) {
-                sanitizedFeatures.push(feat);
-              }
-            }
-            var source = new ol.source.Vector({
-              features: sanitizedFeatures
-            });
-            var layerOptions = {
-              id: options.id,
-              adminId: options.adminId,
-              url: options.url,
-              type: 'KML',
-              label: options.label || kmlFormat.readName(kml) || 'KML',
-              opacity: options.opacity,
-              visible: options.visible,
-              source: source,
-              extent: gaMapUtils.intersectWithDefaultExtent(
-                  source.getExtent()),
-              attribution: options.attribution
-            };
-
-            // Be sure to remove all html tags
-            layerOptions.label = $('<p>' + layerOptions.label + '<p>').text();
-
-            var olLayer;
-            if (options.useImageVector === true) {
-              layerOptions.source = new ol.source.ImageVector({
-                source: layerOptions.source
-              });
-
-              olLayer = new ol.layer.Image(layerOptions);
-            } else {
-              olLayer = new ol.layer.Vector(layerOptions);
-            }
-            gaDefinePropertiesForLayer(olLayer);
-            olLayer.useThirdPartyData = true;
-
-            return olLayer;
-          });
-        };
-
-        // Add an ol layer to the map
-        var addKmlLayer = function(olMap, data, options, index) {
-          options.projection = olMap.getView().getProjection();
-          createKmlLayer(data, options).then(function(olLayer) {
-            if (olLayer) {
-              if (index) {
-                olMap.getLayers().insertAt(index, olLayer);
-              } else {
-                olMap.addLayer(olLayer);
-              }
-
-              // If the layer can contain measure features, we register some
-              // events to add/remove correctly the overlays
-              if (gaMapUtils.isStoredKmlLayer(olLayer)) {
-                if (olLayer.getVisible()) {
-                  angular.forEach(olLayer.getSource().getFeatures(),
-                      function(feature) {
-                    if (gaMapUtils.isMeasureFeature(feature)) {
-                      gaMeasure.addOverlays(olMap, olLayer, feature);
-                    }
-                  });
-                }
-                gaMeasure.registerOverlaysEvents(olMap, olLayer);
-              }
-
-              if (options.zoomToExtent) {
-                var extent = olLayer.getExtent();
-                if (extent) {
-                  olMap.getView().fit(extent, olMap.getSize());
-                }
-              }
-            }
-          });
-        };
-
-        this.addKmlToMap = function(map, data, layerOptions, index) {
-          addKmlLayer(map, data, layerOptions, index);
-        };
-
-        this.addKmlToMapForUrl = function(map, url, layerOptions, index) {
-          var that = this;
-          layerOptions = layerOptions || {};
-          layerOptions.url = url;
-          if (gaNetworkStatus.offline) {
-            addKmlLayer(map, null, layerOptions, index);
-          } else {
-            $http.get(gaGlobalOptions.ogcproxyUrl + encodeURIComponent(url), {
-              cache: true
-            }).success(function(data, status, headers, config) {
-              var fileSize = headers('content-length');
-              if (that.isValidFileContent(data) &&
-                  that.isValidFileSize(fileSize)) {
-                layerOptions.useImageVector = that.useImageVector(fileSize);
-                addKmlLayer(map, data, layerOptions, index);
-              }
-            }).error(function() {
-              // Try to get offline data if exist
-              addKmlLayer(map, null, layerOptions, index);
-            });
-          }
-        };
-
-        // Defines if we should use a ol.layer.Image instead of a
-        // ol.layer.Vector. Currently we define this, only testing the
-        // file size but it could be another condition.
-        this.useImageVector = function(fileSize) {
-          return (!!fileSize && parseInt(fileSize) >= 1000000); // < 1mo
-        };
-
-        // Test the validity of the file size
-        this.isValidFileSize = function(fileSize) {
-          if (fileSize > 20000000) { // 20mo
-            alert($translate.instant('file_too_large'));
-            return false;
-          }
-          return true;
-        };
-
-        // Test the validity of the file content
-        this.isValidFileContent = function(fileContent) {
-          if (!/<kml/.test(fileContent) || !/<\/kml>/.test(fileContent)) {
-            alert($translate.instant('file_is_not_kml'));
-            return false;
-          }
-          return true;
-        };
-      };
-      return new Kml();
-    };
-  });
-
-  /**
+  /*
    * Manage BOD layers
    */
   module.provider('gaLayers', function() {
@@ -862,7 +351,7 @@ goog.require('ga_urlutils_service');
     this.$get = function($http, $q, $rootScope, $translate, $window,
         gaBrowserSniffer, gaDefinePropertiesForLayer, gaMapUtils,
         gaNetworkStatus, gaStorage, gaTileGrid, gaUrlUtils,
-        gaStylesFromLiterals, gaGlobalOptions, gaPermalink, gaTopic,
+        gaStylesFromLiterals, gaGlobalOptions, gaPermalink, 
         gaLang, gaTime) {
 
       var Layers = function(dfltWmsSubdomains,
@@ -977,23 +466,8 @@ goog.require('ga_urlutils_service');
           return $http.get(url).then(function(response) {
             // Live modifications for 3d test
             if (response.data) {
-              // Imagery layers with metadata
-              var ids = [
-                'ch.swisstopo.swisstlm3d-wanderwege',
-                'ch.bafu.wrz-wildruhezonen_portal',
-                'ch.swisstopo.fixpunkte-agnes',
-                'ch.swisstopo.swissimage-product_3d',
-                'ch.swisstopo.swisstlm3d-karte-farbe_3d',
-                'ch.swisstopo.swisstlm3d-karte-grau_3d'
-              ];
-              angular.forEach(ids, function(id) {
-                if (response.data[id]) {
-                  response.data[id].has3dMetadata = true;
-                }
-              });
-
               // Test layers opaque setting
-              ids = [
+              var ids = [
                 'ch.swisstopo.swissimage-product',
                 'ch.swisstopo.pixelkarte-farbe',
                 'ch.swisstopo.pixelkarte-grau',
@@ -1021,7 +495,7 @@ goog.require('ga_urlutils_service');
               response.data['ch.swisstopo.terrain.3d'] = {
                 type: 'terrain',
                 serverLayerName: 'ch.swisstopo.terrain.3d',
-                timestamps: ['20151231'],
+                timestamps: ['20160115'],
                 attribution: 'swisstopo',
                 attributionUrl: 'http://www.swisstopo.admin.ch/internet/' +
                     'swisstopo/' + lang + '/home.html'
@@ -1146,11 +620,15 @@ goog.require('ga_urlutils_service');
             var minRetLod = gaMapUtils.getLodFromRes(config3d.maxResolution) ||
                 window.minimumRetrievingLevel;
             var maxRetLod = gaMapUtils.getLodFromRes(config3d.minResolution);
-            var maxLod = 17;// 17 is the last terrain level
-            if (config3d.resolutions) {
+            // Set maxLod as undefined deactivate client zoom.
+            var maxLod = (maxRetLod) ? undefined : 17;
+            if (maxLod && config3d.resolutions) {
               maxLod = gaMapUtils.getLodFromRes(
                   config3d.resolutions[config3d.resolutions.length - 1]);
             }
+
+            var terrainTimestamp = this.getLayerTimestampFromYear(
+                gaGlobalOptions.defaultTerrain, gaTime.get());
             provider = new Cesium.UrlTemplateImageryProvider({
               url: params.url,
               subdomains: params.subdomains,
@@ -1164,10 +642,9 @@ goog.require('ga_urlutils_service');
               tileHeight: params.tileSize,
               hasAlphaChannel: (format == 'png'),
               availableLevels: window.imageryAvailableLevels,
-              // Experimental
-              metadataUrl: config3d.has3dMetadata ?
-                  getTerrainTileUrl(requestedLayer, timestamp) + '/' :
-                  undefined
+              // Experimental: restrict all rasters to terrain availability
+              metadataUrl: getTerrainTileUrl(
+                  gaGlobalOptions.defaultTerrain, terrainTimestamp) + '/'
             });
           }
           if (provider) {
@@ -1211,6 +688,9 @@ goog.require('ga_urlutils_service');
                 dimensions: {
                   'Time': timestamp
                 },
+                // Temporary until https://github.com/openlayers/ol3/pull/4964
+                // is merged upstream
+                cacheSize: 2048 * 3,
                 projection: gaGlobalOptions.defaultEpsg,
                 requestEncoding: 'REST',
                 tileGrid: gaTileGrid.get(layer.resolutions,
@@ -1234,9 +714,7 @@ goog.require('ga_urlutils_service');
             var wmsParams = {
               LAYERS: layer.wmsLayers,
               FORMAT: 'image/' + layer.format,
-              // INGRID: Add verion to get getMap request for WMS version 1.1.1.
-              // Version is define on layers.json.
-              VERSION: layer.version != undefined ? layer.version : '1.3.0'
+              LANG: gaLang.get()
             };
             if (timestamp) {
               wmsParams['TIME'] = timestamp;
@@ -1264,6 +742,9 @@ goog.require('ga_urlutils_service');
                 var subdomains = dfltWmsSubdomains;
                 olSource = layer.olSource = new ol.source.TileWMS({
                   urls: getImageryUrls(getWmsTpl(layer.wmsUrl), subdomains),
+                  // Temporary until https://github.com/openlayers/ol3/pull/4964
+                  // is merged upstream
+                  cacheSize: 2048 * 3,
                   params: wmsParams,
                   gutter: layer.gutter || 0,
                   // TODO INGRID: Check functions
@@ -1536,10 +1017,16 @@ goog.require('ga_urlutils_service');
         },
 
         flyToAnimation: function(ol3d, center, destination, defer) {
+          // In degrees
+          var pitch = 50;
+          // Default camera field of view
+          // https://cesiumjs.org/Cesium/Build/Documentation/Camera.html
+          var cameraFieldOfView = 60;
           var scene = ol3d.getCesiumScene();
-          var camera = scene.camera;
           var globe = scene.globe;
           var carto = globe.ellipsoid.cartesianToCartographic(destination);
+          var camera = scene.camera;
+
           $http.get(gaGlobalOptions.apiUrl + '/rest/services/height', {
             params: {
               easting: center[0],
@@ -1547,12 +1034,15 @@ goog.require('ga_urlutils_service');
             }
           }).then(function(response) {
             var height = carto.height - response.data.height;
-            var offset = Math.tan(Cesium.Math.toRadians(50)) * (height + 50);
-            destination.x += offset * 2;
+            var magnitude = Math.tan(
+                Cesium.Math.toRadians(pitch + cameraFieldOfView / 2)) * height;
+            // Approx. direction on x and y (only valid for Swiss extent)
+            destination.x += (7 / 8) * magnitude;
+            destination.y += (1 / 8) * magnitude;
             camera.flyTo({
               destination: destination,
               orientation: {
-                pitch: Cesium.Math.toRadians(-50)
+                pitch: Cesium.Math.toRadians(-pitch)
               },
               complete: defer.resolve,
               cancel: defer.resolve
@@ -1702,8 +1192,7 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                // INGRID: Length now 5 because adding WMS version
-                olLayerOrId.split('||').length == 5;
+                olLayerOrId.split('||').length >= 4;
           }
           return olLayerOrId.type == 'WMS';
         },
@@ -1885,800 +1374,4 @@ goog.require('ga_urlutils_service');
       };
     };
   });
-
-  module.provider('gaRealtimeLayersManager', function() {
-    this.$get = function($rootScope, $http, $timeout,
-        gaLayerFilters, gaMapUtils, gaGlobalOptions) {
-
-      var timers = [];
-      var realTimeLayersId = [];
-      var geojsonFormat = new ol.format.GeoJSON();
-
-      function setLayerSource(layer) {
-        var fullUrl = gaGlobalOptions.ogcproxyUrl + layer.geojsonUrl;
-        var olSource = layer.getSource();
-        $http.get(fullUrl, {
-          cache: false
-        }).success(function(data) {
-          olSource.clear();
-          olSource.addFeatures(
-            geojsonFormat.readFeatures(data)
-          );
-          var layerIdIndex = realTimeLayersId.indexOf(layer.bodId);
-          if (layerIdIndex != -1 && !layer.preview) {
-            $timeout.cancel(timers.splice(layerIdIndex, 1));
-            timers.push(setLayerUpdateInterval(layer));
-            if (data.timestamp) {
-              $rootScope.$broadcast('gaNewLayerTimestamp', data.timestamp);
-            }
-          }
-        });
-      }
-      // updateDeplay should be higher than the time
-      // needed to upload the geojson file
-      function setLayerUpdateInterval(layer) {
-        return $timeout(function() {
-          setLayerSource(layer);
-        }, layer.updateDelay);
-      }
-
-      return function(map) {
-        var scope = $rootScope.$new();
-        scope.layers = map.getLayers().getArray();
-        scope.layerFilter = gaLayerFilters.realtime;
-
-        scope.$watchCollection('layers | filter:layerFilter',
-            function(newLayers, oldLayers) {
-          // Layer Removed
-          for (var i = 0; i < oldLayers.length; i++) {
-            var bodId = oldLayers[i].bodId;
-            var oldLayerIdIndex = realTimeLayersId.indexOf(bodId);
-            if (oldLayerIdIndex != -1 &&
-                !gaMapUtils.getMapLayerForBodId(map, bodId)) {
-              realTimeLayersId.splice(oldLayerIdIndex, 1);
-              $timeout.cancel(timers.splice(oldLayerIdIndex, 1));
-              if (realTimeLayersId.length == 0) {
-                $rootScope.$broadcast('gaNewLayerTimestamp', '');
-              }
-            }
-          }
-          // Layer Added
-          for (var i = 0; i < newLayers.length; i++) {
-            var bodId = newLayers[i].bodId;
-            var newLayerIdIndex = realTimeLayersId.indexOf(bodId);
-            if (newLayerIdIndex == -1) {
-              if (!newLayers[i].preview) {
-                realTimeLayersId.push(bodId);
-              }
-              setLayerSource(newLayers[i]);
-            }
-          }
-        });
-
-        // Update geojson source on language change
-        $rootScope.$on('$translateChangeEnd', function(evt) {
-          for (var i = 0; i < realTimeLayersId.length; i++) {
-            var bodId = realTimeLayersId[i];
-            var olLayer = gaMapUtils.getMapLayerForBodId(map, bodId);
-            var olSource = olLayer.getSource();
-            var indexLayerId = realTimeLayersId.indexOf(bodId);
-            $timeout.cancel(timers.splice(indexLayerId, 1));
-            setLayerSource(olLayer);
-          }
-        });
-      };
-    };
-  });
-
-  /**
-   * Service that manages the "layers", "layers_opacity", and
-   * "layers_visibility" permalink parameter.
-   *
-   * The manager works with a "layers" array. It watches the array (using
-   * $watchCollection) and updates the "layers" parameter in the permalink
-   * when the array changes. It also watches "opacity" and "visibility" on
-   * each layer and updates the "layers_opacity" and "layers_visibility"
-   * parameters as appropriate.
-   *
-   * And, at application init time, it adds to the map the layers specified
-   * in the permalink, and the opacity and visibility of layers.
-   */
-  module.provider('gaLayersPermalinkManager', function() {
-
-    this.$get = function($rootScope, gaLayers, gaPermalink, $translate, $http,
-        gaKml, gaMapUtils, gaWms, gaLayerFilters, gaUrlUtils, gaFileStorage,
-        gaTopic, gaGlobalOptions, $q, gaTime) {
-
-      var layersParamValue = gaPermalink.getParams().layers;
-      var layersOpacityParamValue = gaPermalink.getParams().layers_opacity;
-      var layersVisibilityParamValue =
-          gaPermalink.getParams().layers_visibility;
-      var layersTimestampParamValue =
-          gaPermalink.getParams().layers_timestamp;
-
-
-      var layerSpecs = layersParamValue ? layersParamValue.split(',') : [];
-      var layerOpacities = layersOpacityParamValue ?
-          layersOpacityParamValue.split(',') : [];
-      var layerVisibilities = layersVisibilityParamValue ?
-          layersVisibilityParamValue.split(',') : [];
-      var layerTimestamps = layersTimestampParamValue ?
-          layersTimestampParamValue.split(',') : [];
-
-      function updateLayersParam(layers) {
-        if (layers.length) {
-          var layerSpecs = $.map(layers, function(layer) {
-            return layer.bodId || layer.id;
-          });
-          gaPermalink.updateParams({
-            layers: layerSpecs.join(',')
-          });
-        } else {
-          gaPermalink.deleteParam('layers');
-        }
-      }
-
-      function updateLayersOpacityParam(layers) {
-        var opacityTotal = 0;
-        var opacityValues = $.map(layers, function(layer) {
-          var opacity = Math.round(layer.getOpacity() * 100) / 100;
-          opacityTotal += opacity;
-          return opacity;
-        });
-        if (opacityTotal === layers.length) {
-          gaPermalink.deleteParam('layers_opacity');
-        } else {
-          gaPermalink.updateParams({
-            layers_opacity: opacityValues.join(',')
-          });
-        }
-      }
-
-      function updateLayersVisibilityParam(layers) {
-        var visibilityTotal = true;
-        var visibilityValues = $.map(layers, function(layer) {
-          var visibility = layer.visible;
-          visibilityTotal = visibilityTotal && visibility;
-          return visibility;
-        });
-        if (visibilityTotal === true) {
-          gaPermalink.deleteParam('layers_visibility');
-        } else {
-          gaPermalink.updateParams({
-            layers_visibility: visibilityValues.join(',')
-          });
-        }
-      }
-
-      function updateLayersTimestampsParam(layers) {
-        var timestampTotal = false;
-        var timestampValues = $.map(layers, function(layer) {
-          if (layer.timeEnabled) {
-            timestampTotal = true;
-            if (layer.time) {
-              return layer.time;
-            }
-          }
-          return '';
-        });
-        if (timestampTotal) {
-          gaPermalink.updateParams({
-            layers_timestamp: timestampValues.join(',')
-          });
-        } else {
-          gaPermalink.deleteParam('layers_timestamp');
-        }
-      }
-
-      // Update permalink on layer's modification
-      var registerLayersPermalink = function(scope, map) {
-        var deregFns = [];
-        scope.layers = map.getLayers().getArray();
-        scope.layerFilter = gaLayerFilters.permalinked;
-        scope.$watchCollection('layers | filter:layerFilter',
-            function(layers) {
-
-          updateLayersParam(layers);
-
-          // deregister the listeners we have on each layer and register
-          // new ones for the new set of layers.
-          angular.forEach(deregFns, function(deregFn) { deregFn(); });
-          deregFns.length = 0;
-
-          angular.forEach(layers, function(layer) {
-            if (gaMapUtils.isStoredKmlLayer(layer)) {
-              deregFns.push(scope.$watch(function() {
-                return layer.id;
-              }, function() {
-                updateLayersParam(layers);
-              }));
-            }
-            deregFns.push(scope.$watch(function() {
-              return layer.getOpacity();
-            }, function() {
-              updateLayersOpacityParam(layers);
-            }));
-            deregFns.push(scope.$watch(function() {
-              return layer.visible;
-            }, function() {
-              updateLayersVisibilityParam(layers);
-            }));
-            deregFns.push(scope.$watch(function() {
-              return layer.time;
-            }, function() {
-              updateLayersTimestampsParam(layers);
-            }));
-
-          });
-        });
-      };
-      return function(map) {
-        var scope = $rootScope.$new();
-        var dupId = 0; // Use for duplicate layer
-        // We must reorder layer when async layer are added
-        var mustReorder = false;
-
-        var addTopicSelectedLayers = function() {
-          addLayers(gaTopic.get().selectedLayers.slice(0).reverse());
-          var activatedLayers = gaTopic.get().activatedLayers;
-          if (activatedLayers.length) {
-            addLayers(activatedLayers.slice(0).reverse(), null, false);
-          }
-        };
-
-        var addLayers = function(layerSpecs, opacities, visibilities,
-            timestamps) {
-          var nbLayersToAdd = layerSpecs.length;
-          angular.forEach(layerSpecs, function(layerSpec, index) {
-            var layer;
-            var opacity = (opacities && index < opacities.length) ?
-                opacities[index] : undefined;
-            var visible = (visibilities === false ||
-                (angular.isArray(visibilities) &&
-                visibilities[index] == 'false')) ?
-                false : true;
-            var timestamp = (timestamps && index < timestamps.length &&
-                timestamps != '') ? timestamps[index] : '';
-
-            var bodLayer = gaLayers.getLayer(layerSpec);
-            if (bodLayer) {
-              // BOD layer.
-              // Do not consider BOD layers that are already in the map,
-              // except for timeEnabled layers
-              var isOverlay = gaMapUtils.getMapOverlayForBodId(map, layerSpec);
-              // We test if timestamps exist to differentiate between topic
-              // selected layers and topic activated layers (no timestamps
-              // parameter defined).
-              if ((bodLayer.timeEnabled && isOverlay && timestamps) ||
-                  !isOverlay) {
-                layer = gaLayers.getOlLayerById(layerSpec);
-
-                // If the layer is already on the map when need to increment
-                // the id.
-                if (isOverlay) {
-                  layer.id += '_' + dupId++;
-                }
-              }
-              if (angular.isDefined(layer)) {
-                layer.visible = visible;
-                // if there is no opacity defined in the permalink, we keep
-                // the default opacity of the layers
-                if (opacity) {
-                  layer.setOpacity(opacity);
-                }
-                if (layer.timeEnabled && timestamp) {
-                  // If a time permalink exist we use it instead of the
-                  // timestamp, only if the layer is visible.
-                  if (gaTime.get() && layer.visible) {
-                    timestamp = gaLayers.getLayerTimestampFromYear(layer.bodId,
-                        gaTime.get());
-                  }
-                  layer.time = timestamp;
-                }
-                map.addLayer(layer);
-              }
-
-            } else if (gaMapUtils.isKmlLayer(layerSpec)) {
-
-              // KML layer
-              var url = layerSpec.replace('KML||', '');
-              try {
-                gaKml.addKmlToMapForUrl(map, url,
-                  {
-                    opacity: opacity || 1,
-                    visible: visible
-                  },
-                  index + 1);
-                mustReorder = true;
-              } catch (e) {
-                // Adding KML layer failed, native alert, log message?
-              }
-
-            } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
-
-              // External WMS layer
-              var infos = layerSpec.split('||');
-              try {
-                gaWms.addWmsToMap(map,
-                  {
-                    LAYERS: infos[3],
-                    // INGRID: Add version
-                    VERSION: infos[4]
-                  },
-                  {
-                    url: infos[2],
-                    label: infos[1],
-                    opacity: opacity || 1,
-                    visible: visible,
-                    // INGRID: Add default extent by default projection
-                    extent: ol.proj.transformExtent(gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-                  },
-                  index + 1);
-              } catch (e) {
-                // Adding external WMS layer failed, native alert, log message?
-              }
-            }
-          });
-
-          // When an async layer is added we must reorder correctly the layers.
-          if (mustReorder) {
-            var deregister2 = scope.$watchCollection(
-                'layers | filter:layerFilter', function(layers) {
-              if (layers.length == nbLayersToAdd) {
-                deregister2();
-                var hasBg = false;
-                for (var i = 0, ii = map.getLayers().getLength(); i < ii; i++) {
-                  var layer = map.getLayers().item(i);
-                  var idx = layerSpecs.indexOf(layer.id);
-                  if (i == 0 && layer.background == true) {
-                    hasBg = true;
-                  }
-                  if (hasBg) {
-                    idx = idx + 1;
-                  }
-                  if (i != idx) {
-                    map.getLayers().remove(layer);
-                    map.getLayers().insertAt(idx, layer);
-                    i = (i < idx) ? i : idx;
-                  }
-                }
-              }
-            });
-          }
-
-          // Add a modifiable KML layer
-          var adminId = gaPermalink.getParams().adminId;
-          if (adminId) {
-            gaFileStorage.getFileUrlFromAdminId(adminId).then(function(url) {
-              try {
-                gaKml.addKmlToMapForUrl(map, url, {
-                  adminId: adminId
-                });
-                gaPermalink.deleteParam('adminId');
-              } catch (e) {
-                // Adding KML layer failed, native alert, log message?
-              }
-            });
-          }
-        };
-
-        // Add permalink layers when topics and layers config are loaded
-        $q.all([gaTopic.loadConfig(), gaLayers.loadConfig()]).then(function() {
-          if (!layerSpecs.length) {
-            // We add topic selected layers if no layers parameters provided
-            addTopicSelectedLayers();
-          } else {
-            // We add layers from 'layers' parameter
-            addLayers(layerSpecs, layerOpacities, layerVisibilities,
-                layerTimestamps);
-          }
-
-          gaTime.allowStatusUpdate = true;
-          registerLayersPermalink(scope, map);
-          // Listen for next topic change events
-          $rootScope.$on('gaTopicChange', addTopicSelectedLayers);
-        });
-      };
-    };
-  });
-
-
-  /**
-   * This service manage features on vector preview layer.
-   * This preview layer is used to display temporary features.
-   * Used by Tooltip, FeatureTree, Search and Permalink.
-   */
-  module.provider('gaPreviewFeatures', function() {
-    var MINIMAL_EXTENT_SIZE = 1965;
-    var highlightedFeature, onClear, listenerKeyRemove, listenerKeyAdd;
-    var geojson = new ol.format.GeoJSON();
-    var source = new ol.source.Vector();
-    var vector = new ol.layer.Vector({
-      source: source
-    });
-
-    this.$get = function($rootScope, $q, $http, gaDefinePropertiesForLayer,
-        gaStyleFactory, gaMapUtils) {
-      var url = this.url;
-      var selectStyle = gaStyleFactory.getStyle('select');
-      var highlightStyle = gaStyleFactory.getStyle('highlight');
-
-      // Define layer default properties
-      gaDefinePropertiesForLayer(vector);
-      vector.preview = true;
-      vector.displayInLayerManager = false;
-      vector.setZIndex(gaMapUtils.Z_PREVIEW_FEATURE);
-
-      // TO DO: May be this method should be elsewher?
-      var getFeatures = function(featureIdsByBodId) {
-        var promises = [];
-        angular.forEach(featureIdsByBodId, function(featureIds, bodId) {
-          Array.prototype.push.apply(promises, $.map(featureIds,
-              function(featureId) {
-                return $http.get(url + bodId + '/' +
-                  featureId + '?geometryFormat=geojson');
-              }
-          ));
-        });
-        return $q.all(promises);
-      };
-
-      // Get a buffered extent if necessary
-      var getMinimalExtent = function(extent) {
-        if (ol.extent.getHeight(extent) < MINIMAL_EXTENT_SIZE &&
-            ol.extent.getWidth(extent) < MINIMAL_EXTENT_SIZE) {
-          var center = ol.extent.getCenter(extent);
-          return ol.extent.buffer(center.concat(center),
-              MINIMAL_EXTENT_SIZE / 2);
-        } else {
-          return extent;
-        }
-      };
-
-      // Remove features associated with a layer.
-      var removeFromLayer = function(layer) {
-        var features = source.getFeatures();
-        for (var i = 0, ii = features.length; i < ii; i++) {
-          var layerId = features[i].get('layerId');
-          if (angular.isDefined(layerId) && layerId == layer.id) {
-            source.removeFeature(features[i]);
-          }
-        }
-      };
-
-      // Add/remove/move to top the vector layer.
-      var updateLayer = function(map) {
-        if (source.getFeatures().length == 0) {
-          ol.Observable.unByKey(listenerKeyRemove);
-          ol.Observable.unByKey(listenerKeyAdd);
-          map.removeLayer(vector);
-        } else if (map.getLayers().getArray().indexOf(vector) == -1) {
-          map.addLayer(vector);
-
-          // Add event for automatically removing the features when the
-          // corresponding layer is removed.
-          listenerKeyRemove = map.getLayers().on('remove', function(event) {
-            removeFromLayer(event.element);
-          });
-        }
-      };
-
-      var PreviewFeatures = function() {
-
-        // Add a feature.
-        this.add = function(map, feature) {
-          feature.setStyle(selectStyle);
-          source.addFeature(feature);
-          updateLayer(map);
-        };
-
-        // Add features from an array<layerBodId,array<featureIds>>.
-        // Param onNextClear is a function to call on the next execution of
-        // clear function.
-        this.addBodFeatures = function(map, featureIdsByBodId, onNextClear) {
-          var defer = $q.defer();
-          var features = [];
-          this.clear(map);
-          var that = this;
-          getFeatures(featureIdsByBodId).then(function(results) {
-            angular.forEach(results, function(result) {
-              result.data.feature.properties.layerId =
-                  result.data.feature.layerBodId;
-              features.push(result.data.feature);
-              that.add(map, geojson.readFeature(result.data.feature));
-            });
-            that.zoom(map);
-            defer.resolve(features);
-          });
-
-          onClear = onNextClear;
-          return defer.promise;
-        };
-
-        // Remove all.
-        this.clear = function(map) {
-          source.clear();
-          if (map) {
-            updateLayer(map);
-          }
-          highlightedFeature = undefined;
-
-          if (onClear) {
-            onClear();
-            onClear = undefined;
-          }
-        };
-
-        // Remove only the highlighted feature.
-        this.clearHighlight = function(map) {
-          if (highlightedFeature) {
-            source.removeFeature(highlightedFeature);
-            highlightedFeature = undefined;
-          }
-        };
-
-        // Remove the precedent feature highlighted then add the new one.
-        this.highlight = function(map, feature) {
-          this.clearHighlight();
-          if (feature) {
-            // We clone the feature to avoid duplicate features with same ids
-            highlightedFeature = new ol.Feature(feature.getGeometry());
-            highlightedFeature.setStyle(highlightStyle);
-            source.addFeature(highlightedFeature);
-            updateLayer(map);
-          }
-        };
-
-        // Zoom on a feature (if defined) or zoom on the entire source
-        // extent.
-        this.zoom = function(map, ol3d, feature) {
-          var extent = getMinimalExtent((feature) ?
-              feature.getGeometry().getExtent() : source.getExtent());
-          gaMapUtils.zoomToExtent(map, ol3d, extent);
-        };
-      };
-      return new PreviewFeatures();
-    };
-  });
-
-  module.provider('gaFeaturesPermalinkManager', function() {
-    this.$get = function($rootScope, gaPermalink, gaLayers,
-        gaPreviewFeatures, gaMapUtils) {
-      var queryParams = gaPermalink.getParams();
-      var layersParamValue = queryParams.layers;
-      var layerSpecs = layersParamValue ? layersParamValue.split(',') : [];
-
-      return function(map) {
-        gaLayers.loadConfig().then(function() {
-          var featureIdsCount = 0;
-          var featureIdsByBodId = {};
-          var paramKey;
-          var listenerKey;
-          for (paramKey in queryParams) {
-            if (gaLayers.getLayer(paramKey)) {
-              var bodId = paramKey;
-              if (!(bodId in featureIdsByBodId)) {
-                featureIdsByBodId[bodId] = [];
-              }
-              var featureIds = queryParams[bodId].split(',');
-              if (featureIds.length > 0) {
-                featureIdsCount += featureIds.length;
-                Array.prototype.push.apply(featureIdsByBodId[bodId],
-                    featureIds);
-                if (!gaMapUtils.getMapOverlayForBodId(map, bodId) &&
-                    layerSpecs.indexOf(bodId) == -1) {
-                  map.addLayer(gaLayers.getOlLayerById(bodId));
-                }
-              }
-            }
-          }
-
-          var removeParamsFromPL = function() {
-            var bodId;
-            for (bodId in featureIdsByBodId) {
-              gaPermalink.deleteParam(bodId);
-            }
-            featureIdsCount = 0;
-          };
-
-          $rootScope.$broadcast('gaPermalinkFeaturesAdd', {
-            featureIdsByBodId: featureIdsByBodId,
-            count: featureIdsCount
-          });
-
-          if (featureIdsCount > 0) {
-            var featuresShown = gaPreviewFeatures.addBodFeatures(map,
-                featureIdsByBodId, removeParamsFromPL);
-
-            if (queryParams.showTooltip == 'true') {
-              featuresShown.then(function(features) {
-                $rootScope.$broadcast('gaTriggerTooltipRequest', {
-                  features: features,
-                  onCloseCB: function() {
-                    gaPermalink.deleteParam('showTooltip');
-                  },
-                  nohighlight: true
-                });
-              });
-            }
-
-            // When a layer is removed, we need to update the permalink
-            listenerKey = map.getLayers().on('remove', function(event) {
-              var layerBodId = event.element.bodId;
-              if (featureIdsCount > 0 && (layerBodId in featureIdsByBodId)) {
-                featureIdsCount -= featureIdsByBodId[layerBodId].length;
-                gaPermalink.deleteParam(layerBodId);
-              }
-              if (featureIdsCount == 0 && listenerKey) {
-                // Unlisten the remove event when there is no more features
-                // (from permalink) displayed.
-                ol.Observable.unByKey(listenerKey);
-              }
-            });
-          }
-        });
-      };
-    };
-  });
-
-  /**
-   * Service manages preview layers on map, used by CatalogTree,
-   * Search, ImportWMS
-   */
-  module.provider('gaPreviewLayers', function() {
-    // We store all review layers we add
-    var olPreviewLayers = {};
-
-    this.$get = function($rootScope, gaLayers, gaWms, gaTime, gaMapUtils) {
-      var olPreviewLayer;
-
-      var PreviewLayers = function() {
-
-        this.addBodLayer = function(map, bodId) {
-
-          // Remove all preview layers
-          this.removeAll(map);
-
-          // Search or create the preview layer
-          var olPreviewLayer = olPreviewLayers[bodId];
-
-          if (!olPreviewLayer) {
-            olPreviewLayer = gaLayers.getOlLayerById(bodId);
-          }
-
-          // Something failed, layer doesn't exist
-          if (!olPreviewLayer) {
-            return undefined;
-          }
-
-          // Apply the current time
-          if (olPreviewLayer.bodId && olPreviewLayer.timeEnabled) {
-            olPreviewLayer.time = gaLayers.getLayerTimestampFromYear(
-                olPreviewLayer.bodId, gaTime.get());
-          }
-
-          olPreviewLayer.preview = true;
-          olPreviewLayer.displayInLayerManager = false;
-          olPreviewLayer.setZIndex(gaMapUtils.Z_PREVIEW_LAYER);
-          olPreviewLayers[bodId] = olPreviewLayer;
-          map.addLayer(olPreviewLayer);
-
-          return olPreviewLayer;
-        };
-
-        this.addGetCapWMSLayer = function(map, getCapLayer) {
-          // Remove all preview layers
-          this.removeAll(map);
-
-          // Search or create the preview layer
-          var olPreviewLayer = olPreviewLayers[getCapLayer.id];
-
-          if (!olPreviewLayer) {
-            olPreviewLayer = gaWms.getOlLayerFromGetCapLayer(getCapLayer);
-          }
-
-          // Something failed, layer doesn't exist
-          if (!olPreviewLayer) {
-            return undefined;
-          }
-
-          olPreviewLayer.preview = true;
-          olPreviewLayer.displayInLayerManager = false;
-          olPreviewLayers[getCapLayer.id] = olPreviewLayer;
-          olPreviewLayer.setZIndex(gaMapUtils.Z_PREVIEW_LAYER);
-          map.addLayer(olPreviewLayer);
-
-          return olPreviewLayer;
-        };
-
-        // Remove all preview layers currently on the map, to be sure there is
-        // one and only one preview layer at a time
-        this.removeAll = function(map) {
-          var layers = map.getLayers().getArray();
-          for (var i = 0; i < layers.length; i++) {
-            if (layers[i].preview && !(layers[i] instanceof ol.layer.Vector)) {
-              map.removeLayer(layers[i]);
-              i--;
-            } else if (layers[i].preview && layers[i].type == 'geojson') {
-              map.removeLayer(layers[i]);
-              i--;
-            }
-          }
-        };
-      };
-
-      return new PreviewLayers();
-    };
-  });
-
-  /**
-   * Service to pseudo-hide layers behind fully opaque layers
-   * to avoid loading tiles/data for such layers.
-   */
-  module.provider('gaLayerHideManager', function() {
-    this.$get = function(gaDebounce, gaLayers, gaLayerFilters) {
-      var layers = [];
-      var unregKeys = [];
-      var is3DActive = false;
-
-      var unreg = function() {
-        angular.forEach(unregKeys, function(key) {
-          if (key) {
-            ol.Observable.unByKey(key);
-          }
-        });
-        unregKeys = [];
-      };
-
-      var updateHiddenState = gaDebounce.debounce(function() {
-        var sortedLayers = layers.slice().reverse();
-        var hide = false;
-
-        unreg();
-
-        angular.forEach(sortedLayers, function(layer) {
-          layer.hiddenByOther = hide;
-
-          if (is3DActive) {
-            // Register all layers for changes
-            unregKeys.push(layer.on('change:visible', function(evt) {
-              updateHiddenState();
-            }));
-            unregKeys.push(layer.on('change:opacity', function(evt) {
-              updateHiddenState();
-            }));
-
-            // First opaque layer
-            if (!hide &&
-                gaLayers.getLayer(layer.id) &&
-                gaLayers.getLayer(layer.id).opaque &&
-                layer.visible &&
-                layer.invertedOpacity == '0') {
-              hide = true;
-            }
-          }
-        });
-      }, 100, false, false);
-      return function(parentScope) {
-        var scope = parentScope.$new();
-        scope.layers = scope.map.getLayers().getArray();
-        scope.f = function(l) {
-          return (gaLayerFilters.background(l) ||
-                  gaLayerFilters.selected(l));
-        };
-        scope.$watchCollection('layers | filter:f', function(l) {
-          layers = (l) ? l : [];
-          updateHiddenState();
-        });
-
-        scope.$watch('globals.is3dActive', function(val) {
-          is3DActive = val;
-          updateHiddenState();
-        });
-      };
-    };
-  });
-
-
 })();
-

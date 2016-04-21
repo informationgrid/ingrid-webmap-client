@@ -46,8 +46,8 @@
     "ol.extent.containsXY",
     "ol.extent.getCenter",
     "ol.extent.getHeight",
+    "ol.extent.getIntersection",
     "ol.extent.getWidth",
-    "ol.extent.intersects",
     "ol.format.GeoJSON",
     "ol.format.GeoJSON#*",
     "ol.format.KML",
@@ -141,7 +141,6 @@
     "ol.tilegrid.WMTS",
     "ol.tilegrid.WMTS#*"
   ],
-  "umd": true,
   "compile": {
     "externs": [
       "externs/olcsx.js",
@@ -157,8 +156,6 @@
     ],
     "define": [
       "goog.array.ASSUME_NATIVE_FUNCTIONS=true",
-      "goog.dom.ASSUME_STANDARDS_MODE=true",
-      "goog.json.USE_NATIVE_JSON=true",
       "goog.DEBUG=false",
       "ol.ENABLE_DOM=false",
       "ol.ENABLE_WEBGL=false"
@@ -169,13 +166,15 @@
     "jscomp_off": [
       "useOfGoogBase",
       "unnecessaryCasts",
-      "lintChecks"
+      "lintChecks",
+      "analyzerChecks"
     ],
     "extra_annotation_name": [
       "api", "observable"
     ],
     "compilation_level": "ADVANCED",
     "warning_level": "VERBOSE",
+    "output_wrapper": "(function(){%output%}).call(window);",
     "use_types_for_optimization": true,
     "manage_closure_dependencies": true,
     "create_source_map": "dist/ol3cesium.js.map",

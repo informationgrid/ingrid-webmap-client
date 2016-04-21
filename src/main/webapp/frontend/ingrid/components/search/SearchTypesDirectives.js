@@ -2,12 +2,15 @@ goog.provide('ga_search_type_directives');
 
 goog.require('ga_browsersniffer_service');
 goog.require('ga_debounce_service');
-goog.require('ga_layer_metadata_popup_service');
+goog.require('ga_layermetadatapopup_service');
 goog.require('ga_map_service');
 goog.require('ga_marker_overlay_service');
+goog.require('ga_previewfeatures_service');
+goog.require('ga_previewlayers_service');
 goog.require('ga_search_service');
 goog.require('ga_topic_service');
 goog.require('ga_urlutils_service');
+
 (function() {
 
   var originToZoomLevel = {
@@ -172,9 +175,11 @@ goog.require('ga_urlutils_service');
   var module = angular.module('ga_search_type_directives', [
     'ga_browsersniffer_service',
     'ga_debounce_service',
-    'ga_layer_metadata_popup_service',
+    'ga_layermetadatapopup_service',
     'ga_map_service',
     'ga_marker_overlay_service',
+    'ga_previewfeatures_service',
+    'ga_previewlayers_service',
     'ga_search_service',
     'ga_urlutils_service',
     'pascalprecht.translate',
@@ -354,8 +359,8 @@ goog.require('ga_urlutils_service');
               unregisterMove();
               //Gazetteer results that are not points zoom to full bbox extent
               if (res.attrs.origin == 'gazetteer') {
-                isGazetteerPoly = (Math.abs(e[0] - e[2]) > 0.1 &&
-                                   Math.abs(e[1] - e[3]) > 0.1);
+                isGazetteerPoly = (Math.abs(e[0] - e[2]) > 100 &&
+                                   Math.abs(e[1] - e[3]) > 100);
 
               }
               var ol3d = $scope.ol3d;

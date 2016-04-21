@@ -135,5 +135,4 @@ goog.require('ga_urlutils_service');
         return permalink;
       };
   });
-
 })();

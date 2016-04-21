@@ -6,8 +6,8 @@ goog.require('ga_map');
 goog.require('ga_networkstatus_service');
 goog.require('ga_storage_service');
 goog.require('ga_topic_service');
-(function() {
 
+(function() {
 
   var module = angular.module('ga_main_controller', [
     'pascalprecht.translate',
@@ -23,10 +23,10 @@ goog.require('ga_topic_service');
    */
   module.controller('GaMainController', function($rootScope, $scope, $timeout,
       $translate, $window, $document, $q, gaBrowserSniffer, gaHistory,
-      gaFeaturesPermalinkManager, gaLayersPermalinkManager, gaMapUtils,
+      gaPermalinkFeaturesManager, gaPermalinkLayersManager, gaMapUtils,
       gaRealtimeLayersManager, gaNetworkStatus, gaPermalink, gaStorage,
       gaGlobalOptions, gaBackground, gaTime, gaLayers, gaTopic,
-      gaLayerHideManager) {
+      gaOpaqueLayersManager) {
 
     var createMap = function() {
       var toolbar = $('#zoomButtons')[0];
@@ -42,8 +42,16 @@ goog.require('ga_topic_service');
           rotate: false,
           zoomOptions: {
             target: toolbar,
-            zoomInLabel: ' ',
-            zoomOutLabel: ' ',
+            zoomInLabel: $('<span>' +
+                           '<i class="fa fa-ga-circle-bg"></i>' +
+                           '<i class="fa fa-ga-circle"></i>' +
+                           '<i class="fa fa-ga-zoom-plus"></i>' +
+                           '</span>')[0],
+            zoomOutLabel: $('<span>' +
+                            '<i class="fa fa-ga-circle-bg"></i>' +
+                            '<i class="fa fa-ga-circle"></i>' +
+                            '<i class="fa fa-ga-zoom-minus"></i>' +
+                            '</span>')[0],
             zoomInTipLabel: ' ',
             zoomOutTipLabel: ' '
           }
@@ -166,21 +174,31 @@ goog.require('ga_topic_service');
     gaBackground.init($scope.map);
 
     // Activate the "layers" parameter permalink manager for the map.
-    gaLayersPermalinkManager($scope.map);
+    gaPermalinkLayersManager($scope.map);
 
     // Activate the "features" permalink manager for the map.
-    gaFeaturesPermalinkManager($scope.map);
+    gaPermalinkFeaturesManager($scope.map);
 
     gaRealtimeLayersManager($scope.map);
 
     // Optimize performance by hiding non-visible layers
-    gaLayerHideManager($scope);
+    gaOpaqueLayersManager($scope);
 
     var initWithPrint = /print/g.test(gaPermalink.getParams().widgets);
     var initWithFeedback = /feedback/g.test(gaPermalink.getParams().widgets);
     var initWithDraw = /draw/g.test(gaPermalink.getParams().widgets) ||
         !!(gaPermalink.getParams().adminId);
     gaPermalink.deleteParam('widgets');
+
+    var onTopicsLoaded = function() {
+      if (gaPermalink.getParams().layers !== undefined) {
+        $scope.globals.catalogShown = false;
+        $scope.globals.selectionShown = true;
+      } else {
+        $scope.globals.catalogShown = true;
+        $scope.globals.selectionShown = false;
+      }
+    };
 
     var onTopicChange = function(event, topic) {
       $scope.topicId = topic.id;
@@ -189,14 +207,22 @@ goog.require('ga_topic_service');
       if (gaBrowserSniffer.ios) {
         $window.scrollTo(0, 0);
       }
+
       if (topic.activatedLayers.length) {
         $scope.globals.selectionShown = true;
         $scope.globals.catalogShown = false;
       } else if (topic.selectedLayers.length) {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
+      } else {
+        if (event === null) {
+          onTopicsLoaded();
+        } else {
+          $scope.globals.catalogShown = true;
+        }
       }
     };
+
     gaTopic.loadConfig().then(function() {
       $scope.topicId = gaTopic.get().id;
 
@@ -282,7 +308,8 @@ goog.require('ga_topic_service');
     });
     // Deactivate share tool when pulldown is closeddraw is opening
     $scope.$watch('globals.pulldownShown', function(active) {
-      if (active && !$scope.globals.isShareActive &&
+      if (active && !$scope.globals.isDrawActive &&
+          !$scope.globals.isShareActive &&
           win.width() <= screenPhone) {
         $scope.globals.isShareActive = true;
       }
@@ -399,12 +426,16 @@ goog.require('ga_topic_service');
 
     }
 
-    // An appcache update is available.
-    if ($window.applicationCache) { // IE9
-      $window.applicationCache.addEventListener('updateready', function(e) {
-        $window.location.reload();
+    // An new appcache file is available.
+    if ($window.applicationCache) {
+      $window.applicationCache.addEventListener('obsolete', function(e) {
+        // setTimeout is needed for correct appcache update on Firefox
+        setTimeout(function() {
+          $window.location.reload(true);
+        });
       });
     }
+
   });
 })();
 
