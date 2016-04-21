@@ -714,6 +714,9 @@ goog.require('ga_urlutils_service');
             var wmsParams = {
               LAYERS: layer.wmsLayers,
               FORMAT: 'image/' + layer.format,
+              // INGRID: Add verion to get getMap request for WMS version 1.1.1.
+              // Version is define on layers.json.
+              VERSION: layer.version != undefined ? layer.version : '1.3.0',
               LANG: gaLang.get()
             };
             if (timestamp) {
@@ -1192,7 +1195,8 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                olLayerOrId.split('||').length >= 4;
+                // INGRID: Length now 5 because adding WMS version
+                olLayerOrId.split('||').length == 5;
           }
           return olLayerOrId.type == 'WMS';
         },
