@@ -178,7 +178,7 @@ goog.require('ga_wms_service');
               layer.wmsVersion = wmsVersion;
               // INGRID: Add layer WMS version
               layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name + '||' + layer.wmsVersion;
-              layer.extent = getLayerExtentFromGetCap(layer);
+              layer.extent = getLayerExtentFromGetCap(layer, map);
 
               // if the layer has no extent, it is set as invalid.
               // We don't have proj codes list for wms 1.1.1 so we assume the
