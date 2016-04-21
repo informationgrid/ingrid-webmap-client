@@ -19,7 +19,7 @@
     display: block; /*without this, chrome add 3 pixels between zoomin/out buttons*/
   }
 
-  .ol-zoom-in, .ol-zoom-out {
+  .ol-zoom-in, .ol-zoom-out, .ol-zoom-extent {
 
     i {
       margin: 2px;
@@ -37,9 +37,10 @@
       font-size: 38px;
       padding: 1px;
     }
-  }
-
-  .ol-zoom-extent {
-    background-image: data-uri('zoomExtent.png');
+    
+    .fa-resize-horizontal, .fa-resize-vertical{
+      font-size: 20px;
+      padding: 10px;
+    }
   }
 }
