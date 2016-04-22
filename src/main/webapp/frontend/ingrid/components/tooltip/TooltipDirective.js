@@ -332,11 +332,13 @@ goog.require('ga_topic_service');
             // Find features for all type of layers
             var findFeatures = function(coordinate, position3d) {
               initTooltip();
+              /* INGRID: Remove check not needed
               if (!coordinate ||
                  !ol.extent.containsCoordinate(gaMapUtils.defaultExtent,
                  coordinate)) {
                 return;
               }
+              */
               var pointerShown = (map.getTarget().style.cursor == 'pointer');
               var size = map.getSize();
               var mapExtent = map.getView().calculateExtent(size);
@@ -386,6 +388,25 @@ goog.require('ga_topic_service');
                         yearFromString(layerToQuery.time);
                   }
 
+                  // INGRID: Add function to get getFeatureInfo
+                  var url = layerToQuery
+                  .getSource()
+                  .getGetFeatureInfoUrl(
+                      coordinate,
+                      map.getView().getResolution(),
+                      map.getView().getProjection(),
+                      {
+                          'INFO_FORMAT': 'text/html'
+                      }
+                  );
+                  if(url){
+                      all.push($http.get(url, {
+                      }).then(function(response) {
+                        showFeatures(response, coordinate);
+                        return response.data.length;
+                      }));
+                  }
+                  /* INGRID: Remove not needed
                   all.push($http.get(identifyUrl, {
                     timeout: canceler.promise,
                     params: params,
@@ -394,6 +415,7 @@ goog.require('ga_topic_service');
                     showFeatures(response.data.results, coordinate);
                     return response.data.results.length;
                   }));
+                  */
                 }
               }
 
@@ -480,6 +502,20 @@ goog.require('ga_topic_service');
                     });
                   }
                 });
+              } else {
+              // INGRID: Add show GetFeatureInfo
+                  // Remove the tooltip, if a layer is removed, we don't care
+                  // which layer. It worked like that in RE2.
+                  listenerKey = map.getLayers().on('remove',
+                    function(evt) {
+                      if (!evt.element.preview) {
+                        initTooltip();
+                      }
+                    }
+                  );
+                  if(foundFeatures.data && foundFeatures.data.length > 0){
+                      showPopup(foundFeatures.data, foundFeatures);
+                  }
               }
             };
 

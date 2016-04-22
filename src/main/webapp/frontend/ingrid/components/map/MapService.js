@@ -727,8 +727,7 @@ goog.require('ga_urlutils_service');
                 olSource = layer.olSource = new ol.source.ImageWMS({
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
-                  // TODO INGRID: Check functions
-                  //crossOrigin: crossOrigin,
+                  crossOrigin: crossOrigin,
                   ratio: 1
                 });
               }
@@ -751,7 +750,7 @@ goog.require('ga_urlutils_service');
                   params: wmsParams,
                   gutter: layer.gutter || 0,
                   // TODO INGRID: Check functions
-                  //crossOrigin: crossOrigin,
+                  crossOrigin: crossOrigin,
                   //tileGrid: gaTileGrid.get(layer.resolutions,
                   //    layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
