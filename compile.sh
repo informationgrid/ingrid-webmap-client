@@ -26,7 +26,12 @@ cp -r ../src/main/webapp/frontend/ingrid/js src/
 cp -r ../src/main/webapp/frontend/ingrid/style src/
 cp -r ../src/main/webapp/frontend/ingrid/img src/
 cp -r ../src/main/webapp/frontend/ingrid/locales src/
+cp -r ../src/main/webapp/frontend/src/index.mako.html src/
+cp -r ../src/main/webapp/frontend/src/rc_ingrid ./
 
+# Add environments
+source rc_ingrid
+ 
 # make libs
 make libs
 
