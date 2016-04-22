@@ -30,16 +30,16 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="application-name" content="map.geo.admin.ch"/>
-    <meta name="msapplication-TileImage" content="${versionslashed}img/touch-icon-bund-144x144.png"/>
+    <meta name="msapplication-TileImage" content="img/touch-icon-bund-144x144.png"/>
     <meta name="msapplication-TileColor" content="#ffffff"/>
-    <meta name="msapplication-square70x70logo" content="${versionslashed}img/touch-icon-bund-70x70.png"/>
-    <meta name="msapplication-square150x150logo" content="${versionslashed}img/touch-icon-bund-150x150.png"/>
-    <meta name="msapplication-square310x310logo" content="${versionslashed}img/touch-icon-bund-310x310.png"/>
+    <meta name="msapplication-square70x70logo" content="img/touch-icon-bund-70x70.png"/>
+    <meta name="msapplication-square150x150logo" content="img/touch-icon-bund-150x150.png"/>
+    <meta name="msapplication-square310x310logo" content="img/touch-icon-bund-310x310.png"/>
     <link rel="dns-prefetch" href="${api_url}"/>
 
-    <link rel="apple-touch-icon" sizes="76x76" href="${versionslashed}img/touch-icon-bund-76x76.png"/>
-    <link rel="apple-touch-icon" sizes="120x120" href="${versionslashed}img/touch-icon-bund-120x120.png"/>
-    <link rel="apple-touch-icon" sizes="152x152" href="${versionslashed}img/touch-icon-bund-152x152.png"/>
+    <link rel="apple-touch-icon" sizes="76x76" href="img/touch-icon-bund-76x76.png"/>
+    <link rel="apple-touch-icon" sizes="120x120" href="img/touch-icon-bund-120x120.png"/>
+    <link rel="apple-touch-icon" sizes="152x152" href="img/touch-icon-bund-152x152.png"/>
 
     <!-- Description is translated 'by hand' in the MainController -->
     <meta name="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
@@ -53,7 +53,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta property="og:type" content="WebApplication"/>
     <meta property="og:url" content="https://map.geo.admin.ch"/>
     <!-- INGRID: Change icon --> 
-    <meta property="og:image" content="${versionslashed}img/ingrid_logo_icn.png"/>
+    <meta property="og:image" content="img/ingrid_logo_icn.png"/>
 
     <!-- Twitter Card Infos -->
     <meta name="twitter:card" content="summary"/>
@@ -62,7 +62,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="twitter:title" content="geo.admin.ch"/>
     <meta name="twitter:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta name="twitter:image" content="${versionslashed}img/ingrid_logo_icn.png"/>
+    <meta name="twitter:image" content="img/ingrid_logo_icn.png"/>
     <meta name="twitter:url" content="https://map.geo.admin.ch"/>
 
     <!-- Facebook Specific fb:admins and fb.appid -->
@@ -71,7 +71,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta itemprop="name" content="geo.admin.ch"/>
     <meta itemprop="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta itemprop="image" content="${versionslashed}img/ingrid_logo_icn.png"/>
+    <meta itemprop="image" content="img/ingrid_logo_icn.png"/>
 
     <script>
       (function(){
@@ -106,7 +106,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         }
       })();
     </script>
-    <link href="${versionslashed}style/app.css" rel="stylesheet"/>
+    <link href="style/app.css" rel="stylesheet"/>
     <!-- INGRID: Change icon --> 
     <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
   </head>
@@ -140,7 +140,7 @@ itemscope itemtype="http://schema.org/WebApplication"
        }
        })();
       </script>
-      <script src="${versionslashed}lib/IE9Fixes.js"></script>
+      <script src="lib/IE9Fixes.js"></script>
       <script>
         IE9Fix.call(this);
       </script>
@@ -642,15 +642,15 @@ itemscope itemtype="http://schema.org/WebApplication"
 % if mode == 'prod':
   
     <script>
-      window.CESIUM_BASE_URL="${versionslashed}lib/Cesium/";
+      window.CESIUM_BASE_URL="lib/Cesium/";
     </script>
-    <script src="${versionslashed}lib/build.js"></script>
+    <script src="lib/build.js"></script>
     <!-- For <= IE9, we load it explicitely as XDomain does not support
          dynamic/lazy loading of javascript -->
     <!--![if IE]>
-    <script src="${versionslashed}lib/bootstrap-datetimepicker.min.js"></script>
-    <script src="${versionslashed}lib/d3.min.js"></script>
-    <script src="${versionslashed}lib/jquery.xdomainrequest.min.js"></script>
+    <script src="lib/bootstrap-datetimepicker.min.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="lib/jquery.xdomainrequest.min.js"></script>
     <![endif]-->
 % else:
     <!-- in source, we need to load it here because IE9 ignores it in
@@ -742,7 +742,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           publicUrlRegexp: new RegExp('${public_url_regexp}'),
           adminUrlRegexp: new RegExp('${admin_url_regexp}'),
           cachedApiUrl: location.protocol + '${api_url}' + cacheAdd,
-          resourceUrl: location.origin + pathname + '${versionslashed}',
+          resourceUrl: location.origin + pathname + '',
           // INGRID: Change REST service URL
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/wms/proxy/?url=',
           whitelist: [
@@ -764,7 +764,7 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         module.config(function($translateProvider, gaGlobalOptions) {
           $translateProvider.useStaticFilesLoader({
-            prefix: '${versionslashed}locales/',
+            prefix: 'locales/',
             suffix: '.json'
           });
           $translateProvider.cloakClassName('ng-cloak');
