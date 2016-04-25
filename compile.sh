@@ -30,7 +30,6 @@ cp -r ../src/main/webapp/frontend/src/index.mako.html src/
 cp -r ../src/main/webapp/frontend/src/rc_ingrid ./
 
 # Add environments
-#source rc_ingrid
 export DEFAULT_TOPIC_ID=themen
 export DEFAULT_EXTENT="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
 export DEFAULT_EPSG="EPSG:3857"
