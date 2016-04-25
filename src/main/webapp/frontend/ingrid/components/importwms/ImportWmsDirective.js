@@ -252,6 +252,10 @@ goog.require('ga_wms_service');
                 return ol.proj.transformExtent(layerWgs84Extent, wgs84,
                     projCode);
               }
+            }else{
+                // INGRID: Set extent to default extent (WMS 1.1.1 not supported yet)
+                // (wait for https://github.com/openlayers/ol3/pull/2944)
+                return ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
             }
          };
   });

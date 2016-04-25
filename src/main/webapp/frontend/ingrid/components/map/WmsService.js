@@ -81,6 +81,12 @@ goog.require('ga_urlutils_service');
             options.id += '||' + params.VERSION;
           }
 
+          // INGRID: Add queryable 
+          if (options.queryable) {
+            options.id += '||' + options.queryable;
+          }
+
+          
           if (options.useReprojection) {
             options.projection = 'EPSG:4326';
             options.id += '||true';
@@ -100,6 +106,8 @@ goog.require('ga_urlutils_service');
             visible: options.visible,
             attribution: options.attribution,
             extent: options.extent,
+            // INGRID: Add queryable 
+            queryable: options.queryable,
             source: source
           });
           gaDefinePropertiesForLayer(layer);
@@ -123,7 +131,9 @@ goog.require('ga_urlutils_service');
             url: getCapLayer.wmsUrl,
             label: getCapLayer.Title,
             extent: gaMapUtils.intersectWithDefaultExtent(getCapLayer.extent),
-            useReprojection: getCapLayer.useReprojection
+            useReprojection: getCapLayer.useReprojection,
+            // INGRID: Add queryable 
+            queryable: getCapLayer.queryable
           };
           return createWmsLayer(wmsParams, wmsOptions);
         };

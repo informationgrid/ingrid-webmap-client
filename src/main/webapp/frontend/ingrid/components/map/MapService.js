@@ -162,6 +162,15 @@ goog.require('ga_urlutils_service');
               this.set('type', val);
             }
           },
+// INGRID: Add queryable functions
+          queryable: {
+            get: function() {
+              return this.get('queryable');
+            },
+            set: function(val) {
+              this.set('queryable', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');
@@ -697,7 +706,8 @@ goog.require('ga_urlutils_service');
                     layer.minResolution),
                 tileLoadFunction: tileLoadFunction,
                 urls: getImageryUrls(wmtsTplUrl, subdomains),
-                crossOrigin: crossOrigin
+                // INGRID: Need to check
+                //crossOrigin: crossOrigin
               });
             }
             olLayer = new ol.layer.Tile({
@@ -727,7 +737,8 @@ goog.require('ga_urlutils_service');
                 olSource = layer.olSource = new ol.source.ImageWMS({
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
-                  crossOrigin: crossOrigin,
+                  // INGRID: Need to check
+                  //crossOrigin: crossOrigin,
                   ratio: 1
                 });
               }
@@ -750,7 +761,7 @@ goog.require('ga_urlutils_service');
                   params: wmsParams,
                   gutter: layer.gutter || 0,
                   // TODO INGRID: Check functions
-                  crossOrigin: crossOrigin,
+                  //crossOrigin: crossOrigin,
                   //tileGrid: gaTileGrid.get(layer.resolutions,
                   //    layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
@@ -1194,8 +1205,8 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                // INGRID: Length now 5 because adding WMS version
-                olLayerOrId.split('||').length == 5;
+                // INGRID: Length now 6 because adding WMS version and queryable
+                olLayerOrId.split('||').length == 6;
           }
           return olLayerOrId.type == 'WMS';
         },

@@ -70,7 +70,8 @@ goog.require('ga_topic_service');
         var getLayersToQuery = function(map) {
           var layersToQuery = [];
           map.getLayers().forEach(function(l) {
-            if (hasTooltipBodLayer(l) || isVectorLayer(l)) {
+// INGRID: Add check layer is queryable
+            if (hasTooltipBodLayer(l) || isVectorLayer(l) || l.queryable) {
               layersToQuery.push(l);
             }
           });
@@ -368,8 +369,9 @@ goog.require('ga_topic_service');
                   if (feature) {
                     showVectorFeature(feature, layerToQuery);
                   }
-                } else if (layerToQuery.bodId) { // queryable bod layers
-                  var params = {
+                } else if (layerToQuery.bodId || layerToQuery.queryable) { // queryable bod layers
+                    /* INGRID: Not needed because direct GetFeatureInfo request
+                    var params = {
                     geometryType: 'esriGeometryPoint',
                     geometryFormat: 'geojson',
                     geometry: coordinate[0] + ',' + coordinate[1],
@@ -387,7 +389,7 @@ goog.require('ga_topic_service');
                     params.timeInstant = gaTime.get() ||
                         yearFromString(layerToQuery.time);
                   }
-
+                  */
                   // INGRID: Add function to get getFeatureInfo
                   var url = layerToQuery
                   .getSource()
@@ -400,7 +402,7 @@ goog.require('ga_topic_service');
                       }
                   );
                   if(url){
-                      all.push($http.get(url, {
+                      all.push($http.get('/ingrid-webmap-client/rest/wms/proxy?url=' + url.split("&").join("%26"), {
                       }).then(function(response) {
                         showFeatures(response, coordinate);
                         return response.data.length;

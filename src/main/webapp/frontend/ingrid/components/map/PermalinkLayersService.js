@@ -277,8 +277,9 @@ goog.require('ga_wms_service');
                     opacity: opacity || 1,
                     visible: visible,
                     // INGRID: Add default extent by default projection
+                    queryable: infos[5],
                     extent: ol.proj.transformExtent(gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
-                    useReprojection: (infos[5] === 'true')
+                    useReprojection: (infos[6] === 'true')
                   },
                   index + 1);
               } catch (e) {
