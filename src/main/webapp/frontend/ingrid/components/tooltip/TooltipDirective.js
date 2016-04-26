@@ -50,8 +50,9 @@ goog.require('ga_topic_service');
           if (bodId) {
             bodId = gaLayers.getLayerProperty(bodId, 'parentLayerId') || bodId;
           }
-          return (bodId && olLayer.visible && !olLayer.preview &&
-              gaLayers.getLayerProperty(bodId, 'tooltip'));
+          // INGRID: Add 'olLayer.queryable'
+          return ((bodId && olLayer.visible && !olLayer.preview &&
+              gaLayers.getLayerProperty(bodId, 'tooltip')) || olLayer.queryable);
         };
 
         var getOlParentLayer = function(l) {
@@ -121,7 +122,8 @@ goog.require('ga_topic_service');
               },
               undefined,
               function(layer) {
-                return hasTooltipBodLayer(layer);
+                // INGRID: Add check for crossOrigin
+                return hasTooltipBodLayer(layer) && layer.getSource().crossOrigin;
               });
           }
           if (!hasQueryableLayer) {

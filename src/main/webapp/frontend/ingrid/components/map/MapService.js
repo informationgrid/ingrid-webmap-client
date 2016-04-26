@@ -707,7 +707,7 @@ goog.require('ga_urlutils_service');
                 tileLoadFunction: tileLoadFunction,
                 urls: getImageryUrls(wmtsTplUrl, subdomains),
                 // INGRID: Need to check
-                //crossOrigin: crossOrigin
+                crossOrigin: layer.crossOrigin ? crossOrigin : undefined
               });
             }
             olLayer = new ol.layer.Tile({
@@ -738,7 +738,7 @@ goog.require('ga_urlutils_service');
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
                   // INGRID: Need to check
-                  //crossOrigin: crossOrigin,
+                  crossOrigin: layer.crossOrigin ? crossOrigin : undefined,
                   ratio: 1
                 });
               }
@@ -761,7 +761,7 @@ goog.require('ga_urlutils_service');
                   params: wmsParams,
                   gutter: layer.gutter || 0,
                   // TODO INGRID: Check functions
-                  //crossOrigin: crossOrigin,
+                  crossOrigin: layer.crossOrigin ? crossOrigin : undefined,
                   //tileGrid: gaTileGrid.get(layer.resolutions,
                   //    layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
