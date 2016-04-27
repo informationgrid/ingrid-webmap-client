@@ -171,6 +171,24 @@ goog.require('ga_urlutils_service');
               this.set('queryable', val);
             }
           },
+// INGRID: Add crossOrigin functions
+          crossOrigin: {
+            get: function() {
+              return this.get('crossOrigin');
+            },
+            set: function(val) {
+              this.set('crossOrigin', val);
+            }
+          },
+// INGRID: Add extent functions
+          extent: {
+            get: function() {
+              return this.get('extent');
+            },
+            set: function(val) {
+              this.set('extent', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');
