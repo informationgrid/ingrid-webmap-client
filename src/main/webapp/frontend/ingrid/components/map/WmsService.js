@@ -179,6 +179,30 @@ goog.require('ga_urlutils_service');
           defer.resolve({data: html});
           return defer.promise;
         };
+        // INGRID: Add function to get the layer legend url
+        this.getLegendURL = function(layer) {
+            var params = layer.getSource().getParams();
+            // INGRID: Get legend for all layer (intern and extern)
+            var url = layer.url;
+            if(url == undefined){
+                if(layer.getSource()){
+                    if(layer.getSource().urls){
+                        if(layer.getSource().urls.length > 0){
+                            url = layer.getSource().urls[0];
+                        }
+                    }
+                }
+            }
+            return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
+             request: 'GetLegendGraphic',
+             layer: params.LAYERS,
+             style: params.style || 'default',
+             service: 'WMS',
+             version: params.version || '1.3.0',
+             format: 'image/png',
+             sld_version: '1.1.0'
+           }));
+        };
       };
       return new Wms();
     };

@@ -19,11 +19,11 @@ goog.require('ga_time_service');
     'ga_attribution_service'
   ]);
 
-  // INGRID: Add parameter 'gaWms'
+  // INGRID: Add parameter 'gaWms', 'gaGlobalOptions'
   module.controller('GaPrintDirectiveController', function($rootScope, $scope,
       $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils, 
       gaPermalink, gaBrowserSniffer, gaWaitCursor, gaPrintStyleService,
-      gaTime, gaAttribution, gaWms) {
+      gaTime, gaAttribution, gaWms, gaGlobalOptions) {
 
     var pdfLegendsToDownload = [];
     var pdfLegendString = '_big.pdf';
@@ -149,6 +149,10 @@ goog.require('ga_time_service');
           } else if (src instanceof ol.source.ImageWMS ||
               src instanceof ol.source.TileWMS) {
             encLayer = $scope.encoders.layers['WMS'].call(this,
+                layer, layerConfig);
+          } else if (src instanceof ol.source.OSM) {
+            // INGRID: Add print OSM
+            encLayer = $scope.encoders.layers['OSM'].call(this,
                 layer, layerConfig);
           } else if (src instanceof ol.source.Vector ||
               src instanceof ol.source.ImageVector) {
@@ -437,7 +441,8 @@ goog.require('ga_time_service');
               customParams: {
                 'EXCEPTIONS': 'XML',
                 'TRANSPARENT': 'true',
-                'CRS': 'EPSG:21781',
+                // INGRID: Use default EPSG
+                'CRS': gaGlobalOptions.defaultEpsg,
                 'TIME': params.TIME,
                 'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
               },
@@ -484,6 +489,24 @@ goog.require('ga_time_service');
           }
 
           return enc;
+        },
+        // INGRID: Add encoder for OSM
+        'OSM': function(layer, config) {
+            var enc = $scope.encoders.
+              layers['Layer'].call(this, layer);
+            var source = layer.getSource();
+            var tileGrid = source.getTileGrid();
+            angular.extend(enc, {
+              type: 'OSM',
+              baseURL: 'http://tile.openstreetmap.org', 
+              maxExtent: tileGrid.getExtent(), 
+              tileSize: [tileGrid.getTileSize(),tileGrid.getTileSize()], 
+              extension: 'png', 
+              resolutions: tileGrid.getResolutions(),
+              singleTile: config.singleTile || false
+            });
+            return enc;
+
         }
       },
       'features': {
@@ -711,6 +734,12 @@ goog.require('ga_time_service');
               }
             }
           }
+        }else if (layer.getSource() instanceof ol.source.OSM){
+            // INGRID: Encode OSM
+            var enc = encodeLayer(layer, proj);
+            if (enc && enc.layer) {
+              encLayers.push(enc.layer);
+            }
         }
       });
       if (layersYears) {
