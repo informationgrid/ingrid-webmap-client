@@ -499,7 +499,7 @@ goog.require('ga_time_service');
             angular.extend(enc, {
               type: 'OSM',
               baseURL: 'http://tile.openstreetmap.org', 
-              maxExtent: tileGrid.getExtent(), 
+              maxExtent: source.getProjection().getExtent(), 
               tileSize: [tileGrid.getTileSize(),tileGrid.getTileSize()], 
               extension: 'png', 
               resolutions: tileGrid.getResolutions(),
