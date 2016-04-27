@@ -671,8 +671,8 @@ goog.require('ga_urlutils_service');
           var olLayer;
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
           var crossOrigin = 'anonymous';
-          var extent = gaMapUtils.intersectWithDefaultExtent(layer.extent ||
-              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent());
+          // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
+          var extent = layer.extent || ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
 
           // For some obscure reasons, on iOS, displaying a base 64 image
           // in a tile with an existing crossOrigin attribute generates

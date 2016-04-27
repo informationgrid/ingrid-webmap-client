@@ -308,7 +308,8 @@ goog.require('ga_wms_service');
 
     // Zoom to layer extent
     var zoomToLayerExtent = function(layer, map) {
-      var extent = gaMapUtils.intersectWithDefaultExtent(layer.extent);
+      // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
+      var extent = layer.extent;
       var view = map.getView();
       var mapSize = map.getSize();
 

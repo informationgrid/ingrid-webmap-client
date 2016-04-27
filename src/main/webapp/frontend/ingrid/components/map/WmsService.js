@@ -130,7 +130,8 @@ goog.require('ga_urlutils_service');
           var wmsOptions = {
             url: getCapLayer.wmsUrl,
             label: getCapLayer.Title,
-            extent: gaMapUtils.intersectWithDefaultExtent(getCapLayer.extent),
+            // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
+            extent: getCapLayer.extent,
             useReprojection: getCapLayer.useReprojection,
             // INGRID: Add queryable 
             queryable: getCapLayer.queryable
