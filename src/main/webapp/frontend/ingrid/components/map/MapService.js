@@ -748,7 +748,7 @@ goog.require('ga_urlutils_service');
                 opacity: layer.opacity || 1,
                 source: olSource,
                 // INGRID: Set extent by defaultProjection
-                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                extent: layer.extent ? ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
               });
             } else {
               if (!olSource) {
@@ -776,7 +776,7 @@ goog.require('ga_urlutils_service');
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
                 useInterimTilesOnError: gaNetworkStatus.offline,
                 // INGRID: Set extent by defaultProjection
-                extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                extent: layer.extent ? ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
                 
               });
             }
