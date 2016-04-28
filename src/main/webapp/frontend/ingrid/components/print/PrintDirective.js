@@ -173,7 +173,8 @@ goog.require('ga_time_service');
         }
       }
 
-      if ($scope.options.legend && layerConfig.hasLegend) {
+      // INGRID: Fix print of external WMS
+      if ($scope.options.legend && (encLayer && encLayer.type != "OSM")) {
         encLegend = $scope.encoders.legends['ga_urllegend'].call(this,
             layer, layerConfig);
 
