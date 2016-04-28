@@ -187,6 +187,14 @@ goog.require('ga_time_service');
             pdfLegendsToDownload.push(legStr);
             encLegend = undefined;
           }
+          // INGRID: Fix name value of encLegend
+          if (encLegend.name == undefined) {
+            if(layer){
+              if(layer.label){
+                encLegend.name = layer.label;
+              }
+            }
+          }
         }
       }
       return {layer: encLayer, legend: encLegend};
