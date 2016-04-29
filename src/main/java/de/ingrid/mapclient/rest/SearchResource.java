@@ -28,8 +28,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -49,14 +47,10 @@ import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import de.ingrid.mapclient.dwr.services.sns.SNSLocationTopic;
-import de.ingrid.mapclient.dwr.services.sns.SNSService;
-
 @Path("/search")
 public class SearchResource {
 
     private static final Logger log = Logger.getLogger( SearchResource.class );
-    SNSService service;
     /**
      * Path to search term
      */
@@ -66,10 +60,11 @@ public class SearchResource {
     @Path(SEARCH_PATH)
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response search(@QueryParam("q") String searchTerm, @QueryParam("lang") String lang, @QueryParam("type") String type, @QueryParam("searchUrl") String searchUrl, @QueryParam("searchUrlParams") String searchUrlParams) throws Exception {
+    public Response search(@QueryParam("q") String searchTerm, @QueryParam("lang") String lang, @QueryParam("type") String type, @QueryParam("searchUrl") String searchUrl,
+            @QueryParam("searchUrlParams") String searchUrlParams) throws Exception {
         searchTerm = searchTerm.trim();
 
-        if(searchTerm.length() > 2){
+        if (searchTerm.length() > 2) {
             try {
                 searchTerm = URLEncoder.encode( searchTerm, "UTF-8" );
             } catch (Exception e) {
@@ -80,70 +75,39 @@ public class SearchResource {
                 if (type.indexOf( "locations" ) > -1) {
                     JSONArray json = new JSONArray();
                     URL questUrl;
-                    
+
                     // Nominatim
                     try {
-                        questUrl = new URL(searchUrl.concat("&q="+URLEncoder.encode(searchTerm.trim())));
+                        questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm.trim() ) ) );
                         URLConnection con = questUrl.openConnection();
                         InputStream in = con.getInputStream();
                         String encoding = con.getContentEncoding();
                         encoding = encoding == null ? "UTF-8" : encoding;
-                        
-                        String tmpJson = IOUtils.toString(in, encoding);
-                        JSONArray questJson = new JSONArray(tmpJson);
-                        for (int j=0; j < questJson.length(); j++) {
-                            JSONObject questJsonEntry = questJson.getJSONObject(j);
+
+                        String tmpJson = IOUtils.toString( in, encoding );
+                        JSONArray questJson = new JSONArray( tmpJson );
+                        for (int j = 0; j < questJson.length(); j++) {
+                            JSONObject questJsonEntry = questJson.getJSONObject( j );
                             JSONObject newEntry = new JSONObject();
-                            newEntry.put( "id", questJsonEntry.get( "place_id" ));
+                            newEntry.put( "id", questJsonEntry.get( "place_id" ) );
                             newEntry.put( "weight", 7 );
                             JSONObject newAttrs = new JSONObject();
                             newAttrs.put( "origin", "gazetteer" );
-                            newAttrs.put( "label", questJsonEntry.get( "display_name"));
-                            newAttrs.put( "detail", questJsonEntry.get( "licence"));
+                            newAttrs.put( "label", questJsonEntry.get( "display_name" ) );
+                            newAttrs.put( "detail", questJsonEntry.get( "licence" ) );
                             newAttrs.put( "rank", 6 );
-                            JSONArray bounding = (JSONArray) questJsonEntry.get( "boundingbox");
-                            float minX = bounding.getInt(2);
-                            float minY = bounding.getInt(0);
-                            float maxX = bounding.getInt(3);
-                            float maxY = bounding.getInt(1);
-                            newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY);
-                            newAttrs.put( "lon", questJsonEntry.get( "lon") );
-                            newAttrs.put( "lat", questJsonEntry.get( "lat") );
-                            newEntry.put( "attrs", newAttrs );
-                            json.put(newEntry);
-                        }
-                    }catch (Exception e) {
-                    }
-                    
-                    // SNS
-                    /*
-                    de.ingrid.external.sns.SNSService snsService = new de.ingrid.external.sns.SNSService();
-                    snsService.init();
-                    service = new SNSService(); 
-                    service.setGazetteerService( snsService );
-                    List<SNSLocationTopic> result = service.getLocationTopics( searchTerm, "contains", "", Locale.GERMAN );
-                    
-                    for (int j = 0; j < result.size(); j++) {
-                        SNSLocationTopic topic = result.get( j );
-                        if(topic.getBoundingBox() != null){
-                            JSONObject newEntry = new JSONObject();
-                            newEntry.put( "id", topic.getTopicId());
-                            newEntry.put( "weight", 7 );
-                            JSONObject newAttrs = new JSONObject();
-                            newAttrs.put( "origin", "gazetteer" );
-                            newAttrs.put( "label", topic.getName() + " (" + topic.getQualifier() + ")");
-                            newAttrs.put( "detail", topic.getName());
-                            newAttrs.put( "rank", 6 );
-                            float minX = topic.getBoundingBox()[0];
-                            float minY = topic.getBoundingBox()[1];
-                            float maxX = topic.getBoundingBox()[2];
-                            float maxY = topic.getBoundingBox()[3];
-                            newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY);
+                            JSONArray bounding = (JSONArray) questJsonEntry.get( "boundingbox" );
+                            float minX = bounding.getInt( 2 );
+                            float minY = bounding.getInt( 0 );
+                            float maxX = bounding.getInt( 3 );
+                            float maxY = bounding.getInt( 1 );
+                            newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY );
+                            newAttrs.put( "lon", questJsonEntry.get( "lon" ) );
+                            newAttrs.put( "lat", questJsonEntry.get( "lat" ) );
                             newEntry.put( "attrs", newAttrs );
                             json.put( newEntry );
                         }
-                    }
-                    */
+                    } catch (Exception e) {}
                     String responseStr = json.toString();
                     if (json != null) {
                         responseStr = "{\"results\":" + json + "}";
@@ -154,38 +118,38 @@ public class SearchResource {
                     URL questUrl;
                     JSONArray json = new JSONArray();
                     try {
-                        questUrl = new URL(url);
+                        questUrl = new URL( url );
                         URLConnection con = questUrl.openConnection();
                         InputStream in = con.getInputStream();
                         String encoding = con.getContentEncoding();
                         encoding = encoding == null ? "UTF-8" : encoding;
-                        
-                        String tmpJson = IOUtils.toString(in, encoding);
-                        JSONObject questJson = new JSONObject(tmpJson);
+
+                        String tmpJson = IOUtils.toString( in, encoding );
+                        JSONObject questJson = new JSONObject( tmpJson );
                         Iterator<?> keys = questJson.keys();
 
-                        while( keys.hasNext() ) {
-                            String key = (String)keys.next();
-                            if ( questJson.get(key) instanceof JSONObject ) {
-                                JSONObject questJsonEntry = (JSONObject) questJson.get(key);
+                        while (keys.hasNext()) {
+                            String key = (String) keys.next();
+                            if (questJson.get( key ) instanceof JSONObject) {
+                                JSONObject questJsonEntry = (JSONObject) questJson.get( key );
                                 JSONObject newEntry = new JSONObject();
-                                newEntry.put( "id", "");
+                                newEntry.put( "id", "" );
                                 newEntry.put( "weight", 143 );
                                 JSONObject newAttrs = new JSONObject();
-                                newAttrs.put( "origin", "layer");
-                                newAttrs.put( "layer", questJsonEntry.get("serverLayerName") );
-                                newAttrs.put( "label", questJsonEntry.get("label"));
-                                newAttrs.put( "detail", questJsonEntry.get("label"));
+                                newAttrs.put( "origin", "layer" );
+                                newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
+                                newAttrs.put( "label", questJsonEntry.get( "label" ) );
+                                newAttrs.put( "detail", questJsonEntry.get( "label" ) );
                                 newAttrs.put( "lang", "de" );
                                 newAttrs.put( "staging", "prod" );
-                                newAttrs.put( "topics", questJsonEntry.get("topics") );
+                                newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
                                 newEntry.put( "attrs", newAttrs );
                                 json.put( newEntry );
                             }
                         }
                     } catch (Exception e) {
-                        log.info("Search service unreachable: " + url);
-                    }    
+                        log.info( "Search service unreachable: " + url );
+                    }
                     String responseStr = json.toString();
                     if (json != null) {
                         responseStr = "{\"results\":" + json + "}";

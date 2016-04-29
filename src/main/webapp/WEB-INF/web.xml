@@ -13,11 +13,6 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 	
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/application-context.xml</param-value>
-	</context-param>
-	
 	<servlet>
 		<description>JAX-RS Tools Generated - Do not modify</description>
 		<servlet-name>InGrid Map REST Service</servlet-name>

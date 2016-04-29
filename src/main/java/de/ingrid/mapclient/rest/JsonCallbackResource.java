@@ -44,175 +44,173 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-
-
 @Path("/jsonCallback")
-public class JsonCallbackResource{
+public class JsonCallbackResource {
 
-	
-	private static final Logger log = Logger.getLogger(JsonCallbackResource.class);
-	
-	/**
-	 * Path to search term
-	 */
-	private static final String SEARCH_PATH = "query";
-	private static final String SEARCHPOST_PATH = "queryPost";
-	private static final String SEARCHALL_PATH = "queryAll";
-	
-	@GET
-	@Path(SEARCH_PATH)
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response search(@QueryParam("searchterm") String searchTerm, @QueryParam("json_callback") String jsonCallback, @QueryParam("url") String paramURL, @QueryParam("searchID") String identifier) throws IOException {
+    private static final Logger log = Logger.getLogger( JsonCallbackResource.class );
 
-		searchTerm = searchTerm.trim();
-		try {
-		    searchTerm = URLEncoder.encode(searchTerm, "UTF-8").replace("+", "%20");
-		} catch (Exception e) {
-		    log.error("Error url encoding seach term: " + searchTerm, e);
-		}
-		
-		URL url = new URL(paramURL.concat("&" + identifier+"="+searchTerm));
-		URLConnection con = url.openConnection();
-		InputStream in = con.getInputStream();
-		String encoding = con.getContentEncoding();
-		encoding = encoding == null ? "UTF-8" : encoding;
-		
-		String json = IOUtils.toString(in, encoding);
-		if(jsonCallback != null){
-			if(json.indexOf(jsonCallback) < 0){
-				json  = jsonCallback + "("+json+")";
-			}
-		}
-		return Response.ok(json).build();
+    /**
+     * Path to search term
+     */
+    private static final String SEARCH_PATH = "query";
+    private static final String SEARCHPOST_PATH = "queryPost";
+    private static final String SEARCHALL_PATH = "queryAll";
 
-	}
-	
-	@GET
-	@Path(SEARCHPOST_PATH)
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchPost(@QueryParam("data") String data, @QueryParam("url") String paramURL) throws IOException {
+    @GET
+    @Path(SEARCH_PATH)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("searchterm") String searchTerm, @QueryParam("json_callback") String jsonCallback, @QueryParam("url") String paramURL,
+            @QueryParam("searchID") String identifier) throws IOException {
 
-		String content = "content=" + URLEncoder.encode(data.trim(), "UTF-8");
-		
-		URL url = new URL(paramURL);
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("POST");
-		con.setDoInput(true);
-		con.setDoOutput(true);
-		con.setRequestProperty("Content-Type", MediaType.APPLICATION_FORM_URLENCODED);
-		con.setRequestProperty("Content-Length", String.valueOf(content.length()));
-		
-		OutputStreamWriter writer = new OutputStreamWriter( con.getOutputStream() );
-		writer.write(content);
-		writer.flush();
-		
-		InputStream in = con.getInputStream();
-		String encoding = con.getContentEncoding();
-		encoding = encoding == null ? "UTF-8" : encoding;
-		
-		String json = IOUtils.toString(in, encoding);
-		return Response.ok(json).build();
+        searchTerm = searchTerm.trim();
+        try {
+            searchTerm = URLEncoder.encode( searchTerm, "UTF-8" ).replace( "+", "%20" );
+        } catch (Exception e) {
+            log.error( "Error url encoding seach term: " + searchTerm, e );
+        }
 
-	}
-	
-	@GET
-	@Path(SEARCHALL_PATH)
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response searchAll(@QueryParam("searchTerm") String searchTerm, @QueryParam("json_callback") String jsonCallback, @QueryParam("data") String data) throws JSONException {
-		JSONObject obj = new JSONObject(data);
-		JSONArray cmps = new JSONArray(obj.get("cmp").toString());
-		JSONArray json = new JSONArray();
-		for (int i=0; i < cmps.length(); i++) {
-			JSONObject cmp = cmps.getJSONObject(i);
-			String group = cmp.getString("group");
-			String url = cmp.getString("url");
-			String identifier = cmp.getString("identifier");
-			String displayPre = cmp.getString("displayPre");
-			
-			URL questUrl;
-			try {
-				questUrl = new URL(url.concat("&" + identifier+"="+URLEncoder.encode(searchTerm.trim())));
-				URLConnection con = questUrl.openConnection();
-				InputStream in = con.getInputStream();
-				String encoding = con.getContentEncoding();
-				encoding = encoding == null ? "UTF-8" : encoding;
-				
-				String tmpJson = IOUtils.toString(in, encoding);
-				if(group.equals("nominatim")){
-					JSONArray questJson = new JSONArray(tmpJson);
-					for (int j=0; j < questJson.length(); j++) {
-						JSONObject questJsonEntry = questJson.getJSONObject(j);
-						JSONObject newEntry = new JSONObject();
-						newEntry.put("display_field", questJsonEntry.getString("display_name"));
-						newEntry.put("value_field", questJsonEntry.getJSONArray("boundingbox"));
-						newEntry.put("group", group);
-						newEntry.put("displayPre", displayPre);
-						newEntry.put("name", questJsonEntry.getString("display_name"));
-						JSONArray bounds = new JSONArray();
-						bounds.put(questJsonEntry.getJSONArray("boundingbox").get(2));
-						bounds.put(questJsonEntry.getJSONArray("boundingbox").get(0));
-						bounds.put(questJsonEntry.getJSONArray("boundingbox").get(3));
-						bounds.put(questJsonEntry.getJSONArray("boundingbox").get(1));
-						newEntry.put("bounds", bounds);
-						JSONArray lonlat = new JSONArray();
-						lonlat.put(questJsonEntry.getString("lon"));
-						lonlat.put(questJsonEntry.getString("lat"));
-						newEntry.put("lonlat", lonlat);
-						json.put(newEntry);
-					}
-				}else if(group.equals("portalsearch")){
-					JSONArray questJson = new JSONArray(tmpJson);
-					for (int j=0; j < questJson.length(); j++) {
-						JSONObject questJsonEntry = questJson.getJSONObject(j);
-						JSONObject newEntry = new JSONObject();
-						newEntry.put("display_field", questJsonEntry.getString("name"));
-						newEntry.put("value_field", questJsonEntry.getString("capabilitiesUrl"));
-						newEntry.put("group", group);
-						newEntry.put("displayPre", displayPre);
-						newEntry.put("name", questJsonEntry.getString("name"));
-						newEntry.put("capabilitiesUrl", questJsonEntry.getString("capabilitiesUrl"));
-						json.put(newEntry);
-					}
-				}else if(group.equals("bwastrlocator")){
-					JSONObject questJsonResult = new JSONObject(tmpJson);
-					if(questJsonResult != JSONObject.NULL){
-						JSONArray questJson = questJsonResult.getJSONArray("result");
-						
-						for (int j=0; j < questJson.length(); j++) {
-							JSONObject questJsonEntry = questJson.getJSONObject(j);
-							JSONObject newEntry = new JSONObject();
-							newEntry.put("display_field", questJsonEntry.getString("concat_name"));
-							newEntry.put("value_field", questJsonEntry.getString("bwastrid"));
-							newEntry.put("group", group);
-							newEntry.put("displayPre", displayPre);
-							newEntry.put("qid", questJsonEntry.getString("qid"));
-							newEntry.put("bwastrid", questJsonEntry.getString("bwastrid"));
-							newEntry.put("bwastr_name", questJsonEntry.getString("bwastr_name"));
-							newEntry.put("strecken_name", questJsonEntry.getString("strecken_name"));
-							newEntry.put("concat_name", questJsonEntry.getString("concat_name"));
-							newEntry.put("km_von", questJsonEntry.getString("km_von"));
-							newEntry.put("km_bis", questJsonEntry.getString("km_bis"));
-							newEntry.put("priority", questJsonEntry.getString("priority"));
-							newEntry.put("fehlkilometer", questJsonEntry.getString("fehlkilometer"));
-							newEntry.put("fliessrichtung", questJsonEntry.getString("fliessrichtung"));
-							json.put(newEntry);
-						}
-					}
-				}
-			} catch (Exception e) {
-				log.info("Search service unreachable: " + url);
-				continue;
-			}
-		}
-		String responseStr = json.toString();
-		if(jsonCallback != null){
-			if(responseStr.indexOf(jsonCallback) < 0){
-				responseStr  = jsonCallback + "("+json+")";
-			}
-		}
-		return Response.ok(responseStr).build();
-	}
+        URL url = new URL( paramURL.concat( "&" + identifier + "=" + searchTerm ) );
+        URLConnection con = url.openConnection();
+        InputStream in = con.getInputStream();
+        String encoding = con.getContentEncoding();
+        encoding = encoding == null ? "UTF-8" : encoding;
+
+        String json = IOUtils.toString( in, encoding );
+        if (jsonCallback != null) {
+            if (json.indexOf( jsonCallback ) < 0) {
+                json = jsonCallback + "(" + json + ")";
+            }
+        }
+        return Response.ok( json ).build();
+
+    }
+
+    @GET
+    @Path(SEARCHPOST_PATH)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchPost(@QueryParam("data") String data, @QueryParam("url") String paramURL) throws IOException {
+
+        String content = "content=" + URLEncoder.encode( data.trim(), "UTF-8" );
+
+        URL url = new URL( paramURL );
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod( "POST" );
+        con.setDoInput( true );
+        con.setDoOutput( true );
+        con.setRequestProperty( "Content-Type", MediaType.APPLICATION_FORM_URLENCODED );
+        con.setRequestProperty( "Content-Length", String.valueOf( content.length() ) );
+
+        OutputStreamWriter writer = new OutputStreamWriter( con.getOutputStream() );
+        writer.write( content );
+        writer.flush();
+
+        InputStream in = con.getInputStream();
+        String encoding = con.getContentEncoding();
+        encoding = encoding == null ? "UTF-8" : encoding;
+
+        String json = IOUtils.toString( in, encoding );
+        return Response.ok( json ).build();
+
+    }
+
+    @GET
+    @Path(SEARCHALL_PATH)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchAll(@QueryParam("searchTerm") String searchTerm, @QueryParam("json_callback") String jsonCallback, @QueryParam("data") String data) throws JSONException {
+        JSONObject obj = new JSONObject( data );
+        JSONArray cmps = new JSONArray( obj.get( "cmp" ).toString() );
+        JSONArray json = new JSONArray();
+        for (int i = 0; i < cmps.length(); i++) {
+            JSONObject cmp = cmps.getJSONObject( i );
+            String group = cmp.getString( "group" );
+            String url = cmp.getString( "url" );
+            String identifier = cmp.getString( "identifier" );
+            String displayPre = cmp.getString( "displayPre" );
+
+            URL questUrl;
+            try {
+                questUrl = new URL( url.concat( "&" + identifier + "=" + URLEncoder.encode( searchTerm.trim() ) ) );
+                URLConnection con = questUrl.openConnection();
+                InputStream in = con.getInputStream();
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+
+                String tmpJson = IOUtils.toString( in, encoding );
+                if (group.equals( "nominatim" )) {
+                    JSONArray questJson = new JSONArray( tmpJson );
+                    for (int j = 0; j < questJson.length(); j++) {
+                        JSONObject questJsonEntry = questJson.getJSONObject( j );
+                        JSONObject newEntry = new JSONObject();
+                        newEntry.put( "display_field", questJsonEntry.getString( "display_name" ) );
+                        newEntry.put( "value_field", questJsonEntry.getJSONArray( "boundingbox" ) );
+                        newEntry.put( "group", group );
+                        newEntry.put( "displayPre", displayPre );
+                        newEntry.put( "name", questJsonEntry.getString( "display_name" ) );
+                        JSONArray bounds = new JSONArray();
+                        bounds.put( questJsonEntry.getJSONArray( "boundingbox" ).get( 2 ) );
+                        bounds.put( questJsonEntry.getJSONArray( "boundingbox" ).get( 0 ) );
+                        bounds.put( questJsonEntry.getJSONArray( "boundingbox" ).get( 3 ) );
+                        bounds.put( questJsonEntry.getJSONArray( "boundingbox" ).get( 1 ) );
+                        newEntry.put( "bounds", bounds );
+                        JSONArray lonlat = new JSONArray();
+                        lonlat.put( questJsonEntry.getString( "lon" ) );
+                        lonlat.put( questJsonEntry.getString( "lat" ) );
+                        newEntry.put( "lonlat", lonlat );
+                        json.put( newEntry );
+                    }
+                } else if (group.equals( "portalsearch" )) {
+                    JSONArray questJson = new JSONArray( tmpJson );
+                    for (int j = 0; j < questJson.length(); j++) {
+                        JSONObject questJsonEntry = questJson.getJSONObject( j );
+                        JSONObject newEntry = new JSONObject();
+                        newEntry.put( "display_field", questJsonEntry.getString( "name" ) );
+                        newEntry.put( "value_field", questJsonEntry.getString( "capabilitiesUrl" ) );
+                        newEntry.put( "group", group );
+                        newEntry.put( "displayPre", displayPre );
+                        newEntry.put( "name", questJsonEntry.getString( "name" ) );
+                        newEntry.put( "capabilitiesUrl", questJsonEntry.getString( "capabilitiesUrl" ) );
+                        json.put( newEntry );
+                    }
+                } else if (group.equals( "bwastrlocator" )) {
+                    JSONObject questJsonResult = new JSONObject( tmpJson );
+                    if (questJsonResult != JSONObject.NULL) {
+                        JSONArray questJson = questJsonResult.getJSONArray( "result" );
+
+                        for (int j = 0; j < questJson.length(); j++) {
+                            JSONObject questJsonEntry = questJson.getJSONObject( j );
+                            JSONObject newEntry = new JSONObject();
+                            newEntry.put( "display_field", questJsonEntry.getString( "concat_name" ) );
+                            newEntry.put( "value_field", questJsonEntry.getString( "bwastrid" ) );
+                            newEntry.put( "group", group );
+                            newEntry.put( "displayPre", displayPre );
+                            newEntry.put( "qid", questJsonEntry.getString( "qid" ) );
+                            newEntry.put( "bwastrid", questJsonEntry.getString( "bwastrid" ) );
+                            newEntry.put( "bwastr_name", questJsonEntry.getString( "bwastr_name" ) );
+                            newEntry.put( "strecken_name", questJsonEntry.getString( "strecken_name" ) );
+                            newEntry.put( "concat_name", questJsonEntry.getString( "concat_name" ) );
+                            newEntry.put( "km_von", questJsonEntry.getString( "km_von" ) );
+                            newEntry.put( "km_bis", questJsonEntry.getString( "km_bis" ) );
+                            newEntry.put( "priority", questJsonEntry.getString( "priority" ) );
+                            newEntry.put( "fehlkilometer", questJsonEntry.getString( "fehlkilometer" ) );
+                            newEntry.put( "fliessrichtung", questJsonEntry.getString( "fliessrichtung" ) );
+                            json.put( newEntry );
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.info( "Search service unreachable: " + url );
+                continue;
+            }
+        }
+        String responseStr = json.toString();
+        if (jsonCallback != null) {
+            if (responseStr.indexOf( jsonCallback ) < 0) {
+                responseStr = jsonCallback + "(" + json + ")";
+            }
+        }
+        return Response.ok( responseStr ).build();
+    }
 }

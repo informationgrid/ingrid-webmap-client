@@ -68,99 +68,102 @@ import de.ingrid.mapclient.HttpProxy;
 @Path("/wms")
 public class WmsResource {
 
-	private static final Logger log = Logger.getLogger(WmsResource.class);
+    private static final Logger log = Logger.getLogger( WmsResource.class );
 
-	/**
-	 * The service pattern that urls must match
-	 */
-	private final static Pattern SERVICE_PATTERN = Pattern.compile("SERVICE=WMS", Pattern.CASE_INSENSITIVE);
+    /**
+     * The service pattern that urls must match
+     */
+    private final static Pattern SERVICE_PATTERN = Pattern.compile( "SERVICE=WMS", Pattern.CASE_INSENSITIVE );
 
-	/**
-	 * The request pattern that urls must match
-	 */
-	private final static Pattern REQUEST_PATTERN = Pattern.compile("REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE);
+    /**
+     * The request pattern that urls must match
+     */
+    private final static Pattern REQUEST_PATTERN = Pattern.compile( "REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE );
 
+    /**
+     * Get WMS response from the given url
+     * 
+     * @param url
+     *            The request url
+     * @return String
+     */
+    @GET
+    @Path("proxy")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doWmsRequest(@QueryParam("url") String url) {
+        try {
+            String response = HttpProxy.doRequest( url );
+            if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
+                return response;
+            } else {
+                // Replace "," to "." on bounding box.
+                response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
+                response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
+                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+            }
+            return response;
+        } catch (IOException ex) {
+            log.error( "Error sending WMS request: " + url, ex );
+            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+        } catch (Exception e) {
 
-	/**
-	 * Get WMS response from the given url
-	 * @param url The request url
-	 * @return String
-	 */
-	@GET
-	@Path("proxy")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String doWmsRequest(@QueryParam("url") String url) {
-		try {
-			
-			String response = HttpProxy.doRequest(url);
-			if(url.toLowerCase().indexOf("getfeatureinfo") > 0){
-				return response;
-			}else{
-			    // Replace "," to "." on bounding box.
-			    response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"");
-			    response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"");
-			    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2");
-			    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2");
-			}
-			return response;
-		}
-		catch (IOException ex) {
-			log.error("Error sending WMS request: "+url, ex);
-			throw new WebApplicationException(ex, Response.Status.NOT_FOUND);
-		} catch (Exception e) {
-			
-			log.error("Error sending WMS request: "+url, e);
-		}
-		return null;
-	}
-	
-	/**
-	 * Get WMS response from the given url
-	 * @param url The request url
-	 * @return String
-	 */
-	@GET
-	@Path("proxyAdministrativeInfos")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url) {
-		// check if the url string is valid
-		if (!SERVICE_PATTERN.matcher(url).find() && !REQUEST_PATTERN.matcher(url).find()) {
-			throw new IllegalArgumentException("The url is not a valid wms request: "+url);
-		}
+            log.error( "Error sending WMS request: " + url, e );
+        }
+        return null;
+    }
 
-		OSCommunication comm = new OSCommunication();
-		InputStream result = null;
-		result = comm.sendRequest(url);
-		Document doc = null;
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		NodeList fields = null;
+    /**
+     * Get WMS response from the given url
+     * 
+     * @param url
+     *            The request url
+     * @return String
+     */
+    @GET
+    @Path("proxyAdministrativeInfos")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url) {
+        // check if the url string is valid
+        if (!SERVICE_PATTERN.matcher( url ).find() && !REQUEST_PATTERN.matcher( url ).find()) {
+            throw new IllegalArgumentException( "The url is not a valid wms request: " + url );
+        }
 
-		comm.releaseConnection();
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-			@Override
-			public HierarchicalStreamWriter createWriter(Writer writer) {
-				return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-			}
-		});
-		
-		String json = ""; //xstream.toXML(adminInfos);
-		return Response.ok(json).build();
-	}	
-	/**
-	 * Create a parseable DOM-document of the InputStream, which should be XML/HTML.
-	 *  
-	 * @param result
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	private Document getDocumentFromStream(InputStream result)
-			throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		//Document descriptorDoc = builder.parse(new InputSource(new InputStreamReader(result, "UTF8")));
-		Document descriptorDoc = builder.parse(result);
-		return descriptorDoc;
-	}	
+        OSCommunication comm = new OSCommunication();
+        InputStream result = null;
+        result = comm.sendRequest( url );
+        Document doc = null;
+        XPath xpath = XPathFactory.newInstance().newXPath();
+        NodeList fields = null;
+
+        comm.releaseConnection();
+        XStream xstream = new XStream( new JsonHierarchicalStreamDriver() {
+            @Override
+            public HierarchicalStreamWriter createWriter(Writer writer) {
+                return new JsonWriter( writer, JsonWriter.DROP_ROOT_MODE );
+            }
+        } );
+
+        String json = ""; // xstream.toXML(adminInfos);
+        return Response.ok( json ).build();
+    }
+
+    /**
+     * Create a parseable DOM-document of the InputStream, which should be
+     * XML/HTML.
+     * 
+     * @param result
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    private Document getDocumentFromStream(InputStream result) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        // Document descriptorDoc = builder.parse(new InputSource(new
+        // InputStreamReader(result, "UTF8")));
+        Document descriptorDoc = builder.parse( result );
+        return descriptorDoc;
+    }
 }
