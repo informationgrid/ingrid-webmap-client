@@ -1229,6 +1229,18 @@ goog.require('ga_urlutils_service');
           return olLayerOrId.type == 'WMS';
         },
 
+        // INGRID: External service
+        isExternalWmsService: function(olService) {
+          if (!olService) {
+            return false;
+          }
+          if (angular.isString(olService)) {
+            return /^WMS\|\|/.test(olService) &&
+              olService.split('||').length == 3;
+          }
+          return olService.type == 'WMS';
+       },
+
         // Test if a feature is a measure
         isMeasureFeature: function(olFeature) {
           var regex = /^measure/;

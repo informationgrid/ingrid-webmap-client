@@ -17,8 +17,9 @@ goog.require('ga_urlutils_service');
    * Manage external WMS layers
    */
   module.provider('gaWms', function() {
+// INGRID: Add parameter '$http'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
-        gaGlobalOptions, $q, gaLang) {
+        gaGlobalOptions, $q, gaLang, $http) {
       var getCesiumImageryProvider = function(layer) {
         var params = layer.getSource().getParams();
         var proxy;
@@ -121,6 +122,38 @@ goog.require('ga_urlutils_service');
           return layer;
         };
 
+        // INGRID: Add function to get layers
+        var getChildLayers = function(layer, map, wmsVersion) {
+
+            // If the WMS layer has no name, it can't be displayed
+            if (!layer.Name) {
+              layer.isInvalid = true;
+              layer.Abstract = 'layer_invalid_no_name';
+            }
+
+            // Go through the child to get valid layers
+            if (layer.Layer) {
+
+              for (var i = 0; i < layer.Layer.length; i++) {
+                var l = getChildLayers(layer.Layer[i], map, wmsVersion);
+                if (!l) {
+                  layer.Layer.splice(i, 1);
+                  i--;
+                }
+              }
+
+              // No valid child
+              if (layer.Layer.length == 0) {
+                layer.Layer = undefined;
+              }
+            }
+
+            if (layer.isInvalid && !layer.Layer) {
+              return undefined;
+            }
+
+            return layer;
+          };
         // Create an ol WMS layer from GetCapabilities informations
         this.getOlLayerFromGetCapLayer = function(getCapLayer) {
           var wmsParams = {
@@ -150,6 +183,83 @@ goog.require('ga_urlutils_service');
           return olLayer;
         };
 
+        // INGRID: Add service and add it to map
+        this.addWmsServiceToMap = function(map, service, identifier, index) {
+            var cap = service;
+            var proxyUrl = gaGlobalOptions.ogcproxyUrl + encodeURIComponent(cap);
+
+            // IGNRID: Split host from params
+            var capSplit = cap.split("?");
+            var capParams = "?";
+            cap = capSplit[0];
+            if(capSplit.length > 0){
+                var capSplitParams = capSplit[1].split("&");
+                for (var i = 0; i < capSplitParams.length; i++) {
+                    var capSplitParam = capSplitParams[0].toLowerCase();
+                    // IGNRID: Check for needed parameters like 'ID'
+                    if(capSplitParam.indexOf("request") == -1 && capSplitParam.indexOf("service") == -1 && capSplitParam.indexOf("version") == -1){
+                        if(capParams.startsWith("?")){
+                            capParams = capParams + "?&" + capSplitParam;
+                        }else{
+                            capParams = capParams + "&" + capSplitParam;
+                        }
+                    }
+                }
+            }
+            
+            // Angularjs doesn't handle onprogress event
+            $http.get(proxyUrl, {identifier: identifier, index: index, cap: cap + "" + capParams})
+            .success(function(data, status, headers, config) {
+                try {
+                    var result = new ol.format.WMSCapabilities().read(data);
+                    if (result.Capability.Layer) {
+                      var root = getChildLayers(result.Capability.Layer,
+                          map, result.version);
+                      if(root){
+                          if(root.Layer){
+                              for (var i = 0; i < root.Layer.length; i++) {
+                                  var layer = root.Layer[i];
+                                  var layerParams = {
+                                      LAYERS: layer.Name,
+                                      VERSION: result.version
+                                  };
+                                  var visible = false;
+                                  if(config.identifier){
+                                      if(layer.Identifier && layer.Identifier.length > 0){
+                                          if(layer.Identifier[0] == config.identifier){
+                                              visible = true;
+                                          }
+                                      }
+                                  }
+                                  var extent = layer.EX_GeographicBoundingBox || layer.LatLonBoundingBox;
+                                  var layerOptions = {
+                                      url: config.cap,
+                                      label: layer.Title,
+                                      opacity: 1,
+                                      visible: visible,
+                                      queryable: layer.queryable,
+                                      extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                                  };
+                                  var olLayer = createWmsLayer(layerParams, layerOptions);
+                                  olLayer.visible = visible;
+                                  if (config.index) {
+                                    map.getLayers().insertAt(config.index + i, olLayer);
+                                  } else {
+                                    map.addLayer(olLayer);
+                                  }
+                              }
+                          }
+                      }
+                    }
+                  } catch (e) {
+                  }
+            })
+            .error(function(data, status, headers, config) {
+                console.log(data);
+            });
+        };
+        
+        
         // Make a GetLegendGraphic request
         this.getLegend = function(layer) {
           var defer = $q.defer();

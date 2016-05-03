@@ -285,6 +285,16 @@ goog.require('ga_wms_service');
               } catch (e) {
                 // Adding external WMS layer failed, native alert, log message?
               }
+           } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
+
+              // INGRID: Add external service
+              var infos = layerSpec.split('||');
+              try {
+                gaWms.addWmsServiceToMap(map, infos[1], infos[2], index + 1);
+                gaPermalink.deleteParam('layers');
+              } catch (e) {
+                // Adding external WMS service failed, native alert, log message?
+              }
             }
           });
 
