@@ -529,10 +529,11 @@ goog.require('ga_urlutils_service');
           }
         };
       });
-
+  
+  // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLayers',
       function($http, $q, $sce, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup) {
+               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes.html',
@@ -583,6 +584,28 @@ goog.require('ga_urlutils_service');
             $scope.getLegend = function(evt, bodId) {
               gaLayerMetadataPopup.toggle(bodId);
               evt.stopPropagation();
+            };
+            
+            // INGRID: Add zoom to extent
+            $scope.hasExtent = function(bodId) {
+                var layer = gaLayers.getLayer(bodId)
+                if(layer){
+                  if(layer.extent){
+                      return true;
+                  }
+                }
+                return false;
+            };
+            
+            $scope.zoomToExtent = function(evt, bodId) {
+                var layer = gaLayers.getLayer(bodId)
+                if(layer){
+                  if(layer.extent){
+                    var extent = ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                    gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                  }
+                }
+                evt.stopPropagation();
             };
           }
         };
