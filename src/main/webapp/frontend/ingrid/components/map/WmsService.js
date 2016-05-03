@@ -231,7 +231,8 @@ goog.require('ga_urlutils_service');
                                           }
                                       }
                                   }
-                                  var extent = layer.EX_GeographicBoundingBox || 
+                                  //westBoundLongitude:O(Oo),eastBoundLongitude:O(Oo),southBoundLatitude:O(Oo),northBoundLatitude:O(Oo)
+                                  var extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)] || 
                                                     [ parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
                                   var layerOptions = {
                                       url: config.cap,
