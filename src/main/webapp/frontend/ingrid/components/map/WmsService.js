@@ -186,9 +186,9 @@ goog.require('ga_urlutils_service');
         // INGRID: Add service and add it to map
         this.addWmsServiceToMap = function(map, service, identifier, index) {
             var cap = service;
-            var proxyUrl = gaGlobalOptions.ogcproxyUrl + encodeURIComponent(cap);
+            var proxyUrl = gaGlobalOptions.ogcproxyUrl + encodeURIComponent(cap) +  "&toJson=true";
 
-            // IGNRID: Split host from params
+            // INGRID: Split host from params
             var capSplit = cap.split("?");
             var capParams = "?";
             cap = capSplit[0];
@@ -196,7 +196,7 @@ goog.require('ga_urlutils_service');
                 var capSplitParams = capSplit[1].split("&");
                 for (var i = 0; i < capSplitParams.length; i++) {
                     var capSplitParam = capSplitParams[0].toLowerCase();
-                    // IGNRID: Check for needed parameters like 'ID'
+                    // INGRID: Check for needed parameters like 'ID'
                     if(capSplitParam.indexOf("request") == -1 && capSplitParam.indexOf("service") == -1 && capSplitParam.indexOf("version") == -1){
                         if(capParams.startsWith("?")){
                             capParams = capParams + "?&" + capSplitParam;
@@ -211,7 +211,7 @@ goog.require('ga_urlutils_service');
             $http.get(proxyUrl, {identifier: identifier, index: index, cap: cap + "" + capParams})
             .success(function(data, status, headers, config) {
                 try {
-                    var result = new ol.format.WMSCapabilities().read(data);
+                    var result = data.WMT_MS_Capabilities || data.WMS_Capabilities;
                     if (result.Capability.Layer) {
                       var root = getChildLayers(result.Capability.Layer,
                           map, result.version);
@@ -231,14 +231,15 @@ goog.require('ga_urlutils_service');
                                           }
                                       }
                                   }
-                                  var extent = layer.EX_GeographicBoundingBox || layer.LatLonBoundingBox;
+                                  var extent = layer.EX_GeographicBoundingBox || 
+                                                    [ parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
                                   var layerOptions = {
                                       url: config.cap,
                                       label: layer.Title,
                                       opacity: 1,
                                       visible: visible,
-                                      queryable: layer.queryable,
-                                      extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                                      queryable: parseInt(layer.queryable),
+                                      extent: ol.proj.transformExtent(extent || gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
                                   };
                                   var olLayer = createWmsLayer(layerParams, layerOptions);
                                   olLayer.visible = visible;

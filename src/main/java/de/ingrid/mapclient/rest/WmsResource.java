@@ -28,8 +28,6 @@ package de.ingrid.mapclient.rest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -43,11 +41,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
+import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -90,7 +88,7 @@ public class WmsResource {
     @GET
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doWmsRequest(@QueryParam("url") String url) {
+    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
         try {
             String response = HttpProxy.doRequest( url );
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
@@ -101,6 +99,10 @@ public class WmsResource {
                 response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
                 response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
                 response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+            }
+            if(toJson){
+                JSONObject json = XML.toJSONObject( response );
+                return json.toString();
             }
             return response;
         } catch (IOException ex) {
