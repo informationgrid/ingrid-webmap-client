@@ -212,59 +212,63 @@ goog.require('ga_urlutils_service');
             .success(function(data, status, headers, config) {
                 try {
                     var result = data.WMT_MS_Capabilities || data.WMS_Capabilities;
-                    if (result.Capability.Layer) {
-                      var root = getChildLayers(result.Capability.Layer,
-                          map, result.version);
-                      if(root){
-                          if(root.Layer){
-                              for (var i = 0; i < root.Layer.length; i++) {
-                                  var layer = root.Layer[i];
-                                  var layerParams = {
-                                      LAYERS: layer.Name,
-                                      VERSION: result.version
-                                  };
-                                  var visible = false;
-                                  if(config.identifier){
-                                      if(layer.Identifier){
-                                          if(layer.Identifier.content){
-                                              if(layer.Identifier.content == config.identifier){
-                                                  visible = true;
-                                              }
-                                          }
-                                      }
-                                  }
-                                  var extent = gaGlobalOptions.defaultExtent;
-                                  if(layer.EX_GeographicBoundingBox){
-                                      extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)];
-                                  }else if(layer.LatLonBoundingBox){
-                                      extent = [parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
-                                  }
-                                  
-                                  var layerOptions = {
-                                      url: config.cap,
-                                      label: layer.Title,
-                                      opacity: 1,
-                                      visible: visible,
-                                      queryable: parseInt(layer.queryable),
-                                      extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-                                  };
-                                  
-                                  var olLayer = createWmsLayer(layerParams, layerOptions);
-                                  olLayer.visible = visible;
-                                  if (config.index) {
-                                    map.getLayers().insertAt(config.index + i, olLayer);
-                                  } else {
-                                    map.addLayer(olLayer);
-                                  }
-                              }
-                          }
-                      }
+                    if(result.Capability){
+                        if(result.Capability.Layer) {
+                            var root = getChildLayers(result.Capability.Layer, map, result.version);
+                            if(root){
+                                if(root.Layer){
+                                    for (var i = 0; i < root.Layer.length; i++) {
+                                        var layer = root.Layer[i];
+                                        var layerParams = {
+                                            LAYERS: layer.Name,
+                                            VERSION: result.version
+                                        };
+                                        var visible = false;
+                                        if(config.identifier){
+                                            if(layer.Identifier){
+                                                if(layer.Identifier.content){
+                                                    if(layer.Identifier.content == config.identifier){
+                                                        visible = true;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        var extent = gaGlobalOptions.defaultExtent;
+                                        if(layer.EX_GeographicBoundingBox){
+                                            extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)];
+                                        }else if(layer.LatLonBoundingBox){
+                                            extent = [parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
+                                        }
+                                        
+                                        var layerOptions = {
+                                            url: config.cap,
+                                            label: layer.Title,
+                                            opacity: 1,
+                                            visible: visible,
+                                            queryable: parseInt(layer.queryable),
+                                            extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                                        };
+                                        
+                                        var olLayer = createWmsLayer(layerParams, layerOptions);
+                                        olLayer.visible = visible;
+                                        if (config.index) {
+                                          map.getLayers().insertAt(config.index + i, olLayer);
+                                        } else {
+                                          map.addLayer(olLayer);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                      alert("Fehler beim Laden der URL '" + config.cap + "'");
                     }
                   } catch (e) {
+                    alert("Fehler beim Laden der URL '" + config.cap + "'");
                   }
             })
             .error(function(data, status, headers, config) {
-                console.log(data);
+                alert("Fehler beim Laden der URL '" + config.cap + "'");
             });
         };
         
