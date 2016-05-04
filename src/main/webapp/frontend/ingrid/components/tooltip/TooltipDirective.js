@@ -52,7 +52,7 @@ goog.require('ga_topic_service');
           }
           // INGRID: Add 'olLayer.queryable'
           return ((bodId && olLayer.visible && !olLayer.preview &&
-              gaLayers.getLayerProperty(bodId, 'tooltip')) || olLayer.queryable);
+              gaLayers.getLayerProperty(bodId, 'tooltip')) || (olLayer.queryable && olLayer.visible));
         };
 
         var getOlParentLayer = function(l) {
@@ -72,7 +72,7 @@ goog.require('ga_topic_service');
           var layersToQuery = [];
           map.getLayers().forEach(function(l) {
 // INGRID: Add check layer is queryable
-            if (hasTooltipBodLayer(l) || isVectorLayer(l) || l.queryable) {
+            if (hasTooltipBodLayer(l) || isVectorLayer(l) || (l.queryable && l.visible)){
               layersToQuery.push(l);
             }
           });
