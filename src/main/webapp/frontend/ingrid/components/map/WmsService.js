@@ -112,6 +112,8 @@ goog.require('ga_urlutils_service');
             source: source
           });
           gaDefinePropertiesForLayer(layer);
+          // INGRID: Set visible
+          layer.visible = options.visible;
           layer.preview = options.preview;
           layer.displayInLayerManager = !layer.preview;
           layer.useThirdPartyData = gaUrlUtils.isThirdPartyValid(options.url);
@@ -245,7 +247,7 @@ goog.require('ga_urlutils_service');
                                             label: layer.Title,
                                             opacity: 1,
                                             visible: visible,
-                                            queryable: parseInt(layer.queryable),
+                                            queryable: parseInt(layer.queryable) == 1 ? true : false,
                                             extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
                                         };
                                         
