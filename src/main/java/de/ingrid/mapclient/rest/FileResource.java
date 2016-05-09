@@ -25,17 +25,24 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -105,5 +112,20 @@ public class FileResource {
             }
         }
         return content;
+    }
+    
+    @GET
+    @Path("images")
+    @Produces("image/png")
+    public Response getFileImageRequest(@QueryParam("url") String url) throws IOException {
+        if (url != null && url.length() > 0) {
+            URL tmpUrl = new URL(url);
+            BufferedImage image = ImageIO.read(tmpUrl);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", baos);
+            byte[] imageData = baos.toByteArray();
+            return Response.ok(new ByteArrayInputStream(imageData)).build();
+        }
+        return null;
     }
 }

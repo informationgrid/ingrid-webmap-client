@@ -749,6 +749,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           resourceUrl: location.origin + pathname + '',
           // INGRID: Change REST service URL
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/wms/proxy/?url=',
+          // INGRID: Change REST image URL
+          imgproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/data/images/?url=',
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
