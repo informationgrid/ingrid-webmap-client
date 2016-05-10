@@ -80,11 +80,16 @@ goog.require('ga_urlutils_service');
           // layers.
           if (params.VERSION) {
             options.id += '||' + params.VERSION;
+          }else{
+            // INGRID: Add empty version
+            options.id += '||';
           }
 
           // INGRID: Add queryable 
           if (options.queryable) {
             options.id += '||' + options.queryable;
+          }else{
+            options.id += '||';
           }
 
           
@@ -219,6 +224,7 @@ goog.require('ga_urlutils_service');
                             var root = getChildLayers(result.Capability.Layer, map, result.version);
                             if(root){
                                 if(root.Layer){
+                                    var hasAddService = false;
                                     for (var i = 0; i < root.Layer.length; i++) {
                                         var layer = root.Layer[i];
                                         var layerParams = {
@@ -258,6 +264,10 @@ goog.require('ga_urlutils_service');
                                         } else {
                                           map.addLayer(olLayer);
                                         }
+                                        hasAddService = true;
+                                    }
+                                    if(hasAddService){
+                                        alert("Dienst '" + config.cap + "' wurde hinzugefügt.")
                                     }
                                 }
                             }
