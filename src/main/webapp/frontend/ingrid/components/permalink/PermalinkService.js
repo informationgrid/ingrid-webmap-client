@@ -96,12 +96,16 @@ goog.require('ga_urlutils_service');
             angular.extend(params, p);
             // INGRID: Update URL outside of iFrame
             if(window.parent.onParamChange != undefined){
-                window.parent.onParamChange(params, p);
+                window.parent.onParamChange(params);
             }
           };
 
           this.deleteParam = function(key) {
              delete params[key];
+             // INGRID: Update URL outside of iFrame
+             if(window.parent.onParamChange != undefined){
+                 window.parent.onParamChange(params);
+             }
           };
 
           this.refresh = function() {
