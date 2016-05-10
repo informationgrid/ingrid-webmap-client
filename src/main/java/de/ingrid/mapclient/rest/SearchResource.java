@@ -140,18 +140,21 @@ public class SearchResource {
                             if (questJson.get( key ) instanceof JSONObject) {
                                 JSONObject questJsonEntry = (JSONObject) questJson.get( key );
                                 JSONObject newEntry = new JSONObject();
-                                newEntry.put( "id", "" );
-                                newEntry.put( "weight", 143 );
-                                JSONObject newAttrs = new JSONObject();
-                                newAttrs.put( "origin", "layer" );
-                                newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
-                                newAttrs.put( "label", questJsonEntry.get( "label" ) );
-                                newAttrs.put( "detail", questJsonEntry.get( "label" ) );
-                                newAttrs.put( "lang", "de" );
-                                newAttrs.put( "staging", "prod" );
-                                newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
-                                newEntry.put( "attrs", newAttrs );
-                                json.put( newEntry );
+                                String label = (String) questJsonEntry.get( "label" );
+                                if(label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
+                                    newEntry.put( "id", "" );
+                                    newEntry.put( "weight", 143 );
+                                    JSONObject newAttrs = new JSONObject();
+                                    newAttrs.put( "origin", "layer" );
+                                    newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
+                                    newAttrs.put( "label", label );
+                                    newAttrs.put( "detail", label );
+                                    newAttrs.put( "lang", "de" );
+                                    newAttrs.put( "staging", "prod" );
+                                    newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
+                                    newEntry.put( "attrs", newAttrs );
+                                    json.put( newEntry );
+                                }
                             }
                         }
                     } catch (Exception e) {
