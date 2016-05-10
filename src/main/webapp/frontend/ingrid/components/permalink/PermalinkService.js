@@ -117,8 +117,13 @@ goog.require('ga_urlutils_service');
             (port !== '' ? ':' + port : '') +
             loc.pathname;
 
+        // INGRID: Get params from window parent
+        var locSearch = loc.search;
+        if(window.parent.urlParams){
+            locSearch = window.parent.urlParams;
+        }
         var permalink = new Permalink(
-            base, gaUrlUtils.parseKeyValue(loc.search.substring(1)));
+            base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
 
         var lastHref = loc.href;
         $rootScope.$watch(function() {
