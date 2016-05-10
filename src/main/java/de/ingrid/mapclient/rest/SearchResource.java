@@ -39,13 +39,20 @@ import javax.ws.rs.core.Response;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import de.ingrid.iplug.opensearch.communication.OSCommunication;
 
 @Path("/search")
 public class SearchResource {
@@ -153,6 +160,77 @@ public class SearchResource {
                     String responseStr = json.toString();
                     if (json != null) {
                         responseStr = "{\"results\":" + json + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                }else if(type.equals("services")){
+                    String osURL = searchUrl.replace( " ", "+" );
+                    JSONArray jsonArray = new JSONArray();
+                    InputStream result = null;
+                    
+                    searchTerm = searchTerm.trim();
+                    searchTerm = searchTerm.replaceAll("\\s", "+");
+                    try {
+                        searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+                    } catch (Exception e) {
+                        log.error("Error url encoding seach term: " + searchTerm, e);
+                    }
+                    //some logic borrowed from the opensearch iplug
+                    //we open a stream though this module 
+                    //the rest is basically simple xml parsing of the result 
+                    //into a json string which gets to the mapclient through the 
+                    //response
+                    OSCommunication comm = new OSCommunication();
+                    String url = osURL.replace("{query}", searchTerm); 
+                    result = comm.sendRequest(url);
+                    Document doc = null;
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    try {
+                        doc = getDocumentFromStream(result);
+                        if(doc != null){
+                            NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
+                            for (int i = 0; i < items.getLength(); i++) {
+                                Node item = (Node) items.item( i );
+                                NodeList tmp;
+                                JSONObject newEntry = new JSONObject();
+                                newEntry.put( "id", "" );
+                                newEntry.put( "weight", 143 );
+                                JSONObject newAttrs = new JSONObject();
+                                newAttrs.put( "origin", "service" );
+                                
+                                tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
+                                if(tmp.getLength() > 0){
+                                    newAttrs.put( "service", tmp.item(0).getTextContent() );
+                                }
+                                
+                                newAttrs.put( "label", xpath.evaluate("./title", item ) );
+                                newAttrs.put( "detail", xpath.evaluate("./description", item ) );
+                                newAttrs.put( "link", xpath.evaluate("./link", item ) );
+                                
+                                tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
+                                if(tmp.getLength() > 0){
+                                    newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
+                                }
+                                
+                                newAttrs.put( "lang", "de" );
+                                newAttrs.put( "staging", "prod" );
+                                newEntry.put( "attrs", newAttrs );
+                                jsonArray.put( newEntry );
+                            }
+                        }
+                    } catch (ParserConfigurationException e) {
+                        log.error("Error while parsing the InputStream!");
+                        e.printStackTrace();
+                    } catch (SAXException e) {
+                        log.error("Error while parsing the InputStream!");
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        log.error("Error while performing xpath.evaluate on a document!");
+                        e.printStackTrace();
+                    }
+                    comm.releaseConnection();
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
                     }
                     return Response.ok( responseStr ).build();
                 }

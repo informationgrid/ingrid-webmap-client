@@ -33,20 +33,21 @@ goog.require('ga_urlutils_service');
   // INGRID: Edit addOverlay for nominatim
   var addOverlay = function(gaOverlay, map, res, gaGlobalOptions) {
     var visible = originToZoomLevel.hasOwnProperty(res.attrs.origin);
-   var extentString = res.attrs.geom_st_box2d.split(" ");
-    var extent = [];
-    for(var entry in extentString){
-        extent.push(parseFloat(extentString[entry]));
+    if(res.attrs.geom_st_box2d){
+        var extentString = res.attrs.geom_st_box2d.split(" ");
+        var extent = [];
+        for(var entry in extentString){
+            extent.push(parseFloat(extentString[entry]));
+        }
+        var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
+        if(res.attrs.lon && res.attrs.lat){
+            center = ol.proj.transform([parseFloat(res.attrs.lon), parseFloat(res.attrs.lat)], 'EPSG:4326', gaGlobalOptions.defaultEpsg);
+        }
+        gaOverlay.add(map,
+                      center,
+                      parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions),
+                      visible);      
     }
-    var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
-    if(res.attrs.lon && res.attrs.lat){
-        center = ol.proj.transform([parseFloat(res.attrs.lon), parseFloat(res.attrs.lat)], 'EPSG:4326', gaGlobalOptions.defaultEpsg);
-    }
-     gaOverlay.add(map,
-                  center,
-                  parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions),
-                  visible);
-
   };
 
   var removeOverlay = function(gaOverlay, map) {
@@ -607,6 +608,113 @@ goog.require('ga_urlutils_service');
                 }
                 evt.stopPropagation();
             };
+          }
+        };
+      });
+  
+  // INGRID: Add services search
+  module.directive('gaSearchServices',
+      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
+               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms) {
+        return {
+          restrict: 'A',
+          templateUrl: 'components/search/partials/searchtypes.html',
+          scope: {
+            options: '=gaSearchServicesOptions',
+            map: '=gaSearchServicesMap'
+          },
+          controller: 'GaSearchTypesController',
+          link: function($scope, element, attrs) {
+            $scope.type = 'services';
+            $scope.tabstart = tabStarts[3];
+            // INGRID: Change search URL for layer search
+            // TODO: Search layer service not existing yet
+            $scope.searchUrl = $scope.options.searchServiceUrl;
+
+            $scope.select = function(res) {
+              unregisterMove();
+              if(res.attrs.service){
+                  var url = res.attrs.service;
+                  if(url.indexOf("?") == -1){
+                      url = url + "?";
+                  }
+                  if(url.toLowerCase().indexOf("request=getcapabilities") == -1){
+                      if(url.endsWith("?") == false){
+                          url = url + "&";
+                      }
+                      url = url + "REQUEST=GetCapabilities";
+                  }
+                  if(url.toLowerCase().indexOf("service=wms") == -1){
+                      if(url.endsWith("?") == false){
+                          url = url + "&";
+                      }
+                      url = url + "SERVICE=WMS";
+                  }
+                  gaWms.addWmsServiceToMap($scope.map, url);
+                  
+              }
+            };
+            
+            $scope.getServiceInfo = function(evt, attrs) {
+                if(attrs){
+                    var content = "";
+                    if(attrs.label){
+                        content = content + '<h4>' + attrs.label + '</h4><br>';
+                    }
+                    if(attrs.detail){
+                        content = content + '<p>' + attrs.detail + '</p><br>';
+                    }
+                    content = content + '<form class="form-horizontal" ng-class="{ie: isIE}" >';
+                    if(attrs.link){
+                        content = content + '<div class="form-group">';
+                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_more_info') + '</label>';
+                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + attrs.link + '">' + attrs.link + '</a></div>';
+                        content = content + '</div>';
+                    }
+                    if(attrs.service){
+                        var url = attrs.service;
+                        if(url.indexOf("?") == -1){
+                            url = url + "?";
+                        }
+                        if(url.toLowerCase().indexOf("request=getcapabilities") == -1){
+                            if(url.endsWith("?") == false){
+                                url = url + "&";
+                            }
+                            url = url + "REQUEST=GetCapabilities";
+                        }
+                        if(url.toLowerCase().indexOf("service=wms") == -1){
+                            if(url.endsWith("?") == false){
+                                url = url + "&";
+                            }
+                            url = url + "SERVICE=WMS";
+                        }
+                        content = content + '<div class="form-group">';
+                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_capabilities_url') + '</label>';
+                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + url + '">' + url + '</a></div>';
+                        content = content + '</div>';
+                    }
+                    if(attrs.isoxml){
+                        content = content + '<div class="form-group">';
+                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_iso_xml') + '</label>';
+                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + attrs.isoxml + '">' + attrs.isoxml + '</a></div>';
+                        content = content + '</div>';
+                    }
+                    content = content + '</form>';
+                    
+                    var popup = gaPopup.create({
+                        title: $translate.instant('metadata_window_title'),
+                        destroyOnClose: true,
+                        content: content,
+                        className: '',
+                        x: 400,
+                        y: 200,
+                        showPrint: true
+                      });
+                    popup.open();
+                }
+                evt.stopPropagation();
+            };
+
           }
         };
       });

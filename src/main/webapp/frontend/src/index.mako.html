@@ -751,6 +751,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/wms/proxy/?url=',
           // INGRID: Change REST image URL
           imgproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/data/images/?url=',
+          // INGRID: Change search services URL (Opensearch)
+          searchServiceUrl : 'https://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100',
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
