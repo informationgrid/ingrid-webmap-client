@@ -35,6 +35,7 @@
     "ol.coordinate.toStringXY",
     "ol.easing.easeOut",
     "ol.easing.linear",
+    "ol.extent.applyTransform",
     "ol.extent.buffer",
     "ol.extent.containsCoordinate",
     "ol.extent.containsXY",
