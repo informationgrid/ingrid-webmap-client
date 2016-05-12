@@ -141,7 +141,11 @@ public class SearchResource {
                                 JSONObject questJsonEntry = (JSONObject) questJson.get( key );
                                 JSONObject newEntry = new JSONObject();
                                 String label = (String) questJsonEntry.get( "label" );
-                                if(label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
+                                boolean isSearchable = false;
+                                if(questJsonEntry.get( "searchable" ) != null){
+                                    isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                }
+                                if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
                                     newEntry.put( "id", "" );
                                     newEntry.put( "weight", 143 );
                                     JSONObject newAttrs = new JSONObject();
