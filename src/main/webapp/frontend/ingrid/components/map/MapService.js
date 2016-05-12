@@ -478,7 +478,8 @@ goog.require('ga_urlutils_service');
               }
             });
           } else {
-            imageTile.getImage().src = src;
+            // INGRID: Load images over REST services
+            imageTile.getImage().src = gaGlobalOptions.defaultCrossOrigin ? gaGlobalOptions.imgproxyUrl + '' + encodeURIComponent(src) : src;
           }
         };
 
@@ -697,7 +698,8 @@ goog.require('ga_urlutils_service');
           // CORS errors.
           // Currently crossOrigin definition is only used for mouse cursor
           // detection on desktop in TooltipDirective.
-          if (gaBrowserSniffer.ios) {
+          // INGRID: Disabled crossOrigin for mobile and defaultCrossOrigin
+          if (gaBrowserSniffer.ios || gaBrowserSniffer.mobile || (gaGlobalOptions.defaultCrossOrigin == false && layer.crossOrigin == false)) {
             crossOrigin = undefined;
           }
 
@@ -724,8 +726,7 @@ goog.require('ga_urlutils_service');
                     layer.minResolution),
                 tileLoadFunction: tileLoadFunction,
                 urls: getImageryUrls(wmtsTplUrl, subdomains),
-                // INGRID: Need to check
-                crossOrigin: layer.crossOrigin ? crossOrigin : undefined
+                crossOrigin: crossOrigin
               });
             }
             olLayer = new ol.layer.Tile({
@@ -742,7 +743,7 @@ goog.require('ga_urlutils_service');
             var wmsParams = {
               LAYERS: layer.wmsLayers,
               FORMAT: 'image/' + layer.format,
-              // INGRID: Add verion to get getMap request for WMS version 1.1.1.
+              // INGRID: Add version to get getMap request for WMS version 1.1.1.
               // Version is define on layers.json.
               VERSION: layer.version != undefined ? layer.version : '1.3.0',
               LANG: gaLang.get()
@@ -755,8 +756,7 @@ goog.require('ga_urlutils_service');
                 olSource = layer.olSource = new ol.source.ImageWMS({
                   url: getImageryUrls(getWmsTpl(layer.wmsUrl))[0],
                   params: wmsParams,
-                  // INGRID: Need to check
-                  crossOrigin: layer.crossOrigin ? crossOrigin : undefined,
+                  crossOrigin: crossOrigin,
                   ratio: 1
                 });
               }
@@ -778,8 +778,7 @@ goog.require('ga_urlutils_service');
                   cacheSize: 2048 * 3,
                   params: wmsParams,
                   gutter: layer.gutter || 0,
-                  // TODO INGRID: Check functions
-                  crossOrigin: layer.crossOrigin ? crossOrigin : undefined,
+                  crossOrigin: crossOrigin,
                   //tileGrid: gaTileGrid.get(layer.resolutions,
                   //    layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,

@@ -117,15 +117,22 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url) throws IOException {
+    public Response getFileImageRequest(@QueryParam("url") String url){
         if (url != null && url.length() > 0) {
-            URL tmpUrl = new URL(url);
-            BufferedImage image = ImageIO.read(tmpUrl);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);
-            byte[] imageData = baos.toByteArray();
-            return Response.ok(new ByteArrayInputStream(imageData)).build();
+            URL tmpUrl;
+            try {
+                tmpUrl = new URL(url);
+                BufferedImage image = ImageIO.read(tmpUrl);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(image, "png", baos);
+                byte[] imageData = baos.toByteArray();
+                return Response.ok(new ByteArrayInputStream(imageData)).build();
+            } catch (MalformedURLException e) {
+                return Response.status(Response.Status.NOT_FOUND ).build();
+            } catch (IOException e) {
+                return Response.status(Response.Status.OK ).build();
+            }
         }
-        return null;
+        return Response.status(Response.Status.OK ).build();
     }
 }
