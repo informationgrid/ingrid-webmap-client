@@ -846,7 +846,6 @@ goog.require('ga_time_service');
 
 
       // Get the short link
-      /* INGRID: Disabled short link
       var shortLink;
       canceller = $q.defer();
       var promise = $http.get($scope.options.shortenUrl, {
@@ -863,7 +862,7 @@ goog.require('ga_time_service');
         if (!$scope.options.printing) {
           return;
         }
-       */
+
         // Build the correct copyright text to display
         var dataOwner = attributions.join();
         var thirdPartyDataOwner = thirdPartyAttributions.join();
@@ -904,8 +903,7 @@ goog.require('ga_time_service');
               title: $scope.title ? $scope.title :"",
               dataOwner: dataOwner,
               thirdPartyDataOwner: thirdPartyDataOwner,
-              // INGRID: Set to comment shortLink
-              //shortLink: shortLink || '',
+              shortLink: shortLink || '',
               rotation: -((view.getRotation() * 180.0) / Math.PI)
             }, defaultPage)
           ]
