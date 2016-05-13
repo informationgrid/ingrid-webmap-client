@@ -25,7 +25,8 @@ goog.require('ga_styles_service');
     var black = [0, 0, 0];
 
     $scope.options = $scope.options || {};
-    $scope.options.shortenUrl = gaGlobalOptions.apiUrl + '/shorten.json';
+    // INGRID: Change shorten URL service
+    $scope.options.shortenUrl = gaGlobalOptions.shortURLService;
 
     // Add popup options
     $scope.options.popupOptions = {

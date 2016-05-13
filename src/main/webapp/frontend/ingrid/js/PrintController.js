@@ -16,8 +16,8 @@ goog.provide('ga_print_controller');
         // INGRID: Disable legend URL service
         legendUrl: '',
         qrcodeUrl: gaGlobalOptions.apiUrl + '/qrcodegenerator?url=',
-        // INGRID: Disable shorten URL service
-        shortenUrl: '',
+        // INGRID: Change shorten URL service
+        shortenUrl: gaGlobalOptions.shortURLService,
         markerUrl: gaGlobalOptions.resourceUrl + 'img/marker.png',
         bubbleUrl: gaGlobalOptions.resourceUrl + 'img/bubble.png',
         heightMargin: $('#header').height(),
