@@ -854,7 +854,8 @@ goog.require('ga_time_service');
           url: gaPermalink.getHref()
         }
       }).success(function(response) {
-        shortLink = response.shorturl.replace('/shorten', '');
+        // INGRID: Return href if no shorturl exists
+        shortLink = response.shorturl ? response.shorturl.replace('/shorten', '') : gaPermalink.getHref();
       });
 
       // Build the complete json then send it to the print server

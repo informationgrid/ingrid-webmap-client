@@ -124,7 +124,8 @@ goog.require('ga_permalink');
                 url: scope.permalinkValue
               }
             }).success(function(response) {
-              scope.permalinkValue = response.shorturl;
+              // INGRID: Return href if no shorturl exists
+              scope.permalinkValue = response.shorturl ? response.shorturl : scope.permalinkValue;
               scope.urlShortened = true;
               scope.$applyAsync(function() {
                 // Auto-select the shortened permalink (not on mobiles)
