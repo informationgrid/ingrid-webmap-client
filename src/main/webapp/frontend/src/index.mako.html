@@ -211,7 +211,9 @@ itemscope itemtype="http://schema.org/WebApplication"
   % if device == 'embed':
       <a ng-cloak translate-cloak id="bigMapLink" target="_blank" href="{{toMainHref}}">
         <div>
+          <!-- INGRID: Remove icon 
           <i class="fa fa-ga-logo-bund"></i>
+          -->
           <span translate-values="{{host}}" translate>view_on_mapgeoadminch</span>
         </div>
         <div ng-show="time">{{time}}</div>
