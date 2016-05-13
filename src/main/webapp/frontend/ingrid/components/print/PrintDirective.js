@@ -994,7 +994,7 @@ goog.require('ga_time_service');
         }).error(function() {
           $scope.options.printing = false;
         });
-      //});
+      });
     };
 
     var getDpi = function(layoutName, dpiConfig) {
