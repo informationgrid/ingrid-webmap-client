@@ -5,7 +5,8 @@ goog.provide('ga_share_controller');
 
   module.controller('GaShareController', function($scope, gaGlobalOptions) {
     $scope.options = {
-      shortenUrl: gaGlobalOptions.apiUrl + '/shorten.json',
+      // INGRID: Update shorten URL
+      shortenUrl: gaGlobalOptions.shortURLService,
       qrcodegeneratorPath: gaGlobalOptions.apiUrl + '/qrcodegenerator',
       iframeSizes: [{
         label: 'small_size',
