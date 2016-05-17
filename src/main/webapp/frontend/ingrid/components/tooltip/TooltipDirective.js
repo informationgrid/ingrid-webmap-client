@@ -22,9 +22,10 @@ goog.require('ga_topic_service');
   ]);
 
   module.directive('gaTooltip',
+      // INGRID: Add param 'gaGlobalOptions'
       function($timeout, $http, $q, $translate, $sce, gaPopup, gaLayers,
           gaBrowserSniffer, gaMapClick, gaDebounce, gaPreviewFeatures,
-          gaMapUtils, gaTime, gaTopic) {
+          gaMapUtils, gaTime, gaTopic, gaGlobalOptions) {
         var popupContent =
           '<div ng-repeat="html in options.htmls" ' +
                'ng-mouseenter="options.onMouseEnter($event,' +
@@ -404,7 +405,7 @@ goog.require('ga_topic_service');
                       }
                   );
                   if(url){
-                      all.push($http.get('/ingrid-webmap-client/rest/wms/proxy?url=' + url.split("&").join("%26"), {
+                      all.push($http.get(gaGlobalOptions.ogcproxyUrl + '' + url.split("&").join("%26"), {
                       }).then(function(response) {
                         showFeatures(response, coordinate);
                         return response.data.length;
