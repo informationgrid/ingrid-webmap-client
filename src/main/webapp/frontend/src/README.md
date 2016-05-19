@@ -55,9 +55,9 @@ Definition der Karten-Projektion.
     defaultEpsg: 'EPSG:3857'
 
 ## languages
-Definition von unterstützten Sprachen
+Definition von unterstützten Sprachen.
 
-    languages: JSON.parse('["de", "en", "fr", "it", "rm"]')
+    languages: JSON.parse('["de", "en"]')
 
 ## defaultCrossOrigin
 

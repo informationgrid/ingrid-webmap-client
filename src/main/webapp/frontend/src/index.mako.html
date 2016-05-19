@@ -177,11 +177,10 @@ itemscope itemtype="http://schema.org/WebApplication"
         </a>&nbsp;&nbsp;
         <a target="_blank" href="//help.geo.admin.ch/?lang={{langId}}" translate>help_label</a>&nbsp;&nbsp;
         <a href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
-        <!-- INGRID: Remove
-        <div ng-controller="GaTranslationController">
+        <!-- INGRID: Remove -->
+        <div ng-controller="GaTranslationController" ng-if="!globals.isParentIFrame">
           <div ga-translation-selector ga-translation-selector-options="options"></div>
         </div>
-        -->
       </div>
   % endif
       ## css animation doesnt work on pseudo element, let use this instead
@@ -771,7 +770,10 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultEpsgExtent: JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           defaultTerrain: '${default_terrain}',
-          languages: JSON.parse(${languages}),
+          // INGRID: Remove '${languages}'
+          languages: JSON.parse('["de", "en"]'),
+          // INGRID: Add property to check is in iFrame
+          isParentIFrame: window.parent.iframe ? true : false,
           // INGRID: Load map images over rest
           defaultCrossOrigin: false
         });

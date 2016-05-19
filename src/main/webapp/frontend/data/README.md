@@ -86,7 +86,7 @@ In der Datei 'catalogs.json' werden alle vorhanden Rubriken definiert. Die Defin
             // Definition Hintergrund-Layer per default
                 "defaultBackground": "osmLayer",
             // Vorhandene Sprachen der Rubrik 
-                "langs": "de,fr,it,rm,en",
+                "langs": "de,en",
             // Definition von per Default selektierten Layern
                 "selectedLayers": [],
             // Definition von per Default sichtbaren Layern
