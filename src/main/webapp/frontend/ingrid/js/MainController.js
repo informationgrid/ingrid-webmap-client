@@ -322,9 +322,7 @@ goog.require('ga_topic_service');
       }
     });
     $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
-        // INGRID: Disable offline function
-        $scope.globals.offline = false;
-        //$scope.globals.offline = offline;
+        $scope.globals.offline = offline;
     });
 
     $timeout(function() {
