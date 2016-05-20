@@ -29,14 +29,20 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -47,6 +53,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+
+import com.sun.jersey.core.header.FormDataContentDisposition;
+import com.sun.jersey.multipart.FormDataParam;
+
+import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -134,5 +146,77 @@ public class FileResource {
             }
         }
         return Response.status(Response.Status.OK ).build();
+    }
+    
+    @POST
+    @Path("feedback")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback, 
+            @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement, 
+            @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
+            @FormDataParam("subject") String subject) throws FileNotFoundException, IOException{
+        
+        String text = "";
+        if(email != null){
+            text += "E-Mail: " + email;
+            text += "\n";
+        }
+        if(feedback != null){
+            text += "Feedback: " + feedback;
+            text += "\n";
+        }
+        if(ua != null){
+            text += "User-Interface: " + ua;
+            text += "\n";
+        }
+        if(permalink != null){
+            text += "Permalink: " + permalink;
+            text += "\n";
+        }
+        if(kml != null){
+            text += "KML: " + kml;
+            text += "\n";
+        }
+        if(version != null){
+            text += "Version: " + version;
+            text += "\n";
+        }
+        
+        File file = null;
+        if(attachement != null){
+            if(attachementContentDisposition != null){
+                if(attachementContentDisposition.getFileName() != null){
+                    file = new File(attachementContentDisposition.getFileName());
+                    try {
+                        OutputStream out = new FileOutputStream(file);
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while((len=attachement.read(buf))>0){
+                            out.write(buf,0,len);
+                        }
+                        out.close();
+                        attachement.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
+        String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
+        String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
+        String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
+        String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
+        String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
+        boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
+        String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
+        
+        boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
+        if(sendMail){
+            return Response.ok( "{success: true}" ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 }

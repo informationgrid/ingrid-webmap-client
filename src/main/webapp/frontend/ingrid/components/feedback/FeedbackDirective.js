@@ -65,6 +65,9 @@ goog.require('ga_permalink');
                     formData.append('attachement', scope.file || '');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
+                    // INGRID: Add entries
+                    formData.append('subject', $translate.instant('feedback_subject') + '';
+                    
                     return formData;
                 } else {
                     formData = {
@@ -74,7 +77,9 @@ goog.require('ga_permalink');
                       permalink: scope.permalinkValue,
                       attachement: '',
                       kml: kml,
-                      version: gaGlobalOptions.version + ''
+                      version: gaGlobalOptions.version + '',
+                      // INGRID: Add entries
+                      subject: $translate.instant('feedback_subject') + ''
                     };
                     return $.param(formData);
                 }
