@@ -205,7 +205,7 @@ public class FileResource {
         }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
-        if(email != null){
+        if(email != null && email.length() > 0){
             from = email;
         }
         String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
@@ -217,8 +217,8 @@ public class FileResource {
         String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
         
         boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
-        if(sendMail){
-            return Response.ok( "{success: true}" ).build();
+        if(sendMail == false){
+            return Response.ok( "{\"success\": true}" ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
