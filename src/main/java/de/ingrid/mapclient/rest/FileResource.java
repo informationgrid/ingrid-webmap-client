@@ -158,27 +158,27 @@ public class FileResource {
             @FormDataParam("subject") String subject) throws FileNotFoundException, IOException{
         
         String text = "";
-        if(email != null){
+        if(email != null && email.length() > 0){
             text += "E-Mail:\n" + email;
             text += "\n\n";
         }
-        if(feedback != null){
+        if(feedback != null && feedback.length() > 0){
             text += "Feedback:\n" + feedback;
             text += "\n\n";
         }
-        if(ua != null){
+        if(ua != null && ua.length() > 0){
             text += "User-Interface:\n" + ua;
             text += "\n\n";
         }
-        if(permalink != null){
+        if(permalink != null && permalink.length() > 0){
             text += "Permalink:\n" + permalink;
             text += "\n\n";
         }
-        if(kml != null){
+        if(kml != null && kml.length() > 0){
             text += "KML:\n" + kml;
             text += "\n\n";
         }
-        if(version != null){
+        if(version != null && version.length() > 0){
             text += "Version:\n" + version;
             text += "\n\n";
         }
@@ -217,7 +217,7 @@ public class FileResource {
         String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
         
         boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
-        if(sendMail == false){
+        if(sendMail){
             return Response.ok( "{\"success\": true}" ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
