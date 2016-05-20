@@ -158,7 +158,7 @@
 "feedback_placeholder": "Attach a pdf, zip, jpg, jpeg, kml, kmz or gpx file",
 "feedback_revision": "Reporting a detailed revision regarding the national map:",
 "feedback_success_message": "Report sent successfully",
-"feedback_subject": "InGrid MapClient Feedback",
+"feedback_subject": "Feedback: InGrid MapClient",
 "feedback_unsupported_format": "This file format is not supported. Thanks for using another format for you attachment.",
 "file_is_not_kml": "The file is not a KML file.",
 "file_too_large": "The file is too large.",

@@ -151,7 +151,7 @@ public class FileResource {
     @POST
     @Path("feedback")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback, 
             @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement, 
             @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
@@ -159,28 +159,28 @@ public class FileResource {
         
         String text = "";
         if(email != null){
-            text += "E-Mail: " + email;
-            text += "\n";
+            text += "E-Mail:\n" + email;
+            text += "\n\n";
         }
         if(feedback != null){
-            text += "Feedback: " + feedback;
-            text += "\n";
+            text += "Feedback:\n" + feedback;
+            text += "\n\n";
         }
         if(ua != null){
-            text += "User-Interface: " + ua;
-            text += "\n";
+            text += "User-Interface:\n" + ua;
+            text += "\n\n";
         }
         if(permalink != null){
-            text += "Permalink: " + permalink;
-            text += "\n";
+            text += "Permalink:\n" + permalink;
+            text += "\n\n";
         }
         if(kml != null){
-            text += "KML: " + kml;
-            text += "\n";
+            text += "KML:\n" + kml;
+            text += "\n\n";
         }
         if(version != null){
-            text += "Version: " + version;
-            text += "\n";
+            text += "Version:\n" + version;
+            text += "\n\n";
         }
         
         File file = null;
@@ -205,6 +205,9 @@ public class FileResource {
         }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
+        if(email != null){
+            from = email;
+        }
         String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
         String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
         String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
