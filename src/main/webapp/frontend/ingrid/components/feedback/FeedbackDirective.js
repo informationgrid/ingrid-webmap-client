@@ -66,7 +66,7 @@ goog.require('ga_permalink');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
                     // INGRID: Add entries
-                    formData.append('subject', $translate.instant('feedback_subject') + '';
+                    formData.append('subject', $translate.instant('feedback_subject') + '');
                     
                     return formData;
                 } else {
