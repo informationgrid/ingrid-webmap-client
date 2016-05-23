@@ -118,7 +118,9 @@ goog.require('ga_urlutils_service');
           });
           gaDefinePropertiesForLayer(layer);
           // INGRID: Set visible
-          layer.visible = options.visible;
+          if(options.visible != undefined){
+              layer.visible = options.visible;
+          }
           layer.preview = options.preview;
           layer.displayInLayerManager = !layer.preview;
           layer.useThirdPartyData = gaUrlUtils.isThirdPartyValid(options.url);
