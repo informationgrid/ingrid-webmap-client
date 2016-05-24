@@ -15,9 +15,18 @@
   </div>
 
   <div ng-switch-default="" class="ga-catalogitem-node">
-    <a href="#" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}">
+    <!-- INGRID: Check if item is not a parent layer -->
+    <a ng-if="!isParentLayer(item)" href="#" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}">
       <i ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
       {{item.label}}
+    </a>
+    <!-- INGRID: Check if item is a parent layer -->
+    <a ng-if="isParentLayer(item)" href="#"  class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}">
+      <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
+        <i ng-click="toggle($event)" ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
+        <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}">
+        {{item.label}}
+      </label>
     </a>
     <ul ng-if="item.selectedOpen">
       <li ng-repeat="child in item.children">
