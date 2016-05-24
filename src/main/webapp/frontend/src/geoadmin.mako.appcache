@@ -1,0 +1,35 @@
+<%page args="languages" /><%
+  import json
+  # The languages variable must contain simple quote to be correctly parsed in
+  # index.html but here it prevents python to parse the JSON. So we manually
+  # remove them.
+  languages = json.loads(languages[1:-1])
+%>CACHE MANIFEST
+# Version ${version}
+
+CACHE:
+lib/build.js	
+style/app.css
+style/font-awesome-4.5.0/font/fontawesome-webfont.woff
+services
+% for lang in languages:
+layersConfig?lang=${lang}
+locales/${lang}.json
+% endfor
+img/geolocation_heading_marker.png
+
+NETWORK:
+#use by CatalogServer, checker, tiles
+*
+checker #we need to specify the checker here to avoid the appcache callback to be apply
+
+FALLBACK:
+
+# With Permalink
+${apache_base_path}/? index.html
+index.html? index.html
+mobile.html? mobile.html
+
+# Without permalink
+${apache_base_path}/ index.html
+
