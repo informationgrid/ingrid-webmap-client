@@ -233,7 +233,9 @@ itemscope itemtype="http://schema.org/WebApplication"
   % endif
         <div ga-rotate ga-rotate-map="map"></div>
   % if device == 'mobile':
+        <!-- INGRID: Disable save map
         <div ga-offline-bt></div>
+         -->
   % endif
       </div>
       <div ga-swipe 
@@ -737,7 +739,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           buildMode: '${mode}',
           version: '${version}',
           pegman: !!window.location.search.match(/(pegman=true)/),
-          mapUrl : location.origin + '${apache_base_path}',
+          // INGRID: Change mapUrl
+          mapUrl : location.origin + "" + location.pathname + "/..",
           // INGRID: Change REST service URL
           apiUrl : location.origin + '/ingrid-webmap-client/rest/data',
           mapproxyUrl : location.protocol + '${mapproxy_url}',
