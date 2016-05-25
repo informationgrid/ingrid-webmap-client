@@ -261,6 +261,12 @@ goog.require('ga_topic_service');
 
     // Create switch device url
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
+    // INGRID: Fix switch device mode
+    if(location.pathname){
+        if(!location.pathname.endsWith('mobile.html')){
+            switchToMobile = 'true';
+        }
+    }
     $scope.host = {url: $window.location.host}; // only use in embed.html
     $scope.toMainHref = gaPermalink.getMainHref();
     $scope.deviceSwitcherHref = gaPermalink.getHref({mobile: switchToMobile});

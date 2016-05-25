@@ -99,10 +99,13 @@ itemscope itemtype="http://schema.org/WebApplication"
             (('maxTouchPoints' in n) && n.maxTouchPoints > 1) ||
             (('msMaxTouchPoints' in n) && n.msMaxTouchPoints > 1)) &&
             (screen.width<=768 || screen.height<=768));
-        if (m=='false' || (!onMobile && p=='mobile') ) {
-          redirectToDesktop();
-        } else if (m=='true' || (onMobile && p=='desktop') ) {
-          redirectToMobile();
+        // INGRID: Redirect default disable 
+        if(m && p){
+          if (m=='false' || (!onMobile && p=='mobile') ) {
+            redirectToDesktop();
+          } else if (m=='true' || (onMobile && p=='desktop') ) {
+            redirectToMobile();
+          }
         }
       })();
     </script>
