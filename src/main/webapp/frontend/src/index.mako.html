@@ -178,7 +178,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
           <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
         </a>&nbsp;&nbsp;
-        <a target="_blank" href="//help.geo.admin.ch/?lang={{langId}}" translate>help_label</a>&nbsp;&nbsp;
+        <!-- INGRID: Edit href URL -->
+        <a target="_blank" href="/hilfe?hkey=maps-1" translate>help_label</a>&nbsp;&nbsp;
         <a href="{{deviceSwitcherHref}}" ng-if="!globals.isParentIFrame" translate>mobile_redirect</a>&nbsp;&nbsp;
         <!-- INGRID: Remove -->
         <div ng-controller="GaTranslationController" ng-if="!globals.isParentIFrame">
@@ -284,6 +285,7 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
   % endif
      <div class="pull-right">
+        <!-- INGRID: Edit href URL -->
         <a target="_blank" href="/impressum" translate>copyright_label</a>
       </div>
   % if device == 'desktop':
