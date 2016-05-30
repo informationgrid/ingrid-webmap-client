@@ -3,7 +3,7 @@
   <parent>
     <groupId>de.ingrid</groupId>
     <artifactId>ingrid-base-pom</artifactId>
-    <version>3.6.0.3</version>
+    <version>3.6.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.ingrid</groupId>
@@ -172,6 +172,7 @@
   </build>
   <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
   <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
+<!--
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -183,11 +184,13 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+-->
   <!-- ==================== DEPENDENCIES ==================== -->
   <dependencies>
     <dependency>
       <groupId>de.ingrid</groupId>
       <artifactId>ingrid-utils</artifactId>
+      <version>3.5.0</version>
       <exclusions>
         <exclusion>
           <groupId>commons-logging</groupId>
