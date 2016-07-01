@@ -324,7 +324,8 @@ goog.require('ga_topic_service');
       if (active && !$scope.globals.isDrawActive &&
           !$scope.globals.isShareActive &&
           win.width() <= screenPhone) {
-        $scope.globals.isShareActive = true;
+        // INGRID: Set 'isShareActive' to false
+        $scope.globals.isShareActive = false;
       }
     });
     $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
@@ -397,7 +398,8 @@ goog.require('ga_topic_service');
             !$scope.globals.isDrawActive &&
             win.width() <= screenPhone) {
           $scope.$applyAsync(function() {
-            $scope.globals.isShareActive = true;
+            // INGRID: Set 'isShareActive' to false
+            $scope.globals.isShareActive = false;
           });
         }
       });
