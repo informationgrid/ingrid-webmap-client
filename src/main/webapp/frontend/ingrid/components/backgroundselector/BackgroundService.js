@@ -31,15 +31,12 @@ goog.require('ga_permalink');
           id: 'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light',
           label: 'bg_bkg',
           disable3d: true
-        }/*,
-        'ch.swisstopo.pixelkarte-farbe': {
-          id: 'ch.swisstopo.pixelkarte-farbe',
-          label: 'bg_pixel_color'
         },
-        'ch.swisstopo.pixelkarte-grau': {
-          id: 'ch.swisstopo.pixelkarte-grau',
-          label: 'bg_pixel_grey'
-        }*/
+        'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau': {
+          id: 'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau',
+          label: 'bg_bkg_grau',
+          disable3d: true
+        }
       };
       var getBgById = function(id) {
         for (var i = 0, ii = bgs.length; i < ii; i++) {
