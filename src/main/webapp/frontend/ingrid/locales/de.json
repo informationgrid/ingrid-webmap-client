@@ -140,7 +140,7 @@
 "export_kml": "Exportieren",
 "export_kml_notsupported": "Ihr Browser unterstützt die Speicherfunktion nicht. Benutzen Sie IE10, Firefox oder Chrome.",
 "external_data_tooltip": "Daten eines Drittanbieters ",
-"external_data_warning": "Warnung: diese Daten kommen von einem Drittanbieter (--URL--). Verfügbarkeit wird durch Drittanbieter gewährleistet. Es gelten zusätzlich die Bedingungen der entsprechenden Datenherren.",
+"external_data_warning": "Warnung: Diese Daten kommen von einem Drittanbieter (--URL--). Die Verfügbarkeit wird durch den Drittanbieter gewährleistet. Es gelten zusätzlich die Bedingungen des Datenanbieters.",
 "facebook_tooltip": "Teilen Sie diese Karten mit Ihren Freunden auf Facebook",
 "feature": "Objekt",
 "featuresearch_results_header": "Gehe zum Objekt ...",
