@@ -11,13 +11,14 @@
               <!-- INGRID: Change 'CH1903 / LV03' to 'Mercator'  --> 
               <td>Mercator</td>
               <!-- INGRID: Change 'coord21781' to 'coordDefault'  --> 
-              <td><a href="{{contextPermalink}}"
-                     target="_blank">{{coordDefault}}</a></td>
+              <td>{{coordDefault}}</td>
           </tr>
+          <!-- INGRID: Remove 
           <tr>
               <td>CH1903+ / LV95</td>
               <td>{{coord2056}}</td>
           </tr>
+          -->
           <tr>
               <td>WGS 84 (lat/lon)</td>
               <td>{{coord4326}}</td>
@@ -30,18 +31,22 @@
               <td>UTM</td>
               <td>{{coordutm}}</td>
           </tr>
+          <!-- INGRID: Remove 
           <tr>
               <td>MGRS</td>
               <td>{{coordmgrs}}</td>
           </tr>
+          -->
           <tr ng-if="altitude">
               <td translate>elevation</td>
               <td>{{altitude | measure:'distance':[' m']:1}}</td>
           </tr>
+          <!-- INGRID: Remove 
           <tr>
               <td></td>
               <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
           </tr>
+          -->
           <tr ng-if="showQR()">
             <td align="center" colspan="2">
               <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
