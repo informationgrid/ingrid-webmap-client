@@ -113,6 +113,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <link href="style/app.css?v=${versionslashed}" rel="stylesheet"/>
     <!-- INGRID: Change icon --> 
     <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
+    <!-- INGRID: Settings -->
+    <script src="setting.js"></script>
   </head>
 
   <body class="{{topicId}} {{langId}}" 
@@ -198,7 +200,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         <span translate>draw_back</span>
       </button>
       <span ga-help="66"></span>
-      <button class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
+      <!-- INGRID: Add style="right:0"  -->
+      <button style="right:0" class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate><i class="fa fa-reorder" style="font-size:1.5em;"></i></button>
       ## css animation doesnt work on pseudo element, let use this instead
       <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
     </div><!-- #drawModeHeader -->
@@ -286,13 +289,15 @@ itemscope itemtype="http://schema.org/WebApplication"
   % endif
      <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" href="/impressum" translate>copyright_label</a>
+        <a target="_blank" onclick="location.href=settingCopyrightURL?settingCopyrightURL:'/impressum'" translate>copyright_label</a>
       </div>
+  <!-- INGRID: Remove
   % if device == 'desktop':
       <div class="pull-right">
         <a target="_blank" translate="{{topicId + '_service_link_label'}}" translate-attr-href="{{topicId + '_service_link_href'}}"></a>
       </div>
   % endif
+  -->
     </div><!-- #footer -->
 
     <div ng-controller="GaContextPopupController">
@@ -522,7 +527,7 @@ itemscope itemtype="http://schema.org/WebApplication"
               <p>
                 <a target="_blank" translate translate-attr-href="{{topicId + '_service_link_href'}}" >{{topicId + '_service_link_label'}}</a>
                 <br>
-                <a target="_blank" href="http://www.geo.admin.ch/internet/geoportal/{{langId}}/home/geoadmin/contact.html#copyright" translate>copyright_label</a>
+                <a target="_blank" onclick="location.href=settingCopyrightURL?settingCopyrightURL:'/impressum'" translate>copyright_label</a>
               </p>
             </div>
           </div>
@@ -761,21 +766,21 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Change REST image URL
           imgproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/data/images/?url=',
           // INGRID: Change search services URL (Opensearch)
-          searchServiceUrl : 'https://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100',
+          searchServiceUrl : settingSearchServiceUrl ? settingSearchServiceUrl : 'https://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100',
           // INGRID: Short URL service (external)
-          shortURLService : 'https://is.gd/create.php?format=json&url=',
+          shortURLService : settingShortURLService ? settingShortURLService : 'https://is.gd/create.php?format=json&url=',
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
           defaultTopicId: '${default_topic_id}',
           translationFallbackCode: '${translation_fallback_code}',
-          defaultExtent: JSON.parse(${default_extent}),
+          defaultExtent: settingExtent ? JSON.parse(settingExtent) : JSON.parse(${default_epsg_extend}),
           defaultResolution: ${default_resolution},
           defaultLod: ${default_level_of_detail},
           resolutions: JSON.parse(${resolutions}),
           lods: JSON.parse(${level_of_details}),
           defaultEpsg: '${default_epsg}',
-          defaultEpsgExtent: JSON.parse(${default_epsg_extend}),
+          defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           defaultTerrain: '${default_terrain}',
           // INGRID: Remove '${languages}'
@@ -783,7 +788,11 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add property to check is in iFrame
           isParentIFrame: window.parent.iframe ? true : false,
           // INGRID: Load map images over rest
-          defaultCrossOrigin: false
+          defaultCrossOrigin: false,
+          // INGRID: KML download name
+          settingKMLName: settingKMLName ? settingKMLName : 'INGRID',
+          // INGRID: Available list of services to import
+          settingDefaultWMSList: settingDefaultWMSList ? settingDefaultWMSList : []
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

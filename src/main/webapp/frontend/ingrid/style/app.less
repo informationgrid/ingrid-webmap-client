@@ -689,10 +689,11 @@ input[type=text][readonly] {
     font-size: 2em;
     line-height: 1.7em;
     left: 260px;
-    right: 260px;
+    /* right: 260px; */
 
     @media (max-width: @screen-tablet) {
-      left: 260px;
+      /* left: 260px; */
+      left: 50px;
       right: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -707,7 +708,7 @@ input[type=text][readonly] {
   .fa-arrow-left + span {
     padding-left: 5px;
 
-    @media (max-width: @screen-phone) {
+    @media (max-width: @screen-tablet) {
       display: none;
     }
   }
@@ -923,13 +924,13 @@ a .ga-icon-separator {
     .translate3d(-100%, 0, 0);
 
     #shareHeading {
-      display: none;
+      /* display: none; */
     }
 
     #share { 
-      display: block!important;
-      visibility: visible!important;
-      height: auto!important;
+      /* display: block!important; */
+      /* visibility: visible!important; */
+      /* height: auto!important; */
     }
   }
 
