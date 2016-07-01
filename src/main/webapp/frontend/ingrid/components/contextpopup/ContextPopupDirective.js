@@ -138,6 +138,7 @@ goog.require('ga_permalink');
               // digest cycle for us.
               scope.$apply(function() {
 
+                /* INGRID: Disable height
                 $http.get(heightUrl, {
                   params: {
                     // INGRID: Change 'coord21781' to 'coordDefault'
@@ -148,7 +149,7 @@ goog.require('ga_permalink');
                 }).success(function(response) {
                   scope.altitude = parseFloat(response.height);
                 });
-
+                */
                 $http.get(lv03tolv95Url, {
                   params: {
                     // INGRID: Change 'coord21781' to 'coordDefault'
