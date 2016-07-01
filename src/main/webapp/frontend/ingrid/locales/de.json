@@ -245,6 +245,7 @@
 "no_file": "Keine Datei",
 "no_more_information": "Keine weiteren Informationen",
 "no_searchable_layer": "Kein abfragbarer Datensatz",
+"no_legend_available": "No legend available",
 "not_enough_layer_for_swipe": "Der erste Datensatz der Auswahl kann verglichen werden. Es muss dafür mindestens ein Datensatz ausgewählt sein.",
 "object_information": "Objekt-Information",
 "obstacle_deleted_last_2_weeks": "Gelöschte Hindernisse letzte 2 Wochen",

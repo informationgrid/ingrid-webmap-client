@@ -17,9 +17,9 @@ goog.require('ga_urlutils_service');
    * Manage external WMS layers
    */
   module.provider('gaWms', function() {
-// INGRID: Add parameter '$http'
+    // INGRID: Add parameter '$http', '$translate'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
-        gaGlobalOptions, $q, gaLang, $http) {
+        gaGlobalOptions, $q, gaLang, $http, $translate) {
       var getCesiumImageryProvider = function(layer) {
         var params = layer.getSource().getParams();
         var proxy;
@@ -302,7 +302,8 @@ goog.require('ga_urlutils_service');
                     }
                 }
             }
-            var html = '<img alt="No legend available" src="' +
+            // INGRID: Change alt
+            var html = '<img alt="' + $translate.instant('no_legend_available') + '" src="' +
               gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
             request: 'GetLegendGraphic',
             layer: params.LAYERS,
