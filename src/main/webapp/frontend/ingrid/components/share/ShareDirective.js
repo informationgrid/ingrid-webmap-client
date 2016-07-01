@@ -73,8 +73,9 @@ goog.require('ga_permalink');
   });
 
   module.directive('gaShare',
+    // INGRID: Add param 'gaGlobalOptions'
     function($document, $http, $timeout, $translate, $window, gaPermalink,
-        gaBrowserSniffer) {
+        gaBrowserSniffer, gaGlobalOptions) {
       return {
         restrict: 'A',
         scope: {
@@ -107,9 +108,11 @@ goog.require('ga_permalink');
           });
 
           scope.updateUrl = function() {
-            scope.permalinkValue = gaPermalink.getHref();
+            // INGRID: Check iFrame location
+            scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
+            // INGRID: Check iFrame location
             scope.encodedPermalinkHref =
-                encodeURIComponent(gaPermalink.getHref());
+                encodeURIComponent(gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame));
             // assuming document.title never change
             scope.embedValue = gaPermalink.getEmbedHref();
           };

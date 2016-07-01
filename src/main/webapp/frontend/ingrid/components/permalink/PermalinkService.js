@@ -55,10 +55,17 @@ goog.require('ga_urlutils_service');
           var base = b;
           var params = p;
 
-          this.getHref = function(p) {
+          // INGRID: Add param 'isParentIFrame'
+          this.getHref = function(p, isParentIFrame) {
             var newParams = angular.extend({}, params);
             if (angular.isDefined(p)) {
               angular.extend(newParams, p);
+            }
+            // INGRID: Check for iFrame parent location
+            if(isParentIFrame){
+              if(window.parent){
+                return window.parent.location.origin + '' + window.parent.location.pathname + '?' + gaUrlUtils.toKeyValue(newParams);
+              }
             }
             return base + '?' + gaUrlUtils.toKeyValue(newParams);
           };
