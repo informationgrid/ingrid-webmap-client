@@ -51,9 +51,9 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta property="og:title" content="Swiss Geoportal"/>
     <meta property="og:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <meta property="og:type" content="WebApplication"/>
-    <meta property="og:url" content="https://map.geo.admin.ch"/>
+    <meta property="og:url" content="${application_url}"/>
     <!-- INGRID: Change icon --> 
-    <meta property="og:image" content="img/ingrid_logo_icn.png"/>
+    <meta property="og:image" content="${application_url}/img/ingrid_logo_icn.png"/>
 
     <!-- Twitter Card Infos -->
     <meta name="twitter:card" content="summary"/>
@@ -62,8 +62,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name="twitter:title" content="geo.admin.ch"/>
     <meta name="twitter:description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta name="twitter:image" content="img/ingrid_logo_icn.png"/>
-    <meta name="twitter:url" content="https://map.geo.admin.ch"/>
+    <meta name="twitter:image" content="${application_url}/img/ingrid_logo_icn.png"/>
+    <meta name="twitter:url" content="${application_url}"/>
 
     <!-- Facebook Specific fb:admins and fb.appid -->
 
@@ -71,7 +71,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta itemprop="name" content="geo.admin.ch"/>
     <meta itemprop="description" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
     <!-- INGRID: Change icon --> 
-    <meta itemprop="image" content="img/ingrid_logo_icn.png"/>
+    <meta itemprop="image" content="${application_url}/img/ingrid_logo_icn.png"/>
 
     <script>
       (function(){
@@ -114,7 +114,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- INGRID: Change icon --> 
     <link rel="shortcut icon" type="image/x-icon" href="img/ingrid_logo_icn.png"/>
     <!-- INGRID: Settings -->
-    <script src="setting.js"></script>
+    <script src="../src/setting.js"></script>
   </head>
 
   <body class="{{topicId}} {{langId}}" 
@@ -122,7 +122,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           'search-focused': globals.searchFocused,
           'touch': globals.touch, 
           'webkit': globals.webkit, 
-          'no-webkit': !globals.webkit, 
+          'no-webkit': !globals.webkit,
+          'no-animation': !globals.animation,
           'offline': globals.offline,
           'online': !globals.offline,
           'embed': globals.embed,
@@ -741,6 +742,50 @@ itemscope itemtype="http://schema.org/WebApplication"
         var module = angular.module('geoadmin');
         var cacheAdd = '${version}' != '' ? '/' + '${version}' : '';
         var pathname = location.pathname.replace(/(index|mobile|embed)\.html$/g, '');
+
+        function getParam(name){
+          return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+        }
+
+        var apiParam = getParam('api_url');
+        var apiEnv = getParam('api_env');
+        var apiUrlBase = '${api_url}';
+
+        if (apiEnv){
+          if (apiEnv == 'prod'){
+            host = '//api3.geo.admin.ch';
+          } else {
+            host = '//mf-chsdi3.' + apiEnv + '.bgdi.ch';
+          }
+        } else {
+          host = '${api_url}';
+        }
+
+        if (host.slice(-1) == '/'){
+          host = host.slice(0, -1);
+        }
+
+        if (apiParam){
+          apiUrl = host + '/' + apiParam;
+        } else {
+          apiUrl = host;
+        }
+
+        var shopUrl = getParam('shop_url');
+        var shopUrlBase = '${shop_url}';
+
+        if (shopUrl){
+          shopUrl = shopUrl;
+          if (shopUrl == 'dev' || shopUrl == 'int'){
+            shopUrl = '//shop-bgdi.'+ shopUrl + '.bgdi.ch';
+          } else if (shopUrl == 'prod'){
+              shopUrl = '//beta.shop.swisstopo.ch';
+          } else if (shopUrl == 'puzzle'){
+              shopUrl = '//shop-shopbgdi.openshift.puzzle.ch';
+          }
+        } else {
+          shopUrl = shopUrlBase;
+        }
 
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live

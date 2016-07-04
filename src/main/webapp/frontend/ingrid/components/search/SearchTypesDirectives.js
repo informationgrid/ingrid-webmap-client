@@ -46,7 +46,7 @@ goog.require('ga_urlutils_service');
         gaOverlay.add(map,
                       center,
                       parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions),
-                      visible);      
+                      visible);
     }
   };
 
@@ -228,10 +228,9 @@ goog.require('ga_urlutils_service');
         canceler = $q.defer();
 
         // INGRID: Add search URL
-        var url = gaUrlUtils.append($scope.options.baseUrl,
+        var url = gaUrlUtils.append($scope.options.searchUrl,
                                     'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
         url = $scope.typeSpecificUrl(url);
-
         $http.get(url, {
           cache: true,
           timeout: canceler.promise,
@@ -316,10 +315,10 @@ goog.require('ga_urlutils_service');
 
       $scope.fuzzy = '';
 
-      $scope.$watch('options.query', function(newval) {
-        //cancel old requests
+      $scope.$watch('options.searchUrl', function() {
+        // cancel old requests
         cancel();
-        if (newval != '') {
+        if ($scope.options.query != '') {
           blockEvent = false;
           triggerSearch();
         } else {

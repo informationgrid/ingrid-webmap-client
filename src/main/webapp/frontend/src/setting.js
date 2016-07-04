@@ -1,10 +1,13 @@
+// Default
 var settingExtent = undefined;
 var settingEpsgExtent = undefined;
 var settingEpsg = undefined;
 var settingShortURLService = undefined;
 var settingSearchServiceUrl = undefined;
 var settingCopyrightURL = undefined;
+// KML
 var settingKMLName = 'INGRID';
+// WMS Import
 var settingDefaultWMSList = [
      'http://atlas.wsv.bund.de/bwastr/wms?',
      'http://gdi.uba.de/arcgis/services/BoFlLa/WMS_UBA_BoFlLa_NitratGrundWa_MST/MapServer/WMSServer?',
@@ -23,3 +26,10 @@ var settingDefaultWMSList = [
      'http://gdi.uba.de/arcgis/services/KlEn/WMS_UBA_KlEn_Kraftw/MapServer/WMSServer?',
      'http://wms.geo.admin.ch/'
    ];
+// Share
+var settingShareFacebook = true;
+var settingShareMail = true;
+var settingShareGoogle = true;
+var settingShareTwitter = true;
+var settingShareIFrame = true;
+var settingShareLink = true;

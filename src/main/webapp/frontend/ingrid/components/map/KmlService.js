@@ -70,6 +70,71 @@ goog.require('ga_urlutils_service');
       }
     };
 
+    var shouldRemoveMultiGeom = function(geometry, children) {
+      var coords = [];
+      for (var i = 0, ii = children.length; i < ii; i++) {
+        if (!shouldRemoveGeometry(children[i])) {
+          coords.push(children[i].getCoordinates());
+        }
+      }
+      if (coords.length) {
+        geometry.setCoordinates(coords);
+        return false;
+      }
+      return true;
+    };
+
+    /**
+     * This function tests if all coordinates of a geometry are identical.
+     * Special case , returns true if there is only one coordinate.
+     * Used to test LineStrings and LinearRings.
+     */
+    var uniqueCoords = function(coords) {
+      var unique = true;
+      for (var i = 0, ii = coords.length; i < ii; i++) {
+        var coord = coords[i];
+        var nextCoord = coords[i + 1];
+        if (unique && nextCoord &&
+            (coord[0] != nextCoord[0] ||
+            coord[1] != nextCoord[1] ||
+            coord[2] != nextCoord[2])) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    var shouldRemoveGeometry = function(geom) {
+      var geometries = [geom];
+      if (geom instanceof ol.geom.GeometryCollection) {
+        geometries = geom.getGeometries();
+      }
+      for (var i = 0, ii = geometries.length; i < ii; i++) {
+        var geometry = geometries[i];
+        var remove = false;
+        if (geometry instanceof ol.geom.MultiPolygon) {
+           remove = shouldRemoveMultiGeom(geometry, geometry.getPolygons());
+        } else if (geometry instanceof ol.geom.MultiLineString) {
+           remove = shouldRemoveMultiGeom(geometry, geometry.getLineStrings());
+        } else if (geometry instanceof ol.geom.Polygon) {
+           remove = shouldRemoveMultiGeom(geometry, geometry.getLinearRings());
+        } else if (geometry instanceof ol.geom.LinearRing ||
+            geometry instanceof ol.geom.LineString) {
+          remove = uniqueCoords(geometry.getCoordinates());
+        }
+        if (remove) {
+          geometries.splice(i, 1);
+          i--;
+        }
+      }
+      if (geometries.length && geom instanceof ol.geom.GeometryCollection) {
+        geom.setGeometries(geometries);
+        return false;
+      }
+      return !geometries.length;
+    };
+
+
     this.$get = function($http, $q, $rootScope, $timeout, $translate,
         gaDefinePropertiesForLayer, gaGlobalOptions, gaMapClick, gaMapUtils,
         gaNetworkStatus, gaStorage, gaStyleFactory, gaUrlUtils, gaMeasure) {
@@ -130,14 +195,19 @@ goog.require('ga_urlutils_service');
 
       // Sanitize the feature's properties (id, geometry, style).
       var sanitizeFeature = function(feature, projection) {
-        var geometry = feature.getGeometry();
-        // Remove feature without geometry.
-        if (!geometry) {
+        var geom = feature.getGeometry();
+
+        // Returns true if a geometry has a bad geometry
+        // (ex: only one coordinate for line strings)
+        var remove = shouldRemoveGeometry(geom);
+
+        // Remove feature without good geometry.
+        if (!geom || remove) {
           return;
         }
         // Ensure polygons are closed.
         // Reason: print server failed when polygons are not closed.
-        closeGeometry(geometry);
+        closeGeometry(geom);
 
         // Replace empty id by undefined.
         // Reason: If 2 features have their id empty, an assertion error
@@ -145,8 +215,7 @@ goog.require('ga_urlutils_service');
         if (feature.getId() === '') {
           feature.setId(undefined);
         }
-        feature.getGeometry().transform('EPSG:4326', projection);
-        var geom = feature.getGeometry();
+        geom.transform('EPSG:4326', projection);
         var styles = feature.getStyleFunction().call(feature);
         var style = styles[0];
 
@@ -251,9 +320,15 @@ goog.require('ga_urlutils_service');
                 sanitizedFeatures.push(feat);
               }
             }
+
+            // #2820: we set useSpatialIndex to false for KML created with draw
+            // tool
             var source = new ol.source.Vector({
-              features: sanitizedFeatures
+              features: sanitizedFeatures,
+              useSpatialIndex: !gaMapUtils.isStoredKmlLayer(options.id)
             });
+
+            var sourceExtent = gaMapUtils.getVectorSourceExtent(source);
             var layerOptions = {
               id: options.id,
               adminId: options.adminId,
@@ -263,8 +338,7 @@ goog.require('ga_urlutils_service');
               opacity: options.opacity,
               visible: options.visible,
               source: source,
-              extent: gaMapUtils.intersectWithDefaultExtent(
-                  source.getExtent()),
+              extent: gaMapUtils.intersectWithDefaultExtent(sourceExtent),
               attribution: options.attribution
             };
 
@@ -333,20 +407,22 @@ goog.require('ga_urlutils_service');
           layerOptions = layerOptions || {};
           layerOptions.url = url;
           if (gaNetworkStatus.offline) {
-            addKmlLayer(map, null, layerOptions, index);
+            return this.addKmlToMap(map, null, layerOptions, index);
           } else {
-            $http.get(gaGlobalOptions.ogcproxyUrl + encodeURIComponent(url), {
+            return $http.get(gaGlobalOptions.ogcproxyUrl +
+                encodeURIComponent(url), {
               cache: true
-            }).success(function(data, status, headers, config) {
-              var fileSize = headers('content-length');
+            }).then(function(response) {
+              var data = response.data;
+              var fileSize = response.headers('content-length');
               if (that.isValidFileContent(data) &&
                   that.isValidFileSize(fileSize)) {
                 layerOptions.useImageVector = that.useImageVector(fileSize);
-                addKmlLayer(map, data, layerOptions, index);
+                return that.addKmlToMap(map, data, layerOptions, index);
               }
-            }).error(function() {
+            }, function() {
               // Try to get offline data if exist
-              addKmlLayer(map, null, layerOptions, index);
+              return that.addKmlToMap(map, null, layerOptions, index);
             });
           }
         };
@@ -360,8 +436,8 @@ goog.require('ga_urlutils_service');
 
         // Test the validity of the file size
         this.isValidFileSize = function(fileSize) {
-          if (fileSize > 20000000) { // 20mo
-            alert($translate.instant('file_too_large'));
+          if (fileSize > 20000000) { // 20 Mo
+            alert($translate.instant('file_too_large') + ' (max. 20 MB)');
             return false;
           }
           return true;

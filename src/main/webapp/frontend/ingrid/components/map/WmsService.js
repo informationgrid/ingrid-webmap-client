@@ -80,6 +80,11 @@ goog.require('ga_urlutils_service');
           // layers.
           if (params.VERSION) {
             options.id += '||' + params.VERSION;
+
+            if (options.useReprojection) {
+              options.projection = 'EPSG:4326';
+              options.id += '||true';
+            }
           }else{
             // INGRID: Add empty version
             options.id += '||';
@@ -92,11 +97,6 @@ goog.require('ga_urlutils_service');
             options.id += '||';
           }
 
-          
-          if (options.useReprojection) {
-            options.projection = 'EPSG:4326';
-            options.id += '||true';
-          }
           var source = new ol.source.ImageWMS({
             params: params,
             url: options.url,

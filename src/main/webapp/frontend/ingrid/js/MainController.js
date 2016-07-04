@@ -74,9 +74,7 @@ goog.require('ga_topic_service');
           altShiftDragRotate: true,
           touchRotate: false,
           keyboard: false
-        }).extend([
-          new ol.interaction.DragZoom()
-        ]),
+        }),
         renderer: 'canvas',
         view: new ol.View({
             // INGRID: Configuration of map
@@ -285,6 +283,7 @@ goog.require('ga_topic_service');
       touch: gaBrowserSniffer.touchDevice,
       webkit: gaBrowserSniffer.webkit,
       ios: gaBrowserSniffer.ios,
+      animation: gaBrowserSniffer.animation,
       offline: gaNetworkStatus.offline,
       embed: gaBrowserSniffer.embed,
       pulldownShown: !(gaBrowserSniffer.mobile || win.width() <= 1024),
@@ -329,7 +328,7 @@ goog.require('ga_topic_service');
       }
     });
     $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
-        $scope.globals.offline = offline;
+      $scope.globals.offline = offline;
     });
 
     $timeout(function() {

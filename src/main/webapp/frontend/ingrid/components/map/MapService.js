@@ -89,10 +89,6 @@ goog.require('ga_urlutils_service');
               }
             }
           },
-          userVisible: {
-            writable: true,
-            value: true
-          },
           hiddenByOther: {
             get: function() {
               return this.get('hiddenByOther');
@@ -244,6 +240,14 @@ goog.require('ga_urlutils_service');
               this.set('getCesiumImageryProvider', val);
             }
           },
+          altitudeMode: {
+            get: function() {
+              return this.get('altitudeMode');
+            },
+            set: function(val) {
+              this.set('altitudeMode', val);
+            }
+          },
           background: {
             writable: true,
             value: false
@@ -267,6 +271,10 @@ goog.require('ga_urlutils_service');
           updateDelay: {
             writable: true,
             value: null
+          },
+          userVisible: {
+            writable: true,
+            value: olLayer.getVisible()
           }
         });
       };
@@ -286,11 +294,26 @@ goog.require('ga_urlutils_service');
   module.provider('gaMapClick', function() {
     this.$get = function($timeout, gaBrowserSniffer) {
       return {
-        listen: function(map, callback) {
+        listen: function(map, onClick) {
           var down = null;
           var moving = false;
           var timeoutPromise = null;
           var touchstartTime;
+          var callback = function(evt) {
+            // if a draw or a select interaction is active, do
+            // nothing.
+            var cancel = false;
+            var arr = map.getInteractions().getArray();
+            arr.slice().reverse().forEach(function(item) {
+              if (!cancel && (item instanceof ol.interaction.Select ||
+                  item instanceof ol.interaction.Draw) && item.getActive()) {
+               cancel = true;
+              }
+            });
+            if (!cancel) {
+              onClick(evt);
+            }
+          };
 
           var isMouseRightAction = function(evt) {
             return (evt.button === 2 || evt.which === 3);
@@ -866,7 +889,6 @@ goog.require('ga_urlutils_service');
           return olLayer;
         };
 
-
         /**
          * Returns layers definition for given bodId. Returns
          * undefined if bodId does not exist
@@ -936,6 +958,58 @@ goog.require('ga_urlutils_service');
 
           return undefined;
         };
+
+        /**
+         * Determines if the layer is a bod layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a BOD layer.
+         * Returns false if the layer is not a BOD layer.
+         */
+        this.isBodLayer = function(olLayer) {
+          if (olLayer) {
+            var bodId = olLayer.bodId;
+            return layers.hasOwnProperty(bodId);
+          }
+          return false;
+        };
+
+        /**
+         * Finds the parent layer bodid if the layer is a child.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns a bodId of the parent layer.
+         * Returns undefined if no parent layer was found
+         */
+        this.getBodParentLayerId = function(olLayer) {
+          if (this.isBodLayer(olLayer)) {
+            var bodId = olLayer.bodId;
+            return this.getLayerProperty(bodId,
+                'parentLayerId');
+          }
+        };
+
+        /**
+         * Determines if the bod layer has a tooltip.
+         * Note: the layer is considered to have a tooltip if the parent layer
+         * has a tooltip.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer has bod a tooltip.
+         * Returns false if the layer doesn't have a bod tooltip.
+         */
+        this.hasTooltipBodLayer = function(olLayer) {
+          if (!this.isBodLayer(olLayer)) {
+            return false;
+          }
+          var hasTooltip;
+          var parentLayerId = this.getBodParentLayerId(olLayer);
+          var bodId = parentLayerId || olLayer.bodId;
+          if (bodId) {
+            hasTooltip = this.getLayerProperty(bodId, 'tooltip');
+          }
+          return !!(bodId && hasTooltip);
+        };
       };
 
       return new Layers(this.dfltWmsSubdomains,
@@ -956,6 +1030,11 @@ goog.require('ga_urlutils_service');
       var resolutions = gaGlobalOptions.resolutions;
       var lodsForRes = gaGlobalOptions.lods;
       var isExtentEmpty = function(extent) {
+        for (var i = 0, ii = extent.length; i < ii; i++) {
+           if (!extent[i]) {
+             return true;
+           }
+        }
         return extent[0] >= extent[2] || extent[1] >= extent[3];
       };
       // Level of detail for the default resolution
@@ -987,12 +1066,7 @@ goog.require('ga_urlutils_service');
           }
           return this.arrayBufferToBlob(uInt8Array.buffer, contentType);
         },
-        // Convert an extent to Cesium
-        extentToRectangle: function(e, sourceProj) {
-          sourceProj = sourceProj || ol.proj.get(gaGlobalOptions.defaultEpsg);
-          e = ol.proj.transformExtent(e, sourceProj, 'EPSG:4326');
-          return Cesium.Rectangle.fromDegrees(e[0], e[1], e[2], e[3]);
-        },
+
         // Advantage of the blob is we have easy access to the size and the
         // type of the image, moreover in the future we could store it
         // directly in indexedDB, no need of fileReader anymore.
@@ -1009,6 +1083,13 @@ goog.require('ga_urlutils_service');
           }
         },
 
+        // Convert an ol.extent to Cesium.Rectangle
+        extentToRectangle: function(e, sourceProj) {
+          sourceProj = sourceProj || ol.proj.get(gaGlobalOptions.defaultEpsg);
+          e = ol.proj.transformExtent(e, sourceProj, 'EPSG:4326');
+          return Cesium.Rectangle.fromDegrees(e[0], e[1], e[2], e[3]);
+        },
+
         /**
          * Defines a unique identifier from a tileUrl.
          * Use by offline to store in local storage.
@@ -1016,6 +1097,7 @@ goog.require('ga_urlutils_service');
         getTileKey: function(tileUrl) {
           return tileUrl.replace(/^\/\/wmts[0-9]/, '');
         },
+
         /**
          * Search for a layer identified by bodId in the map and
          * return it. undefined is returned if the map does not have
@@ -1096,6 +1178,7 @@ goog.require('ga_urlutils_service');
           }
           return defer.promise;
         },
+
         zoomToExtent: function(map, ol3d, extent) {
           var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
@@ -1217,15 +1300,13 @@ goog.require('ga_urlutils_service');
         // or permalink
         // @param olLayerOrId  An ol layer or an id of a layer
         isExternalWmsLayer: function(olLayerOrId) {
-          if (!olLayerOrId) {
-            return false;
-          }
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
                 // INGRID: Length now 6 because adding WMS version and queryable
                 olLayerOrId.split('||').length == 6;
           }
-          return olLayerOrId.type == 'WMS';
+          return !!(olLayerOrId && !olLayerOrId.bodId &&
+              this.isWMSLayer(olLayerOrId));
         },
 
         // INGRID: External service
@@ -1318,7 +1399,6 @@ goog.require('ga_urlutils_service');
             updateWhileInteracting: true,
             zIndex: this.Z_FEATURE_OVERLAY
           });
-          layer.set('altitudeMode', 'clampToGround');
           gaDefinePropertiesForLayer(layer);
           layer.displayInLayerManager = false;
           return layer;
@@ -1334,6 +1414,54 @@ goog.require('ga_urlutils_service');
           }
           // TODO: Implement the calculation of the closest level of detail
           // available if res is not in the resolutions array
+        },
+
+        // The ol.source.Vector.getExtent function doesn't exist when the
+        // useSpatialIndex property is set to false
+        getVectorSourceExtent: function(source) {
+          try {
+            return source.getExtent();
+          } catch (e) {
+            var sourceExtent;
+            source.getFeatures().forEach(function(item) {
+              var extent = item.getGeometry().getExtent();
+              if (!sourceExtent) {
+                sourceExtent = extent;
+              } else {
+                ol.extent.extend(sourceExtent, extent);
+              }
+            });
+            return sourceExtent;
+          }
+        },
+
+        /**
+         * Tests if a layer is a vector layer or a vector tile layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a Vector
+         * Returns false if the layer is not a Vector
+         */
+        isVectorLayer: function(olLayer) {
+          return !!(olLayer && !(olLayer instanceof ol.layer.Group) &&
+              olLayer.getSource() &&
+              (olLayer instanceof ol.layer.Vector ||
+              (olLayer instanceof ol.layer.Image &&
+              olLayer.getSource() instanceof ol.source.ImageVector)));
+        },
+
+        /**
+         * Tests if a layer is a WMS layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a WMS
+         * Returns false if the layer is not a WMS
+         */
+        isWMSLayer: function(olLayer) {
+          return !!(olLayer && !(olLayer instanceof ol.layer.Group) &&
+              olLayer.getSource &&
+              (olLayer.getSource() instanceof ol.source.ImageWMS ||
+              olLayer.getSource() instanceof ol.source.TileWMS));
         }
       };
     };
@@ -1373,13 +1501,14 @@ goog.require('ga_urlutils_service');
                  !layer.preview;
         },
         /**
-         * Keep layers with potential tooltip
+         * Keep layers with potential tooltip for query tool
          */
         potentialTooltip: function(layer) {
           return layer.displayInLayerManager &&
                  layer.visible &&
                  layer.bodId &&
-                 gaLayers.getLayerProperty(layer.bodId, 'tooltip');
+                 gaLayers.hasTooltipBodLayer(layer) &&
+                 !gaMapUtils.isVectorLayer(layer);
         },
         /**
          * Searchable layers
