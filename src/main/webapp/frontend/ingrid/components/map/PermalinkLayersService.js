@@ -359,6 +359,7 @@ goog.require('ga_wms_service');
           registerLayersPermalink(scope, map);
           $rootScope.$on('gaTopicChange', function() {
             // First we remove all layers that are selected
+            /* INGRID: Do not remove layers after topic change
             var toDelete = [];
             angular.forEach(map.getLayers().getArray(), function(l) {
               if (gaLayerFilters.selected(l)) {
@@ -368,6 +369,7 @@ goog.require('ga_wms_service');
             angular.forEach(toDelete, function(l) {
               map.removeLayer(l);
             });
+            */
             addTopicSelectedLayers();
           });
         });
