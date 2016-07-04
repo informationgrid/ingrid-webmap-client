@@ -802,7 +802,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           shopUrl : location.protocol + '${shop_url}',
           // INGRID: Change REST service URL
           publicUrl : location.origin + '/ingrid-webmap-client/rest/data',
-          publicUrlRegexp: new RegExp('${public_url_regexp}'),
+          // INGRID: Change RegExp
+          publicUrlRegexp: new RegExp('ingrid-webmap-client\/rest\/data\/'),
           adminUrlRegexp: new RegExp('${admin_url_regexp}'),
           cachedApiUrl: location.protocol + '${api_url}' + cacheAdd,
           resourceUrl: location.origin + pathname + '',
