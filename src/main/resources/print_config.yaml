@@ -60,13 +60,6 @@ layouts:
             align: center
             text: '${title}'
       items:
-        - !image
-          spacingAfter: 15
-          rotation: '${rotation}'
-          maxWidth: 50
-          maxHeight: 50
-          align: left
-          url: http://trac.mapfish.org/trac/mapfish/export/2892/print/trunk/print-standalone/samples/Arrow_North_CFCF.svg
         - !map
           spacingAfter: 15
           width: 440
@@ -129,13 +122,6 @@ layouts:
             align: center
             text: '${title}'
       items:
-        - !image
-          spacingAfter: 5
-          rotation: '${rotation}'
-          maxWidth: 50
-          maxHeight: 50
-          align: left
-          url: http://trac.mapfish.org/trac/mapfish/export/2892/print/trunk/print-standalone/samples/Arrow_North_CFCF.svg
         - !map
           spacingAfter: 5
           width: 483
@@ -197,13 +183,6 @@ layouts:
             align: center
             text: '${title}'
       items:
-        - !image
-          spacingAfter: 15
-          rotation: '${rotation}'
-          maxWidth: 50
-          maxHeight: 50
-          align: left
-          url: http://trac.mapfish.org/trac/mapfish/export/2892/print/trunk/print-standalone/samples/Arrow_North_CFCF.svg
         - !map
           spacingAfter: 15
           width: 650
@@ -266,13 +245,6 @@ layouts:
             align: center
             text: '${title}'
       items:
-        - !image
-          spacingAfter: 5
-          rotation: '${rotation}'
-          maxWidth: 50
-          maxHeight: 50
-          align: left
-          url: http://trac.mapfish.org/trac/mapfish/export/2892/print/trunk/print-standalone/samples/Arrow_North_CFCF.svg
         - !map
           spacingAfter: 5
           width: 750
