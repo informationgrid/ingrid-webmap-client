@@ -25,6 +25,7 @@
       <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
         <i ng-click="toggle($event)" ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
         <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}">
+        <span></span>
         {{item.label}}
       </label>
       <div class="ga-layer-ordering">
