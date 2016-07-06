@@ -69,7 +69,8 @@ goog.require('ga_topic_service');
 
             if (gaMapUtils.isVectorLayer(l)) {
               layersToQuery.vectorLayers.push(l);
-            } else if (gaLayers.hasTooltipBodLayer(l)) {
+            // INGRID: Add wms layers to 'wmsLayers'
+            } else if (gaLayers.hasTooltipBodLayer(l) && !gaMapUtils.isWMSLayer(l)) {
               layersToQuery.bodLayers.push(l);
             } else if (gaMapUtils.isWMSLayer(l)) {
               layersToQuery.wmsLayers.push(l);
@@ -416,7 +417,8 @@ goog.require('ga_topic_service');
                     sourceCoord || coordinate,
                     sourceRes || mapRes,
                     sourceProj || mapProj,
-                    {'INFO_FORMAT': 'text/plain'});
+                    // INGRID: Get 'text/html'
+                    {'INFO_FORMAT': 'text/html'});
                 if (!is3dActive() && url) {
                   url = gaGlobalOptions.ogcproxyUrl +
                       encodeURIComponent(url);
@@ -430,7 +432,8 @@ goog.require('ga_topic_service');
                     }
                     var feat = new ol.Feature({
                       geometry: null,
-                      description: '<pre>' + text + '</pre>'
+                      // INGRID: Remove '<pre>' HTML tag
+                      description: text
                     });
                     showVectorFeature(feat, response.config.layer);
                     return 1;
