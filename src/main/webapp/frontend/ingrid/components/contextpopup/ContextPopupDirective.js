@@ -245,7 +245,8 @@ goog.require('ga_permalink');
                 Y: Math.round(coordDefault[0], 1)
               };
 
-              var contextPermalink = gaPermalink.getHref(p);
+              // INGRID: Create href with portal layout
+              var contextPermalink = gaPermalink.getHref(p, gaGlobalOptions.isParentIFrame);
               scope.contextPermalink = contextPermalink;
 
               scope.crosshairPermalink = gaPermalink.getHref(
