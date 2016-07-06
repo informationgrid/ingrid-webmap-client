@@ -551,8 +551,9 @@ goog.require('ga_time_service');
       var lang = $translate.use();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;
+      // INGRID: Check iFrame for qrcode
       var qrcodeUrl = $scope.options.qrcodeUrl +
-          encodeURIComponent(gaPermalink.getHref());
+          encodeURIComponent(gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame));
       var print_zoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + print_zoom);
        var encLayers = [];
@@ -740,6 +741,10 @@ goog.require('ga_time_service');
           rotation: -((view.getRotation() * 180.0) / Math.PI),
           // INGRID: Set to comment app
           //app: 'config',
+          // INGRID: Add logo url
+          logo: gaGlobalOptions.printLogo,
+          // INGRID: Add north arrow logo url
+          northArrow: gaGlobalOptions.printNorthArrow,
           lang: lang,
           //use a function to get correct dpi according to layout (A4/A3)
           dpi: getDpi($scope.layout.name, $scope.dpi),

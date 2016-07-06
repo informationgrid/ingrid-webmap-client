@@ -34,3 +34,5 @@ var settingShareGoogle = true;
 var settingShareTwitter = true;
 var settingShareIFrame = true;
 var settingShareLink = true;
+var settingPrintLogo = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/ingrid_logo_icn_big.png';
+var settingPrintNorthArrow = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/north_arrow.png';
