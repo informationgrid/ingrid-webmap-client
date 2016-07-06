@@ -228,26 +228,28 @@ goog.require('ga_urlutils_service');
         canceler = $q.defer();
 
         // INGRID: Add search URL
-        var url = gaUrlUtils.append($scope.options.searchUrl,
-                                    'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
-        url = $scope.typeSpecificUrl(url);
-        $http.get(url, {
-          cache: true,
-          timeout: canceler.promise,
-          // INGRID: Add search params
-          params: $scope.searchParams
-        }).success(function(data) {
-          $scope.results = data.results;
-          if (data.fuzzy) {
-            $scope.fuzzy = '_fuzzy';
-          }
-          $scope.options.announceResults($scope.type, data.results.length);
-        }).error(function(data, statuscode) {
-          // If request is canceled, statuscode is 0 and we don't announce it
-          if (statuscode !== 0) {
-            $scope.options.announceResults($scope.type, 0);
-          }
-        });
+        if($scope.searchUrl){
+          var url = gaUrlUtils.append($scope.options.searchUrl,
+                                      'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
+          url = $scope.typeSpecificUrl(url);
+          $http.get(url, {
+            cache: true,
+            timeout: canceler.promise,
+            // INGRID: Add search params
+            params: $scope.searchParams
+          }).success(function(data) {
+            $scope.results = data.results;
+            if (data.fuzzy) {
+              $scope.fuzzy = '_fuzzy';
+            }
+            $scope.options.announceResults($scope.type, data.results.length);
+          }).error(function(data, statuscode) {
+            // If request is canceled, statuscode is 0 and we don't announce it
+            if (statuscode !== 0) {
+              $scope.options.announceResults($scope.type, 0);
+            }
+          });
+        }
       }, 133, false, false);
       // 133 filters out 'stuck key' events while staying responsive
 
@@ -345,7 +347,7 @@ goog.require('ga_urlutils_service');
             $scope.type = 'locations';
             $scope.tabstart = tabStarts[0];
             // INGRID: Add nominatim search URL
-            $scope.searchUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
+            $scope.searchUrl = $scope.options.searchNominatimUrl;
 
             // Can be removed onnce real type contains gazetter
             $scope.typeSpecificUrl = function(url) {

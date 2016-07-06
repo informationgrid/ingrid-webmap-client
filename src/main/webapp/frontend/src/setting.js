@@ -3,7 +3,8 @@ var settingExtent = undefined;
 var settingEpsgExtent = undefined;
 var settingEpsg = undefined;
 var settingShortURLService = undefined;
-var settingSearchServiceUrl = undefined;
+var settingSearchServiceUrl = 'https://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
+var settingSearchNominatimUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
 var settingCopyrightURL = undefined;
 // KML
 var settingKMLName = 'INGRID';

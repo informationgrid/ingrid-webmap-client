@@ -10,6 +10,8 @@ goog.provide('ga_search_controller');
           searchUrl: '/ingrid-webmap-client/rest/search/query?',
           // INGRID: Add search service URL
           searchServiceUrl: gaGlobalOptions.searchServiceUrl,
+          // INGRID: Add search nominatim URL
+          searchNominatimUrl: gaGlobalOptions.searchNominatimUrl,
           featureUrl: gaGlobalOptions.cachedApiUrl +
               '/rest/services/{Topic}/MapServer/{Layer}/{Feature}'
         };

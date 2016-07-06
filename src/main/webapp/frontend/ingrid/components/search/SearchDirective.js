@@ -85,6 +85,9 @@ goog.require('ga_translation_service');
       
       // INGRID: Add search service url
       $scope.childoptions.searchServiceUrl = $scope.options.searchServiceUrl;
+      
+      // INGRID: Add search nominatim url
+      $scope.childoptions.searchNominatimUrl = $scope.options.searchNominatimUrl;
 
       // Result set announces a result selection
       $scope.childoptions.valueSelected = function(strValue) {
