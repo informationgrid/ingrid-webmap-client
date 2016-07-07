@@ -88,11 +88,24 @@ goog.require('ga_permalink');
                   event.coordinate;
               // INGRID: Change 'coord21781' to 'coordDefault'
               var coord4326 = ol.proj.transform(coordDefault,
-                      gaGlobalOptions.defaultEpsg, 'EPSG:4326');
+                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
               // INGRID: Change 'coord21781' to 'coordDefault'
               var coord2056 = ol.proj.transform(coordDefault,
                   gaGlobalOptions.defaultEpsg, 'EPSG:2056');
-
+              // INGRID: Add coordinates
+              var coord31466 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:31466');
+              var coord31467 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:31467');
+              var coord31468 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:31468');
+              var coord31469 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:31469');
+              var coord25832 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:25832');
+              var coord25833 = ol.proj.transform(coordDefault,
+                  gaGlobalOptions.defaultEpsg, 'EPSG:25833');
+                  
               // recenter on phones
               if (gaBrowserSniffer.phone) {
                 var pan = ol.animation.pan({
@@ -104,13 +117,22 @@ goog.require('ga_permalink');
                 view.setCenter(coordDefault);
               }
 
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              scope.coordDefault = formatCoordinates(coordDefault, 1);
+              // INGRID: Change 'coord21781' to 'coordDefault' and format coordDefault
+              scope.coordDefault = ol.coordinate.format(coordDefault, '{y}, {x}', 2);
               scope.coord4326 = ol.coordinate.format(coord4326, '{y}, {x}', 5);
               var coord4326String = ol.coordinate.toStringHDMS(coord4326, 3).
                                    replace(/ /g, '');
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
               scope.coord2056 = formatCoordinates(coord2056, 2) + ' *';
+              
+              // INGRID: Add coordinates to scope
+              scope.coord31466 = ol.coordinate.format(coord31466, '{y}, {x}', 2);
+              scope.coord31467 = ol.coordinate.format(coord31467, '{y}, {x}', 2);
+              scope.coord31468 = ol.coordinate.format(coord31468, '{y}, {x}', 2);
+              scope.coord31469 = ol.coordinate.format(coord31469, '{y}, {x}', 2);
+              scope.coord25832 = ol.coordinate.format(coord25832, '{y}, {x}', 2);
+              scope.coord25833 = ol.coordinate.format(coord25833, '{y}, {x}', 2);
+              
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
                 var utm_31t = ol.proj.transform(coord4326,
                     'EPSG:4326', 'EPSG:32631');

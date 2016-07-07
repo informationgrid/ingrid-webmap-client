@@ -20,9 +20,10 @@
           </tr>
           -->
           <tr>
-              <td>WGS 84 (lat/lon)</td>
+              <td>WGS 84 (Breite/Länge)</td>
               <td>{{coord4326}}</td>
           </tr>
+          <!-- INGRID: Remove
           <tr>
               <td></td>
               <td>{{coordiso4326}}</td>
@@ -31,17 +32,41 @@
               <td>UTM</td>
               <td>{{coordutm}}</td>
           </tr>
-          <!-- INGRID: Remove 
           <tr>
               <td>MGRS</td>
               <td>{{coordmgrs}}</td>
           </tr>
           -->
+          <!-- INGRID: Add coordinates -->
+          <tr>
+              <td>GK2</td>
+              <td>{{coord31466}}</td>
+          </tr>
+          <tr>
+              <td>GK3</td>
+              <td>{{coord31467}}</td>
+          </tr>
+          <tr>
+              <td>GK4</td>
+              <td>{{coord31468}}</td>
+          </tr>
+          <tr>
+              <td>GK5</td>
+              <td>{{coord31469}}</td>
+          </tr>
+          <tr>
+              <td>UTM 32N (East/North)</td>
+              <td>{{coord25832}}</td>
+          </tr>
+          <tr>
+              <td>UTM 33N (East/North)</td>
+              <td>{{coord25833}}</td>
+          </tr>
+          <!-- INGRID: Remove 
           <tr ng-if="altitude">
               <td translate>elevation</td>
               <td>{{altitude | measure:'distance':[' m']:1}}</td>
           </tr>
-          <!-- INGRID: Remove 
           <tr>
               <td></td>
               <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
