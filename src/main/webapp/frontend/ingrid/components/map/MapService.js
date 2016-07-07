@@ -714,7 +714,8 @@ goog.require('ga_urlutils_service');
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
           var crossOrigin = 'anonymous';
           // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
-          var extent = layer.extent || ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
+          var extent = layer.extent ||
+              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
 
           // For some obscure reasons, on iOS, displaying a base 64 image
           // in a tile with an existing crossOrigin attribute generates
@@ -817,7 +818,6 @@ goog.require('ga_urlutils_service');
                 useInterimTilesOnError: gaNetworkStatus.offline,
                 // INGRID: Set extent by defaultProjection
                 extent: layer.extent ? ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
-                
               });
             }
           } else if (layer.type == 'aggregate') {
@@ -860,8 +860,9 @@ goog.require('ga_urlutils_service');
                 cache: true
               }).success(function(data) {
                 var olStyleForVector = gaStylesFromLiterals(data);
-                olLayer.setStyle(function(feature) {
-                  return [olStyleForVector.getFeatureStyle(feature)];
+                olLayer.setStyle(function(feature, resolution) {
+                  return [olStyleForVector.getFeatureStyle(
+                      feature, resolution)];
                 });
               });
               // Handle error
