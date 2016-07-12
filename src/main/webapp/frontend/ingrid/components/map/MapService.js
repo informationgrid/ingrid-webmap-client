@@ -473,6 +473,15 @@ goog.require('ga_urlutils_service');
               .replace('{Lang}', lang);
         };
 
+        // INGRID: Add function
+        var getMetaDataUrlWithLegend = function(layer, lang, legend) {
+            return legendUrlTemplate
+                .replace('{Layer}', layer)
+                .replace('{Lang}', lang)
+                .replace('{Legend}', legend)
+                .replace('{URL}', getLayersConfigUrl(lang));
+        };
+
         // Function to remove the blob url from memory.
         var revokeBlob = function() {
           $window.URL.revokeObjectURL(this.src);
@@ -914,6 +923,12 @@ goog.require('ga_urlutils_service');
          */
         this.getMetaDataOfLayer = function(bodId) {
           var url = getMetaDataUrl(bodId, gaLang.get());
+          return $http.get(url);
+        };
+
+        // INGRID: Add function
+        this.getMetaDataOfLayerWithLegend = function(bodId, legendUrl) {
+          var url = getMetaDataUrlWithLegend(bodId, gaLang.get(), legendUrl);
           return $http.get(url);
         };
 

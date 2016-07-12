@@ -882,8 +882,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           gaLayersProvider.wmtsMapProxyGetTileUrlTemplate =  gaGlobalOptions.mapproxyUrl + '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
           gaLayersProvider.terrainTileUrlTemplate = '//3d.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
           // INGRID: Change layer service URL
-          gaLayersProvider.layersConfigUrlTemplate = '../data/layers.json';
-          gaLayersProvider.legendUrlTemplate = gaGlobalOptions.apiUrl + '/rest/services/all/MapServer/{Layer}/legend?lang={Lang}';
+          gaLayersProvider.layersConfigUrlTemplate = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/data/layers.json';
+          // INGRID: Edit legendURL
+          gaLayersProvider.legendUrlTemplate = location.origin + '/ingrid-webmap-client/rest/wms/metadata?layer={Layer}&lang={Lang}&url={URL}&legend={Legend}';
         });
         module.config(function(gaTopicProvider, gaGlobalOptions) {
           // INGRID: Change topic service URL
