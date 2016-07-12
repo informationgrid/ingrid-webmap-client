@@ -27,13 +27,13 @@ goog.require('ga_permalink');
       var predefinedBgs = {
         'voidLayer': voidLayer,
         'osmLayer': osmLayer,
-        'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light': {
-          id: 'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light',
+        'webatlasde_light': {
+          id: 'webatlasde_light',
           label: 'bg_bkg',
           disable3d: true
         },
-        'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau': {
-          id: 'sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau',
+        'webatlasde_grau': {
+          id: 'webatlasde_grau',
           label: 'bg_bkg_grau',
           disable3d: true
         }

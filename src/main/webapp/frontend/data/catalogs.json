@@ -4,7 +4,7 @@
         "langs": "de,en",
         "selectedLayers": [],
         "activatedLayers": [],
-        "backgroundLayers": ["osmLayer","sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light","sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau"],
+        "backgroundLayers": ["osmLayer","webatlasde_light","webatlasde_grau"],
         "id": "themen"
     },
     {
@@ -12,7 +12,7 @@
         "langs": "de,en",
         "selectedLayers": [],
         "activatedLayers": [],
-        "backgroundLayers": ["osmLayer","sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light","sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_grau"],
+        "backgroundLayers": ["osmLayer","webatlasde_light","webatlasde_grau"],
         "id": "anbieter"
     }]
 }

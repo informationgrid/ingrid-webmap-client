@@ -22,7 +22,7 @@ Die JSON-Datei 'layers.json' listet alle Karten-Layers im MapClient auf, d.h. Ba
 Die Struktur des JSON-Formats sieht folgendermaßen aus:
 
     {
-        "sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light": {
+        "webatlasde_light": {
         // URL des Layers
             "wmsUrl": "http://sg.geodatenzentrum.de/wms_webatlasde.light?",
         // 'NAME' des Layers
@@ -38,7 +38,7 @@ Die Struktur des JSON-Formats sieht folgendermaßen aus:
         // GetMap Bild-Format
             "format": "png",
         // Layer-Name für WMTS
-            "serverLayerName": "sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light",
+            "serverLayerName": "webatlasde_light",
         // WIRD NICHT BEI INGRID VERWENDET
             "selectbyrectangle": true,
         // WIRD NICHT BEI INGRID VERWENDET
@@ -92,7 +92,7 @@ In der Datei 'catalogs.json' werden alle vorhanden Rubriken definiert. Die Defin
             // Definition von per Default sichtbaren Layern
                 "activatedLayers": [],
             // Definition von auswählbaren Hintergrund-Layern
-                "backgroundLayers": ["osmLayer", "sg_geodatenzentrum_de_wms_webatlasde_light_webatlasde_light"],
+                "backgroundLayers": ["osmLayer", "webatlasde_light"],
             // ID der Rubrik 
                 "id": "themen"
             },
