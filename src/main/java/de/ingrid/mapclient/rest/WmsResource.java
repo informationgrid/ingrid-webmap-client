@@ -204,7 +204,9 @@ public class WmsResource {
                             wmsHost = wmsHost + "?";
                         }
                         wmsURL = wmsHost + "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version");
-                        wmsLegend = jsonLayer.getString("legendUrl");
+                        if(jsonLayer.has("legendUrl")){
+                            wmsLegend = jsonLayer.getString("legendUrl");
+                        }
                         wmsName = jsonLayer.getString("wmsLayers");
                     }
                 }
