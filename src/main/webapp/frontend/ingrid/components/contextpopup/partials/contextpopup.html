@@ -77,6 +77,35 @@
               <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
             </td>
           </tr>
+          <!-- INGRID: Show 'BWaStrLocator' stations -->
+          <tr ng-if="bwastr_id != undefined">
+              <td>BWaStr-IdNr:</td>
+              <td>{{bwastr_id}}</td>
+          </tr>
+          <tr ng-if="bwastr_name != undefined">
+              <td>BWaStr-Bezeichnung:</td>
+              <td>{{bwastr_name}}</td>
+          </tr>
+          <tr ng-if="bwastr_typ != undefined">
+              <td>Streckenbezeichnung:	</td>
+              <td>{{bwastr_typ}}</td>
+          </tr>
+          <tr ng-if="bwastr_lon != undefined">
+              <td>Länge [Dezimalgrad]:</td>
+              <td>{{bwastr_lon}}</td>
+          </tr>
+          <tr ng-if="bwastr_lat != undefined">
+              <td>Breite [Dezimalgrad]:</td>
+              <td>{{bwastr_lat}}</td>
+          </tr>
+          <tr ng-if="bwastr_km != undefined">
+              <td>Station [km]:</td>
+              <td>{{bwastr_km}}</td>
+          </tr>
+          <tr ng-if="bwastr_distance != undefined">
+              <td>Abstand [m]:</td>
+              <td>{{bwastr_distance}}</td>
+          </tr>
           </tbody>
       </table>
   </div>

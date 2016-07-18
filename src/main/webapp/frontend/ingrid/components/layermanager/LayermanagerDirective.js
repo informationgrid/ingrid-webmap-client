@@ -285,6 +285,9 @@ goog.require('ga_urlutils_service');
 
 // INGRID: Add function for zoomToExtent
         scope.hasExtent = function(layer) {
+          if(layer.type == "KML"){
+            return true;
+          }
           return layer.extent ? true : false;
         };
 
@@ -302,7 +305,11 @@ goog.require('ga_urlutils_service');
 
 // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
-          gaMapUtils.zoomToExtent(map, undefined, layer.extent);
+          if(layer.type == "KML"){
+            map.getView().fit(layer.getSource().getExtent(), map.getSize()); 
+          }else{
+            gaMapUtils.zoomToExtent(map, undefined, layer.extent);
+          }
           evt.preventDefault();
         };
 

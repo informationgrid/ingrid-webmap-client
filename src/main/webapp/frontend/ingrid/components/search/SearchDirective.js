@@ -89,6 +89,9 @@ goog.require('ga_translation_service');
       // INGRID: Add search nominatim url
       $scope.childoptions.searchNominatimUrl = $scope.options.searchNominatimUrl;
 
+      // INGRID: Add search Bwa Locator url
+      $scope.childoptions.searchBwaLocatorUrl = $scope.options.searchBwaLocatorUrl;
+      
       // Result set announces a result selection
       $scope.childoptions.valueSelected = function(strValue) {
         $scope.query = strValue;

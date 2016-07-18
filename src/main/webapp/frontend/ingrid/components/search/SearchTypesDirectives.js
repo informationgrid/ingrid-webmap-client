@@ -72,7 +72,9 @@ goog.require('ga_urlutils_service');
   var tabStarts = [
     100000,
     200000,
-    300000
+    300000,
+    // INGRID: Add tab starts
+    400000
   ];
 
   var nextTabGroup = function(val) {
@@ -548,7 +550,6 @@ goog.require('ga_urlutils_service');
             $scope.type = 'layers';
             $scope.tabstart = tabStarts[2];
             // INGRID: Change search URL for layer search
-            // TODO: Search layer service not existing yet
             $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/data/layers.json';
 
             $scope.preview = function(res) {
@@ -598,17 +599,6 @@ goog.require('ga_urlutils_service');
                 }
                 return false;
             };
-            
-            $scope.zoomToExtent = function(evt, bodId) {
-                var layer = gaLayers.getLayer(bodId)
-                if(layer){
-                  if(layer.extent){
-                    var extent = ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-                    gaMapUtils.zoomToExtent($scope.map, undefined, extent);
-                  }
-                }
-                evt.stopPropagation();
-            };
           }
         };
       });
@@ -628,8 +618,7 @@ goog.require('ga_urlutils_service');
           link: function($scope, element, attrs) {
             $scope.type = 'services';
             $scope.tabstart = tabStarts[3];
-            // INGRID: Change search URL for layer search
-            // TODO: Search layer service not existing yet
+            // INGRID: Change search URL for service search
             $scope.searchUrl = $scope.options.searchServiceUrl;
 
             $scope.select = function(res) {
@@ -720,4 +709,354 @@ goog.require('ga_urlutils_service');
         };
       });
 
+//INGRID: Add Bwa locator search
+  module.directive('gaSearchBwaLocator',
+      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
+               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms, gaDefinePropertiesForLayer) {
+        return {
+          restrict: 'A',
+          templateUrl: 'components/search/partials/searchtypes_bwalocator.html',
+          scope: {
+            options: '=gaSearchBwaLocatorOptions',
+            map: '=gaSearchBwaLocatorMap'
+          },
+          controller: 'GaSearchTypesController',
+          link: function($scope, element, attrs) {
+              
+            var bwaLocatorLayerFull = null;
+            var bwaLocatorID = ""; 
+            var bwaLocatorFrom = "";
+            var bwaLocatorTo = "";
+            var bwaLocatorDistance = "";
+            var bwaLocatorPopUp = "";
+            
+            var featureSelect = new ol.interaction.Select();
+            $scope.map.addInteraction(featureSelect);
+            
+            $scope.type = 'bwalocator';
+            $scope.tabstart = tabStarts[4];
+            // INGRID: Change search URL for bwa locator search
+            $scope.searchUrl = $scope.options.searchBwaLocatorUrl;
+
+            $scope.prepareLabel = function(attrs) {
+              var l = gaSearchLabels.highlight(attrs.label, $scope.options.query);
+              updateBWaLocatorData(attrs);
+              return $sce.trustAsHtml(l);
+            };
+              
+            $scope.map.on('singleclick', function(evt) {
+                var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
+                    return feature;
+                });
+
+                if (feature) {
+                    var coords = feature.getGeometry().getCoordinates();
+                    var props = feature.getProperties();
+                    var measures = props.measures;
+                    
+                    var info = '<table><tbody>';
+                    info += '<tr><td>Id</td><td>' + props.bwastrid + '</td></tr>';
+                    info += '<tr><td>Name</td><td>' + props.bwastr_name + '</td></tr>';
+                    info += '<tr><td>Bezeichnung</td><td>' + props.strecken_name + '</td></tr>';
+                    if(props.km_wert){
+                      info += '<tr><td>KM:</td><td>' + props.km_wert + ' km</td></tr>';
+                    }else{
+                      info += '<tr><td>Von:</td><td>' + props.km_von + ' km</td></tr>';
+                      info += '<tr><td>Bis:</td><td>' + props.km_bis + ' km</td></tr>';
+                    }
+                    info += '<tr><td><br></td></tr>';
+                    
+                    var csvContent = "data:text/csv;charset=utf-8,";
+                    
+                    
+                    var coordMeasures = [];
+                    var count = 0;
+                    for(var j=0; j<coords.length;j++){
+                        var coord = coords[j];
+                        if(coord instanceof Array){
+                            for(var k=0; k<coord.length;k++){
+                                var coordinateEntry = coord[k];
+                                var measure = "0";
+                                if(measures[count]){
+                                    measure = measures[count];
+                                }
+                                coordMeasures.push([coordinateEntry[0]+"", coordinateEntry[1]+"", measure+""    ]);
+                                count++;
+                            }
+                            coordMeasures.sort(function(a, b){
+                                var measureA = a.measure;
+                                var measureB = b.measure;
+                                if(measureA < measureB) return -1;
+                                if(measureA > measureB) return 1;
+                                return 0;
+                            });
+                        }
+                    }
+                    
+                    coordMeasures.forEach(function(array, index){
+                       var dataString = array.join(";");
+                       csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
+                    }); 
+                    
+                    var encodedUri = encodeURI(csvContent);
+                    var csvDownloadName = "";
+                    csvDownloadName += props.bwastrid;
+                    csvDownloadName += '-';
+                    csvDownloadName += props.bwastr_name;
+                    if(props.strecken_name){
+                      csvDownloadName += "-";
+                      csvDownloadName += props.strecken_name;
+                    }
+                    csvDownloadName += ".csv";
+                    
+                    info += '<tr><td><a href="' + encodedUri + '" download="' + csvDownloadName + '">Strecke als CSV</a></td></tr>';
+                    info += '</tbody></table>';
+                    info += '<br>';
+                    
+                    if(bwaLocatorPopUp){
+                        bwaLocatorPopUp.close();
+                    }
+                    
+                    bwaLocatorPopUp = gaPopup.create({
+                        title: 'BWaStr Locator',
+                        destroyOnClose: true,
+                        content: info,
+                        className: '',
+                        x: evt.pixel[0],
+                        y: evt.pixel[1],
+                        showPrint: true
+                      });
+                    bwaLocatorPopUp.open();
+                }
+            });
+            
+            function updateBWaLocatorData(attrs){
+              if(attrs){
+                $scope.bwalocator_from_id = attrs.bwastrid + "_bwalocator_from";
+                $scope.bwalocator_from_placeholder = attrs.km_von;
+                $scope.bwalocator_to_id = attrs.bwastrid + "_bwalocator_to";
+                $scope.bwalocator_to_placeholder = attrs.km_bis;
+                $scope.bwalocator_distance_id = attrs.bwastrid + "_bwalocator_distance";
+                $scope.bwalocator_distance_placeholder = 0;
+              }
+            }
+           
+            function clearBWaSelectionInfos (){
+                if(bwaLocatorPopUp){
+                  bwaLocatorPopUp.close();
+                }
+                if(featureSelect){
+                  featureSelect.getFeatures().clear();
+                }
+            }
+            
+            $scope.select = function(res) {
+              unregisterMove();
+              
+              var inputValueFrom = $("#" + res.id + "_bwalocator_from").val().trim();
+              var inputValueTo = $("#" + res.id + "_bwalocator_to").val().trim();
+              var inputValueDistance = $("#" + res.id + "_bwalocator_distance").val().trim();
+              var hasBwaLocatorLayer = false;
+              var layerBwaLocator = []
+              var layers = $scope.map.getLayers().getArray();
+              for (var i = 0; i < layers.length; i++) {
+                  var layer = layers[i];
+                  if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
+                    hasBwaLocatorLayer = true;
+                    layerBwaLocator.push(layer);
+                  }
+              }
+              if(bwaLocatorID != res.id || hasBwaLocatorLayer == false){
+                for (var i = 0; i < layerBwaLocator.length; i++) {
+                    var layer = layerBwaLocator[i];
+                    if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
+                      $scope.map.removeLayer(layer);
+                    }
+                }
+                clearBWaSelectionInfos();
+                selectBWaLocatorData(res, true);
+                bwaLocatorID = res.id;
+                bwaLocatorFrom = "";
+                bwaLocatorTo = "";
+                bwaLocatorDistance = "";
+              }
+              
+              if(((bwaLocatorFrom != inputValueFrom) && inputValueFrom != "")
+                      || ((bwaLocatorTo != inputValueTo) && inputValueTo != "")
+                      || ((bwaLocatorDistance != inputValueDistance) && inputValueDistance != "")){
+                  for (var i = 0; i < layerBwaLocator.length; i++) {
+                      var layer = layerBwaLocator[i];
+                      if(layer.get("bwalocatorshort")){
+                        $scope.map.removeLayer(layer);
+                      }
+                  }
+                  clearBWaSelectionInfos();
+                  selectBWaLocatorData(res);
+              }
+              bwaLocatorFrom = inputValueFrom;
+              bwaLocatorTo = inputValueTo;
+              bwaLocatorDistance = inputValueDistance;
+            };
+            
+            function selectBWaLocatorData(res, full){
+              if(res){
+                  var inputBwaLocatorFrom = $("#" + res.id + "_bwalocator_from").val();
+                  var inputBwaLocatorTo = $("#" + res.id + "_bwalocator_to").val();
+                  var inputBwaLocatorDistance = $("#" + res.id + "_bwalocator_distance").val();
+                  
+                  var content = '{'
+                      + '"limit":200,'
+                      + '"queries":['
+                      + '{'
+                      + '"qid":1,'
+                      + '"bwastrid":"'+ res.attrs.bwastrid +'",'
+                      + '"stationierung":{';
+                  if(((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined) 
+                      && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined) 
+                      && (inputBwaLocatorDistance == "" || inputBwaLocatorDistance == undefined))
+                      || full){
+                      content = content + '"km_von":'+ res.attrs.km_von;
+                      content = content + ',';
+                      content = content + '"km_bis":'+ res.attrs.km_bis;
+                  }else{
+                      
+                      if((inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined)
+                          && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
+                          content = content + '"km_wert":'+ inputBwaLocatorFrom;
+                      }else{
+                          if(inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined){
+                              content = content + '"km_von":'+ inputBwaLocatorFrom;
+                          }
+                          
+                          if(inputBwaLocatorTo != "" && inputBwaLocatorTo != undefined){
+                              if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
+                                  content = content + '"km_von":'+ res.attrs.km_von;
+                              }
+                              content = content + ',';
+                              content = content + '"km_bis":'+ inputBwaLocatorTo;
+                          }
+                      }
+                      
+                      if(inputBwaLocatorDistance != "" && inputBwaLocatorDistance != undefined){
+                          if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
+                              content = content + '"km_von":'+ res.attrs.km_von;
+                              content = content + ',';
+                          }
+                          if((inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
+                              content = content + '"km_bis":'+ res.attrs.km_bis;
+                              content = content + ',';
+                          }
+                          content = content + ',';
+                          content = content + '"offset":'+ inputBwaLocatorDistance;
+                      }
+                  }
+                  content = content + '},'
+                      + '"spatialReference":{'
+                      + '"wkid":3857'
+                      + '}'
+                      + '}'
+                      + ']'
+                      + '}';
+                  
+                  $http.get('/ingrid-webmap-client/rest/jsonCallback/queryPost?', {
+                    params: {
+                     'url':  gaGlobalOptions.searchBwaLocatorGeoUrl,
+                     'data': content
+                    }
+                  }).success(function(response) {
+                      drawBWaLocatorData(response, full);
+                  }).error(function() {
+                });
+              }
+            }
+            
+            function drawBWaLocatorData (response, full){
+                var data = response.result[0];
+                if(data){
+                    var geometry = data.geometry;
+                    if(geometry){
+                        var geojsonObject = {
+                                'type': 'FeatureCollection',
+                                'crs': {
+                                  'type': 'name',
+                                  'properties': {
+                                    'name': 'EPSG:3857'
+                                  }
+                                },
+                                'features': [{
+                                  'type': 'Feature',
+                                  'geometry': {
+                                    'type': geometry.type,
+                                    'coordinates': geometry.coordinates
+                                  },
+                                  'properties': {
+                                    'bwastrid': data.bwastrid,
+                                    'bwastr_name': data.bwastr_name,
+                                    'strecken_name': data.strecken_name,
+                                    'km_von': data.stationierung.km_von,
+                                    'km_bis': data.stationierung.km_bis,
+                                    'km_wert': data.stationierung.km_wert,
+                                    'measures': geometry.measures
+                                  }
+                                }]
+                              };
+                        var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                          });
+                        var layerLabel = data.bwastrid + ' ' + data.bwastr_name;
+                        if(data.strecken_name){
+                          layerLabel += ' ' + data.strecken_name;
+                        }
+                        if(full){
+                            bwaLocatorLayerFull = new ol.layer.Vector({
+                                source: vectorSource,
+                                bwalocator:true,
+                                visible: true,
+                                style: new ol.style.Style({
+                                    stroke: new ol.style.Stroke({
+                                        color: 'red',
+                                        width: 2
+                                      })
+                                    })
+                              });
+                            gaDefinePropertiesForLayer(bwaLocatorLayerFull);
+                            bwaLocatorLayerFull.label = layerLabel;
+                            bwaLocatorLayerFull.type = 'KML';
+                            $scope.map.addLayer(bwaLocatorLayerFull);
+                         }else{
+                            var bwaLocatorLayerShort = new ol.layer.Vector({
+                                source: vectorSource,
+                                visible: true,
+                                bwalocator:true,
+                                bwalocatorshort:true,
+                                style: new ol.style.Style({
+                                    stroke: new ol.style.Stroke({
+                                        color: 'blue',
+                                        width: 2
+                                      })
+                                    })
+                              });
+                            gaDefinePropertiesForLayer(bwaLocatorLayerShort);
+                            bwaLocatorLayerShort.label = layerLabel + '(Abschnitt)';
+                            bwaLocatorLayerShort.type = 'KML';
+                            $scope.map.addLayer(bwaLocatorLayerShort);
+                        }
+                        $scope.map.getView().fit(vectorSource.getExtent(), $scope.map.getSize());
+                    }
+                }
+            }
+            
+            // Toggle layer tools for small screen
+            element.on('click', '.fa-gear', function() {
+              var li = $(this).closest('li');
+              li.toggleClass('ga-layer-folded');
+              $(this).closest('ul').find('li').each(function(i, el) {
+                if (el != li[0]) {
+                  $(el).addClass('ga-layer-folded');
+                }
+              });
+            });
+          }
+        };
+      });
 })();

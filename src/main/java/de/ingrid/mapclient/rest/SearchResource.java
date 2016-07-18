@@ -191,50 +191,90 @@ public class SearchResource {
                     result = comm.sendRequest(url);
                     Document doc = null;
                     XPath xpath = XPathFactory.newInstance().newXPath();
-                    try {
-                        doc = getDocumentFromStream(result);
-                        if(doc != null){
-                            NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
-                            for (int i = 0; i < items.getLength(); i++) {
-                                Node item = (Node) items.item( i );
-                                NodeList tmp;
-                                JSONObject newEntry = new JSONObject();
-                                newEntry.put( "id", "" );
-                                newEntry.put( "weight", 143 );
-                                JSONObject newAttrs = new JSONObject();
-                                newAttrs.put( "origin", "service" );
-                                
-                                tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
-                                if(tmp.getLength() > 0){
-                                    newAttrs.put( "service", tmp.item(0).getTextContent() );
+                    if(result != null){
+                        try {
+                            doc = getDocumentFromStream(result);
+                            if(doc != null){
+                                NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
+                                for (int i = 0; i < items.getLength(); i++) {
+                                    Node item = (Node) items.item( i );
+                                    NodeList tmp;
+                                    JSONObject newEntry = new JSONObject();
+                                    newEntry.put( "id", "" );
+                                    newEntry.put( "weight", 143 );
+                                    JSONObject newAttrs = new JSONObject();
+                                    newAttrs.put( "origin", "service" );
+                                    
+                                    tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
+                                    if(tmp.getLength() > 0){
+                                        newAttrs.put( "service", tmp.item(0).getTextContent() );
+                                    }
+                                    
+                                    newAttrs.put( "label", xpath.evaluate("./title", item ) );
+                                    newAttrs.put( "detail", xpath.evaluate("./description", item ) );
+                                    newAttrs.put( "link", xpath.evaluate("./link", item ) );
+                                    
+                                    tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
+                                    if(tmp.getLength() > 0){
+                                        newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
+                                    }
+                                    
+                                    newAttrs.put( "lang", "de" );
+                                    newAttrs.put( "staging", "prod" );
+                                    newEntry.put( "attrs", newAttrs );
+                                    jsonArray.put( newEntry );
                                 }
-                                
-                                newAttrs.put( "label", xpath.evaluate("./title", item ) );
-                                newAttrs.put( "detail", xpath.evaluate("./description", item ) );
-                                newAttrs.put( "link", xpath.evaluate("./link", item ) );
-                                
-                                tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
-                                if(tmp.getLength() > 0){
-                                    newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
-                                }
-                                
-                                newAttrs.put( "lang", "de" );
-                                newAttrs.put( "staging", "prod" );
-                                newEntry.put( "attrs", newAttrs );
-                                jsonArray.put( newEntry );
                             }
+                        } catch (ParserConfigurationException e) {
+                            log.error("Error while parsing the InputStream!");
+                            e.printStackTrace();
+                        } catch (SAXException e) {
+                            log.error("Error while parsing the InputStream!");
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            log.error("Error while performing xpath.evaluate on a document!");
+                            e.printStackTrace();
                         }
-                    } catch (ParserConfigurationException e) {
-                        log.error("Error while parsing the InputStream!");
-                        e.printStackTrace();
-                    } catch (SAXException e) {
-                        log.error("Error while parsing the InputStream!");
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        log.error("Error while performing xpath.evaluate on a document!");
-                        e.printStackTrace();
                     }
                     comm.releaseConnection();
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                }else if(type.equals("bwalocator")){
+                    JSONArray jsonArray = new JSONArray();
+                    URL questUrl;
+                    questUrl = new URL(searchUrl.concat("&searchterm="+URLEncoder.encode(searchTerm.trim())));
+                    URLConnection con = questUrl.openConnection();
+                    InputStream in = con.getInputStream();
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String tmpJson = IOUtils.toString(in, encoding);
+                    JSONObject questJsonResult = new JSONObject(tmpJson);
+                    if(questJsonResult != JSONObject.NULL){
+                        JSONArray questJson = questJsonResult.getJSONArray("result");
+                        
+                        for (int j=0; j < questJson.length(); j++) {
+                            JSONObject questJsonEntry = questJson.getJSONObject(j);
+                            JSONObject newEntry = new JSONObject();
+                            newEntry.put( "id", questJsonEntry.getString("bwastrid") );
+                            JSONObject newAttrs = new JSONObject();
+                            newAttrs.put("label", questJsonEntry.getString("concat_name"));
+                            newAttrs.put("qid", questJsonEntry.getString("qid"));
+                            newAttrs.put("bwastrid", questJsonEntry.getString("bwastrid"));
+                            newAttrs.put("bwastr_name", questJsonEntry.getString("bwastr_name"));
+                            newAttrs.put("strecken_name", questJsonEntry.getString("strecken_name"));
+                            newAttrs.put("concat_name", questJsonEntry.getString("concat_name"));
+                            newAttrs.put("km_von", questJsonEntry.getString("km_von"));
+                            newAttrs.put("km_bis", questJsonEntry.getString("km_bis"));
+                            newAttrs.put("priority", questJsonEntry.getString("priority"));
+                            newAttrs.put("fehlkilometer", questJsonEntry.getString("fehlkilometer"));
+                            newAttrs.put("fliessrichtung", questJsonEntry.getString("fliessrichtung"));
+                            newEntry.put( "attrs", newAttrs );
+                            jsonArray.put(newEntry);
+                        }
+                    }
                     String responseStr = jsonArray.toString();
                     if (jsonArray != null) {
                         responseStr = "{\"results\":" + jsonArray + "}";

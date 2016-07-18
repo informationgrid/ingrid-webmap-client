@@ -25,6 +25,8 @@ goog.require('ga_permalink');
           link: function(scope, element, attrs) {
             var heightUrl = scope.options.heightUrl;
             var qrcodeUrl = scope.options.qrcodeUrl;
+            // INGRID: Add BwaStrLocator
+            var bwaLocatorUrl = scope.options.bwaLocatorUrl;
             var lv03tolv95Url = scope.options.lv03tolv95Url;
 
             scope.titleClose = $translate.instant('close');
@@ -187,6 +189,9 @@ goog.require('ga_permalink');
 
               updatePopupLinks();
 
+              // INGRID: Add get 'BWaStrLocator' data
+              getBWaLocatorData();
+              
               view.once('change:center', function() {
                 hidePopover();
               });
@@ -278,6 +283,45 @@ goog.require('ga_permalink');
                 scope.qrcodeUrl = qrcodeUrl + '?url=' +
                     escape(contextPermalink);
               }
+            }
+            
+            // INGRID: Get 'BWaStrLocator' data
+            function getBWaLocatorData(){
+              var that = this;
+              var p = {
+                // INGRID: Change 'coord21781' to 'coordDefault'
+                X: Math.round(coordDefault[1], 1),
+                Y: Math.round(coordDefault[0], 1)
+              };
+              var content = "";
+              content = content + '{"limit":200,"queries":[';
+              content = content + '{"qid":1,"geometry":{"type":"Point","coordinates":[' + p.Y + ',' + p.X + '],"spatialReference":{"wkid":3857}}}';
+              content = content + ']}';
+              
+              $http.get(bwaLocatorUrl + "&data=" + content, {
+                  params: {
+                    'url':  gaGlobalOptions.searchBwaLocatorStationUrl,
+                    'data': content
+                  }
+                }).success(function(response) {
+                    updateBWaLocatorData(response);
+                }).error(function() {
+              });
+            }
+            
+            function updateBWaLocatorData(response){
+                var result = response.result[0];
+                if(result){
+                    if(result.error == undefined){
+                        scope.bwastr_id = result.bwastrid;
+                        scope.bwastr_name = result.bwastr_name;
+                        scope.bwastr_typ = result.strecken_name;
+                        scope.bwastr_lon = result.geometry.coordinates[0];
+                        scope.bwastr_lat = result.geometry.coordinates[1];
+                        scope.bwastr_km = result.stationierung.km_wert;
+                        scope.bwastr_distance = result.stationierung.offset;
+                    }
+                }
             }
           }
         };

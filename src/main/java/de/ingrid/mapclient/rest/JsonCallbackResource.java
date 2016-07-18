@@ -92,26 +92,26 @@ public class JsonCallbackResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response searchPost(@QueryParam("data") String data, @QueryParam("url") String paramURL) throws IOException {
 
-        String content = "content=" + URLEncoder.encode( data.trim(), "UTF-8" );
-
-        URL url = new URL( paramURL );
+        String content = data.trim();
+        
+        URL url = new URL(paramURL);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod( "POST" );
-        con.setDoInput( true );
-        con.setDoOutput( true );
-        con.setRequestProperty( "Content-Type", MediaType.APPLICATION_FORM_URLENCODED );
-        con.setRequestProperty( "Content-Length", String.valueOf( content.length() ) );
-
+        con.setRequestMethod("POST");
+        con.setDoInput(true);
+        con.setDoOutput(true);
+        con.setRequestProperty("Content-Type", MediaType.APPLICATION_JSON);
+        con.setRequestProperty("Content-Length", String.valueOf(content.length()));
+        
         OutputStreamWriter writer = new OutputStreamWriter( con.getOutputStream() );
-        writer.write( content );
+        writer.write(content);
         writer.flush();
-
+        
         InputStream in = con.getInputStream();
         String encoding = con.getContentEncoding();
         encoding = encoding == null ? "UTF-8" : encoding;
-
-        String json = IOUtils.toString( in, encoding );
-        return Response.ok( json ).build();
+        
+        String json = IOUtils.toString(in, encoding);
+        return Response.ok(json).build();
 
     }
 

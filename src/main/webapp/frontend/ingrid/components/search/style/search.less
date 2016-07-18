@@ -118,22 +118,117 @@
         }
         
         // INGRID: Add for zoom extent button
-	    .ga-layer-ordering {
-	      position: absolute;
-	      top: 0;
-	      right: 0;
-	      height: 100%;
-	      
-	      button {
-	        height: 100%;
-	      }
-	    }
+        .ga-layer-ordering {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 100%;
+          
+          button {
+            height: 100%;
+          }
+        }
+      }
+      
+      ul{
+        list-style-type: none;
+        margin-bottom: 0;
+        padding: 0;
+        
+        li{
+          font-size: 11px;
+          padding: 3px 20px;
+          height: 7em;
+          overflow: hidden;
+          -webkit-transition: height 0.35s ease;
+          -o-transition: height 0.35s ease;
+          transition: height 0.35s ease;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          
+          @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+            padding: 6px 10px;
+            font-size: 13px;
+          }
+          
+          label{
+            font-weight: normal;
+            margin: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: calc(100% - 20px);
+            
+            @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+              width: 15em;
+            }
+          }
+        }
+        
+        .ga-layer-folded {
+          height: 22px;
+          
+          @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+            height: 40px;
+          }
+        }
+      }
+      
+      .fa-gear {
+        position: absolute;
+        right: 0;
+        -webkit-transition: -webkit-transform 0.35s ease;
+        -moz-transition: -moz-transform 0.35s ease;
+        -o-transition: -o-transform 0.35s ease;
+        transition: transform 0.35s ease;
+        -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+        color: red;
+      }
+      
+      .ga-layer-folded .fa-gear{
+        -webkit-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+        color: black;
       }
     }
 
     p {
       margin: 0;
     }
+  }
+  
+  .ga-layer-tools {
+    width: 100%;
+    top: 3em;
+    left: 0;
+    background: transparent;
+    -webkit-transition: top 0.35s ease;
+    -o-transition: top 0.35s ease;
+    transition: top 0.35s ease;
+
+    label {
+      font-size: 0.9em;
+      padding-left: 0.3em;
+      width: 30% !important;
+      white-space: normal !important;
+
+      > * {
+        display: inline-block;
+      }
+    }
+  }
+
+  .ga-bwa-infos {
+    @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+     padding: 5px 0;
+    } 
   }
   
   .ga-search-results-header {
@@ -191,6 +286,15 @@
 
   // INGRID: Add for search services
   [ga-search-services] {
+
+    .ga-search-item {
+      width: ~"calc(100% - 35px)";
+      padding-right: 0px;
+    }
+  }
+  
+  // INGRID: Add for search bwalocator
+  [ga-search-bwalocator] {
 
     .ga-search-item {
       width: ~"calc(100% - 35px)";
