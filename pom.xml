@@ -158,6 +158,7 @@
     <!-- ==================== DEPENDENCY MANAGEMENT ==================== -->
     <!-- ALWAYS USE DEPENDENCY MANAGEMENT WHEN OVERWRITING VERSIONS FROM ingrid-base-pom, 
         SO ASSEMBLY PLUGIN WORKS !!!!!!!! -->
+<!--
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -169,11 +170,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+-->
     <!-- ==================== DEPENDENCIES ==================== -->
     <dependencies>
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils</artifactId>
+            <version>3.5.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
