@@ -712,7 +712,7 @@ goog.require('ga_urlutils_service');
 //INGRID: Add Bwa locator search
   module.directive('gaSearchBwaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms, gaDefinePropertiesForLayer) {
+               gaPreviewLayers, gaMapUtils, gaLayers, gaGlobalOptions, gaDefinePropertiesForLayer) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes_bwalocator.html',
@@ -723,15 +723,10 @@ goog.require('ga_urlutils_service');
           controller: 'GaSearchTypesController',
           link: function($scope, element, attrs) {
               
-            var bwaLocatorLayerFull = null;
             var bwaLocatorID = ""; 
             var bwaLocatorFrom = "";
             var bwaLocatorTo = "";
             var bwaLocatorDistance = "";
-            var bwaLocatorPopUp = "";
-            
-            var featureSelect = new ol.interaction.Select();
-            $scope.map.addInteraction(featureSelect);
             
             $scope.type = 'bwalocator';
             $scope.tabstart = tabStarts[4];
@@ -744,92 +739,7 @@ goog.require('ga_urlutils_service');
               return $sce.trustAsHtml(l);
             };
               
-            $scope.map.on('singleclick', function(evt) {
-                var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
-                    return feature;
-                });
-
-                if (feature) {
-                    var coords = feature.getGeometry().getCoordinates();
-                    var props = feature.getProperties();
-                    var measures = props.measures;
-                    
-                    var info = '<table><tbody>';
-                    info += '<tr><td>Id</td><td>' + props.bwastrid + '</td></tr>';
-                    info += '<tr><td>Name</td><td>' + props.bwastr_name + '</td></tr>';
-                    info += '<tr><td>Bezeichnung</td><td>' + props.strecken_name + '</td></tr>';
-                    if(props.km_wert){
-                      info += '<tr><td>KM:</td><td>' + props.km_wert + ' km</td></tr>';
-                    }else{
-                      info += '<tr><td>Von:</td><td>' + props.km_von + ' km</td></tr>';
-                      info += '<tr><td>Bis:</td><td>' + props.km_bis + ' km</td></tr>';
-                    }
-                    info += '<tr><td><br></td></tr>';
-                    
-                    var csvContent = "data:text/csv;charset=utf-8,";
-                    
-                    
-                    var coordMeasures = [];
-                    var count = 0;
-                    for(var j=0; j<coords.length;j++){
-                        var coord = coords[j];
-                        if(coord instanceof Array){
-                            for(var k=0; k<coord.length;k++){
-                                var coordinateEntry = coord[k];
-                                var measure = "0";
-                                if(measures[count]){
-                                    measure = measures[count];
-                                }
-                                coordMeasures.push([coordinateEntry[0]+"", coordinateEntry[1]+"", measure+""    ]);
-                                count++;
-                            }
-                            coordMeasures.sort(function(a, b){
-                                var measureA = a.measure;
-                                var measureB = b.measure;
-                                if(measureA < measureB) return -1;
-                                if(measureA > measureB) return 1;
-                                return 0;
-                            });
-                        }
-                    }
-                    
-                    coordMeasures.forEach(function(array, index){
-                       var dataString = array.join(";");
-                       csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
-                    }); 
-                    
-                    var encodedUri = encodeURI(csvContent);
-                    var csvDownloadName = "";
-                    csvDownloadName += props.bwastrid;
-                    csvDownloadName += '-';
-                    csvDownloadName += props.bwastr_name;
-                    if(props.strecken_name){
-                      csvDownloadName += "-";
-                      csvDownloadName += props.strecken_name;
-                    }
-                    csvDownloadName += ".csv";
-                    
-                    info += '<tr><td><a href="' + encodedUri + '" download="' + csvDownloadName + '">Strecke als CSV</a></td></tr>';
-                    info += '</tbody></table>';
-                    info += '<br>';
-                    
-                    if(bwaLocatorPopUp){
-                        bwaLocatorPopUp.close();
-                    }
-                    
-                    bwaLocatorPopUp = gaPopup.create({
-                        title: 'BWaStr Locator',
-                        destroyOnClose: true,
-                        content: info,
-                        className: '',
-                        x: evt.pixel[0],
-                        y: evt.pixel[1],
-                        showPrint: true
-                      });
-                    bwaLocatorPopUp.open();
-                }
-            });
-            
+           
             function updateBWaLocatorData(attrs){
               if(attrs){
                 $scope.bwalocator_from_id = attrs.bwastrid + "_bwalocator_from";
@@ -841,15 +751,6 @@ goog.require('ga_urlutils_service');
               }
             }
            
-            function clearBWaSelectionInfos (){
-                if(bwaLocatorPopUp){
-                  bwaLocatorPopUp.close();
-                }
-                if(featureSelect){
-                  featureSelect.getFeatures().clear();
-                }
-            }
-            
             $scope.select = function(res) {
               unregisterMove();
               
@@ -873,7 +774,6 @@ goog.require('ga_urlutils_service');
                       $scope.map.removeLayer(layer);
                     }
                 }
-                clearBWaSelectionInfos();
                 selectBWaLocatorData(res, true);
                 bwaLocatorID = res.id;
                 bwaLocatorFrom = "";
@@ -890,7 +790,6 @@ goog.require('ga_urlutils_service');
                         $scope.map.removeLayer(layer);
                       }
                   }
-                  clearBWaSelectionInfos();
                   selectBWaLocatorData(res);
               }
               bwaLocatorFrom = inputValueFrom;
@@ -1008,10 +907,12 @@ goog.require('ga_urlutils_service');
                           layerLabel += ' ' + data.strecken_name;
                         }
                         if(full){
-                            bwaLocatorLayerFull = new ol.layer.Vector({
+                            var bwaLocatorLayerFull = new ol.layer.Vector({
                                 source: vectorSource,
-                                bwalocator:true,
+                                id: "bwaLocatorLayerFull_" + data.bwastrid + "_" + data.bwastr_name,
                                 visible: true,
+                                queryable: true,
+                                bwalocator:true,
                                 style: new ol.style.Style({
                                     stroke: new ol.style.Stroke({
                                         color: 'red',
@@ -1026,7 +927,9 @@ goog.require('ga_urlutils_service');
                          }else{
                             var bwaLocatorLayerShort = new ol.layer.Vector({
                                 source: vectorSource,
+                                id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
                                 visible: true,
+                                queryable: true,
                                 bwalocator:true,
                                 bwalocatorshort:true,
                                 style: new ol.style.Style({

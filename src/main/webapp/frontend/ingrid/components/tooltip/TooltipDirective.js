@@ -81,7 +81,8 @@ goog.require('ga_topic_service');
 
         // Test if a feature is queryable.
         var isFeatureQueryable = function(feature) {
-          return feature && feature.get('name') || feature.get('description');
+          // INGRID: Add 'bwastrid'
+          return feature && feature.get('name') || feature.get('description') || feature.get('bwastrid');
         };
 
         // Find the first feature from a vector layer
@@ -553,6 +554,78 @@ goog.require('ga_topic_service');
                   replace('{{id}}', id).
                   replace('{{descr}}', feature.get('description') || '').
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
+              
+              // INGRID: Add pop up for 'bwalocator'
+              if(feature.get('bwastrid')){
+                htmlpopup =
+                  '<div id="{{id}}" class="htmlpopup-container">' +
+                    '<div class="htmlpopup-header">' +
+                      '<span>' + layer.label + ' &nbsp;</span>' +
+                      '(BWaStr Locator)' +
+                    '</div>' +
+                    '<div class="htmlpopup-content">';
+                htmlpopup += '<table><tbody>';
+                htmlpopup += '<tr><td>Id:</td><td>' + feature.get('bwastrid') + '</td></tr>';
+                htmlpopup += '<tr><td>Name:</td><td>' + feature.get('bwastr_name') + '</td></tr>';
+                htmlpopup += '<tr><td>Bezeichnung:</td><td>' + feature.get('strecken_name') + '</td></tr>';
+                if(feature.get('km_wert')){
+                  htmlpopup += '<tr><td>KM:</td><td>' + feature.get('km_wert') + ' km</td></tr>';
+                }else{
+                  htmlpopup += '<tr><td>Von:</td><td>' + feature.get('km_von') + ' km</td></tr>';
+                  htmlpopup += '<tr><td>Bis:</td><td>' + feature.get('km_bis') + ' km</td></tr>';
+                }
+                htmlpopup += '</tbody></table><br>';
+                
+                var csvContent = "data:text/csv;charset=utf-8,";
+                
+                var coords = feature.getGeometry().getCoordinates();
+                var props = feature.getProperties();
+                var measures = props.measures;
+                
+                var coordMeasures = [];
+                var count = 0;
+                for(var j=0; j<coords.length;j++){
+                    var coord = coords[j];
+                    if(coord instanceof Array){
+                        for(var k=0; k<coord.length;k++){
+                            var coordinateEntry = coord[k];
+                            var measure = "0";
+                            if(measures[count]){
+                                measure = measures[count];
+                            }
+                            coordMeasures.push([coordinateEntry[0]+"", coordinateEntry[1]+"", measure+""    ]);
+                            count++;
+                        }
+                        coordMeasures.sort(function(a, b){
+                            var measureA = a.measure;
+                            var measureB = b.measure;
+                            if(measureA < measureB) return -1;
+                            if(measureA > measureB) return 1;
+                            return 0;
+                        });
+                    }
+                }
+                
+                coordMeasures.forEach(function(array, index){
+                   var dataString = array.join(";");
+                   csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
+                }); 
+                
+                var encodedUri = encodeURI(csvContent);
+                var csvDownloadName = "";
+                csvDownloadName += props.bwastrid;
+                csvDownloadName += '-';
+                csvDownloadName += props.bwastr_name;
+                if(props.strecken_name){
+                  csvDownloadName += "-";
+                  csvDownloadName += props.strecken_name;
+                }
+                csvDownloadName += ".csv";
+                
+                htmlpopup += '<p><a href="' + encodedUri + '" download="' + csvDownloadName + '">Strecke als CSV</a></p>';
+                htmlpopup += '</div>';
+                htmlpopup += '</div>';
+              }
               feature.set('htmlpopup', htmlpopup);
               if (!isFeatureQueryable(feature)) {
                 feature.set('htmlpopup', undefined);
