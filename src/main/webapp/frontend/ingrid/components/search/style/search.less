@@ -159,11 +159,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            width: calc(100% - 20px);
+            width: ~"calc(100% - 20px)";
             
-            @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
-              width: 15em;
-            }
           }
         }
         
