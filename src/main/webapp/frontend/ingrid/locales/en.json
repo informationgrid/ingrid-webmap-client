@@ -58,6 +58,8 @@
 "confirm_remove_selected_features": "Do you really want to delete the selected features?",
 "connect": "Connect",
 "contact_us": "Contact",
+"context_title_coords": "Coordinates",
+"context_title_bwalocator": "BWaStr Locator",
 "coordinates_label": "Coordinates (m)",
 "copy_success": "Link copied!",
 "copy_url": "Copy the link",

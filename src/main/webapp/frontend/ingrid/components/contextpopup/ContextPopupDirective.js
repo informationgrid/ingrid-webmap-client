@@ -30,7 +30,18 @@ goog.require('ga_permalink');
             var lv03tolv95Url = scope.options.lv03tolv95Url;
 
             scope.titleClose = $translate.instant('close');
-
+            
+            // INGRID: Add tabs to add 'bwalocator'
+            scope.currentTab = 1;
+            
+            // Tabs management stuff
+            scope.activeTab = function(numTab) {
+              scope.currentTab = numTab;
+            };
+            scope.getTabClass = function(numTab) {
+              return (numTab === scope.currentTab) ? 'active' : '';
+            };
+            
             // The popup content is updated (a) on contextmenu events,
             // and (b) when the permalink is updated.
 
@@ -287,7 +298,15 @@ goog.require('ga_permalink');
             
             // INGRID: Get 'BWaStrLocator' data
             function getBWaLocatorData(){
-              var that = this;
+              scope.bwastr_id = undefined;
+              scope.bwastr_name = undefined;
+              scope.bwastr_typ = undefined;
+              scope.bwastr_lon = undefined;
+              scope.bwastr_lat = undefined;
+              scope.bwastr_km = undefined;
+              scope.bwastr_distance = undefined;
+              scope.bwastr_error = undefined;
+              
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
                 X: Math.round(coordDefault[1], 1),
@@ -320,6 +339,8 @@ goog.require('ga_permalink');
                         scope.bwastr_lat = result.geometry.coordinates[1];
                         scope.bwastr_km = result.stationierung.km_wert;
                         scope.bwastr_distance = result.stationierung.offset;
+                    }else{
+                        scope.bwastr_error = result.error.message;
                     }
                 }
             }
