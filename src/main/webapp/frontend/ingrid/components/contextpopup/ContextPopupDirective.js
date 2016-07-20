@@ -30,8 +30,6 @@ goog.require('ga_permalink');
             var lv03tolv95Url = scope.options.lv03tolv95Url;
 
             scope.titleClose = $translate.instant('close');
-            
-            // INGRID: Add tabs to add 'bwalocator'
             scope.currentTab = 1;
             
             // Tabs management stuff
@@ -184,7 +182,7 @@ goog.require('ga_permalink');
                 }).success(function(response) {
                   scope.altitude = parseFloat(response.height);
                 });
-                */
+                
                 $http.get(lv03tolv95Url, {
                   params: {
                     // INGRID: Change 'coord21781' to 'coordDefault'
@@ -195,6 +193,7 @@ goog.require('ga_permalink');
                   coord2056 = response.coordinates;
                   scope.coord2056 = formatCoordinates(coord2056, 2);
                 });
+                */
 
               });
 
