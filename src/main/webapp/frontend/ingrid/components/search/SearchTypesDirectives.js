@@ -712,7 +712,7 @@ goog.require('ga_urlutils_service');
 //INGRID: Add Bwa locator search
   module.directive('gaSearchBwaLocator',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaGlobalOptions, gaDefinePropertiesForLayer) {
+               gaPreviewLayers, gaMapUtils, gaLayers, gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes_bwalocator.html',
@@ -723,11 +723,12 @@ goog.require('ga_urlutils_service');
           controller: 'GaSearchTypesController',
           link: function($scope, element, attrs) {
               
-            var bwaLocatorID = ""; 
             var bwaLocatorFrom = "";
             var bwaLocatorTo = "";
             var bwaLocatorDistance = "";
-            
+            var layers;
+            var canceler = $q.defer();
+
             $scope.type = 'bwalocator';
             $scope.tabstart = tabStarts[4];
             // INGRID: Change search URL for bwa locator search
@@ -738,8 +739,43 @@ goog.require('ga_urlutils_service');
               updateBWaLocatorData(attrs);
               return $sce.trustAsHtml(l);
             };
-              
-           
+
+            $scope.select = function(res) {
+              unregisterMove();
+              var isLayerToAdd = true;
+              // INGRID: Remove existing layers
+              layers = $scope.map.getLayers().getArray();
+              for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
+                  if(layer.id.indexOf(res.id) < 0){
+                    $scope.map.removeLayer(layer);
+                    i--;
+                  }else{
+                    isLayerToAdd = false;
+                  }
+                }
+              }
+              if(isLayerToAdd){
+                selectBWaLocatorData(res, true);
+              }
+            };
+            
+            $scope.getBwaLocatorParam = function(evt, res){
+              unregisterMove();
+
+              // INGRID: Remove existing layers
+              layers = $scope.map.getLayers().getArray();
+              for (var i = 0; i < layers.length; i++) {
+                var layer = layers[i];
+                if(layer.get("bwalocatorshort")){
+                  $scope.map.removeLayer(layer);
+                  i--;
+                }
+              }
+              selectBWaLocatorData(res);
+            };
+
             function updateBWaLocatorData(attrs){
               if(attrs){
                 $scope.bwalocator_from_id = attrs.bwastrid + "_bwalocator_from";
@@ -750,59 +786,13 @@ goog.require('ga_urlutils_service');
                 $scope.bwalocator_distance_placeholder = 0;
               }
             }
-           
-            $scope.select = function(res) {
-              unregisterMove();
-              
-              var inputValueFrom = $("#" + res.id + "_bwalocator_from").val().trim();
-              var inputValueTo = $("#" + res.id + "_bwalocator_to").val().trim();
-              var inputValueDistance = $("#" + res.id + "_bwalocator_distance").val().trim();
-              var hasBwaLocatorLayer = false;
-              var layerBwaLocator = []
-              var layers = $scope.map.getLayers().getArray();
-              for (var i = 0; i < layers.length; i++) {
-                  var layer = layers[i];
-                  if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
-                    hasBwaLocatorLayer = true;
-                    layerBwaLocator.push(layer);
-                  }
-              }
-              if(bwaLocatorID != res.id || hasBwaLocatorLayer == false){
-                for (var i = 0; i < layerBwaLocator.length; i++) {
-                    var layer = layerBwaLocator[i];
-                    if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
-                      $scope.map.removeLayer(layer);
-                    }
-                }
-                selectBWaLocatorData(res, true);
-                bwaLocatorID = res.id;
-                bwaLocatorFrom = "";
-                bwaLocatorTo = "";
-                bwaLocatorDistance = "";
-              }
-              
-              if(((bwaLocatorFrom != inputValueFrom) && inputValueFrom != "")
-                      || ((bwaLocatorTo != inputValueTo) && inputValueTo != "")
-                      || ((bwaLocatorDistance != inputValueDistance) && inputValueDistance != "")){
-                  for (var i = 0; i < layerBwaLocator.length; i++) {
-                      var layer = layerBwaLocator[i];
-                      if(layer.get("bwalocatorshort")){
-                        $scope.map.removeLayer(layer);
-                      }
-                  }
-                  selectBWaLocatorData(res);
-              }
-              bwaLocatorFrom = inputValueFrom;
-              bwaLocatorTo = inputValueTo;
-              bwaLocatorDistance = inputValueDistance;
-            };
-            
+
             function selectBWaLocatorData(res, full){
               if(res){
                   var inputBwaLocatorFrom = $("#" + res.id + "_bwalocator_from").val();
                   var inputBwaLocatorTo = $("#" + res.id + "_bwalocator_to").val();
                   var inputBwaLocatorDistance = $("#" + res.id + "_bwalocator_distance").val();
-                  
+
                   var content = '{'
                       + '"limit":200,'
                       + '"queries":['
@@ -811,146 +801,163 @@ goog.require('ga_urlutils_service');
                       + '"bwastrid":"'+ res.attrs.bwastrid +'",'
                       + '"stationierung":{';
                   if(((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined) 
-                      && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined) 
-                      && (inputBwaLocatorDistance == "" || inputBwaLocatorDistance == undefined))
-                      || full){
-                      content = content + '"km_von":'+ res.attrs.km_von;
-                      content = content + ',';
-                      content = content + '"km_bis":'+ res.attrs.km_bis;
+                    && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined) 
+                    && (inputBwaLocatorDistance == "" || inputBwaLocatorDistance == undefined))
+                    || full){
+                    content = content + '"km_von":'+ res.attrs.km_von;
+                    content = content + ',';
+                    content = content + '"km_bis":'+ res.attrs.km_bis;
                   }else{
-                      
-                      if((inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined)
-                          && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
-                          content = content + '"km_wert":'+ inputBwaLocatorFrom;
-                      }else{
-                          if(inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined){
-                              content = content + '"km_von":'+ inputBwaLocatorFrom;
-                          }
-                          
-                          if(inputBwaLocatorTo != "" && inputBwaLocatorTo != undefined){
-                              if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
-                                  content = content + '"km_von":'+ res.attrs.km_von;
-                              }
-                              content = content + ',';
-                              content = content + '"km_bis":'+ inputBwaLocatorTo;
-                          }
+                    if((inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined)
+                      && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
+                      content = content + '"km_wert":'+ inputBwaLocatorFrom;
+                    }else{
+                      if(inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined){
+                        content = content + '"km_von":'+ inputBwaLocatorFrom;
                       }
-                      
-                      if(inputBwaLocatorDistance != "" && inputBwaLocatorDistance != undefined){
-                          if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
-                              content = content + '"km_von":'+ res.attrs.km_von;
-                              content = content + ',';
-                          }
-                          if((inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
-                              content = content + '"km_bis":'+ res.attrs.km_bis;
-                              content = content + ',';
-                          }
-                          content = content + ',';
-                          content = content + '"offset":'+ inputBwaLocatorDistance;
+
+                      if(inputBwaLocatorTo != "" && inputBwaLocatorTo != undefined){
+                        if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
+                          content = content + '"km_von":'+ res.attrs.km_von;
+                        }
+                        content = content + ',';
+                        content = content + '"km_bis":'+ inputBwaLocatorTo;
                       }
+                    }
+
+                    if(inputBwaLocatorDistance != "" && inputBwaLocatorDistance != undefined){
+                      if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
+                        content = content + '"km_von":'+ res.attrs.km_von;
+                        content = content + ',';
+                      }
+                      if((inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
+                        content = content + '"km_bis":'+ res.attrs.km_bis;
+                        content = content + ',';
+                      }
+                      content = content + ',';
+                      content = content + '"offset":'+ inputBwaLocatorDistance;
+                    }
                   }
                   content = content + '},'
-                      + '"spatialReference":{'
-                      + '"wkid":3857'
-                      + '}'
-                      + '}'
-                      + ']'
-                      + '}';
+                    + '"spatialReference":{'
+                    + '"wkid":3857'
+                    + '}'
+                    + '}'
+                    + ']'
+                    + '}';
                   
                   $http.get('/ingrid-webmap-client/rest/jsonCallback/queryPost?', {
+                    cache: true,
+                    timeout: canceler.promise,
                     params: {
                      'url':  gaGlobalOptions.searchBwaLocatorGeoUrl,
                      'data': content
                     }
                   }).success(function(response) {
-                      drawBWaLocatorData(response, full);
+                    drawBWaLocatorData(response, full);
                   }).error(function() {
                 });
               }
             }
             
             function drawBWaLocatorData (response, full){
-                var data = response.result[0];
-                if(data){
-                    var geometry = data.geometry;
-                    if(geometry){
-                        var geojsonObject = {
-                                'type': 'FeatureCollection',
-                                'crs': {
-                                  'type': 'name',
-                                  'properties': {
-                                    'name': 'EPSG:3857'
-                                  }
-                                },
-                                'features': [{
-                                  'type': 'Feature',
-                                  'geometry': {
-                                    'type': geometry.type,
-                                    'coordinates': geometry.coordinates
-                                  },
-                                  'properties': {
-                                    'bwastrid': data.bwastrid,
-                                    'bwastr_name': data.bwastr_name,
-                                    'strecken_name': data.strecken_name,
-                                    'km_von': data.stationierung.km_von,
-                                    'km_bis': data.stationierung.km_bis,
-                                    'km_wert': data.stationierung.km_wert,
-                                    'measures': geometry.measures
-                                  }
-                                }]
-                              };
-                        var vectorSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
-                          });
-                        var layerLabel = data.bwastrid + ' ' + data.bwastr_name;
-                        if(data.strecken_name){
-                          layerLabel += ' ' + data.strecken_name;
+              var data = response.result[0];
+              if(data){
+                var geometry = data.geometry;
+                  if(geometry){
+                    var geojsonObject = {
+                      'type': 'FeatureCollection',
+                      'crs': {
+                        'type': 'name',
+                        'properties': {
+                          'name': 'EPSG:3857'
                         }
-                        if(full){
-                            var bwaLocatorLayerFull = new ol.layer.Vector({
-                                source: vectorSource,
-                                id: "bwaLocatorLayerFull_" + data.bwastrid + "_" + data.bwastr_name,
-                                visible: true,
-                                queryable: true,
-                                bwalocator:true,
-                                style: new ol.style.Style({
-                                    stroke: new ol.style.Stroke({
-                                        color: 'red',
-                                        width: 2
-                                      })
-                                    })
-                              });
-                            gaDefinePropertiesForLayer(bwaLocatorLayerFull);
-                            bwaLocatorLayerFull.label = layerLabel;
-                            bwaLocatorLayerFull.type = 'KML';
-                            $scope.map.addLayer(bwaLocatorLayerFull);
-                         }else{
-                            var bwaLocatorLayerShort = new ol.layer.Vector({
-                                source: vectorSource,
-                                id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
-                                visible: true,
-                                queryable: true,
-                                bwalocator:true,
-                                bwalocatorshort:true,
-                                style: new ol.style.Style({
-                                    stroke: new ol.style.Stroke({
-                                        color: 'blue',
-                                        width: 2
-                                      })
-                                    })
-                              });
-                            gaDefinePropertiesForLayer(bwaLocatorLayerShort);
-                            bwaLocatorLayerShort.label = layerLabel + '(Abschnitt)';
-                            bwaLocatorLayerShort.type = 'KML';
-                            $scope.map.addLayer(bwaLocatorLayerShort);
+                      },
+                      'features': [{
+                        'type': 'Feature',
+                        'geometry': {
+                          'type': geometry.type,
+                          'coordinates': geometry.coordinates
+                        },
+                        'properties': {
+                          'bwastrid': data.bwastrid,
+                          'bwastr_name': data.bwastr_name,
+                          'strecken_name': data.strecken_name,
+                          'km_von': data.stationierung.km_von,
+                          'km_bis': data.stationierung.km_bis,
+                          'km_wert': data.stationierung.km_wert,
+                          'measures': geometry.measures
                         }
-                        $scope.map.getView().fit(vectorSource.getExtent(), $scope.map.getSize());
+                      }]
+                    };
+                    var vectorSource = new ol.source.Vector({
+                      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                    });
+                    var layerLabel = data.bwastrid + ' ' + data.bwastr_name;
+                    if(data.strecken_name){
+                      layerLabel += ' ' + data.strecken_name;
                     }
+                    if(geometry.type == "Point"){
+                      var bwaLocatorLayerShort = new ol.layer.Vector({
+                        source: vectorSource,
+                        id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
+                        visible: true,
+                        queryable: true,
+                        bwalocator:true,
+                        bwalocatorshort:true,
+                        style: gaStyleFactory.getStyle('marker')
+                      });
+                      gaDefinePropertiesForLayer(bwaLocatorLayerShort);
+                      bwaLocatorLayerShort.label = layerLabel + ' (Abschnitt)';
+                      bwaLocatorLayerShort.type = 'KML';
+                      $scope.map.addLayer(bwaLocatorLayerShort);
+                    }else{
+                      if(full){
+                        var bwaLocatorLayerFull = new ol.layer.Vector({
+                          source: vectorSource,
+                          id: "bwaLocatorLayerFull_" + data.bwastrid + "_" + data.bwastr_name,
+                          visible: true,
+                          queryable: true,
+                          bwalocator:true,
+                          style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                              color: 'red',
+                              width: 2
+                            })
+                          })
+                        });
+                        gaDefinePropertiesForLayer(bwaLocatorLayerFull);
+                        bwaLocatorLayerFull.label = layerLabel;
+                        bwaLocatorLayerFull.type = 'KML';
+                        $scope.map.addLayer(bwaLocatorLayerFull);
+                      }else{
+                        var bwaLocatorLayerShort = new ol.layer.Vector({
+                          source: vectorSource,
+                          id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
+                          visible: true,
+                          queryable: true,
+                          bwalocator:true,
+                          bwalocatorshort:true,
+                          style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                              color: 'blue',
+                              width: 2
+                            })
+                          })
+                        });
+                        gaDefinePropertiesForLayer(bwaLocatorLayerShort);
+                        bwaLocatorLayerShort.label = layerLabel + ' (Abschnitt)';
+                        bwaLocatorLayerShort.type = 'KML';
+                        $scope.map.addLayer(bwaLocatorLayerShort);
+                      }
+                    }
+                  $scope.map.getView().fit(vectorSource.getExtent(), $scope.map.getSize());
                 }
+              }
             }
-            
+
             // Toggle layer tools for small screen
-            element.on('click', '.fa-gear', function() {
+            element.on('click', '.ga-bwa-infos', function() {
               var li = $(this).closest('li');
               li.toggleClass('ga-layer-folded');
               $(this).closest('ul').find('li').each(function(i, el) {

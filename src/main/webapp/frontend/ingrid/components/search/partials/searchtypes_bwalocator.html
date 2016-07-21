@@ -12,7 +12,6 @@
              ng-mouseleave="out()">
            <div class="ga-bwa-infos">
              <label class="ga-checkbox" ng-bind-html="prepareLabel(res.attrs)"></label>
-             <button class="ga-icon fa fa-gear" ng-click="getExtentSettings($event, res.attrs)"></button>
            </div><!--ga-layer-infos-->
            <div class="ga-layer-tools">
               <label>
@@ -27,6 +26,7 @@
                 <div translate>bwalocator_distance</div>&nbsp;
                 <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value=""/>
               </label>
+              <button class="ga-icon fa fa-chevron-sign-right" ng-click="getBwaLocatorParam($event, res)"></button>
            </div><!--ga-layer-tools-->
          </li>
     </ul>
