@@ -584,31 +584,34 @@ goog.require('ga_topic_service');
                 
                 var coordMeasures = [];
                 var count = 0;
-                for(var j=0; j<coords.length;j++){
+                if(measures.length == 1){
+                  coordMeasures.push([coords[0]+"", coords[1]+"", measures[0]+""]);
+                }else{
+                  for(var j=0; j<coords.length;j++){
                     var coord = coords[j];
                     if(coord instanceof Array){
-                        for(var k=0; k<coord.length;k++){
-                            var coordinateEntry = coord[k];
-                            var measure = "0";
-                            if(measures[count]){
-                                measure = measures[count];
-                            }
-                            coordMeasures.push([coordinateEntry[0]+"", coordinateEntry[1]+"", measure+""    ]);
-                            count++;
+                      for(var k=0; k<coord.length;k++){
+                        var coordinateEntry = coord[k];
+                        var measure = "0";
+                        if(measures[count]){
+                          measure = measures[count];
                         }
-                        coordMeasures.sort(function(a, b){
-                            var measureA = a.measure;
-                            var measureB = b.measure;
-                            if(measureA < measureB) return -1;
-                            if(measureA > measureB) return 1;
-                            return 0;
-                        });
+                        coordMeasures.push([coordinateEntry[0]+"", coordinateEntry[1]+"", measure+""]);
+                        count++;
+                     }
+                     coordMeasures.sort(function(a, b){
+                       var measureA = a.measure;
+                       var measureB = b.measure;
+                       if(measureA < measureB) return -1;
+                       if(measureA > measureB) return 1;
+                         return 0;
+                       });
                     }
+                  }
                 }
-                
                 coordMeasures.forEach(function(array, index){
-                   var dataString = array.join(";");
-                   csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
+                  var dataString = array.join(";");
+                  csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
                 }); 
                 
                 var encodedUri = encodeURI(csvContent);
