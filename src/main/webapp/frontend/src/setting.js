@@ -1,4 +1,5 @@
 // Default
+var settingDefaultTopicId = 'themen';
 var settingExtent = undefined;
 var settingEpsgExtent = undefined;
 var settingEpsg = undefined;

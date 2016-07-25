@@ -840,7 +840,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
-          defaultTopicId: '${default_topic_id}',
+          defaultTopicId: settingDefaultTopicId ? settingDefaultTopicId : '${default_topic_id}',
           translationFallbackCode: '${translation_fallback_code}',
           defaultExtent: settingExtent ? JSON.parse(settingExtent) : JSON.parse(${default_epsg_extend}),
           defaultResolution: ${default_resolution},
