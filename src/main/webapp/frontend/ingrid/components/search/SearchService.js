@@ -80,9 +80,12 @@ goog.provide('ga_search_service');
                                match[5].replace('\'', ''));
           }
 
+          /* INGRID: Change position
           position =
             [left > right ? left : right,
               right < left ? right : left];
+          */
+          position = [right, left];
           if (ol.extent.containsCoordinate(
               extent, position)) {
             valid = true;
