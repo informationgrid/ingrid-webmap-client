@@ -290,7 +290,7 @@ itemscope itemtype="http://schema.org/WebApplication"
   % endif
      <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="location.href=settingCopyrightURL?settingCopyrightURL:'/impressum'" translate>copyright_label</a>
+        <a target="_blank" onclick="window.open(settingCopyrightURL?settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
       </div>
   <!-- INGRID: Remove
   % if device == 'desktop':
