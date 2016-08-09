@@ -293,6 +293,10 @@ itemscope itemtype="http://schema.org/WebApplication"
         <!-- INGRID: Edit href URL -->
         <a target="_blank" onclick="window.open(settingCopyrightURL?settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
       </div>
+     <div class="pull-right">
+        <!-- INGRID: Edit href URL -->
+        <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settingSitemapURL?settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+      </div>
   <!-- INGRID: Remove
   % if device == 'desktop':
       <div class="pull-right">
@@ -527,9 +531,14 @@ itemscope itemtype="http://schema.org/WebApplication"
               </div>
               <hr>
               <p>
+                <!-- INGRID: Remove
                 <a target="_blank" translate translate-attr-href="{{topicId + '_service_link_href'}}" >{{topicId + '_service_link_label'}}</a>
                 <br>
-                <a target="_blank" onclick="location.href=settingCopyrightURL?settingCopyrightURL:'/impressum'" translate>copyright_label</a>
+                -->
+                <!-- INGRID: Edit -->
+                <a target="_blank" onclick="window.open(settingCopyrightURL?settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+                <br>
+                <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settingSitemapURL?settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
               </p>
             </div>
           </div>
