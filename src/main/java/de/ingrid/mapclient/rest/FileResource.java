@@ -41,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
@@ -79,52 +80,66 @@ import de.ingrid.mapclient.utils.Utils;
 public class FileResource {
 
     private static final Logger log = Logger.getLogger( FileResource.class );
-    private static final String path = "./data/";
     
     @POST
     @Path("files")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response fileRequest(String content) {
-        if (content != null && content.length() > 0) {
-            String filename = path + "" + content.hashCode();
-            File file = new File( filename + "" );
-            try {
-                FileWriter fileWriter = new FileWriter( file );
-                fileWriter.write( content );
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public Response fileRequest(String content, @QueryParam("adminId") String mapUserId, @QueryParam("maxDaysOfDeleteFile") String maxDaysOfDeleteFile) {
+        String fileId = createKMLFile( content, mapUserId);
+        if(fileId != null && fileId.length() > 0){
+            String json = "{\"adminId\":\"" + fileId + "\", \"fileId\":\"" + fileId + "\"}";
+            return Response.ok( json ).build();
         }
-        String json = "{\"adminId\":" + content.hashCode() + ", \"fileId\":" + content.hashCode() + "}";
-        return Response.ok( json ).build();
+        
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
     @POST
     @Path("files/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response updateFileRequest(@PathParam("id") String id, String content) {
-        if (id != null && id.length() > 0) {
-            String filename = path + "" + id;
-            File file = new File( filename + "" );
-            try {
-                FileWriter fileWriter = new FileWriter( file );
-                fileWriter.write( content );
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+    public Response updateFileRequest(@PathParam("id") String id, String content, @QueryParam("adminId") String mapUserId) throws IOException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" );
+        
+        String filename = path + "" + id;
+        String fileId = id;
+        if(mapUserId != null && mapUserId.length() > 0){
+            if (fileId != null && fileId.length() > 0) {
+                if(fileId.indexOf( mapUserId ) > -1){
+                    // Update file
+                    File file = new File( filename );
+                    try {
+                        FileWriter fileWriter = new FileWriter( file );
+                        fileWriter.write( content );
+                        fileWriter.flush();
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    // New file
+                    fileId = createKMLFile( content, mapUserId);
+                }
             }
+        }else{
+            // New file
+            fileId = createKMLFile( content, mapUserId);
         }
-        String json = "{\"adminId\":" + id + ", \"fileId\":" + id + "}";
-        return Response.ok( json ).build();
+        if(fileId != null && fileId.length() > 0){
+            String json = "{\"adminId\":\"" + fileId + "\", \"fileId\":\"" + fileId + "\"}";
+            return Response.ok( json ).build();
+        }
+
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getFileRequest(@PathParam("id") String id) {
+    public String getFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/");
+        
         String content = null;
         if (id != null && id.length() > 0) {
             try {
@@ -275,5 +290,52 @@ public class FileResource {
             return Response.ok( "{\"success\": true}" ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
+    private String createKMLFile(String content, String mapUserId){
+        String filename = "";
+        String fileId = "";
+        String path = "";
+        
+        Properties p;
+        try {
+            p = ConfigurationProvider.INSTANCE.getProperties();
+            int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
+            int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
+            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/");
+            filename = path;
+            File folder = new File(filename);
+            File[] listOfFiles = folder.listFiles();
+            if(listOfFiles.length > maxDirectoryFiles){
+                for (File file : listOfFiles) {
+                    if (file.isFile()) {
+                        long diff = new Date().getTime() - file.lastModified();
+                        if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
+                            file.delete();
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            log.error( "Count files in directory " + path +" failed: " + e);
+        }
+        
+        if (content != null && content.length() > 0) {
+            if(mapUserId != null && mapUserId.length() > 0){
+                fileId += mapUserId + "";
+            }
+            fileId += content.hashCode();
+            filename += fileId;
+            File file = new File( filename);
+            try {
+                FileWriter fileWriter = new FileWriter( file );
+                fileWriter.write( content );
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+       return fileId;
     }
 }

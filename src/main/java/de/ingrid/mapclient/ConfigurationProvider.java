@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
 /**
  * ConfigurationProvider gives access to the configuration of the map client.
  * The application configuration consists of two parts:
@@ -61,10 +59,11 @@ public enum ConfigurationProvider {
     public static final String FEEDBACK_PASSWORD = "feedback.password";
     public static final String FEEDBACK_SSL = "feedback.ssl";
     public static final String FEEDBACK_PROTOCOL = "feedback.protocol";
+    public static final String KML_DIRECTORY = "kml.directory";
+    public static final String KML_MAX_DAYS_FILE_EXIST = "kml.days_of_exist";
+    public static final String KML_MAX_DIRECTORY_FILES = "kml.max_directory_files";
     
     private Properties properties = null;
-    
-    private Logger log = null;
 
     /**
      * Get the application properties.
@@ -80,46 +79,4 @@ public enum ConfigurationProvider {
         }
         return this.properties;
     }
-
-    /**
-     * Get the opensearch url only
-     * 
-     * @return String
-     */
-    public String getOpensearchUrl() {
-        return this.properties.getProperty( OPENSEARCH_URL );
-    }
-
-    public String getFeedbackFrom() {
-        return this.properties.getProperty( FEEDBACK_FROM );
-    }
-
-    public String getFeedbackTo() {
-        return this.properties.getProperty( FEEDBACK_TO );
-    }
-
-    public String getFeedbackHost() {
-        return this.properties.getProperty( FEEDBACK_HOST );
-    }
-
-    public String getFeedbackPort() {
-        return this.properties.getProperty( FEEDBACK_PORT );
-    }
-
-    public String getFeedbackUser() {
-        return this.properties.getProperty( FEEDBACK_USER );
-    }
-
-    public String getFeedbackPassword() {
-        return this.properties.getProperty( FEEDBACK_PASSWORD );
-    }
-
-    public boolean getFeedbackSSL() {
-        return new Boolean (this.properties.getProperty( FEEDBACK_SSL ));
-    }
-
-    public String getFeedbackProtocol() {
-        return this.properties.getProperty( FEEDBACK_PROTOCOL );
-    }
-
 }
