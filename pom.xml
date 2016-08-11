@@ -112,7 +112,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${project.basedir}/compile${script.extension}</executable>
+                            <executable>${project.basedir}/tools/compile${script.extension}</executable>
                         </configuration>
                     </execution>
                 </executions>

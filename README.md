@@ -19,8 +19,6 @@ Requirements
 
 - a running InGrid Software System
 - For standalone (without portal): an apache tomcat version >= 6.0.35
-- Software/Tools: make gcc+ git unzip openjdk-6-jre openjdk-6-jdk g++ npm python-virtualenv (see https://github.com/geoadmin/mf-geoadmin3#dependencies)
-- On WINDOWS: Install software/tools to cygwin 
 
 Installation
 ------------
@@ -31,17 +29,42 @@ The Webmap Client can also run independent, but no installer support is added at
 
 Following the next steps to install the Webmap Client without the portal:
 
-- On windows: Add cygwin home path to system environment variable, for example:
+### System pre installation on WINDOWS
+
+   - Install Python 2.7 (https://www.python.org/downloads/)
+   
+   - Install cygwin (https://www.cygwin.com/) with the tools wget, make, gcc-core, gcc-g+, unzip, git
+
+   - Add cygwin home path to system environment variable, for example:
 
     ```
     CYGWIN_HOME C:\cygwin
     ```
 
+   - Add git home path to system environment variable, for example:
+
+    ```
+    GIT_HOME C:\Program Files (x86)\Git
+    ```
+
+### System pre installation on UNIX
+
+  - Make sure to install the following dependencies (see https://github.com/geoadmin/mf-geoadmin3#dependencies)
+  
+    ```
+    sudo apt-get install python-software-properties 
+    sudo add-apt-repository ppa:chris-lea/node.js 
+    sudo apt-get update
+    sudo apt-get install make gcc+ git unzip openjdk-6-jre openjdk-6-jdk g++ npm python-virtualenv
+    ```
+
+### Project installation
+
 - Checkout the project and build project with maven command:
 
     ```
-    mvn clean install -Pwindows (For windows)
-    mvn clean install -Punix (For unix)
+    mvn clean install -Pwindows (For WINDOWS)
+    mvn clean install -Punix (For UNIX)
     ```
 - On your installed tomcat add for the project the configuration file "ingrid-webmap-client.xml" under "conf/Catalina/localhost".
 - Add the following content to the configuration file:
