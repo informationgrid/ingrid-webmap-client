@@ -1,0 +1,46 @@
+[ga-map] {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .ol-viewport .ol-unselectable {
+    .ga-user-select(none);
+  }
+  
+  .ol-dragbox {
+    border: 3px solid blue;
+  }
+
+  .ol-dragzoom {
+    border: 2px solid red;
+  }
+
+  .ol-zoom-in, .ol-zoom-out button, .ol-zoom-extent button { 
+    display: block; /*without this, chrome add 3 pixels between zoomin/out buttons*/
+  }
+
+  .ol-zoom-in, .ol-zoom-out, .ol-zoom-extent {
+
+    i {
+      margin: 2px;
+    }
+  
+    .fa-ga-circle {
+      font-size: 40px;
+    }
+  
+    .fa-ga-zoom-plus, .fa-ga-zoom-minus {
+      font-size: 40px;
+    }
+
+    .fa-ga-circle-bg {
+      font-size: 38px;
+      padding: 1px;
+    }
+    
+    .fa-resize-horizontal, .fa-resize-vertical{
+      font-size: 20px;
+      padding: 10px;
+    }
+  }
+}

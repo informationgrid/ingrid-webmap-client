@@ -1,120 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  **************************************************-
-  InGrid Web Map Client
-  ==================================================
-  Copyright (C) 2014 wemove digital solutions GmbH
-  ==================================================
-  Licensed under the EUPL, Version 1.1 or – as soon they will be
-  approved by the European Commission - subsequent versions of the
-  EUPL (the "Licence");
-  
-  You may not use this work except in compliance with the Licence.
-  You may obtain a copy of the Licence at:
-  
-  http://ec.europa.eu/idabc/eupl5
-  
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the Licence is distributed on an "AS IS" basis,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the Licence for the specific language governing permissions and
-  limitations under the Licence.
-  **************************************************#
-  -->
-
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
 http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>InGridMapClient</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
-	<servlet>
-		<description>JAX-RS Tools Generated - Do not modify</description>
-		<servlet-name>InGrid Map REST Service</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<param-name>com.sun.jersey.config.property.packages</param-name>
-			<param-value>de.ingrid.mapclient.rest</param-value>
-		</init-param>
-		<!--init-param> <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name> 
-			<param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value> 
-			</init-param -->
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>InGrid Map REST Service</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
-	</servlet-mapping>
+    <display-name>InGridMapClient</display-name>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+        <welcome-file>default.htm</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
 
-	<servlet>
-		<servlet-name>mapfish.print</servlet-name>
-		<servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
-		<init-param>
-			<param-name>config</param-name>
-			<param-value>WEB-INF/classes/print_config.yaml</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>mapfish.print</servlet-name>
-		<url-pattern>/pdf/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-        <servlet-name>wms</servlet-name>
-        <servlet-class>de.ingrid.mapclient.servlet.WMSServlet</servlet-class>
-        <load-on-startup>0</load-on-startup>
+    <servlet>
+        <description>JAX-RS Tools Generated - Do not modify</description>
+        <servlet-name>InGrid Map REST Service</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>de.ingrid.mapclient.rest</param-value>
+        </init-param>
+        <!--init-param> <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name> 
+            <param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value> 
+            </init-param -->
+        <load-on-startup>1</load-on-startup>
     </servlet>
-    
     <servlet-mapping>
-        <servlet-name>wms</servlet-name>
-        <url-pattern>/wms/*</url-pattern>
+        <servlet-name>InGrid Map REST Service</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
-	
-	<servlet>
-		<servlet-name>AuthServlet</servlet-name>
-		<jsp-file>/jsp/auth.jsp</jsp-file>
-	</servlet>
-	 
-	<servlet-mapping>
-		<servlet-name>AuthServlet</servlet-name>
-		<url-pattern>/auth</url-pattern>
-	</servlet-mapping>
-	
-	<!-- which resources should be protected -->
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>MapClient Administration</web-resource-name>
-			<url-pattern>/admin/*</url-pattern>
-		</web-resource-collection>
-		<web-resource-collection>
-			<web-resource-name>MapClient Configuration Write Access</web-resource-name>
-			<url-pattern>/rest/config/*</url-pattern>
-			<http-method>POST</http-method>
-			<http-method>DELETE</http-method>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Has to be an administrator</description>
-			<role-name>admin-gui</role-name>
-		</auth-constraint>
-	</security-constraint>
 
-	<!-- which realm to use for basic auth -->
-	<login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name>Tomcat Supported Realm</realm-name>
-	</login-config>
-	
-	<security-role>
-		<role-name>admin-gui</role-name>
-	</security-role>
-	
-	<listener>
-        <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
-	</listener>
+    <servlet>
+        <servlet-name>mapfish.print</servlet-name>
+        <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>WEB-INF/classes/print_config.yaml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mapfish.print</servlet-name>
+        <url-pattern>/pdf/*</url-pattern>
+    </servlet-mapping>
 </web-app>
