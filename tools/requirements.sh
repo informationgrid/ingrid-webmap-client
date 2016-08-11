@@ -8,6 +8,7 @@ else
     tar xf distribute-0.6.35.tar.gz
     cd distribute-0.6.35
     python2.7 setup.py install
+    cd ..
     rm -r distribute-*
 fi
 
