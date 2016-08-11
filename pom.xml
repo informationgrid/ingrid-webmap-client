@@ -19,10 +19,10 @@
     </scm>
     <profiles>
       <profile>
-        <id>Windows</id>
+        <id>windows</id>
         <activation>
           <os>
-            <family>Windows</family>
+            <family>windows</family>
           </os>
         </activation>
         <properties>
@@ -64,14 +64,30 @@
                 <configuration>
                     <!-- add class files to WEB-INF/classes also config files ->CONFIG-FILES 
                         needed at runtime in classes-path -->
-                    <packagingExcludes>frontend/ingrid/</packagingExcludes>
-                    <packagingExcludes>frontend/orig_*</packagingExcludes>
+                    <packagingExcludes>**/frontend/ingrid/</packagingExcludes>
                     <archiveClasses>false</archiveClasses>
                     <archive>
                         <manifestEntries>
                             <ingridComponentType>WEBMAP_CLIENT</ingridComponentType>
                         </manifestEntries>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.properties</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/*.sql</exclude>
+                        <exclude>**/*.xml</exclude>
+                        <exclude>**/*.js</exclude>
+                        <exclude>**/*.html</exclude>
+                        <exclude>**/*.less</exclude>
+                        <exclude>**/*.yaml</exclude>
+                        <exclude>**/mf-geoadmin3/*</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

@@ -1,7 +1,70 @@
-Webmap Client (ingrid-mf-geoadmin3)
+Webmap Client
 ============= 
 
-This software is part of the InGrid software package. The webmap client is integrated in the InGrid Portal and allows to display Web Map Services (WMS) and other geospatial data.
+This software is part of the InGrid software package. The webmap client is integrated in the InGrid Portal and allows to display Web Map Services (WMS) and other geospatial data. The client is based on geo.admin.ch (see https://github.com/geoadmin/mf-geoadmin3) with for InGrid needed adjustments.
+
+Features
+--------
+
+- map client based on Openlayers 3 and AngularJS
+- pre configured, categorized Web Map Services
+- integrated search of InGrid data space and Nominatim
+- supports different, configurable coordinate systems
+- displays WMS feature information
+- draw feature
+- print maps
+
+Requirements
+-------------
+
+- a running InGrid Software System
+- For standalone (without portal): an apache tomcat version >= 6.0.35
+- Software/Tools: make gcc+ git unzip openjdk-6-jre openjdk-6-jdk g++ npm python-virtualenv (see https://github.com/geoadmin/mf-geoadmin3#dependencies)
+- On WINDOWS: Install software/tools to cygwin 
+
+Installation
+------------
+
+Integrated in the InGrid portal. 
+
+The Webmap Client can also run independent, but no installer support is added at the moment.
+
+Following the next steps to install the Webmap Client without the portal:
+
+- On windows: Add cygwin home path to system environment variable, for example:
+
+    ```
+    CYGWIN_HOME C:\cygwin
+    ```
+
+- Checkout the project and build project with maven command:
+
+    ```
+    mvn clean install -Pwindows (For windows)
+    mvn clean install -Punix (For unix)
+    ```
+- On your installed tomcat add for the project the configuration file "ingrid-webmap-client.xml" under "conf/Catalina/localhost".
+- Add the following content to the configuration file:
+
+    ```
+    <Context path="/ingrid-webmap-client"
+        docBase="<PROJECT_PATH>\target\ingrid-webmap-client"
+        workDir="<PROJECT_PATH>\work"
+        crossContext="true">
+    </Context>
+    ```
+- Start the tomcat. 
+- Open a browser and enter following URL:
+
+    ```
+    Debug version:
+    http://localhost:8080/ingrid-webmap-client/frontend/src/
+    
+    Production version:
+    http://localhost:8080/ingrid-webmap-client/frontend/prd/
+    ```
+
+Obtain further information at http://www.ingrid-oss.eu/
 
 Contribute
 ----------
@@ -9,23 +72,37 @@ Contribute
 - Issue Tracker: https://github.com/informationgrid/ingrid-webmap-client/issues
 - Source Code: https://github.com/informationgrid/ingrid-webmap-client
 
-### Integration to Eclipse
+### Set up eclipse project
 
-- cd "PROJECT_PATH"
-- mvn eclipse:eclipse
+    ```
+    mvn eclipse:eclipse clean install -Pwindows (For WINDOWS)
+    mvn eclipse:eclipse clean install -Punix (For UNIX)
+    ```
 
-### Set up dev version
+and import project into eclipse. 
 
-- cd "PROJECT_PATH"/mf-geoadmin3
-- make dev
-- mvn clean install
+### Debug under eclipse
 
-### Set up prod version
+To debug the project, the project must integrate to a local tomcat.
 
-- cd "PROJECT_PATH"/mf-geoadmin3
-- make prod
-- mvn clean install
+Following the next steps:
 
+- Install a local apache tomcat (if not exist)
+- Add to your eclipse the tomcat plugin "com.sysdeo.eclipse.tomcat_3.3.1" to start/stop the installed local tomcat from eclipse. (see http://www.eclipsetotale.com/tomcatPlugin.html#A3)
+- After restart your eclipse go to "Window -> Preferences -> Tomcat" and select the path of your installed tomcat.
+- On your installed tomcat add the the configuration "ingrid-webmap-client.xml" for the project under "conf/Catalina/localhost".
+- Then follow the steps of **Following the next steps to install the Webmap Client without the portal** without checkout and build project.
+- Start the tomcat with the installed eclipse plugin.
+
+Support
+-------
+
+If you are having issues, please let us know: info@informationgrid.eu
+
+License
+-------
+
+The project is licensed under the EUPL license.
 
 Changes for InGrid
 ------------------
