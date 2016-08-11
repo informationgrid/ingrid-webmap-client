@@ -20,9 +20,6 @@
  * limitations under the Licence.
  * **************************************************#
  */
-/*
- * Copyright (c) 2011 wemove digital solutions. All rights reserved.
- */
 package de.ingrid.mapclient.rest;
 
 import java.io.BufferedReader;
