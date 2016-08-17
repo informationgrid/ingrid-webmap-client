@@ -45,6 +45,7 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -128,6 +129,33 @@ public class FileResource {
         }
 
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    @DELETE
+    @Path("files/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" );
+        
+        String filename = path + "" + id;
+        String fileId = id;
+        if(mapUserId != null && mapUserId.length() > 0){
+            if (fileId != null && fileId.length() > 0) {
+                if(fileId.indexOf( mapUserId ) > -1){
+                    // Update file
+                    File file = new File( filename );
+                    if(file.exists()){
+                        file.delete();
+                        return Response.status(Response.Status.OK ).build();
+                    }
+                }else{
+                    return Response.status(Response.Status.NOT_MODIFIED ).build();
+                }
+            }
+        }
+
+        return Response.status(Response.Status.NOT_MODIFIED ).build();
     }
 
     @GET
