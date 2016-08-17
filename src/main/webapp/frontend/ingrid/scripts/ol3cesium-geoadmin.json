@@ -126,6 +126,8 @@
     "ol.style.Style#*",
     "ol.style.Text",
     "ol.style.Text#*",
+    "ol.Sphere",
+    "ol.Sphere#*",
     "ol.source.ImageVector",
     "ol.source.ImageVector#*",
     "ol.source.ImageWMS",
