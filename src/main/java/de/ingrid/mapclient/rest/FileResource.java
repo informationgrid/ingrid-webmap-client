@@ -102,10 +102,6 @@ public class FileResource {
     @Path("files/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateFileRequest(@PathParam("id") String id, String content, @QueryParam("adminId") String mapUserId) throws IOException {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" );
-        
-        String filename = path + "" + id;
         String fileId = id;
         // New file
         fileId = createKMLFile( content, mapUserId);
@@ -129,7 +125,11 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateFileRequest(@PathParam("id") String id, @PathParam("user") String user, String content, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" );
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" ).trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
         
         String fileId = id;
         if(mapUserId != null && mapUserId.length() > 0){
@@ -181,7 +181,11 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" );
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" ).trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
         
         String fileId = id;
         if(mapUserId != null && mapUserId.length() > 0){
@@ -207,7 +211,11 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/");
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
         
         String content = null;
         if (id != null && id.length() > 0) {
@@ -225,12 +233,16 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/");
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
         
         String content = null;
         if (id != null && id.length() > 0) {
             try {
-                content = new String( Files.readAllBytes( Paths.get( path + "/" + user + "/" + id ) ) );
+                content = new String( Files.readAllBytes( Paths.get( path + "" + user + "/" + id ) ) );
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -389,13 +401,23 @@ public class FileResource {
             p = ConfigurationProvider.INSTANCE.getProperties();
             int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
             int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
-            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/");
-            filename = path;
+            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+            
+            if(!path.endsWith( "/")){
+                path += "/";
+            }
+            
+            filename += path;
+            
+            File pathFolder = new File(path);
+            if(!pathFolder.exists()){
+                pathFolder.mkdir();
+            }
             
             if(mapUserId != null && mapUserId.length() > 0){
-                File file = new File( filename + mapUserId);
-                if(!file.exists()){
-                    file.mkdir();
+                File userFolder = new File( path + mapUserId);
+                if(!userFolder.exists()){
+                    userFolder.mkdir();
                 }
                 filename += mapUserId + "/";
             }
