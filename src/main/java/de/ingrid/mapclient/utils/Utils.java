@@ -65,6 +65,26 @@ public class Utils {
 
     private static final Logger log = Logger.getLogger( Utils.class );
 
+    public static String checkWMSUrl(String url, String paramString){
+        String[] partsParamString = paramString.split("&");
+        String tmpUrl = url.toLowerCase();
+        for (int i = 0; i < partsParamString.length; i++) {
+          String partParamString = partsParamString[i];
+          if(tmpUrl.indexOf(partParamString.toLowerCase()) < 0){
+            if(url.indexOf("?") < 0){
+                url += "?";
+            }
+            if(url.endsWith("?") == false){
+                url += "&";
+            }
+            if(url.indexOf(partParamString.split("=")[0]) < 0){
+                url += partParamString;
+            }
+          }
+        }
+        return url;
+    }
+    
     public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
             String protocol) {
         return sendEmail( from, subject, to, text, headers, host, port, user, password, ssl, protocol, null );

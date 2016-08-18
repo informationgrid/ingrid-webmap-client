@@ -34,7 +34,9 @@ goog.require('ga_wms_service');
             if (gaUrlUtils.isValid(url)) {
 
               // Append GetCapabilities default parameters
-              url = gaUrlUtils.append(url, $scope.options.defaultGetCapParams);
+              // url = gaUrlUtils.append(url, $scope.options.defaultGetCapParams);
+              // INGRID: Use checkWMSUrl instead of append
+              url = gaUrlUtils.checkWMSUrl(url, $scope.options.defaultGetCapParams);
 
               // Use lang param only for admin.ch servers
               if (url.indexOf('admin.ch') > 0) {
@@ -85,7 +87,28 @@ goog.require('ga_wms_service');
                     ' * ' + result.Service.MaxHeight : '';
 
               if (result.Capability.Layer) {
-                var root = getChildLayers(result.Capability.Layer,
+                // INGRID: Get WMS URL from response
+                var wmsUrl = undefined;
+                if(result){
+                  if(result.Capability){
+                    if(result.Capability.Request){
+                      if(result.Capability.Request.GetCapabilities){
+                        if(result.Capability.Request.GetCapabilities.DCPType){
+                          if(result.Capability.Request.GetCapabilities.DCPType[0]){
+                            if(result.Capability.Request.GetCapabilities.DCPType[0].HTTP){
+                              if(result.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get){
+                                if(result.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource){
+                                  wmsUrl = result.Capability.Request.GetCapabilities.DCPType[0].HTTP.Get.OnlineResource;
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                var root = getChildLayers(result.Capability.Layer, wmsUrl,
                     $scope.map, result.version);
                 if (root) {
                   $scope.layers = root.Layer || [root];
@@ -165,7 +188,8 @@ goog.require('ga_wms_service');
           // Go through all layers, assign needed properties,
           // and remove useless layers (no name or bad crs without children
           // or no intersection between map extent and layer extent)
-          var getChildLayers = function(layer, map, wmsVersion) {
+          // INGRID: Add 'wmsUrl'
+          var getChildLayers = function(layer, wmsUrl, map, wmsVersion) {
 
             // If the WMS layer has no name, it can't be displayed
             if (!layer.Name) {
@@ -174,7 +198,8 @@ goog.require('ga_wms_service');
             }
 
             if (!layer.isInvalid) {
-              layer.wmsUrl = $scope.fileUrl;
+              // INGRID: Get WMS URL from response
+              layer.wmsUrl = wmsUrl ? wmsUrl : $scope.fileUrl;
               layer.wmsVersion = wmsVersion;
               // INGRID: Add layer WMS version
               layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name + '||' + layer.wmsVersion;
@@ -199,7 +224,8 @@ goog.require('ga_wms_service');
             if (layer.Layer) {
 
               for (var i = 0; i < layer.Layer.length; i++) {
-                var l = getChildLayers(layer.Layer[i], map, wmsVersion);
+                // INGRID: Add 'wmsUrl'
+                var l = getChildLayers(layer.Layer[i], wmsUrl, map, wmsVersion);
                 if (!l) {
                   layer.Layer.splice(i, 1);
                   i--;

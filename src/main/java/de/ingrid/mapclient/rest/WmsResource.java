@@ -64,6 +64,7 @@ import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.iplug.opensearch.communication.OSCommunication;
 import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -187,7 +188,7 @@ public class WmsResource {
                     if(layerSplit[4] != null){
                         wmsVersion = layerSplit[4];
                     }
-                    wmsURL = wmsHost + "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion;
+                    wmsURL = Utils.checkWMSUrl(wmsHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
                 }
             }else {
                 // Intern WMS
@@ -200,7 +201,7 @@ public class WmsResource {
                         if(wmsHost.indexOf("?") == -1){
                             wmsHost = wmsHost + "?";
                         }
-                        wmsURL = wmsHost + "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version");
+                        wmsURL = Utils.checkWMSUrl(wmsHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version"));
                         if(jsonLayer.has("legendUrl")){
                             wmsLegend = jsonLayer.getString("legendUrl");
                         }

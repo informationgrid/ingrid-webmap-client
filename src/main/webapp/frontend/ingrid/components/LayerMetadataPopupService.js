@@ -39,7 +39,8 @@ goog.require('ga_wms_service');
             if(id == undefined){
               id = layer.id;
             }
-            promise = gaLayers.getMetaDataOfLayerWithLegend(id, encodeURIComponent(gaWms.getLegendURL(layer)));
+            // INGRID: Encode id
+            promise = gaLayers.getMetaDataOfLayerWithLegend(encodeURIComponent(id), encodeURIComponent(gaWms.getLegendURL(layer)));
             return promise.then(function(resp) {
               // INGRID: Add replaces to localisation html.
               var data = resp.data;
