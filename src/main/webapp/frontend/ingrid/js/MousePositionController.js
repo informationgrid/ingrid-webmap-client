@@ -6,7 +6,8 @@ goog.provide('ga_mouseposition_controller');
   ]);
 
   module.controller('GaMousePositionController',
-      function($scope, $translate, $window) {
+      // INGRID: Add 'gaGlobalOptions'
+      function($scope, $translate, $window, gaGlobalOptions) {
         var coordinatesFormat = function(coordinates) {
           return $translate.instant('coordinates_label') + ': ' +
               ol.coordinate.toStringXY(coordinates, 0).
@@ -71,7 +72,8 @@ goog.provide('ga_mouseposition_controller');
         ];
 
         $scope.options = {
-          projection: $scope.mousePositionProjections[0]
+          // INGRID: Use mouse position projection by setting 
+          projection: gaGlobalOptions.defaultMousePositionIndex ? $scope.mousePositionProjections[gaGlobalOptions.defaultMousePositionIndex] : $scope.mousePositionProjections[0]
         };
 
       });

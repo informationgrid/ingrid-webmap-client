@@ -876,7 +876,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add print north arrow logo url
           printNorthArrow: settingPrintNorthArrow,
           // INGRID: Add use geodesic
-          useGeodesic: settingUseGeodesic ? settingUseGeodesic : true
+          useGeodesic: settingUseGeodesic ? settingUseGeodesic : true,
+          // INGRID: Add default mouse position
+          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {
