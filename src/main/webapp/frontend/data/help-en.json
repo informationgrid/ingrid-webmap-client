@@ -45,8 +45,8 @@
         "image": ""
     },
     "39": {
-        "title": "Datenbezug",
-        "text": "Die Daten, die im Kartenfenster angezeigt werden, können, falls vom entsprechenden BA vorgesehen direkt bei deisem bezogen werden. Über den info Knopf wird das Info Fenster zu einem ausgewähltem Datensatz geöffnet. Der Link Datenbezug führt zur jeweiligen Bezugsstelle.",
+        "title": "Buy data",
+        "text": "Raw data-sets for download can be obtained via the corresponding federal authority - depending on the licensing attributes. The link “Order data” will lead to the corresponding dowload/shop or web ressource.",
         "image": ""
     },
     "44": {
@@ -66,7 +66,7 @@
     },
     "66": {
         "title": "All \"draw/measure\" functions",
-        "text": "1- \u003ca href=\"//help.geo.admin.ch/?id=91&lang=en\" target=\"_self\"\u003eAdd \u003cb\u003esymbol\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n2- \u003ca href=\"//help.geo.admin.ch/?id=92&lang=en\" target=\"_self\"\u003eAdd \u003cb\u003etext\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n3- \u003ca href=\"//help.geo.admin.ch/?id=93&lang=en\" target=\"_self\"\u003eAdd \u003cb\u003eline / polygon\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n4- \u003ca href=\"//help.geo.admin.ch/?id=94&lang=en\" target=\"_self\"\u003e\u003cb\u003eMeasure\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n5- \u003ca href=\"//help.geo.admin.ch/?id=95&lang=en\" target=\"_self\"\u003e\u003cb\u003eShare\u003c/b\u003e drawing / KML\u003c/a\u003e",
+        "text": "1- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-1\" target=\"_self\"\u003eAdd \u003cb\u003esymbol\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n2- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-2\" target=\"_self\"\u003eAdd \u003cb\u003etext\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n3- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-3\" target=\"_self\"\u003eAdd \u003cb\u003eline / polygon\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n4- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-4\" target=\"_self\"\u003e\u003cb\u003eMeasure\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n5- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-5\" target=\"_self\"\u003e\u003cb\u003eShare\u003c/b\u003e drawing / KML\u003c/a\u003e",
         "image": ""
     },
     "68": {
