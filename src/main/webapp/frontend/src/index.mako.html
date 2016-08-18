@@ -419,8 +419,9 @@ itemscope itemtype="http://schema.org/WebApplication"
                   </a>
                 </li>
                 <li ng-show="!globals.is3dActive"><!-- Compare -->
+                  <!-- INGRID: Remove title -->
+                  <!-- data-original-title="{{'swipe_tooltip' | translate}}" -->
                   <a href=""  ng-click="globals.isSwipeActive = !globals.isSwipeActive"
-                     data-original-title="{{'swipe_tooltip' | translate}}"
                      class="ga-custom-tooltip" data-placement="bottom"
                      accesskey="c">
                     <span ng-class="{'selected': globals.isSwipeActive}" translate>swipe</span>
