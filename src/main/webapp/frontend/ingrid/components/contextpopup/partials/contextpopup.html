@@ -5,8 +5,49 @@
     <button type="button" class="ga-icon ga-btn fa fa-remove" title="{{titleClose}}" ng-click="hidePopover()"></button>
   </div>
   <div class="popover-content">
+    <table ng-if="showBWaLocator() == false" >
+      <tbody>
+        <tr>
+          <td>Mercator</td>
+          <td>{{coordDefault}}</td>
+        </tr>
+        <tr>
+          <td>WGS 84 (Breite/Länge)</td>
+          <td>{{coord4326}}</td>
+        </tr>
+        <tr>
+          <td>GK2</td>
+          <td>{{coord31466}}</td>
+        </tr>
+        <tr>
+          <td>GK3</td>
+          <td>{{coord31467}}</td>
+        </tr>
+        <tr>
+          <td>GK4</td>
+          <td>{{coord31468}}</td>
+        </tr>
+        <tr>
+          <td>GK5</td>
+          <td>{{coord31469}}</td>
+        </tr>
+        <tr>
+          <td>UTM 32N (East/North)</td>
+          <td>{{coord25832}}</td>
+        </tr>
+        <tr>
+          <td>UTM 33N (East/North)</td>
+          <td>{{coord25833}}</td>
+        </tr>
+        <tr ng-if="showQR()">
+          <td align="center" colspan="2">
+            <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <!-- INGRID: New layout for context popup -->
-    <div class="tabbable">
+    <div ng-if="showBWaLocator()"  class="tabbable">
       <ul class="nav nav-tabs">
         <li ng-class="getTabClass(1)">
           <a ng-click="activeTab(1)" translate>context_title_coords</a>
@@ -59,7 +100,7 @@
             </tbody>
           </table>
         </div>
-        <div class="tab-pane" ng-class="getTabClass(2)">
+        <div ng-if="options.bwaLocatorUrl != undefined" class="tab-pane" ng-class="getTabClass(2)">
           <table>
             <tbody>
               <tr ng-if="bwastr_id != undefined">

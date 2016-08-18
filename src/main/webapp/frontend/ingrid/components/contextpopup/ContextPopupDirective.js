@@ -59,7 +59,15 @@ goog.require('ga_permalink');
             scope.showQR = function() {
               return !gaBrowserSniffer.mobile && !gaNetworkStatus.offline;
             };
-
+            
+            // INGRID: Add 'showBWaStrLocator'
+            scope.showBWaLocator = function() {
+                if(gaGlobalOptions.searchBwaLocatorStationUrl){
+                    return true;
+                }
+                return false;
+            };
+            
             var formatCoordinates = function(coord, prec, ignoreThousand) {
               var fCoord = ol.coordinate.toStringXY(coord, prec);
               if (!ignoreThousand) {
@@ -200,7 +208,9 @@ goog.require('ga_permalink');
               updatePopupLinks();
 
               // INGRID: Add get 'BWaStrLocator' data
-              getBWaLocatorData();
+              if(gaGlobalOptions.searchBwaLocatorStationUrl){
+                  getBWaLocatorData();
+              }
               
               view.once('change:center', function() {
                 hidePopover();
