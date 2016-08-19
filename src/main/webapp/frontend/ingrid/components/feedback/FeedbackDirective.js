@@ -138,11 +138,13 @@ goog.require('ga_permalink');
                 }
               });
 
-              scope.permalinkValue = gaPermalink.getHref();
+              // INGRID: Add params
+              scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
 
               // Listen to permalink change events from the scope.
               scope.$on('gaPermalinkChange', function(event) {
-                scope.permalinkValue = gaPermalink.getHref();
+                // INGRID: Add params
+                scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
               });
 
               scope.$on('gaDrawingLayer', function(event, data) {
