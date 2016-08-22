@@ -750,6 +750,7 @@ goog.require('ga_time_service');
           dpi: getDpi($scope.layout.name, $scope.dpi),
           layers: encLayers,
           legends: encLegends,
+          legendTitle: $translate.instant('legend'),
           enableLegends: (encLegends && encLegends.length > 0),
           qrcodeurl: qrcodeUrl,
           movie: movieprint,
