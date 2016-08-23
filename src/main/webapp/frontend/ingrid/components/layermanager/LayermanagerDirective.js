@@ -306,7 +306,12 @@ goog.require('ga_urlutils_service');
 // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
           if(layer.type == "KML"){
-            map.getView().fit(layer.getSource().getExtent(), map.getSize()); 
+            if(layer.getSource()){
+              var extent = gaMapUtils.getVectorSourceExtent(layer.getSource());
+              if(extent){
+                map.getView().fit(extent, map.getSize());
+              }
+            }
           }else{
             gaMapUtils.zoomToExtent(map, undefined, layer.extent);
           }
