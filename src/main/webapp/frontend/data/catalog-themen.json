@@ -10,7 +10,26 @@
                 "selectedOpen": false,
                 "label": "Geobasisdaten",
                 "id": 2,
-                "children": []
+                "children": [{
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "label": "DTK250 Layers",
+                    "id": 1392,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DTK250 Farbe",
+                        "layerBodId": "wms_dtk250_dtk250",
+                        "id": 1393
+                    },{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DTK250 Grau",
+                        "layerBodId": "wms_dtk250_dtk250_grau",
+                        "id": 1394
+                    }]
+                }]
             },
             {
                 "category": "cat70",
@@ -9174,5 +9193,5 @@
             }]
         }
     },
-    "last_id": 1391
+    "last_id": 1394
 }
