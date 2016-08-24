@@ -10,18 +10,19 @@ Folgende Dateien im JSON-Format müssen vorhanden sein:
 
 - layers.json 
 - catalogs.json
-- catalog-<TOPICS-ID>.json 
+- catalog-[TOPIC-ID].json 
 
 Daten-Struktur
 ----------
 
 ## Layer (layers.json)
 
-Die JSON-Datei 'layers.json' listet alle Karten-Layers im MapClient auf, d.h. Basis-Layers für den Mapclient und Layers, die ggfs. einer Rubrik zugeordnet sind.
+Die JSON-Datei 'layers.json' listet alle Karten-Layer im MapClient auf, d.h. Grundkarten-Layer für den Mapclient und Layer, die ggfs. einer Rubrik zugeordnet sind.
 
 Die Struktur des JSON-Formats sieht folgendermaßen aus:
 
     {
+    // Eindeutige ID des Layers
         "webatlasde_light": {
         // URL des Layers
             "wmsUrl": "http://sg.geodatenzentrum.de/wms_webatlasde.light?",
@@ -100,11 +101,11 @@ In der Datei 'catalogs.json' werden alle vorhanden Rubriken definiert. Die Defin
         ]
     }
 
-## Rubrik (catalog-<TOPIC-ID>.json)
+## Rubrik (catalog-[TOPIC-ID].json)
 
 Zu jeder definierten Rubrik unter 'catalogs.json' muss eine weitere JSON-Datei erstellt werden. Von der Benennung der Datei muss diese folgende Syntax vorweisen:
 
-    catalog-<TOPIC-ID>.json
+    catalog-[TOPIC-ID].json
 
 In der erstellten Datei wird die Struktur der Rubrik im JSON-Format hinterlegt. Wie der Inhalt des JSON-Formats aussehen kann, zeigt folgendes Beispiel:
 
@@ -115,7 +116,7 @@ In der erstellten Datei wird die Struktur der Rubrik im JSON-Format hinterlegt. 
                 "category": "root",
             // WIRD NICHT BEI INGRID VERWENDET
                 "staging": "prod",
-            
+            // Eindeutige ID eines Knotens
                 "id": 1,
             // Definition von Unterknoten
                 "children": [{
@@ -127,7 +128,7 @@ In der erstellten Datei wird die Struktur der Rubrik im JSON-Format hinterlegt. 
                     "selectedOpen": false,
                 // Titel des Knotens
                     "label": "Geobasisdaten",
-                // Eindeutige und einmalige Rubrik-Knoten ID, erweitert URL-Parameter 'catalogNodes' (Wiederherstellung Knoten-Status)
+                // Eindeutige und einmalige Rubrik-Knoten ID, erweitert URL-Parameter 'catalogNodes' (Wiederherstellung des Knoten-Status)
                     "id": 2, 
                 // Definition von Unterknoten
                     "children": [{
@@ -167,4 +168,8 @@ In der erstellten Datei wird die Struktur der Rubrik im JSON-Format hinterlegt. 
             }
         }
     }
+
+Zu beachten ist: 
+
+Hat ein Knoten die Eigenschaft "layerBodId", so handelt es sich um einen darstellenden Layer-Knoten, ansonsten wird es als Struktur-Knoten dargestellt (ohne Checkbox).
 
