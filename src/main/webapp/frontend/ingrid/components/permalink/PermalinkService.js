@@ -132,7 +132,18 @@ goog.require('ga_urlutils_service');
         // INGRID: Get params from window parent
         var locSearch = loc.search;
         if(window.parent.urlParams){
-            locSearch = window.parent.urlParams;
+            if(locSearch.startsWith("?")){
+                locSearch = locSearch.replace("?", "");
+            }
+            if(locSearch.startsWith("&")){
+                locSearch = locSearch.replace("&", "");
+            }
+            if(window.parent.urlParams.endsWith("&") == false){
+                locSearch = window.parent.urlParams + "&" + locSearch;
+            }else {
+                locSearch = window.parent.urlParams + "" + locSearch;
+            }
+            
         }
         var permalink = new Permalink(
             base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
