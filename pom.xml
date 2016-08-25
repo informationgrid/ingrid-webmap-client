@@ -83,6 +83,7 @@
                         <exclude>**/*.sql</exclude>
                         <exclude>**/*.xml</exclude>
                         <exclude>**/*.js</exclude>
+                        <exclude>**/*.jsp</exclude>
                         <exclude>**/*.html</exclude>
                         <exclude>**/*.less</exclude>
                         <exclude>**/*.yaml</exclude>
