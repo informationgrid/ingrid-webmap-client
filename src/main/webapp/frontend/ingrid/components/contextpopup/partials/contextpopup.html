@@ -1,0 +1,143 @@
+<div class="popover bottom">
+  <div class="arrow"></div>
+  <div class="popover-title">
+    <span translate>position</span>
+    <button type="button" class="ga-icon ga-btn fa fa-remove" title="{{titleClose}}" ng-click="hidePopover()"></button>
+  </div>
+  <div class="popover-content">
+    <table ng-if="showBWaLocator() == false" >
+      <tbody>
+        <tr>
+          <td>Mercator</td>
+          <td>{{coordDefault}}</td>
+        </tr>
+        <tr>
+          <td>WGS 84 (Breite/Länge)</td>
+          <td>{{coord4326}}</td>
+        </tr>
+        <tr>
+          <td>GK2</td>
+          <td>{{coord31466}}</td>
+        </tr>
+        <tr>
+          <td>GK3</td>
+          <td>{{coord31467}}</td>
+        </tr>
+        <tr>
+          <td>GK4</td>
+          <td>{{coord31468}}</td>
+        </tr>
+        <tr>
+          <td>GK5</td>
+          <td>{{coord31469}}</td>
+        </tr>
+        <tr>
+          <td>UTM 32N (East/North)</td>
+          <td>{{coord25832}}</td>
+        </tr>
+        <tr>
+          <td>UTM 33N (East/North)</td>
+          <td>{{coord25833}}</td>
+        </tr>
+        <tr ng-if="showQR()">
+          <td align="center" colspan="2">
+            <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- INGRID: New layout for context popup -->
+    <div ng-if="showBWaLocator()"  class="tabbable">
+      <ul class="nav nav-tabs">
+        <li ng-class="getTabClass(1)">
+          <a ng-click="activeTab(1)" translate>context_title_coords</a>
+        </li>
+        <li ng-class="getTabClass(2)">
+          <a ng-click="activeTab(2)" translate>context_title_bwalocator</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane" ng-class="getTabClass(1)">
+          <table>
+            <tbody>
+              <tr>
+                <td>Mercator</td>
+                <td>{{coordDefault}}</td>
+              </tr>
+              <tr>
+                <td>WGS 84 (Breite/Länge)</td>
+                <td>{{coord4326}}</td>
+              </tr>
+              <tr>
+                <td>GK2</td>
+                <td>{{coord31466}}</td>
+              </tr>
+              <tr>
+                <td>GK3</td>
+                <td>{{coord31467}}</td>
+              </tr>
+              <tr>
+                <td>GK4</td>
+                <td>{{coord31468}}</td>
+              </tr>
+              <tr>
+                <td>GK5</td>
+                <td>{{coord31469}}</td>
+              </tr>
+              <tr>
+                <td>UTM 32N (East/North)</td>
+                <td>{{coord25832}}</td>
+              </tr>
+              <tr>
+                <td>UTM 33N (East/North)</td>
+                <td>{{coord25833}}</td>
+              </tr>
+              <tr ng-if="showQR()">
+                <td align="center" colspan="2">
+                  <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div ng-if="options.bwaLocatorUrl != undefined" class="tab-pane" ng-class="getTabClass(2)">
+          <table>
+            <tbody>
+              <tr ng-if="bwastr_id != undefined">
+                <td>BWaStr-IdNr:</td>
+                <td>{{bwastr_id}}</td>
+              </tr>
+              <tr ng-if="bwastr_name != undefined">
+                <td>BWaStr-Bezeichnung:</td>
+                <td>{{bwastr_name}}</td>
+              </tr>
+              <tr ng-if="bwastr_typ != undefined">
+                <td>Streckenbezeichnung:</td>
+                <td>{{bwastr_typ}}</td>
+              </tr>
+              <tr ng-if="bwastr_lon != undefined">
+                <td>Länge [Dezimalgrad]:</td>
+                <td>{{bwastr_lon}}</td>
+              </tr>
+              <tr ng-if="bwastr_lat != undefined">
+                <td>Breite [Dezimalgrad]:</td>
+                <td>{{bwastr_lat}}</td>
+              </tr>
+              <tr ng-if="bwastr_km != undefined">
+                <td>Station:</td>
+                <td>{{bwastr_km}} km</td>
+              </tr>
+              <tr ng-if="bwastr_distance != undefined">
+                <td>Abstand:</td>
+                <td>{{bwastr_distance}} m</td>
+              </tr>
+              <tr ng-if="bwastr_error != undefined" colspan="2">
+                <td>{{bwastr_error}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

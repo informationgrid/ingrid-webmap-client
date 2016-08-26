@@ -1,0 +1,250 @@
+[ga-background-selector] {
+  .user-select(none);
+
+  .ga-bg-layer-bt, .ga-bg-layer, .ga-bg-layer-bt-close {
+    bottom: unit(@bt-bottom, px);
+    overflow: hidden;
+    cursor: pointer;
+    position: absolute; 
+    background: #fff data-uri('bg-layersx2.jpg') no-repeat 0 center;
+    background-size: 275px 58px;
+    border: 3px solid;
+    .transition-transform(~".5s,  bottom .5s, width .5s");
+
+    @media (max-width: @screen-tablet) {
+      bottom: unit(@bt-bottom-sm, px);
+    }
+  }
+
+  .ga-bg-layer:hover, .ga-bg-highlight {
+    border-color: red !important;
+    cursor: normal;
+  }
+
+  .ga-bg-layer-bt {
+    z-index: 1005;
+  }
+
+  .ga-bg-layer-0 {
+    z-index: 1004;
+  }
+  .ga-bg-layer-1 {
+    z-index: 1003;
+  }
+
+  .ga-bg-layer-2 {
+    z-index: 1002;
+  }
+
+  .ga-bg-layer-3 {
+    z-index: 1001;
+  }
+
+  .ga-bg-layer-text, .ga-bg-layer-bt-text {
+    padding: 1px;
+    font-size: 75%;
+    text-align: center;
+  }
+   
+  .ga-bg-layer-text {
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  .ga-bg-layer-bt-text {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  &.ga-bg-mobile {
+
+    .ga-bg-layer-bt, .ga-bg-layer {
+      left: unit(@control-btns-right, px);
+    }
+
+    .ga-bg-layer {
+      &:active {
+        border-color: red;
+      }
+    }
+
+    .ga-bg-layer-bt {
+      border-width: 8px;
+
+      &:active {
+        .scale(1.2);
+      }
+    }
+
+    .ga-bg-layer-bt, .ga-bg-layer {
+      width: unit(@control-btn-size - 2, px);
+      height: unit(@control-btn-size - 2, px);
+      border-radius: 21px;
+      margin: 1px;
+    }
+
+    .ga-pixelkarte-grau {
+      background-position: -118px center;
+    }
+
+    .ga-pixelkarte-farbe {
+      background-position: -210px center;
+    }
+
+    .ga-osmLayer {
+      background-image: data-uri("ga-osmLayer.png");
+      background-size: 38px 38px;
+    }
+    
+    .ga-webatlasde_light {
+      background-image: data-uri("ga-light.png");
+      background-size: 38px 38px;
+    }
+    
+    .ga-webatlasde_grau {
+      background-image: data-uri("ga-light-grau.png");
+      background-size: 38px 38px;
+    }
+
+    &.ga-open {
+
+      .ga-swissimage {
+        .translate3d(0, -49px, 0);
+        -ms-transform: translateY(-49px); /* IE 9*/
+      }
+
+      .ga-pixelkarte-farbe {
+        .translate3d(0, -98px, 0);
+        -ms-transform: translateY(-98px); /* IE 9*/
+      }
+
+      .ga-pixelkarte-grau {
+        .translate3d(0, -147px, 0);
+        -ms-transform: translateY(-147px); /* IE 9*/
+      }
+
+      .ga-voidLayer {
+        .translate3d(0, -196px, 0);
+        -ms-transform: translateY(-196px); /* IE 9*/
+      }
+      
+      .ga-osmLayer {
+        .translate3d(0, -49px, 0);
+        -ms-transform: translateY(-49px); /* IE 9*/
+      }
+    
+      .ga-webatlasde_light {
+        .translate3d(0, -98px, 0);
+        -ms-transform: translateY(-98px); /* IE 9*/
+      }
+    
+      .ga-webatlasde_grau {
+        .translate3d(0, -147px, 0);
+        -ms-transform: translateY(-147px); /* IE 9*/
+      }
+      
+    }
+  }
+
+  &.ga-bg-desktop {
+    
+    .fa-chevron-sign-right {
+      line-height: 64px;
+      text-align: center;
+      display: none;
+    }
+
+    .ga-bg-layer, .ga-bg-layer-bt {
+      width: 96px;
+      height: 64px;
+      right: unit(@control-btns-right, px);
+      border-color: white;
+    }
+
+    .ga-pixelkarte-farbe {
+      background-position: -185px 0;
+    }
+
+    .ga-pixelkarte-grau {
+      background-position: -92px 0;
+    }
+
+    .ga-osmLayer {
+      background-image: data-uri("ga-osmLayer.png");
+      background-size: 90px 58px;
+    }
+    
+    .ga-webatlasde_light {
+      background-image: data-uri("ga-light.png");
+      background-size: 90px 58px;
+    }
+    
+    .ga-webatlasde_grau {
+      background-image: data-uri("ga-light-grau.png");
+      background-size: 90px 58px;
+    }
+
+    &.ga-open {
+
+      .ga-bg-layer-bt {
+        width: 20px;
+        background-image: none;
+
+        .ga-bg-layer-bt-text {
+          display: none;
+        }
+
+        .fa-chevron-sign-right {
+          display: block;
+        }
+      }
+
+      .ga-swissimage {
+        .translate3d(-25px, 0 , 0);
+        -ms-transform: translateX(-25px); /* IE 9*/
+      }
+
+      .ga-pixelkarte-farbe {
+        .translate3d(-126px, 0 , 0);
+        -ms-transform: translateX(-126px); /* IE 9*/
+      }
+
+      .ga-pixelkarte-grau {
+        .translate3d(-227px, 0 , 0);
+        -ms-transform: translateX(-227px); /* IE 9*/
+      }
+
+      .ga-voidLayer {
+        .translate3d(-328px, 0 , 0);
+         -ms-transform: translateX(-328px); /* IE 9*/
+      }
+
+      .ga-osmLayer {
+        .translate3d(-25px, 0 , 0);
+        -ms-transform: translateX(-25px); /* IE 9*/
+      }
+    
+
+      .ga-webatlasde_light {
+        .translate3d(-126px, 0 , 0);
+        -ms-transform: translateX(-126px); /* IE 9*/
+      }
+    
+      .ga-webatlasde_grau {
+        .translate3d(-227px, 0 , 0);
+        -ms-transform: translateX(-227px); /* IE 9*/
+      }
+    }
+  }
+}
+
+.ga-3d-active {
+
+  [ga-background-selector] {
+
+    .ga-disable3d {
+      cursor: not-allowed;
+      border-color: gray !important;
+      color: gray;
+    }
+  }
+}

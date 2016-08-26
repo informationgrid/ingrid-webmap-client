@@ -24,10 +24,10 @@ package de.ingrid.mapclient.rest;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Writer;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -41,126 +41,267 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonWriter;
-
 import de.ingrid.iplug.opensearch.communication.OSCommunication;
-import de.ingrid.mapclient.ConfigurationProvider;
-import de.ingrid.mapclient.model.WmsServer;
-
-
-
-
-
 
 @Path("/search")
 public class SearchResource {
 
-	
-	private static final Logger log = Logger.getLogger(SearchResource.class);
-	
-	/**
-	 * Path to search term
-	 */
-	private static final String SEARCH_PATH = "query";
-	
-	@GET
-	@Path(SEARCH_PATH)
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response search(@QueryParam("searchTerm") String searchTerm, @QueryParam("json_callback") String jsonCallback) {
-		//get the opensearch url through the application properties file
-		String OSUrl = ConfigurationProvider.INSTANCE.getOpensearchUrl();
-		InputStream result = null;
-		searchTerm = searchTerm.trim();
-		searchTerm = searchTerm.replaceAll("\\s", "+");
-		try {
-		    searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
-		} catch (Exception e) {
-		    log.error("Error url encoding seach term: " + searchTerm, e);
-		}
-		//some logic borrowed from the opensearch iplug
-		//we open a stream though this module 
-		//the rest is basically simple xml parsing of the result 
-		//into a json string which gets to the mapclient through the 
-		//response
-		OSCommunication comm = new OSCommunication();
-		String url = OSUrl.replace("{query}", searchTerm); 
-		result = comm.sendRequest(url);
-		Document doc = null;
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		NodeList nodesTitles = null;
-		NodeList nodesWmsUrls = null;
-		List<WmsServer> services = new ArrayList<WmsServer>();
-		try {
-			doc = getDocumentFromStream(result);
-			nodesTitles = (NodeList) xpath.evaluate("/rss/channel/item/title",
-					doc, XPathConstants.NODESET);
-			nodesWmsUrls = (NodeList) xpath.evaluate(
-					"/rss/channel/item/wms-url", doc, XPathConstants.NODESET);
-			for (int i = 0; i < nodesTitles.getLength(); i++) {
-				if(nodesTitles.item(i) != null && nodesWmsUrls.item(i) != null){
-					WmsServer wmsServer = new WmsServer(nodesTitles.item(i).getTextContent(), 
-							nodesWmsUrls.item(i).getTextContent().replace("&amp;", "&"));
-					services.add(wmsServer);
-				}
-			}
-		} catch (XPathExpressionException e) {
-			log.error("Error while parsing the InputStream!");
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			log.error("Error while parsing the InputStream!");
-			e.printStackTrace();
-		} catch (SAXException e) {
-			log.error("Error while parsing the InputStream!");
-			e.printStackTrace();
-		} catch (IOException e) {
-			log.error("Error while performing xpath.evaluate on a document!");
-			e.printStackTrace();
-		}
+    private static final Logger log = Logger.getLogger( SearchResource.class );
+    /**
+     * Path to search term
+     */
+    private static final String SEARCH_PATH = "query";
 
-		comm.releaseConnection();
-		XStream xstream = new XStream(new JsonHierarchicalStreamDriver() {
-			@Override
-			public HierarchicalStreamWriter createWriter(Writer writer) {
-				return new JsonWriter(writer, JsonWriter.DROP_ROOT_MODE);
-			}
-		});
-		
-		String json = xstream.toXML(services);
-		if(jsonCallback != null){
-			if(json.indexOf(jsonCallback) < 0){
-				json  = jsonCallback + "("+json+")";
-			}
-		}
-		return Response.ok(json).build();
+    @GET
+    @Path(SEARCH_PATH)
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response search(@QueryParam("q") String searchTerm, @QueryParam("lang") String lang, @QueryParam("type") String type, @QueryParam("searchUrl") String searchUrl,
+            @QueryParam("searchUrlParams") String searchUrlParams) throws Exception {
+        searchTerm = searchTerm.trim();
 
-	}
-	/**
-	 * Create a parseable DOM-document of the InputStream, which should be XML/HTML.
-	 *  
-	 * @param result
-	 * @return
-	 * @throws ParserConfigurationException
-	 * @throws SAXException
-	 * @throws IOException
-	 */
-	private Document getDocumentFromStream(InputStream result)
-			throws ParserConfigurationException, SAXException, IOException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		//Document descriptorDoc = builder.parse(new InputSource(new InputStreamReader(result, "UTF8")));
-		Document descriptorDoc = builder.parse(result);
-		return descriptorDoc;
-	}
+        if (searchTerm.length() > 2) {
+            try {
+                searchTerm = URLEncoder.encode( searchTerm, "UTF-8" );
+            } catch (Exception e) {
+                log.error( "Error url encoding seach term: " + searchTerm, e );
+            }
+
+            if (type != null) {
+                if (type.indexOf( "locations" ) > -1) {
+                    JSONArray json = new JSONArray();
+                    URL questUrl;
+
+                    // Nominatim
+                    try {
+                        questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm.trim() ) ) );
+                        URLConnection con = questUrl.openConnection();
+                        InputStream in = con.getInputStream();
+                        String encoding = con.getContentEncoding();
+                        encoding = encoding == null ? "UTF-8" : encoding;
+
+                        String tmpJson = IOUtils.toString( in, encoding );
+                        JSONArray questJson = new JSONArray( tmpJson );
+                        for (int j = 0; j < questJson.length(); j++) {
+                            JSONObject questJsonEntry = questJson.getJSONObject( j );
+                            JSONObject newEntry = new JSONObject();
+                            newEntry.put( "id", questJsonEntry.get( "place_id" ) );
+                            newEntry.put( "weight", 7 );
+                            JSONObject newAttrs = new JSONObject();
+                            newAttrs.put( "origin", "gazetteer" );
+                            newAttrs.put( "label", questJsonEntry.get( "display_name" ) );
+                            newAttrs.put( "detail", questJsonEntry.get( "licence" ) );
+                            newAttrs.put( "rank", 6 );
+                            JSONArray bounding = (JSONArray) questJsonEntry.get( "boundingbox" );
+                            float minX = bounding.getInt( 2 );
+                            float minY = bounding.getInt( 0 );
+                            float maxX = bounding.getInt( 3 );
+                            float maxY = bounding.getInt( 1 );
+                            newAttrs.put( "geom_st_box2d", minX + " " + minY + " " + maxX + " " + maxY );
+                            newAttrs.put( "lon", questJsonEntry.get( "lon" ) );
+                            newAttrs.put( "lat", questJsonEntry.get( "lat" ) );
+                            newEntry.put( "attrs", newAttrs );
+                            json.put( newEntry );
+                        }
+                    } catch (Exception e) {}
+                    String responseStr = json.toString();
+                    if (json != null) {
+                        responseStr = "{\"results\":" + json + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                } else if (type.equals( "layers" )) {
+                    String url = searchUrl;
+                    URL questUrl;
+                    JSONArray json = new JSONArray();
+                    try {
+                        questUrl = new URL( url );
+                        URLConnection con = questUrl.openConnection();
+                        InputStream in = con.getInputStream();
+                        String encoding = con.getContentEncoding();
+                        encoding = encoding == null ? "UTF-8" : encoding;
+
+                        String tmpJson = IOUtils.toString( in, encoding );
+                        JSONObject questJson = new JSONObject( tmpJson );
+                        Iterator<?> keys = questJson.keys();
+
+                        while (keys.hasNext()) {
+                            String key = (String) keys.next();
+                            if (questJson.get( key ) instanceof JSONObject) {
+                                JSONObject questJsonEntry = (JSONObject) questJson.get( key );
+                                JSONObject newEntry = new JSONObject();
+                                String label = (String) questJsonEntry.get( "label" );
+                                boolean isSearchable = false;
+                                if(questJsonEntry.get( "searchable" ) != null){
+                                    isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                }
+                                if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
+                                    newEntry.put( "id", "" );
+                                    newEntry.put( "weight", 143 );
+                                    JSONObject newAttrs = new JSONObject();
+                                    newAttrs.put( "origin", "layer" );
+                                    newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
+                                    newAttrs.put( "label", label );
+                                    newAttrs.put( "detail", label );
+                                    newAttrs.put( "lang", "de" );
+                                    newAttrs.put( "staging", "prod" );
+                                    newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
+                                    newEntry.put( "attrs", newAttrs );
+                                    json.put( newEntry );
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.info( "Search service unreachable: " + url );
+                    }
+                    String responseStr = json.toString();
+                    if (json != null) {
+                        responseStr = "{\"results\":" + json + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                }else if(type.equals("services")){
+                    String osURL = searchUrl.replace( " ", "+" );
+                    JSONArray jsonArray = new JSONArray();
+                    InputStream result = null;
+                    
+                    searchTerm = searchTerm.trim();
+                    searchTerm = searchTerm.replaceAll("\\s", "+");
+                    try {
+                        searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+                    } catch (Exception e) {
+                        log.error("Error url encoding seach term: " + searchTerm, e);
+                    }
+                    //some logic borrowed from the opensearch iplug
+                    //we open a stream though this module 
+                    //the rest is basically simple xml parsing of the result 
+                    //into a json string which gets to the mapclient through the 
+                    //response
+                    OSCommunication comm = new OSCommunication();
+                    String url = osURL.replace("{query}", searchTerm); 
+                    result = comm.sendRequest(url);
+                    Document doc = null;
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    if(result != null){
+                        try {
+                            doc = getDocumentFromStream(result);
+                            if(doc != null){
+                                NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
+                                for (int i = 0; i < items.getLength(); i++) {
+                                    Node item = (Node) items.item( i );
+                                    NodeList tmp;
+                                    JSONObject newEntry = new JSONObject();
+                                    newEntry.put( "id", "" );
+                                    newEntry.put( "weight", 143 );
+                                    JSONObject newAttrs = new JSONObject();
+                                    newAttrs.put( "origin", "service" );
+                                    
+                                    tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
+                                    if(tmp.getLength() > 0){
+                                        newAttrs.put( "service", tmp.item(0).getTextContent() );
+                                    }
+                                    
+                                    newAttrs.put( "label", xpath.evaluate("./title", item ) );
+                                    newAttrs.put( "detail", xpath.evaluate("./description", item ) );
+                                    newAttrs.put( "link", xpath.evaluate("./link", item ) );
+                                    
+                                    tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
+                                    if(tmp.getLength() > 0){
+                                        newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
+                                    }
+                                    
+                                    newAttrs.put( "lang", "de" );
+                                    newAttrs.put( "staging", "prod" );
+                                    newEntry.put( "attrs", newAttrs );
+                                    jsonArray.put( newEntry );
+                                }
+                            }
+                        } catch (ParserConfigurationException e) {
+                            log.error("Error while parsing the InputStream!");
+                            e.printStackTrace();
+                        } catch (SAXException e) {
+                            log.error("Error while parsing the InputStream!");
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            log.error("Error while performing xpath.evaluate on a document!");
+                            e.printStackTrace();
+                        }
+                    }
+                    comm.releaseConnection();
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                }else if(type.equals("bwalocator")){
+                    JSONArray jsonArray = new JSONArray();
+                    URL questUrl;
+                    questUrl = new URL(searchUrl.concat("&searchterm="+URLEncoder.encode(searchTerm.trim())));
+                    URLConnection con = questUrl.openConnection();
+                    InputStream in = con.getInputStream();
+                    String encoding = con.getContentEncoding();
+                    encoding = encoding == null ? "UTF-8" : encoding;
+                    String tmpJson = IOUtils.toString(in, encoding);
+                    JSONObject questJsonResult = new JSONObject(tmpJson);
+                    if(questJsonResult != JSONObject.NULL){
+                        JSONArray questJson = questJsonResult.getJSONArray("result");
+                        
+                        for (int j=0; j < questJson.length(); j++) {
+                            JSONObject questJsonEntry = questJson.getJSONObject(j);
+                            JSONObject newEntry = new JSONObject();
+                            newEntry.put( "id", questJsonEntry.getString("bwastrid") );
+                            JSONObject newAttrs = new JSONObject();
+                            newAttrs.put("label", questJsonEntry.getString("concat_name"));
+                            newAttrs.put("qid", questJsonEntry.getString("qid"));
+                            newAttrs.put("bwastrid", questJsonEntry.getString("bwastrid"));
+                            newAttrs.put("bwastr_name", questJsonEntry.getString("bwastr_name"));
+                            newAttrs.put("strecken_name", questJsonEntry.getString("strecken_name"));
+                            newAttrs.put("concat_name", questJsonEntry.getString("concat_name"));
+                            newAttrs.put("km_von", questJsonEntry.getString("km_von"));
+                            newAttrs.put("km_bis", questJsonEntry.getString("km_bis"));
+                            newAttrs.put("priority", questJsonEntry.getString("priority"));
+                            newAttrs.put("fehlkilometer", questJsonEntry.getString("fehlkilometer"));
+                            newAttrs.put("fliessrichtung", questJsonEntry.getString("fliessrichtung"));
+                            newEntry.put( "attrs", newAttrs );
+                            jsonArray.put(newEntry);
+                        }
+                    }
+                    String responseStr = jsonArray.toString();
+                    if (jsonArray != null) {
+                        responseStr = "{\"results\":" + jsonArray + "}";
+                    }
+                    return Response.ok( responseStr ).build();
+                }
+            }
+        }
+        return Response.ok( "{\"results\":[]}" ).build();
+    }
+
+    /**
+     * Create a parseable DOM-document of the InputStream, which should be
+     * XML/HTML.
+     * 
+     * @param result
+     * @return
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     */
+    private Document getDocumentFromStream(InputStream result) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        // Document descriptorDoc = builder.parse(new InputSource(new
+        // InputStreamReader(result, "UTF8")));
+        Document descriptorDoc = builder.parse( result );
+        return descriptorDoc;
+    }
 }

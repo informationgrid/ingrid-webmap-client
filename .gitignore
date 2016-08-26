@@ -4,3 +4,6 @@
 /.classpath
 work
 /bin
+/src/main/java/de/ingrid/mapclient/ConvertConfig.java
+/mf-geoadmin3
+*.stackdump
