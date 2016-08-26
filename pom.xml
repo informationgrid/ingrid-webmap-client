@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
         <groupId>de.ingrid</groupId>
         <artifactId>ingrid-base-pom</artifactId>
@@ -126,43 +125,35 @@
                         <configuration>
                             <tasks>
                                 <echo>Copy mf-geoadmin 'src/components'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/components">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/components">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/components/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/img'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/img">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/img">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/img/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/js'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/js">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/js">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/js/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/lib'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/lib">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/lib">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/lib/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/locales'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/locales">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/locales">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/locales/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/style'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src/style">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/style">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/style/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'src/'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/src">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/" />
                                 </copy>
                                 <echo>Copy mf-geoadmin 'prd/'</echo>
-                                <copy
-                                    todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/prd/" />
                                 </copy>
                             </tasks>
