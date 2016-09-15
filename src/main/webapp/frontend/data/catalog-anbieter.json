@@ -5692,15 +5692,412 @@
                 "selectedOpen": false,
                 "label": "Nds. Landesbehörde für Straßenbau und Verkehr",
                 "id": 816,
-                "children": []
-            },
-            {
-                "category": "cat70",
-                "staging": "prod",
-                "selectedOpen": false,
-                "label": "Nds. Vermessungs- und Katasterverwaltung",
-                "id": 825,
-                "children": []
+                "children": [{
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1069,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_Viewservice_Strassenkarte-Nds",
+                        "layerBodId": "1757040403",
+                        "id": 1070,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Strassenkarte Niedersachsen - Grau",
+                            "layerBodId": "-988852808",
+                            "id": 1071
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Strassenkarte Niedersachsen - Farbe",
+                            "layerBodId": "-988852812",
+                            "id": 1072
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_Viewservice_Strassenkarte-Nds"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1073,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_SWIS-Sensoren",
+                        "layerBodId": "2078685041",
+                        "id": 1074,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "SWIS-Sensoren",
+                            "layerBodId": "-107561017",
+                            "id": 1075
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "SWIS-Sensoren-Name",
+                            "layerBodId": "-671345423",
+                            "id": 1076
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_SWIS-Sensoren"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1077,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_Flugplaetze-und-Rastanlagen",
+                        "layerBodId": "1777614678",
+                        "id": 1078,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Zuständigkeitsbereiche Luftverkehr NLSTBV",
+                            "layerBodId": "1424575452",
+                            "id": 1079
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Verkehrsflughafen",
+                            "layerBodId": "-1407532521",
+                            "id": 1080
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Verkehrslandeplatz",
+                            "layerBodId": "-1209927240",
+                            "id": 1081
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Sonderlandeplatz",
+                            "layerBodId": "1348685483",
+                            "id": 1082
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Segelfluggelaende",
+                            "layerBodId": "-1165503850",
+                            "id": 1083
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_Flugplaetze"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1084,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_Tank-und-Rastanlagen",
+                        "layerBodId": "1329270314",
+                        "id": 1085,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Tank- und Rastanlagen",
+                            "layerBodId": "540425008",
+                            "id": 1086
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_Tank-und-Rastanlagen"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1087,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_SVZ_Zaehlstellenbereiche_2005",
+                        "layerBodId": "-152073231",
+                        "id": 1088,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 L Fläche",
+                            "layerBodId": "-370512287",
+                            "id": 1089
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 B Fläche",
+                            "layerBodId": "1020631491",
+                            "id": 1090
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 A Fläche",
+                            "layerBodId": "639077799",
+                            "id": 1091
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 L Linie",
+                            "layerBodId": "-370637175",
+                            "id": 1092
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 B Linie",
+                            "layerBodId": "1020506603",
+                            "id": 1093
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 A Linie",
+                            "layerBodId": "638952911",
+                            "id": 1094
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Landesstraßen",
+                            "layerBodId": "-846794010",
+                            "id": 1095
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Bundesstraßen",
+                            "layerBodId": "-847072700",
+                            "id": 1096
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Autobahnen",
+                            "layerBodId": "1081053096",
+                            "id": 1097
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 L Beschriftung",
+                            "layerBodId": "-370402366",
+                            "id": 1098
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 B Beschriftung",
+                            "layerBodId": "1020741412",
+                            "id": 1099
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2005 A Beschriftung",
+                            "layerBodId": "639187720",
+                            "id": 1100
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_SVZ_Zaehlstellenbereiche_2005"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1101,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_SVZ_Zaehlstellenbereiche_2010",
+                        "layerBodId": "-152073205",
+                        "id": 1102,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 L Fläche",
+                            "layerBodId": "153392635",
+                            "id": 1103
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 B Fläche",
+                            "layerBodId": "1544536413",
+                            "id": 1104
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 A Fläche",
+                            "layerBodId": "-175306035",
+                            "id": 1105
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 L Linie",
+                            "layerBodId": "153267747",
+                            "id": 1106
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 B Linie",
+                            "layerBodId": "1544411525",
+                            "id": 1107
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 A Linie",
+                            "layerBodId": "-175430923",
+                            "id": 1108
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Landesstraßen",
+                            "layerBodId": "-846794010",
+                            "id": 1109
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Bundesstraßen",
+                            "layerBodId": "-847072700",
+                            "id": 1110
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Autobahnen",
+                            "layerBodId": "1081053096",
+                            "id": 1111
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 L SV Beschriftung",
+                            "layerBodId": "-580073013",
+                            "id": 1112
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 L Beschriftung",
+                            "layerBodId": "-1077452456",
+                            "id": 1113
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 B SV Beschriftung",
+                            "layerBodId": "-404288855",
+                            "id": 1114
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 B Beschriftung",
+                            "layerBodId": "313691322",
+                            "id": 1115
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 A SV Beschriftung",
+                            "layerBodId": "-1876385161",
+                            "id": 1116
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTV 2010 A Beschriftung",
+                            "layerBodId": "-1739372402",
+                            "id": 1117
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_SVZ_Zaehlstellenbereiche_2010"
+                },
+                {
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1118,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DE-NI-SBV_INSPIRE_Viewservice_Dienststellen-SBV",
+                        "layerBodId": "-163337843",
+                        "id": 1119,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Regionale Geschäftsbereiche",
+                            "layerBodId": "1081036882",
+                            "id": 1120
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Straßenmeistereien",
+                            "layerBodId": "727608853",
+                            "id": 1121
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Autobahnmeistereien",
+                            "layerBodId": "727608295",
+                            "id": 1122
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "RGB-Standorte",
+                            "layerBodId": "-2107901795",
+                            "id": 1123
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "SM-Standorte",
+                            "layerBodId": "-899280790",
+                            "id": 1124
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "AM-Standorte",
+                            "layerBodId": "-899281348",
+                            "id": 1125
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Sonstige Standorte",
+                            "layerBodId": "-169342780",
+                            "id": 1126
+                        }]
+                    }],
+                    "label": "DE-NI-SBV_INSPIRE_Viewservice_Dienststellen-SBV"
+                }]
             },
             {
                 "category": "cat70",
@@ -7325,9 +7722,250 @@
                 "selectedOpen": false,
                 "label": "Nds. Ministerium für Ernährung, Landwirtschaft und Verbraucherschutz",
                 "id": 1062,
-                "children": []
+                "children": [{
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1131,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "Root",
+                        "id": 1132,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Energieatlas",
+                            "id": 1133,
+                            "children": [{
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "Biogasanlagen",
+                                "layerBodId": "-294709899",
+                                "id": 1134
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "Windenergieanlagen",
+                                "layerBodId": "501903217",
+                                "id": 1135
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "Vorranggebiete Windenergienutzung",
+                                "layerBodId": "1265297300",
+                                "id": 1136
+                            }]
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Root theme",
+                            "id": 1137,
+                            "children": [{
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "Webatlas DE grau",
+                                "layerBodId": "-1665987170",
+                                "id": 1138
+                            }]
+                        }]
+                    }],
+                    "label": "Energieatlas WMS"
+                }]
+            },
+            {
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
+                "label": "Nds. Kataster- und Vermessungsverwaltung",
+                "id": 1139,
+                "children": [{
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "id": 1140,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "LGLN-Bestand",
+                        "layerBodId": "933857530",
+                        "id": 1141,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Übersichtskarten",
+                            "layerBodId": "489163562",
+                            "id": 1142,
+                            "children": [{
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "UKN 5.000",
+                                "layerBodId": "1505007816",
+                                "id": 1143
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "UKN 2.500",
+                                "layerBodId": "464705178",
+                                "id": 1144
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "DÜKN1000",
+                                "layerBodId": "-2045006908",
+                                "id": 1145
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "DÜKN500",
+                                "layerBodId": "-319336250",
+                                "id": 1146
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "DTK100V BKG",
+                                "layerBodId": "2042611245",
+                                "id": 1147
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "DTK100V",
+                                "layerBodId": "-1539444626",
+                                "id": 1148
+                            },
+                            {
+                                "category": "layer",
+                                "staging": "prod",
+                                "label": "DTK100",
+                                "layerBodId": "-1789309449",
+                                "id": 1149
+                            }]
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK100-V BKG Bestand",
+                            "layerBodId": "2042611240",
+                            "id": 1150
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK100-V Bestand",
+                            "layerBodId": "-1539444631",
+                            "id": 1151
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK100 Bestand",
+                            "layerBodId": "-1789309454",
+                            "id": 1152
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK50-V BKG Bestand",
+                            "layerBodId": "-2130143914",
+                            "id": 1153
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK50-V Bestand",
+                            "layerBodId": "481920663",
+                            "id": 1154
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK50 Bestand",
+                            "layerBodId": "-1165977696",
+                            "id": 1155
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK25-V BKG Bestand",
+                            "layerBodId": "-1987941122",
+                            "id": 1156
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "TK25 - Blattschnitte - Bestand",
+                            "layerBodId": "1380277238",
+                            "id": 1157
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DTK25 Bestand",
+                            "layerBodId": "-1166062264",
+                            "id": 1158
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Preußische Landesaufnahme Bestand",
+                            "layerBodId": "1266684155",
+                            "id": 1159
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DSK10 Bestand",
+                            "layerBodId": "-1194726011",
+                            "id": 1160
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DGK5 Bestand",
+                            "layerBodId": "-1538103804",
+                            "id": 1161
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "AK5 Bestand",
+                            "layerBodId": "-1081396299",
+                            "id": 1162
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "DOP Bestand",
+                            "layerBodId": "-1078449873",
+                            "id": 1163
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Landkreisgrenzen",
+                            "layerBodId": "972798719",
+                            "id": 1164
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Gemeindegrenzen",
+                            "layerBodId": "-1617003593",
+                            "id": 1165
+                        }]
+                    }],
+                    "label": "LGLN-Bestand"
+                }]
             }]
         }
     },
-    "last_id": 1063
+    "last_id": 1165
 }
