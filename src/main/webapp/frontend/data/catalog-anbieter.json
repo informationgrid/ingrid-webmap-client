@@ -7964,8 +7964,35 @@
                     }],
                     "label": "LGLN-Bestand"
                 }]
+            },
+            {
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
+                "label": "Bundesamt für Kartographie und Geodäsie",
+                "id": 1166,
+                "children": [{
+                    "category": "cat71",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "label": "Digitale Topographische Karte 1 : 250.000",
+                    "id": 1167,
+                    "children": [{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DTK250 Farbe",
+                        "layerBodId": "wms_dtk250_dtk250",
+                        "id": 1168
+                    },{
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "DTK250 Grau",
+                        "layerBodId": "wms_dtk250_dtk250_grau",
+                        "id": 1169
+                    }]
+                }]
             }]
         }
     },
-    "last_id": 1165
+    "last_id": 1169
 }
