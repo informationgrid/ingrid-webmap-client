@@ -414,9 +414,11 @@ goog.require('ga_urlutils_service');
         // Returns a unique WMS template url (e.g. //wms{s}.geo.admin.ch)
         var getWmsTpl = function(wmsUrl, wmsParams) {
           var tpl = wmsUrl;
+          /* INGRID: Remove check of URL
           if (/wms.geo/.test(wmsUrl)) {
             tpl = undefined;
           }
+          */
           if (tpl && /(request|service|version)/i.test(tpl)) {
             tpl = gaUrlUtils.remove(tpl, ['request', 'service', 'version'],
                 true);
