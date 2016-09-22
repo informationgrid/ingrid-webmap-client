@@ -336,7 +336,8 @@ goog.require('ga_urlutils_service');
              layer: params.LAYERS,
              style: params.style || 'default',
              service: 'WMS',
-             version: params.version || '1.3.0',
+             // INGRID: Add 'params.VERSION'
+             version: params.version || params.VERSION || '1.3.0',
              format: 'image/png',
              sld_version: '1.1.0'
            }));
