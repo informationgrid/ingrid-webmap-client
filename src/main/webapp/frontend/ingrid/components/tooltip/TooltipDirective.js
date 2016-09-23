@@ -72,7 +72,8 @@ goog.require('ga_topic_service');
             // INGRID: Add wms layers to 'wmsLayers'
             } else if (gaLayers.hasTooltipBodLayer(l) && !gaMapUtils.isWMSLayer(l)) {
               layersToQuery.bodLayers.push(l);
-            } else if (gaMapUtils.isWMSLayer(l)) {
+            // INGRID: Check tooltip param
+            } else if (gaMapUtils.isWMSLayer(l) && (gaLayers.hasTooltipBodLayer(l) || !l.bodId)) {
               layersToQuery.wmsLayers.push(l);
             }
           });
