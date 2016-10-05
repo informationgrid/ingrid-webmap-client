@@ -56,6 +56,8 @@ Die Struktur des JSON-Formats sieht folgendermaßen aus:
             "chargeable": false, 
         // WIRD NICHT BEI INGRID VERWENDET
             "hasLegend": true,
+        // URL der Legende (falls vorhanden, ansonsten wird GetLegenden-Request ausgeführt)
+            "legendURL": "<LEGENDEN-URL>"
         // Typ des Layers
             "type": "wms",
         // WIRD NICHT BEI INGRID VERWENDET
@@ -71,7 +73,9 @@ Die Struktur des JSON-Formats sieht folgendermaßen aus:
         // Layer kann in der Suche recherchiert werden (Wert: false oder true)
             "searchable": true,
         // GetMap-Anfrage auf Layer liefert im Response-Header 'Access-Control-Allow-Origin: * || <HOST>'
-            "crossOrigin": false
+            "crossOrigin": false,
+        // Extent des Layers in WGS84
+            "extent": [10.5, 51.7, 10.7, 51.8]
         },
         ... 
     }
