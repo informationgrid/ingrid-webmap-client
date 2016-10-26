@@ -557,6 +557,8 @@ goog.require('ga_topic_service');
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
               
               // INGRID: Add pop up for 'bwalocator'
+              var blob = null;
+              var csvDownloadName = "";
               if(feature.get('bwastrid')){
                 htmlpopup =
                   '<div id="{{id}}" class="htmlpopup-container">' +
@@ -577,12 +579,22 @@ goog.require('ga_topic_service');
                 }
                 htmlpopup += '</tbody></table><br>';
                 
-                var csvContent = "data:text/csv;charset=utf-8,";
+                var csvContent = "";
+                var encodedUri = "";
                 
                 var coords = feature.getGeometry().getCoordinates();
                 var props = feature.getProperties();
                 var measures = props.measures;
                 
+                csvDownloadName += props.bwastrid;
+                csvDownloadName += '-';
+                csvDownloadName += props.bwastr_name;
+                if(props.strecken_name){
+                  csvDownloadName += "-";
+                  csvDownloadName += props.strecken_name;
+                }
+                csvDownloadName += ".csv";
+
                 var coordMeasures = [];
                 var count = 0;
                 if(measures.length == 1){
@@ -615,18 +627,15 @@ goog.require('ga_topic_service');
                   csvContent += index < coordMeasures.length ? dataString+ "\n" : dataString;
                 }); 
                 
-                var encodedUri = encodeURI(csvContent);
-                var csvDownloadName = "";
-                csvDownloadName += props.bwastrid;
-                csvDownloadName += '-';
-                csvDownloadName += props.bwastr_name;
-                if(props.strecken_name){
-                  csvDownloadName += "-";
-                  csvDownloadName += props.strecken_name;
+                if (navigator.msSaveBlob) { // IE 10+
+                  blob = new Blob([csvContent],{type: "text/csv;charset=utf-8;"});
+                  htmlpopup += '<p><a class="bwastr_download_csv" href="javascript:void(0);" onclick="this.isDownloadSelect=true;">Strecke als CSV</a></p>';
+                } else {
+                  csvContent = "data:text/csv;charset=utf-8," + csvContent;
+                  encodedUri = encodeURI(csvContent);
+                  htmlpopup += '<p><a class="bwastr_download_csv" href="' + encodedUri + '" download="' + csvDownloadName + '">Strecke als CSV</a></p>';
                 }
-                csvDownloadName += ".csv";
-                
-                htmlpopup += '<p><a href="' + encodedUri + '" download="' + csvDownloadName + '">Strecke als CSV</a></p>';
+
                 htmlpopup += '</div>';
                 htmlpopup += '</div>';
               }
@@ -636,7 +645,18 @@ goog.require('ga_topic_service');
               }
               feature.set('layerId', layerId);
               showFeatures([feature]);
-
+              if(blob){
+                $(document).on("click", "a", function(){
+                  if(this.className){
+                    if(this.className.indexOf("bwastr_download_csv") > -1){
+                      if(this.isDownloadSelect){
+                        navigator.msSaveBlob(blob, csvDownloadName);
+                        this.isDownloadSelect = false;
+                      }
+                    }
+                  }
+                });
+              }
               // Iframe communication from inside out
               gaIFrameCom.send('gaFeatureSelection', {
                 layerId: layerId,
