@@ -557,11 +557,10 @@ goog.require('ga_topic_service');
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
               
               // INGRID: Add pop up for 'bwalocator'
-              var blob = null;
               var csvDownloadName = "";
               if(feature.get('bwastrid')){
                 htmlpopup =
-                  '<div id="{{id}}" class="htmlpopup-container">' +
+                  '<div class="htmlpopup-container">' +
                     '<div class="htmlpopup-header">' +
                       '<span>' + layer.label + ' &nbsp;</span>' +
                       '(BWaStr Locator)' +
@@ -628,8 +627,9 @@ goog.require('ga_topic_service');
                 }); 
                 
                 if (navigator.msSaveBlob) { // IE 10+
-                  blob = new Blob([csvContent],{type: "text/csv;charset=utf-8;"});
-                  htmlpopup += '<p><a class="bwastr_download_csv" href="javascript:void(0);" onclick="this.isDownloadSelect=true;">Strecke als CSV</a></p>';
+                  csvContent = csvContent;
+                  encodedUri = encodeURI(csvContent);
+                  htmlpopup += '<p><a class="bwastr_download_csv" href="javascript:void(0);" onclick="$(this).addClass(\'activated\');this.bwastrContent=\'' + encodedUri +'\';">Strecke als CSV</a></p>';
                 } else {
                   csvContent = "data:text/csv;charset=utf-8," + csvContent;
                   encodedUri = encodeURI(csvContent);
@@ -645,13 +645,16 @@ goog.require('ga_topic_service');
               }
               feature.set('layerId', layerId);
               showFeatures([feature]);
-              if(blob){
-                $(document).on("click", "a", function(){
+              
+              // INGRID: IE download CSV
+              if(navigator.msSaveBlob){
+                $(document).on("click", ".activated", function(){
                   if(this.className){
-                    if(this.className.indexOf("bwastr_download_csv") > -1){
-                      if(this.isDownloadSelect){
+                    if(this.className.indexOf("bwastr_download_csv activated") > -1){
+                      if(this.bwastrContent){
+                        var blob = new Blob([decodeURI(this.bwastrContent)],{type: "text/csv;charset=utf-8;"});
                         navigator.msSaveBlob(blob, csvDownloadName);
-                        this.isDownloadSelect = false;
+                        $(this).removeClass('activated');
                       }
                     }
                   }
