@@ -599,6 +599,18 @@ goog.require('ga_urlutils_service');
                 }
                 return false;
             };
+            
+            // INGRID: Add zoom to extent
+            $scope.zoomToExtent = function(evt, bodId) {
+              var layer = gaLayers.getLayer(bodId);
+              if(layer){
+                if(layer.extent){
+                  var extent = ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                  gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                }
+              }
+              evt.stopPropagation();
+            };
           }
         };
       });

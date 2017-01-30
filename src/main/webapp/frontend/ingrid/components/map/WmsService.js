@@ -227,8 +227,14 @@ goog.require('ga_urlutils_service');
                             if(root){
                                 if(root.Layer){
                                     var hasAddService = false;
-                                    for (var i = 0; i < root.Layer.length; i++) {
-                                        var layer = root.Layer[i];
+                                    var layers = [];
+                                    if(root.Layer.length){
+                                        layers = root.Layer;
+                                    }else{
+                                        layers.push(root.Layer);
+                                    }
+                                    for (var i = 0; i < layers.length; i++) {
+                                        var layer = layers[i];
                                         var layerParams = {
                                             LAYERS: layer.Name,
                                             VERSION: result.version
@@ -336,7 +342,8 @@ goog.require('ga_urlutils_service');
              layer: params.LAYERS,
              style: params.style || 'default',
              service: 'WMS',
-             version: params.version || '1.3.0',
+             // INGRID: Add 'params.VERSION'
+             version: params.version || params.VERSION || '1.3.0',
              format: 'image/png',
              sld_version: '1.1.0'
            }));

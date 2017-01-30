@@ -3,12 +3,11 @@
     <parent>
         <groupId>de.ingrid</groupId>
         <artifactId>ingrid-base-pom</artifactId>
-        <version>3.6.2</version>
+        <version>4.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.ingrid</groupId>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -196,7 +195,7 @@
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-utils</artifactId>
-            <version>3.5.0</version>
+            <version>4.0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-logging</groupId>
@@ -219,7 +218,7 @@
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-iplug-opensearch</artifactId>
-            <version>3.5.0</version>
+            <version>4.0.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>de.ingrid</groupId>
@@ -365,6 +364,12 @@
         <repository>
             <id>org.mapfish</id>
             <url>http://dev.mapfish.org/maven/repository</url>
+        </repository>
+        <!-- next repository needed for old opengis libs -->
+        <repository>
+          <id>geotoolkit</id>
+          <name>Geotoolkit.org project</name>
+          <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
     </repositories>
     <distributionManagement>

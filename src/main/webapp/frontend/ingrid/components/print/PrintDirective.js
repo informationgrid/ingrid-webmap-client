@@ -277,7 +277,8 @@ goog.require('ga_time_service');
               styles: styles,
               format: 'image/' + (config.format || 'png'),
               customParams: {
-                'EXCEPTIONS': 'XML',
+                // INGRID: Remove param 'EXCEPTIONS'
+                //'EXCEPTIONS': 'XML',
                 'TRANSPARENT': 'true',
                 // INGRID: Use default EPSG
                 'CRS': gaGlobalOptions.defaultEpsg,
