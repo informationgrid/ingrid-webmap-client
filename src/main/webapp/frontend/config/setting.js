@@ -30,8 +30,14 @@ var settingSearchBwaLocatorStationUrl = 'https://atlas.wsv.bund.de/bwastr-locato
 
 // Override copyright URL (Default: '/impressum')
 var settingCopyrightURL = undefined;
+
+// Override sitemap URL (Default: '/inhaltsverzeichnis'()
 var settingSitemapURL = undefined;
+
+// Activate to use geodesic
 var settingUseGeodesic = true;
+
+// Override default mouse position projection (Default: 0)
 var settingDefaultMousePositionIndex = 0;
 
 // Default list on WMS import function
