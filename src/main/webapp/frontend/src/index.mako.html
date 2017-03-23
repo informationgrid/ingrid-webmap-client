@@ -879,7 +879,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultLod: ${default_level_of_detail},
           resolutions: JSON.parse(${resolutions}),
           lods: JSON.parse(${level_of_details}),
-          defaultEpsg: '${default_epsg}',
+          defaultEpsg: settingEpsg ? settingEpsg : '${default_epsg}',
           defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           defaultTerrain: '${default_terrain}',
@@ -900,7 +900,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add use geodesic
           useGeodesic: settingUseGeodesic ? settingUseGeodesic : true,
           // INGRID: Add default mouse position
-          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0
+          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0,
+          // INGRID: Add print graticule
+          defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer)
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

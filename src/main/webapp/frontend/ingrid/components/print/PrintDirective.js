@@ -626,11 +626,11 @@ goog.require('ga_time_service');
       // Transform graticule to literal
       if ($scope.options.graticule) {
         var graticule = {
-          'baseURL': 'https://wms.geo.admin.ch/',
+          'baseURL': gaGlobalOptions.defaultPrintGraticuleLayer.url,
           'opacity': 1,
           'singleTile': true,
           'type': 'WMS',
-          'layers': ['org.epsg.grid_2056'],
+          'layers': gaGlobalOptions.defaultPrintGraticuleLayer.layers,
           'format': 'image/png',
           'styles': [''],
           'customParams': {
