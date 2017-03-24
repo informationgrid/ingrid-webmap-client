@@ -61,10 +61,19 @@ goog.require('ga_urlutils_service');
             if (angular.isDefined(p)) {
               angular.extend(newParams, p);
             }
+            
+            // INGRID: Update URL outside of iFrame
+            if(window.document.referrer.indexOf(window.location.host) > -1){
+                if(window.parent.onParamChange != undefined){
+                    window.parent.onParamChange(params);
+                }
+            }
             // INGRID: Check for iFrame parent location
             if(isParentIFrame){
               if(window.parent){
-                return window.parent.location.origin + '' + window.parent.location.pathname + '?' + gaUrlUtils.toKeyValue(newParams);
+                  if(window.document.referrer.indexOf(window.location.host) > -1){
+                      return window.parent.location.origin + '' + window.parent.location.pathname + '?' + gaUrlUtils.toKeyValue(newParams);
+                  }
               }
             }
             return base + '?' + gaUrlUtils.toKeyValue(newParams);
@@ -102,18 +111,10 @@ goog.require('ga_urlutils_service');
 
           this.updateParams = function(p) {
             angular.extend(params, p);
-            // INGRID: Update URL outside of iFrame
-            if(window.parent.onParamChange != undefined){
-                window.parent.onParamChange(params);
-            }
           };
 
           this.deleteParam = function(key) {
              delete params[key];
-             // INGRID: Update URL outside of iFrame
-             if(window.parent.onParamChange != undefined){
-                 window.parent.onParamChange(params);
-             }
           };
 
           this.refresh = function() {
@@ -131,19 +132,21 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Get params from window parent
         var locSearch = loc.search;
-        if(window.parent.urlParams){
-            if(locSearch.startsWith("?")){
-                locSearch = locSearch.replace("?", "");
+        if(window.document.referrer.indexOf(loc.host) > -1){
+            if(window.parent.urlParams){
+                if(locSearch.startsWith("?")){
+                    locSearch = locSearch.replace("?", "");
+                }
+                if(locSearch.startsWith("&")){
+                    locSearch = locSearch.replace("&", "");
+                }
+                if(window.parent.urlParams.endsWith("&") == false){
+                    locSearch = window.parent.urlParams + "&" + locSearch;
+                }else {
+                    locSearch = window.parent.urlParams + "" + locSearch;
+                }
+                
             }
-            if(locSearch.startsWith("&")){
-                locSearch = locSearch.replace("&", "");
-            }
-            if(window.parent.urlParams.endsWith("&") == false){
-                locSearch = window.parent.urlParams + "&" + locSearch;
-            }else {
-                locSearch = window.parent.urlParams + "" + locSearch;
-            }
-            
         }
         var permalink = new Permalink(
             base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
