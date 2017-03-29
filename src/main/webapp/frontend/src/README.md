@@ -37,7 +37,7 @@ Definition der OpenSearch URL für die InGrid-Suche nach WMS Diensten.
 
 ## shortURLService
 
-    shortURLService : 'https://is.gd/create.php?format=json&url='
+    shortURLService : 'https://is.gd/create.php?format=json'
 
 ## defaultTopicId
 Definition der Default-Rubrik per ID.

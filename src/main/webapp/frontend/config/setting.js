@@ -10,7 +10,7 @@ var settingEpsgExtent = undefined;
 //Override default EPSG (default: 'EPSG:3857')
 var settingEpsg = undefined;
 
-// Override short URL service (default: 'https://is.gd/create.php?format=json&url=')
+// Override short URL service (default: 'https://is.gd/create.php?format=json')
 var settingShortURLService = undefined;
 
 // Define opensearch URL to search for WMS services. (integrate on map client search field) 
