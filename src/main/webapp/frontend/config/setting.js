@@ -79,3 +79,6 @@ var settingPrintGraticuleLayer = '{"url":"http://atlas.wsv.bund.de/netze/wms?", 
 
 // Default prefix for download KML
 var settingKMLName = 'INGRID';
+
+// Hide of catalog menu
+var settingHideCatalog = false;

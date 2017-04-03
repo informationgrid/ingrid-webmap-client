@@ -297,7 +297,9 @@ goog.require('ga_topic_service');
       isSwipeActive: false,
       is3dActive: startWith3D,
       // INGRID: Add 'isParentIFrame'
-      isParentIFrame: gaGlobalOptions.isParentIFrame
+      isParentIFrame: gaGlobalOptions.isParentIFrame,
+      // INGRID: Add 'isHideCatalog'
+      isHideCatalog: gaGlobalOptions.isHideCatalog
     };
 
     // Deactivate all tools when draw is opening

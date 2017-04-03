@@ -465,7 +465,7 @@ itemscope itemtype="http://schema.org/WebApplication"
   % endif
 
         <!-- Catalog -->
-        <div class="panel" ng-hide="globals.isDrawActive">
+        <div class="panel" ng-hide="globals.isDrawActive || globals.isHideCatalog">
   % if device == 'desktop':
           <div class="theme-toggle">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -903,7 +903,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add default mouse position
           defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0,
           // INGRID: Add print graticule
-          defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer)
+          defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
+          // INGRID: Add setting to hide catalog menu
+          isHideCatalog: settingHideCatalog
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {
