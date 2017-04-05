@@ -331,8 +331,7 @@ goog.require('ga_time_service');
         },
         // INGRID: Add encoder for OSM
         'OSM': function(layer, config) {
-            var enc = $scope.encoders.
-              layers['Layer'].call(this, layer);
+            var enc = {};
             var source = layer.getSource();
             var tileGrid = source.getTileGrid();
             angular.extend(enc, {
