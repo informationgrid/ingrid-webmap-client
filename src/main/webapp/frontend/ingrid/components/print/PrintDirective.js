@@ -282,8 +282,9 @@ goog.require('ga_time_service');
                 'TRANSPARENT': 'true',
                 // INGRID: Use default EPSG
                 'CRS': gaGlobalOptions.defaultEpsg,
-                'TIME': params.TIME,
-                'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
+                'TIME': params.TIME
+                // INGRID: Remove param 'MAP_RESOLUTION'
+                //'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
               },
               singleTile: config.singleTile || false
             });
