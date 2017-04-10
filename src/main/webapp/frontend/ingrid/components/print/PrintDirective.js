@@ -282,8 +282,9 @@ goog.require('ga_time_service');
                 'TRANSPARENT': 'true',
                 // INGRID: Use default EPSG
                 'CRS': gaGlobalOptions.defaultEpsg,
-                'TIME': params.TIME,
-                'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
+                'TIME': params.TIME
+                // INGRID: Remove param 'MAP_RESOLUTION'
+                //'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
               },
               singleTile: config.singleTile || false
             });
@@ -331,8 +332,7 @@ goog.require('ga_time_service');
         },
         // INGRID: Add encoder for OSM
         'OSM': function(layer, config) {
-            var enc = $scope.encoders.
-              layers['Layer'].call(this, layer);
+            var enc = {};
             var source = layer.getSource();
             var tileGrid = source.getTileGrid();
             angular.extend(enc, {
@@ -626,11 +626,11 @@ goog.require('ga_time_service');
       // Transform graticule to literal
       if ($scope.options.graticule) {
         var graticule = {
-          'baseURL': 'https://wms.geo.admin.ch/',
+          'baseURL': gaGlobalOptions.defaultPrintGraticuleLayer.url,
           'opacity': 1,
           'singleTile': true,
           'type': 'WMS',
-          'layers': ['org.epsg.grid_2056'],
+          'layers': gaGlobalOptions.defaultPrintGraticuleLayer.layers,
           'format': 'image/png',
           'styles': [''],
           'customParams': {

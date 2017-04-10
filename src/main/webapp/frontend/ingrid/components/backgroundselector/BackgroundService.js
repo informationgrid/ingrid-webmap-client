@@ -78,10 +78,6 @@ goog.require('ga_permalink');
           }
           bgs.push(bgLayer);
         });
-        // INGRID: Add OSM layer
-        if (bgs.indexOf(osmLayer) === -1) {
-            bgs.push(osmLayer);
-        }
         if (bgs.indexOf(voidLayer) === -1) {
           bgs.push(voidLayer);
         }

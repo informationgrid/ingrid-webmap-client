@@ -34,7 +34,9 @@ goog.require('ga_topic_service');
       var zoomToExtentButton = $('#zoomToExtentButton')[0];
       var defaultProjection = ol.proj.get(gaGlobalOptions.defaultEpsg);
       // INGRID: Disable defaultProjection extent
-      //defaultProjection.setExtent(gaGlobalOptions.defaultEpsgExtent);
+      if(defaultProjection.getExtent() == null){
+          defaultProjection.setExtent(ol.proj.transformExtent(gaGlobalOptions.defaultEpsgExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg));
+      }
 
       var map = new ol.Map({
         controls: ol.control.defaults({
@@ -79,7 +81,7 @@ goog.require('ga_topic_service');
         view: new ol.View({
             // INGRID: Configuration of map
             projection: defaultProjection,
-            center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg),
+            center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
             //extent: ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
             //resolution: gaMapUtils.defaultResolution
             //resolutions: gaMapUtils.viewResolutions
@@ -297,7 +299,9 @@ goog.require('ga_topic_service');
       isSwipeActive: false,
       is3dActive: startWith3D,
       // INGRID: Add 'isParentIFrame'
-      isParentIFrame: gaGlobalOptions.isParentIFrame
+      isParentIFrame: gaGlobalOptions.isParentIFrame,
+      // INGRID: Add 'isHideCatalog'
+      isHideCatalog: gaGlobalOptions.isHideCatalog
     };
 
     // Deactivate all tools when draw is opening

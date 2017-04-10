@@ -100,7 +100,10 @@ public class WmsResource {
         try {
             String response = HttpProxy.doRequest( url );
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
-                return response;
+                // Remove script tags on getFeatureInfo response.
+                Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
+                        Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+                return p.matcher(response).replaceAll("");
             } else {
                 // Replace "," to "." on bounding box.
                 response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );

@@ -137,6 +137,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico"/>
     <!-- INGRID: Settings -->
     <script src="../config/setting.js"></script>
+    <script src="../config/setting.profile.js"></script>
   </head>
 
   <body class="{{topicId}} {{langId}}" 
@@ -464,7 +465,7 @@ itemscope itemtype="http://schema.org/WebApplication"
   % endif
 
         <!-- Catalog -->
-        <div class="panel" ng-hide="globals.isDrawActive">
+        <div class="panel" ng-hide="globals.isDrawActive || globals.isHideCatalog">
   % if device == 'desktop':
           <div class="theme-toggle">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -868,7 +869,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add search BwaLocator Station
           searchBwaLocatorStationUrl : settingSearchBwaLocatorStationUrl,
           // INGRID: Short URL service (external)
-          shortURLService : settingShortURLService ? settingShortURLService : 'https://is.gd/create.php?format=json&url=',
+          shortURLService : settingShortURLService ? settingShortURLService : 'https://is.gd/create.php?format=json',
           whitelist: [
             'https://' + window.location.host + '/**'
           ],
@@ -879,14 +880,14 @@ itemscope itemtype="http://schema.org/WebApplication"
           defaultLod: ${default_level_of_detail},
           resolutions: JSON.parse(${resolutions}),
           lods: JSON.parse(${level_of_details}),
-          defaultEpsg: '${default_epsg}',
+          defaultEpsg: settingEpsg ? settingEpsg : '${default_epsg}',
           defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           defaultTerrain: '${default_terrain}',
           // INGRID: Remove '${languages}'
           languages: JSON.parse('["de", "en"]'),
           // INGRID: Add property to check is in iFrame
-          isParentIFrame: window.parent.iframe ? true : false,
+          isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name
@@ -900,7 +901,11 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add use geodesic
           useGeodesic: settingUseGeodesic ? settingUseGeodesic : true,
           // INGRID: Add default mouse position
-          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0
+          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0,
+          // INGRID: Add print graticule
+          defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
+          // INGRID: Add setting to hide catalog menu
+          isHideCatalog: settingHideCatalog
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

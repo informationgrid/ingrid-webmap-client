@@ -72,12 +72,6 @@ public class SearchResource {
         searchTerm = searchTerm.trim();
 
         if (searchTerm.length() > 2) {
-            try {
-                searchTerm = URLEncoder.encode( searchTerm, "UTF-8" );
-            } catch (Exception e) {
-                log.error( "Error url encoding seach term: " + searchTerm, e );
-            }
-
             if (type != null) {
                 if (type.indexOf( "locations" ) > -1) {
                     JSONArray json = new JSONArray();
@@ -85,7 +79,7 @@ public class SearchResource {
 
                     // Nominatim
                     try {
-                        questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm.trim() ) ) );
+                        questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm, "UTF-8" ) ) );
                         URLConnection con = questUrl.openConnection();
                         InputStream in = con.getInputStream();
                         String encoding = con.getContentEncoding();
@@ -174,7 +168,6 @@ public class SearchResource {
                     JSONArray jsonArray = new JSONArray();
                     InputStream result = null;
                     
-                    searchTerm = searchTerm.trim();
                     searchTerm = searchTerm.replaceAll("\\s", "+");
                     try {
                         searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
@@ -245,7 +238,7 @@ public class SearchResource {
                 }else if(type.equals("bwalocator")){
                     JSONArray jsonArray = new JSONArray();
                     URL questUrl;
-                    questUrl = new URL(searchUrl.concat("&searchterm="+URLEncoder.encode(searchTerm.trim())));
+                    questUrl = new URL(searchUrl.concat("&searchterm="+URLEncoder.encode(searchTerm, "UTF-8")));
                     URLConnection con = questUrl.openConnection();
                     InputStream in = con.getInputStream();
                     String encoding = con.getContentEncoding();
