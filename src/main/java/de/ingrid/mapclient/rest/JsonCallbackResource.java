@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.Properties;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -43,6 +44,8 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+
+import de.ingrid.mapclient.ConfigurationProvider;
 
 @Path("/jsonCallback")
 public class JsonCallbackResource {
@@ -212,42 +215,5 @@ public class JsonCallbackResource {
             }
         }
         return Response.ok( responseStr ).build();
-    }
-
-    @GET
-    @Path("help")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response help(@QueryParam("lang") String lang, @QueryParam("id") String id, @QueryParam("helpUrl") String helpUrl) throws IOException, JSONException {
-
-        URL url = new URL(helpUrl.replace( "{lang}", lang ));
-        URLConnection con = url.openConnection();
-        InputStream in = con.getInputStream();
-        String encoding = con.getContentEncoding();
-        encoding = encoding == null ? "UTF-8" : encoding;
-
-        String tmpJson = IOUtils.toString( in, encoding );
-        JSONObject jsonObj = new JSONObject();
-        JSONObject questJsonResult = new JSONObject( tmpJson );
-        if(questJsonResult != null){
-            JSONObject jsonObjId = (JSONObject) questJsonResult.get(id);
-            if(jsonObjId != null){
-                String title = jsonObjId.getString( "title" );
-                String text = jsonObjId.getString( "text" );
-                String image = jsonObjId.getString( "image" );
-                
-                JSONArray jsonRowObj = new JSONArray();
-                jsonRowObj.put(id);
-                jsonRowObj.put(title);
-                jsonRowObj.put(text);
-                jsonRowObj.put("");
-                jsonRowObj.put(image);
-                
-                JSONArray jsonRow = new JSONArray();
-                jsonRow.put( jsonRowObj );
-                jsonObj.put( "rows", jsonRow );
-            }
-        }
-        return Response.ok( jsonObj ).build();
     }
 }

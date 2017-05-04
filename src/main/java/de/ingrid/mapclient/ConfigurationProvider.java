@@ -58,6 +58,8 @@ public enum ConfigurationProvider {
     public static final String KML_DIRECTORY = "kml.directory";
     public static final String KML_MAX_DAYS_FILE_EXIST = "kml.days_of_exist";
     public static final String KML_MAX_DIRECTORY_FILES = "kml.max_directory_files";
+    public static final String CONFIG_DIR = "config.dir";
+    public static final String CONFIG_DIR_ALTERNATIVE = "config.dir.alternative";
     
     private Properties properties = null;
 

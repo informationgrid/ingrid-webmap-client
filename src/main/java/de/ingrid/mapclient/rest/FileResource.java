@@ -125,7 +125,7 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateFileRequest(@PathParam("id") String id, @PathParam("user") String user, String content, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" ).trim();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/" ).trim();
         
         if(!path.endsWith( "/")){
             path += "/";
@@ -181,7 +181,7 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/" ).trim();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/" ).trim();
         
         if(!path.endsWith( "/")){
             path += "/";
@@ -211,7 +211,7 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
         
         if(!path.endsWith( "/")){
             path += "/";
@@ -233,7 +233,7 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+        String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
         
         if(!path.endsWith( "/")){
             path += "/";
@@ -401,7 +401,7 @@ public class FileResource {
             p = ConfigurationProvider.INSTANCE.getProperties();
             int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
             int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
-            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./data/").trim();
+            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
             
             if(!path.endsWith( "/")){
                 path += "/";
