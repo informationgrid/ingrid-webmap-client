@@ -47,7 +47,6 @@ public enum ConfigurationProvider {
     INSTANCE;
 
     private static final String APPLICATION_PROPERTIES = "application.properties";
-    public static final String OPENSEARCH_URL = "opensearch.searchurl";
     public static final String FEEDBACK_FROM = "feedback.from";
     public static final String FEEDBACK_TO = "feedback.to";
     public static final String FEEDBACK_HOST = "feedback.host";
