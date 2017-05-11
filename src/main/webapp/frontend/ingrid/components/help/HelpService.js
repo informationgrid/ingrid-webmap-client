@@ -48,7 +48,7 @@ goog.provide('ga_help_service');
             params: {
               lang: lang,
               id: id,
-              helpUrl: 'help-{lang}'
+              helpUrl: location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/help/help-{lang}.json'
             }
           }).success(function(response) {
             registry[key(id, lang)] = response;

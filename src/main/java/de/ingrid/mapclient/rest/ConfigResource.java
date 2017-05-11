@@ -24,6 +24,10 @@ package de.ingrid.mapclient.rest;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Properties;
 
 import javax.ws.rs.Consumes;
@@ -35,9 +39,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
@@ -126,54 +130,41 @@ public class ConfigResource {
     @Path("help")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response helpRequest(@QueryParam("id") String id, @QueryParam("lang") String lang, @QueryParam("helpUrl") String filename) {
-        if(filename != null && filename.length() > 0){
-            if(lang != null){
-                filename = filename.replace( "{lang}", lang );
-            }
-            Properties p;
+    public Response helpRequest(@QueryParam("id") String id, @QueryParam("lang") String lang, @QueryParam("helpUrl") String helpUrl) {
+        if(helpUrl != null && id != null && lang != null){
+            URL url;
             try {
-                p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                String fileContent = null;
-                if(config_dir != null){
-                    fileContent = getFileContent(config_dir, filename, ".json", "help/");
-                }
-                
-                if(fileContent == null){
-                    config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR_ALTERNATIVE);
-                    if(config_dir != null){
-                        fileContent = getFileContent(config_dir, filename, ".json", "help/");
+                url = new URL(helpUrl.replace( "{lang}", lang ));
+                URLConnection con = url.openConnection();
+                InputStream in = con.getInputStream();
+                String encoding = con.getContentEncoding();
+                encoding = encoding == null ? "UTF-8" : encoding;
+            
+                String tmpJson = IOUtils.toString( in, encoding );
+                JSONObject jsonObj = new JSONObject();
+                JSONObject questJsonResult = new JSONObject( tmpJson );
+                if(questJsonResult != null){
+                    JSONObject jsonObjId = (JSONObject) questJsonResult.get(id);
+                    if(jsonObjId != null){
+                        String title = jsonObjId.getString( "title" );
+                        String text = jsonObjId.getString( "text" );
+                        String image = jsonObjId.getString( "image" );
+                        
+                        JSONArray jsonRowObj = new JSONArray();
+                        jsonRowObj.put(id);
+                        jsonRowObj.put(title);
+                        jsonRowObj.put(text);
+                        jsonRowObj.put("");
+                        jsonRowObj.put(image);
+                        
+                        JSONArray jsonRow = new JSONArray();
+                        jsonRow.put( jsonRowObj );
+                        jsonObj.put( "rows", jsonRow );
                     }
                 }
-                if(fileContent != null){
-                    JSONObject jsonObj = new JSONObject();
-                    JSONObject questJsonResult = new JSONObject( fileContent );
-                    if(questJsonResult != null){
-                        JSONObject jsonObjId = (JSONObject) questJsonResult.get(id);
-                        if(jsonObjId != null){
-                            String title = jsonObjId.getString( "title" );
-                            String text = jsonObjId.getString( "text" );
-                            String image = jsonObjId.getString( "image" );
-                            
-                            JSONArray jsonRowObj = new JSONArray();
-                            jsonRowObj.put(id);
-                            jsonRowObj.put(title);
-                            jsonRowObj.put(text);
-                            jsonRowObj.put("");
-                            jsonRowObj.put(image);
-                            
-                            JSONArray jsonRow = new JSONArray();
-                            jsonRow.put( jsonRowObj );
-                            jsonObj.put( "rows", jsonRow );
-                        }
-                    }
-                    return Response.ok( jsonObj ).build();
-                }
-            } catch (IOException e) {
-                log.error( "Error read help directory property: " + e );
-            } catch (JSONException e) {
-                log.error( "Error read help file: " + e );
+                return Response.ok( jsonObj ).build();
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
