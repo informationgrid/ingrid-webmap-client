@@ -4656,394 +4656,388 @@
                     "children": [{
                         "category": "layer",
                         "staging": "prod",
-                        "label": "EG-Wasserrahmenrichtlinie",
-                        "id": 699,
+                        "label": "Nährstoffe",
+                        "id": 700,
                         "children": [{
                             "category": "layer",
                             "staging": "prod",
-                            "label": "Nährstoffe",
-                            "id": 700,
-                            "children": [{
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Oberflächengewässer-Trends Gesamtphosphat",
-                                "layerBodId": "1576103849",
-                                "id": 701
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Oberflächengewässer-Güte Gesamtphosphat",
-                                "layerBodId": "-1540370423",
-                                "id": 702
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Oberflächengewässer-Trends Gesamtstickstoff",
-                                "layerBodId": "-1311353856",
-                                "id": 703
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Oberflächengewässer-Güte Gesamtstickstoff",
-                                "layerBodId": "1644043360",
-                                "id": 704
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwasser-Trends Nitrat",
-                                "layerBodId": "-321487896",
-                                "id": 705
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwasser-Güte Nitrat - Aktuellster Jahresmittelwert",
-                                "layerBodId": "-180555698",
-                                "id": 706
-                            }]
+                            "label": "Oberflächengewässer-Trends Gesamtphosphat",
+                            "layerBodId": "1576103849",
+                            "id": 701
                         },
                         {
                             "category": "layer",
                             "staging": "prod",
-                            "label": "EG-WRRL Massnahmenkataster",
-                            "id": 707,
-                            "children": [{
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Überregionale Wanderrouten der Fischfauna",
-                                "layerBodId": "-778165438",
-                                "id": 708
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Laich- und Aufwuchsgewässer",
-                                "layerBodId": "-1493116314",
-                                "id": 709
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Tidebeeinflußte Bundeswasserstraßen",
-                                "layerBodId": "-1537578169",
-                                "id": 710
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Prioritäre Fließgewässer in Niedersachsen (Stand 31.03.2008)",
-                                "layerBodId": "-139452781",
-                                "id": 711
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Gewässerentwicklungspläne kleiner 10 EZG km²",
-                                "layerBodId": "-1289269990",
-                                "id": 712
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Gewässerentwicklungspläne (Stand 2010)",
-                                "layerBodId": "1811394379",
-                                "id": 713
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante sonstige Maßnahmen",
-                                "layerBodId": "-1181243406",
-                                "id": 714
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte sonstige Maßnahmen",
-                                "layerBodId": "-1458669657",
-                                "id": 715
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante sonstige Landesmaßnahmen",
-                                "layerBodId": "1462403787",
-                                "id": 716
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte sonstige Landesmaßnahmen",
-                                "layerBodId": "-422447424",
-                                "id": 717
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante Maßnahmen Abwasser",
-                                "layerBodId": "713282966",
-                                "id": 718
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte Maßnahmen Abwasser",
-                                "layerBodId": "435856715",
-                                "id": 719
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante Maßnahmen Naturschutz",
-                                "layerBodId": "1254941059",
-                                "id": 720
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte Maßnahmen Naturschutz",
-                                "layerBodId": "-33424978",
-                                "id": 721
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante Maßnahmen zur Fließgewässerentwicklung",
-                                "layerBodId": "1470132568",
-                                "id": 722
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte Maßnahmen zur Fließgewässerentwicklung",
-                                "layerBodId": "207484099",
-                                "id": 723
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Geplante konzeptionelle Maßnahmen",
-                                "layerBodId": "-1927854579",
-                                "id": 724
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Durchgeführte konzeptionelle Maßnahmen",
-                                "layerBodId": "482261506",
-                                "id": 725
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Kulisse Gewässerschutzberatung",
-                                "layerBodId": "1614799820",
-                                "id": 726
-                            }]
+                            "label": "Oberflächengewässer-Güte Gesamtphosphat",
+                            "layerBodId": "-1540370423",
+                            "id": 702
                         },
                         {
                             "category": "layer",
                             "staging": "prod",
-                            "label": "WRRL Oberflächengewässer",
-                            "id": 727,
-                            "children": [{
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Chemischer Zustand gesamt Fließgewässer",
-                                "layerBodId": "-1180890704",
-                                "id": 728
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Chemischer Zustand gesamt Seen",
-                                "layerBodId": "-73911746",
-                                "id": 729
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Chemischer Zustand gesamt Küsten- und Übergangsgewässer",
-                                "layerBodId": "841107704",
-                                "id": 730
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Ökologischer Zustand/Potenzial Fließgewässer",
-                                "layerBodId": "300240979",
-                                "id": 731
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Ökologischer Zustand/Potenzial Seen",
-                                "layerBodId": "419289296",
-                                "id": 732
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Ökologischer Zustand/Potenzial Küsten- und Übergangsgewässer",
-                                "layerBodId": "-1080355034",
-                                "id": 733
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Natürliche, erheblich veränderte und künstliche Fließgewässer",
-                                "layerBodId": "-1986761043",
-                                "id": 734
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Natürliche, erheblich veränderte und künstliche Seen",
-                                "layerBodId": "710028982",
-                                "id": 735
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Natürliche, erheblich veränderte und künstliche Küsten- und Übergangsgewässer",
-                                "layerBodId": "1023820160",
-                                "id": 736
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Operative Messstellen Oberflächengewässer",
-                                "layerBodId": "-1704164497",
-                                "id": 737
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Überblicksmessstellen Oberflächengewässer",
-                                "layerBodId": "-527467986",
-                                "id": 738
-                            }]
+                            "label": "Oberflächengewässer-Trends Gesamtstickstoff",
+                            "layerBodId": "-1311353856",
+                            "id": 703
                         },
                         {
                             "category": "layer",
                             "staging": "prod",
-                            "label": "WRRL Grundwasser",
-                            "id": 739,
-                            "children": [{
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Mengenmässiger Zustand Grundwasser",
-                                "layerBodId": "-1173316027",
-                                "id": 740
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Chemischer Zustand gesamt Grundwasser",
-                                "layerBodId": "-1735754796",
-                                "id": 741
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwassermessstellen gesamt",
-                                "layerBodId": "1238051395",
-                                "id": 742
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Überblicksmessstellen Grundwasser",
-                                "layerBodId": "1307489277",
-                                "id": 743
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Operative Messstellen Grundwasser",
-                                "layerBodId": "-509278252",
-                                "id": 744
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwassermessstellen mengenmässiger Zustand",
-                                "layerBodId": "-1262301970",
-                                "id": 745
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwassermessstellen chemischer Zustand",
-                                "layerBodId": "-126714603",
-                                "id": 746
-                            }]
+                            "label": "Oberflächengewässer-Güte Gesamtstickstoff",
+                            "layerBodId": "1644043360",
+                            "id": 704
                         },
                         {
                             "category": "layer",
                             "staging": "prod",
-                            "label": "WRRL Grundlagendaten",
-                            "id": 747,
-                            "children": [{
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Grundwasserkörper (WRRL)",
-                                "layerBodId": "1727707790",
-                                "id": 748
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Wasserkörpereinzugsgebiete (WRRL)",
-                                "layerBodId": "382631024",
-                                "id": 749
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Küsten- und Übergangsgewässer (WRRL)",
-                                "layerBodId": "1064578570",
-                                "id": 750
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Seen (WRRL)",
-                                "layerBodId": "-768309336",
-                                "id": 751
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Fließgewässer (WRRL)",
-                                "layerBodId": "155427069",
-                                "id": 752
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Flußgebiete (WRRL)",
-                                "layerBodId": "-1147336799",
-                                "id": 753
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Koordinierungsräume (WRRL)",
-                                "layerBodId": "-1066551021",
-                                "id": 754
-                            },
-                            {
-                                "category": "layer",
-                                "staging": "prod",
-                                "label": "Bearbeitungsgebiete (WRRL)",
-                                "layerBodId": "933229115",
-                                "id": 755
-                            }]
+                            "label": "Grundwasser-Trends Nitrat",
+                            "layerBodId": "-321487896",
+                            "id": 705
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Grundwasser-Güte Nitrat - Aktuellster Jahresmittelwert",
+                            "layerBodId": "-180555698",
+                            "id": 706
+                        }]
+                    },
+                    {
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "EG-WRRL Massnahmenkataster",
+                        "id": 707,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Überregionale Wanderrouten der Fischfauna",
+                            "layerBodId": "-778165438",
+                            "id": 708
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Laich- und Aufwuchsgewässer",
+                            "layerBodId": "-1493116314",
+                            "id": 709
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Tidebeeinflußte Bundeswasserstraßen",
+                            "layerBodId": "-1537578169",
+                            "id": 710
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Prioritäre Fließgewässer in Niedersachsen (Stand 31.03.2008)",
+                            "layerBodId": "-139452781",
+                            "id": 711
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Gewässerentwicklungspläne kleiner 10 EZG km²",
+                            "layerBodId": "-1289269990",
+                            "id": 712
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Gewässerentwicklungspläne (Stand 2010)",
+                            "layerBodId": "1811394379",
+                            "id": 713
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante sonstige Maßnahmen",
+                            "layerBodId": "-1181243406",
+                            "id": 714
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte sonstige Maßnahmen",
+                            "layerBodId": "-1458669657",
+                            "id": 715
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante sonstige Landesmaßnahmen",
+                            "layerBodId": "1462403787",
+                            "id": 716
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte sonstige Landesmaßnahmen",
+                            "layerBodId": "-422447424",
+                            "id": 717
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante Maßnahmen Abwasser",
+                            "layerBodId": "713282966",
+                            "id": 718
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte Maßnahmen Abwasser",
+                            "layerBodId": "435856715",
+                            "id": 719
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante Maßnahmen Naturschutz",
+                            "layerBodId": "1254941059",
+                            "id": 720
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte Maßnahmen Naturschutz",
+                            "layerBodId": "-33424978",
+                            "id": 721
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante Maßnahmen zur Fließgewässerentwicklung",
+                            "layerBodId": "1470132568",
+                            "id": 722
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte Maßnahmen zur Fließgewässerentwicklung",
+                            "layerBodId": "207484099",
+                            "id": 723
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Geplante konzeptionelle Maßnahmen",
+                            "layerBodId": "-1927854579",
+                            "id": 724
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Durchgeführte konzeptionelle Maßnahmen",
+                            "layerBodId": "482261506",
+                            "id": 725
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Kulisse Gewässerschutzberatung",
+                            "layerBodId": "1614799820",
+                            "id": 726
+                        }]
+                    },
+                    {
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "WRRL Oberflächengewässer",
+                        "id": 727,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Chemischer Zustand gesamt Fließgewässer",
+                            "layerBodId": "-1180890704",
+                            "id": 728
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Chemischer Zustand gesamt Seen",
+                            "layerBodId": "-73911746",
+                            "id": 729
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Chemischer Zustand gesamt Küsten- und Übergangsgewässer",
+                            "layerBodId": "841107704",
+                            "id": 730
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Ökologischer Zustand/Potenzial Fließgewässer",
+                            "layerBodId": "300240979",
+                            "id": 731
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Ökologischer Zustand/Potenzial Seen",
+                            "layerBodId": "419289296",
+                            "id": 732
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Ökologischer Zustand/Potenzial Küsten- und Übergangsgewässer",
+                            "layerBodId": "-1080355034",
+                            "id": 733
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Natürliche, erheblich veränderte und künstliche Fließgewässer",
+                            "layerBodId": "-1986761043",
+                            "id": 734
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Natürliche, erheblich veränderte und künstliche Seen",
+                            "layerBodId": "710028982",
+                            "id": 735
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Natürliche, erheblich veränderte und künstliche Küsten- und Übergangsgewässer",
+                            "layerBodId": "1023820160",
+                            "id": 736
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Operative Messstellen Oberflächengewässer",
+                            "layerBodId": "-1704164497",
+                            "id": 737
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Überblicksmessstellen Oberflächengewässer",
+                            "layerBodId": "-527467986",
+                            "id": 738
+                        }]
+                    },
+                    {
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "WRRL Grundwasser",
+                        "id": 739,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Mengenmässiger Zustand Grundwasser",
+                            "layerBodId": "-1173316027",
+                            "id": 740
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Chemischer Zustand gesamt Grundwasser",
+                            "layerBodId": "-1735754796",
+                            "id": 741
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Grundwassermessstellen gesamt",
+                            "layerBodId": "1238051395",
+                            "id": 742
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Überblicksmessstellen Grundwasser",
+                            "layerBodId": "1307489277",
+                            "id": 743
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Operative Messstellen Grundwasser",
+                            "layerBodId": "-509278252",
+                            "id": 744
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Grundwassermessstellen mengenmässiger Zustand",
+                            "layerBodId": "-1262301970",
+                            "id": 745
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Grundwassermessstellen chemischer Zustand",
+                            "layerBodId": "-126714603",
+                            "id": 746
+                        }]
+                    },
+                    {
+                        "category": "layer",
+                        "staging": "prod",
+                        "label": "WRRL Grundlagendaten",
+                        "id": 747,
+                        "children": [{
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Grundwasserkörper (WRRL)",
+                            "layerBodId": "1727707790",
+                            "id": 748
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Wasserkörpereinzugsgebiete (WRRL)",
+                            "layerBodId": "382631024",
+                            "id": 749
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Küsten- und Übergangsgewässer (WRRL)",
+                            "layerBodId": "1064578570",
+                            "id": 750
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Seen (WRRL)",
+                            "layerBodId": "-768309336",
+                            "id": 751
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Fließgewässer (WRRL)",
+                            "layerBodId": "155427069",
+                            "id": 752
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Flußgebiete (WRRL)",
+                            "layerBodId": "-1147336799",
+                            "id": 753
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Koordinierungsräume (WRRL)",
+                            "layerBodId": "-1066551021",
+                            "id": 754
+                        },
+                        {
+                            "category": "layer",
+                            "staging": "prod",
+                            "label": "Bearbeitungsgebiete (WRRL)",
+                            "layerBodId": "933229115",
+                            "id": 755
                         }]
                     }]
                 },
