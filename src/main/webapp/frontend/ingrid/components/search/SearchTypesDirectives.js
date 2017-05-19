@@ -550,7 +550,7 @@ goog.require('ga_urlutils_service');
             $scope.type = 'layers';
             $scope.tabstart = tabStarts[2];
             // INGRID: Change search URL for layer search
-            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/data/layers.json';
+            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/config/data?filename=layers';
 
             $scope.preview = function(res) {
               if (gaBrowserSniffer.mobile) {
