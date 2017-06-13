@@ -28,6 +28,7 @@ goog.require('ga_permalink');
    *
    */
   module.directive('gaDraw',
+    // INGRID: Add params 'gaGlobalOptions'
     function($timeout, $translate, $window, $rootScope, gaBrowserSniffer,
         gaDefinePropertiesForLayer, gaDebounce, gaFileStorage, gaLayerFilters,
         gaExportKml, gaMapUtils, gaPermalink, gaUrlUtils,
@@ -704,6 +705,9 @@ goog.require('ga_permalink');
             });*/
             var regex = new RegExp(',{0,1}' +
                 gaUrlUtils.encodeUriQuery(layer.id, true));
+            /* INGRID:
+             * Add check for iFrame href. 
+             */
             scope.adminShortenUrl = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame).replace(regex, '') +
                 '&adminId=' + adminId;
             scope.userShortenUrl = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
