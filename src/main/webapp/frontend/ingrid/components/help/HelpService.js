@@ -23,7 +23,7 @@ goog.provide('ga_help_service');
         var url = 'https://www.googleapis.com/fusiontables/v1/query?' +
                   'callback=JSON_CALLBACK';
         */
-        var url = '/ingrid-webmap-client/rest/jsonCallback/help';
+        var url = '/ingrid-webmap-client/rest/config/help';
         var apiKey = 'AIzaSyDT7wmEx97gAG5OnPwKyz2PnCx3yT4j7C0';
         var sqlTmpl = 'select * from 1Tx2VSM1WHZfDXzf8rweRLG1kd23AA4aw8xnZ_3c' +
                       ' where col0={id} and col5=\'{lang}\'';
@@ -48,7 +48,7 @@ goog.provide('ga_help_service');
             params: {
               lang: lang,
               id: id,
-              helpUrl: location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/data/help-{lang}.json'
+              helpUrl: location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/help/help-{lang}.json'
             }
           }).success(function(response) {
             registry[key(id, lang)] = response;

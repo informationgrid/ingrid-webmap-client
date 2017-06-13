@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.0.2</version>
+    <version>4.0.3</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -274,7 +274,7 @@
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.7</version>
+            <version>1.4.8</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
@@ -319,7 +319,7 @@
         <dependency>
             <groupId>org.mapfish.print</groupId>
             <artifactId>print-lib</artifactId>
-            <version>1.2.0</version>
+            <version>2.1.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

@@ -132,37 +132,31 @@ goog.require('ga_urlutils_service');
         };
 
         // INGRID: Add function to get layers
-        var getChildLayers = function(layer, map, wmsVersion) {
-
-            // If the WMS layer has no name, it can't be displayed
-            if (!layer.Name) {
-              layer.isInvalid = true;
-              layer.Abstract = 'layer_invalid_no_name';
-            }
-
+        var getChildLayers = function(layers, layer, map, wmsVersion) {
             // Go through the child to get valid layers
             if (layer.Layer) {
-
-              for (var i = 0; i < layer.Layer.length; i++) {
-                var l = getChildLayers(layer.Layer[i], map, wmsVersion);
-                if (!l) {
-                  layer.Layer.splice(i, 1);
-                  i--;
+                if(layer.Layer.length){
+                    for (var i = 0; i < layer.Layer.length; i++) {
+                        var tmpLayer = layer.Layer[i];
+                        if(tmpLayer.Name){
+                            layers.splice(0, 0, tmpLayer)
+                        }
+                        if(tmpLayer.Layer){
+                            getChildLayers(layers, tmpLayer, map, wmsVersion);
+                        }
+                    }
+                }else{
+                    var tmpLayer = layer.Layer;
+                    if(tmpLayer.Name){
+                        layers.splice(0, 0, tmpLayer);
+                    }
+                    if(tmpLayer.Layer){
+                        getChildLayers(layers, tmpLayer, map, wmsVersion);
+                    }
                 }
-              }
-
-              // No valid child
-              if (layer.Layer.length == 0) {
-                layer.Layer = undefined;
-              }
             }
-
-            if (layer.isInvalid && !layer.Layer) {
-              return undefined;
-            }
-
-            return layer;
-          };
+        };
+          
         // Create an ol WMS layer from GetCapabilities informations
         this.getOlLayerFromGetCapLayer = function(getCapLayer) {
           var wmsParams = {
@@ -223,60 +217,53 @@ goog.require('ga_urlutils_service');
                     var result = data.WMT_MS_Capabilities || data.WMS_Capabilities;
                     if(result.Capability){
                         if(result.Capability.Layer) {
-                            var root = getChildLayers(result.Capability.Layer, map, result.version);
-                            if(root){
-                                if(root.Layer){
-                                    var hasAddService = false;
-                                    var layers = [];
-                                    if(root.Layer.length){
-                                        layers = root.Layer;
-                                    }else{
-                                        layers.push(root.Layer);
-                                    }
-                                    for (var i = 0; i < layers.length; i++) {
-                                        var layer = layers[i];
-                                        var layerParams = {
-                                            LAYERS: layer.Name,
-                                            VERSION: result.version
-                                        };
-                                        var visible = false;
-                                        if(config.identifier){
-                                            if(layer.Identifier){
-                                                if(layer.Identifier.content){
-                                                    if(layer.Identifier.content == config.identifier){
-                                                        visible = true;
-                                                    }
+                            var layers = [];
+                            getChildLayers(layers, result.Capability.Layer, map, result.version);
+                            if(layers){
+                                var hasAddService = false;
+                                for (var i = 0; i < layers.length; i++) {
+                                    var layer = layers[i];
+                                    var layerParams = {
+                                        LAYERS: layer.Name,
+                                        VERSION: result.version
+                                    };
+                                    var visible = false;
+                                    if(config.identifier){
+                                        if(layer.Identifier){
+                                            if(layer.Identifier.content){
+                                                if(layer.Identifier.content == config.identifier){
+                                                    visible = true;
                                                 }
                                             }
                                         }
-                                        var extent = gaGlobalOptions.defaultExtent;
-                                        if(layer.EX_GeographicBoundingBox){
-                                            extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)];
-                                        }else if(layer.LatLonBoundingBox){
-                                            extent = [parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
-                                        }
-                                        
-                                        var layerOptions = {
-                                            url: config.cap,
-                                            label: layer.Title,
-                                            opacity: 1,
-                                            visible: visible,
-                                            queryable: parseInt(layer.queryable) == 1 ? true : false,
-                                            extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-                                        };
-                                        
-                                        var olLayer = createWmsLayer(layerParams, layerOptions);
-                                        olLayer.visible = visible;
-                                        if (config.index) {
-                                          map.getLayers().insertAt(config.index + i, olLayer);
-                                        } else {
-                                          map.addLayer(olLayer);
-                                        }
-                                        hasAddService = true;
                                     }
-                                    if(hasAddService){
-                                        alert("Dienst '" + config.cap + "' wurde hinzugefügt.")
+                                    var extent = gaGlobalOptions.defaultExtent;
+                                    if(layer.EX_GeographicBoundingBox){
+                                        extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)];
+                                    }else if(layer.LatLonBoundingBox){
+                                        extent = [parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
                                     }
+                                    
+                                    var layerOptions = {
+                                        url: config.cap,
+                                        label: layer.Title,
+                                        opacity: 1,
+                                        visible: visible,
+                                        queryable: parseInt(layer.queryable) == 1 ? true : false,
+                                        extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                                    };
+                                    
+                                    var olLayer = createWmsLayer(layerParams, layerOptions);
+                                    olLayer.visible = visible;
+                                    if (config.index) {
+                                      map.getLayers().insertAt(config.index + i, olLayer);
+                                    } else {
+                                      map.addLayer(olLayer);
+                                    }
+                                    hasAddService = true;
+                                }
+                                if(hasAddService){
+                                    alert("Dienst '" + config.cap + "' wurde hinzugefügt.")
                                 }
                             }
                         }
