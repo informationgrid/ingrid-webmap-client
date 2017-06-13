@@ -53,8 +53,14 @@ goog.require('ga_permalink');
           '<span ng-show="!isCopied" translate>copy_url</span>',
       link: function(scope, element, attrs) {
         scope.isCopied = false;
+        /* INGRID:
+         * Remove copy button. Copy URL failed. Wait for client update
+         * 
+         * 
         var isCopyAllow = ((gaBrowserSniffer.msie >= 11) ||
             (gaBrowserSniffer.chrome >= 43));
+        */
+        var isCopyAllow = (gaBrowserSniffer.msie >= 11);
         if (!isCopyAllow) {
           element.remove();
         }

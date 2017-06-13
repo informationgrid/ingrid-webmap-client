@@ -31,7 +31,7 @@ goog.require('ga_permalink');
     function($timeout, $translate, $window, $rootScope, gaBrowserSniffer,
         gaDefinePropertiesForLayer, gaDebounce, gaFileStorage, gaLayerFilters,
         gaExportKml, gaMapUtils, gaPermalink, gaUrlUtils,
-        $document, gaMeasure) {
+        $document, gaMeasure, gaGlobalOptions) {
 
       var createDefaultLayer = function(map, useTemporaryLayer) {
         // #2820: we set useSpatialIndex to false to allow display of azimuth
@@ -704,9 +704,9 @@ goog.require('ga_permalink');
             });*/
             var regex = new RegExp(',{0,1}' +
                 gaUrlUtils.encodeUriQuery(layer.id, true));
-            scope.adminShortenUrl = gaPermalink.getHref().replace(regex, '') +
+            scope.adminShortenUrl = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame).replace(regex, '') +
                 '&adminId=' + adminId;
-            scope.userShortenUrl = gaPermalink.getHref();
+            scope.userShortenUrl = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
           };
 
 
