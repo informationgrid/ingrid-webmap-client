@@ -11,6 +11,8 @@ goog.provide('ga_contextpopup_controller');
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
           // INGRID: Add BWaStrLocator
           bwaLocatorUrl: '/ingrid-webmap-client/rest/jsonCallback/queryPost?',
+          // INGRID: Add short URL
+          shortenUrl: gaGlobalOptions.shortURLService
         };
 
       });

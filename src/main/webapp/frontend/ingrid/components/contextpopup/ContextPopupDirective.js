@@ -28,6 +28,8 @@ goog.require('ga_permalink');
             // INGRID: Add BwaStrLocator
             var bwaLocatorUrl = scope.options.bwaLocatorUrl;
             var lv03tolv95Url = scope.options.lv03tolv95Url;
+            // INGRID: Add short URL
+            var shortenUrl = scope.options.shortenUrl;
 
             scope.titleClose = $translate.instant('close');
             scope.currentTab = 1;
@@ -300,8 +302,15 @@ goog.require('ga_permalink');
                   angular.extend({crosshair: 'marker'}, p));
 
               if (!gaBrowserSniffer.mobile) {
-                scope.qrcodeUrl = qrcodeUrl + '?url=' +
-                    escape(contextPermalink);
+                  $http.get(shortenUrl, {
+                      params: {
+                        url: contextPermalink
+                      }
+                  }).success(function(response) {
+                      // INGRID: Return href if no shorturl exists
+                      var url = response.shorturl ? response.shorturl : scope.contextPermalink;
+                      scope.qrcodeUrl = qrcodeUrl + '?url=' + escape(url);
+                  });
               }
             }
             

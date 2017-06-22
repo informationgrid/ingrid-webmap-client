@@ -715,6 +715,11 @@ goog.require('ga_time_service');
       }).success(function(response) {
         // INGRID: Return href if no shorturl exists
         shortLink = response.shorturl ? response.shorturl.replace('/shorten', '') : gaPermalink.getHref();
+        // INGRID: Add used shortLink for QR
+        if(shortLink){
+          qrcodeUrl = $scope.options.qrcodeUrl +
+          encodeURIComponent(shortLink);
+        }
       });
 
       // Build the complete json then send it to the print server
