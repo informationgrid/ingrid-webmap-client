@@ -742,11 +742,16 @@ goog.require('ga_urlutils_service');
           var olSource = (layer.timeEnabled) ? null : layer.olSource;
           if (layer.type == 'wmts') {
             if (!olSource) {
+              /*
+              * INGRID: Remove use default wmts template
               var wmtsTplUrl = getWmtsGetTileTpl(layer.serverLayerName, null,
                   '21781', layer.format, true)
                   .replace('{z}', '{TileMatrix}')
                   .replace('{x}', '{TileCol}')
                   .replace('{y}', '{TileRow}');
+              */
+              // INGRID: Use template from config
+              var wmtsTplUrl = layer.template;
               var subdomains = dfltWmtsNativeSubdomains;
               olSource = layer.olSource = new ol.source.WMTS({
                 dimensions: {
@@ -756,16 +761,29 @@ goog.require('ga_urlutils_service');
                 // is merged upstream
                 cacheSize: 2048 * 3,
                 projection: gaGlobalOptions.defaultEpsg,
-                requestEncoding: 'REST',
-                tileGrid: gaTileGrid.get(layer.resolutions,
-                    layer.minResolution),
+                // INGRID: Use WMTS properties from layer config
+                requestEncoding: layer.requestEncoding || "KVP",
+                version: layer.version || '1.0.0',
+                layer: layer.name,
+                format: "image/" + layer.format,
+                style: layer.style || 'default',
+                matrixSet: layer.matrixSet,
+                // INGRID: Replace tileGrid function
+                tileGrid: new ol.tilegrid.WMTS({
+                    matrixIds: $.map(layer.resolutions, function(r, i) { return i + ''; }),
+                    origin: layer.origin,
+                    resolutions: layer.resolutions,
+                    extent: layer.extent ? ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
+                }),
                 tileLoadFunction: tileLoadFunction,
-                urls: getImageryUrls(wmtsTplUrl, subdomains),
+                // INGRID: Replace generate urls
+                urls: layer.subdomains ? getImageryUrls(wmtsTplUrl, layer.subdomains) : [wmtsTplUrl],
                 crossOrigin: crossOrigin
               });
             }
             olLayer = new ol.layer.Tile({
-              extent: extent,
+              // INGRID: Get extent from layer config
+              extent: layer.extent ? ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
               minResolution: gaNetworkStatus.offline ? null :
                   layer.minResolution,
               preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,

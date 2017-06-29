@@ -8,6 +8,56 @@
                 "category": "cat70",
                 "staging": "prod",
                 "selectedOpen": false,
+                "label": "WMTS Examples",
+                "id": 9000,
+                "children": [{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "USA WMTS (KVP)",
+                    "layerBodId": "wmts_usa_1",
+                    "id": 9001
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "USA WMTS (REST)",
+                    "layerBodId": "wmts_usa_2",
+                    "id": 9002
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "WebAtlasDE.light WMTS (KVP)",
+                    "layerBodId": "wmts_webatlas_light_1",
+                    "id": 9002
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "WebAtlasDE.light WMTS (REST)",
+                    "layerBodId": "wmts_webatlas_light_2",
+                    "id": 9003
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "DOP20 WMTS (REST)",
+                    "layerBodId": "wmts_dop20",
+                    "id": 9005
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "InlandENCs der WSV WMTS (REST)",
+                    "layerBodId": "wmts_wmsienc",
+                    "id": 9006
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Bundeswasserstrassen WMTS (REST)",
+                    "layerBodId": "wmts_bwastr",
+                    "id": 9007
+                }]
+            },
+            {
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
                 "label": "Geobasisdaten",
                 "id": 2,
                 "children": [{
