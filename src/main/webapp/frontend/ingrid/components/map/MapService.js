@@ -919,7 +919,7 @@ goog.require('ga_urlutils_service');
               FORMAT: 'image/' + layer.format,
               // INGRID: Add version to get getMap request for WMS version 1.1.1
               // Version is define on layers.json.
-              VERSION: layer.version != undefined ? layer.version : '1.3.0',
+              VERSION: layer.version ? layer.version : '1.3.0',
               LANG: gaLang.get()
             };
             if (timestamp) {
@@ -947,8 +947,11 @@ goog.require('ga_urlutils_service');
               if (!olSource) {
                 var subdomains = dfltWmsSubdomains;
                 olSource = layer.olSource = new ol.source.TileWMS({
+                  /* INGRID: Remove
                   urls: getImageryUrls(
                       getWmsTpl(gaGlobalOptions.wmsUrl), subdomains),
+                  */
+                  urls: [layer.wmsUrl],
                   // Temporary until https://github.com/openlayers/ol3/pull/4964
                   // is merged upstream
                   cacheSize: 2048 * 3,
