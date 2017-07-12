@@ -49,11 +49,12 @@ goog.require('ga_map_service');
             Array.prototype.push.apply(tmp, layers);
             layers = tmp;
           }
-          
+
           // INGRID: Add copyright for OSM layer
-          if(gaPermalink.getParams().bgLayer){
-              if(gaPermalink.getParams().bgLayer == "osmLayer"){
-                  list.push("<a target=\"new\" href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>");
+          if (gaPermalink.getParams().bgLayer) {
+              if (gaPermalink.getParams().bgLayer == 'osmLayer') {
+                  list.push('<a target=\"new\" href=\"http://www.openstreet' +
+                    'map.org/copyright\">OpenStreetMap contributors</a>');
               }
           }
           layers.forEach(function(layer) {
@@ -81,6 +82,9 @@ goog.require('ga_map_service');
         };
 
         scope.$watchCollection('layers | filter:layerFilter', function(layers) {
+          if (!layersFiltered && !layers.length) {
+            return;
+          }
           layersFiltered = layers;
           updateDebounced(element, layers);
         });
@@ -110,8 +114,7 @@ goog.require('ga_map_service');
   /**
    * ga-attribution-warning displays a warning about the data in 2.5d.
    */
-  module.directive('gaAttributionWarning', function($translate, $window,
-      gaBrowserSniffer, gaAttribution, $rootScope, gaDebounce) {
+  module.directive('gaAttributionWarning', function(gaDebounce) {
 
     var update = function(element, layers) {
       element.toggle(!!(layers && layers.length));
@@ -124,6 +127,7 @@ goog.require('ga_map_service');
         ol3d: '=gaAttributionWarningOl3d'
       },
       link: function(scope, element, attrs) {
+        element.hide();
         var layersFiltered = [], dereg = [];
         scope.layerFilter = function(layer) {
           return !layer.background && (layer.preview ||

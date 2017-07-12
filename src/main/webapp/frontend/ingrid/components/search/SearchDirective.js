@@ -8,6 +8,8 @@ goog.require('ga_search_service');
 goog.require('ga_search_type_directives');
 goog.require('ga_topic_service');
 goog.require('ga_translation_service');
+goog.require('ga_what3words_service');
+
 (function() {
 
   var module = angular.module('ga_search_directive', [
@@ -19,7 +21,8 @@ goog.require('ga_translation_service');
     'ga_search_type_directives',
     'ga_urlutils_service',
     'ga_translation_service',
-    'ga_topic_service'
+    'ga_topic_service',
+    'ga_what3words_service'
   ]);
 
   var ResultStats = function() {
@@ -72,7 +75,7 @@ goog.require('ga_translation_service');
     function($scope, $rootScope, $sce, $timeout, gaPermalink,
              gaUrlUtils, gaSearchGetCoordinate, gaMapUtils, gaMarkerOverlay,
              gaKml, gaPreviewLayers, gaLang, gaTopic, gaLayers,
-             gaSearchTokenAnalyser) {
+             gaSearchTokenAnalyser, gaWhat3Words) {
       var blockQuery = false;
       var restat = new ResultStats();
       $scope.restat = restat;
@@ -82,16 +85,18 @@ goog.require('ga_translation_service');
       $scope.childoptions = {};
 
       $scope.childoptions.featureUrl = $scope.options.featureUrl;
-      
+
       // INGRID: Add search service url
       $scope.childoptions.searchServiceUrl = $scope.options.searchServiceUrl;
-      
+
       // INGRID: Add search nominatim url
-      $scope.childoptions.searchNominatimUrl = $scope.options.searchNominatimUrl;
+      $scope.childoptions.searchNominatimUrl = $scope.options.
+        searchNominatimUrl;
 
       // INGRID: Add search Bwa Locator url
-      $scope.childoptions.searchBwaLocatorUrl = $scope.options.searchBwaLocatorUrl;
-      
+      $scope.childoptions.searchBwaLocatorUrl = $scope.options.
+        searchBwaLocatorUrl;
+
       // Result set announces a result selection
       $scope.childoptions.valueSelected = function(strValue) {
         $scope.query = strValue;
@@ -122,6 +127,7 @@ goog.require('ga_translation_service');
       $scope.childoptions.query = '';
 
       $scope.clearInput = function() {
+        gaWhat3Words.cancel();
         restat.reset();
         gaMarkerOverlay.remove($scope.map);
         gaPreviewLayers.removeAll($scope.map);
@@ -146,6 +152,7 @@ goog.require('ga_translation_service');
 
       var startQuery = function(q) {
         restat.reset();
+        gaWhat3Words.cancel();
 
         if (!blockQuery) {
           // URL?
@@ -157,13 +164,28 @@ goog.require('ga_translation_service');
             return;
           }
           // Coordinate?
-          var position = gaSearchGetCoordinate(
-              $scope.map.getView().getProjection().getExtent(), q);
+          var extent = $scope.map.getView().getProjection().getExtent();
+          gaSearchGetCoordinate(extent, q).then(function(position) {
+            if (position) {
+              gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, position);
+              gaMarkerOverlay.add($scope.map, position, true);
+            }
+          });
 
-          if (position) {
-            gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, position);
-            gaMarkerOverlay.add($scope.map, position,
-                                [position, position], true);
+          // w3w word?
+          var w3w = gaWhat3Words.getCoordinate(q);
+
+          if (w3w) {
+            w3w.then(function(response) {
+              var res = response.data;
+              if (res && res.geometry && res.geometry.lng && res.geometry.lat) {
+                var newPos = ol.proj.transform([res.geometry.lng,
+                                                res.geometry.lat],
+                                               'EPSG:4326', 'EPSG:21781');
+                gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, newPos);
+                gaMarkerOverlay.add($scope.map, newPos, true);
+              }
+            });
           } else {
             // Standard query then
             var tokenized = gaSearchTokenAnalyser.run(q);

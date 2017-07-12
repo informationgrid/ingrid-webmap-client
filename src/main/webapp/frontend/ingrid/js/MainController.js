@@ -3,40 +3,58 @@ goog.provide('ga_main_controller');
 goog.require('ga_background_service');
 goog.require('ga_cesium');
 goog.require('ga_map');
+goog.require('ga_map_load_service');
 goog.require('ga_networkstatus_service');
 goog.require('ga_storage_service');
 goog.require('ga_topic_service');
+goog.require('ga_window_service');
 
 (function() {
 
   var module = angular.module('ga_main_controller', [
     'pascalprecht.translate',
     'ga_map',
+    'ga_map_load_service',
     'ga_networkstatus_service',
     'ga_storage_service',
     'ga_background_service',
-    'ga_topic_service'
+    'ga_topic_service',
+    'ga_window_service'
   ]);
 
   /**
    * The application's main controller.
    */
   module.controller('GaMainController', function($rootScope, $scope, $timeout,
-      $translate, $window, $document, $q, gaBrowserSniffer, gaHistory,
+      $translate, $window, $document, $q, gaBrowserSniffer, gaHistory, $compile,
       gaPermalinkFeaturesManager, gaPermalinkLayersManager, gaMapUtils,
       gaRealtimeLayersManager, gaNetworkStatus, gaPermalink, gaStorage,
       gaGlobalOptions, gaBackground, gaTime, gaLayers, gaTopic,
-      gaOpaqueLayersManager) {
+      gaOpaqueLayersManager, gaMapLoad, gaWindow) {
 
     var createMap = function() {
       var toolbar = $('#zoomButtons')[0];
-      // INGRID: Add zoom to extent button
-      var zoomToExtentButton = $('#zoomToExtentButton')[0];
       var defaultProjection = ol.proj.get(gaGlobalOptions.defaultEpsg);
       // INGRID: Disable defaultProjection extent
-      if(defaultProjection.getExtent() == null){
-          defaultProjection.setExtent(ol.proj.transformExtent(gaGlobalOptions.defaultEpsgExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg));
+      if (defaultProjection.getExtent() == null) {
+          defaultProjection.setExtent(ol.proj.
+            transformExtent(gaGlobalOptions.defaultEpsgExtent, 'EPSG:4326',
+            gaGlobalOptions.defaultEpsg));
       }
+
+      // INGRID: Add zoom to extent button
+      var zoomToExtentButton = $('#zoomToExtentButton')[0];
+      var zoomIn = '<span translate-attr="{title: \'zoom_in\'}">' +
+        '<i class="fa fa-ga-circle-bg"></i>' +
+        '<i class="fa fa-ga-circle"></i>' +
+        '<i class="fa fa-ga-zoom-plus"></i>' +
+      '</span>';
+
+      var zoomOut = '<span translate-attr="{title: \'zoom_out\'}">' +
+        '<i class="fa fa-ga-circle-bg"></i>' +
+        '<i class="fa fa-ga-circle"></i>' +
+        '<i class="fa fa-ga-zoom-minus"></i>' +
+      '</span>';
 
       var map = new ol.Map({
         controls: ol.control.defaults({
@@ -44,24 +62,15 @@ goog.require('ga_topic_service');
           rotate: false,
           zoomOptions: {
             target: toolbar,
-            zoomInLabel: $('<span>' +
-                           '<i class="fa fa-ga-circle-bg"></i>' +
-                           '<i class="fa fa-ga-circle"></i>' +
-                           '<i class="fa fa-ga-zoom-plus"></i>' +
-                           '</span>')[0],
-            zoomOutLabel: $('<span>' +
-                            '<i class="fa fa-ga-circle-bg"></i>' +
-                            '<i class="fa fa-ga-circle"></i>' +
-                            '<i class="fa fa-ga-zoom-minus"></i>' +
-                            '</span>')[0],
-            zoomInTipLabel: ' ',
-            zoomOutTipLabel: ' '
+            zoomInLabel: $compile(zoomIn)($scope)[0],
+            zoomOutLabel: $compile(zoomOut)($scope)[0],
           }
         // INGRID: Configuration of zoom to extent button
         }).extend([
         new ol.control.ZoomToExtent({
            target: zoomToExtentButton,
-           extent: ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
+           extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
+            'EPSG:4326', gaGlobalOptions.defaultEpsg),
            tipLabel: ' ',
            label: $('<span>' +
                    '<i class="fa fa-ga-circle-bg"></i>' +
@@ -81,36 +90,30 @@ goog.require('ga_topic_service');
         view: new ol.View({
             // INGRID: Configuration of map
             projection: defaultProjection,
-            center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-            //extent: ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+            center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.
+              defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+            //extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
+            //  'EPSG:4326', gaGlobalOptions.defaultEpsg)
             //resolution: gaMapUtils.defaultResolution
             //resolutions: gaMapUtils.viewResolutions
         }),
         logo: false
       });
 
-      var dragClass = 'ga-dragging';
-      var viewport = $(map.getViewport());
-      map.on('dragstart', function() {
-        viewport.addClass(dragClass);
-      });
-      map.on('dragend', function() {
-        viewport.removeClass(dragClass);
-      });
-
       return map;
     };
 
     // Determines if the window has a height <= 550
-    var win = $($window), screenPhone = 480, screenSmMaxHeight = 550;
-    var isWindowTooSmall = function() {
-      return win.height() <= screenSmMaxHeight;
-    };
+    var win = $($window);
     var dismiss = 'none';
 
     // The main controller creates the OpenLayers map object. The map object
     // is central, as most directives/components need a reference to it.
     $scope.map = createMap();
+    // Only active if debug=true is specified
+    if (gaPermalink.getParams().debug == 'true') {
+      gaMapLoad.init($scope);
+    }
 
     // Set up 3D
     var startWith3D = false;
@@ -133,7 +136,7 @@ goog.require('ga_topic_service');
 
       var cesium = new GaCesium($scope.map, gaPermalink, gaLayers,
                                 gaGlobalOptions, gaBrowserSniffer, $q,
-                                $translate);
+                                $translate, $rootScope, gaBackground);
       cesium.loaded().then(function(ol3d) {
         $scope.ol3d = ol3d;
         if (!$scope.ol3d) {
@@ -245,13 +248,6 @@ goog.require('ga_topic_service');
 
     $rootScope.$on('$translateChangeEnd', function() {
       $scope.langId = $translate.use();
-      var descr = $translate.instant('page_description');
-      var title = $translate.instant('page_title');
-      $('meta[name=description]').attr('content', descr);
-      $('meta[property="og:description"]').attr('content', descr);
-      $('meta[name="twitter:description"]').attr('content', descr);
-      $('meta[itemprop="description"]').attr('content', descr);
-      $('meta[name="application-name"]').attr('content', title);
     });
 
     $scope.time = gaTime.get();
@@ -262,8 +258,8 @@ goog.require('ga_topic_service');
     // Create switch device url
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
     // INGRID: Fix switch device mode
-    if(location.pathname){
-        if(!location.pathname.endsWith('mobile.html')){
+    if (location.pathname) {
+        if (!location.pathname.endsWith('mobile.html')) {
             switchToMobile = 'true';
         }
     }
@@ -280,9 +276,6 @@ goog.require('ga_topic_service');
       pegman: gaGlobalOptions.pegman,
       searchFocused: !gaBrowserSniffer.mobile,
       homescreen: false,
-      tablet: gaBrowserSniffer.mobile && !gaBrowserSniffer.phone,
-      phone: gaBrowserSniffer.phone,
-      touch: gaBrowserSniffer.touchDevice,
       webkit: gaBrowserSniffer.webkit,
       ios: gaBrowserSniffer.ios,
       animation: gaBrowserSniffer.animation,
@@ -298,10 +291,17 @@ goog.require('ga_topic_service');
       isFeatureTreeActive: false,
       isSwipeActive: false,
       is3dActive: startWith3D,
+      hostIsProd: gaGlobalOptions.hostIsProd,
       // INGRID: Add 'isParentIFrame'
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog
+    };
+
+    $scope.hidePulldownOnXSmallScreen = function() {
+      if (gaWindow.isWidth('xs')) {
+        $scope.globals.pulldownShown = false;
+      }
     };
 
     // Deactivate all tools when draw is opening
@@ -322,38 +322,37 @@ goog.require('ga_topic_service');
         $scope.globals.isShareActive = false;
       }
     });
-    // Deactivate share tool when pulldown is closeddraw is opening
+    // Activate share tool when menu is opening.
     $scope.$watch('globals.pulldownShown', function(active) {
       if (active && !$scope.globals.isDrawActive &&
-          !$scope.globals.isShareActive &&
-          win.width() <= screenPhone) {
+          !$scope.globals.isShareActive && gaWindow.isWidth('xs')) {
         // INGRID: Set 'isShareActive' to false
         $scope.globals.isShareActive = false;
       }
     });
+
     $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
       $scope.globals.offline = offline;
     });
 
+    // Only iOS Safari
+    if (!$window.navigator.standalone && gaBrowserSniffer.ios &&
+        gaBrowserSniffer.safari && !gaStorage.getItem('homescreen')) {
     $timeout(function() {
-      $scope.globals.homescreen = gaBrowserSniffer.ios &&
-        !gaBrowserSniffer.iosChrome &&
-        !(gaStorage.getItem('homescreen') == dismiss) &&
-        !$window.navigator.standalone;
-      $scope.$watch('globals.homescreen', function(newVal) {
-        if (newVal == true) {
-          return;
-        }
-        gaStorage.setItem('homescreen', dismiss);
-      });
+        $scope.globals.homescreen = true;
+        $scope.globals.tablet = gaWindow.isWidth('s');
+        $scope.$watch('globals.homescreen', function(newVal) {
+          if (newVal == false) {
+            gaStorage.setItem('homescreen', 'none');
+          }
+        });
     }, 2000);
+    }
 
-    // Try to manage the menu correctly when height is too small,
-    // only on desktop.
+    // Manage exit of draw mode (only desktop)
     if (!gaBrowserSniffer.mobile) {
 
-
-      // Exit Draw mode when pressing ESC or BAckspace button
+      // Exit Draw mode when pressing ESC or Backspace button
       $document.keydown(function(evt) {
         if (evt.which == 8) {
           if (!/^(input|textarea)$/i.test(evt.target.tagName)) {
@@ -387,62 +386,72 @@ goog.require('ga_topic_service');
           $scope.$digest();
         }
       };
-
-      win.on('resize', function() {
-        if (isWindowTooSmall()) {
-          if ($scope.globals.catalogShown) {
-            $scope.$applyAsync(function() {
-              $scope.globals.catalogShown = false;
-            });
-          }
-        }
-        // Open share panel by default on phone
-        if ($scope.globals.pulldownShown && !$scope.globals.isShareActive &&
-            !$scope.globals.isDrawActive &&
-            win.width() <= screenPhone) {
-          $scope.$applyAsync(function() {
-            // INGRID: Set 'isShareActive' to false
-            $scope.globals.isShareActive = false;
-          });
-        }
-      });
-
-      // Hide a panel clicking on its heading
-      var hidePanel = function(id) {
-        if ($('#' + id).hasClass('in')) {
-          $('#' + id + 'Heading').click();
-        }
-      };
-
-      var hideAccordionPanels = function() {
-        hidePanel('share');
-        hidePanel('print');
-        hidePanel('tools');
-      };
-
-      $('#catalog').on('shown.bs.collapse', function() {
-        // Close accordion
-        hideAccordionPanels();
-
-        if (isWindowTooSmall()) {
-          // Close selection
-          hidePanel('selection');
-        }
-      });
-
-      $('#selection').on('shown.bs.collapse', function() {
-        // Close accordion
-        hideAccordionPanels();
-
-        if (isWindowTooSmall()) {
-          // Close catalog
-          hidePanel('catalog');
-        }
-      });
-
     }
 
-    // An new appcache file is available.
+    // Management of panels display (only on screen bigger than 480px)
+    win.on('resize', function() {
+      if (gaWindow.isWidth('xs')) {
+        return;
+      }
+
+      // Hide catalog panel if height is too small
+      if (gaWindow.isHeight('<=m')) {
+        if ($scope.globals.catalogShown) {
+          $scope.$applyAsync(function() {
+            $scope.globals.catalogShown = false;
+          });
+        }
+      }
+      // Open share panel by default on phone
+      if ($scope.globals.pulldownShown && !$scope.globals.isShareActive &&
+          !$scope.globals.isDrawActive && gaWindow.isWidth('xs')) {
+        $scope.$applyAsync(function() {
+          // INGRID: Set 'isShareActive' to false
+          $scope.globals.isShareActive = false;
+        });
+      }
+    });
+
+    // Hide a panel clicking on its heading
+    var hidePanel = function(id) {
+      if ($('#' + id).hasClass('in')) {
+        $('#' + id + 'Heading').click();
+      }
+    };
+
+    var hideAccordionPanels = function() {
+      hidePanel('share');
+      hidePanel('print');
+      hidePanel('tools');
+    };
+
+    $('#catalog').on('shown.bs.collapse', function() {
+      if (gaWindow.isWidth('xs')) {
+        return;
+      }
+      // Close accordion
+      hideAccordionPanels();
+
+      if (gaWindow.isHeight('<=s')) {
+        // Close selection
+        hidePanel('selection');
+      }
+    });
+
+    $('#selection').on('shown.bs.collapse', function() {
+      if (gaWindow.isWidth('xs')) {
+        return;
+      }
+      // Close accordion
+      hideAccordionPanels();
+
+      if (gaWindow.isHeight('<=s')) {
+        // Close catalog
+        hidePanel('catalog');
+      }
+    });
+
+    // Load new appcache file if available.
     if ($window.applicationCache) {
       $window.applicationCache.addEventListener('obsolete', function(e) {
         // setTimeout is needed for correct appcache update on Firefox
@@ -451,7 +460,6 @@ goog.require('ga_topic_service');
         });
       });
     }
-
   });
 })();
 

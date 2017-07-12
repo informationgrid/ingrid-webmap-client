@@ -8,7 +8,7 @@
 # Version ${version}
 
 CACHE:
-lib/build.js	
+lib/build.js
 style/app.css
 style/font-awesome-4.5.0/font/fontawesome-webfont.woff
 services

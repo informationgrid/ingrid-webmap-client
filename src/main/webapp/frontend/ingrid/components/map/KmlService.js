@@ -1,11 +1,14 @@
 goog.provide('ga_kml_service');
 
+goog.require('ga_geomutils_service');
 goog.require('ga_map_service');
 goog.require('ga_measure_service');
 goog.require('ga_networkstatus_service');
 goog.require('ga_storage_service');
 goog.require('ga_styles_service');
 goog.require('ga_urlutils_service');
+goog.require('ngeo.fileService');
+
 
 (function() {
 
@@ -15,7 +18,9 @@ goog.require('ga_urlutils_service');
     'ga_storage_service',
     'ga_styles_service',
     'ga_urlutils_service',
-    'ga_measure_service'
+    'ga_measure_service',
+    'ga_geomutils_service',
+    'ngeo.fileService'
   ]);
 
   /**
@@ -23,154 +28,79 @@ goog.require('ga_urlutils_service');
    */
   module.provider('gaKml', function() {
 
-    // Ensure linear rings are closed
-    var closeLinearRing = function(linearRing) {
-      if (linearRing.getFirstCoordinate() != linearRing.getLastCoordinate()) {
-        var coords = linearRing.getCoordinates();
-        coords.push(linearRing.getFirstCoordinate());
-        linearRing.setCoordinates(coords);
-
-      }
-    };
-    var closePolygon = function(polygon) {
-      var coords = [];
-      var linearRings = polygon.getLinearRings();
-      for (var i = 0, ii = linearRings.length; i < ii; i++) {
-        closeLinearRing(linearRings[i]);
-        coords.push(linearRings[i].getCoordinates());
-      }
-      polygon.setCoordinates(coords);
-    };
-    var closeMultiPolygon = function(multiPolygon) {
-      var coords = [];
-      var polygons = multiPolygon.getPolygons();
-      for (var i = 0, ii = polygons.length; i < ii; i++) {
-        closePolygon(polygons[i]);
-        coords.push(polygons[i].getCoordinates());
-      }
-      multiPolygon.setCoordinates(coords);
-    };
-    var closeGeometry = function(geom) {
-      var geometries = [geom];
-      if (geom instanceof ol.geom.GeometryCollection) {
-        geometries = geom.getGeometries();
-      }
-      for (var i = 0, ii = geometries.length; i < ii; i++) {
-        var geometry = geometries[i];
-        if (geometry instanceof ol.geom.MultiPolygon) {
-          closeMultiPolygon(geometry);
-        } else if (geometry instanceof ol.geom.Polygon) {
-          closePolygon(geometry);
-        } else if (geometry instanceof ol.geom.LinearRing) {
-          closeLinearRing(geometry);
-        }
-      }
-      if (geom instanceof ol.geom.GeometryCollection) {
-        geom.setGeometries(geometries);
-      }
-    };
-
-    var shouldRemoveMultiGeom = function(geometry, children) {
-      var coords = [];
-      for (var i = 0, ii = children.length; i < ii; i++) {
-        if (!shouldRemoveGeometry(children[i])) {
-          coords.push(children[i].getCoordinates());
-        }
-      }
-      if (coords.length) {
-        geometry.setCoordinates(coords);
-        return false;
-      }
-      return true;
-    };
-
-    /**
-     * This function tests if all coordinates of a geometry are identical.
-     * Special case , returns true if there is only one coordinate.
-     * Used to test LineStrings and LinearRings.
-     */
-    var uniqueCoords = function(coords) {
-      var unique = true;
-      for (var i = 0, ii = coords.length; i < ii; i++) {
-        var coord = coords[i];
-        var nextCoord = coords[i + 1];
-        if (unique && nextCoord &&
-            (coord[0] != nextCoord[0] ||
-            coord[1] != nextCoord[1] ||
-            coord[2] != nextCoord[2])) {
-          return false;
-        }
-      }
-      return true;
-    };
-
-    var shouldRemoveGeometry = function(geom) {
-      var geometries = [geom];
-      if (geom instanceof ol.geom.GeometryCollection) {
-        geometries = geom.getGeometries();
-      }
-      for (var i = 0, ii = geometries.length; i < ii; i++) {
-        var geometry = geometries[i];
-        var remove = false;
-        if (geometry instanceof ol.geom.MultiPolygon) {
-           remove = shouldRemoveMultiGeom(geometry, geometry.getPolygons());
-        } else if (geometry instanceof ol.geom.MultiLineString) {
-           remove = shouldRemoveMultiGeom(geometry, geometry.getLineStrings());
-        } else if (geometry instanceof ol.geom.Polygon) {
-           remove = shouldRemoveMultiGeom(geometry, geometry.getLinearRings());
-        } else if (geometry instanceof ol.geom.LinearRing ||
-            geometry instanceof ol.geom.LineString) {
-          remove = uniqueCoords(geometry.getCoordinates());
-        }
-        if (remove) {
-          geometries.splice(i, 1);
-          i--;
-        }
-      }
-      if (geometries.length && geom instanceof ol.geom.GeometryCollection) {
-        geom.setGeometries(geometries);
-        return false;
-      }
-      return !geometries.length;
-    };
-
-
     this.$get = function($http, $q, $rootScope, $timeout, $translate,
         gaDefinePropertiesForLayer, gaGlobalOptions, gaMapClick, gaMapUtils,
-        gaNetworkStatus, gaStorage, gaStyleFactory, gaUrlUtils, gaMeasure) {
+        gaNetworkStatus, gaStorage, gaStyleFactory, gaUrlUtils, gaMeasure,
+        gaGeomUtils, ngeoFile) {
 
       // Store the parser.
       var kmlFormat;
 
-      // Read a kml string then return a list of features.
-      var readFeatures = function(kml) {
-        // Replace all hrefs to prevent errors if image doesn't have
-        // CORS headers. Exception for *.geo.admin.ch, *.bgdi.ch and google
-        // markers icons (lightblue.png, ltblue-dot.png, ltblu-pushpin.png, ...)
-        // to keep the OL3 magic for anchor origin.
-        // Test regex here: http://regex101.com/r/tF3vM0/3
-        // List of google icons: http://www.lass.it/Web/viewer.aspx?id=4
-        // INGRID: Change proxy url
-        kml = kml.replace(
-          /<href>http(?!(s?):\/\/(maps\.(?:google|gstatic)\.com.*(blue|green|orange|pink|purple|red|yellow|pushpin).*\.png|.*(bgdi|geo.admin)\.ch))/g,
-          '<href>' + gaGlobalOptions.imgproxyUrl + 'http'
-        );
-
-        // Replace all http hrefs from *.geo.admin.ch or *.bgdi.ch by https
-        // Test regex here: http://regex101.com/r/fY7wB3/3
-        kml = kml.replace(
-          /<href>http(?!(s))(?=:\/\/(.*(bgdi|geo.admin)\.ch))/g,
-          '<href>https'
-        );
-
-        // Load the parser only when needed.
-        // WARNING: it's needed to initialize it here for test.
+      // Create the parser/writer KML
+      var setKmlFormat = function() {
         if (!kmlFormat) {
+          // TO FIX, caused by OL 3.18.2
+          // Hack for #3531: We create an empty format first to create the
+          // default style variables.
+          // https://github.com/openlayers/openlayers/blob/master/src/ol/format/kml.js#L143
+          // https://github.com/openlayers/openlayers/pull/5587
+          ol.format.KML();
+
           kmlFormat = new ol.format.KML({
             extractStyles: true,
             defaultStyle: [gaStyleFactory.getStyle('kml')]
           });
         }
+      };
+
+      // Sanitize KML changing href links if necessary
+      var sanitizeKml = function(kml) {
+        // Replace all hrefs to prevent errors if image doesn't have
+        // CORS headers. Exception for *.geo.admin.ch, *.bgdi.ch and google
+        // markers icons (only https)
+        // to keep the OL magic for anchor origin.
+        // Test regex here: http://regex101.com/r/tF3vM0/9
+        // List of google icons: http://www.lass.it/Web/viewer.aspx?id=4
+        // INGRID: Change proxy url
+        kml = kml.replace(
+          /<href>http(?!(s:\/\/maps\.(google|gstatic)\.com[a-zA-Z\d\.\-\/_]*\.png|s?:\/\/[a-z\d\.\-]*(bgdi|geo.admin)\.ch))/g,
+          '<href>' + gaGlobalOptions.imgproxyUrl + 'http'
+        );
+
+        // We still need to convert <href>https://proxy.admin.ch/https:// to
+        // <href>https://proxy.admin.ch/https/
+        kml = kml.replace(
+          new RegExp('<href>' + gaGlobalOptions.proxyUrl + 'http://', 'g'),
+          '<href>' + gaGlobalOptions.proxyUrl + 'http/')
+            .replace(
+          new RegExp('<href>' + gaGlobalOptions.proxyUrl + 'https://', 'g'),
+          '<href>' + gaGlobalOptions.proxyUrl + 'https/');
+
+        // Replace all http hrefs from *.geo.admin.ch or *.bgdi.ch by https
+        // Test regex here: http://regex101.com/r/fY7wB3/5
+        kml = kml.replace(
+          /<href>http(?=s{0}:\/\/[a-z\d\.\-]*(bgdi|admin)\.ch)/g,
+          '<href>https'
+        );
+
+        // Replace all old maki urls image by the color service url
+        // Test regex here: https://regex101.com/r/rF2tA1/4
+        kml = kml.replace(
+          /<href>https?:\/\/[a-z\d\.\-]*(bgdi|geo.admin)\.ch[a-zA-Z\d\-_\/]*img\/maki\/([a-z\-0-9]*-24@2x\.png)/g,
+          '<href>' + gaGlobalOptions.apiUrl + '/color/255,0,0/$2'
+        );
+
+        return kml;
+      };
+
+      // Read a kml string then return a list of features.
+      var readFeatures = function(kml, projection) {
+
+        // Create the parser
+        setKmlFormat();
+
+        // Sanitize KML
+        kml = sanitizeKml(kml);
 
         // Manage networkLink tags
         var all = [];
@@ -180,7 +110,8 @@ goog.require('ga_urlutils_service');
           angular.forEach(networkLinks, function(networkLink) {
             if (gaUrlUtils.isValid(networkLink.href)) {
               all.push($http.get(networkLink.href).then(function(response) {
-                return readFeatures(response.data).then(function(newFeatures) {
+                return readFeatures(response.data, projection).then(
+                    function(newFeatures) {
                   features = features.concat(newFeatures);
                 });
               }));
@@ -189,7 +120,14 @@ goog.require('ga_urlutils_service');
         }
 
         return $q.all(all).then(function() {
-          return features;
+          var sanitizedFeatures = [];
+          for (var i = 0, ii = features.length; i < ii; i++) {
+            var feat = sanitizeFeature(features[i], projection);
+            if (feat) {
+              sanitizedFeatures.push(feat);
+            }
+          }
+          return sanitizedFeatures;
         });
       };
 
@@ -197,17 +135,13 @@ goog.require('ga_urlutils_service');
       var sanitizeFeature = function(feature, projection) {
         var geom = feature.getGeometry();
 
-        // Returns true if a geometry has a bad geometry
-        // (ex: only one coordinate for line strings)
-        var remove = shouldRemoveGeometry(geom);
-
         // Remove feature without good geometry.
-        if (!geom || remove) {
+        if (!gaGeomUtils.isValid(geom)) {
           return;
         }
         // Ensure polygons are closed.
         // Reason: print server failed when polygons are not closed.
-        closeGeometry(geom);
+        gaGeomUtils.close(geom);
 
         // Replace empty id by undefined.
         // Reason: If 2 features have their id empty, an assertion error
@@ -217,7 +151,17 @@ goog.require('ga_urlutils_service');
         }
         geom.transform('EPSG:4326', projection);
         var styles = feature.getStyleFunction().call(feature);
-        var style = styles[0];
+
+        // The use of clone is part of the scale fix line 156
+        var style = styles[0].clone();
+
+        // The canvas draws a stroke width=1 by default if width=0, so we
+        // remove the stroke style in that case.
+        // See https://github.com/geoadmin/mf-geoadmin3/issues/3421
+        var stroke = style.getStroke();
+        if (stroke && stroke.getWidth() == 0) {
+          stroke = undefined;
+        }
 
         // if the feature is a Point and we are offline, we use default kml
         // style.
@@ -229,6 +173,7 @@ goog.require('ga_urlutils_service');
             geom instanceof ol.geom.MultiPoint)) {
           var image = style.getImage();
           var text = null;
+          var fill = style.getFill();
 
           if (gaNetworkStatus.offline) {
             image = gaStyleFactory.getStyle('kml').getImage();
@@ -250,11 +195,14 @@ goog.require('ga_urlutils_service');
                   style.getText().getFill().getColor()),
               scale: style.getText().getScale()
             });
+
+            fill = undefined;
+            stroke = undefined;
           }
 
           styles = [new ol.style.Style({
-            fill: style.getFill(),
-            stroke: style.getStroke(),
+            fill: fill,
+            stroke: stroke,
             image: image,
             text: text,
             zIndex: style.getZIndex()
@@ -280,7 +228,7 @@ goog.require('ga_urlutils_service');
             geom instanceof ol.geom.GeometryCollection)) {
           styles = [new ol.style.Style({
             fill: style.getFill(),
-            stroke: style.getStroke(),
+            stroke: stroke,
             image: null,
             text: null,
             zIndex: style.getZIndex()
@@ -311,24 +259,16 @@ goog.require('ga_urlutils_service');
             return deferred.promise;
           }
 
-          // Read features available in a kml string, then create an ol layer.
-          return readFeatures(kml).then(function(features) {
-            var sanitizedFeatures = [];
-            for (var i = 0, ii = features.length; i < ii; i++) {
-              var feat = sanitizeFeature(features[i], options.projection);
-              if (feat) {
-                sanitizedFeatures.push(feat);
-              }
-            }
+         // Read features available in a kml string, then create an ol layer.
+          return readFeatures(kml, options.projection).then(function(features) {
 
             // #2820: we set useSpatialIndex to false for KML created with draw
             // tool
             var source = new ol.source.Vector({
-              features: sanitizedFeatures,
+              features: features,
               useSpatialIndex: !gaMapUtils.isStoredKmlLayer(options.id)
             });
 
-            var sourceExtent = gaMapUtils.getVectorSourceExtent(source);
             var layerOptions = {
               id: options.id,
               adminId: options.adminId,
@@ -338,7 +278,7 @@ goog.require('ga_urlutils_service');
               opacity: options.opacity,
               visible: options.visible,
               source: source,
-              extent: gaMapUtils.intersectWithDefaultExtent(sourceExtent),
+              //extent: gaMapUtils.intersectWithDefaultExtent(sourceExtent),
               attribution: options.attribution
             };
 
@@ -357,6 +297,12 @@ goog.require('ga_urlutils_service');
             }
             gaDefinePropertiesForLayer(olLayer);
             olLayer.useThirdPartyData = true;
+            olLayer.updateDelay = options.updateDelay;
+
+            // Save the kml content for for offline and 3d parsing
+            olLayer.getSource().setProperties({
+              'kmlString': sanitizeKml(kml)
+            });
 
             return olLayer;
           });
@@ -373,11 +319,17 @@ goog.require('ga_urlutils_service');
                 olMap.addLayer(olLayer);
               }
 
+              var source = olLayer.getSource();
+              if (source instanceof ol.source.ImageVector) {
+                source = source.getSource();
+              }
+
               // If the layer can contain measure features, we register some
               // events to add/remove correctly the overlays
-              if (gaMapUtils.isStoredKmlLayer(olLayer)) {
+              if (gaMapUtils.isStoredKmlLayer(olLayer) ||
+                  gaMapUtils.isLocalKmlLayer(olLayer)) {
                 if (olLayer.getVisible()) {
-                  angular.forEach(olLayer.getSource().getFeatures(),
+                  angular.forEach(source.getFeatures(),
                       function(feature) {
                     if (gaMapUtils.isMeasureFeature(feature)) {
                       gaMeasure.addOverlays(olMap, olLayer, feature);
@@ -388,14 +340,22 @@ goog.require('ga_urlutils_service');
               }
 
               if (options.zoomToExtent) {
-                var extent = olLayer.getExtent();
-                if (extent) {
-                  olMap.getView().fit(extent, olMap.getSize());
+                var sourceExtent = gaMapUtils.getVectorSourceExtent(source);
+                var ext = gaMapUtils.intersectWithDefaultExtent(sourceExtent);
+                if (ext) {
+                  olMap.getView().fit(ext, {
+                    size: olMap.getSize()
+                  });
                 }
               }
             }
             return olLayer;
           });
+        };
+
+        // Returns a promis
+        this.readFeatures = function(kmlString, projection) {
+          return readFeatures(kmlString, projection);
         };
 
         this.addKmlToMap = function(map, kmlString, layerOptions, index) {
@@ -409,20 +369,21 @@ goog.require('ga_urlutils_service');
           if (gaNetworkStatus.offline) {
             return this.addKmlToMap(map, null, layerOptions, index);
           } else {
-            return $http.get(gaGlobalOptions.ogcproxyUrl +
-                encodeURIComponent(url), {
-              cache: true
-            }).then(function(response) {
-              var data = response.data;
-              var fileSize = response.headers('content-length');
-              if (that.isValidFileContent(data) &&
-                  that.isValidFileSize(fileSize)) {
-                layerOptions.useImageVector = that.useImageVector(fileSize);
-                return that.addKmlToMap(map, data, layerOptions, index);
-              }
-            }, function() {
-              // Try to get offline data if exist
-              return that.addKmlToMap(map, null, layerOptions, index);
+            return gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
+              return $http.get(proxyUrl, {
+                cache: true
+              }).then(function(response) {
+                var data = response.data;
+                var fileSize = response.headers('content-length');
+                if (ngeoFile.isKml(data) &&
+                    ngeoFile.isValidFileSize(fileSize)) {
+                  layerOptions.useImageVector = that.useImageVector(fileSize);
+                  return that.addKmlToMap(map, data, layerOptions, index);
+                }
+              }, function() {
+                // Try to get offline data if exist
+                return that.addKmlToMap(map, null, layerOptions, index);
+              });
             });
           }
         };
@@ -434,22 +395,10 @@ goog.require('ga_urlutils_service');
           return (!!fileSize && parseInt(fileSize) >= 1000000); // < 1mo
         };
 
-        // Test the validity of the file size
-        this.isValidFileSize = function(fileSize) {
-          if (fileSize > 20000000) { // 20 Mo
-            alert($translate.instant('file_too_large') + ' (max. 20 MB)');
-            return false;
-          }
-          return true;
-        };
-
-        // Test the validity of the file content
-        this.isValidFileContent = function(fileContent) {
-          if (!/<kml/.test(fileContent) || !/<\/kml>/.test(fileContent)) {
-            alert($translate.instant('file_is_not_kml'));
-            return false;
-          }
-          return true;
+        // Returns the unique KML format used by the application
+        this.getFormat = function() {
+          setKmlFormat();
+          return kmlFormat;
         };
       };
       return new Kml();

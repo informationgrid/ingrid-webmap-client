@@ -66,8 +66,9 @@ goog.require('ga_permalink');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
                     // INGRID: Add entries
-                    formData.append('subject', $translate.instant('feedback_subject') + '');
-                    
+                    formData.append('subject',
+                      translate.instant('feedback_subject') + '');
+
                     return formData;
                 } else {
                     formData = {
@@ -128,23 +129,25 @@ goog.require('ga_permalink');
               elFileInpt.bind('change', function(evt) {
                 var file = (evt.srcElement || evt.target).files[0];
                 if (validateSize(file.size) && validateFormat(file.name)) {
-                  scope.$apply(function() {
+                  scope.$applyAsync(function() {
                     scope.file = file;
                   });
                 } else {
-                  scope.$apply(function() {
+                  scope.$applyAsync(function() {
                     scope.file = null;
                   });
                 }
               });
 
               // INGRID: Add params
-              scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
+              scope.permalinkValue = gaPermalink.getHref(undefined,
+                gaGlobalOptions.isParentIFrame);
 
               // Listen to permalink change events from the scope.
               scope.$on('gaPermalinkChange', function(event) {
                 // INGRID: Add params
-                scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
+                scope.permalinkValue = gaPermalink.getHref(undefined,
+                  gaGlobalOptions.isParentIFrame);
               });
 
               scope.$on('gaDrawingLayer', function(event, data) {
@@ -188,10 +191,10 @@ goog.require('ga_permalink');
                 }
 
                 scope.showProgress = true;
-                $http(params).success(function(response) {
+                $http(params).then(function() {
                   resetF();
                   scope.success = true;
-                }).error(function(response) {
+                }, function() {
                   resetF();
                   scope.error = true;
                 });

@@ -1,11 +1,12 @@
 goog.provide('ga_print_directive');
 
-// INGRID: Add 'ga_map_service'
-goog.require('ga_map_service');
 goog.require('ga_attribution_service');
 goog.require('ga_browsersniffer_service');
+//INGRID: Add 'ga_map_service'
+goog.require('ga_map_service');
 goog.require('ga_printstyle_service');
 goog.require('ga_time_service');
+goog.require('ga_urlutils_service');
 
 (function() {
 
@@ -16,14 +17,15 @@ goog.require('ga_time_service');
     'pascalprecht.translate',
     'ga_printstyle_service',
     'ga_time_service',
-    'ga_attribution_service'
+    'ga_attribution_service',
+    'ga_urlutils_service'
   ]);
 
   // INGRID: Add parameter 'gaWms', 'gaGlobalOptions'
   module.controller('GaPrintDirectiveController', function($rootScope, $scope,
       $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils, 
       gaPermalink, gaBrowserSniffer, gaWaitCursor, gaPrintStyle,
-      gaTime, gaAttribution, gaWms, gaGlobalOptions) {
+      gaTime, gaAttribution, gaUrlUtils, gaWms, gaGlobalOptions) {
 
     var pdfLegendsToDownload = [];
     var pdfLegendString = '_big.pdf';
@@ -144,12 +146,12 @@ goog.require('ga_time_service');
         if (resolution <= maxResolution &&
             resolution >= minResolution) {
           if (src instanceof ol.source.WMTS) {
-            encLayer = $scope.encoders.layers['WMTS'].call(this,
-                layer, layerConfig);
+            encLayer = $scope.encoders.layers['WMTS'].call(this, layer,
+                layerConfig);
           } else if (src instanceof ol.source.ImageWMS ||
               src instanceof ol.source.TileWMS) {
-            encLayer = $scope.encoders.layers['WMS'].call(this,
-                layer, layerConfig);
+            encLayer = $scope.encoders.layers['WMS'].call(this, layer,
+                layerConfig);
           } else if (src instanceof ol.source.OSM) {
             // INGRID: Add print OSM
             encLayer = $scope.encoders.layers['OSM'].call(this,
@@ -166,12 +168,13 @@ goog.require('ga_time_service');
       }
 
       // INGRID: Fix print of external WMS
-      if ($scope.options.legend && (encLayer && encLayer.type != "OSM" && encLayer.type != "Vector")) {
-        encLegend = $scope.encoders.legends['ga_urllegend'].call(this,
-            layer, layerConfig);
+      if ($scope.options.legend &&
+          layerConfig.hasLegend &&
+          (encLayer && encLayer.type != 'OSM' && encLayer.type != 'Vector')) {
+        encLegend = $scope.encoders.legends['ga_urllegend'].call(this, layer,
+            layerConfig);
 
-        if (encLegend.classes &&
-            encLegend.classes[0] &&
+        if (encLegend.classes && encLegend.classes[0] &&
             encLegend.classes[0].icon) {
           var legStr = encLegend.classes[0].icon;
           if (legStr.indexOf(pdfLegendString,
@@ -181,8 +184,8 @@ goog.require('ga_time_service');
           }
           // INGRID: Fix name value of encLegend
           if (encLegend.name == undefined) {
-            if(layer){
-              if(layer.label){
+            if (layer) {
+              if (layer.label) {
                 encLegend.name = layer.label;
               }
             }
@@ -208,8 +211,7 @@ goog.require('ga_time_service');
           var subLayers = layer.getLayers();
           subLayers.forEach(function(subLayer, idx, arr) {
             if (subLayer.visible) {
-              var enc = $scope.encoders.
-                  layers['Layer'].call(this, layer);
+              var enc = $scope.encoders.layers['Layer'].call(this, layer);
               var layerEnc = encodeLayer(subLayer, proj);
               if (layerEnc && layerEnc.layer) {
                 $.extend(enc, layerEnc);
@@ -220,8 +222,7 @@ goog.require('ga_time_service');
           return encs;
         },
         'Vector': function(layer, features) {
-          var enc = $scope.encoders.
-              layers['Layer'].call(this, layer);
+          var enc = $scope.encoders.layers['Layer'].call(this, layer);
           var encStyles = {};
           var encFeatures = [];
           var stylesDict = {};
@@ -263,72 +264,167 @@ goog.require('ga_time_service');
           return enc;
         },
         'WMS': function(layer, config) {
-            var enc = $scope.encoders.
-              layers['Layer'].call(this, layer);
-            var params = layer.getSource().getParams();
-            var layers = params.LAYERS.split(',') || [];
-            var styles = (params.STYLES !== undefined) ?
-                params.STYLES.split(',') :
-                new Array(layers.length).join(',').split(',');
-            angular.extend(enc, {
-              type: 'WMS',
-              baseURL: config.wmsUrl || layer.url,
-              layers: layers,
-              styles: styles,
-              format: 'image/' + (config.format || 'png'),
-              customParams: {
-                // INGRID: Remove param 'EXCEPTIONS'
-                //'EXCEPTIONS': 'XML',
-                'TRANSPARENT': 'true',
-                // INGRID: Use default EPSG
-                'CRS': gaGlobalOptions.defaultEpsg,
-                'TIME': params.TIME
-                // INGRID: Remove param 'MAP_RESOLUTION'
-                //'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
-              },
-              singleTile: config.singleTile || false
-            });
-            return enc;
-
-        },
-        'WMTS': function(layer, config) {
-            var enc = $scope.encoders.layers['Layer'].
-                call(this, layer);
-            var source = layer.getSource();
-            var tileGrid = source.getTileGrid();
-            if (!config.background && layer.visible && config.timeEnabled) {
-              layersYears.push(layer.time);
-            }
-            angular.extend(enc, {
-              type: 'WMTS',
-              baseURL: location.protocol + '//wmts.geo.admin.ch',
-              layer: config.serverLayerName,
-              maxExtent: layer.getExtent(),
-              tileOrigin: tileGrid.getOrigin(),
-              tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
-              resolutions: tileGrid.getResolutions(),
-              zoomOffset: tileGrid.getMinZoom(),
-              version: '1.0.0',
-              requestEncoding: 'REST',
-              formatSuffix: config.format || 'jpeg',
-              style: 'default',
-              dimensions: ['TIME'],
-              params: {'TIME': source.getDimensions().Time},
-              matrixSet: '21781'
+          var enc = $scope.encoders.layers['Layer'].call(this, layer);
+          var source = layer.getSource();
+          var params = source.getParams();
+          var layers = params.LAYERS.split(',') || [];
+          var styles = (params.STYLES !== undefined) ?
+              params.STYLES.split(',') :
+              new Array(layers.length).join(',').split(',');
+          var url = (source.getUrls && source.getUrls()[0]) ||
+              (source.getUrl && source.getUrl());
+          angular.extend(enc, {
+            type: 'WMS',
+            baseURL: url || layer.url,
+            layers: layers,
+            styles: styles,
+            format: 'image/' + (config.format || 'png'),
+            customParams: {
+              // INGRID: Remove param 'EXCEPTIONS'
+              //'EXCEPTIONS': 'XML',
+              'TRANSPARENT': 'true',
+              // INGRID: Use default EPSG
+              'CRS': gaGlobalOptions.defaultEpsg,
+              'TIME': params.TIME
+              // INGRID: Remove param 'MAP_RESOLUTION'
+              //'MAP_RESOLUTION': getDpi($scope.layout.name, $scope.dpi)
+            },
+            singleTile: config.singleTile || false
           });
-          var multiPagesPrint = false;
+          return enc;
+        },
+
+        'matrixIds': function(tilegrid, extent) {
+          var matrixIds = [];
+          var ids = tilegrid.getMatrixIds();
+          var resolutions = tilegrid.getResolutions();
+          var defaultExtent = gaMapUtils.defaultExtent;
+          angular.forEach(resolutions, function(value, key) {
+            var resolution = parseFloat(value);
+            var z = tilegrid.getZForResolution(resolution);
+            var tileSize = tilegrid.getTileSize(z);
+            var topLeftCorner = tilegrid.getOrigin(z);
+            var minX = topLeftCorner[0];
+            var maxY = topLeftCorner[1];
+            var maxX = extent[2] || defaultExtent[2];
+            var minY = extent[1] || defaultExtent[1];
+            var topLeftTile = tilegrid
+                .getTileCoordForCoordAndZ([minX, maxY], z);
+            var bottomRightTile = tilegrid
+                .getTileCoordForCoordAndZ([maxX, minY], z);
+            var tileWidth = 1 + bottomRightTile[1] - topLeftTile[1];
+            var tileHeight = 1 + topLeftTile[2] - bottomRightTile[2];
+            var matrix = {
+              identifier: ids[key],
+              resolution: resolution,
+              topLeftCorner: tilegrid.getOrigin(z),
+              tileSize: [tileSize, tileSize],
+              matrixSize: [tileWidth, tileHeight]
+            };
+            this.push(matrix);
+
+          }, matrixIds);
+
+          return matrixIds;
+        },
+        // Dimensions
+        'dimensions': function(dimensions) {
+          var params = {};
+
+          angular.forEach(dimensions, function(value, key) {
+            params[key.toUpperCase()] = value;
+          });
+
+          return params;
+        },
+
+        'WMTS': function(layer, config) {
+
+          // config is not defined for external WMTS
+          // For internal WMTS layer, we use the simplified
+          // mapfish print protocol, and the standard for
+          // external WMTS layers.
+          // See http://www.mapfish.org/doc/print/protocol.html#wmts
+
+          var isExternalWmts = angular.equals(config, {});
+
+          var enc = $scope.encoders.layers['Layer'].call(this, layer);
+          var source = layer.getSource();
+          var tileGrid = source.getTileGrid();
+          var extent = layer.getExtent();
+
+          var requestEncoding = source.getRequestEncoding() || 'REST';
+
+          if (!config.background && layer.visible && config.timeEnabled) {
+            if (!layer.time) {
+              return;
+            }
+            layersYears.push(layer.time);
+          }
+
+          // resourceURL for RESTful, service endpoint for KVP
+          var url = source.getUrls()[0];
+          var baseUrl = url.replace(/^\/\//, 'https://');
+
+          if (requestEncoding == 'REST') {
+            baseUrl = baseUrl
+              .replace(/\{Time\}/i, '{TIME}')
+              .replace(/\{/g, '%7B')
+              .replace(/\}/g, '%7D')
+              .replace(/wmts\d{1,3}\.geo\.admin\.ch/, 'wmts.geo.admin.ch');
+          }
+
+          var wmts_dimensions = $scope.encoders.layers['dimensions']
+              .call(this, source.getDimensions());
+          // common config
+          angular.extend(enc, {
+            type: 'WMTS',
+            layer: source.getLayer(),
+            version: source.getVersion() || '1.0.0',
+            requestEncoding: requestEncoding,
+            formatSuffix: source.getFormat().replace('image/', ''),
+            style: source.getStyle() || 'default',
+            dimensions: Object.keys(wmts_dimensions),
+            params: wmts_dimensions,
+            matrixSet: source.getMatrixSet() || '21781'
+          });
+
+        if (!isExternalWmts) {
+
+          angular.extend(enc, {
+            baseURL: baseUrl.slice(0, baseUrl.indexOf('/1.0.0')),
+            zoomOffset: tileGrid.getMinZoom(),
+            tileOrigin: tileGrid.getOrigin(),
+            tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
+            resolutions: tileGrid.getResolutions(),
+            maxExtent: extent
+           });
+
+        } else {
+          // use the full monty WMTS definition fo external source
+          var matrixIds = $scope.encoders.layers['matrixIds']
+              .call(this, tileGrid, extent);
+
+          angular.extend(enc, {
+            layer: source.getLayer(),
+            baseURL: baseUrl,
+            matrixIds: matrixIds
+          });
+        }
+
+        var multiPagesPrint = false;
           if (config.timestamps) {
             multiPagesPrint = !config.timestamps.some(function(ts) {
               return ts == '99991231';
-            });
-          }
-          // printing time series
-          if (config.timeEnabled && gaTime.get() == undefined &&
-              multiPagesPrint) {
-            enc['timestamps'] = config.timestamps;
-          }
+          });
+        }
+        // printing time series
+        if (config.timeEnabled && gaTime.get() == undefined &&
+             multiPagesPrint) {
+           enc['timestamps'] = config.timestamps;
+        }
 
-          return enc;
+        return enc;
         },
         // INGRID: Add encoder for OSM
         'OSM': function(layer, config) {
@@ -337,10 +433,10 @@ goog.require('ga_time_service');
             var tileGrid = source.getTileGrid();
             angular.extend(enc, {
               type: 'OSM',
-              baseURL: 'http://tile.openstreetmap.org', 
-              maxExtent: source.getProjection().getExtent(), 
-              tileSize: [tileGrid.getTileSize(),tileGrid.getTileSize()], 
-              extension: 'png', 
+              baseURL: 'http://tile.openstreetmap.org',
+              maxExtent: source.getProjection().getExtent(),
+              tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
+              extension: 'png',
               resolutions: tileGrid.getResolutions(),
               singleTile: config.singleTile || false
             });
@@ -363,10 +459,9 @@ goog.require('ga_time_service');
             } else if (layer.getStyleFunction()) {
               styles = layer.getStyleFunction()(feature);
             } else {
-              styles = ol.style.defaultStyleFunction(feature);
+              styles = ol.style.Style.defaultFunction(feature);
             }
           }
-
           var geometry = feature.getGeometry();
           var styleToEncode;
           if (styles && styles.length > 0) {
@@ -390,7 +485,8 @@ goog.require('ga_time_service');
           // Handle ol.style.RegularShape by converting points to polygons
           var image = styleToEncode.getImage();
           if (geometry instanceof ol.geom.Point &&
-              image instanceof ol.style.RegularShape) {
+              image instanceof ol.style.RegularShape &&
+              !(image instanceof ol.style.Circle)) {
             var scale = parseFloat($scope.scale.value);
             var resolution = scale / UNITS_RATIO / POINTS_PER_INCH;
             geometry = gaPrintStyle.olPointToPolygon(
@@ -403,7 +499,9 @@ goog.require('ga_time_service');
             feature = new ol.Feature(geometry);
           }
 
-          // Encode a feature if it intersects with the extent
+          // Encode a feature if it intersects with the extent and
+          // if the map is not rotated
+
           if (geometry.intersectsExtent(getPrintRectangleCoords())) {
             var encFeature = format.writeFeatureObject(feature);
             if (!encFeature.properties) {
@@ -464,8 +562,8 @@ goog.require('ga_time_service');
           var enc = $scope.encoders.legends.base.call(this, config);
           enc.classes.push({
             name: '',
-            // INGRID: Get legend by getLegend request
-            icon: gaWms.getLegendURL(layer)
+            icon: $scope.options.legendUrl +
+                layer.bodId + '_' + $translate.use() + format
           });
           return enc;
         },
@@ -554,10 +652,11 @@ goog.require('ga_time_service');
       defaultPage['lang' + lang] = true;
       // INGRID: Check iFrame for qrcode
       var qrcodeUrl = $scope.options.qrcodeUrl +
-          encodeURIComponent(gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame));
+          encodeURIComponent(gaPermalink.getHref(undefined,
+          gaGlobalOptions.isParentIFrame));
       var print_zoom = getZoomFromScale($scope.scale.value);
       qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + print_zoom);
-       var encLayers = [];
+      var encLayers = [];
       var encLegends;
       var attributions = [];
       var thirdPartyAttributions = [];
@@ -572,10 +671,49 @@ goog.require('ga_time_service');
 
       // Transform layers to literal
       layers.forEach(function(layer) {
-        if (layer.visible && (!layer.timeEnabled ||
-            angular.isDefined(layer.time))) {
+        if (!layer.visible || layer.opacity == 0) {
+          return;
+        }
+        // Only print layer which have an extent intersecting the print extent
+        if (!ol.extent.intersects(layer.getExtent() || gaMapUtils.defaultExtent,
+            getPrintRectangleCoords())) {
+          return;
+        }
+        // layer not having the same projection as the map, won't be printed
+        // TODO: issue a warning for the user
+        if (layer.getSource && layer.getSource().getProjection()) {
+            var proj = layer.getSource().getProjection().getCode();
+            if (proj == null || proj != view.getProjection().getCode()) {
+                return;
+            }
+        }
 
-          // Get all attributions to diaplay
+        // Encode layers
+        var encs;
+        if (layer instanceof ol.layer.Group) {
+          encs = $scope.encoders.layers['Group'].call(this,
+              layer, proj);
+        } else if (layer.getSource() instanceof ol.source.OSM) {
+            // INGRID: Encode OSM
+            var enc = encodeLayer(layer, proj);
+            if (enc && enc.layer) {
+              encLayers.push(enc.layer);
+            }
+        } else {
+          var enc = encodeLayer(layer, proj);
+          if (enc && enc.layer) {
+            encs = [enc.layer];
+            if (enc.legend) {
+              encLegends = encLegends || [];
+              encLegends.push(enc.legend);
+            }
+          }
+        }
+
+        if (encs && encs.length) {
+          encLayers = encLayers.concat(encs);
+
+          // Add attribution of encoded layers
           var attribution = gaAttribution.getTextFromLayer(layer);
           if (attribution !== undefined) {
             if (layer.useThirdPartyData) {
@@ -586,28 +724,6 @@ goog.require('ga_time_service');
               attributions.push(attribution);
             }
           }
-
-          // Encode layers
-          if (layer instanceof ol.layer.Group) {
-            var encs = $scope.encoders.layers['Group'].call(this,
-                layer, proj);
-            encLayers = encLayers.concat(encs);
-          } else {
-            var enc = encodeLayer(layer, proj);
-            if (enc && enc.layer) {
-              encLayers.push(enc.layer);
-              if (enc.legend) {
-                encLegends = encLegends || [];
-                encLegends.push(enc.legend);
-              }
-            }
-          }
-        }else if (layer.getSource() instanceof ol.source.OSM){
-            // INGRID: Encode OSM
-            var enc = encodeLayer(layer, proj);
-            if (enc && enc.layer) {
-              encLayers.push(enc.layer);
-            }
         }
       });
       if (layersYears) {
@@ -657,11 +773,19 @@ goog.require('ga_time_service');
         var offset = 5 * resolution;
 
         if (center) {
+          var style = 1, $elt = $(elt);
+          if ($elt.text()) {
+             style = 2;
+             if ($elt.hasClass('ga-draw-measure-tmp')) {
+               style = 3;
+             }
+          }
           var encOverlayLayer = {
             'type': 'Vector',
             'styles': {
               '1': { // Style for marker position
-                'externalGraphic': $scope.options.markerUrl,
+                'externalGraphic':
+                  gaUrlUtils.unProxifyUrl($scope.options.markerUrl),
                 'graphicWidth': 20,
                 'graphicHeight': 30,
                 // the icon is not perfectly centered in the image
@@ -669,18 +793,29 @@ goog.require('ga_time_service');
                 'graphicXOffset': -12,
                 'graphicYOffset': -30
               }, '2': { // Style for measure tooltip
-                'externalGraphic': $scope.options.bubbleUrl,
+                'externalGraphic':
+                  gaUrlUtils.unProxifyUrl($scope.options.bubbleUrl),
                 'graphicWidth': 97,
                 'graphicHeight': 27,
                 'graphicXOffset': -48,
                 'graphicYOffset': -27,
-                'label': $(elt).text(),
+                'label': $elt.text(),
                 'labelXOffset': 0,
                 'labelYOffset': 18,
                 'fontColor': '#ffffff',
                 'fontSize': 10,
                 'fontWeight': 'normal'
+              }, '3': { // Style for intermeediate measure tooltip
+                'label': $elt.text(),
+                'labelXOffset': 0,
+                'labelYOffset': 18,
+                'fontColor': '#ffffff',
+                'fontSize': 8,
+                'fontWeight': 'normal',
+                'fillColor': '#ff0000',
+                'strokeColor': '#ff0000'
               }
+
             },
             'styleProperty': '_gx_style',
             'geoJson': {
@@ -688,7 +823,7 @@ goog.require('ga_time_service');
               'features': [{
                 'type': 'Feature',
                 'properties': {
-                  '_gx_style': ($(elt).text() ? 2 : 1)
+                  '_gx_style': style
                 },
                 'geometry': {
                   'type': 'Point',
@@ -707,23 +842,18 @@ goog.require('ga_time_service');
       // Get the short link
       var shortLink;
       canceller = $q.defer();
-      var promise = $http.get($scope.options.shortenUrl, {
-        timeout: canceller.promise,
-        params: {
-          url: gaPermalink.getHref()
-        }
-      }).success(function(response) {
+      gaUrlUtils.shorten(gaPermalink.getHref(), canceller.promise)
+          .then(function(shortUrl) {
         // INGRID: Return href if no shorturl exists
-        shortLink = response.shorturl ? response.shorturl.replace('/shorten', '') : gaPermalink.getHref();
+        shortLink = response.shorturl ?
+          response.shorturl.replace('/shorten', '') : gaPermalink.getHref();
         // INGRID: Add used shortLink for QR
-        if(shortLink){
+        if (shortLink) {
           qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(shortLink);
         }
-      });
 
-      // Build the complete json then send it to the print server
-      promise.then(function() {
+        // Build the complete json then send it to the print server
         if (!$scope.options.printing) {
           return;
         }
@@ -756,7 +886,6 @@ goog.require('ga_time_service');
           dpi: getDpi($scope.layout.name, $scope.dpi),
           layers: encLayers,
           legends: encLegends,
-          legendTitle: $translate.instant('legend'),
           enableLegends: (encLegends && encLegends.length > 0),
           qrcodeurl: qrcodeUrl,
           movie: movieprint,
@@ -768,8 +897,8 @@ goog.require('ga_time_service');
               // scale has to be one of the advertise by the print server
               scale: $scope.scale.value,
               // INGRID: Add comment and title for print
-              comment: $scope.comment ? $scope.comment : "",
-              title: $scope.title ? $scope.title :"",
+              comment: $scope.comment ? $scope.comment : '',
+              title: $scope.title ? $scope.title : '',
               dataOwner: dataOwner,
               thirdPartyDataOwner: thirdPartyDataOwner,
               shortLink: shortLink || '',
@@ -787,7 +916,8 @@ goog.require('ga_time_service');
             canceller = $q.defer();
             var http = $http.get(url, {
                timeout: canceller.promise
-            }).success(function(data) {
+            }).then(function(response) {
+              var data = response.data;
               if (!$scope.options.printing) {
                 return;
               }
@@ -822,7 +952,7 @@ goog.require('ga_time_service');
               } else {
                 $scope.downloadUrl(data.getURL);
               }
-            }).error(function() {
+            }, function() {
               if ($scope.options.printing == false) {
                 pollErrors = 0;
                 return;
@@ -844,10 +974,11 @@ goog.require('ga_time_service');
         }
         canceller = $q.defer();
         // INGRID: Change print URL
-        var http = $http.post(printUrl ,
+        var http = $http.post(printUrl,
           spec, {
           timeout: canceller.promise
-        }).success(function(data) {
+        }).then(function(response) {
+          var data = response.data;
           if (movieprint) {
             //start polling process
             var pollUrl = $scope.options.printPath + 'progress?id=' +
@@ -859,7 +990,7 @@ goog.require('ga_time_service');
           } else {
             $scope.downloadUrl(data.getURL);
           }
-        }).error(function() {
+        }, function() {
           $scope.options.printing = false;
         });
       });
@@ -882,7 +1013,16 @@ goog.require('ga_time_service');
           displayCoords[3]]);
       var topRight = $scope.map.getCoordinateFromPixel([displayCoords[2],
           displayCoords[1]]);
-      return bottomLeft.concat(topRight);
+      var topLeft = $scope.map.getCoordinateFromPixel([displayCoords[0],
+          displayCoords[1]]);
+      var bottomRight = $scope.map.getCoordinateFromPixel([displayCoords[2],
+          displayCoords[3]]);
+
+      // Always returns an extent [minX, minY, maxX, maxY]
+      var printPoly = new ol.geom.Polygon([[bottomLeft, topLeft, topRight,
+          bottomRight, bottomLeft]]);
+
+      return printPoly.getExtent();
     };
 
     var getPrintRectangleCenterCoord = function() {
@@ -961,7 +1101,8 @@ goog.require('ga_time_service');
     $scope.$watch('active', function(newVal, oldVal) {
       if (newVal === true) {
         if (!$scope.printConfigLoaded) {
-          loadPrintConfig().success(function(data) {
+          loadPrintConfig().then(function(response) {
+            var data = response.data;
             $scope.capabilities = data;
             angular.forEach($scope.capabilities.layouts, function(lay) {
               lay.stripped = lay.name.substr(2);

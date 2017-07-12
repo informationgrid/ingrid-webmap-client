@@ -1,7 +1,10 @@
 goog.provide('ga_search_service');
+
+goog.require('ga_reframe_service');
 (function() {
 
   var module = angular.module('ga_search_service', [
+    'ga_reframe_service'
   ]);
 
   var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
@@ -10,6 +13,7 @@ goog.provide('ga_search_service');
     '[0-9]+\\b)("|\'\'|′′|″)';
   var DMSNorth = '[N]';
   var DMSEast = '[E]';
+  var MGRS = '^3[123]\[\\s\a-z]{3}[\\s\\d]*';
   var regexpDMSN = new RegExp(DMSDegree +
     '(' + DMSMinute + ')?\\s*' +
     '(' + DMSSecond + ')?\\s*' +
@@ -22,13 +26,36 @@ goog.provide('ga_search_service');
   var regexpCoordinate = new RegExp(
     '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
     '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
+  var regexMGRS = new RegExp(MGRS, 'gi');
+  // Grid zone designation for Switzerland + two 100km letters + two digits
+  // It's a limitiation of proj4 and a sensible default (precision is 10km)
+  var MGRSMinimalPrecision = 7;
+
+  var roundCoordinates = function(coords) {
+    return [Math.round(coords[0] * 1000) / 1000,
+      Math.round(coords[1] * 1000) / 1000];
+  };
 
   module.provider('gaSearchGetCoordinate', function() {
-    this.$get = function() {
+    this.$get = function($window, $q, gaReframe) {
+
       return function(extent, query) {
         var position;
-        var valid = false;
 
+        // Parse MGRS notation
+        var matchMGRS = query.match(regexMGRS);
+        if (matchMGRS && matchMGRS.length == 1) {
+          var mgrsStr = matchMGRS[0].split(' ').join('');
+          if ((mgrsStr.length - MGRSMinimalPrecision) % 2 == 0) {
+            var wgs84 = $window.proj4.mgrs.toPoint(mgrsStr);
+            position = ol.proj.transform(wgs84, 'EPSG:4326', 'EPSG:3857');
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when(roundCoordinates(position));
+            }
+          }
+        }
+
+        // Parse degree EPSG:4326 notation
         var matchDMSN = query.match(regexpDMSN);
         var matchDMSE = query.match(regexpDMSE);
         if (matchDMSN && matchDMSN.length == 1 &&
@@ -64,53 +91,49 @@ goog.provide('ga_search_service');
                 'EPSG:4326', 'EPSG:3857');
           if (ol.extent.containsCoordinate(
             extent, position)) {
-              valid = true;
+            return $q.when(roundCoordinates(position));
           }
         }
 
         var match = query.match(regexpCoordinate);
-        if (match && !valid) {
-          var left = parseFloat(match[1].replace('\'', ''));
-          var right = parseFloat(match[2].replace('\'', ''));
+        if (match) {
+          var left = parseFloat(match[1].replace(/\'/g, ''));
+          var right = parseFloat(match[2].replace(/\'/g, ''));
           //Old school entries like '600 000 200 000'
           if (match[3] != null) {
-            left = parseFloat(match[1].replace('\'', '') +
-                              match[2].replace('\'', ''));
-            right = parseFloat(match[4].replace('\'', '') +
-                               match[5].replace('\'', ''));
+            left = parseFloat(match[1].replace(/\'/g, '') +
+                              match[2].replace(/\'/g, ''));
+            right = parseFloat(match[4].replace(/\'/g, '') +
+                               match[5].replace(/\'/g, ''));
           }
-
           /* INGRID: Change position
-          position =
-            [left > right ? left : right,
+          position = [left > right ? left : right,
               right < left ? right : left];
           */
           position = [right, left];
-          if (ol.extent.containsCoordinate(
-              extent, position)) {
-            valid = true;
-          } else {
-            position = ol.proj.transform(position,
-              'EPSG:2056', 'EPSG:3857');
-            if (ol.extent.containsCoordinate(
-                extent, position)) {
-              valid = true;
-            } else {
-              position =
-                [left < right ? left : right,
-                  right > left ? right : left];
-              position = ol.proj.transform(position,
-                'EPSG:4326', 'EPSG:3857');
-              if (ol.extent.containsCoordinate(
-                extent, position)) {
-                valid = true;
-              }
+          if (ol.extent.containsCoordinate(extent, position)) {
+            return $q.when(roundCoordinates(position));
+          }
+
+          // Match decimal notation EPSG:4326
+          if (left <= 180 && left >= -180 &&
+              right <= 180 && right >= -180) {
+            position = [left > right ? right : left,
+                right < left ? left : right];
+            position = ol.proj.transform(position, 'EPSG:4326', 'EPSG:3857');
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when(roundCoordinates(position));
             }
           }
+
+          // Match LV95 coordinates
+          return gaReframe.get95To03(position).then(function(position) {
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return roundCoordinates(position);
+            }
+          });
         }
-        return valid ?
-          [Math.round(position[0] * 1000) / 1000,
-          Math.round(position[1] * 1000) / 1000] : undefined;
+        return $q.when(undefined);
       };
     };
   });
@@ -235,6 +258,5 @@ goog.provide('ga_search_service');
       };
     };
   });
-
 })();
 

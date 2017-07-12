@@ -22,7 +22,7 @@
   .ga-search-title {
     font-weight: bold;
   } 
-  @media (max-width: 992px), (max-height: @screen-sm-max-height) {
+  @media (max-width: @screen-desktop), (max-height: @screen-s-height) {
     .ga-search-title {
       display: none;
     }
@@ -50,16 +50,26 @@
   .ga-search-1 {
     .ga-search-results {
       max-height: 415px;
-      @media (max-height: 550px) {
+
+      @media (max-height: @screen-s-height) {
         max-height: 325px;
+      }
+
+      @media (max-height: @screen-xs-height) {
+        max-height: 218px;
       }
     }
   }
   .ga-search-2 {
     .ga-search-results {
       max-height: 190px;
-      @media (max-height: 550px) {
+
+      @media (max-height: @screen-s-height) {
         max-height: 150px;
+      }
+
+      @media (max-height: @screen-xs-height) {
+        max-height: 94px;
       }
     }
   }
@@ -93,7 +103,7 @@
       padding: 3px 20px;
       font-size: 11px;
 
-      @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+      @media (max-width: @screen-tablet), (max-height: @screen-s-height) {
         padding: 6px 10px;
         font-size: 13px;
       }
@@ -137,110 +147,11 @@
           }
         }
       }
-      
-      ul{
-        list-style-type: none;
-        margin-bottom: 0;
-        padding: 0;
-        
-        li{
-          font-size: 11px;
-          padding: 3px 20px;
-          height: 7em;
-          overflow: hidden;
-          -webkit-transition: height 0.35s ease;
-          -o-transition: height 0.35s ease;
-          transition: height 0.35s ease;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          user-select: none;
-          
-          @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
-            padding: 6px 10px;
-            font-size: 13px;
-          }
-          
-          label{
-            font-weight: normal;
-            margin: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            
-          }
-        }
-        
-        .ga-layer-folded {
-          height: 22px;
-          
-          @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
-            height: 40px;
-          }
-          
-          .ga-layer-tools {
-            display: none;
-          }
-        }
-      }
-      
-      .fa-gear {
-        position: absolute;
-        right: 0;
-        -webkit-transition: -webkit-transform 0.35s ease;
-        -moz-transition: -moz-transform 0.35s ease;
-        -o-transition: -o-transform 0.35s ease;
-        transition: transform 0.35s ease;
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        color: red;
-      }
-      
-      .ga-layer-folded .fa-gear{
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-        color: black;
-      }
     }
 
     p {
       margin: 0;
     }
-  }
-  
-  .ga-layer-tools {
-    width: 100%;
-    top: 3em;
-    left: 0;
-    background: transparent;
-    -webkit-transition: top 0.35s ease;
-    -o-transition: top 0.35s ease;
-    transition: top 0.35s ease;
-
-    label {
-      font-size: 0.9em;
-      padding-left: 0.3em;
-      width: 25% !important;
-      white-space: normal !important;
-
-      > * {
-        display: inline-block;
-      }
-    }
-    
-    button {
-      font-size: 2.2em;
-    }
-  }
-
-  .ga-bwa-infos {
-    @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
-     padding: 5px 0;
-    } 
   }
   
   .ga-search-results-header {
@@ -249,7 +160,7 @@
     background-color: #E9E9E9;
     font-size: 14px;
 
-    @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+    @media (max-width: @screen-tablet), (max-height: @screen-s-height) {
       padding: 5px 5px;
     }
   }
@@ -272,7 +183,7 @@
   .fa-remove-sign {
     right: 0;
     
-    @media (max-width: @screen-tablet), (max-height: @screen-sm-max-height) {
+    @media (max-width: @screen-tablet), (max-height: @screen-s-height) {
       font-size: 24px;
     }
   }

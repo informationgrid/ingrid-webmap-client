@@ -8,6 +8,7 @@ goog.require('ga_time_service');
 goog.require('ga_topic_service');
 goog.require('ga_urlutils_service');
 goog.require('ga_wms_service');
+goog.require('ga_wmts_service');
 
 (function() {
 
@@ -20,7 +21,8 @@ goog.require('ga_wms_service');
     'ga_time_service',
     'ga_topic_service',
     'ga_urlutils_service',
-    'ga_wms_service'
+    'ga_wms_service',
+    'ga_wmts_service'
   ]);
 
   /**
@@ -38,12 +40,13 @@ goog.require('ga_wms_service');
    */
   module.provider('gaPermalinkLayersManager', function() {
 
-    this.$get = function($rootScope, gaLayers, gaPermalink, $translate, $http,
+    this.$get = function($rootScope, gaLayers, gaPermalink, $translate,
         gaKml, gaMapUtils, gaWms, gaLayerFilters, gaUrlUtils, gaFileStorage,
-        gaTopic, gaGlobalOptions, $q, gaTime, $log) {
+        gaTopic, gaGlobalOptions, $q, gaTime, $log, $http, gaWmts) {
 
       var layersParamValue = gaPermalink.getParams().layers;
       var layersOpacityParamValue = gaPermalink.getParams().layers_opacity;
+      var layersParamsValue = gaPermalink.getParams().layers_params;
       var layersVisibilityParamValue =
           gaPermalink.getParams().layers_visibility;
       var layersTimestampParamValue =
@@ -53,6 +56,8 @@ goog.require('ga_wms_service');
       var layerSpecs = layersParamValue ? layersParamValue.split(',') : [];
       var layerOpacities = layersOpacityParamValue ?
           layersOpacityParamValue.split(',') : [];
+      var layerParams = layersParamsValue ?
+          layersParamsValue.split(',') : [];
       var layerVisibilities = layersVisibilityParamValue ?
           layersVisibilityParamValue.split(',') : [];
       var layerTimestamps = layersTimestampParamValue ?
@@ -183,7 +188,9 @@ goog.require('ga_wms_service');
                       p.layers_visibility ?
                           p.layers_visibility.split(',') : false,
                       p.layers_timestamp ?
-                          p.layers_timestamp.split(',') : undefined
+                          p.layers_timestamp.split(',') : undefined,
+                      p.layers_params ?
+                          p.layers_params.split(',') : undefined
             );
           } else {
             addLayers(topic.selectedLayers.slice(0).reverse());
@@ -195,7 +202,7 @@ goog.require('ga_wms_service');
         };
 
         var addLayers = function(layerSpecs, opacities, visibilities,
-            timestamps) {
+            timestamps, parameters) {
           var nbLayersToAdd = layerSpecs.length;
           angular.forEach(layerSpecs, function(layerSpec, index) {
             var layer;
@@ -207,6 +214,8 @@ goog.require('ga_wms_service');
                 false : true;
             var timestamp = (timestamps && index < timestamps.length &&
                 timestamps != '') ? timestamps[index] : '';
+            var params = (parameters && index < parameters.length) ?
+                gaUrlUtils.parseKeyValue(parameters[index]) : undefined;
             var bodLayer = gaLayers.getLayer(layerSpec);
             if (bodLayer) {
               // BOD layer.
@@ -242,6 +251,10 @@ goog.require('ga_wms_service');
                   }
                   layer.time = timestamp;
                 }
+                if (params && layer.getSource &&
+                    layer.getSource().updateParams) {
+                  layer.getSource().updateParams(params);
+                }
                 map.addLayer(layer);
               }
 
@@ -249,11 +262,16 @@ goog.require('ga_wms_service');
 
               // KML layer
               var url = layerSpec.replace('KML||', '');
+              var delay = params ? parseInt(params.updateDelay) : NaN;
+              if (!isNaN(delay)) {
+                delay = (delay < 3) ? 3 : delay;
+              }
               try {
                 gaKml.addKmlToMapForUrl(map, url,
                   {
                     opacity: opacity || 1,
-                    visible: visible
+                    visible: visible,
+                    updateDelay: isNaN(delay) ? undefined : delay * 1000
                   },
                   index + 1);
                 mustReorder = true;
@@ -279,7 +297,8 @@ goog.require('ga_wms_service');
                     visible: visible,
                     // INGRID: Add default extent by default projection
                     queryable: infos[5],
-                    extent: ol.proj.transformExtent(gaGlobalOptions.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
+                    extent: ol.proj.transformExtent(gaGlobalOptions.
+                       defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
                     useReprojection: (infos[6] === 'true')
                   },
                   index + 1);
@@ -287,7 +306,7 @@ goog.require('ga_wms_service');
                 // Adding external WMS layer failed, native alert, log message?
                 $log.error(e.message);
               }
-           } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
+           } else if (gaMapUtils.isExternalWmtsLayer(layerSpec)) {
 
               // INGRID: Add external service
               var infos = layerSpec.split('||');
@@ -295,7 +314,6 @@ goog.require('ga_wms_service');
                 gaWms.addWmsServiceToMap(map, infos[1], infos[2], index + 1);
                 gaPermalink.deleteParam('layers');
               } catch (e) {
-                // Adding external WMS service failed, native alert, log message?
                 $log.error(e.message);
               }
             }
@@ -304,16 +322,18 @@ goog.require('ga_wms_service');
           // When an async layer is added we must reorder correctly the layers.
           if (mustReorder) {
             var deregister2 = scope.$watchCollection(
-                'layers | filter:layerFilter', function(layers) {
+                'layers | filter : layerFilter', function(layers) {
               if (layers.length == nbLayersToAdd) {
                 deregister2();
-                var hasBg = false;
+                var hasBg = map.getLayers().item(0).background;
                 for (var i = 0, ii = map.getLayers().getLength(); i < ii; i++) {
                   var layer = map.getLayers().item(i);
                   var idx = layerSpecs.indexOf(layer.id);
-                  if (i == 0 && layer.background == true) {
-                    hasBg = true;
+                  if (idx == -1) {
+                    // If the layer is not in the layerSpecs we ignore it
+                    continue;
                   }
+
                   if (hasBg) {
                     idx = idx + 1;
                   }
@@ -335,12 +355,12 @@ goog.require('ga_wms_service');
                 gaKml.addKmlToMapForUrl(map, url, {
                   adminId: adminId
                 });
-                gaPermalink.deleteParam('adminId');
               } catch (e) {
                 // Adding KML layer failed, native alert, log message?
                 $log.error(e.message);
               }
             });
+            gaPermalink.deleteParam('adminId');
           }
         };
 
@@ -352,7 +372,7 @@ goog.require('ga_wms_service');
           } else {
             // We add layers from 'layers' parameter
             addLayers(layerSpecs, layerOpacities, layerVisibilities,
-                layerTimestamps);
+                layerTimestamps, layerParams);
           }
 
           gaTime.allowStatusUpdate = true;

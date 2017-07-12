@@ -15,14 +15,14 @@ goog.require('ga_styles_service');
     'ga_styles_service'
   ]);
 
-  module.directive('gaCesiumInspector', function($rootScope, gaPermalink) {
+  module.directive('gaCesiumInspector', function(gaPermalink) {
     return {
       restrict: 'A',
       scope: {
         ol3d: '=gaCesiumInspectorOl3d'
       },
       link: function(scope, element, attrs) {
-        if (!angular.isDefined(gaPermalink.getParams().debug)) {
+        if (!gaPermalink.getParams().debug) {
           element[0].style['display'] = 'none';
           return;
         }
@@ -31,16 +31,13 @@ goog.require('ga_styles_service');
           if (ol3d && !inspector) {
             var scene = ol3d.getCesiumScene();
             inspector = new Cesium.CesiumInspector(element[0], scene);
-            scene.postRender.addEventListener(function() {
-              inspector.viewModel.update();
-            });
           }
         });
       }
     };
   });
   // INGRID: Add parameter 'gaGlobalOptions'
-  module.directive('gaMap', function($window, $rootScope, $timeout, gaPermalink,
+  module.directive('gaMap', function($window, $timeout, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
       gaMapUtils, gaGlobalOptions) {
     return {
@@ -75,7 +72,10 @@ goog.require('ga_styles_service');
         }
 
         if (queryParams.crosshair !== undefined) {
-          var crosshair = new ol.Feature(new ol.geom.Point(view.getCenter()));
+          var crosshair = new ol.Feature({
+            label: 'link_bowl_crosshair',
+            geometry: new ol.geom.Point(view.getCenter())
+          });
           var style = gaStyleFactory.getStyle(queryParams.crosshair);
           if (!style) {
             style = gaStyleFactory.getStyle('marker');
@@ -115,16 +115,18 @@ goog.require('ga_styles_service');
 
         // INGRID: Add default zoom
         // Zoom to default extent
-        if(gaPermalink.getParams().X == undefined && gaPermalink.getParams().Y == undefined){
-            if(window.parent.resizeIframe != undefined){
+        if (gaPermalink.getParams().X == undefined &&
+                gaPermalink.getParams().Y == undefined) {
+            if (window.parent.resizeIframe != undefined) {
                 window.parent.resizeIframe();
                 map.updateSize();
             }
-            var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg);
+            var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
+              'EPSG:4326', gaGlobalOptions.defaultEpsg);
             var size = map.getSize();
             view.fit(extent, size);
         }
-        
+
         scope.$watch('::ol3d', function(ol3d) {
           if (ol3d) {
             var camera = ol3d.getCesiumScene().camera;
@@ -134,8 +136,8 @@ goog.require('ga_styles_service');
             var position, heading, pitch;
             if (isFinite(params.lon) && isFinite(params.lat) &&
                 isFinite(params.elevation)) {
-              var lon = params.lon;
-              var lat = params.lat;
+              var lon = parseFloat(params.lon);
+              var lat = parseFloat(params.lat);
               var elevation = parseFloat(params.elevation);
               position = Cesium.Cartesian3.fromDegrees(lon, lat, elevation);
             }
@@ -245,9 +247,14 @@ goog.require('ga_styles_service');
               }
             });
           }
+        } else {
+          // #3722: On mobile we need to update size of the map on iframe load.
+          $($window).on('DOMContentLoaded', function() {
+            map.updateSize();
+          });
         }
 
-        $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
+        scope.$on('gaNetworkStatusChange', function(evt, offline) {
           gaOffline.refreshLayers(map.getLayers().getArray(), offline);
           if (offline) {
             gaOffline.showExtent(map);
@@ -291,10 +298,10 @@ goog.require('ga_styles_service');
           // (ex: using the time selector toggle)
           for (var i = 0, ii = olLayers.length; i < ii; i++) {
             var olLayer = olLayers[i];
-            // We update only time enabled bod layers
-            if (olLayer.bodId && olLayer.timeEnabled && olLayer.visible) {
+
+            if (olLayer.timeEnabled && olLayer.visible) {
               var layerTimeStr =
-                  gaLayers.getLayerTimestampFromYear(olLayer.bodId, time);
+                  gaLayers.getLayerTimestampFromYear(olLayer, time);
               if (switchTimeActive) {
                 // We save the current value after a global activation.
                 // (ex: using the time selector toggle)

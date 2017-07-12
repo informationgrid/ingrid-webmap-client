@@ -61,18 +61,23 @@ goog.require('ga_urlutils_service');
             if (angular.isDefined(p)) {
               angular.extend(newParams, p);
             }
-            
+
             // INGRID: Update URL outside of iFrame
-            if(window.document.referrer.indexOf(window.location.host) > -1){
-                if(window.parent.onParamChange != undefined){
+            if (window.document.referrer.indexOf(window.location.host) > -1) {
+                if (window.parent.onParamChange != undefined) {
                     window.parent.onParamChange(params);
                 }
             }
             // INGRID: Check for iFrame parent location
-            if(isParentIFrame){
-              if(window.parent){
-                  if(window.document.referrer.indexOf(window.location.host) > -1){
-                      return window.parent.location.origin + '' + window.parent.location.pathname + '?' + gaUrlUtils.toKeyValue(newParams);
+            if (isParentIFrame) {
+              if (window.parent) {
+                  if (window.document.referrer.indexOf(window.location.host) >
+                    -1) {
+                      return window.parent.location.origin +
+                      '' +
+                      window.parent.location.pathname +
+                      '?' +
+                      gaUrlUtils.toKeyValue(newParams);
                   }
               }
             }
@@ -132,22 +137,22 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Get params from window parent
         var locSearch = loc.search;
-        if(window.document.referrer.indexOf(loc.host) > -1){
-            if(window.parent.urlParams){
-                if(locSearch.startsWith("?")){
-                    locSearch = locSearch.replace("?", "");
+        if (window.document.referrer.indexOf(loc.host) > -1) {
+            if (window.parent.urlParams) {
+                if (locSearch.startsWith('?')) {
+                    locSearch = locSearch.replace('?', '');
                 }
-                if(locSearch.startsWith("&")){
-                    locSearch = locSearch.replace("&", "");
+                if (locSearch.startsWith('&')) {
+                    locSearch = locSearch.replace('&', '');
                 }
-                if(window.parent.urlParams.endsWith("&") == false){
-                    locSearch = window.parent.urlParams + "&" + locSearch;
+                if (window.parent.urlParams.endsWith('&') == false) {
+                    locSearch = window.parent.urlParams + '&' + locSearch;
                 }else {
-                    locSearch = window.parent.urlParams + "" + locSearch;
+                    locSearch = window.parent.urlParams + '' + locSearch;
                 }
-                
             }
         }
+        // INGRID: Change 'loc.search' to 'locSearch'
         var permalink = new Permalink(
             base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
 

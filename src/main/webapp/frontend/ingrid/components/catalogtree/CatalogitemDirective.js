@@ -2,16 +2,15 @@ goog.provide('ga_catalogitem_directive');
 
 goog.require('ga_browsersniffer_service');
 goog.require('ga_catalogtree_directive');
-goog.require('ga_catalogtree_service');
 goog.require('ga_layermetadatapopup_service');
 goog.require('ga_map_service');
 goog.require('ga_previewlayers_service');
+
 (function() {
 
   var module = angular.module('ga_catalogitem_directive', [
     'ga_browsersniffer_service',
     'ga_catalogtree_directive',
-    'ga_catalogtree_service',
     'ga_layermetadatapopup_service',
     'ga_map_service',
     'ga_previewlayers_service'
@@ -20,10 +19,19 @@ goog.require('ga_previewlayers_service');
   /**
    * See examples on how it can be used
    */
+  // INGRID: Add param 'gaGlobalOptions'
   module.directive('gaCatalogitem',
-      // INGRID: Add params 'gaLayers', 'gaGlobalOptions'
-      function($compile, gaCatalogtreeMapUtils, gaMapUtils,
-          gaLayerMetadataPopup, gaBrowserSniffer, gaPreviewLayers, gaLayers, gaGlobalOptions) {
+      function($compile, gaMapUtils, gaLayerMetadataPopup, gaBrowserSniffer,
+          gaPreviewLayers, gaLayers, gaGlobalOptions) {
+
+        var addBodLayer = function(map, layerBodId) {
+          if (gaLayers.getLayer(layerBodId)) {
+            var layer = gaLayers.getOlLayerById(layerBodId);
+            if (layer) {
+              map.addLayer(layer);
+            }
+          }
+        };
 
         // Don't add preview layer if the layer is already on the map
         var addPreviewLayer = function(map, item) {
@@ -70,7 +78,7 @@ goog.require('ga_previewlayers_service');
                   // Add it if it's not already on the map
                   if (!layer) {
                     removePreviewLayer($scope.map);
-                    gaCatalogtreeMapUtils.addLayer($scope.map, $scope.item);
+                    addBodLayer($scope.map, $scope.item.layerBodId);
                   }
                 }
               } else { //getter called
@@ -93,45 +101,46 @@ goog.require('ga_previewlayers_service');
 // INGRID: Add zoom to extent
             $scope.zoomToExtent = function(evt, bodId) {
               var layer = gaLayers.getLayer(bodId);
-              if(layer){
-                if(layer.extent){
-                  var extent = ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+              if (layer) {
+                if (layer.extent) {
+                  var extent = ol.proj.transformExtent(layer.extent,
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg);
                   gaMapUtils.zoomToExtent($scope.map, undefined, extent);
                 }
               }
               evt.stopPropagation();
             };
-            
+
 // INGRID: Add hasExtent
             $scope.hasExtent = function(bodId) {
               var layer = gaLayers.getLayer(bodId);
-              if(layer){
-                if(layer.extent){
+              if (layer) {
+                if (layer.extent) {
                     return true;
                 }
               }
               return false;
             };
-            
+
 // INGRID: Add isLayer
-            $scope.isLayer = function(bodId) {
-              if(bodId){
-                return true;
-              }
-              return false;
-            };
-          
+           $scope.isLayer = function(bodId) {
+             if (bodId) {
+               return true;
+             }
+             return false;
+           };
+
 // INGRID: Add isParentLayer
-            $scope.isParentLayer = function(item) {
-              if(item){
-                if(item.layerBodId){
-                  if(item.children){
-                    return true;
-                  }
-                }
-              }
-              return false;
-            };
+           $scope.isParentLayer = function(item) {
+             if (item) {
+               if (item.layerBodId) {
+                 if (item.children) {
+                   return true;
+                 }
+               }
+             }
+             return false;
+           };
           },
 
           compile: function(tEl, tAttr) {
@@ -148,10 +157,9 @@ goog.require('ga_previewlayers_service');
                   controller.updatePermalink(scope.item.id, value);
                 });
 
-              }
               // INGRID: Split else if for preview of parent layer
               // Leaf
-              if (!gaBrowserSniffer.mobile) {
+              } else if (!gaBrowserSniffer.mobile) {
                 iEl.on('mouseenter', function(evt) {
                   addPreviewLayer(scope.map, scope.item);
                 }).on('mouseleave', function(evt) {

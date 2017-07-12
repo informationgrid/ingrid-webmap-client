@@ -16,12 +16,11 @@ goog.require('ga_permalink');
   module.provider('gaBackground', function() {
     this.$get = function($rootScope, $q, gaTopic, gaLayers, gaPermalink,
         gaUrlUtils) {
-      var isOfflineToOnline = false;
       var bg; // The current background
       var bgs = []; // The list of backgrounds available
       var bgsP; // Promise resolved when the background service is initialized.
       var voidLayer = {id: 'voidLayer', label: 'void_layer'};
-      // INGRID: Add OSM layer 
+      // INGRID: Add OSM layer
       var osmLayer = {id: 'osmLayer', label: 'bg_osm'};
       // INGRID: Change default background layer
       var predefinedBgs = {
@@ -52,10 +51,7 @@ goog.require('ga_permalink');
           var p = gaUrlUtils.parseKeyValue(topic.plConfig);
           topicBg = getBgById(p.bgLayer);
         }
-        topicBg = topicBg || getBgById(topic.defaultBackground) || bgs[0];
-        if (topicBg && !isOfflineToOnline) {
-           return topicBg;
-        }
+        return topicBg || getBgById(topic.defaultBackground) || bgs[0];
       };
 
       var broadcast = function() {
@@ -100,11 +96,6 @@ goog.require('ga_permalink');
             $rootScope.$on('gaTopicChange', function(evt, newTopic) {
               updateDefaultBgOrder(newTopic.backgroundLayers);
               that.set(map, getBgByTopic(newTopic));
-              isOfflineToOnline = false;
-            });
-            // We must know when the app goes from offline to online.
-            $rootScope.$on('gaNetworkStatusChange', function(evt, offline) {
-              isOfflineToOnline = !offline;
             });
           });
 
@@ -123,7 +114,7 @@ goog.require('ga_permalink');
 
         this.setById = function(map, newBgId) {
           if (map && (!bg || newBgId != bg.id)) {
-            var newBg = getBgById(newBgId, false);
+            var newBg = getBgById(newBgId);
             if (newBg) {
               bg = newBg;
               var layers = map.getLayers();
@@ -132,7 +123,7 @@ goog.require('ga_permalink');
                     layers.item(0).background === true) {
                   layers.removeAt(0);
                 }
-              // INGRID: Create OSM layer 
+              // INGRID: Create OSM layer
               } else if (bg.id == 'osmLayer') {
                   var layer = new ol.layer.Tile({
                       source: new ol.source.OSM()

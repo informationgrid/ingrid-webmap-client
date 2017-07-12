@@ -1,24 +1,26 @@
 goog.provide('ga_help_service');
+
+goog.require('ga_translation_service');
+
 (function() {
 
   var module = angular.module('ga_help_service', [
-    'pascalprecht.translate'
+    'ga_translation_service'
   ]);
 
  /**
-   * The gaHelpService.
+   * The gaHelp service.
    *
    * The service provides the following functionality:
    *
    * - Allows the gaHelpDirective to get a html snipped
    *   for a given help-id
    */
-  module.provider('gaHelpService', function() {
-    this.$get = function($q, $http, $translate, $timeout) {
+  module.provider('gaHelp', function() {
+    this.$get = function($http, gaLang) {
 
       var Help = function() {
         //keeps cached versions of help snippets
-        var registry = {};
         /* INGRID: Change 'url'
         var url = 'https://www.googleapis.com/fusiontables/v1/query?' +
                   'callback=JSON_CALLBACK';
@@ -30,47 +32,28 @@ goog.provide('ga_help_service');
 
         //Returns a promise
         this.get = function(id) {
-          var lang = fixLang($translate.use());
-          var deferred = $q.defer();
-         //We resolve directly when we have it in cache already
-          if (angular.isDefined(registry[key(id, lang)])) {
-            $timeout(function() {
-              deferred.resolve(registry[key(id, lang)]);
-            }, 0);
-          }
+          var lang = gaLang.getNoRm();
 
           //get it from fusion tables
           var sql = sqlTmpl
                     .replace('{id}', id)
                     .replace('{lang}', lang);
+          // INGRID: Add 'cache'
+          var cache = $cacheFactory('helpCache-' + id);
           // INGRID: Change '$http.jsonp' to '$http.get' and add replacing.
           $http.get(url, {
+            // INGRID: Change 'cache'
+            cache: cache,
             params: {
               lang: lang,
               id: id,
-              helpUrl: location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/help/help-{lang}.json'
+              helpUrl: location.protocol + '//' +
+                location.host +
+                '/ingrid-webmap-client/frontend/help/help-{lang}.json'
             }
-          }).success(function(response) {
-            registry[key(id, lang)] = response;
-            deferred.resolve(response);
-          }).error(function() {
-            deferred.reject();
+          }).then(function(response) {
+            return response.data;
           });
-
-          return deferred.promise;
-        };
-
-        //we only support certain languages
-        function fixLang(langa) {
-          var l = langa;
-          if (langa == 'rm') {
-            l = 'de';
-          }
-          return l;
-        }
-
-        function key(id, lang) {
-          return id + lang;
         };
       };
 

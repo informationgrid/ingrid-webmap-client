@@ -10,6 +10,9 @@ var settingEpsgExtent = undefined;
 //Override default EPSG (default: 'EPSG:3857')
 var settingEpsg = undefined;
 
+//Override supported languages (default: 'EPSG:3857')
+var settingLanguages = '["de", "en"]';
+
 // Override short URL service (default: 'https://is.gd/create.php?format=json')
 var settingShortURLService = undefined;
 

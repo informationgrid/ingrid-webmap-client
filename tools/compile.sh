@@ -16,9 +16,9 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision 'f38784dc490ee2cc181102bc2dac5b6ba3cfff4b' (Date: 8. Juli 2016 09:17:52) ***"
-git checkout f38784dc490ee2cc181102bc2dac5b6ba3cfff4b
-    
+echo "*** Checkout mf-geoadmin3 revision 'a82bf600b1ef1e5c03e0bbadde1423739db17710' (Date: 6. Juli 2017 11:09:09) ***"
+git checkout a82bf600b1ef1e5c03e0bbadde1423739db17710
+
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
 cp -r ../src/main/webapp/frontend/ingrid/scripts ./
@@ -36,16 +36,15 @@ export DEFAULT_TOPIC_ID=themen
 export DEFAULT_EXTENT="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
 export DEFAULT_EPSG="EPSG:3857"
 export DEFAULT_EPSG_EXTEND="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
-export LANGS= de en
 
-# make libs
-echo "*** Make libs ***"
-make libs
+# make lint
+echo "*** Make lint ***"
+make lint
 
 # make dev version
 echo "*** Make debug ***"
 make debug
 
 # make prod version
-echo "*** Make release ***"
-make release
+#echo "*** Make release ***"
+#make release
