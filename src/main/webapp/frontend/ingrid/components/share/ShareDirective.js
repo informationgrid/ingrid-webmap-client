@@ -25,7 +25,6 @@ goog.require('ga_urlutils_service');
       templateUrl: 'components/share/partials/share.html',
       link: function(scope, element, attrs) {
         var permalinkInput = $('.ga-share-permalink input');
-        var shortenUrl = scope.options.shortenUrl;
 
         scope.qrcodegeneratorPath = scope.options.qrcodegeneratorPath;
         scope.mobile = gaBrowserSniffer.mobile;
@@ -66,8 +65,8 @@ goog.require('ga_urlutils_service');
               $translate.instant('page_title'));
           gaUrlUtils.shorten(scope.permalinkValue).then(function(shortUrl) {
             // INGRID: Return href if no shorturl exists
-            scope.permalinkValue = response.shorturl ?
-              response.shorturl : scope.permalinkValue;
+            scope.permalinkValue = shortUrl ?
+              shortUrl : scope.permalinkValue;
             scope.urlShortened = true;
             scope.$applyAsync(function() {
               // Auto-select the shortened permalink (not on mobiles)
