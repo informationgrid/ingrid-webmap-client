@@ -19,10 +19,11 @@ goog.require('ga_window_service');
     'pascalprecht.translate'
   ]);
 
+  // INGRID: Add 'gaUrlUtils'
   module.directive('gaContextPopup',
       function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
           gaNetworkStatus, gaPermalink, gaGlobalOptions, gaLang, gaWhat3Words,
-          gaReframe, gaEvent, gaWindow, $translate) {
+          gaReframe, gaEvent, gaWindow, gaUrlUtils) {
         return {
           restrict: 'A',
           replace: true,
@@ -38,13 +39,14 @@ goog.require('ga_window_service');
             var startPixel, holdPromise, isPopoverShown = false;
             var reframeCanceler = $q.defer();
             var heightCanceler = $q.defer();
+            var map = scope.map;
+            var view = map.getView();
+            // INGRID: Change 'coord21781' to 'coordDefault'
+            var coordDefault, coord4326;
             // INGRID: Add BwaStrLocator
             var bwaLocatorUrl = scope.options.bwaLocatorUrl;
 
-            // INGRID: Add short URL
-            var shortenUrl = scope.options.shortenUrl;
-
-            scope.titleClose = $translate.instant('close');
+            // INGRID: Add tabs
             scope.currentTab = 1;
 
             // Tabs management stuff
@@ -54,14 +56,6 @@ goog.require('ga_window_service');
             scope.getTabClass = function(numTab) {
               return (numTab === scope.currentTab) ? 'active' : '';
             };
-
-            // The popup content is updated (a) on contextmenu events,
-            // and (b) when the permalink is updated.
-
-            var map = scope.map;
-            var view = map.getView();
-            // INGRID: Change 'coord21781' to 'coordDefault'
-            var coordDefault, coord4326;
 
             var overlay = new ol.Overlay({
               element: element[0],
@@ -347,18 +341,16 @@ goog.require('ga_window_service');
               scope.crosshairPermalink = gaPermalink.getHref(
                   angular.extend({crosshair: 'marker'}, p));
 
+              scope.qrcodeUrl = null;
               if (!gaNetworkStatus.offline && gaWindow.isWidth('>=s') &&
                   gaWindow.isHeight('>s')) {
-                  $http.get(shortenUrl, {
-                      params: {
-                        url: contextPermalink
-                      }
-                  }).success(function(response) {
-                      // INGRID: Return href if no shorturl exists
-                      var url = response.shorturl ? response.shorturl :
+                  gaUrlUtils.shorten(scope.contextPermalink).
+                    then(function(shortUrl) {
+                    // INGRID: Return href if no shorturl exists
+                    var url = shortUrl ? shortUrl :
                         scope.contextPermalink;
-                      scope.qrcodeUrl = qrcodeUrl + '?url=' +
-                          escape(url);
+                    scope.qrcodeUrl = qrcodeUrl + '?url=' +
+                        escape(url);
                   });
               }
             }
@@ -399,7 +391,7 @@ goog.require('ga_window_service');
             }
 
             function updateBWaLocatorData(response) {
-                var result = response.result[0];
+                var result = response.data.result[0];
                 if (result) {
                     if (result.error == undefined) {
                         scope.bwastr_id = result.bwastrid;
