@@ -273,6 +273,7 @@ goog.require('ga_urlutils_service');
               new Array(layers.length).join(',').split(',');
           var url = (source.getUrls && source.getUrls()[0]) ||
               (source.getUrl && source.getUrl());
+
           angular.extend(enc, {
             type: 'WMS',
             baseURL: url || layer.url,
@@ -845,8 +846,8 @@ goog.require('ga_urlutils_service');
       gaUrlUtils.shorten(gaPermalink.getHref(), canceller.promise)
           .then(function(shortUrl) {
         // INGRID: Return href if no shorturl exists
-        shortLink = response.shorturl ?
-          response.shorturl.replace('/shorten', '') : gaPermalink.getHref();
+        shortLink = shortUrl ?
+          shortUrl.replace('/shorten', '') : gaPermalink.getHref();
         // INGRID: Add used shortLink for QR
         if (shortLink) {
           qrcodeUrl = $scope.options.qrcodeUrl +
