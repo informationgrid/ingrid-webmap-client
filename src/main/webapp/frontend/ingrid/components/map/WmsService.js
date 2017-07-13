@@ -208,8 +208,10 @@ goog.require('ga_urlutils_service');
             // Angularjs doesn't handle onprogress event
             $http.get(proxyUrl, {identifier: identifier, index: index, cap:
               cap + '' + capParams})
-            .success(function(data, status, headers, config) {
+            .then(function(response) {
               try {
+              var config = response.config;
+              var data = response.data;
               var result = data.WMT_MS_Capabilities ||
                 data.WMS_Capabilities;
               if (result.Capability) {
@@ -282,9 +284,8 @@ goog.require('ga_urlutils_service');
               } catch (e) {
                 alert('Fehler beim Laden der URL ' + config.cap + '.');
               }
-            })
-            .error(function(data, status, headers, config) {
-                alert('Fehler beim Laden der URL ' + config.cap + '.');
+            }, function(response) {
+                alert('Fehler beim Laden der URL ' + response.config.cap + '.');
             });
         };
 

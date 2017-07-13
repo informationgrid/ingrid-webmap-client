@@ -651,7 +651,7 @@ goog.require('ga_urlutils_service');
             $scope.select = function(res) {
               unregisterMove();
               if (res.attrs.service) {
-                  var url = res.attrs.service;
+                  var url = res.attrs.service.split(", ")[0];
                   if (url.indexOf('?') == -1) {
                       url = url + '?';
                   }
