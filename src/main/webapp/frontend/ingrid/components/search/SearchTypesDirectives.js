@@ -632,7 +632,7 @@ goog.require('ga_urlutils_service');
   // INGRID: Add services search
   module.directive('gaSearchServices',
       function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
-              gaBrowserSniffergaPreviewLayers, gaMapUtils, gaLayers,
+              gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
               gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms) {
         return {
           restrict: 'A',
