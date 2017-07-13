@@ -129,8 +129,6 @@ goog.require('ga_permalink');
                       source: new ol.source.OSM()
                   });
                   layer.background = true;
-                  // INGRID: Add visible
-                  layer.visible = true;
                   layer.displayInLayerManager = false;
                   if (layers.item(0) && layers.item(0).background) {
                     layers.setAt(0, layer);
