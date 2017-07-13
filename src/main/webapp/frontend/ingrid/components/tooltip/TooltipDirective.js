@@ -482,7 +482,8 @@ goog.require('ga_topic_service');
                     {'INFO_FORMAT': 'text/html'});
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
-                    all.push($http.get(proxyUrl, {
+                    // INGRID: Change 'proxyUrl' to 'url'
+                    all.push($http.get(url, {
                       timeout: canceler.promise,
                       layer: layerToQuery
                     }).then(function(response) {
