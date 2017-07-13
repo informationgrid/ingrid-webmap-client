@@ -168,8 +168,7 @@ goog.require('ga_urlutils_service');
       }
 
       // INGRID: Fix print of external WMS
-      if ($scope.options.legend &&
-          layerConfig.hasLegend &&
+      if ($scope.options.legend && layerConfig.hasLegend &&
           (encLayer && encLayer.type != 'OSM' && encLayer.type != 'Vector')) {
         encLegend = $scope.encoders.legends['ga_urllegend'].call(this, layer,
             layerConfig);
@@ -427,6 +426,7 @@ goog.require('ga_urlutils_service');
 
         return enc;
         },
+
         // INGRID: Add encoder for OSM
         'OSM': function(layer, config) {
             var enc = {};
@@ -442,7 +442,6 @@ goog.require('ga_urlutils_service');
               singleTile: config.singleTile || false
             });
             return enc;
-
         }
       },
       'features': {
@@ -672,14 +671,17 @@ goog.require('ga_urlutils_service');
 
       // Transform layers to literal
       layers.forEach(function(layer) {
-        if (!layer.visible || layer.opacity == 0) {
+        /* INGRID: Change 'visible' and 'opacity' function
+        if (!layer.getVisible() || layer.getOpacity() == 0) {
           return;
         }
         // Only print layer which have an extent intersecting the print extent
+        /* INGRID: Remove check intersects of extent
         if (!ol.extent.intersects(layer.getExtent() || gaMapUtils.defaultExtent,
             getPrintRectangleCoords())) {
           return;
         }
+        */
         // layer not having the same projection as the map, won't be printed
         // TODO: issue a warning for the user
         if (layer.getSource && layer.getSource().getProjection()) {
