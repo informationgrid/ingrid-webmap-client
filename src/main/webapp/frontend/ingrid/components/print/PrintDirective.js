@@ -562,8 +562,8 @@ goog.require('ga_urlutils_service');
           var enc = $scope.encoders.legends.base.call(this, config);
           enc.classes.push({
             name: '',
-            icon: $scope.options.legendUrl +
-                layer.bodId + '_' + $translate.use() + format
+            // INGRID: Get legend by getLegend request
+            icon: gaWms.getLegendURL(layer)
           });
           return enc;
         },
