@@ -920,7 +920,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add print graticule
           defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
           // INGRID: Add setting to hide catalog menu
-          isHideCatalog: settingHideCatalog
+          isHideCatalog: settingHideCatalog,
+       // INGRID: Add setting to define zoom level of gazetter search
+          gazetterZoom: settingGazetterZoom ? settingGazetterZoom : 10
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

@@ -19,6 +19,9 @@ var settingShortURLService = undefined;
 // Define opensearch URL to search for WMS services. (integrate on map client search field) 
 var settingSearchServiceUrl = 'http://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
 
+// Define gazetter/nominatim zoom level 
+var settingGazetterZoom = 10;
+
 // Define nominatim URL to search for cities, places, countries (integrate on map client search field)
 var settingSearchNominatimUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
 

@@ -32,7 +32,7 @@ goog.require('ga_urlutils_service');
 
   // INGRID: Edit addOverlay for nominatim
   var addOverlay = function(gaMarkerOverlay, map, res, gaGlobalOptions) {
-    var visible = originToZoomLevel.hasOwnProperty(res.attrs.origin);
+    var visible = /^(address|parcel|gazetteer)$/.test(res.attrs.origin);
     if (res.attrs.geom_st_box2d) {
         var extentString = res.attrs.geom_st_box2d.split(' ');
         var extent = [];
@@ -234,7 +234,8 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add search URL
         var url = gaUrlUtils.append($scope.options.searchUrl,
-          'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
+                                    'type=' + $scope.type +
+                                    '&searchUrl=' + $scope.searchUrl);
         url = $scope.typeSpecificUrl(url);
         $http.get(url, {
           cache: true,
@@ -371,7 +372,9 @@ goog.require('ga_urlutils_service');
 
               }
               var ol3d = $scope.ol3d;
-              if (res.attrs.zoomlevel < ZOOM_LIMIT &&
+              // INGRID: Remove 'res.attrs.zoomlevel'
+              // TODO: Add gazetter zoom '10' to settings.
+              if (globalOptions.gazetterZoom < ZOOM_LIMIT &&
                   !isGazetteerPoly) {
                 // INGRID: Change selection handling of nominatim
                 var extentString = res.attrs.geom_st_box2d.split(' ');
@@ -388,7 +391,7 @@ goog.require('ga_urlutils_service');
                         gaGlobalOptions.defaultEpsg);
                 }
                 gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                    originToZoomLevel[res.attrs.origin],
+                    globalOptions.gazetterZoom,
                     center);
               } else {
                 gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, e);
@@ -1030,4 +1033,5 @@ goog.require('ga_urlutils_service');
           }
         };
       });
+
 })();
