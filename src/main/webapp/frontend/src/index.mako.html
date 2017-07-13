@@ -989,10 +989,9 @@ itemscope itemtype="http://schema.org/WebApplication"
         });
 
         module.config(function(gaUrlUtilsProvider, gaGlobalOptions) {
+          // INGRID: Change shortenUrl api
           gaUrlUtilsProvider.shortenUrl =
-              // INGRID: Change shortUrl api
-              gaGlobalOptions.shortUrl;
-              // gaGlobalOptions.apiUrl + '/shorten.json';
+              gaGlobalOptions.shortURLService;
         });
 
         module.config(function(gaQueryProvider, gaGlobalOptions) {
