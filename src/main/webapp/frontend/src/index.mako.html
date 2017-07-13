@@ -154,15 +154,15 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
 % if device != 'embed':
     <div ng-cloak translate-cloak id="header" class="navbar navbar-fixed-top" ng-class="{'host-not-prod': !globals.hostIsProd}">
+      <!-- INGRID: Remove logo
       <a href="?topic={{topicId}}&lang={{langId}}">
         <div id="logo" class="pull-left ga-logo">
           <i class="fa fa-ga-logo-bund"></i>
-          <!-- INGRID: Remove logo
           <div class="ga-logo-text"></div>
           <div class="ga-logo-text ga-subtitle-{{langId}}"></div>
-          -->
         </div>
       </a>
+      -->
       <div id="search-container" ng-controller="GaSearchController">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
   % if device == 'desktop':
