@@ -62,7 +62,8 @@ goog.provide('ga_urlutils_service');
           var protocol = parts[1];
           var resource = parts[3];
           // proxy is RESTFful, <service>/<protocol>/<resource>
-          return gaGlobalOptions.proxyUrl + protocol + '/' +
+          // INGRID: Change proxy url
+          return gaGlobalOptions.proxyUrl +
               encodeURIComponent(resource);
         };
 

@@ -850,7 +850,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Change REST service URL
           apiUrl: location.origin + '/ingrid-webmap-client/rest/data',
           printUrl: printUrl,
-          proxyUrl: proxyUrl,
+          // INGRID: Change 'proxyUrl'
+          proxyUrl:  location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/wms/proxy/?url=',
           mapproxyUrl: mapproxyUrl,
           vectorTilesUrl: vectorTilesUrl,
           shopUrl: shopUrl,
