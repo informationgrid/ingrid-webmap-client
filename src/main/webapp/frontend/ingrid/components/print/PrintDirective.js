@@ -671,7 +671,7 @@ goog.require('ga_urlutils_service');
 
       // Transform layers to literal
       layers.forEach(function(layer) {
-        /* INGRID: Change 'visible' and 'opacity' function
+        // INGRID: Change 'visible' and 'opacity' function
         if (!layer.getVisible() || layer.getOpacity() == 0) {
           return;
         }
