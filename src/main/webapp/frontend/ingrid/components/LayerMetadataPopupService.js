@@ -74,7 +74,6 @@ goog.require('ga_wms_service');
               $translate.instant('metadata_service_url'))
             .replace('metadata_service_url_link',
               $translate.instant('metadata_service_url_link'));
-          result.html = $sce.trustAsHtml(data);
           popup.scope.options.result.html = $sce.trustAsHtml(data);
           popup.scope.options.lang = gaLang.get();
         }, function() {
