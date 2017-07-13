@@ -374,7 +374,7 @@ goog.require('ga_urlutils_service');
               var ol3d = $scope.ol3d;
               // INGRID: Remove 'res.attrs.zoomlevel'
               // TODO: Add gazetter zoom '10' to settings.
-              if (globalOptions.gazetterZoom < ZOOM_LIMIT &&
+              if (gaGlobalOptions.gazetterZoom < ZOOM_LIMIT &&
                   !isGazetteerPoly) {
                 // INGRID: Change selection handling of nominatim
                 var extentString = res.attrs.geom_st_box2d.split(' ');
@@ -391,7 +391,7 @@ goog.require('ga_urlutils_service');
                         gaGlobalOptions.defaultEpsg);
                 }
                 gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                    globalOptions.gazetterZoom,
+                    gaGlobalOptions.gazetterZoom,
                     center);
               } else {
                 gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, e);
