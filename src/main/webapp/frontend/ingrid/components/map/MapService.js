@@ -388,7 +388,7 @@ goog.require('ga_urlutils_service');
           };
 
           var deregKey = map.on('singleclick', function(evt) {
-            // We active singleclick only on mouse event to avoid confilct with
+            // We active singleclick only on mouse event to avoid conflict with
             // contextpopup.
             if (gaEvent.isMouse(evt)) {
               callback(evt);
@@ -396,15 +396,15 @@ goog.require('ga_urlutils_service');
           });
 
           var touchEvents = gaBrowserSniffer.events;
-            var viewport = $(map.getViewport());
-            viewport.on(touchEvents.start, touchstartListener);
-            viewport.on(touchEvents.move, touchmoveListener);
-            viewport.on(touchEvents.end, touchendListener);
+          var viewport = $(map.getViewport());
+          viewport.on(touchEvents.start, touchstartListener);
+          viewport.on(touchEvents.move, touchmoveListener);
+          viewport.on(touchEvents.end, touchendListener);
           return function() {
             ol.Observable.unByKey(deregKey);
-              viewport.unbind(touchEvents.start, touchstartListener);
-              viewport.unbind(touchEvents.move, touchmoveListener);
-              viewport.unbind(touchEvents.end, touchendListener);
+            viewport.unbind(touchEvents.start, touchstartListener);
+            viewport.unbind(touchEvents.move, touchmoveListener);
+            viewport.unbind(touchEvents.end, touchendListener);
           };
         }
       };
@@ -867,7 +867,6 @@ goog.require('ga_urlutils_service');
               */
               // INGRID: Use template from config
               var wmtsTplUrl = layer.template;
-              var subdomains = dfltWmtsNativeSubdomains;
               olSource = layer.olSource = new ol.source.WMTS({
                 dimensions: {
                   'Time': timestamp
