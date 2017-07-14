@@ -266,10 +266,10 @@ public class FileResource {
             } catch (MalformedURLException e) {
                 return Response.status(Response.Status.NOT_FOUND ).build();
             } catch (IOException e) {
-                return Response.status(Response.Status.OK ).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
             }
         }
-        return Response.status(Response.Status.OK ).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
     @GET
@@ -309,10 +309,11 @@ public class FileResource {
             byte[] imageData = baos.toByteArray();
             return Response.ok(new ByteArrayInputStream(imageData)).build();
         } catch(WriterException e){
-            
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
         } catch (IOException e) {
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
         }
-        return Response.status(Response.Status.OK ).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
     
@@ -387,6 +388,65 @@ public class FileResource {
         boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
         if(sendMail){
             return Response.ok( "{\"success\": true}" ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
+    @GET
+    @Path("color/{color}/{icon}")
+    @Produces("image/png")
+    public Response getImageRequest(@PathParam("color") String color, @PathParam("icon") String icon) throws IOException{
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        if(!path.endsWith( "/" )){
+           path = path.concat( "/" ); 
+        }
+        File imageDir = new File(path + "img");
+        if(!imageDir.exists()){
+            imageDir.mkdirs();
+        }
+        path = imageDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+         }
+        File colorsDir = new File(path + "color");
+        if(!colorsDir.exists()){
+            colorsDir.mkdirs();
+        }
+        path = colorsDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File colorDir = new File(path + color);
+        if(!colorDir.exists()){
+            colorDir.mkdirs();
+        }
+        path = colorDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File imageFile = new File(path + icon);
+        if(imageFile.exists()){
+            return Response.ok(imageFile).build();
+        }else{
+            if(color != null && icon != null){
+                String url = "https://api3.geo.admin.ch/color/" + color + "/" + icon;
+                if (url != null && url.length() > 0) {
+                    URL tmpUrl;
+                    try {
+                        tmpUrl = new URL(url);
+                        BufferedImage image = ImageIO.read(tmpUrl);
+                        ImageIO.write(image, "png", imageFile);
+                        return Response.ok(imageFile).build();
+                    } catch (MalformedURLException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.NOT_FOUND ).build();
+                    } catch (IOException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                    }
+                }
+            }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
