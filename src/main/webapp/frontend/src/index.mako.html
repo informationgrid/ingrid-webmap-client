@@ -883,19 +883,19 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add search BwaLocator Station
           searchBwaLocatorStationUrl : settingSearchBwaLocatorStationUrl,
           // INGRID: Short URL service (external)
-          shortURLService : settingShortURLService ? settingShortURLService : 'https://is.gd/create.php?format=json',
+          shortURLService : settingShortURLService || 'https://is.gd/create.php?format=json',
           whitelist: [
             'https://' + window.location.host + '/**',
             'https://www.googleapis.com/**'
           ],
-          defaultTopicId: settingDefaultTopicId ? settingDefaultTopicId : '${default_topic_id}',
+          defaultTopicId: settingDefaultTopicId || '${default_topic_id}',
           translationFallbackCode: '${translation_fallback_code}',
           defaultExtent: settingExtent ? JSON.parse(settingExtent) : JSON.parse(${default_epsg_extend}),
           defaultResolution: ${default_resolution},
           defaultLod: ${default_level_of_detail},
           resolutions: JSON.parse(${resolutions}),
           lods: JSON.parse(${level_of_details}),
-          defaultEpsg: settingEpsg ? settingEpsg : '${default_epsg}',
+          defaultEpsg: settingEpsg || '${default_epsg}',
           defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           defaultTerrain: '${default_terrain}',
@@ -907,7 +907,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name
-          settingKMLName: settingKMLName ? settingKMLName : 'INGRID',
+          settingKMLName: settingKMLName || 'INGRID',
           // INGRID: Available list of services to import
           settingDefaultImportList: settingDefaultImportList || [],
           // INGRID: Add print logo url
@@ -915,15 +915,15 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add print north arrow logo url
           printNorthArrow: settingPrintNorthArrow,
           // INGRID: Add use geodesic
-          useGeodesic: settingUseGeodesic ? settingUseGeodesic : true,
+          useGeodesic: settingUseGeodesic || true,
           // INGRID: Add default mouse position
-          defaultMousePositionIndex: settingDefaultMousePositionIndex ? settingDefaultMousePositionIndex : 0,
+          defaultMousePositionIndex: settingDefaultMousePositionIndex || 0,
           // INGRID: Add print graticule
           defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
           // INGRID: Add setting to hide catalog menu
           isHideCatalog: settingHideCatalog,
        // INGRID: Add setting to define zoom level of gazetter search
-          gazetterZoom: settingGazetterZoom ? settingGazetterZoom : 10
+          gazetterZoom: settingGazetterZoom || 10
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {
