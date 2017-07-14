@@ -374,7 +374,7 @@ public class FileResource {
         }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
-        if(email != null && email.length() > 0){
+        if(email != null && email.length() > 0 && !email.equals( "undefined" )){
             from = email;
         }
         String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 

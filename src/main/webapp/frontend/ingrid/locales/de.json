@@ -187,6 +187,7 @@
 "feedback_placeholder": "Fügen Sie eine .pdf, .zip, .jpg, .jpeg, .kml, .kmz oder .gpx Datei hinzu",
 "feedback_success_message": "Danke für Ihre Nachricht. Diese wurde erfolgreich übermittelt.",
 "feedback_unsupported_format": "Dieser Dateityp wird leider nicht unterstützt. Bitte verwenden Sie eine .pdf, .zip, .jpg, .jpeg, .kml, .kmz oder .gpx Datei.",
+"feedback_subject": "Feedback: InGrid MapClient",
 "file_is_not_kml": "Dieses File ist keine KML Datei. ",
 "follow_us": "Folgen Sie uns",
 "full_screen": "Vollbild",

@@ -19,9 +19,10 @@ goog.require('ga_permalink');
    * When the response is received from the feedback service it sets the
    * "response" scope property to "success" or "error".
    */
+  // INGRID: Add 'gaUrlUtils'
   module.directive('gaFeedback',
       function($http, $translate, gaPermalink, gaBrowserSniffer, gaExportKml,
-               gaGlobalOptions) {
+               gaGlobalOptions, gaUrlUtils) {
           return {
             restrict: 'A',
             replace: true,
@@ -61,13 +62,14 @@ goog.require('ga_permalink');
                     formData.append('email', scope.email);
                     formData.append('feedback', scope.feedback);
                     formData.append('ua', navigator.userAgent);
-                    formData.append('permalink', scope.permalinkValue);
+                    // INGRID: Add scope.shortUrl
+                    formData.append('permalink', scope.shortUrl || scope.permalinkValue);
                     formData.append('attachement', scope.file || '');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
                     // INGRID: Add entries
                     formData.append('subject',
-                      translate.instant('feedback_subject') + '');
+                      $translate.instant('feedback_subject') + '');
 
                     return formData;
                 } else {
@@ -75,7 +77,8 @@ goog.require('ga_permalink');
                       email: scope.email,
                       feedback: scope.feedback,
                       ua: navigator.userAgent,
-                      permalink: scope.permalinkValue,
+                      // INGRID: Add scope.shortUrl
+                      permalink: scope.shortUrl || scope.permalinkValue,
                       attachement: '',
                       kml: kml,
                       version: gaGlobalOptions.version + '',
@@ -143,11 +146,24 @@ goog.require('ga_permalink');
               scope.permalinkValue = gaPermalink.getHref(undefined,
                 gaGlobalOptions.isParentIFrame);
 
+              // INGRID: Get short url
+              gaUrlUtils.shorten(scope.permalinkValue).
+                then(function(url) {
+                  // INGRID: Return href if no shorturl exists
+                  scope.shortUrl = url || scope.permalinkValue;
+              });
+              
               // Listen to permalink change events from the scope.
               scope.$on('gaPermalinkChange', function(event) {
                 // INGRID: Add params
                 scope.permalinkValue = gaPermalink.getHref(undefined,
                   gaGlobalOptions.isParentIFrame);
+                // INGRID: Get short url
+                gaUrlUtils.shorten(scope.permalinkValue).
+                  then(function(url) {
+                    // INGRID: Return href if no shorturl exists
+                    scope.shortUrl = url || scope.permalinkValue;
+                });
               });
 
               scope.$on('gaDrawingLayer', function(event, data) {
