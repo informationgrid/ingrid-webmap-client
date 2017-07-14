@@ -46,8 +46,8 @@ var settingUseGeodesic = true;
 // Override default mouse position projection (Default: 0)
 var settingDefaultMousePositionIndex = 0;
 
-// Default list on WMS import function
-var settingDefaultWMSList = [
+// Default list on import function
+var settingDefaultImportList = [
      'http://atlas.wsv.bund.de/bwastr/wms?',
      'http://atlas.wsv.bund.de/ienc/wms?',
      'http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml',

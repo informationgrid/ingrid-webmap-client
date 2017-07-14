@@ -29,7 +29,7 @@ goog.require('ngeo.fileService');
     $scope.supportDnd = !gaBrowserSniffer.msie || gaBrowserSniffer.msie > 9;
     $scope.options = {
       // INGRID: Get list from settings
-      urls: gaGlobalOptions.settingDefaultWMSList
+      urls: gaGlobalOptions.settingDefaultImportList
     };
 
     $scope.options.isValidUrl = gaUrlUtils.isValid;
