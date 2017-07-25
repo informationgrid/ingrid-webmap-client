@@ -384,8 +384,9 @@ goog.require('ga_urlutils_service');
             requestEncoding: requestEncoding,
             formatSuffix: source.getFormat().replace('image/', ''),
             style: source.getStyle() || 'default',
-            dimensions: Object.keys(wmts_dimensions),
-            params: wmts_dimensions,
+            // INGRID: Remove add time on 'wmts_dimensions'
+            // dimensions: Object.keys(wmts_dimensions),
+            // params: wmts_dimensions,
             matrixSet: source.getMatrixSet() || '21781'
           });
 
