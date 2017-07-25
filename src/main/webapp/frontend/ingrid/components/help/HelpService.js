@@ -38,12 +38,9 @@ goog.require('ga_translation_service');
           var sql = sqlTmpl
                     .replace('{id}', id)
                     .replace('{lang}', lang);
-          // INGRID: Add 'cache'
-          var cache = $cacheFactory('helpCache-' + id);
           // INGRID: Change '$http.jsonp' to '$http.get' and add replacing.
           $http.get(url, {
-            // INGRID: Change 'cache'
-            cache: cache,
+            cache: true,
             params: {
               lang: lang,
               id: id,

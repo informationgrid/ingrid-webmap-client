@@ -63,7 +63,8 @@ goog.require('ga_permalink');
                     formData.append('feedback', scope.feedback);
                     formData.append('ua', navigator.userAgent);
                     // INGRID: Add scope.shortUrl
-                    formData.append('permalink', scope.shortUrl || scope.permalinkValue);
+                    formData.append('permalink', scope.shortUrl ||
+                      scope.permalinkValue);
                     formData.append('attachement', scope.file || '');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
@@ -152,7 +153,7 @@ goog.require('ga_permalink');
                   // INGRID: Return href if no shorturl exists
                   scope.shortUrl = url || scope.permalinkValue;
               });
-              
+
               // Listen to permalink change events from the scope.
               scope.$on('gaPermalinkChange', function(event) {
                 // INGRID: Add params
