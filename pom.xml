@@ -151,12 +151,10 @@
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/" />
                                 </copy>
-                                <!-- 
                                 <echo>Copy mf-geoadmin 'prd/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/prd/" />
                                 </copy>
-                                 -->
                             </tasks>
                         </configuration>
                         <goals>

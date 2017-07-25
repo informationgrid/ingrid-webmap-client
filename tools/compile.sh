@@ -38,13 +38,22 @@ export DEFAULT_EPSG="EPSG:3857"
 export DEFAULT_EPSG_EXTEND="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
 
 # make lint
+echo ""
+echo "******************"
 echo "*** Make lint ***"
+echo "******************"
 make lint
 
 # make dev version
+echo ""
+echo "******************"
 echo "*** Make debug ***"
+echo "******************"
 make debug
 
 # make prod version
-#echo "*** Make release ***"
-#make release
+echo ""
+echo "********************"
+echo "*** Make release ***"
+echo "********************"
+make release
