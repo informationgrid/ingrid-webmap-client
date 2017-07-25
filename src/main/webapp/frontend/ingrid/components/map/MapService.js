@@ -872,7 +872,8 @@ goog.require('ga_urlutils_service');
               var wmtsTplUrl = layer.template;
               olSource = layer.olSource = new ol.source.WMTS({
                 dimensions: {
-                  'Time': timestamp
+                  // INGRID: Set timestamp to ''
+                  'Time': timestamp || ''
                 },
                 // Workaround: Set a cache size of zero when layer is
                 // timeEnabled see:
