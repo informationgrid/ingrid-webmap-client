@@ -389,6 +389,8 @@ goog.require('ga_urlutils_service');
             matrixSet: source.getMatrixSet() || '21781'
           });
 
+        // INGRID: Remove check 'isExternalWmts'
+        /*
         if (!isExternalWmts) {
 
           angular.extend(enc, {
@@ -401,6 +403,7 @@ goog.require('ga_urlutils_service');
            });
 
         } else {
+        */
           // use the full monty WMTS definition fo external source
           var matrixIds = $scope.encoders.layers['matrixIds']
               .call(this, tileGrid, extent);
@@ -410,7 +413,7 @@ goog.require('ga_urlutils_service');
             baseURL: baseUrl,
             matrixIds: matrixIds
           });
-        }
+        //}
 
         var multiPagesPrint = false;
           if (config.timestamps) {
