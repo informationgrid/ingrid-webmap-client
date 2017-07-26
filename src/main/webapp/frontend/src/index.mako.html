@@ -115,6 +115,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           'ga-3d-active': globals.is3dActive
         }">
     <!-- The below conditional is ignored by >= IE10 and all other browsers -->
+    <!-- INGRID: Remove '${versionslashed}' -->
     <!--![if IE]>
       <script>
        (function(){
@@ -131,7 +132,6 @@ itemscope itemtype="http://schema.org/WebApplication"
        }
        })();
       </script>
-<!-- INGRID: Remove '${s3basepath}${versionslashed}' -->
       <script src="${s3basepath}lib/IE9Fixes.js"></script>
       <script>
         IE9Fix.call(this);
@@ -707,13 +707,6 @@ itemscope itemtype="http://schema.org/WebApplication"
       window.CESIUM_BASE_URL="lib/Cesium/";
     </script>
     <script src="lib/build.js"></script>
-    <!-- INGRID: Add projections -->
-    <script src="../src/lib/EPSG25832.js"></script>
-    <script src="../src/lib/EPSG25833.js"></script>
-    <script src="../src/lib/EPSG31466.js"></script>
-    <script src="../src/lib/EPSG31467.js"></script>
-    <script src="../src/lib/EPSG31468.js"></script>
-    <script src="../src/lib/EPSG31469.js"></script>
     <!-- For <= IE9, we load it explicitely as XDomain does not support
          dynamic/lazy loading of javascript -->
     <!--![if IE]>
@@ -745,13 +738,6 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script src="lib/EPSG2056.js"></script>
     <script src="lib/EPSG32631.js"></script>
     <script src="lib/EPSG32632.js"></script>
-    <!-- INGRID: Add projections -->
-    <script src="lib/EPSG25832.js"></script>
-    <script src="lib/EPSG25833.js"></script>
-    <script src="lib/EPSG31466.js"></script>
-    <script src="lib/EPSG31467.js"></script>
-    <script src="lib/EPSG31468.js"></script>
-    <script src="lib/EPSG31469.js"></script>
     <script src="lib/fastclick.js"></script>
     <script src="lib/localforage.js"></script>
     <script src="lib/filesaver.js"></script>
@@ -770,6 +756,14 @@ itemscope itemtype="http://schema.org/WebApplication"
       goog.require('geoadmin');
     </script>
 % endif
+
+    <!-- INGRID: Add projections -->
+    <script src="../src/lib/EPSG25832.js"></script>
+    <script src="../src/lib/EPSG25833.js"></script>
+    <script src="../src/lib/EPSG31466.js"></script>
+    <script src="../src/lib/EPSG31467.js"></script>
+    <script src="../src/lib/EPSG31468.js"></script>
+    <script src="../src/lib/EPSG31469.js"></script>
 
     <script>
       window.addEventListener('load', function() {
