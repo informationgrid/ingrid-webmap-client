@@ -12,6 +12,7 @@
 "File too large": "The file is too large.",
 "Invalid layer outside the map": "The layer can't be displayed because its extent is outside the map. ",
 "Invalid layer: missing name": "The layer can't be displayed because it has no name. ",
+"Invalid layer: unsupported crs": "<br/><br/>Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
 "Layer": "Title",
 "Load local file": "Load",
 "Maximum WMS size allowed": "WMS max size allowed",
