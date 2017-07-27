@@ -306,8 +306,31 @@ goog.require('ga_wmts_service');
                 // Adding external WMS layer failed, native alert, log message?
                 $log.error(e.message);
               }
-           } else if (gaMapUtils.isExternalWmtsLayer(layerSpec)) {
-
+            } else if (gaMapUtils.isExternalWmtsLayer(layerSpec)) {
+              var infos = layerSpec.split('||');
+              $http.get(gaUrlUtils.buildProxyUrl(infos[2]))
+                  .then(function(response) {
+                try {
+                  var data = response.data;
+                  var getCap = new ol.format.WMTSCapabilities().read(data);
+                  var layerOptions = gaWmts.getLayerOptionsFromIdentifier(
+                      getCap, infos[1]);
+                  // Override the url found in the xml file which is often a
+                  // wrong url.
+                  layerOptions.capabilitiesUrl = infos[2];
+                  layerOptions.time = timestamp;
+                  gaWmts.addWmtsToMap(map, layerOptions, index + 1);
+                } catch (e) {
+                  // Adding external WMTS layer failed
+                  $log.error('Loading of external WMTS layer ' + layerSpec +
+                      ' failed. ' + e.message);
+                }
+              }, function(reason) {
+                $log.error('Loading of external WMTS layer ' + layerSpec +
+                    ' failed. Failed to get capabilities from server.' +
+                    'Reason : ' + reason);
+              });
+            } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
               // INGRID: Add external service
               var infos = layerSpec.split('||');
               try {
