@@ -367,8 +367,10 @@ goog.require('ga_urlutils_service');
           var baseUrl = url.replace(/^\/\//, 'https://');
 
           if (requestEncoding == 'REST') {
+            // INGRID: Add replace 'Style'
             baseUrl = baseUrl
               .replace(/\{Time\}/i, '{TIME}')
+              .replace(/\{Style\}/i, source.getStyle() || '{Style}')
               .replace(/\{/g, '%7B')
               .replace(/\}/g, '%7D')
               .replace(/wmts\d{1,3}\.geo\.admin\.ch/, 'wmts.geo.admin.ch');
