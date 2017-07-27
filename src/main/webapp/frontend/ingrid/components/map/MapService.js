@@ -1559,12 +1559,14 @@ goog.require('ga_urlutils_service');
           if (!extent || extent.length !== 4) {
             return gaGlobalOptions.defaultExtent;
           }
+          /* INGRID: Remove check extent
           extent = [
             Math.max(extent[0], gaGlobalOptions.defaultExtent[0]),
             Math.max(extent[1], gaGlobalOptions.defaultExtent[1]),
             Math.min(extent[2], gaGlobalOptions.defaultExtent[2]),
             Math.min(extent[3], gaGlobalOptions.defaultExtent[3])
           ];
+          */
           if (!isExtentEmpty(extent)) {
             return extent;
           } else {
