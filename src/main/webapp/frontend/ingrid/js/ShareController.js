@@ -7,20 +7,7 @@ goog.provide('ga_share_controller');
     $scope.options = {
       // INGRID: Update shorten URL
       shortenUrl: gaGlobalOptions.shortURLService,
-      qrcodegeneratorPath: gaGlobalOptions.apiUrl + '/qrcodegenerator',
-      iframeSizes: [{
-        label: 'small_size',
-        value: [400, 300]
-      }, {
-        label: 'medium_size',
-        value: [600, 450]
-      }, {
-        label: 'big_size',
-        value: [800, 600]
-      }, {
-        label: 'custom_size',
-        value: undefined
-      }]
+      qrcodegeneratorPath: gaGlobalOptions.apiUrl + '/qrcodegenerator'
     };
   });
 })();

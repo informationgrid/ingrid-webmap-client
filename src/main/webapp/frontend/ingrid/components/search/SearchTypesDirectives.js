@@ -13,52 +13,55 @@ goog.require('ga_urlutils_service');
 
 (function() {
 
-  var originToZoomLevel = {
-    address: 10,
-    parcel: 10,
-    gazetteer: 10
-  };
+  // We can't put strings in zoomlevel attribute of search results. That's
+  // why we put huge numbers to indicate that we want to use the bbox for
+  // zooming instead of the delivered zoomlevel.
+  var ZOOM_LIMIT = 100;
 
   // INGRID: Edit parseExtent for nominatim
   var parseExtent = function(stringBox2D, gaGlobalOptions) {
-      var extentString = stringBox2D.split(" ");
+      var extentString = stringBox2D.split(' ');
       var extent = [];
-      for(var entry in extentString){
+      for (var entry in extentString) {
           extent.push(parseFloat(extentString[entry]));
       }
-      extent = ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg));
+      extent = ol.extent.applyTransform(extent,
+        ol.proj.getTransform('EPSG:4326', gaGlobalOptions.defaultEpsg));
     return $.map(extent, parseFloat);
   };
 
   // INGRID: Edit addOverlay for nominatim
-  var addOverlay = function(gaOverlay, map, res, gaGlobalOptions) {
-    var visible = originToZoomLevel.hasOwnProperty(res.attrs.origin);
-    if(res.attrs.geom_st_box2d){
-        var extentString = res.attrs.geom_st_box2d.split(" ");
+  var addOverlay = function(gaMarkerOverlay, map, res, gaGlobalOptions) {
+    var visible = /^(address|parcel|gazetteer)$/.test(res.attrs.origin);
+    if (res.attrs.geom_st_box2d) {
+        var extentString = res.attrs.geom_st_box2d.split(' ');
         var extent = [];
-        for(var entry in extentString){
+        for (var entry in extentString) {
             extent.push(parseFloat(extentString[entry]));
         }
-        var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
-        if(res.attrs.lon && res.attrs.lat){
-            center = ol.proj.transform([parseFloat(res.attrs.lon), parseFloat(res.attrs.lat)], 'EPSG:4326', gaGlobalOptions.defaultEpsg);
+        var center = ol.extent.getCenter(ol.extent.applyTransform(extent,
+          ol.proj.getTransform('EPSG:4326', gaGlobalOptions.defaultEpsg)));
+        if (res.attrs.lon && res.attrs.lat) {
+          center = ol.proj.transform([parseFloat(res.attrs.lon),
+            parseFloat(res.attrs.lat)], 'EPSG:4326',
+            gaGlobalOptions.defaultEpsg);
         }
-        gaOverlay.add(map,
+        gaMarkerOverlay.add(map,
                       center,
-                      parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions),
-                      visible);
+                      visible,
+                      parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions));
     }
   };
 
-  var removeOverlay = function(gaOverlay, map) {
-    gaOverlay.remove(map);
+  var removeOverlay = function(gaMarkerOverlay, map) {
+    gaMarkerOverlay.remove(map);
   };
 
   var listenerMoveEnd;
-  var registerMove = function(gaOverlay, gaDebounce, map) {
+  var registerMove = function(gaMarkerOverlay, gaDebounce, map) {
     listenerMoveEnd = map.on('moveend', gaDebounce.debounce(function() {
       var zoom = map.getView().getZoom();
-      gaOverlay.setVisibility(zoom);
+      gaMarkerOverlay.setVisibility(zoom);
     }, 200, false, false));
   };
 
@@ -230,28 +233,28 @@ goog.require('ga_urlutils_service');
         canceler = $q.defer();
 
         // INGRID: Add search URL
-        if($scope.searchUrl){
-          var url = gaUrlUtils.append($scope.options.searchUrl,
-                                      'type=' + $scope.type + '&searchUrl=' + $scope.searchUrl);
-          url = $scope.typeSpecificUrl(url);
-          $http.get(url, {
-            cache: true,
-            timeout: canceler.promise,
-            // INGRID: Add search params
-            params: $scope.searchParams
-          }).success(function(data) {
-            $scope.results = data.results;
-            if (data.fuzzy) {
-              $scope.fuzzy = '_fuzzy';
-            }
-            $scope.options.announceResults($scope.type, data.results.length);
-          }).error(function(data, statuscode) {
-            // If request is canceled, statuscode is 0 and we don't announce it
-            if (statuscode !== 0) {
-              $scope.options.announceResults($scope.type, 0);
-            }
-          });
-        }
+        var url = gaUrlUtils.append($scope.options.searchUrl,
+                                    'type=' + $scope.type +
+                                    '&searchUrl=' + $scope.searchUrl);
+        url = $scope.typeSpecificUrl(url);
+        $http.get(url, {
+          cache: true,
+          timeout: canceler.promise,
+          // INGRID: Add search params
+          params: $scope.searchParams
+        }).then(function(response) {
+          var data = response.data;
+          $scope.results = data.results;
+          if (data.fuzzy) {
+            $scope.fuzzy = '_fuzzy';
+          }
+          $scope.options.announceResults($scope.type, data.results.length);
+        }, function(response) {
+          // If request is canceled, statuscode is 0 and we don't announce it
+          if (response.status !== 0) {
+            $scope.options.announceResults($scope.type, 0);
+          }
+        });
       }, 133, false, false);
       // 133 filters out 'stuck key' events while staying responsive
 
@@ -335,7 +338,8 @@ goog.require('ga_urlutils_service');
   // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLocations',
       function($http, $q, $sce, $translate, gaUrlUtils, gaBrowserSniffer,
-               gaMarkerOverlay, gaSearchLabels, gaMapUtils, gaDebounce, gaGlobalOptions) {
+               gaMarkerOverlay, gaSearchLabels, gaMapUtils, gaDebounce,
+               gaGlobalOptions) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes.html',
@@ -353,7 +357,7 @@ goog.require('ga_urlutils_service');
 
             // Can be removed onnce real type contains gazetter
             $scope.typeSpecificUrl = function(url) {
-              return url.replace('type=locations', 'type=locations_preview');
+              return url;
             };
 
             $scope.select = function(res) {
@@ -368,20 +372,26 @@ goog.require('ga_urlutils_service');
 
               }
               var ol3d = $scope.ol3d;
-              if (originToZoomLevel.hasOwnProperty(res.attrs.origin) &&
+              // INGRID: Remove 'res.attrs.zoomlevel'
+              // TODO: Add gazetter zoom '10' to settings.
+              if (gaGlobalOptions.gazetterZoom < ZOOM_LIMIT &&
                   !isGazetteerPoly) {
                 // INGRID: Change selection handling of nominatim
-                var extentString = res.attrs.geom_st_box2d.split(" ");
+                var extentString = res.attrs.geom_st_box2d.split(' ');
                 var extent = [];
-                for(var entry in extentString){
+                for (var entry in extentString) {
                     extent.push(parseFloat(extentString[entry]));
                 }
-                var center = ol.extent.getCenter(ol.extent.applyTransform(extent, ol.proj.getTransform("EPSG:4326", gaGlobalOptions.defaultEpsg)));
-                if(res.attrs.lon && res.attrs.lat){
-                    center = ol.proj.transform([parseFloat(res.attrs.lon), parseFloat(res.attrs.lat)], 'EPSG:4326', gaGlobalOptions.defaultEpsg);
+                var center = ol.extent.getCenter(ol.extent.applyTransform(
+                  extent, ol.proj.getTransform('EPSG:4326',
+                  gaGlobalOptions.defaultEpsg)));
+                if (res.attrs.lon && res.attrs.lat) {
+                    center = ol.proj.transform([parseFloat(res.attrs.lon),
+                        parseFloat(res.attrs.lat)], 'EPSG:4326',
+                        gaGlobalOptions.defaultEpsg);
                 }
                 gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                    originToZoomLevel[res.attrs.origin],
+                    gaGlobalOptions.gazetterZoom,
                     center);
               } else {
                 gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, e);
@@ -433,7 +443,8 @@ goog.require('ga_urlutils_service');
               params: {
                  geometryFormat: 'geojson'
               }
-            }).success(function(result) {
+            }).then(function(response) {
+              var result = response.data;
               selectedFeatures[key] = result.feature;
               cb(result.feature);
             });
@@ -533,11 +544,12 @@ goog.require('ga_urlutils_service');
           }
         };
       });
-  
+
   // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLayers',
       function($http, $q, $sce, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions) {
+               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup,
+               gaGlobalOptions) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes.html',
@@ -550,7 +562,8 @@ goog.require('ga_urlutils_service');
             $scope.type = 'layers';
             $scope.tabstart = tabStarts[2];
             // INGRID: Change search URL for layer search
-            $scope.searchUrl = location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/config/data?filename=layers';
+            $scope.searchUrl = location.protocol + '//' + location.host +
+              '/ingrid-webmap-client/rest/config/data?filename=layers';
 
             $scope.preview = function(res) {
               if (gaBrowserSniffer.mobile) {
@@ -588,24 +601,25 @@ goog.require('ga_urlutils_service');
               gaLayerMetadataPopup.toggle(bodId);
               evt.stopPropagation();
             };
-            
+
             // INGRID: Add zoom to extent
             $scope.hasExtent = function(bodId) {
-                var layer = gaLayers.getLayer(bodId)
-                if(layer){
-                  if(layer.extent){
+                var layer = gaLayers.getLayer(bodId);
+                if (layer) {
+                  if (layer.extent) {
                       return true;
                   }
                 }
                 return false;
             };
-            
+
             // INGRID: Add zoom to extent
             $scope.zoomToExtent = function(evt, bodId) {
               var layer = gaLayers.getLayer(bodId);
-              if(layer){
-                if(layer.extent){
-                  var extent = ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
+              if (layer) {
+                if (layer.extent) {
+                  var extent = ol.proj.transformExtent(layer.extent,
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg);
                   gaMapUtils.zoomToExtent($scope.map, undefined, extent);
                 }
               }
@@ -614,11 +628,12 @@ goog.require('ga_urlutils_service');
           }
         };
       });
-  
+
   // INGRID: Add services search
   module.directive('gaSearchServices',
-      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms) {
+      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
+              gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
+              gaLayerMetadataPopup, gaGlobalOptions, gaPopup, gaWms) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes.html',
@@ -635,96 +650,109 @@ goog.require('ga_urlutils_service');
 
             $scope.select = function(res) {
               unregisterMove();
-              if(res.attrs.service){
-                  var url = res.attrs.service;
-                  if(url.indexOf("?") == -1){
-                      url = url + "?";
+              if (res.attrs.service) {
+                  var url = res.attrs.service.split(', ')[0];
+                  if (url.indexOf('?') == -1) {
+                      url = url + '?';
                   }
-                  if(url.toLowerCase().indexOf("request=getcapabilities") == -1){
-                      if(url.endsWith("?") == false){
-                          url = url + "&";
+                  if (url.toLowerCase().
+                    indexOf('request=getcapabilities') == -1) {
+                      if (url.endsWith('?') == false) {
+                          url = url + '&';
                       }
-                      url = url + "REQUEST=GetCapabilities";
+                      url = url + 'REQUEST=GetCapabilities';
                   }
-                  if(url.toLowerCase().indexOf("service=wms") == -1){
-                      if(url.endsWith("?") == false){
-                          url = url + "&";
+                  if (url.toLowerCase().indexOf('service=wms') == -1) {
+                      if (url.endsWith('?') == false) {
+                          url = url + '&';
                       }
-                      url = url + "SERVICE=WMS";
+                      url = url + 'SERVICE=WMS';
                   }
                   gaWms.addWmsServiceToMap($scope.map, url);
-                  
               }
             };
-            
-            $scope.getServiceInfo = function(evt, attrs) {
-                if(attrs){
-                    var content = "";
-                    if(attrs.label){
-                        content = content + '<h4>' + attrs.label + '</h4><br>';
-                    }
-                    if(attrs.detail){
-                        content = content + '<p>' + attrs.detail + '</p><br>';
-                    }
-                    content = content + '<form class="form-horizontal" ng-class="{ie: isIE}" >';
-                    if(attrs.link){
-                        content = content + '<div class="form-group">';
-                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_more_info') + '</label>';
-                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + attrs.link + '">' + attrs.link + '</a></div>';
-                        content = content + '</div>';
-                    }
-                    if(attrs.service){
-                        var url = attrs.service;
-                        if(url.indexOf("?") == -1){
-                            url = url + "?";
-                        }
-                        if(url.toLowerCase().indexOf("request=getcapabilities") == -1){
-                            if(url.endsWith("?") == false){
-                                url = url + "&";
-                            }
-                            url = url + "REQUEST=GetCapabilities";
-                        }
-                        if(url.toLowerCase().indexOf("service=wms") == -1){
-                            if(url.endsWith("?") == false){
-                                url = url + "&";
-                            }
-                            url = url + "SERVICE=WMS";
-                        }
-                        content = content + '<div class="form-group">';
-                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_capabilities_url') + '</label>';
-                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + url + '">' + url + '</a></div>';
-                        content = content + '</div>';
-                    }
-                    if(attrs.isoxml){
-                        content = content + '<div class="form-group">';
-                        content = content + '<label class="col-xs-4 control-label">' + $translate.instant('detail_iso_xml') + '</label>';
-                        content = content + '<div class="col-xs-8"><a target="_blank" href="' + attrs.isoxml + '">' + attrs.isoxml + '</a></div>';
-                        content = content + '</div>';
-                    }
-                    content = content + '</form>';
-                    
-                    var popup = gaPopup.create({
-                        title: $translate.instant('metadata_window_title'),
-                        destroyOnClose: true,
-                        content: content,
-                        className: '',
-                        x: 400,
-                        y: 200,
-                        showPrint: true
-                      });
-                    popup.open();
-                }
-                evt.stopPropagation();
-            };
 
+            $scope.getServiceInfo = function(evt, attrs) {
+              if (attrs) {
+                var content = '';
+                if (attrs.label) {
+                    content = content + '<h4>' + attrs.label + '</h4><br>';
+                }
+                if (attrs.detail) {
+                    content = content + '<p>' + attrs.detail + '</p><br>';
+                }
+                content += '<form class="form-horizontal"' +
+                  'ng-class="{ie: isIE}" >';
+                if (attrs.link) {
+                    content = content +
+                    '<div class="form-group">' +
+                    '<label class="col-xs-4 control-label">' +
+                    $translate.instant('detail_more_info') +
+                    '</label>' +
+                    '<div class="col-xs-8"><a target="_blank" href="' +
+                    attrs.link + '">' + attrs.link + '</a></div>' +
+                    '</div>';
+                }
+                if (attrs.service) {
+                    var url = attrs.service;
+                    if (url.indexOf('?') == -1) {
+                        url = url + '?';
+                    }
+                    if (url.toLowerCase().
+                      indexOf('request=getcapabilities') == -1) {
+                        if (url.endsWith('?') == false) {
+                            url = url + '&';
+                        }
+                        url = url + 'REQUEST=GetCapabilities';
+                    }
+                    if (url.toLowerCase().indexOf('service=wms') == -1) {
+                        if (url.endsWith('?') == false) {
+                            url = url + '&';
+                        }
+                        url = url + 'SERVICE=WMS';
+                    }
+                    content = content +
+                    '<div class="form-group">' +
+                    '<label class="col-xs-4 control-label">' +
+                    $translate.instant('detail_capabilities_url') +
+                    '</label>' +
+                    '<div class="col-xs-8"><a target="_blank" href="' +
+                    url + '">' + url + '</a></div>' +
+                    '</div>';
+                }
+                if (attrs.isoxml) {
+                    content = content +
+                    '<div class="form-group">' +
+                    '<label class="col-xs-4 control-label">' +
+                    $translate.instant('detail_iso_xml') + '</label>' +
+                    '<div class="col-xs-8"><a target="_blank" href="' +
+                    attrs.isoxml + '">' + attrs.isoxml + '</a></div>' +
+                    '</div>';
+                }
+                content = content + '</form>';
+
+                var popup = gaPopup.create({
+                    title: $translate.instant('metadata_window_title'),
+                    destroyOnClose: true,
+                    content: content,
+                    className: '',
+                    x: 400,
+                    y: 200,
+                    showPrint: true
+                  });
+                popup.open();
+              }
+              evt.stopPropagation();
+            };
           }
         };
       });
 
 //INGRID: Add Bwa locator search
   module.directive('gaSearchBwaLocator',
-      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels, gaBrowserSniffer,
-               gaPreviewLayers, gaMapUtils, gaLayers, gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
+      function($http, $q, $sce, $translate, gaUrlUtils, gaSearchLabels,
+              gaBrowserSniffer, gaPreviewLayers, gaMapUtils, gaLayers,
+              gaGlobalOptions, gaDefinePropertiesForLayer, gaStyleFactory) {
         return {
           restrict: 'A',
           templateUrl: 'components/search/partials/searchtypes_bwalocator.html',
@@ -734,10 +762,9 @@ goog.require('ga_urlutils_service');
           },
           controller: 'GaSearchTypesController',
           link: function($scope, element, attrs) {
-              
-            var bwaLocatorFrom = "";
-            var bwaLocatorTo = "";
-            var bwaLocatorDistance = "";
+            var bwaLocatorFrom = '';
+            var bwaLocatorTo = '';
+            var bwaLocatorDistance = '';
             var layers;
             var canceler = $q.defer();
 
@@ -747,7 +774,8 @@ goog.require('ga_urlutils_service');
             $scope.searchUrl = $scope.options.searchBwaLocatorUrl;
 
             $scope.prepareLabel = function(attrs) {
-              var l = gaSearchLabels.highlight(attrs.label, $scope.options.query);
+              var l = gaSearchLabels.highlight(attrs.label,
+                $scope.options.query);
               updateBWaLocatorData(attrs);
               return $sce.trustAsHtml(l);
             };
@@ -759,28 +787,28 @@ goog.require('ga_urlutils_service');
               layers = $scope.map.getLayers().getArray();
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
-                if(layer.get("bwalocator") || layer.get("bwalocatorshort")){
-                  if(layer.id.indexOf(res.id) < 0){
+                if (layer.get('bwalocator') || layer.get('bwalocatorshort')) {
+                  if (layer.id.indexOf(res.id) < 0) {
                     $scope.map.removeLayer(layer);
                     i--;
-                  }else{
+                  } else {
                     isLayerToAdd = false;
                   }
                 }
               }
-              if(isLayerToAdd){
+              if (isLayerToAdd) {
                 selectBWaLocatorData(res, true);
               }
             };
-            
-            $scope.getBwaLocatorParam = function(evt, res){
+
+            $scope.getBwaLocatorParam = function(evt, res) {
               unregisterMove();
 
               // INGRID: Remove existing layers
               layers = $scope.map.getLayers().getArray();
               for (var i = 0; i < layers.length; i++) {
                 var layer = layers[i];
-                if(layer.get("bwalocatorshort")){
+                if (layer.get('bwalocatorshort')) {
                   $scope.map.removeLayer(layer);
                   i--;
                 }
@@ -788,81 +816,99 @@ goog.require('ga_urlutils_service');
               selectBWaLocatorData(res);
             };
 
-            function updateBWaLocatorData(attrs){
-              if(attrs){
-                $scope.bwalocator_from_id = attrs.bwastrid + "_bwalocator_from";
+            function updateBWaLocatorData(attrs) {
+              if (attrs) {
+                $scope.bwalocator_from_id = attrs.bwastrid +
+                  '_bwalocator_from';
                 $scope.bwalocator_from_placeholder = attrs.km_von;
-                $scope.bwalocator_to_id = attrs.bwastrid + "_bwalocator_to";
+                $scope.bwalocator_to_id = attrs.bwastrid +
+                  '_bwalocator_to';
                 $scope.bwalocator_to_placeholder = attrs.km_bis;
-                $scope.bwalocator_distance_id = attrs.bwastrid + "_bwalocator_distance";
+                $scope.bwalocator_distance_id = attrs.bwastrid +
+                  '_bwalocator_distance';
                 $scope.bwalocator_distance_placeholder = 0;
               }
             }
 
-            function selectBWaLocatorData(res, full){
-              if(res){
-                  var inputBwaLocatorFrom = $("#" + res.id + "_bwalocator_from").val();
-                  var inputBwaLocatorTo = $("#" + res.id + "_bwalocator_to").val();
-                  var inputBwaLocatorDistance = $("#" + res.id + "_bwalocator_distance").val();
+            function selectBWaLocatorData(res, full) {
+              if (res) {
+                  var inputBwaLocatorFrom = $('#' + res.id +
+                          '_bwalocator_from').val();
+                  var inputBwaLocatorTo = $('#' + res.id +
+                          '_bwalocator_to').val();
+                  var inputBwaLocatorDistance = $('#' + res.id +
+                          '_bwalocator_distance').val();
 
-                  var content = '{'
-                      + '"limit":200,'
-                      + '"queries":['
-                      + '{'
-                      + '"qid":1,'
-                      + '"bwastrid":"'+ res.attrs.bwastrid +'",'
-                      + '"stationierung":{';
-                  if(((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined) 
-                    && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined) 
-                    && (inputBwaLocatorDistance == "" || inputBwaLocatorDistance == undefined))
-                    || full){
-                    content = content + '"km_von":'+ res.attrs.km_von;
+                  var content = '{' +
+                      '"limit":200,' +
+                      '"queries":[' +
+                      '{' +
+                      '"qid":1,' +
+                      '"bwastrid":"' + res.attrs.bwastrid + '",' +
+                      '"stationierung":{';
+                  if (((inputBwaLocatorFrom == '' ||
+                    inputBwaLocatorFrom == undefined) &&
+                    (inputBwaLocatorTo == '' ||
+                    inputBwaLocatorTo == undefined) &&
+                    (inputBwaLocatorDistance == '' ||
+                    inputBwaLocatorDistance == undefined)) ||
+                          full) {
+                    content = content + '"km_von":' + res.attrs.km_von;
                     content = content + ',';
-                    content = content + '"km_bis":'+ res.attrs.km_bis;
-                  }else{
-                    if((inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined)
-                      && (inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
-                      content = content + '"km_wert":'+ inputBwaLocatorFrom;
-                    }else{
-                      if(inputBwaLocatorFrom != "" && inputBwaLocatorFrom != undefined){
-                        content = content + '"km_von":'+ inputBwaLocatorFrom;
+                    content = content + '"km_bis":' + res.attrs.km_bis;
+                  } else {
+                    if ((inputBwaLocatorFrom != '' &&
+                      inputBwaLocatorFrom != undefined) &&
+                      (inputBwaLocatorTo == '' ||
+                        inputBwaLocatorTo == undefined)) {
+                      content = content + '"km_wert":' + inputBwaLocatorFrom;
+                    } else {
+                      if (inputBwaLocatorFrom != '' &&
+                        inputBwaLocatorFrom != undefined) {
+                        content = content + '"km_von":' + inputBwaLocatorFrom;
                       }
 
-                      if(inputBwaLocatorTo != "" && inputBwaLocatorTo != undefined){
-                        if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
-                          content = content + '"km_von":'+ res.attrs.km_von;
+                      if (inputBwaLocatorTo != '' &&
+                        inputBwaLocatorTo != undefined) {
+                        if ((inputBwaLocatorFrom == '' ||
+                          inputBwaLocatorFrom == undefined)) {
+                          content = content + '"km_von":' + res.attrs.km_von;
                         }
                         content = content + ',';
-                        content = content + '"km_bis":'+ inputBwaLocatorTo;
+                        content = content + '"km_bis":' + inputBwaLocatorTo;
                       }
                     }
 
-                    if(inputBwaLocatorDistance != "" && inputBwaLocatorDistance != undefined){
-                      if((inputBwaLocatorFrom == "" || inputBwaLocatorFrom == undefined)){
-                        content = content + '"km_von":'+ res.attrs.km_von;
+                    if (inputBwaLocatorDistance != '' &&
+                      inputBwaLocatorDistance != undefined) {
+                      if ((inputBwaLocatorFrom == '' ||
+                        inputBwaLocatorFrom == undefined)) {
+                        content = content + '"km_von":' + res.attrs.km_von;
                         content = content + ',';
                       }
-                      if((inputBwaLocatorTo == "" || inputBwaLocatorTo == undefined)){
-                        content = content + '"km_bis":'+ res.attrs.km_bis;
+                      if ((inputBwaLocatorTo == '' ||
+                        inputBwaLocatorTo == undefined)) {
+                        content = content + '"km_bis":' + res.attrs.km_bis;
                         content = content + ',';
                       }
                       content = content + ',';
-                      content = content + '"offset":'+ inputBwaLocatorDistance;
+                      content = content + '"offset":' + inputBwaLocatorDistance;
                     }
                   }
-                  content = content + '},'
-                    + '"spatialReference":{'
-                    + '"wkid":3857'
-                    + '}'
-                    + '}'
-                    + ']'
-                    + '}';
-                  
-                  $http.get('/ingrid-webmap-client/rest/jsonCallback/queryPost?', {
+                  content = content + '},' +
+                    '"spatialReference":{' +
+                    '"wkid":3857' +
+                    '}' +
+                    '}' +
+                    ']' +
+                    '}';
+
+                  $http.get('/ingrid-webmap-client/rest/' +
+                    'jsonCallback/queryPost?', {
                     cache: true,
                     timeout: canceler.promise,
                     params: {
-                     'url':  gaGlobalOptions.searchBwaLocatorGeoUrl,
+                     'url': gaGlobalOptions.searchBwaLocatorGeoUrl,
                      'data': content
                     }
                   }).success(function(response) {
@@ -871,12 +917,12 @@ goog.require('ga_urlutils_service');
                 });
               }
             }
-            
-            function drawBWaLocatorData (response, full){
+
+            function drawBWaLocatorData(response, full) {
               var data = response.result[0];
-              if(data){
+              if (data) {
                 var geometry = data.geometry;
-                  if(geometry){
+                  if (geometry) {
                     var geojsonObject = {
                       'type': 'FeatureCollection',
                       'crs': {
@@ -903,34 +949,37 @@ goog.require('ga_urlutils_service');
                       }]
                     };
                     var vectorSource = new ol.source.Vector({
-                      features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
+                      features: (new ol.format.GeoJSON()).
+                        readFeatures(geojsonObject)
                     });
                     var layerLabel = data.bwastrid + ' ' + data.bwastr_name;
-                    if(data.strecken_name){
+                    if (data.strecken_name) {
                       layerLabel += ' ' + data.strecken_name;
                     }
-                    if(geometry.type == "Point"){
+                    if (geometry.type == 'Point') {
                       var bwaLocatorLayerShort = new ol.layer.Vector({
                         source: vectorSource,
-                        id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
+                        id: 'bwaLocatorLayerShort_' +
+                          data.bwastrid + '_' + data.bwastr_name,
                         visible: true,
                         queryable: true,
-                        bwalocator:true,
-                        bwalocatorshort:true,
+                        bwalocator: true,
+                        bwalocatorshort: true,
                         style: gaStyleFactory.getStyle('marker')
                       });
                       gaDefinePropertiesForLayer(bwaLocatorLayerShort);
                       bwaLocatorLayerShort.label = layerLabel + ' (Abschnitt)';
                       bwaLocatorLayerShort.type = 'KML';
                       $scope.map.addLayer(bwaLocatorLayerShort);
-                    }else{
-                      if(full){
+                    } else {
+                      if (full) {
                         var bwaLocatorLayerFull = new ol.layer.Vector({
                           source: vectorSource,
-                          id: "bwaLocatorLayerFull_" + data.bwastrid + "_" + data.bwastr_name,
+                          id: 'bwaLocatorLayerFull_' +
+                            data.bwastrid + '_' + data.bwastr_name,
                           visible: true,
                           queryable: true,
-                          bwalocator:true,
+                          bwalocator: true,
                           style: new ol.style.Style({
                             stroke: new ol.style.Stroke({
                               color: 'red',
@@ -942,14 +991,15 @@ goog.require('ga_urlutils_service');
                         bwaLocatorLayerFull.label = layerLabel;
                         bwaLocatorLayerFull.type = 'KML';
                         $scope.map.addLayer(bwaLocatorLayerFull);
-                      }else{
+                      } else {
                         var bwaLocatorLayerShort = new ol.layer.Vector({
                           source: vectorSource,
-                          id: "bwaLocatorLayerShort_" + data.bwastrid + "_" + data.bwastr_name,
+                          id: 'bwaLocatorLayerShort_' +
+                            data.bwastrid + '_' + data.bwastr_name,
                           visible: true,
                           queryable: true,
-                          bwalocator:true,
-                          bwalocatorshort:true,
+                          bwalocator: true,
+                          bwalocatorshort: true,
                           style: new ol.style.Style({
                             stroke: new ol.style.Stroke({
                               color: 'blue',
@@ -958,12 +1008,14 @@ goog.require('ga_urlutils_service');
                           })
                         });
                         gaDefinePropertiesForLayer(bwaLocatorLayerShort);
-                        bwaLocatorLayerShort.label = layerLabel + ' (Abschnitt)';
+                        bwaLocatorLayerShort.label = layerLabel +
+                          ' (Abschnitt)';
                         bwaLocatorLayerShort.type = 'KML';
                         $scope.map.addLayer(bwaLocatorLayerShort);
                       }
                     }
-                  $scope.map.getView().fit(vectorSource.getExtent(), $scope.map.getSize());
+                  $scope.map.getView().fit(vectorSource.getExtent(),
+                          $scope.map.getSize());
                 }
               }
             }
@@ -981,4 +1033,5 @@ goog.require('ga_urlutils_service');
           }
         };
       });
+
 })();

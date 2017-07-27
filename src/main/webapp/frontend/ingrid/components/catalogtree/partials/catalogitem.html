@@ -1,6 +1,6 @@
-<div class="ga-catalogitem-template" ng-switch="item.children">
+<div class="ga-catalogitem-template" ng-switch="!!item.children">
 
-  <div ng-switch-when="undefined" class="ga-catalogitem-leaf ga-catalogitem-entry"
+  <div ng-switch-when="false" class="ga-catalogitem-leaf ga-catalogitem-entry"
        ng-class="{'ga-catalogitem-selected': item.selectedOpen}">
     <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
       <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}"/>
@@ -32,7 +32,6 @@
         <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)"></button>
         <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
       </div>
-      
     </a>
     <ul ng-if="item.selectedOpen">
       <li ng-repeat="child in item.children">

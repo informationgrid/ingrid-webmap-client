@@ -45,7 +45,7 @@ goog.require('ga_urlutils_service');
     }
   });
 
-  module.directive('gaLayermanager', function($compile, $document, $timeout,
+  module.directive('gaLayermanager', function($compile, $timeout,
       $rootScope, $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaAttribution, gaUrlUtils,
       gaMapUtils) {
@@ -65,55 +65,41 @@ goog.require('ga_urlutils_service');
       '</div>';
 
     // Create the popover
-    var popover, content, container, callback, closeBt;
+    var popover, content, container, callback;
     var win = $($window);
-    var createPopover = function(target, element, scope) {
+    var createPopover = function(bt, element) {
 
       // Lazy load
       if (!container) {
         container = element.parent();
         callback = function(evt) {
-          destroyPopover(evt.target, element);
+          destroyPopover(element);
         };
-        closeBt = $('<button class="close">&times;</button>').on('click',
-            function() {
-          destroyPopover(null, element);
-        });
       }
-
-      popover = $(target).popover({
+      popover = bt.popover({
         container: container,
         content: content,
-        html: 'true',
-        placement: function() {
-          return (win.width() < 640) ? 'left' : 'right';
-        },
-        title: $translate.instant('time_select_year'),
+        html: true,
+        placement: 'auto right',
+        title: $translate.instant('time_select_year') +
+            '<button class="ga-icon ga-btn fa fa-remove"></button>',
         trigger: 'manual'
-      });
-      popover.addClass('ga-layer-timestamps-popover');
-      popover.popover('show');
-      container.find('.popover-title').append(closeBt);
+      }).one('shown.bs.popover', function(evt) {
+        container.find('.fa-remove').one('click', function() {
+          destroyPopover(element);
+        });
+      }).popover('show');
       element.on('scroll', callback);
-      $document.on('click', callback);
       win.on('resize', callback);
     };
 
     // Remove the popover
-    var destroyPopover = function(target, element) {
+    var destroyPopover = function(element) {
       if (popover) {
-        if (target) {
-          var popoverElt = container.find('.popover');
-          if (popoverElt.is(target) ||
-              popoverElt.has(target).length !== 0) {
-            return;
-          }
-        }
         popover.popover('destroy');
         popover = undefined;
-        element.unbind('scroll', callback);
-        $document.unbind('click', callback);
-        win.unbind('resize', callback);
+        element.off('scroll', callback);
+        win.off('resize', callback);
       }
     };
 
@@ -216,24 +202,22 @@ goog.require('ga_urlutils_service');
         };
 
         // On mobile we use a classic select box, on desktop a popover
+        scope.displayTimestamps = angular.noop;
         if (!scope.mobile) {
           // Simulate a select box with a popover
           scope.displayTimestamps = function(evt, layer) {
-            if (popover && popover[0] === evt.target) {
-              destroyPopover(evt.target, element);
-            } else {
-              destroyPopover(evt.target, element);
+            destroyPopover(element);
+            var bt = $(evt.target);
+            if (!bt.data('bs.popover')) {
               scope.tmpLayer = layer;
               // We use timeout otherwise the popover is bad centered.
               $timeout(function() {
-                createPopover(evt.target, element, scope);
+                createPopover(bt, element, scope);
               }, 100, false);
             }
             evt.preventDefault();
             evt.stopPropagation();
           };
-        } else {
-          scope.displayTimestamps = function() {};
         }
 
         scope.isDefaultValue = function(timestamp) {
@@ -285,7 +269,7 @@ goog.require('ga_urlutils_service');
 
 // INGRID: Add function for zoomToExtent
         scope.hasExtent = function(layer) {
-          if(layer.type == "KML"){
+          if (layer.type == 'KML') {
             return true;
           }
           return layer.extent ? true : false;
@@ -305,14 +289,14 @@ goog.require('ga_urlutils_service');
 
 // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
-          if(layer.type == "KML"){
-            if(layer.getSource()){
+          if (layer.type == 'KML') {
+            if (layer.getSource()) {
               var extent = gaMapUtils.getVectorSourceExtent(layer.getSource());
-              if(extent){
+              if (extent) {
                 map.getView().fit(extent, map.getSize());
               }
             }
-          }else{
+          } else {
             gaMapUtils.zoomToExtent(map, undefined, layer.extent);
           }
           evt.preventDefault();
@@ -320,7 +304,7 @@ goog.require('ga_urlutils_service');
 
         scope.setLayerTime = function(layer, time) {
           layer.time = time;
-          destroyPopover(null, element);
+          destroyPopover(element);
         };
 
         scope.useRange = (!gaBrowserSniffer.mobile && (!gaBrowserSniffer.msie ||
@@ -328,17 +312,17 @@ goog.require('ga_urlutils_service');
 
         if (!scope.useRange) {
           scope.opacityValues = [
-            { key: '1' , value: '100%'},
-            { key: '0.95' , value: '95%' }, { key: '0.9' , value: '90%' },
-            { key: '0.85' , value: '85%' }, { key: '0.8' , value: '80%' },
-            { key: '0.75' , value: '75%' }, { key: '0.7' , value: '70%' },
-            { key: '0.65' , value: '65%' }, { key: '0.6' , value: '60%' },
-            { key: '0.55' , value: '55%' }, { key: '0.5' , value: '50%' },
-            { key: '0.45' , value: '45%' }, { key: '0.4' , value: '40%' },
-            { key: '0.35' , value: '35%' }, { key: '0.3' , value: '30%' },
-            { key: '0.25' , value: '25%' }, { key: '0.2' , value: '20%' },
-            { key: '0.15' , value: '15%' }, { key: '0.1' , value: '10%' },
-            { key: '0.05' , value: '5%' }, { key: '0' , value: '0%' }
+            { key: 1 , value: '100%'},
+            { key: 0.95 , value: '95%' }, { key: 0.9 , value: '90%' },
+            { key: 0.85 , value: '85%' }, { key: 0.8 , value: '80%' },
+            { key: 0.75 , value: '75%' }, { key: 0.7 , value: '70%' },
+            { key: 0.65 , value: '65%' }, { key: 0.6 , value: '60%' },
+            { key: 0.55 , value: '55%' }, { key: 0.5 , value: '50%' },
+            { key: 0.45 , value: '45%' }, { key: 0.4 , value: '40%' },
+            { key: 0.35 , value: '35%' }, { key: 0.3 , value: '30%' },
+            { key: 0.25 , value: '25%' }, { key: 0.2 , value: '20%' },
+            { key: 0.15 , value: '15%' }, { key: 0.1 , value: '10%' },
+            { key: 0.05 , value: '5%' }, { key: 0 , value: '0%' }
           ];
         }
 
@@ -362,9 +346,11 @@ goog.require('ga_urlutils_service');
             title: function(elm) {
               return $translate.instant('external_data_tooltip');
             },
-            template: '<div class="tooltip ga-red-tooltip" role="tooltip">' +
-                '<div class="tooltip-arrow"></div><div class="tooltip-inner">' +
-                '</div></div>'
+            template:
+              '<div class="tooltip ga-red-tooltip">' +
+                '<div class="tooltip-arrow"></div>' +
+                '<div class="tooltip-inner"></div>' +
+              '</div>'
           });
         }
 
@@ -380,4 +366,3 @@ goog.require('ga_urlutils_service');
     };
   });
 })();
-

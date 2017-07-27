@@ -4,17 +4,18 @@ goog.require('ga_browsersniffer_service');
 
   var module = angular.module('ga_exportkml_service', [
     'ga_browsersniffer_service',
+    'ga_kml_service',
     'pascalprecht.translate'
   ]);
 
   /**
    * This service can be used to export a kml file based on some
-   * features on an ol3 map
+   * features on an ol map
    */
   module.provider('gaExportKml', function() {
-   // INGRID: Add params 'gaLayers', 'gaGlobalOptions'
-   this.$get = function($translate, $window, $document, $http,
-                         gaBrowserSniffer, gaGlobalOptions) {
+   // INGRID: Add param 'gaGlobalOptions'
+    this.$get = function($translate, $window, $document, $http,
+        gaBrowserSniffer, gaKml, gaGlobalOptions) {
 
       var downloadUrl = this.downloadKmlUrl;
 
@@ -91,7 +92,7 @@ goog.require('ga_browsersniffer_service');
               //force the add of a <Document> node
               exportFeatures.push(new ol.Feature());
             }
-            kmlString = new ol.format.KML().writeFeatures(exportFeatures);
+            kmlString = gaKml.getFormat().writeFeatures(exportFeatures);
             // Remove no image hack
             kmlString = kmlString.
                 replace(/<Icon>\s*<href>noimage<\/href>\s*<\/Icon>/g, '');
@@ -114,13 +115,10 @@ goog.require('ga_browsersniffer_service');
           var now = dateFormat(new Date());
           var saveAs = $window.saveAs;
           // INGRID: Edit file name
-          var filename = gaGlobalOptions.settingKMLName + '_KML_' + now + '.kml';
+          var filename = gaGlobalOptions.settingKMLName +
+              '_KML_' + now + '.kml';
           var charset = $document.characterSet || 'UTF-8';
           var type = 'application/vnd.google-earth.kml+xml;charset=' + charset;
-
-          if (!this.canSave()) {
-            $window.alert($translate.instant('export_kml_notsupported'));
-          } else {
             var kmlString = this.create(layer, projection);
             if (kmlString) {
               if (useDownloadService()) {
@@ -141,11 +139,6 @@ goog.require('ga_browsersniffer_service');
                 saveAs(blob, filename);
               }
             }
-          }
-        };
-
-        this.canSave = function() {
-          return !gaBrowserSniffer.mobile;
         };
       };
 

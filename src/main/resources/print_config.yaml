@@ -321,21 +321,6 @@ layouts:
       items:
 
 ##---------------------------------------
-## Legend title
-##---------------------------------------
-        - !columns
-          absoluteX: 22
-          absoluteY: 820
-          width: 551
-          condition: "enableLegends"
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${legendTitle}
-
-##---------------------------------------
 ## Legend
 ##---------------------------------------
         - !columns
@@ -639,21 +624,6 @@ layouts:
     lastPage:
       landscape: true
       items:
-
-##---------------------------------------
-## Legend title
-##---------------------------------------
-        - !columns
-          absoluteX: 22
-          absoluteY: 575
-          width: 798
-          condition: "enableLegends"
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${legendTitle}
 
 ##--------------------------------------
 ## Legend
@@ -959,21 +929,6 @@ layouts:
       items:
 
 ##---------------------------------------
-## Legend title
-##---------------------------------------
-        - !columns
-          absoluteX: 22
-          absoluteY: 820
-          width: 551
-          condition: "enableLegends"
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${legendTitle}
-
-##---------------------------------------
 ## Legend
 ##---------------------------------------
         - !columns
@@ -1277,21 +1232,6 @@ layouts:
     lastPage:
       landscape: true
       items:
-
-##---------------------------------------
-## Legend title
-##---------------------------------------
-        - !columns
-          absoluteX: 22
-          absoluteY: 575
-          width: 798
-          condition: "enableLegends"
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${legendTitle}
 
 ##--------------------------------------
 ## Legend

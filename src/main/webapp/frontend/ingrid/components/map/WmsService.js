@@ -20,17 +20,9 @@ goog.require('ga_urlutils_service');
     // INGRID: Add parameter '$http', '$translate'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
         gaGlobalOptions, $q, gaLang, $http, $translate) {
+
       var getCesiumImageryProvider = function(layer) {
         var params = layer.getSource().getParams();
-        var proxy;
-        if (!gaUrlUtils.isAdminValid(layer.url)) {
-          proxy = {
-            getURL: function(resource) {
-               return gaGlobalOptions.ogcproxyUrl +
-                   encodeURIComponent(resource);
-            }
-          };
-        }
         var wmsParams = {
           layers: params.LAYERS,
           format: params.FORMAT || 'image/png',
@@ -42,7 +34,7 @@ goog.require('ga_urlutils_service');
                 '{northProjected},{eastProjected}',
           width: '256',
           height: '256',
-          styles: params.STYLES || 'default',
+          styles: params.STYLES || '',
           transparent: 'true'
         };
 
@@ -58,7 +50,7 @@ goog.require('ga_urlutils_service');
           minimumRetrievingLevel: window.minimumRetrievingLevel,
           url: gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue(wmsParams)),
           rectangle: gaMapUtils.extentToRectangle(extent),
-          proxy: proxy,
+          proxy: gaUrlUtils.getCesiumProxy(),
           tilingScheme: new Cesium.GeographicTilingScheme(),
           hasAlphaChannel: true,
           availableLevels: window.imageryAvailableLevels
@@ -85,15 +77,15 @@ goog.require('ga_urlutils_service');
               options.projection = 'EPSG:4326';
               options.id += '||true';
             }
-          }else{
+          } else {
             // INGRID: Add empty version
-            options.id += '||';
+            params.VERSION = '';
           }
 
-          // INGRID: Add queryable 
+          // INGRID: Add queryable
           if (options.queryable) {
             options.id += '||' + options.queryable;
-          }else{
+          } else {
             options.id += '||';
           }
 
@@ -112,16 +104,16 @@ goog.require('ga_urlutils_service');
             visible: options.visible,
             attribution: options.attribution,
             extent: options.extent,
-            // INGRID: Add queryable 
+            // INGRID: Add queryable
             queryable: options.queryable,
             source: source
           });
           gaDefinePropertiesForLayer(layer);
           // INGRID: Set visible
-          if(options.visible != undefined){
+          if (options.visible != undefined) {
               layer.visible = options.visible;
           }
-          layer.preview = options.preview;
+          layer.preview = !!options.preview;
           layer.displayInLayerManager = !layer.preview;
           layer.useThirdPartyData = gaUrlUtils.isThirdPartyValid(options.url);
           layer.label = options.label;
@@ -135,28 +127,28 @@ goog.require('ga_urlutils_service');
         var getChildLayers = function(layers, layer, map, wmsVersion) {
             // Go through the child to get valid layers
             if (layer.Layer) {
-                if(layer.Layer.length){
+                if (layer.Layer.length) {
                     for (var i = 0; i < layer.Layer.length; i++) {
                         var tmpLayer = layer.Layer[i];
-                        if(tmpLayer.Name){
-                            layers.splice(0, 0, tmpLayer)
+                        if (tmpLayer.Name) {
+                            layers.splice(0, 0, tmpLayer);
                         }
-                        if(tmpLayer.Layer){
+                        if (tmpLayer.Layer) {
                             getChildLayers(layers, tmpLayer, map, wmsVersion);
                         }
                     }
-                }else{
+                } else {
                     var tmpLayer = layer.Layer;
-                    if(tmpLayer.Name){
+                    if (tmpLayer.Name) {
                         layers.splice(0, 0, tmpLayer);
                     }
-                    if(tmpLayer.Layer){
+                    if (tmpLayer.Layer) {
                         getChildLayers(layers, tmpLayer, map, wmsVersion);
                     }
                 }
             }
         };
-          
+
         // Create an ol WMS layer from GetCapabilities informations
         this.getOlLayerFromGetCapLayer = function(getCapLayer) {
           var wmsParams = {
@@ -168,9 +160,9 @@ goog.require('ga_urlutils_service');
             label: getCapLayer.Title,
             // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
             extent: getCapLayer.extent,
-            useReprojection: getCapLayer.useReprojection,
-            // INGRID: Add queryable 
-            queryable: getCapLayer.queryable
+            // INGRID: Add queryable
+            queryable: getCapLayer.queryable,
+            useReprojection: getCapLayer.useReprojection
           };
           return createWmsLayer(wmsParams, wmsOptions);
         };
@@ -189,115 +181,134 @@ goog.require('ga_urlutils_service');
         // INGRID: Add service and add it to map
         this.addWmsServiceToMap = function(map, service, identifier, index) {
             var cap = service;
-            var proxyUrl = gaGlobalOptions.ogcproxyUrl + encodeURIComponent(cap) +  "&toJson=true";
+            var proxyUrl = gaGlobalOptions.ogcproxyUrl +
+              encodeURIComponent(cap) + '&toJson=true';
 
             // INGRID: Split host from params
-            var capSplit = cap.split("?");
-            var capParams = "?";
+            var capSplit = cap.split('?');
+            var capParams = '?';
             cap = capSplit[0];
-            if(capSplit.length > 0){
-                var capSplitParams = capSplit[1].split("&");
+            if (capSplit.length > 0) {
+                var capSplitParams = capSplit[1].split('&');
                 for (var i = 0; i < capSplitParams.length; i++) {
                     var capSplitParam = capSplitParams[0].toLowerCase();
                     // INGRID: Check for needed parameters like 'ID'
-                    if(capSplitParam.indexOf("request") == -1 && capSplitParam.indexOf("service") == -1 && capSplitParam.indexOf("version") == -1){
-                        if(capParams.startsWith("?")){
-                            capParams = capParams + "?&" + capSplitParam;
-                        }else{
-                            capParams = capParams + "&" + capSplitParam;
+                    if (capSplitParam.indexOf('request') == -1 &&
+                      capSplitParam.indexOf('service') == -1 &&
+                      capSplitParam.indexOf('version') == -1) {
+                        if (capParams.startsWith('?')) {
+                            capParams = capParams + '?&' + capSplitParam;
+                        } else {
+                            capParams = capParams + '&' + capSplitParam;
                         }
                     }
                 }
             }
-            
+
             // Angularjs doesn't handle onprogress event
-            $http.get(proxyUrl, {identifier: identifier, index: index, cap: cap + "" + capParams})
-            .success(function(data, status, headers, config) {
-                try {
-                    var result = data.WMT_MS_Capabilities || data.WMS_Capabilities;
-                    if(result.Capability){
-                        if(result.Capability.Layer) {
-                            var layers = [];
-                            getChildLayers(layers, result.Capability.Layer, map, result.version);
-                            if(layers){
-                                var hasAddService = false;
-                                for (var i = 0; i < layers.length; i++) {
-                                    var layer = layers[i];
-                                    var layerParams = {
-                                        LAYERS: layer.Name,
-                                        VERSION: result.version
-                                    };
-                                    var visible = false;
-                                    if(config.identifier){
-                                        if(layer.Identifier){
-                                            if(layer.Identifier.content){
-                                                if(layer.Identifier.content == config.identifier){
-                                                    visible = true;
-                                                }
-                                            }
-                                        }
+            $http.get(proxyUrl, {identifier: identifier, index: index, cap:
+              cap + '' + capParams})
+            .then(function(response) {
+              try {
+              var config = response.config;
+              var data = response.data;
+              var result = data.WMT_MS_Capabilities ||
+                data.WMS_Capabilities;
+              if (result.Capability) {
+                if (result.Capability.Layer) {
+                    var layers = [];
+                    getChildLayers(layers, result.Capability.Layer,
+                       map, result.version);
+                      if (layers) {
+                        var hasAddService = false;
+                        for (var i = 0; i < layers.length; i++) {
+                          var layer = layers[i];
+                          var layerParams = {
+                            LAYERS: layer.Name,
+                            VERSION: result.version
+                          };
+                          var visible = false;
+                          if (config.identifier) {
+                            if (layer.Identifier) {
+                                if (layer.Identifier.content) {
+                                    if (layer.Identifier.content ==
+                                      config.identifier) {
+                                        visible = true;
                                     }
-                                    var extent = gaGlobalOptions.defaultExtent;
-                                    if(layer.EX_GeographicBoundingBox){
-                                        extent = [parseFloat(layer.EX_GeographicBoundingBox.westBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.southBoundLatitude), parseFloat(layer.EX_GeographicBoundingBox.eastBoundLongitude), parseFloat(layer.EX_GeographicBoundingBox.northBoundLatitude)];
-                                    }else if(layer.LatLonBoundingBox){
-                                        extent = [parseFloat(layer.LatLonBoundingBox.minx), parseFloat(layer.LatLonBoundingBox.miny), parseFloat(layer.LatLonBoundingBox.maxx), parseFloat(layer.LatLonBoundingBox.maxy)];
-                                    }
-                                    
-                                    var layerOptions = {
-                                        url: config.cap,
-                                        label: layer.Title,
-                                        opacity: 1,
-                                        visible: visible,
-                                        queryable: parseInt(layer.queryable) == 1 ? true : false,
-                                        extent: ol.proj.transformExtent(extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-                                    };
-                                    
-                                    var olLayer = createWmsLayer(layerParams, layerOptions);
-                                    olLayer.visible = visible;
-                                    if (config.index) {
-                                      map.getLayers().insertAt(config.index + i, olLayer);
-                                    } else {
-                                      map.addLayer(olLayer);
-                                    }
-                                    hasAddService = true;
-                                }
-                                if(hasAddService){
-                                    alert("Dienst '" + config.cap + "' wurde hinzugefügt.")
                                 }
                             }
+                          }
+                          var extent = gaGlobalOptions.defaultExtent;
+                          if (layer.EX_GeographicBoundingBox) {
+                            var bbox = layer.EX_GeographicBoundingBox;
+                            extent = [parseFloat(bbox.westBoundLongitude),
+                              parseFloat(bbox.southBoundLatitude),
+                              parseFloat(bbox.eastBoundLongitude),
+                              parseFloat(bbox.northBoundLatitude)];
+                          }else if (layer.LatLonBoundingBox) {
+                            var bbox = layer.LatLonBoundingBox;
+                            extent = [parseFloat(bbox.minx),
+                              parseFloat(bbox.miny),
+                              parseFloat(bbox.maxx),
+                              parseFloat(bbox.maxy)];
+                          }
+
+                          var layerOptions = {
+                            url: config.cap,
+                            label: layer.Title,
+                            opacity: 1,
+                            visible: visible,
+                            queryable: parseInt(layer.queryable) == 1 ? true :
+                              false,
+                            extent: ol.proj.transformExtent(extent,
+                              'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                        };
+
+                        var olLayer = createWmsLayer(layerParams, layerOptions);
+                        olLayer.visible = visible;
+                        if (config.index) {
+                          map.getLayers().insertAt(config.index + i, olLayer);
+                        } else {
+                          map.addLayer(olLayer);
                         }
-                    }else{
-                      alert("Fehler beim Laden der URL '" + config.cap + "'");
+                        hasAddService = true;
+                      }
+                      if (hasAddService) {
+                        alert('Dienst ' + config.cap + ' wurde hinzugefügt.');
+                      }
                     }
-                  } catch (e) {
-                    alert("Fehler beim Laden der URL '" + config.cap + "'");
                   }
-            })
-            .error(function(data, status, headers, config) {
-                alert("Fehler beim Laden der URL '" + config.cap + "'");
+                } else {
+                  alert('Fehler beim Laden der URL ' + config.cap + '.');
+                }
+              } catch (e) {
+                alert('Fehler beim Laden der URL ' + config.cap + '.');
+              }
+            }, function(response) {
+                alert('Fehler beim Laden der URL ' + response.config.cap + '.');
             });
         };
-        
-        
+
+
         // Make a GetLegendGraphic request
         this.getLegend = function(layer) {
           var defer = $q.defer();
           var params = layer.getSource().getParams();
             // INGRID: Get legend for all layer (intern and extern)
             var url = layer.url;
-            if(url == undefined){
-                if(layer.getSource()){
-                    if(layer.getSource().urls){
-                        if(layer.getSource().urls.length > 0){
+            if (url == undefined) {
+                if (layer.getSource()) {
+                    if (layer.getSource().urls) {
+                        if (layer.getSource().urls.length > 0) {
                             url = layer.getSource().urls[0];
                         }
                     }
                 }
             }
             // INGRID: Change alt
-            var html = '<img alt="' + $translate.instant('no_legend_available') + '" src="' +
-              gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
+            var html = '<img alt="' +
+              $translate.instant('no_legend_available') + '" src="' +
+              gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
             request: 'GetLegendGraphic',
             layer: params.LAYERS,
             style: params.STYLES || 'default',
@@ -315,10 +326,10 @@ goog.require('ga_urlutils_service');
             var params = layer.getSource().getParams();
             // INGRID: Get legend for all layer (intern and extern)
             var url = layer.url;
-            if(url == undefined){
-                if(layer.getSource()){
-                    if(layer.getSource().urls){
-                        if(layer.getSource().urls.length > 0){
+            if (url == undefined) {
+                if (layer.getSource()) {
+                    if (layer.getSource().urls) {
+                        if (layer.getSource().urls.length > 0) {
                             url = layer.getSource().urls[0];
                         }
                     }

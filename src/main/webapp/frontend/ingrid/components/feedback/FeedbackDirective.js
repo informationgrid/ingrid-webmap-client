@@ -19,9 +19,10 @@ goog.require('ga_permalink');
    * When the response is received from the feedback service it sets the
    * "response" scope property to "success" or "error".
    */
+  // INGRID: Add 'gaUrlUtils'
   module.directive('gaFeedback',
       function($http, $translate, gaPermalink, gaBrowserSniffer, gaExportKml,
-               gaGlobalOptions) {
+               gaGlobalOptions, gaUrlUtils) {
           return {
             restrict: 'A',
             replace: true,
@@ -61,20 +62,24 @@ goog.require('ga_permalink');
                     formData.append('email', scope.email);
                     formData.append('feedback', scope.feedback);
                     formData.append('ua', navigator.userAgent);
-                    formData.append('permalink', scope.permalinkValue);
+                    // INGRID: Add scope.shortUrl
+                    formData.append('permalink', scope.shortUrl ||
+                      scope.permalinkValue);
                     formData.append('attachement', scope.file || '');
                     formData.append('kml', kml);
                     formData.append('version', gaGlobalOptions.version + '');
                     // INGRID: Add entries
-                    formData.append('subject', $translate.instant('feedback_subject') + '');
-                    
+                    formData.append('subject',
+                      $translate.instant('feedback_subject') + '');
+
                     return formData;
                 } else {
                     formData = {
                       email: scope.email,
                       feedback: scope.feedback,
                       ua: navigator.userAgent,
-                      permalink: scope.permalinkValue,
+                      // INGRID: Add scope.shortUrl
+                      permalink: scope.shortUrl || scope.permalinkValue,
                       attachement: '',
                       kml: kml,
                       version: gaGlobalOptions.version + '',
@@ -128,23 +133,38 @@ goog.require('ga_permalink');
               elFileInpt.bind('change', function(evt) {
                 var file = (evt.srcElement || evt.target).files[0];
                 if (validateSize(file.size) && validateFormat(file.name)) {
-                  scope.$apply(function() {
+                  scope.$applyAsync(function() {
                     scope.file = file;
                   });
                 } else {
-                  scope.$apply(function() {
+                  scope.$applyAsync(function() {
                     scope.file = null;
                   });
                 }
               });
 
               // INGRID: Add params
-              scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
+              scope.permalinkValue = gaPermalink.getHref(undefined,
+                gaGlobalOptions.isParentIFrame);
+
+              // INGRID: Get short url
+              gaUrlUtils.shorten(scope.permalinkValue).
+                then(function(url) {
+                  // INGRID: Return href if no shorturl exists
+                  scope.shortUrl = url || scope.permalinkValue;
+              });
 
               // Listen to permalink change events from the scope.
               scope.$on('gaPermalinkChange', function(event) {
                 // INGRID: Add params
-                scope.permalinkValue = gaPermalink.getHref(undefined, gaGlobalOptions.isParentIFrame);
+                scope.permalinkValue = gaPermalink.getHref(undefined,
+                  gaGlobalOptions.isParentIFrame);
+                // INGRID: Get short url
+                gaUrlUtils.shorten(scope.permalinkValue).
+                  then(function(url) {
+                    // INGRID: Return href if no shorturl exists
+                    scope.shortUrl = url || scope.permalinkValue;
+                });
               });
 
               scope.$on('gaDrawingLayer', function(event, data) {
@@ -188,10 +208,10 @@ goog.require('ga_permalink');
                 }
 
                 scope.showProgress = true;
-                $http(params).success(function(response) {
+                $http(params).then(function() {
                   resetF();
                   scope.success = true;
-                }).error(function(response) {
+                }, function() {
                   resetF();
                   scope.error = true;
                 });

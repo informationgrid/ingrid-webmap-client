@@ -37,14 +37,15 @@ goog.provide('ga_filestorage_service');
         // Get the accessible url of the file from an adminId
         this.getFileUrlFromAdminId = function(adminId) {
           var deferred = $q.defer();
-          $http.get(getServiceUrl(adminId)).success(function(data) {
+          $http.get(getServiceUrl(adminId)).then(function(response) {
+            var data = response.data;
             if (data && data.fileId) {
               var url = getPublicUrl(data.fileId);
               deferred.resolve(url);
             } else {
               deferred.reject();
             }
-          }).error(function() {
+          }, function() {
             deferred.reject();
           });
           return deferred.promise;
@@ -58,25 +59,22 @@ goog.provide('ga_filestorage_service');
         // if id is an fileId --> fork the file
         //     returns new adminId and new file url
         this.save = function(id, content, contentType) {
-          var deferred = $q.defer();
-          $http.post(getServiceUrl(id), content, {
+          return $http.post(getServiceUrl(id), content, {
             headers: {
               'Content-Type': contentType
             },
             // INGRID: Add user param
-            params:{
+            params: {
               adminId: window.mapUserId
             }
-          }).success(function(data) {
-            deferred.resolve({
+          }).then(function(response) {
+            var data = response.data;
+            return {
               adminId: data.adminId,
               fileId: data.fileId,
               fileUrl: getPublicUrl(data.fileId)
-            });
-          }).error(function() {
-            deferred.reject();
+            };
           });
-          return deferred.promise;
         };
 
 
@@ -84,7 +82,7 @@ goog.provide('ga_filestorage_service');
         this.del = function(adminId) {
           return $http['delete'](getServiceUrl(adminId), {
             // INGRID: Add user param
-            params:{
+            params: {
               adminId: window.mapUserId
             }
           });
