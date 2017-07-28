@@ -39,7 +39,7 @@ goog.require('ga_translation_service');
                     .replace('{id}', id)
                     .replace('{lang}', lang);
           // INGRID: Change '$http.jsonp' to '$http.get' and add replacing.
-          $http.get(url, {
+          return $http.get(url, {
             cache: true,
             params: {
               lang: lang,
