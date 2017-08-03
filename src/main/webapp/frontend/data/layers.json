@@ -29942,6 +29942,16 @@
         "searchable": true,
         "hasLegend": false,
         "label":  "IENC Karten WMTS (REST)",
+        "queryable": false,
+        "tooltip": false,
+        "opacity": 1,
+        "selectbyrectangle": false,
+        "timeBehaviour": "last",
+        "topics": "themen",
+        "singleTile": false,
+        "highlightable": false,
+        "chargeable": false,
+        "crossOrigin": true,
         "extent": [6.0562769, 48.4939283, 14.7788274, 53.5455233]
     },
     "wmts_bwastr" : {
@@ -29962,6 +29972,16 @@
         "matrixIds": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"],
         "hasLegend": false,
         "label":  "Bundeswasserstrassen WMTS (REST)",
+        "queryable": false,
+        "tooltip": false,
+        "opacity": 1,
+        "selectbyrectangle": false,
+        "timeBehaviour": "last",
+        "topics": "themen",
+        "singleTile": false,
+        "highlightable": false,
+        "chargeable": false,
+        "crossOrigin": true,
         "extent": [5.8, 47, 15, 55]
     }
 }

@@ -1648,6 +1648,20 @@ goog.require('ga_urlutils_service');
               olLayer.getSource &&
               (olLayer.getSource() instanceof ol.source.ImageWMS ||
               olLayer.getSource() instanceof ol.source.TileWMS));
+        },
+
+        // INGRID: Add 'isWMTSLayer'
+        /**
+         * Tests if a layer is a WMTS layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a WMTS
+         * Returns false if the layer is not a WMTS
+         */
+        isWMTSLayer: function(olLayer) {
+          return !!(olLayer && !(olLayer instanceof ol.layer.Group) &&
+              olLayer.getSource &&
+              (olLayer.getSource() instanceof ol.source.WMTS));
         }
       };
     };

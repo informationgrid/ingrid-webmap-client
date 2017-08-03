@@ -68,7 +68,9 @@ goog.require('ga_topic_service');
           var layersToQuery = {
             bodLayers: [],
             vectorLayers: [],
-            wmsLayers: []
+            wmsLayers: [],
+            // INGRID: Add 'wmtsLayers'
+            wmtsLayers: []
           };
           map.getLayers().forEach(function(l) {
             if (!l.visible || l.preview) {
@@ -77,11 +79,13 @@ goog.require('ga_topic_service');
 
             if (gaMapUtils.isVectorLayer(l)) {
               layersToQuery.vectorLayers.push(l);
-            // INGRID: Add wms layers to 'wmsLayers'
+            // INGRID: Check wms and wmts
             } else if (gaLayers.hasTooltipBodLayer(l) &&
-                !gaMapUtils.isWMSLayer(l)) {
+                !gaMapUtils.isWMSLayer(l) &&
+                !gaMapUtils.isWMTSLayer(l)) {
               layersToQuery.bodLayers.push(l);
             // INGRID: Check tooltip param
+            // INGRID: Add wms layers to 'wmsLayers'
             } else if (gaMapUtils.isWMSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || !l.bodId)) {
               layersToQuery.wmsLayers.push(l);
