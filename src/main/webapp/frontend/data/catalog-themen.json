@@ -9094,18 +9094,6 @@
                 "children": [{
                     "category": "layer",
                     "staging": "prod",
-                    "label": "USA WMTS (KVP)",
-                    "layerBodId": "wmts_usa_1",
-                    "id": 9001
-                },{
-                    "category": "layer",
-                    "staging": "prod",
-                    "label": "USA WMTS (REST)",
-                    "layerBodId": "wmts_usa_2",
-                    "id": 9002
-                },{
-                    "category": "layer",
-                    "staging": "prod",
                     "label": "InlandENCs der WSV WMTS (REST)",
                     "layerBodId": "wmts_wmsienc",
                     "id": 9006
