@@ -919,7 +919,7 @@ goog.require('ga_urlutils_service');
       }
 
       function drawBWaLocatorData(response, full) {
-        if(response.data){
+        if (response.data) {
           var data = response.data.result[0];
           if (data) {
             var geometry = data.geometry;
