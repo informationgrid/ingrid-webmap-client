@@ -24,7 +24,8 @@ goog.require('ga_measure_filter');
           return raw.replace(/\B(?=(\d{3})+(?!\d))/g, "'");
         };
 
-        this.getLength = function(geom) {
+        // INGRID: Check 'useGeodesic'
+        this.getLength = function(geom, useGeodesic) {
           var lineString;
           if (geom instanceof ol.geom.LineString) {
             lineString = geom;
@@ -37,26 +38,8 @@ goog.require('ga_measure_filter');
             return 2 * Math.PI * geom.getRadius();
           }
           if (lineString) {
-            return lineString.getLength();
-          } else {
-            return 0;
-          }
-        };
-
-        // INGRID: Add function geodesic
-        this.getLengthGeodesic = function(geom) {
-            var lineString;
-            if (geom instanceof ol.geom.LineString) {
-              lineString = geom;
-            } else if (geom instanceof ol.geom.LinearRing) {
-              lineString = new ol.geom.LineString(geom.getCoordinates());
-            } else if (geom instanceof ol.geom.Polygon) {
-              lineString = new ol.geom.LineString(
-                  geom.getLinearRing(0).getCoordinates());
-            } else if (geom instanceof ol.geom.Circle) {
-              return 2 * Math.PI * geom.getRadius();
-            }
-            if (lineString) {
+            // INGRID: Check 'useGeodesic'
+            if (useGeodesic) {
               var length;
               var coords = lineString.getCoordinates();
               var wgs84Sphere = new ol.Sphere(6378137);
@@ -68,19 +51,35 @@ goog.require('ga_measure_filter');
                   gaGlobalOptions.defaultEpsg, 'EPSG:4326');
                 length += wgs84Sphere.haversineDistance(c1, c2);
               }
-
               return length;
-            } else {
-              return 0;
             }
-          };
+            return lineString.getLength();
+          } else {
+            return 0;
+          }
+        };
 
-        this.getArea = function(geom, calculateLineStringArea) {
+        // INGRID: Add check 'useGeodesic'
+        this.getArea = function(geom, calculateLineStringArea, useGeodesic) {
           if (calculateLineStringArea && geom instanceof ol.geom.LineString) {
             return Math.abs(new ol.geom.Polygon([geom.getCoordinates()]).
                 getArea());
           } else if (geom instanceof ol.geom.LinearRing ||
               geom instanceof ol.geom.Polygon) {
+            if (useGeodesic) {
+              var wgs84Sphere = new ol.Sphere(6378137);
+              var coords = geom.getCoordinates();
+              if (coords && coords.length > 0) {
+                var wgs84Coords = [];
+                for (var i = 0, ii = coords[0].length - 1; i < ii; ++i) {
+                  wgs84Coords.push(ol.proj.transform(coords[0][i],
+                    gaGlobalOptions.defaultEpsg, 'EPSG:4326'));
+                }
+                if (wgs84Coords.length > 0) {
+                  return Math.abs(wgs84Sphere.geodesicArea(wgs84Coords));
+                }
+              }
+            }
             return Math.abs(geom.getArea());
           } else if (geom instanceof ol.geom.Circle) {
             return Math.PI * Math.pow(geom.getRadius(), 2);
@@ -112,17 +111,15 @@ goog.require('ga_measure_filter');
         };
 
         this.getLengthLabel = function(geom) {
-          // INGRID: Add function geodesic
-          if (gaGlobalOptions.useGeodesic) {
-              return measureFilter(this.getLengthGeodesic(geom));
-          } else {
-              return measureFilter(this.getLength(geom));
-          }
+          // INGRID: Add check 'useGeodesic'
+          return measureFilter(this.getLength(geom,
+            gaGlobalOptions.useGeodesic));
         };
 
         this.getAreaLabel = function(geom, calculateLineStringArea) {
-          return measureFilter(this.getArea(geom, calculateLineStringArea),
-              'area');
+          // INGRID: Add check 'useGeodesic'
+          return measureFilter(this.getArea(geom, calculateLineStringArea,
+           gaGlobalOptions.useGeodesic), 'area');
         };
 
         this.getAzimuthLabel = function(geom) {
@@ -190,7 +187,8 @@ goog.require('ga_measure_filter');
           if (geomLine instanceof ol.geom.LineString) {
             var label = '',
                 delta = 1,
-                length = geomLine.getLength();
+                // INGRID: Add check 'gaGlobalOptions.useGeodesic'
+                length = this.getLength(geomLine, gaGlobalOptions.useGeodesic);
             if (this.canShowAzimuthCircle(geomLine)) {
               label += this.getAzimuthLabel(geomLine) + ' / ';
             }
