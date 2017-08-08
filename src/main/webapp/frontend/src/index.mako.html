@@ -187,9 +187,9 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
       </div>
   % endif
-      <!-- INGRID: Change position of menu button
-      <button class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
-      -->
+      <!-- INGRID: Change position of menu button -->
+      <button class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate><i class="fa fa-reorder" style="font-size:1.5em;"></i></button>
+      
       ## css animation doesnt work on pseudo element, let use this instead
       <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
     </div> <!-- #header -->
@@ -202,7 +202,7 @@ itemscope itemtype="http://schema.org/WebApplication"
       </button>
       <span ga-help="66"></span>
       <!-- INGRID: Add style="right:0"  -->
-      <button style="right:0" class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate>menu</button>
+      <button style="right:0" class="btn ga-menu-bt" ng-click="globals.pulldownShown=true" translate><i class="fa fa-reorder" style="font-size:1.5em;"></i></button>
       ## css animation doesnt work on pseudo element, let use this instead
       <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
     </div><!-- #drawModeHeader -->
