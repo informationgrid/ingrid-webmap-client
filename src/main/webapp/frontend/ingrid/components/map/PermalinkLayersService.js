@@ -330,7 +330,7 @@ goog.require('ga_wmts_service');
                     ' failed. Failed to get capabilities from server.' +
                     'Reason : ' + reason);
               });
-            } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
+            } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
               // INGRID: Add external service
               var infos = layerSpec.split('||');
               try {
