@@ -180,9 +180,9 @@ itemscope itemtype="http://schema.org/WebApplication"
         </a>&nbsp;&nbsp;
         <!-- INGRID: Edit href URL -->
         <a target="_blank" href="/hilfe?hkey=maps-1" translate>help_label</a>&nbsp;&nbsp;
-        <a href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
+        <a href="{{deviceSwitcherHref}}" ng-if="!globals.isParentIFrame" translate>mobile_redirect</a>&nbsp;&nbsp;
         <!-- INGRID: Remove -->
-        <div ng-controller="GaTranslationController">
+        <div ng-controller="GaTranslationController" ng-if="!globals.isParentIFrame">
           <div ga-translation-selector ga-translation-selector-options="options"></div>
         </div>
       </div>
