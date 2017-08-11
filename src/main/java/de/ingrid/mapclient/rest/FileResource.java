@@ -244,7 +244,12 @@ public class FileResource {
             try {
                 content = new String( Files.readAllBytes( Paths.get( path + "" + user + "/" + id ) ) );
             } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    // Try to get kml from portal tmp kml service folder.
+                    content = new String( Files.readAllBytes( Paths.get( "./data/" + user + "/" + id ) ) );
+                } catch (IOException e1) {
+                    e.printStackTrace();
+                }
             }
         }
         return content;

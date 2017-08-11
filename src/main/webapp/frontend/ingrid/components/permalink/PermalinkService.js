@@ -65,6 +65,10 @@ goog.require('ga_urlutils_service');
             // INGRID: Update URL outside of iFrame
             if (window.document.referrer.indexOf(window.location.host) > -1) {
                 if (window.parent.onParamChange != undefined) {
+                    // INGRID: Delete params from point coordinates
+                    delete params['action'];
+                    delete params['plugid'];
+                    delete params['docid'];
                     window.parent.onParamChange(params);
                 }
             }
