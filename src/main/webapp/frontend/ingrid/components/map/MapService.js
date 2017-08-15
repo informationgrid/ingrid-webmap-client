@@ -893,6 +893,7 @@ goog.require('ga_urlutils_service');
                       function(r, i) { return i + ''; }),
                     origin: layer.origin,
                     resolutions: layer.resolutions,
+                    tileSize: layer.tileSize || 256,
                     extent: layer.extent ?
                       ol.proj.transformExtent(layer.extent, 'EPSG:4326',
                       gaGlobalOptions.defaultEpsg) : extent
