@@ -29951,7 +29951,7 @@
         "singleTile": false,
         "highlightable": false,
         "chargeable": false,
-        "crossOrigin": true,
+        "crossOrigin": false,
         "extent": [6.0562769, 48.4939283, 14.7788274, 53.5455233]
     },
     "wmts_bwastr" : {
@@ -29981,7 +29981,7 @@
         "singleTile": false,
         "highlightable": false,
         "chargeable": false,
-        "crossOrigin": true,
+        "crossOrigin": false,
         "extent": [5.8, 47, 15, 55]
     }
 }
