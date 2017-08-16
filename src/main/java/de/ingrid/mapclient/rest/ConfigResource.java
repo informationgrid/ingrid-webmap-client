@@ -25,7 +25,6 @@ package de.ingrid.mapclient.rest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -66,26 +65,15 @@ public class ConfigResource {
                 log.debug( "Load file: " + filename );
             }
             
-            Properties p;
-            try {
-                p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                String fileContent = null;
-                if(config_dir != null){
-                    fileContent = getFileContent(config_dir, filename, ".js", "config/");
-                }
-                
-                if(fileContent == null){
-                    config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR_ALTERNATIVE);
-                    if(config_dir != null){
-                        fileContent = getFileContent(config_dir, filename, ".js", "config/");
-                    }
-                }
-                if(fileContent != null){
-                    return Response.ok( fileContent ).build();
-                }
-            } catch (IOException e) {
-                log.error( "Error read config directory property: " + e );
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            String fileContent = null;
+            if(config_dir != null){
+                fileContent = getFileContent(config_dir, filename, ".js", "config/");
+            }
+            
+            if(fileContent != null){
+                return Response.ok( fileContent ).build();
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -101,26 +89,15 @@ public class ConfigResource {
                 log.debug( "Load file: " + filename );
             }
             
-            Properties p;
-            try {
-                p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                String fileContent = null;
-                if(config_dir != null){
-                    fileContent = getFileContent(config_dir, filename, ".json", "data/");
-                }
-                
-                if(fileContent == null){
-                    config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR_ALTERNATIVE);
-                    if(config_dir != null){
-                        fileContent = getFileContent(config_dir, filename, ".json", "data/");
-                    }
-                }
-                if(fileContent != null){
-                    return Response.ok( fileContent ).build();
-                }
-            } catch (IOException e) {
-                log.error( "Error read config directory property: " + e );
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            String fileContent = null;
+            if(config_dir != null){
+                fileContent = getFileContent(config_dir, filename, ".json", "data/");
+            }
+            
+            if(fileContent != null){
+                return Response.ok( fileContent ).build();
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();

@@ -461,46 +461,41 @@ public class FileResource {
         String fileId = "";
         String path = "";
         
-        Properties p;
-        try {
-            p = ConfigurationProvider.INSTANCE.getProperties();
-            int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
-            int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
-            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
-            
-            if(!path.endsWith( "/")){
-                path += "/";
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
+        int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
+        path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
+        
+        filename += path;
+        
+        File pathFolder = new File(path);
+        if(!pathFolder.exists()){
+            pathFolder.mkdir();
+        }
+        
+        if(mapUserId != null && mapUserId.length() > 0){
+            File userFolder = new File( path + mapUserId);
+            if(!userFolder.exists()){
+                userFolder.mkdir();
             }
-            
-            filename += path;
-            
-            File pathFolder = new File(path);
-            if(!pathFolder.exists()){
-                pathFolder.mkdir();
-            }
-            
-            if(mapUserId != null && mapUserId.length() > 0){
-                File userFolder = new File( path + mapUserId);
-                if(!userFolder.exists()){
-                    userFolder.mkdir();
-                }
-                filename += mapUserId + "/";
-            }
-            
-            File folder = new File(filename);
-            File[] listOfFiles = folder.listFiles();
-            if(listOfFiles.length > maxDirectoryFiles){
-                for (File file : listOfFiles) {
-                    if (file.isFile()) {
-                        long diff = new Date().getTime() - file.lastModified();
-                        if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
-                            file.delete();
-                        }
+            filename += mapUserId + "/";
+        }
+        
+        File folder = new File(filename);
+        File[] listOfFiles = folder.listFiles();
+        if(listOfFiles.length > maxDirectoryFiles){
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    long diff = new Date().getTime() - file.lastModified();
+                    if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
+                        file.delete();
                     }
                 }
             }
-        } catch (IOException e) {
-            log.error( "Count files in directory " + path +" failed: " + e);
         }
         
         if (content != null && content.length() > 0) {
