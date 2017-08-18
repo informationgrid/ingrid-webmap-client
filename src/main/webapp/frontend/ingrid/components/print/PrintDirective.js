@@ -279,7 +279,10 @@ goog.require('ga_urlutils_service');
             layersYears.push(layer.time);
           }
 
-          if ($scope.options.legend && layerConfig.hasLegend) {
+          // INGRID: Change check legend
+          if ($scope.options.legend && 
+                  ((layerConfig.hasLegend && layerConfig.legendUrl) ||
+                  (layer && layer.type != "OSM" && layer.type != "Vector")) {
             encLegend = gaPrintLayer.encodeLegend(layer, layerConfig,
                 $scope.options);
 
@@ -402,6 +405,8 @@ goog.require('ga_urlutils_service');
           dpi: getDpi($scope.layout.name, $scope.dpi),
           layers: encLayers,
           legends: encLegends,
+          // INGRID: Add legend title
+          legendTitle: $translate.instant('legend'),
           enableLegends: (encLegends && encLegends.length > 0),
           qrcodeurl: qrcodeUrl,
           movie: movieprint,

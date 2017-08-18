@@ -1,5 +1,7 @@
 goog.provide('ga_printlayer_service');
 
+//INGRID: Add 'ga_map_service'
+goog.require('ga_map_service');
 goog.require('ga_printstyle_service');
 goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
@@ -7,6 +9,8 @@ goog.require('ga_urlutils_service');
 (function() {
 
   var module = angular.module('ga_printlayer_service', [
+     // INGRID: Add 'ga_map_service'
+    'ga_map_service',
     'ga_translation_service',
     'ga_urlutils_service',
     'ga_printstyle_service',
@@ -15,12 +19,14 @@ goog.require('ga_urlutils_service');
 
   module.provider('gaPrintLayer', function gaPrintLayer() {
 
+    // INGRID: Add param 'gaWms'
     this.$get = function($document, $translate, gaGlobalOptions,
         gaLayers, gaTime, gaLang, gaPrintStyle, gaMapUtils,
-        gaUrlUtils) {
+        gaUrlUtils, gaWms) {
 
       return {
-        encodeLegend: getEncodeLegend(gaLang),
+        // INGRID: Add param 'gaWms'
+        encodeLegend: getEncodeLegend(gaLang, gaWms),
         encodeMatrixIds: getMatrixIds(gaMapUtils),
         encodeBase: encodeBase,
         encodeGroup: getEncodeGroup(gaLayers, gaPrintStyle,
@@ -601,7 +607,8 @@ goog.require('ga_urlutils_service');
     }
   };
 
- function getEncodeLegend(gaLang) {
+ // INGRID: Add param 'gaWms'
+ function getEncodeLegend(gaLang, gaWms) {
    return encodeLegend;
 
    function encodeLegend(layer, config, options) {
@@ -612,13 +619,14 @@ goog.require('ga_urlutils_service');
      }
 
      var enc = {
-       name: config.label,
+       // INGRID Check layer label
+       name: config.label || layer.label,
        classes: []
      };
      enc.classes.push({
        name: '',
-       icon: options.legendUrl +
-           layer.bodId + '_' + gaLang.get() + format
+       // INGRID Check layer legend
+       icon: config.legendUrl || gaWms.getLegendURL(layer)
      });
      return enc;
     }
