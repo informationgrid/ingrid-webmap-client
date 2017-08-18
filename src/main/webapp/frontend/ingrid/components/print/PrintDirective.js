@@ -280,9 +280,9 @@ goog.require('ga_urlutils_service');
           }
 
           // INGRID: Change check legend
-          if ($scope.options.legend && 
+          if ($scope.options.legend &&
                   ((layerConfig.hasLegend && layerConfig.legendUrl) ||
-                  (layer && layer.type != "OSM" && layer.type != "Vector")) {
+                  (layer && layer.type != 'OSM' && layer.type != 'Vector'))) {
             encLegend = gaPrintLayer.encodeLegend(layer, layerConfig,
                 $scope.options);
 
