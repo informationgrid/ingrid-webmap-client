@@ -37,25 +37,25 @@ goog.require('ga_measure_service');
       }
     }, {
       value: 'EPSG:31466',
-      label: 'GK2 - DHDN90 (Rechtswert/Hochwert)',
+      label: 'GK2 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31467',
-      label: 'GK3 - DHDN90 (Rechtswert/Hochwert)',
+      label: 'GK3 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31468',
-      label: 'GK4 - DHDN90 (Rechtswert/Hochwert)',
+      label: 'GK4 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31469',
-      label: 'GK5 - DHDN90 (Rechtswert/Hochwert)',
+      label: 'GK5 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
