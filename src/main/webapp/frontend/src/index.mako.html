@@ -764,6 +764,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script src="../src/lib/EPSG31467.js"></script>
     <script src="../src/lib/EPSG31468.js"></script>
     <script src="../src/lib/EPSG31469.js"></script>
+    <script src="../src/lib/EPSG2166.js"></script>
+    <script src="../src/lib/EPSG2167.js"></script>
 
     <script>
       window.addEventListener('load', function() {
@@ -911,7 +913,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add use geodesic
           useGeodesic: settingUseGeodesic || true,
           // INGRID: Add default mouse position
-          defaultMousePositionIndex: settingDefaultMousePositionIndex || 0,
+          defaultMouseProjections: settingDefaultMouseProjections,
           // INGRID: Add print graticule
           defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
           // INGRID: Add setting to hide catalog menu

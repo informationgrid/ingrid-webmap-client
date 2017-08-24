@@ -23,7 +23,7 @@ goog.require('ga_measure_service');
     };
 
     // TODO INGRID: Change projections. Create by admin/json.
-    $scope.mousePositionProjections = [{
+    var projections = [{
       value: 'EPSG:3857',
       label: 'Mercator (Breite/Länge)',
       format: function(coordinates) {
@@ -33,51 +33,73 @@ goog.require('ga_measure_service');
       value: 'EPSG:4326',
       label: 'WGS 84 (Breite/Länge)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 5) + ' (WGS 84)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 5);
       }
     }, {
       value: 'EPSG:31466',
       label: 'GK2 - DHDN90 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (GK2)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31467',
       label: 'GK3 - DHDN90 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-         return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (GK3)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31468',
       label: 'GK4 - DHDN90 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (GK4)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:31469',
       label: 'GK5 - DHDN90 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (GK5)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:25832',
       label: 'UTM 32N - ETRS89 (East/North)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (UTM 32N)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }, {
       value: 'EPSG:25833',
       label: 'UTM 33N - ETRS89 (East/North)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 2) + ' (UTM 33N)';
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
+      }
+    }, {
+      value: 'EPSG:2166',
+      label: 'GK3 - S42/83 (Rechtswert/Hochwert)',
+      format: function(coordinates) {
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
+      }
+    }, {
+      value: 'EPSG:2167',
+      label: 'GK4 - S42/83 (Rechtswert/Hochwert)',
+      format: function(coordinates) {
+        return ol.coordinate.format(coordinates, '{y}, {x}', 2);
       }
     }];
 
+    var sortProjections = [];
+    for (var gp in gaGlobalOptions.defaultMouseProjections) {
+      var gaProj = gaGlobalOptions.defaultMouseProjections[gp];
+      for (var p in projections) {
+        var proj = projections[p];
+        if (gaProj === proj.value) {
+          sortProjections.push(proj);
+          break;
+        }
+      }
+    }
+    $scope.mousePositionProjections = sortProjections;
+
     $scope.options = {
-      // INGRID: Use mouse position projection by setting
-      projection: gaGlobalOptions.defaultMousePositionIndex ? $scope.
-        mousePositionProjections[gaGlobalOptions.defaultMousePositionIndex] :
-        $scope.mousePositionProjections[0]
+      projection: $scope.mousePositionProjections[0]
     };
   });
 })();

@@ -43,8 +43,8 @@ var settingSitemapURL = undefined;
 // Activate to use geodesic
 var settingUseGeodesic = true;
 
-// Override default mouse position projection (Default: 0)
-var settingDefaultMousePositionIndex = 0;
+// Override default mouse position projections
+var settingDefaultMouseProjections = ['EPSG:3857', 'EPSG:4326', 'EPSG:31466', 'EPSG:31467', 'EPSG:31468', 'EPSG:31469', 'EPSG:25832', 'EPSG:25833'];
 
 // Default list on import function
 var settingDefaultImportList = [
