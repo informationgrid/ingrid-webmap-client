@@ -897,7 +897,7 @@ goog.require('ga_urlutils_service');
           }
           content = content + '},' +
             '"spatialReference":{' +
-            '"wkid":3857' +
+            '"wkid":' + gaGlobalOptions.defaultEpsg.split(":")[1] +
             '}' +
             '}' +
             ']' +
@@ -929,7 +929,7 @@ goog.require('ga_urlutils_service');
                   'crs': {
                     'type': 'name',
                     'properties': {
-                      'name': 'EPSG:3857'
+                      'name': gaGlobalOptions.defaultEpsg
                     }
                   },
                   'features': [{

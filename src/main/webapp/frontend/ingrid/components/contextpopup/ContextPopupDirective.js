@@ -377,7 +377,7 @@ goog.require('ga_window_service');
                 p.Y +
                 ',' +
                 p.X +
-                '],"spatialReference":{"wkid":3857}}}' +
+                '],"spatialReference":{"wkid":'+ gaGlobalOptions.defaultEpsg.split(":")[1] +'}}}' +
                 ']}';
 
               $http.get(bwaLocatorUrl + '&data=' + content, {

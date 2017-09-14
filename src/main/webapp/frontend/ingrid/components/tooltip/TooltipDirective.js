@@ -105,8 +105,8 @@ goog.require('ga_topic_service');
               !(geom instanceof ol.geom.MultiPoint ||
               geom instanceof ol.geom.MultiLineString ||
               geom instanceof ol.geom.MultiPolygon ||
-              geom instanceof ol.geom.GeometryCollection ||
-              feature.get('bwastrid'));
+              geom instanceof ol.geom.GeometryCollection) ||
+              feature.get('bwastrid');
         };
 
         // Find the first feature from a vector layer
