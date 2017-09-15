@@ -297,8 +297,8 @@ goog.require('ga_wmts_service');
                     visible: visible,
                     // INGRID: Add default extent by default projection
                     queryable: infos[5],
-                    extent: ol.proj.transformExtent(gaGlobalOptions.
-                       defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
+                 // extent: ol.proj.transformExtent(gaGlobalOptions.
+                 //  defaultExtent, 'EPSG:4326', gaGlobalOptions.defaultEpsg),
                     useReprojection: (infos[6] === 'true')
                   },
                   index + 1);
