@@ -1,7 +1,62 @@
 {
+    "1": {
+       "title": "HOMEPAGE",
+       "text": "\u003cb\u003eMAPVIEWER HELP: FUNCTIONS AND PRACTICAL APPLICATIONS\u003c/b\u003e\n\n\u003cb\u003eThe “map viewer” facility of geo.admin.ch is an intuitive application for the search, display and use of geographical information. It enables the interactive presentation of maps and the inclusion of specialised (thematic) geographical data using a standard Web browser.\u003c/b\u003e \n\nThe user can customise many map parameters, such as the area displayed and the size of the image, as well as the type of information displayed and the cartographic background. \n\nThe application enables not only on-screen display but also high-quality printouts on paper. Depending on the installation, it may also be possible to access additional information linked to the geographical objects displayed.\n\n\u003ciframe width=\"570\" height=\"307\" style=\"border:1px solid #ccc\"  src=\"https://www.youtube.com/embed/TUx1xSp7PGQ?rel=0\" frameborder=\"0\" allowfullscreen\u003e\u003c/iframe\u003e\n\n\u003ciframe width=\"570\" height=\"307\" style=\"border:1px solid #ccc\"  src=\"https://www.youtube.com/embed/IglAmPcvjdI?rel=0\" frameborder=\"0\" allowfullscreen\u003e\u003c/iframe\u003e",
+       "image":""
+    },
+    "2": {
+       "title": "TUTORIALS",
+       "text": "#",
+       "image":""
+    },
+    "3": {
+       "title": "First steps with map.geo.admin.ch",
+       "text": "\n\u003ciframe width=\"570\" height=\"307\" style=\"border:1px solid #ccc\"  src=\"https://www.youtube.com/embed/TUx1xSp7PGQ?rel=0\" frameborder=\"0\" allowfullscreen\u003e\u003c/iframe\u003e",
+       "image":""
+    },
+    "4": {
+       "title": "How to trace a hiking route",
+       "text": "\n\u003ciframe width=\"570\" height=\"307\" style=\"border:1px solid #ccc\"  src=\"https://www.youtube.com/embed/IglAmPcvjdI?rel=0\" frameborder=\"0\" allowfullscreen\u003e\u003c/iframe\u003e",
+       "image":""
+    },
+    "10": {
+       "title": "MAP WINDOW",
+       "text": "#",
+       "image":""
+    },
+    "11": {
+       "title": "Change language",
+       "text": "The application detects the default language of the browser. If you prefer another of the available languages, choose your preference from the pulldown menu located at the top right.",
+       "image":""
+    },
+    "12": {
+       "title": "Display coordinates",
+       "text": "Hovering the mouse cursor on the map, corresponding coordinates are displayed below the main map window. With a right mouseklick on the map, additional information regarding the position (such as altitude etc) are shown.\n\u003cbr\u003e\u003cimg src=\"//help.geo.admin.ch/img/12e.jpg\"\u003e",
+       "image":""
+    },
+    "20": {
+       "title": "NAVIGATION & ORIENTATION",
+       "text": "#",
+       "image":""
+    },
+    "21": {
+       "title": "Zoom in and zoom out (change the map scale)",
+       "text": "To enlarge or reduce the scale, click on the plus or minus button or simply use the mouse wheel.",
+       "image":""
+    },
+    "22": {
+       "title": "Zoom in to a section of the map",
+       "text": "Zoom in to a rectangular map section by  keeping the SHIFT key pressed and drawing a rectangle with the left-hand mouse button.",
+       "image":""
+    },
+    "23": {
+       "title": "Panning tool",
+       "text": "The panning tool can be used to shift the map on display: click and hold down to move the map.",
+       "image":""
+    },
     "24": {
         "title": "Geographical search (centre on coordinates)",
-        "text": "If coordinates of a point of interest are known, these can simply be entered in the “Search location, zip, coordinate” field, to centre the map on the required point: for example \"600000 200000\" in national coordinates or \"46.5 6.0\" for latitiude and longitude",
+        "text": "If coordinates of a point of interest are known, these can simply be entered in the “Search location, zip, coordinate” field, to centre the map on the required point: for example \"2600000 1200000\" -\"600000 200000\" in national coordinates or \"46.5 6.0\" for latitiude and longitude",
         "image": ""
     },
     "25": {
@@ -9,10 +64,25 @@
         "text": "The “Search location, zip, coordinate” field enables direct access to any place or commune name, any Swiss postcode or indeed any location named on the national map at any scale (mountain, valley, pass, hamlet, farmhouse, hut, river, stream, lake, etc.) As soon as a letter or number is entered, suggestions for place names or postcodes respectively will start to appear; if the desired name or postcode becomes visible it is then sufficient to click on it.",
         "image": ""
     },
+    "26": {
+       "title": "Back to start - reset",
+       "text": "Clicking on the Swiss Confederation logo, top left corner, takes you straight back to the map viewer’s starting screen.\nThe viewer is also reset.",
+       "image":""
+    },
+    "27": {
+       "title": "Geolocation",
+       "text": "The \"geolocation\" button allows the location of your geographical position by GPS. When clicked for the first time, it becomes red and an icon is displayed on the map.\n\nThe arrow, represented by the icon, shows the direction where you are looking at. Therefore, when you move your device, the icon rotates.\n\n\u003cimg src=\"http://help.geo.admin.ch/img/27a_e.jpg\"\u003e\n\n\nWhen you click on the \"geolocation\" button the second time, the map orientates itself depending upon the direction of the device. To exit the mode \"geolocation\", click once again on the button.\n\n\u003cimg src=\"http://help.geo.admin.ch/img/27b_e.jpg\"\u003e",
+       "image":""
+    },
     "28": {
-        "title": "2.5D / (3D ALPHA)",
-        "text": "The viewer can also be activated in 2.5D / 3D mode. You can put all 2D data on the terrain model - with probable distortions for some areas. To enable this feature, the 2.5D button must be activated. Data can be added via the search or the catalog.\u003cbr\u003e\u003cbr\u003e\n\u003cb\u003eIMPORTANT\u003c/b\u003e: This feature is available in an alpha version, as an early stage of development. The availability of version alpha can not be guaranteed - they can be deactivated under certain circumstances.\u003cbr\u003e\u003cbr\u003e\n\n\n\u003cimg src=\"http://help.geo.admin.ch/img/28_e.png\"\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eTilt up/down\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Shift or CTRL or ALT + left mouse button + drag up / down\u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\" src=\"http://help.geo.admin.ch/img/TouchTilt.png\"\u003e\u003cbr\u003e\n\u003ci\u003eTilts the viewer toward \"horizon\" / \"top-down\" view.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eLook\u003c/b\u003e\u003cbr\u003e\nPC: CTRL + left mouse button + drag\t\u003cbr\u003e\nMac: Command/Open Apple Key + mouse button + drag\u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\"  src=\"http://help.geo.admin.ch/img/TouchRotate.png\"\u003e\u003cbr\u003e\n\u003ci\u003ePerspective points in another direction, as if you are turning your head up, down, left or right.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eZoom in/Zoom out\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Scroll wheel or right mouse + drag up / down\u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\"  src=\"http://help.geo.admin.ch/img/TouchZoom.png\"\u003e\u003cbr\u003e\n\u003ci\u003eZooms the viewer in and out.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eMove left / right\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Left / right arrow \u003cbr\u003e\nTouch: One finger drag left / right\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eMove forward / backward \u003c/b\u003e\u003cbr\u003e\nPC + Mac: Up / down arrow \u003cbr\u003e\nTouch: One finger drag forward / backward\u003cbr\u003e\u003cbr\u003e",
+        "title": "3D BETA",
+        "text": "The viewer can also be activated in 3D mode. You can put all 2D data on the terrain model - with probable distortions for some areas. To enable this feature, the 3D button must be activated. Data can be added via the search or the catalog.\u003cbr\u003e\n\u003cb\u003eIMPORTANT\u003c/b\u003e: This feature is available in an beta version, as an early stage of development. The availability of version beta can not be guaranteed - they can be deactivated under certain circumstances.\u003cbr\u003e\nSample \u003ca href=\"http://cms.geo.admin.ch/www.geo.admin.ch/kml/sample3D.kml\"\u003e3D KML \u003c/a\u003e file for visualizing \u003ca href=\"https://s.geo.admin.ch/712b01e222\"\u003eyour 3D\u003c/a\u003e  data. \n\n\u003cimg src=\"http://help.geo.admin.ch/img/28_e.png\"\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eTilt up/down\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Shift or CTRL or ALT + left mouse button + drag up / down\u003cbr\u003e\nPC + Mac: Shift + up / down arrow \u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\" src=\"http://help.geo.admin.ch/img/TouchTilt.png\"\u003e\u003cbr\u003e\n\u003ci\u003eTilts the viewer toward \"horizon\" / \"top-down\" view.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eLook\u003c/b\u003e\u003cbr\u003e\nPC: CTRL + left mouse button + drag\t\u003cbr\u003e\nMac: Command/Open Apple Key + mouse button + drag\u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\"  src=\"http://help.geo.admin.ch/img/TouchRotate.png\"\u003e\u003cbr\u003e\n\u003ci\u003ePerspective points in another direction, as if you are turning your head up, down, left or right.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eZoom in/Zoom out\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Scroll wheel or right mouse + drag up / down\u003cbr\u003e\nTouch:\n\u003cimg style=\"border:none !important;\"  src=\"http://help.geo.admin.ch/img/TouchZoom.png\"\u003e\u003cbr\u003e\n\u003ci\u003eZooms the viewer in and out.\u003c/i\u003e\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eMove left / right\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Left / right arrow \u003cbr\u003e\nTouch: One finger drag left / right\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eMove forward / backward \u003c/b\u003e\u003cbr\u003e\nPC + Mac: Up / down arrow \u003cbr\u003e\nTouch: One finger drag forward / backward\u003cbr\u003e\u003cbr\u003e\n\n\u003cb\u003eRotate clockwise / counterclockwise\u003c/b\u003e\u003cbr\u003e\nPC + Mac: Shift + left / right arrow \u003cbr\u003e",
         "image": ""
+    },
+    "30": {
+       "title": "SELECTION AND DISPLAY OF DATA",
+       "text": "#",
+       "image":""
     },
     "31": {
         "title": "Full text search for data",
@@ -23,6 +93,11 @@
         "title": "Search for data (catalogue)",
         "text": "Under \"Change topic\" you will find all available digital data classified by theme. When you select a data-set (by clicking on the circle symbol to the right) it will be displayed directly by the map viewer, as a separate layer of data.",
         "image": ""
+    },
+    "33": {
+       "title": "Change the cartographic background",
+       "text": "The cartographic background is the national map or  aerial photography. It is possible to select national map colour or black-and-white or no background",
+       "image":""
     },
     "34": {
         "title": "Change the visibility of the selected dataset",
@@ -44,19 +119,84 @@
         "text": "In the “Selection”, “Search” or “Catalogue” pane, the “i” button provides access to an information window about the selected data-set (layer). The information provided covers; the range of applicable scales, available metadata, a link to the description of the data, how to order data, the relevant thematic geoportal and WMS service and the issue date (latest revision date) of the data.",
         "image": ""
     },
+    "38": {
+       "title": "View information about an object on the map",
+       "text": "Where vector data-sets (points, lines or areas) are displayed, attributes of individual objects can be interrogated simply by means of a mouse click. If more than one layer os activated information will be provided for all objects/features at the mouse position for all active data-sets.",
+       "image":""
+    },
     "39": {
         "title": "Buy data",
         "text": "Raw data-sets for download can be obtained via the corresponding federal authority - depending on the licensing attributes. The link “Order data” will lead to the corresponding dowload/shop or web ressource.",
         "image": ""
+    },
+    "40": {
+       "title": "Aerial photography",
+       "text": "By using the LUBIS Viewer application \u003ca href=\"http://map.lubis.admin.ch\"\u003emap.lubis.admin.ch \u003c/a\u003e you have access to all aerial images and image strips which are available in the aerial image database of swisstopo.  They can be searched for, viewed and ordered. The database is permanently updated with image strips and historical images. New updates are available every three months.\nGeneral information can be found under the following \u003ca href=\"http://www.swisstopo.admin.ch/internet/swisstopo/de/home/products/images/aerial.html\"\u003e link \u003c/a\u003e\n\n1. Start the application on \u003ca href=\"http://map.lubis.admin.ch\"\u003emap.lubis.admin.ch\u003c/a\u003e.\n\n2. Search for a place or a coordinate \n\n\u003cimg src=\"//help.geo.admin.ch/img/luft2.jpg\" /\u003e\n\n3. Choose the image type (black and white, color, infrared or image stripes).\n4. Search by year: Can be activated by the button \u003cb1\u003e “Time” \u003cb2\u003e \n\n\u003cimg src=\"//help.geo.admin.ch/img/luft3.jpg\" /\u003e\n\n5. By clicking on a single image (point) or an image stripe (line) you will see:\n- The area the image covers (in yellow).\n- A window with information (full view/technical data sheet) and the opportunity to make an order. \n\n\u003cimg src=\"//help.geo.admin.ch/img/luft4.jpg\" /\u003e\n\nA document with further informations can be found here:\n\u003ciframe src=\"https://docs.google.com/presentation/d/1xiLNEWj0DaCbjNiInNxvn2qapFhpSBjCaZfT_BGMlic/embed?start=false&loop=false&delayms=5000\" frameborder=\"0\" width=\"570\" height=\"456\" allowfullscreen=\"true\" mozallowfullscreen=\"true\" webkitallowfullscreen=\"true\"\u003e\u003c/iframe\u003e",
+       "image":""
+    },
+    "41": {
+       "title": "Print",
+       "text": "The “Print” function enables you to produce portable document format (.pdf) files containing an extract of the main map and any background data, together with information such as the map scale. You can save these files and print them out. The “Print” button opens a dialogue box for your choice of scale of the A4/A3 page to be downloaded and printed, independent of the scale of the map view on display. The printable area will be highlighted and the map canbe moved / panned with the mouse to fit the extired extent into the print area. The legend for selected thematic data-sets (layers) can also be printed to a second page by activating the corresponding checkbox. Actviate the \"Coordinate grid\" check box to superimpose a georeferencing information. CAUTION: pdf files can occupy several megabytes (MB) which may take a considerable time to download if your Internet connection is slow.",
+       "image":""
+    },
+    "42": {
+       "title": "Time slider",
+       "text": "Some geodata can be filtered by time. These datasets are identified by the \"time\" icon that is displayed on the viewer on the right side.\n\u003cimg src=\"//help.geo.admin.ch/img/42e.jpg\"\u003e\u003cbr\u003e\n\n1) Select a \u003cb\u003eraster\u003c/b\u003e dataset (eg. As \"Journey through time - Maps\") or a \u003cb\u003evector\u003c/b\u003e dataset (eg. \"Aerial Images swisstopo color\").\u003cbr\u003e\n2) The icon \u003cb\u003e\"time\"\u003c/b\u003e appears to the right and:\n - in the case of \u003cb\u003eraster\u003c/b\u003e dataset, it is enabled by default: the time slider appears, and the latest dataset is displayed\n - in the case of \u003cb\u003evector\u003c/b\u003e dataset, it is disabled by default: the data of all years are displayed. When activating the icon \"time\", the time slider appears and only the data of the most recent year is displayed.\u003cbr\u003e\n3) Use the \u003cb\u003etime slider\u003c/b\u003e to select the data of a particular year.\u003cbr\u003e\n4) The selected year is also mentioned in the selection window.",
+       "image":""
+    },
+    "43": {
+       "title": "Time copy/compare",
+       "text": "1) Select a raster dataset with time representation (eg. As \"Journey through time - Maps\") or a vector dataset (eg. \"Aerial Images swisstopo color\").\n2) Copy this dataset by clicking the icon \u003cb\u003e\"Copy\"\u003c/b\u003e in the selection window: the duplicate layer appears.\n3) Open the \u003cb\u003eyear selection window\u003c/b\u003e by clicking on the year number of the dataset (in red) and choose the needed year for each layer.\n\n4) Compare these two datasets by using directly the transparency slider of the upper layer or by using the \u003cb\u003e\"Compare\"\u003c/b\u003e function in \"Tools\".\n\n\u003cimg src=\"//help.geo.admin.ch/img/43e_1.png\"\u003e\n\n\u003cimg src=\"//help.geo.admin.ch/img/43e_2.png\"\u003e",
+       "image":""
     },
     "44": {
         "title": "How to select objects « Query Tool »",
         "text": "\u003col type=\"1\"\u003e\u003cli\u003eChoose a dataset from the topic « Aviation » (e.g. Air navigation obstacles). All datasets whose attributes are searchable, can be used in this tool. \u003ca href=\"//api3.geo.admin.ch/api/faq/index.html#which-layers-are-searchable\" target=\"_blank\"\u003eHere’s an overview of those datasets\u003c/a\u003e.\u003c/li\u003e\n\u003cli\u003eChoose « Object information » from the « Tools » section\u003c/li\u003e\n\u003cli\u003eTo select all objects (200 as a maximum!) inside a map perimeter, use CTRL (cmd on Mac) and draw a rectangle on the map\u003c/li\u003e\u003cbr /\u003e\u003cimg src=\"//help.geo.admin.ch/img/44a_e.jpg\"\u003e\u003cbr /\u003e\u003cbr /\u003e\u003cb\u003e\u003cu\u003eSelect objects by attributes with types date or numeric\u003c/u\u003e\u003c/b\u003e\u003cbr /\u003e\u003cbr /\u003e\u003cli\u003eObjects can be searched by predefined or user defined \u003cb\u003equeries\u003c/b\u003e\u003c/li\u003e\n\u003cli\u003eSet the query parameters by choosing a dataset,\u003c/li\u003e\n\u003cli\u003ean \u003cb\u003eattribute\u003c/b\u003e, an \u003cb\u003eoperator\u003c/b\u003e,\u003c/li\u003e\n\u003cli\u003eand by entering a \u003cb\u003evalue\u003c/b\u003e (numeric or date).\u003c/li\u003e\n\u003cli\u003eSeveral queries can be combined with an AND operation.\u003c/li\u003e\u003cbr /\u003eFinish your query by clicking « Search ». The objects corresponding to the query are highlighted in the map and appear inside the result list. A maximum of 200 objects can be selected.\u003cbr /\u003e\u003cbr /\u003e\u003cimg src=\"//help.geo.admin.ch/img/44b_e.jpg\"\u003e\u003cbr /\u003e\u003cbr /\u003e\u003cb\u003e\u003cu\u003eSelect objects by attributes with type domain\u003c/u\u003e\u003c/b\u003e\u003cbr /\u003eIt is possible to search by attributes with domain values (e.g. the status of Air navigation obstacles).\u003cbr /\u003e\u003cbr /\u003e\u003cli\u003eChoose the attribute « Status » from the dropdown menu\u003c/li\u003e\n\u003cli\u003eClick here in order to display all \u003cb\u003eoccurring values\u003c/b\u003e of the attribute\u003c/li\u003e\n\u003cli\u003eChoose operator  « ilike » =  or « not ilike » !=\u003c/li\u003e\u003c/ol\u003eFinish your query by clicking « Search ». The objects corresponding to the query are highlighted in the map and appear inside the result list. A maximum of 200 objects can be selected.",
         "image": ""
     },
+    "45": {
+       "title": "Aviation",
+       "text": "As part of their flight preparation, pilots use WeGOM (the Web-GIS Obstacle Map) to familiarise themselves with the latest published aviation obstacles in terms of Art. 63 para. a/b of the Aviation Infrastructure Ordinance.\u003cbr\u003e\u003cbr\u003eAn interactive digital aviation obstacle map, WeGOM is updated each week to show the latest obstacle situation. Other aviation-related data, such as protected zones under Art. 19 of the Off-Aerodrome Landing Ordinance (OALO) or aviation maps, can also be displayed if required.\u003cbr\u003e\u003cbr\u003e\u003ciframe src=\"https://docs.google.com/presentation/d/1ASm3TD3-6BWE_yCD8Y86PeWOQRxxmGKz6YYmb20F3JA/embed?start=false&loop=false&delayms=3000\" frameborder=\"0\" width=\"570\" height=\"456\" allowfullscreen=\"true\" mozallowfullscreen=\"true\" webkitallowfullscreen=\"true\"\u003e\u003c/iframe\u003e",
+       "image":""
+    },
+    "50": {
+       "title": "LINKING & INTEGRATION",
+       "text": "#",
+       "image":""
+    },
+    "52": {
+       "title": "Send/save/iFrame of the current map",
+       "text": "\u003cb\u003e Save current map display or send it by e-mail send to other people \u003c/b\u003e\n\nUsing the \"Share\" function, the current map content (layers, location, zoom level) will be stored as link (URL) and can be send as e-mail or via social media.\u003cbr\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/52e_1.png\"\u003e\u003cbr\u003e\n\u003cb\u003eMap integration in a Web page using iFrame\u003c/b\u003e\n\nThe code to integrate in your web page is automatically generated. By clicking on \"show more\", you can configure the dimensions of the map. Then just copy the code in the web page.\u003cbr\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/52e_2.png\"\u003e\u003cbr\u003e\nThe code of our example:\n\u003cp class=\"test\" style=\"text-align: left;font-style: italic; color: #069;\"\u003e&lt;iframe src='//map.geo.admin.ch/embed.html?X=171954.23&Y=640698.99&zoom=3&lang=en&topic=ech&bgLayer=ch.swisstopo.pixelkarte-grau' width='400' height='300' frameborder='0' style='border:0'&gt;&lt;/iframe&gt;\u003c/p\u003e\ngives the following result:\u003cbr\u003e\n\u003ciframe src='//map.geo.admin.ch/embed.html?X=171954.23&Y=640698.99&zoom=3&lang=en&topic=ech&bgLayer=ch.swisstopo.pixelkarte-grau' width='400' height='300' frameborder='0' style='border:0'\u003e\u003c/iframe\u003e\n",
+       "image":""
+    },
+    "53": {
+       "title": "Save/send a link to an object",
+       "text": "With some vector data-sets (points, lines and areas) it is possible to generate a link (URL) direct to an object on the map. \nWhen “Object information” is viewed, the bottom line is “Link to object”. One click centres the object in the current window; \na double click opens it in a new window with the object centred. The “Link” function can then be used to copy the URL then save it or send it in an e-mail.",
+       "image":""
+    },
+    "54": {
+       "title": "Use parameters to call up a map",
+       "text": "Preset parameters can be used to call up the map viewer with predefined data-sets (layers), language, location of centre of view and scale: api3.geo.admin.ch [//api3.geo.admin.ch]",
+       "image":""
+    },
+    "55": {
+       "title": "Mobile",
+       "text": "\u003ch2\u003eMapviewer on the go\u003c/h2\u003e\n\u003cb\u003eGo Mobile\u003c/b\u003e - Use map.geo.admin.ch with your smartphone iOS and add map.geo.admin.ch as an app on your Home screen:\n\n\n\u003cimg src=\"https://help.geo.admin.ch/img/gomobile_en.png\"\u003e\n\n\u003cb\u003eAndroid\u003c/b\u003e: use the menu of your browser to add map.geo.admin.ch as an app on your Home screen.\n\n\n\u003ch2\u003eOffline Mode\u003c/h2\u003e\nOffline for a map extent of 10x10km up to a scale of 1:25’000, no tooltips. \u003cbr\u003e\u003cu\u003eCurrently available only on mobile devices.\u003c/u\u003e\n\n1. Use a stable internet connection, hit «ok» to validate the download\nDon’t close the browser or lock your device. If you encounter problems/no progress during the process: delete the browsercache of your device. Deactivate «Private» mode\nWait until download has been completed, hit «ok»\n\n2. If no internet connection is available - website toggles into offline mode\n3. Offline functions: display saved extent and data\n\n\u003cb\u003eShow extent:\u003c/b\u003e data within red rectangle is available for offline use\n\u003cb\u003eZoom to extent:\u003c/b\u003e zoom directly to your area\n\u003cb\u003eDelete saved map extent:\u003c/b\u003e ensure Internet connection and use the delete map function and a new map extent for offline can be added\n\n\u003cb\u003eInstructions on Slideshare:\u003c/b\u003e [http://de.slideshare.net/swiss_geoportal/mobilegeoadminch-re1/32]",
+       "image":""
+    },
+    "59": {
+       "title": "DRAW & MEASURE FUNCTIONS",
+       "text": "#",
+       "image":""
+    },
+    "60": {
+       "title": "ADVANCED FUNCTIONS",
+       "text": "#",
+       "image":""
+    },
     "62": {
-        "title": "WMS import",
-        "text": "Only WMS services compliant with \"Swiss Projection EPSG 21781\" and following the \u003ca href=\"http://www.opengeospatial.org/standards/wms\"\u003e WMS OGC Standard\u003c/a\u003e  can be displayed. An easy tool to check this is provided by \u003ca href =\"//www.geo.admin.ch/internet/geoportal/en/home/services/geoservices/ech0056.html\"\u003eLink\u003c/a\u003e\nGenerally the WMS datasets are visible in a given scale, that's why the right portion of the map has to be selected and appropriate scale too.\nThe displaying speed of WMS datasets and their availability is under responsibility of the service owner.\nThe WMS datasets can be saved as PDF through the \"Print\" function.\nA WMS dataset can be forwarded by email with Permalink \"Link\" function.\nPlease, follow the use conditions of the WMS service provider.",
+        "title": "Import",
+        "text": "To import a WM(T)S or KML, enter the URL in the field and click \"Connect\". You can also select a URL from the list of available WM(T)S by clicking the &#9660;  icon (left of the field). If the KML is stored locally, select the \"Local\" tab and give the path to the file with \"Browse\". Then click on \"Load\".\u003cbr\u003e\u003cbr\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/62e_new.png\"\u003e\u003cbr /\u003e\n\n\u003ch2\u003eWM(T)S Import\u003c/h2\u003e\nOnly WM(T)S services compliant with \u003ca href=\"http://www.opengeospatial.org/standards/WMS\"\u003eWMS OGC Standard\u003c/a\u003e or \u003ca href=\"http://www.opengeospatial.org/standards/WMTS\"\u003eWMTS OGC Standard\u003c/a\u003e can be displayed. References to check  this is provided by \u003ca href =\"//www.geo.admin.ch/en/geo-services/geo-services/geo-check-services.html\"\u003eLink\u003c/a\u003e\nSupported projections WMTS:  pseudo-mercator (google, bing, osm) (urn:ogc:def:crs:EPSG:6.18.3:3857), WGS1984 (urn:ogc:def:crs:EPSG:6.3:4326), LV95, LV03.\nGenerally the WM(T)S datasets are visible in a given scale, that's why the right portion of the map has to be selected and appropriate scale too.\nThe displaying speed of WM(T)S datasets and their availability is under responsibility of the service owner.\nThe WM(T)S datasets can be saved as PDF through the \"Print\" function.\nA WM(T)S dataset can be forwarded by email with Permalink \"Link\" function.\nPlease, follow the use conditions of the WM(T)S service provider.\u003cbr\u003e\n\n\u003ch2\u003eKML Import\u003c/h2\u003e\n\u003cp\u003eIt is possible to display KML saved online (by using URL) or locally (this fonction is not possible with IE)\u003c/p\u003e\u003cp\u003eOnly KML files without any error can be displayed. These files must be compliant with \u003ca href=\"http://opengeospatial.org/standards/kml\"\u003e\u003cb\u003ethe OGC KML format\u003c/b\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003eAn easy way to check your file is provided by \u003ca href=\"http://www.feedvalidator.org\"\u003e\u003cb\u003eLink\u003c/b\u003e\u003c/a\u003e\u003c/p\u003e\u003cbr\u003e\n\u003ch2\u003eGenerating KML file and using it online\u003c/h2\u003e\n\u003cp\u003e\u003cb\u003eHow to create a .kml file\u003c/b\u003e\u003c/p\u003e\u003cp\u003e\u003ca href=\"http://www.swisstopo.admin.ch/internet/swisstopo/de/home/apps/calc/kml.html\"\u003eOnline KML Generator\u003c/a\u003e\u003cbr\u003e\n\u003ca href=\"//help.geo.admin.ch/?id=67\"\u003eDrawing\u003c/a\u003e\u003c/p\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003eHow to publish a .kml file online\u003c/b\u003e\u003cbr /\u003eIn order to distribute your own KML-files via a stable URL without setting up an own web server you can use the following free services for hosting and distributing:\u003c/p\u003e\u003cp\u003e\u003cb\u003e1. \u003cu\u003ePublish with Google Docs\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\n\u003cul\u003e\u003cli\u003eCreate your account: \u003ca href=\"https://docs.google.com\"\u003ehttps://docs.google.com\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003eUpload the file: click on the Upload button \u003e Files… \u003c/li\u003e\u003c/ul\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/upload.jpg\"\u003e\n\u003cul\u003e\u003cli\u003eIn the window \"File Upload\" select your KML file and \"Open\"\u003c/li\u003e \n\u003cli\u003eIn the window \"Upload settings \"Uncheck \"Convert documents, presentations, spreadsheets, and drawings to the corresponding Google Docs format\" and \"Convert text from PDF and image files to Google documents\" and click \"Start upload\"\u003c/li\u003e \n\u003cli\u003eSelect the document by clicking in the checkbox on the left and click on the share button and then on \"Change…\" in the \"Sharing settings\" widows. Select \"Public on the web\" or \"Anyone with the link\" and click \"Save\", copy the \"Link to share\" then \"Done\".\u003c/li\u003e \u003c/ul\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/sharing.jpg\"\u003e\n\u003cul\u003e\u003cli\u003eThe copied URL has to be modified as follows in order to import the KML file on map.geo.admin.ch with the \"Import\" tool : the link before the ID \"https://drive.google.com/file/d/\" must be replaced with \"https://drive.google.com/uc?export=download&id=\" .\u003cbr\u003e\u003cbr\u003e\u003ca style=\"float:left\" href=\"https://s.geo.admin.ch/72b1f27e81\"\u003e\u003cb\u003eExample\u003c/b\u003e\u003c/a\u003e\u003c/li\u003e\u003c/ul\u003e\n\u003cp\u003e\u003cb\u003e2. \u003cu\u003ePublish with Dropbox\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\n\u003cul\u003e\u003cli\u003eCreate your account: \u003ca href=\"http://www.dropbox.com\"\u003ehttp://www.dropbox.com\u003c/a\u003e (You can install it or only use the web interface on this website)\u003c/li\u003e \n\u003cli\u003eMove your KML File in the public folder once the file is in your Public folder, simply right-click it once to open a menu. Choose \"Dropbox \u003e Copy public link\" (Dropbox installed on your computer) or \"Copy public link\" (Web interface).(More information about Shared document in Dropbox: \u003ca href=\"http://www.dropbox.com/help/16\"\u003ehttp://www.dropbox.com/help/16\u003c/a\u003e\u003cbr\u003e\n\u003cli\u003eModify the copied Link by adding  \"dl=1\": http://dl.dropbox.com/u/44486020/swisstopo.kml?\u003cb\u003edl=1\u003c/b\u003e.\u003c/li\u003e\n\u003cli\u003eThe link can be used in the \"KML import\" in map.geo.admin.ch\u003c/li\u003e\u003c/ul\u003e\u003cp\u003eExample:\u003cbr /\u003e\u003ca href=\"//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttp%3A%2F%2Fdl.dropbox.com%2Fu%2F44486020%2Fswisstopo.kml&layers_opacity=1&layers_visibility=true\"\u003e//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttp%3A%2F%2Fdl.dropbox.com%2Fu%2F44486020%2Fswisstopo.kml&layers_opacity=1&layers_visibility=true\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003e3. \u003cu\u003ePublish with Gist\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://gist.github.com/\"\u003eGist\u003c/a\u003e, a feature made available by \u003ca href=\"https://github.com\"\u003eGithub\u003c/a\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003eDrag your KML-file into the text field of Gist (1). After that, the code of the KML-file is visible in the text field\u003c/li\u003e\n\u003cli\u003ePush “Create Public Gist” (2)\u003c/li\u003e\n\u003cli\u003ePush “Raw” (3)\u003c/li\u003e\n\u003cli\u003eAs visible in (4), an URL with your KML-file has been generated\u003c/li\u003e\n\u003cli\u003eAccording to (5) you can now embed the KML-file via the URL in the map viewer. In addition you can create map.geo.admin.ch-permalinks with your KML and share your data with other users or on your own web page.\u003c/li\u003e\u003c/ul\u003e  \n\u003cimg src=\"//help.geo.admin.ch/img/64all.jpg\"\u003e\n",
         "image": ""
     },
     "63": {
@@ -64,9 +204,14 @@
         "text": "\u003cp\u003eIt is now possible to display KML saved online (by using URL) or locally (this fonction is not possible with IE)\u003c/p\u003e\u003cp\u003eOnly KML files without any error can be displayed. These files must be compliant with \u003ca href=\"http://opengeospatial.org/standards/kml\"\u003e\u003cb\u003ethe OGC KML format\u003c/b\u003e\u003c/a\u003e\u003c/p\u003e\u003cp\u003eAn easy way to check your file is provided by \u003ca href=\"http://kmlvalidator.com/home.htm\"\u003e\u003cb\u003eLink\u003c/b\u003e\u003c/a\u003e\u003c/p\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/64d.jpg\"\u003e\u003cbr /\u003e\u003cbr /\u003e\u003ch2\u003eGenerating KML file and using it online\u003c/h2\u003e\u003cp\u003e\u003cb\u003eHow to create a .kml file\u003c/b\u003e\u003c/p\u003e\u003cp\u003e\u003ca href=\"http://www.swisstopo.admin.ch/internet/swisstopo/de/home/apps/calc/kml.html\"\u003eOnline KML Generator\u003c/a\u003e\u003cbr\u003e\n\u003ca href=\"//help.geo.admin.ch/?id=66&lang=en\"\u003eDrawing\u003c/a\u003e\u003c/p\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003eHow to publish a .kml file online\u003c/b\u003e\u003cbr /\u003eIn order to distribute your own KML-files via a stable URL without setting up an own web server you can use the following free services for hosting and distributing:\u003c/p\u003e\u003cp\u003e\u003cb\u003e1. \u003cu\u003ePublish with Google Docs\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\n\u003cul\u003e\u003cli\u003eCreate your account: \u003ca href=\"https://docs.google.com\"\u003ehttps://docs.google.com\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003eUpload the file: click on the Upload button \u003e Files… \u003c/li\u003e\u003c/ul\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/upload.jpg\"\u003e\n\u003cul\u003e\u003cli\u003eIn the window \"File Upload\" select your KML file and \"Open\"\u003c/li\u003e \n\u003cli\u003eIn the window \"Upload settings \"Uncheck \"Convert documents, presentations, spreadsheets, and drawings to the corresponding Google Docs format\" and \"Convert text from PDF and image files to Google documents\" and click \"Start upload\"\u003c/li\u003e \n\u003cli\u003eSelect the document by clicking in the checkbox on the left and click on the share button and then on \"Change…\" in the \"Sharing settings\" widows. Select \"Public on the web\" or \"Anyone with the link\" and click \"Save\", copy the \"Link to share\" then \"Done\".\u003c/li\u003e \u003c/ul\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/sharing.jpg\"\u003e\u003cul\u003e\u003cli\u003eModify the copied Link by changing the word \"leaf\" by \"uc\" between \"https://docs.google.com/\" and \"?id=…\", the link can be use in the \"KML import\" in map.geo.admin.ch\u003c/li\u003e\u003c/ul\u003e\u003cp\u003eExample:\u003cbr /\u003e \n\u003ca href=\"//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttps%3A%2F%2Fdocs.google.com%2Fuc%3Fid%3D0B4uRuJ1hajZmZjJlZDNiMGItNmU0Zi00N2FlLWJiZDItM2UwZDA3YmQwYzk3%26hl%3Dfr&layers_opacity=1&layers_visibility=true\"\u003e//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttps%3A%2F%2Fdocs.google.com%2Fuc%3Fid%3D0B4uRuJ1hajZmZjJlZDNiMGItNmU0Zi00N2FlLWJiZDItM2UwZDA3YmQwYzk3%26hl%3Dfr&layers_opacity=1&layers_visibility=true\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003e2. \u003cu\u003ePublish with Dropbox\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\n\u003cul\u003e\u003cli\u003eCreate your account: \u003ca href=\"http://www.dropbox.com\"\u003ehttp://www.dropbox.com\u003c/a\u003e (You can install it or only use the web interface on this website)\u003c/li\u003e \n\u003cli\u003eMove your KML File in the public folder once the file is in your Public folder, simply right-click it once to open a menu. Choose \"Dropbox \u003e Copy public link\" (Dropbox installed on your computer) or \"Copy public link\" (Web interface).(More information about Shared document in Dropbox: \u003ca href=\"http://www.dropbox.com/help/16\"\u003ehttp://www.dropbox.com/help/16\u003c/a\u003e\u003cbr\u003e\n\u003cli\u003eModify the copied Link by adding  \"dl=1\": http://dl.dropbox.com/u/44486020/swisstopo.kml?\u003cb\u003edl=1\u003c/b\u003e.\u003c/li\u003e\n\u003cli\u003eThe link can be used in the \"KML import\" in map.geo.admin.ch\u003c/li\u003e\u003c/ul\u003e\u003cp\u003eExample:\u003cbr /\u003e\u003ca href=\"//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttp%3A%2F%2Fdl.dropbox.com%2Fu%2F44486020%2Fswisstopo.kml&layers_opacity=1&layers_visibility=true\"\u003e//map.geo.admin.ch/?Y=600769&X=198300.5&zoom=7&bgOpacity=0&bgLayer=ch.swisstopo.pixelkarte-grau&layers=KML%7C%7Chttp%3A%2F%2Fdl.dropbox.com%2Fu%2F44486020%2Fswisstopo.kml&layers_opacity=1&layers_visibility=true\u003c/a\u003e\u003c/p\u003e\u003cp\u003e\u003cb\u003e3. \u003cu\u003ePublish with Gist\u003c/u\u003e\u003c/b\u003e\u003c/p\u003e\u003cp\u003e\u003ca href=\"https://gist.github.com/\"\u003eGist\u003c/a\u003e, a feature made available by \u003ca href=\"https://github.com\"\u003eGithub\u003c/a\u003e\u003c/p\u003e\u003cul\u003e\u003cli\u003eDrag your KML-file into the text field of Gist (1). After that, the code of the KML-file is visible in the text field\u003c/li\u003e\n\u003cli\u003ePush “Create Public Gist” (2)\u003c/li\u003e\n\u003cli\u003ePush “Raw” (3)\u003c/li\u003e\n\u003cli\u003eAs visible in (4), an URL with your KML-file has been generated\u003c/li\u003e\n\u003cli\u003eAccording to (5) you can now embed the KML-file via the URL in the map viewer. In addition you can create map.geo.admin.ch-permalinks with your KML and share your data with other users or on your own web page.\u003c/li\u003e\u003c/ul\u003e  \n\u003cimg src=\"//help.geo.admin.ch/img/64all.jpg\"\u003e",
         "image": ""
     },
+    "65": {
+       "title": "Compare",
+       "text": "It is possible to compare two datasets. Select \"Compare\" in the Tools and the red cursor will appear on the middle of the map.\n\u003cimg src=\"//help.geo.admin.ch/img/65e_1.png\"\u003e\nThe selected layer in first position is displayed on the left side, all other layers on the right side.\nThe comparison can easily be done by sliding the red cursor with the mouse:",
+       "image":""
+    },
     "66": {
         "title": "All \"draw/measure\" functions",
-        "text": "1- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-1\" target=\"_blank\"\u003eAdd \u003cb\u003esymbol\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n2- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-2\" target=\"_blank\"\u003eAdd \u003cb\u003etext\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n3- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-3\" target=\"_blank\"\u003eAdd \u003cb\u003eline / polygon\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n4- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-4\" target=\"_blank\"\u003e\u003cb\u003eMeasure\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n5- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-5\" target=\"_blank\"\u003e\u003cb\u003eShare\u003c/b\u003e drawing / KML\u003c/a\u003e",
+        "text": "1- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-1\" target=\"_blank\"\u003eAdd \u003cb\u003esymbol\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n2- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-2\" target=\"_blank\"\u003eAdd \u003cb\u003etext\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n3- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-3\" target=\"_blank\"\u003eAdd \u003cb\u003eline / polygon\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n4- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-4\" target=\"_blank\"\u003e\u003cb\u003eMeasure\u003c/b\u003e\u003c/a\u003e\u003cbr\u003e\n5- \u003ca href=\"/hilfe?hkey=maps-1#maps-6-5\" target=\"_blank\"\u003e\u003cb\u003eShare\u003c/b\u003e drawing / KML\u003c/a\u003e\n\n\u003ciframe width=\"570\" height=\"307\" style=\"border:1px solid #ccc\"  src=\"https://www.youtube.com/embed/IglAmPcvjdI?rel=0\" frameborder=\"0\" allowfullscreen\u003e\u003c/iframe\u003e",
         "image": ""
     },
     "68": {
@@ -74,9 +219,49 @@
         "text": "To get informations on several obects, trace a recangle with CTRL+ mouse click, all objects included in the rectangle will be collected in a single information window:",
         "image": ""
     },
+    "69": {
+       "title": "Keyboard shortcuts",
+       "text": "\u003ciframe src=\"//help.geo.admin.ch/shortcuts.html\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" width=\"560\" height=\"700\"\u003e\u003c/iframe\u003e",
+       "image":""
+    },
     "70": {
         "title": "Report problem",
-        "text": "\u003cp\u003eThis tool enables you to send suggestions on map.geo.admin.ch. We welcome problem reports as well as general comments.\u003cbr /\u003eOpen map.geo.admin.ch and zoom in an area of interest: a street, an address, a place. Use the search tool to directly search your area of interest. Click top-right on \"Report problem\".\u003c/p\u003e\u003cp\u003e\u003cb\u003eYour e-mail\u003c/b\u003e\u003cbr /\u003eFill in the field with your e-mail address. The field is not mandatory.\u003c/p\u003e\u003cp\u003e\u003cb\u003eYour feedback to the current map extent \u003c/b\u003e\u003cbr /\u003eFill in with your comments or problem report.\u003c/p\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/70e.jpg\"\u003e\u003cp\u003e\u003cb\u003eYour drawing\u003c/b\u003e\u003cbr /\u003eYou can additionally provide a drawing by using the drawing tools. The drawing will be automatically attached to the report. This section is not mandatory.\u003c/p\u003e\u003cp\u003e\u003cb\u003eAttach a file\u003c/b\u003e\u003cbr /\u003eYou can provide additional information by attaching a file (\"Browse\"). This section is not mandatory.\u003c/p\u003e\u003cp\u003eClick \"Send\"\u003c/p\u003e\u003cp\u003e\u003cb\u003eWhat file formats can be attached?\u003c/b\u003e\u003cbr /\u003eThe following formats are supported: .pdf, .zip, .jpg, .jpeg, .kml, .kmz oder gpx.\u003c/p\u003e\u003cp\u003e\u003cb\u003eWhat happens to my report?\u003c/b\u003e\u003cbr /\u003eIn case of problems related to data, the information will be forwarded to the respective data owner.\u003c/p\u003e",
+        "text": "\u003cp\u003eThis tool enables you to send suggestions on map.geo.admin.ch. We welcome problem reports as well as general comments: you can report, for example, changes in the map, improvements to the data or questions about the website.\u003cbr /\u003e\nOpen map.geo.admin.ch and zoom in an area of interest: a street, an address, a place. Use the search tool to directly search your area of interest. Click top-right on \"Report problem\".\n\u003c/p\u003e\u003cp\u003e\u003cb\u003e1. Report in this field changes in the map, improvements to the data or questions about this website (required):\u003c/b\u003e\u003cbr /\u003eFill in with your comments or problem report. This field is mandatory.\u003c/p\u003e\n\u003cimg src=\"//help.geo.admin.ch/img/70e.jpg\"\u003e\u003cp\u003e\u003cb\u003e2. Indicate the appropriate location on the map:\u003c/b\u003e\u003cbr /\u003eYou can provide a drawing by using the drawing tools. The drawing will be automatically attached to the report.\u003cbr /\u003eThis section is not mandatory, but useful if you report problems related to the data.\n\u003c/p\u003e\u003cp\u003e\u003cb\u003e3. Your Email:\u003c/b\u003e\u003cbr /\u003eFill in the field with your e-mail address. The field is not mandatory.\u003c/p\u003e\u003cp\u003e\u003cb\u003eAttach a file\u003c/b\u003e\u003cbr /\u003eYou can provide additional information by attaching a file (\"Browse\"). This section is not mandatory.\u003cbr\u003eClick \"Send\"\u003c/p\u003e\u003cp\u003e\u003cb\u003eWhat file formats can be attached?\u003c/b\u003e\u003cbr /\u003eThe following formats are supported: .pdf, .zip, .jpg, .jpeg, .kml, .kmz oder gpx.\u003c/p\u003e\u003cp\u003e\u003cb\u003eWhat happens to my report?\u003c/b\u003e\u003cbr /\u003eIn case of problems related to data, the information will be forwarded to the respective data owner.\u003cbr /\u003eThe information you provide may be stored, processed and possibly published in an anonymous form by an official office of the Confederation.\u003c/p\u003e",
         "image": ""
+    },
+    "80": {
+       "title": "TECHNICAL AND LEGAL INFORMATION",
+       "text": "#",
+       "image":""
+    },
+    "81": {
+       "title": "Informations and conditions",
+       "text": "\u003cb1\u003eTechnical informations and support\u003cb2\u003e\n Information on data storage\napi3.geo.admin.ch [//api3.geo.admin.ch]\n\n\u003cb1\u003eLegal /Conditions of Use\u003cb2\u003e\nThe general legal provisions  http://www.disclaimer.admin.ch which apply to \nmap.geo.admin.ch [http://www.disclaimer.admin.ch]",
+       "image":""
+    },
+    "91": {
+       "title": "Add symbol",
+       "text": "In main menu item \"Draw & measure on map\" select \"Symbol\". Click the mouse on the desired location to add a symbol.\n\nOnce placed, the symbol can be modified (size and icon) and receive a description in HTML format or text (left down window). This description is displayed when the symbol is mouse-clicked while the drawing is shared or displayed through KML. \n\nEvery element can be modified by clicking on it.  Several elements can be selected to be modified/deleted by SHIFT + mouse-clicking on the objects, or deleted by using the options of the scrolling menu \"More...\".",
+       "image":""
+    },
+    "92": {
+       "title": "Add text",
+       "text": "In main menu item \"Draw & measure on map\" select \"Text\". Click the mouse on the desired location to add text.\n\nOnce placed, the text and its colour can be modified (window).  \n\nEvery element can be modified by clicking on it.  Several elements can be selected to be modified/deleted by SHIFT + mouse-clicking on the objects, or deleted by using the options of the scrolling menu \"More...\".",
+       "image":""
+    },
+    "93": {
+       "title": "Add line / polygon",
+       "text": "In main menu item \"Draw & measure on map\" select \"Line\". Click the mouse to start the line, the next clicks add new line segments. Double-click to finish.\n\nNew points can be added to the drawing: click on a segment and move the new point, then release the mouse to validate its position.\nThe left down window allows to:\n- change the \u003cb\u003ecolor\u003c/b\u003e of the line and give it a \u003cb\u003edescription\u003c/b\u003e in HTML format or text. This description is displayed when the symbol is mouse-clicked while the drawing is shared or displayed through KML.\n- display the drawing's \u003cb\u003eprofile\u003c/b\u003e\n- display the \u003cb\u003emeasurements\u003c/b\u003e of the line (distance, surface, azimut)\n\nEvery element can be modified by clicking on it.  Several elements can be selected to be modified/deleted by SHIFT + mouse-clicking on the objects, or deleted by using the options of the scrolling menu \"More...\". \u003cb\u003ePress DEL to remove the last point drawn\u003c/b\u003e",
+       "image":""
+    },
+    "94": {
+       "title": "Measure",
+       "text": "In main menu item \"Draw & measure on map\" select \"Measure\". Click the mouse to define the start of the measurement, next clicks to add new line segments or create a surface. Double-click to finish the line or click on the start point to close the surface.\n\nThe measurement of distance, surface and profile are automatically displayed.\n\nEvery element can be modified by clicking on it.  Several elements can be selected to be modified/deleted by SHIFT + mouse-clicking on the objects, or deleted by using the options of the scrolling menu \"More...\". \u003cb\u003ePress DEL to remove the last point drawn\u003c/b\u003e\n\n\u003cimg src=\"http://help.geo.admin.ch/img/94e.png\"\u003e\n\u003clegend\u003eYour drawing is automatically saved for one year. By using this service, you agree the Conditions of Use.\u003c/legend\u003e\n\n\u003col\u003e\u003cli\u003ealtitude difference start - end\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/resize-vertical.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003eascent\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/ga-elevation-up.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003edescent\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/ga-elevation-down.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003ehighest point\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/chevron-up.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003elowest point\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/chevron-down.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003epath distance\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/resize-horizontal.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003elinear distance\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/eye.png\"\u003e\n\u003c/li\u003e\n\u003cli\u003ewalking time\u003cbr\u003e\n\u003cimg style=\"height: 30px; border:none;\" src=\"http://help.geo.admin.ch/img/clock-o.png\"\u003e\n\u003c/li\u003e\n\u003c/ol\u003e\n",
+       "image":""
+    },
+    "95": {
+       "title": "Share drawing / KML",
+       "text": "In main menu item \"Draw & measure on map\", all drawing elements (symbols, lines, texts) can be:\n\n- \u003cb\u003eShare link\u003c/b\u003e: shared with other users (1).\n- \u003cb\u003eAdmin link\u003c/b\u003e: edited later. This link shall be saved, if you need to modify/delete your drawing elements (2).\n- \u003cb\u003eExport\u003c/b\u003e your drawing elements as a dataset in KML format (3).",
+       "image":""
     }
 }
