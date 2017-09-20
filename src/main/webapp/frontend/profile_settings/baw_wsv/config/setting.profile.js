@@ -28,3 +28,4 @@ settingSearchServiceUrl = 'https://geoportal.wsv.res.bund.de/opensearch/query?q=
 settingKMLName = 'ITZBund';
 settingDefaultWMSList = [];
 settingDefaultMouseProjections = ['EPSG:25832', 'EPSG:25833', 'EPSG:4326', 'EPSG:31466', 'EPSG:31467', 'EPSG:31468', 'EPSG:2166', 'EPSG:2167', 'EPSG:3857'];
+settingEnableW3W = true;

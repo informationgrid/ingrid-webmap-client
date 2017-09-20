@@ -897,7 +897,7 @@ goog.require('ga_urlutils_service');
           }
           content = content + '},' +
             '"spatialReference":{' +
-            '"wkid":' + gaGlobalOptions.defaultEpsg.split(":")[1] +
+            '"wkid":' + gaGlobalOptions.defaultEpsg.split(':')[1] +
             '}' +
             '}' +
             ']' +

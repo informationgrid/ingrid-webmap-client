@@ -41,6 +41,10 @@
               <td>UTM 33N (East/North)</td>
               <td>{{coord25833}}</td>
           </tr>
+          <tr ng-if="enableW3W">
+              <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
+              <td>{{w3w}}</td>
+          </tr>
           <tr ng-if="qrcodeUrl">
             <td align="center" colspan="2">
               <img draggable="false" ng-src="{{qrcodeUrl}}" class="ga-qrcode">
@@ -93,6 +97,10 @@
               <tr>
                 <td>UTM 33N (East/North)</td>
                 <td>{{coord25833}}</td>
+              </tr>
+              <tr ng-if="enableW3W">
+                <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
+                <td>{{w3w}}</td>
               </tr>
               <tr ng-if="qrcodeUrl">
                 <td align="center" colspan="2">

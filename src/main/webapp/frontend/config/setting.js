@@ -76,3 +76,8 @@ var settingKMLName = 'INGRID';
 
 // Hide of catalog menu
 var settingHideCatalog = false;
+
+// Enable what3words
+var settingEnableW3W = false;
+var w3wUrl = 'https://api.what3words.com';
+var w3wApiKey = 'OM48J50Y';

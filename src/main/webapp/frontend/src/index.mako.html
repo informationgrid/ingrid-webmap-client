@@ -860,10 +860,10 @@ itemscope itemtype="http://schema.org/WebApplication"
           cachedPrintUrl: printUrl + cacheAdd,
           resourceUrl: location.origin + s3pathname + '',
           wmsUrl: wmsUrl,
-          w3wUrl: 'https://api.what3words.com',
+          w3wUrl: w3wUrl,
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
           lv95tolv03Url: 'https://geodesy.geo.admin.ch/reframe/lv95tolv03',
-          w3wApiKey: 'OM48J50Y',
+          w3wApiKey: w3wApiKey,
           // INGRID: Change REST service URL
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/wms/proxy/?url=',
           // INGRID: Change REST image URL
@@ -919,7 +919,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add setting to hide catalog menu
           isHideCatalog: settingHideCatalog,
           // INGRID: Add setting to define zoom level of gazetter search
-          gazetterZoom: settingGazetterZoom || 10
+          gazetterZoom: settingGazetterZoom || 10,
+          // INGRID: Enable what3words
+          enableW3W: settingEnableW3W || false
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

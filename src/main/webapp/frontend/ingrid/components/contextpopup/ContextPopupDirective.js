@@ -48,6 +48,8 @@ goog.require('ga_window_service');
 
             // INGRID: Add tabs
             scope.currentTab = 1;
+            // INGRID: Enable w3w
+            scope.enableW3W = gaGlobalOptions.enableW3W;
 
             // Tabs management stuff
             scope.activeTab = function(numTab) {
@@ -217,9 +219,8 @@ goog.require('ga_window_service');
                   coord2056 = coords;
                   scope.coord2056 = formatCoordinates(coord2056, 2);
                 });
-
-                updateW3W();
                 */
+                updateW3W();
               });
 
               updatePopupLinks();
@@ -377,7 +378,8 @@ goog.require('ga_window_service');
                 p.Y +
                 ',' +
                 p.X +
-                '],"spatialReference":{"wkid":'+ gaGlobalOptions.defaultEpsg.split(":")[1] +'}}}' +
+                '],"spatialReference":{"wkid":' +
+                gaGlobalOptions.defaultEpsg.split(':')[1] + '}}}' +
                 ']}';
 
               $http.get(bwaLocatorUrl + '&data=' + content, {
