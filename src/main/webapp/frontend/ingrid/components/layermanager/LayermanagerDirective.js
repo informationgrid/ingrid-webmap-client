@@ -263,8 +263,10 @@ goog.require('ga_urlutils_service');
         };
 
         scope.hasMetadata = function(layer) {
+          // INGRID: Add wmts check
           return scope.isBodLayer(layer) ||
-              gaMapUtils.isExternalWmsLayer(layer);
+              gaMapUtils.isExternalWmsLayer(layer) ||
+              gaMapUtils.isExternalWmtsLayer(layer);
         };
 
 // INGRID: Add function for zoomToExtent

@@ -33,8 +33,20 @@ goog.require('ga_wms_service');
           id = layer.id;
         }
         // INGRID: Encode id
-        promise = gaLayers.getMetaDataOfLayerWithLegend(encodeURIComponent(id),
-          encodeURIComponent(gaWms.getLegendURL(layer)));
+        if (layer.hasLegend && layer.legendUrl) {
+          promise = gaLayers.
+            getMetaDataOfLayerWithLegend(encodeURIComponent(id),
+            encodeURIComponent(layer.legendUrl));
+        } else if (gaMapUtils.isExternalWmsLayer(layer) ||
+          (layer.hasLegend && layer.type &&
+            layer.type.toLowerCase() === 'wms')) {
+          promise = gaLayers.
+            getMetaDataOfLayerWithLegend(encodeURIComponent(id),
+            encodeURIComponent(gaWms.getLegendURL(layer)));
+        } else if (id) {
+          promise = gaLayers.
+            getMetaDataOfLayerWithLegend(encodeURIComponent(id));
+        }
         return promise.then(function(resp) {
           // INGRID: Add replaces to localisation html.
           var data = resp.data;
