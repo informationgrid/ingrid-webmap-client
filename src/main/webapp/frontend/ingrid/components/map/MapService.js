@@ -1474,8 +1474,7 @@ goog.require('ga_urlutils_service');
         isExternalWmsLayer: function(olLayerOrId) {
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                // INGRID: Length now 6 because adding WMS version and queryable
-                olLayerOrId.split('||').length == 6;
+                olLayerOrId.split('||').length >= 4;
           }
           return !!(olLayerOrId && !olLayerOrId.bodId &&
               this.isWMSLayer(olLayerOrId));
