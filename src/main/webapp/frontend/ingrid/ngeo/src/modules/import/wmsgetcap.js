@@ -26,15 +26,29 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     if (layer['BoundingBox']) {
       for (let i = 0, ii = layer['BoundingBox'].length; i < ii; i++) {
         const bbox = layer['BoundingBox'][i];
-        const code = bbox['crs'] || bbox['srs'];
+        const code = bbox['CRS'] || bbox['SRS'];
         if (code && code.toUpperCase() == projCode.toUpperCase()) {
-          return bbox['extent'];
+          return [parseFloat(bbox['minx']), parseFloat(bbox['miny']), parseFloat(bbox['maxx']), parseFloat(bbox['maxy'])];
         }
       }
     }
 
-    const wgs84Extent = layer['EX_GeographicBoundingBox'] || layer['LatLonBoundingBox'];
+    const wgs84Extent = layer['EX_GeographicBoundingBox'] || layer['LatLonBoundingBox']
     if (wgs84Extent) {
+      // INGRID: Add 'extent'
+      var extent = layer['EX_GeographicBoundingBox'] ? 
+        [
+          parseFloat(wgs84Extent['westBoundLongitude']),
+          parseFloat(wgs84Extent['southBoundLatitude']),
+          parseFloat(wgs84Extent['eastBoundLongitude']),
+          parseFloat(wgs84Extent['northBoundLatitude'])
+        ] :
+        [
+          parseFloat(wgs84Extent['minx']),
+          parseFloat(wgs84Extent['miny']),
+          parseFloat(wgs84Extent['maxx']),
+          parseFloat(wgs84Extent['maxy'])
+        ];
       // If only an extent in wgs 84 is available, we use the
       // intersection between proj extent and layer extent as the new
       // layer extent. We compare extients in wgs 84 to avoid
@@ -42,9 +56,9 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
       // (-180,-90,180,90)
       const projWgs84Extent = ol.proj.transformExtent(proj.getExtent(), projCode, wgs84);
       const layerWgs84Extent = ol.extent.getIntersection(projWgs84Extent, wgs84Extent);
-      if (layerWgs84Extent) {
-        // INGRID: Change 'layerWgs84Extent' to 'wgs84Extent'
-        return ol.proj.transformExtent(wgs84Extent, wgs84, projCode);
+      // INGRID: Change 'layerWgs84Extent' to 'extent'
+      if (extent) {
+        return ol.proj.transformExtent(extent, wgs84, projCode);
       }
     }
   };
@@ -68,7 +82,7 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     }
 
     if (!layer['isInvalid']) {
-      layer['wmsUrl'] = getCap['Capability']['Request']['GetMap']['DCPType'][0]['HTTP']['Get']['OnlineResource'];
+      layer['wmsUrl'] = getCap['Capability']['Request']['GetMap']['DCPType']['HTTP']['Get']['OnlineResource']['xlink:href'];
       layer['wmsVersion'] = getCap['version'];
       layer['id'] = `WMS||${layer['wmsUrl']}||${layer['Name']}`;
       layer['extent'] = getLayerExtentFromGetCap(layer, proj);
@@ -130,7 +144,7 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
       scope.$watch('getCap', (val) => {
         let err;
         try {
-          val = new ol.format.WMSCapabilities().read(val);
+          val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
         } catch (e) {
           err = e;
         }
