@@ -78,7 +78,8 @@ goog.require('ngeo.fileService');
       file = file || {};
 
       // INGRID: Add check wms objects
-      if (ngeoFile.isWmsGetCap(data) || data.WMT_MS_Capabilities || data.WMS_Capabilities) {
+      if (ngeoFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
+          data.WMS_Capabilities) {
         $scope.wmsGetCap = data;
         defer.resolve({
           message: 'upload_succeeded'
