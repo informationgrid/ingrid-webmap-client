@@ -9,41 +9,17 @@
   <div class="popover-content">
       <table ng-if="showBWaLocator() == false" >
           <tbody>
-          <tr>
-              <td>Mercator</td>
-              <td>{{coordDefault}}</td>
-          </tr>
-          <tr>
-              <td>WGS 84 (Breite/Länge)</td>
-              <td>{{coord4326}}</td>
-          </tr>
-          <tr>
-              <td>GK2</td>
-              <td>{{coord31466}}</td>
-          </tr>
-          <tr>
-              <td>GK3</td>
-              <td>{{coord31467}}</td>
-          </tr>
-          <tr>
-              <td>GK4</td>
-              <td>{{coord31468}}</td>
-          </tr>
-          <tr>
-              <td>GK5</td>
-              <td>{{coord31469}}</td>
-          </tr>
-          <tr>
-              <td>UTM 32N (East/North)</td>
-              <td>{{coord25832}}</td>
-          </tr>
-          <tr>
-              <td>UTM 33N (East/North)</td>
-              <td>{{coord25833}}</td>
+          <tr ng-repeat="projection in projections">
+            <td>{{projection.label}}</td>
+            <td>{{projection.coordinates}}</td>
           </tr>
           <tr ng-if="enableW3W">
-              <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
-              <td>{{w3w}}</td>
+            <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
+            <td>{{w3w}}</td>
+          </tr>
+          <tr>
+              <td></td>
+              <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
           </tr>
           <tr ng-if="qrcodeUrl">
             <td align="center" colspan="2">
@@ -66,41 +42,17 @@
         <div class="tab-pane" ng-class="getTabClass(1)">
           <table>
             <tbody>
-              <tr>
-                <td>Mercator</td>
-                <td>{{coordDefault}}</td>
-              </tr>
-              <tr>
-                <td>WGS 84 (Breite/Länge)</td>
-                <td>{{coord4326}}</td>
-              </tr>
-              <tr>
-                <td>GK2</td>
-                <td>{{coord31466}}</td>
-              </tr>
-              <tr>
-                <td>GK3</td>
-                <td>{{coord31467}}</td>
-              </tr>
-              <tr>
-                <td>GK4</td>
-                <td>{{coord31468}}</td>
-              </tr>
-              <tr>
-                <td>GK5</td>
-                <td>{{coord31469}}</td>
-              </tr>
-              <tr>
-                <td>UTM 32N (East/North)</td>
-                <td>{{coord25832}}</td>
-              </tr>
-              <tr>
-                <td>UTM 33N (East/North)</td>
-                <td>{{coord25833}}</td>
+              <tr ng-repeat="projection in projections">
+                <td>{{projection.label}}</td>
+                <td>{{projection.coordinates}}</td>
               </tr>
               <tr ng-if="enableW3W">
                 <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
                 <td>{{w3w}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
               </tr>
               <tr ng-if="qrcodeUrl">
                 <td align="center" colspan="2">

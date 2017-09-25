@@ -136,18 +136,26 @@ goog.require('ga_window_service');
               var coord2056 = ol.proj.transform(coordDefault,
                   gaGlobalOptions.defaultEpsg, 'EPSG:2056');
               // INGRID: Add coordinates
-              var coord31466 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:31466');
-              var coord31467 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:31467');
-              var coord31468 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:31468');
-              var coord31469 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:31469');
-              var coord25832 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:25832');
-              var coord25833 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:25833');
+              var coord3857 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:3857');
+              var coord31466 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:31466');
+              var coord31467 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:31467');
+              var coord31468 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:31468');
+              var coord31469 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:31469');
+              var coord25832 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:25832');
+              var coord25833 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:25833');
+              var coord2166 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:2166');
+              var coord2167 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:2167');
+              var coord2168 = ol.proj.transform(coord4326,
+                  'EPSG:4326', 'EPSG:2168');
 
               // INGRID: Change 'coord21781' to 'coordDefault'
               // and format coordDefault
@@ -158,19 +166,6 @@ goog.require('ga_window_service');
                                    replace(/ /g, '');
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
               scope.coord2056 = formatCoordinates(coord2056, 2) + ' *';
-              // INGRID: Add coordinates to scope
-              scope.coord31466 = ol.coordinate.format(coord31466,
-                '{y}, {x}', 2);
-              scope.coord31467 = ol.coordinate.format(coord31467,
-                '{y}, {x}', 2);
-              scope.coord31468 = ol.coordinate.format(coord31468,
-                '{y}, {x}', 2);
-              scope.coord31469 = ol.coordinate.format(coord31469,
-                '{y}, {x}', 2);
-              scope.coord25832 = ol.coordinate.format(coord25832,
-                '{y}, {x}', 2);
-              scope.coord25833 = ol.coordinate.format(coord25833,
-                '{y}, {x}', 2);
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
                 var utm_31t = ol.proj.transform(coord4326,
                     'EPSG:4326', 'EPSG:32631');
@@ -183,6 +178,72 @@ goog.require('ga_window_service');
                   // INGRID: Remove return '-'
                   // return '-';
               }
+              var projections = [{
+                value: 'EPSG:3857',
+                label: 'Mercator (Breite/Länge)',
+                coordinates: coord3857
+              }, {
+                value: 'EPSG:4326',
+                label: 'WGS 84 (Breite/Länge)',
+                coordinates: coord4326
+              }, {
+                value: 'EPSG:31466',
+                label: 'GK2 - DHDN (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord31466,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:31467',
+                label: 'GK3 - DHDN (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord31467,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:31468',
+                label: 'GK4 - DHDN (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord31468,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:31469',
+                label: 'GK5 - DHDN (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord31469,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:25832',
+                label: 'UTM 32N - ETRS89 (East/North)',
+                coordinates: ol.coordinate.format(coord25832,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:25833',
+                label: 'UTM 33N - ETRS89 (East/North)',
+                coordinates: ol.coordinate.format(coord25832,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:2166',
+                label: 'GK3 - S42/83 (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord2166,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:2167',
+                label: 'GK4 - S42/83 (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord2167,
+                  '{x}, {y}', 2)
+              }, {
+                value: 'EPSG:2168',
+                label: 'GK5 - S42/83 (Rechtswert/Hochwert)',
+                coordinates: ol.coordinate.format(coord2168,
+                  '{x}, {y}', 2)
+              }];
+              var sortProjections = [];
+              for (var gp in gaGlobalOptions.defaultMouseProjections) {
+                var gaProj = gaGlobalOptions.defaultMouseProjections[gp];
+                for (var p in projections) {
+                  var proj = projections[p];
+                  if (gaProj === proj.value) {
+                    sortProjections.push(proj);
+                    break;
+                  }
+                }
+              }
+              scope.projections = sortProjections;
 
               coord4326['lon'] = coord4326[0];
               coord4326['lat'] = coord4326[1];
