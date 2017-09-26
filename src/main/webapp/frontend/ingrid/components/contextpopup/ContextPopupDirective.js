@@ -181,11 +181,13 @@ goog.require('ga_window_service');
               var projections = [{
                 value: 'EPSG:3857',
                 label: 'Mercator (Breite/Länge)',
-                coordinates: coord3857
+                coordinates: ol.coordinate.format(coord3857,
+                  '{y}, {x}', 2)
               }, {
                 value: 'EPSG:4326',
                 label: 'WGS 84 (Breite/Länge)',
-                coordinates: coord4326
+                coordinates: ol.coordinate.format(coord4326,
+                  '{y}, {x}', 5)
               }, {
                 value: 'EPSG:31466',
                 label: 'GK2 - DHDN (Rechtswert/Hochwert)',
