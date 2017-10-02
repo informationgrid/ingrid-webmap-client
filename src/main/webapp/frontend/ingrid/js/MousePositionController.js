@@ -37,55 +37,55 @@ goog.require('ga_measure_service');
       }
     }, {
       value: 'EPSG:31466',
-      label: 'GK2 - DHDN (R, H)',
+      label: 'GK2 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:31467',
-      label: 'GK3 - DHDN (R, H)',
+      label: 'GK3 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:31468',
-      label: 'GK4 - DHDN (R, H)',
+      label: 'GK4 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:31469',
-      label: 'GK5 - DHDN (R, H)',
+      label: 'GK5 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:25832',
-      label: 'UTM 32N - ETRS89 (E, N)',
+      label: 'UTM 32N - ETRS89 (East/North)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:25833',
-      label: 'UTM 33N - ETRS89 (E, N)',
+      label: 'UTM 33N - ETRS89 (East/North)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:2166',
-      label: 'GK3 - S42/83 (R, H)',
+      label: 'GK3 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:2167',
-      label: 'GK4 - S42/83 (R, H)',
+      label: 'GK4 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
     }, {
       value: 'EPSG:2168',
-      label: 'GK5 - S42/83 (R, H)',
+      label: 'GK5 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
         return ol.coordinate.format(coordinates, '{x}, {y}', 2);
       }
