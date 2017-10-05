@@ -9085,6 +9085,44 @@
                         "id": 1497
                     }]
                 }]
+            },{
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
+                "label": "WMTS Examples",
+                "id": 9000,
+                "children": [{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "InlandENCs der WSV WMTS (REST)",
+                    "layerBodId": "wmts_wmsienc",
+                    "id": 9006
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Bundeswasserstrassen WMTS (REST)",
+                    "layerBodId": "wmts_bwastr",
+                    "id": 9007
+                }]
+            },{
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
+                "label": "WMS Combine Examples",
+                "id": 9008,
+                "children": [{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Combine Biogasanlagen+Windenergieanlagen",
+                    "layerBodId": "comb_energieatlas_1",
+                    "id": 9009
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Combine Windenergiegebiete+Windenergieanlagen",
+                    "layerBodId": "comb_energieatlas_2",
+                    "id": 9010
+                }]
             }]
         }
     },

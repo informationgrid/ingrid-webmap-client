@@ -169,55 +169,76 @@ public class WmsResource {
         String html = "";
         
         if(layer != null){
-            String wmsURL = null;
-            String wmsLegend = null;
-            String wmsTitle = null;
-            String wmsName = null;
-            String wmsHost = null;
-            String wmsLayerAbstract = null;
+            String serviceCapabilitiesURL = null;
+            String serviceHost = null;
+            String serviceType = null;
+            String layerLegend = null;
+            String layerTitle = null;
+            String layerName = null;
+            String layerAbstract = null;
             
             if(layer.indexOf("||") > -1){
-                // Extern WMS
+                // Extern
                 String[] layerSplit = layer.split( "\\|\\|" );
+                serviceType = layerSplit[0].trim();
                 if(layerSplit != null && layerSplit.length > 0){
-                    // WMS||Wasserstrassenklassen||http://atlas.wsv.bund.de/bwastr/wms?||Wasserstrassenklassen||1.1.1||true
-                    wmsTitle = layerSplit[1];
-                    wmsName = layerSplit[3];
-                    wmsHost = layerSplit[2];
-                    if(wmsHost.indexOf("?") == -1){
-                        wmsHost = wmsHost + "?";
+                    if(serviceType.toLowerCase().equals( "wms" )){
+                        // WMS||Wasserstrassenklassen||http://atlas.wsv.bund.de/bwastr/wms?||Wasserstrassenklassen||1.1.1||true
+                        layerTitle = layerSplit[1];
+                        layerName = layerSplit[3];
+                        serviceHost = layerSplit[2];
+                        if(serviceHost.indexOf("?") == -1){
+                            serviceHost = serviceHost + "?";
+                        }
+                        String wmsVersion = "1.3.0"; 
+                        if(layerSplit[4] != null){
+                            wmsVersion = layerSplit[4];
+                        }
+                        serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
+                    }else if(serviceType.toLowerCase().equals( "wmts" )){
+                        // WMTS||WmsBWaStr||http:%2F%2Fatlas.wsv.bund.de%2Fbwastr%2Fwmts%2F1.0.0%2FWMTSCapabilities.xml
+                        layerTitle = layerSplit[1];
+                        layerName = layerSplit[1];
+                        serviceCapabilitiesURL = layerSplit[2];
                     }
-                    String wmsVersion = "1.3.0"; 
-                    if(layerSplit[4] != null){
-                        wmsVersion = layerSplit[4];
-                    }
-                    wmsURL = Utils.checkWMSUrl(wmsHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
                 }
             }else {
-                // Intern WMS
+                // Intern
                 JSONObject json = readJsonFromUrl(url);
                 if(json != null){
                     JSONObject jsonLayer = (JSONObject) json.get(layer);
                     if(jsonLayer != null){
-                        wmsTitle = jsonLayer.getString("label");
-                        wmsHost = jsonLayer.getString("wmsUrl");
-                        if(wmsHost.indexOf("?") == -1){
-                            wmsHost = wmsHost + "?";
+                        serviceType = jsonLayer.getString("type").trim();
+                        if(serviceType.toLowerCase().equals( "wms" )){
+                            layerTitle = jsonLayer.getString("label");
+                            serviceHost = jsonLayer.getString("wmsUrl");
+                            if(serviceHost != null){
+                                if(serviceHost.indexOf("?") == -1){
+                                    serviceHost = serviceHost + "?";
+                                }
+                                serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version"));
+                            }
+                            if(jsonLayer.has("legendUrl")){
+                                layerLegend = jsonLayer.getString("legendUrl");
+                            }
+                            layerName = jsonLayer.getString("wmsLayers");
+                        }else if(serviceType.toLowerCase().equals( "wmts" )){
+                            layerTitle = jsonLayer.getString("label");
+                            serviceCapabilitiesURL = jsonLayer.getString("serviceUrl");
+                            if(jsonLayer.has("legendUrl")){
+                                layerLegend = jsonLayer.getString("legendUrl");
+                            }
+                            layerName = jsonLayer.getString("serverLayerName");
                         }
-                        wmsURL = Utils.checkWMSUrl(wmsHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version"));
-                        if(jsonLayer.has("legendUrl")){
-                            wmsLegend = jsonLayer.getString("legendUrl");
-                        }
-                        wmsName = jsonLayer.getString("wmsLayers");
                     }
                 }
             }
-            if(wmsLegend == null){
-                wmsLegend = legend;
+            if(layerLegend == null){
+                layerLegend = legend;
             }
             
-            if(wmsURL != null && wmsName != null){
-                String response = HttpProxy.doRequest( wmsURL );
+            if(serviceCapabilitiesURL != null && layerName != null){
+                String response = HttpProxy.doRequest( serviceCapabilitiesURL );
                 DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                 docFactory.setValidating(false);
                 Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
@@ -225,180 +246,380 @@ public class WmsResource {
                 Node field = null;
                 Node layerField = null;
                 
-                field = (Node) xpath.evaluate("//Layer/Name[text()=\""+wmsName+"\"]", doc, XPathConstants.NODE);
-                if(field != null){
-                    layerField = field.getParentNode();
-                    field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
+                if(serviceType.toLowerCase().equals( "wms" )){
+                    field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
                     if(field != null){
-                        wmsLayerAbstract = HtmlEncoder.encode(field.getTextContent());
+                        layerField = field.getParentNode();
+                        field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
+                        if(field != null){
+                            layerAbstract = HtmlEncoder.encode(field.getTextContent());
+                        }
                     }
-                }
-                
-                // Create HTML
-                html = html + "<div class=\"legend-container\">";
-                html = html + "<div class=\"legend-header\">";
-                if(wmsTitle != null){
-                    html = html + "<p class=\"bod-title\">" + wmsTitle + "</p>";
-                }
-                if(wmsLayerAbstract != null){
-                    html = html + "<p class=\"legend-abstract\">" + wmsLayerAbstract + "</p>";
-                }
-                
-                html = html + "</div>";
-                html = html + "<div class=\"legend-footer\">";
-                if(wmsLegend != null){
-                    html = html + "<br>";
-                    html = html + "<span>metadata_legend</span><br>";
-                    html = html + "<div class=\"img-container\">";
-                    html = html + "<img alt=\"layer legend img\" src=\"" + wmsLegend + "\">";
+                    
+                    // Create HTML
+                    html = html + "<div class=\"legend-container\">";
+                    html = html + "<div class=\"legend-header\">";
+                    if(layerTitle != null){
+                        html = html + "<p class=\"bod-title\">" + layerTitle + "</p>";
+                    }
+                    if(layerAbstract != null){
+                        html = html + "<p class=\"legend-abstract\">" + layerAbstract + "</p>";
+                    }
+                    
+                    html = html + "</div>";
+                    html = html + "<div class=\"legend-footer\">";
+                    
+                    if(layerLegend.equals( legend )){
+                        field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", layerField, XPathConstants.NODE);
+                        if(field != null){
+                          layerLegend = field.getTextContent();
+                        }
+                    }
+                    
+                    if(layerLegend != null && !layerLegend.equals( "undefined" )){
+                        html = html + "<br>";
+                        html = html + "<span>metadata_legend</span><br>";
+                        html = html + "<div class=\"img-container\">";
+                        html = html + "<img alt=\"layer legend img\" src=\"" + layerLegend + "\">";
+                        html = html + "</div>";
+                    }
+                    html = html + "<br><br>";
+                    html = html + "<span>metadata_information</span><br>";
+                    html = html + "<table>";
+                    html = html + "<tbody>";
+                    
+                    field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_title</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/Name", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_id</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                         html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/Abstract", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_abstract</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/Fees", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_fees</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/AccessConstraints", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_accessconstraints</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactPerson", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_contactperson</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_organisation</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Address", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_addresse</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    String city = null;
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/City", doc, XPathConstants.NODE);
+                    if(field != null){
+                        city = HtmlEncoder.encode(field.getTextContent());
+                    }
+    
+                    String plz = null;
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/PostCode", doc, XPathConstants.NODE);
+                    if(field != null){
+                        plz = HtmlEncoder.encode(field.getTextContent());
+                    }
+                    
+                    if(city != null || plz != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_city</td>";
+                        html = html + "<td>";
+                        if(plz != null){
+                            html = html + "" + plz + " ";
+                        }
+                        if(city != null){
+                            html = html + "" + city;
+                        }
+                        html = html + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Country", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_country</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactVoiceTelephone", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_phone</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactFacsimileTelephone", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_fax</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactElectronicMailAddress", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_mail</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_resource</td>";
+                        html = html + "<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>";
+                        html = html + "</tr>";
+                    }
+                    
+                    if(serviceCapabilitiesURL != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_url</td>";
+                        html = html + "<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\">metadata_service_url_link</a></td>";
+                        html = html + "</tr>";
+                    }
+                    
+                    html = html + "</tbody>";
+                    html = html + "</table>";
+                    html = html + "</div>";
+                    html = html + "</div>";
+                }else if(serviceType.toLowerCase().equals( "wmts" )){
+                    field = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
+                    if(field != null){
+                        layerField = field.getParentNode();
+                        field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
+                        if(field != null){
+                            layerAbstract = HtmlEncoder.encode(field.getTextContent());
+                        }
+                        field = (Node) xpath.evaluate( "./Title", layerField, XPathConstants.NODE);
+                        if(field != null){
+                            layerTitle = HtmlEncoder.encode(field.getTextContent());
+                        }
+                        
+                    }
+                    
+                    // Create HTML
+                    html = html + "<div class=\"legend-container\">";
+                    html = html + "<div class=\"legend-header\">";
+                    if(layerTitle != null){
+                        html = html + "<p class=\"bod-title\">" + layerTitle + "</p>";
+                    }
+                    if(layerAbstract != null){
+                        html = html + "<p class=\"legend-abstract\">" + layerAbstract + "</p>";
+                    }
+                    
+                    html = html + "</div>";
+                    html = html + "<div class=\"legend-footer\">";
+                    if(layerLegend == null || layerLegend.equals( "undefined" )){
+                        field = (Node) xpath.evaluate( "./Style/LegendURL/@href", layerField, XPathConstants.NODE);
+                        if(field != null){
+                            layerLegend = field.getTextContent();
+                        }else{
+                            layerLegend = null;
+                        }
+                        
+                    }
+                    
+                    if(layerLegend != null) {
+                        html = html + "<br>";
+                        html = html + "<span>metadata_legend</span><br>";
+                        html = html + "<div class=\"img-container\">";
+                        html = html + "<img alt=\"layer legend img\" src=\"" + layerLegend + "\">";
+                        html = html + "</div>";
+                    }
+                    html = html + "<br><br>";
+                    html = html + "<span>metadata_information</span><br>";
+                    html = html + "<table>";
+                    html = html + "<tbody>";
+                    
+                    field = (Node) xpath.evaluate( ".//ServiceIdentification/Title", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_title</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceIdentification/ServiceType", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_id</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                         html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceIdentification/Abstract", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_abstract</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceIdentification/Fees", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_fees</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceIdentification/AccessConstraints", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_accessconstraints</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_contactperson</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/IndividualName", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_organisation</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/DeliveryPoint", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_addresse</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    String city = null;
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/City", doc, XPathConstants.NODE);
+                    if(field != null){
+                        city = HtmlEncoder.encode(field.getTextContent());
+                    }
+    
+                    String plz = null;
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/PostalCode", doc, XPathConstants.NODE);
+                    if(field != null){
+                        plz = HtmlEncoder.encode(field.getTextContent());
+                    }
+                    
+                    if(city != null || plz != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_city</td>";
+                        html = html + "<td>";
+                        if(plz != null){
+                            html = html + "" + plz + " ";
+                        }
+                        if(city != null){
+                            html = html + "" + city;
+                        }
+                        html = html + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/Country", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_country</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Phone/Voice", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_phone</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Phone/Facsimile", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_fax</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ServiceContact/ContactInfo/Address/ElectronicMailAddress", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_mail</td>";
+                        html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
+                        html = html + "</tr>";
+                    }
+    
+                    field = (Node) xpath.evaluate( ".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
+                    if(field != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_resource</td>";
+                        html = html + "<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>";
+                        html = html + "</tr>";
+                    }
+                    
+                    if(serviceCapabilitiesURL != null){
+                        html = html + "<tr>";
+                        html = html + "<td>metadata_service_url</td>";
+                        html = html + "<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\">metadata_service_url_link</a></td>";
+                        html = html + "</tr>";
+                    }
+                    
+                    html = html + "</tbody>";
+                    html = html + "</table>";
+                    html = html + "</div>";
                     html = html + "</div>";
                 }
-                html = html + "<br><br>";
-                html = html + "<span>metadata_information</span><br>";
-                html = html + "<table>";
-                html = html + "<tbody>";
-                
-                field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_title</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/Name", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_id</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                     html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/Abstract", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_abstract</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/Fees", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_fees</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/AccessConstraints", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_accessconstraints</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactPerson", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_contactperson</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_organisation</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Address", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_addresse</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                String city = null;
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/City", doc, XPathConstants.NODE);
-                if(field != null){
-                    city = HtmlEncoder.encode(field.getTextContent());
-                }
-
-                String plz = null;
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/PostCode", doc, XPathConstants.NODE);
-                if(field != null){
-                    plz = HtmlEncoder.encode(field.getTextContent());
-                }
-                
-                if(city != null || plz != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_city</td>";
-                    html = html + "<td>";
-                    if(plz != null){
-                        html = html + "" + plz + " ";
-                    }
-                    if(city != null){
-                        html = html + "" + city;
-                    }
-                    html = html + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Country", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_country</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactVoiceTelephone", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_phone</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactFacsimileTelephone", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_fax</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactElectronicMailAddress", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_mail</td>";
-                    html = html + "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-                    html = html + "</tr>";
-                }
-
-                field = (Node) xpath.evaluate( ".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
-                if(field != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_resource</td>";
-                    html = html + "<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>";
-                    html = html + "</tr>";
-                }
-                
-                if(wmsURL != null){
-                    html = html + "<tr>";
-                    html = html + "<td>metadata_service_url</td>";
-                    html = html + "<td><a target=\"new\" href=\"" + wmsURL + "\">metadata_service_url_link</a></td>";
-                    html = html + "</tr>";
-                }
-                
-                html = html + "</tbody>";
-                html = html + "</table>";
-                html = html + "</div>";
-                html = html + "</div>";
             }
         }
         return Response.ok(html).build();

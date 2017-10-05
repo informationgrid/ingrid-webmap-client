@@ -244,7 +244,12 @@ public class FileResource {
             try {
                 content = new String( Files.readAllBytes( Paths.get( path + "" + user + "/" + id ) ) );
             } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    // Try to get kml from portal tmp kml service folder.
+                    content = new String( Files.readAllBytes( Paths.get( "./data/" + user + "/" + id ) ) );
+                } catch (IOException e1) {
+                    e.printStackTrace();
+                }
             }
         }
         return content;
@@ -266,10 +271,10 @@ public class FileResource {
             } catch (MalformedURLException e) {
                 return Response.status(Response.Status.NOT_FOUND ).build();
             } catch (IOException e) {
-                return Response.status(Response.Status.OK ).build();
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
             }
         }
-        return Response.status(Response.Status.OK ).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
     @GET
@@ -309,10 +314,11 @@ public class FileResource {
             byte[] imageData = baos.toByteArray();
             return Response.ok(new ByteArrayInputStream(imageData)).build();
         } catch(WriterException e){
-            
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
         } catch (IOException e) {
+            Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
         }
-        return Response.status(Response.Status.OK ).build();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
     
@@ -373,7 +379,7 @@ public class FileResource {
         }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
-        if(email != null && email.length() > 0){
+        if(email != null && email.length() > 0 && !email.equals( "undefined" )){
             from = email;
         }
         String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
@@ -391,51 +397,105 @@ public class FileResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
+    @GET
+    @Path("color/{color}/{icon}")
+    @Produces("image/png")
+    public Response getImageRequest(@PathParam("color") String color, @PathParam("icon") String icon) throws IOException{
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        if(!path.endsWith( "/" )){
+           path = path.concat( "/" ); 
+        }
+        File imageDir = new File(path + "img");
+        if(!imageDir.exists()){
+            imageDir.mkdirs();
+        }
+        path = imageDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+         }
+        File colorsDir = new File(path + "color");
+        if(!colorsDir.exists()){
+            colorsDir.mkdirs();
+        }
+        path = colorsDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File colorDir = new File(path + color);
+        if(!colorDir.exists()){
+            colorDir.mkdirs();
+        }
+        path = colorDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File imageFile = new File(path + icon);
+        if(imageFile.exists()){
+            return Response.ok(imageFile).build();
+        }else{
+            if(color != null && icon != null){
+                String url = "https://api3.geo.admin.ch/color/" + color + "/" + icon;
+                if (url != null && url.length() > 0) {
+                    URL tmpUrl;
+                    try {
+                        tmpUrl = new URL(url);
+                        BufferedImage image = ImageIO.read(tmpUrl);
+                        ImageIO.write(image, "png", imageFile);
+                        return Response.ok(imageFile).build();
+                    } catch (MalformedURLException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.NOT_FOUND ).build();
+                    } catch (IOException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                    }
+                }
+            }
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
     private String createKMLFile(String content, String mapUserId){
         String filename = "";
         String fileId = "";
         String path = "";
         
-        Properties p;
-        try {
-            p = ConfigurationProvider.INSTANCE.getProperties();
-            int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
-            int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
-            path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
-            
-            if(!path.endsWith( "/")){
-                path += "/";
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
+        int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
+        path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
+        
+        filename += path;
+        
+        File pathFolder = new File(path);
+        if(!pathFolder.exists()){
+            pathFolder.mkdir();
+        }
+        
+        if(mapUserId != null && mapUserId.length() > 0){
+            File userFolder = new File( path + mapUserId);
+            if(!userFolder.exists()){
+                userFolder.mkdir();
             }
-            
-            filename += path;
-            
-            File pathFolder = new File(path);
-            if(!pathFolder.exists()){
-                pathFolder.mkdir();
-            }
-            
-            if(mapUserId != null && mapUserId.length() > 0){
-                File userFolder = new File( path + mapUserId);
-                if(!userFolder.exists()){
-                    userFolder.mkdir();
-                }
-                filename += mapUserId + "/";
-            }
-            
-            File folder = new File(filename);
-            File[] listOfFiles = folder.listFiles();
-            if(listOfFiles.length > maxDirectoryFiles){
-                for (File file : listOfFiles) {
-                    if (file.isFile()) {
-                        long diff = new Date().getTime() - file.lastModified();
-                        if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
-                            file.delete();
-                        }
+            filename += mapUserId + "/";
+        }
+        
+        File folder = new File(filename);
+        File[] listOfFiles = folder.listFiles();
+        if(listOfFiles.length > maxDirectoryFiles){
+            for (File file : listOfFiles) {
+                if (file.isFile()) {
+                    long diff = new Date().getTime() - file.lastModified();
+                    if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
+                        file.delete();
                     }
                 }
             }
-        } catch (IOException e) {
-            log.error( "Count files in directory " + path +" failed: " + e);
         }
         
         if (content != null && content.length() > 0) {

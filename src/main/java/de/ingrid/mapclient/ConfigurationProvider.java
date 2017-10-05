@@ -24,7 +24,10 @@ package de.ingrid.mapclient;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 /**
  * ConfigurationProvider gives access to the configuration of the map client.
@@ -46,7 +49,10 @@ public enum ConfigurationProvider {
     // singleton instance
     INSTANCE;
 
+    private static final Logger log = Logger.getLogger( ConfigurationProvider.class );
+    
     private static final String APPLICATION_PROPERTIES = "application.properties";
+    private static final String APPLICATION_OVERRIDE_PROPERTIES = "application.override.properties";
     public static final String FEEDBACK_FROM = "feedback.from";
     public static final String FEEDBACK_TO = "feedback.to";
     public static final String FEEDBACK_HOST = "feedback.host";
@@ -59,9 +65,9 @@ public enum ConfigurationProvider {
     public static final String KML_MAX_DAYS_FILE_EXIST = "kml.days_of_exist";
     public static final String KML_MAX_DIRECTORY_FILES = "kml.max_directory_files";
     public static final String CONFIG_DIR = "config.dir";
-    public static final String CONFIG_DIR_ALTERNATIVE = "config.dir.alternative";
     
     private Properties properties = null;
+    private Properties propertiesOverride = null;
 
     /**
      * Get the application properties.
@@ -69,11 +75,27 @@ public enum ConfigurationProvider {
      * @return Properties
      * @throws IOException
      */
-    public Properties getProperties() throws IOException {
+    public Properties getProperties() {
         if (this.properties == null) {
             this.properties = new Properties();
+            this.propertiesOverride = new Properties();
             InputStream inputStream = ConfigurationProvider.class.getClassLoader().getResourceAsStream( APPLICATION_PROPERTIES );
-            this.properties.load( inputStream );
+            InputStream inputOverrideStream = ConfigurationProvider.class.getClassLoader().getResourceAsStream( APPLICATION_OVERRIDE_PROPERTIES );
+            try {
+                this.properties.load( inputStream );
+                if(inputOverrideStream != null){
+                    this.propertiesOverride.load( inputOverrideStream );
+                }
+            } catch (IOException e) {
+                log.error("Error load properties: " + e);
+            }
+            if(!this.propertiesOverride.isEmpty()){
+                Enumeration<?> e = this.propertiesOverride.propertyNames();
+                while (e.hasMoreElements()) {
+                    String key = (String) e.nextElement();
+                    this.properties.put( key, this.propertiesOverride.get( key ) );
+                }
+            }
         }
         return this.properties;
     }

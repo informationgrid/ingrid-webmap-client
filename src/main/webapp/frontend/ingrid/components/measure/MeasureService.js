@@ -10,10 +10,22 @@ goog.require('ga_measure_filter');
 
   module.provider('gaMeasure', function() {
     // INGRID: Add 'gaGlobalOptions'
-    this.$get = function($document, measureFilter, gaMapUtils, gaGlobalOptions) {
+    this.$get = function($document, measureFilter, gaMapUtils,
+            gaGlobalOptions) {
       var Measure = function() {
 
-        this.getLength = function(geom) {
+        // Transform 2111333 in 2'111'333
+        this.formatCoordinates = function(coordinates, prec) {
+          var raw = ol.coordinate.toStringXY(coordinates, prec || 0);
+          if (coordinates && coordinates.length === 3) {
+            raw += ', ' + coordinates[2].toFixed(1);
+          }
+
+          return raw.replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+        };
+
+        // INGRID: Check 'useGeodesic'
+        this.getLength = function(geom, useGeodesic) {
           var lineString;
           if (geom instanceof ol.geom.LineString) {
             lineString = geom;
@@ -26,48 +38,48 @@ goog.require('ga_measure_filter');
             return 2 * Math.PI * geom.getRadius();
           }
           if (lineString) {
-            return lineString.getLength(); 
-          } else {
-            return 0;
-          }
-        };
-
-        // INGRID: Add function geodesic
-        this.getLengthGeodesic = function(geom) {
-            var lineString;
-            if (geom instanceof ol.geom.LineString) {
-              lineString = geom;
-            } else if (geom instanceof ol.geom.LinearRing) {
-              lineString = new ol.geom.LineString(geom.getCoordinates());
-            } else if (geom instanceof ol.geom.Polygon) {
-              lineString = new ol.geom.LineString(
-                  geom.getLinearRing(0).getCoordinates());
-            } else if (geom instanceof ol.geom.Circle) {
-              return 2 * Math.PI * geom.getRadius();
-            }
-            if (lineString) {
+            // INGRID: Check 'useGeodesic'
+            if (useGeodesic) {
               var length;
               var coords = lineString.getCoordinates();
               var wgs84Sphere = new ol.Sphere(6378137);
               length = 0;
               for (var i = 0, ii = coords.length - 1; i < ii; ++i) {
-                var c1 = ol.proj.transform(coords[i], gaGlobalOptions.defaultEpsg, 'EPSG:4326');
-                var c2 = ol.proj.transform(coords[i + 1], gaGlobalOptions.defaultEpsg, 'EPSG:4326');
+                var c1 = ol.proj.transform(coords[i],
+                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
+                var c2 = ol.proj.transform(coords[i + 1],
+                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
                 length += wgs84Sphere.haversineDistance(c1, c2);
               }
-            
               return length;
-            } else {
-              return 0;
             }
-          };
+            return lineString.getLength();
+          } else {
+            return 0;
+          }
+        };
 
-        this.getArea = function(geom, calculateLineStringArea) {
+        // INGRID: Add check 'useGeodesic'
+        this.getArea = function(geom, calculateLineStringArea, useGeodesic) {
           if (calculateLineStringArea && geom instanceof ol.geom.LineString) {
             return Math.abs(new ol.geom.Polygon([geom.getCoordinates()]).
                 getArea());
           } else if (geom instanceof ol.geom.LinearRing ||
               geom instanceof ol.geom.Polygon) {
+            if (useGeodesic) {
+              var wgs84Sphere = new ol.Sphere(6378137);
+              var coords = geom.getCoordinates();
+              if (coords && coords.length > 0) {
+                var wgs84Coords = [];
+                for (var i = 0, ii = coords[0].length - 1; i < ii; ++i) {
+                  wgs84Coords.push(ol.proj.transform(coords[0][i],
+                    gaGlobalOptions.defaultEpsg, 'EPSG:4326'));
+                }
+                if (wgs84Coords.length > 0) {
+                  return Math.abs(wgs84Sphere.geodesicArea(wgs84Coords));
+                }
+              }
+            }
             return Math.abs(geom.getArea());
           } else if (geom instanceof ol.geom.Circle) {
             return Math.PI * Math.pow(geom.getRadius(), 2);
@@ -99,17 +111,15 @@ goog.require('ga_measure_filter');
         };
 
         this.getLengthLabel = function(geom) {
-          // INGRID: Add function geodesic
-          if(gaGlobalOptions.useGeodesic){
-              return measureFilter(this.getLengthGeodesic(geom));
-          }else{
-              return measureFilter(this.getLength(geom));
-          }
+          // INGRID: Add check 'useGeodesic'
+          return measureFilter(this.getLength(geom,
+            gaGlobalOptions.useGeodesic));
         };
 
         this.getAreaLabel = function(geom, calculateLineStringArea) {
-          return measureFilter(this.getArea(geom, calculateLineStringArea),
-              'area');
+          // INGRID: Add check 'useGeodesic'
+          return measureFilter(this.getArea(geom, calculateLineStringArea,
+           gaGlobalOptions.useGeodesic), 'area');
         };
 
         this.getAzimuthLabel = function(geom) {
@@ -117,72 +127,147 @@ goog.require('ga_measure_filter');
         };
 
         // Creates a new measure tooltip with a nice arrow
-        this.createOverlay = function() {
+        this.createOverlay = function(cssClass, stopEvent) {
           var tooltipElement = $document[0].createElement('div');
-          tooltipElement.className = 'ga-draw-measure-static';
+          tooltipElement.className = cssClass || 'ga-draw-measure-static';
           var tooltip = new ol.Overlay({
             element: tooltipElement,
             offset: [0, -7],
             positioning: 'bottom-center',
-            stopEvent: true // for copy/paste
+            stopEvent: angular.isDefined(stopEvent) ?
+                stopEvent : true // for copy/paste
           });
           return tooltip;
         };
-        this.updateOverlays = function(feature) {
+
+        this.updateOverlays = function(layer, feature) {
           var overlays = feature.get('overlays');
-          if (overlays) {
-            var geom = feature.getGeometry();
-            if (geom instanceof ol.geom.Polygon) {
-              var areaOverlay = overlays[0];
-              areaOverlay.getElement().innerHTML = this.getAreaLabel(geom);
-              areaOverlay.setPosition(geom.getInteriorPoint().getCoordinates());
-              geom = new ol.geom.LineString(geom.getCoordinates()[0]);
+          var isDrawing = feature.get('isDrawing');
+
+          if (!overlays) {
+            return;
+          }
+          var currIdx = 0, geomLine;
+          var geom = geomLine = feature.getGeometry();
+
+          if (geom instanceof ol.geom.Polygon) {
+            var pos, coords = geom.getCoordinates()[0];
+            geomLine = new ol.geom.LineString(coords);
+
+            if (geom.getArea()) {
+              pos = geom.getInteriorPoint().getCoordinates();
             }
-            if (geom instanceof ol.geom.LineString) {
-              var label = '';
-              if (this.canShowAzimuthCircle(feature.getGeometry())) {
-                label += this.getAzimuthLabel(feature.getGeometry()) + ' / ';
+
+            // When drawing we show the area tooltip only when the user closes
+            // the polygon.
+            if (isDrawing) {
+              var first = coords[0];
+              var last = coords[coords.length - 2];
+
+              if (first[0] != last[0] || first[1] != last[1]) {
+                pos = undefined;
               }
-              var distOverlay = overlays[1] || overlays[0];
-              label += this.getLengthLabel(geom);
-              distOverlay.getElement().innerHTML = label;
-              distOverlay.setPosition(geom.getLastCoordinate());
+
+              // We use the polygon coordinates without the last one.
+              geomLine.setCoordinates(coords.slice(0, -1));
+            }
+
+            // We create the overlay
+            var areaOverlay = overlays.item(currIdx) || this.createOverlay();
+            areaOverlay.getElement().innerHTML = this.getAreaLabel(geom);
+            areaOverlay.getElement().style.opacity = layer.getOpacity();
+            areaOverlay.setPosition(pos);
+
+            if (!overlays.item(currIdx)) {
+              overlays.push(areaOverlay);
+            }
+            currIdx++;
+          }
+
+          if (geomLine instanceof ol.geom.LineString) {
+            var label = '',
+                delta = 1,
+                // INGRID: Add check 'gaGlobalOptions.useGeodesic'
+                length = this.getLength(geomLine, gaGlobalOptions.useGeodesic);
+            if (this.canShowAzimuthCircle(geomLine)) {
+              label += this.getAzimuthLabel(geomLine) + ' / ';
+            }
+            var distOverlay = overlays.item(currIdx) || this.createOverlay();
+            label += this.getLengthLabel(geomLine);
+            distOverlay.getElement().innerHTML = label;
+            distOverlay.getElement().style.opacity = layer.getOpacity();
+
+            if (length) {
+              distOverlay.setPosition(geomLine.getLastCoordinate());
+            } else {
+              distOverlay.setPosition(undefined);
+            }
+
+            if (!overlays.item(currIdx)) {
+              overlays.push(distOverlay);
+            }
+
+            currIdx++;
+
+            // Add intermediate tootlip only on line.
+            if (length > 200000) {
+              delta = 100000 / length;
+            } else if (length > 20000) {
+              delta = 10000 / length;
+            } else if (length != 0) {
+              delta = 1000 / length;
+            }
+            for (var i = delta; i < 1; i += delta, currIdx++) {
+              var t = overlays.item(currIdx) ||
+                  this.createOverlay('ga-draw-measure-tmp', false);
+              t.getElement().innerHTML = measureFilter(length * i);
+              t.getElement().style.opacity = layer.getOpacity();
+              t.setPosition(geomLine.getCoordinateAt(i));
+
+              if (!overlays.item(currIdx)) {
+                overlays.push(t);
+              }
+            }
+            if (currIdx < overlays.getLength()) {
+             for (var j = overlays.getLength() - 1; j >= currIdx; j--) {
+               overlays.pop();
+             }
             }
           }
         };
         // Add overlays with distance, azimuth and area, depending on the
         // feature's geometry
         this.addOverlays = function(map, layer, feature) {
-          var overlays = [], geom = feature.getGeometry();
-          if (geom instanceof ol.geom.Polygon) {
-            var areaOverlay = this.createOverlay();
-            areaOverlay.getElement().style.opacity = layer.getOpacity();
-            map.addOverlay(areaOverlay);
-            overlays.push(areaOverlay);
-            geom = new ol.geom.LineString(geom.getCoordinates()[0]);
-          }
-          if (geom instanceof ol.geom.LineString) {
-            var distOverlay = this.createOverlay();
-            distOverlay.getElement().style.opacity = layer.getOpacity();
-            map.addOverlay(distOverlay);
-            overlays.push(distOverlay);
-          }
-          if (overlays.length) {
-            feature.set('overlays', overlays);
-            this.updateOverlays(feature);
-            feature.on('change', function(evt) {
-              this.updateOverlays(evt.target);
-            }, this);
+          var geom = feature.getGeometry();
+          if (geom instanceof ol.geom.Polygon ||
+              geom instanceof ol.geom.LineString) {
+            var overlays = feature.get('overlays');
+            if (!overlays) {
+              overlays = new ol.Collection();
+              overlays.on('add', function(evt) {
+                map.addOverlay(evt.element);
+              });
+              overlays.on('remove', function(evt) {
+                map.removeOverlay(evt.element);
+              });
+              feature.set('overlays', overlays);
+              feature.on('change', function(evt) {
+                // If overlays is undefined that means the feature has been
+                // removed from the layer.
+                if (evt.target.get('overlays')) {
+                  this.updateOverlays(layer, evt.target);
+                }
+              }, this);
+            }
+            this.updateOverlays(layer, feature);
           }
         };
         // Remove the overlays attached to the feature
         this.removeOverlays = function(feature) {
           var overlays = feature.get('overlays');
-          while (overlays && overlays.length) {
-            var overlay = overlays.pop();
-            overlay.getMap().removeOverlay(overlay);
+          if (overlays instanceof ol.Collection) {
+            overlays.clear();
           }
-          feature.set('overlays', undefined);
         };
 
         // Determine if the geometry can display azimuth circle or not
@@ -198,47 +283,63 @@ goog.require('ga_measure_filter');
           return false;
         };
 
-        // Register events on map, layer and source to manage correctly the
-        // display of overlays
-        this.registerOverlaysEvents = function(map, layer) {
-          map.getLayers().on('remove', function(evt) {
-            if (evt.element === layer) {
-              var features = evt.element.getSource().getFeatures();
-              for (var i = 0; i < features.length; i++) {
+        // Add/remove overlays attached to a layer
+        this.toggleLayerOverlays = function(map, olLayer, visible) {
+          var features = olLayer.getSource().getFeatures();
+          for (var i = 0; i < features.length; i++) {
+            if (gaMapUtils.isMeasureFeature(features[i])) {
+              if (visible) {
+                this.addOverlays(map, olLayer, features[i]);
+              } else {
                 this.removeOverlays(features[i]);
               }
             }
+          }
+        };
+
+        // Register events on map, layer and source to manage correctly the
+        // display of overlays
+        this.registerOverlaysEvents = function(map, layer) {
+          if (!(layer instanceof ol.layer.Vector)) {
+            return;
+          }
+
+          map.getLayers().on('remove', function(evt) {
+            if (evt.element === layer) {
+              this.toggleLayerOverlays(map, evt.element, false);
+            }
           }, this);
+          map.getLayers().on('add', function(evt) {
+            if (evt.element === layer) {
+              this.toggleLayerOverlays(map, evt.element, true);
+            }
+          }, this);
+
           layer.getSource().on('removefeature', function(evt) {
             this.removeOverlays(evt.feature);
+            evt.feature.set('overlays', undefined);
           }, this);
-          if (layer.displayInLayerManager) {
-            layer.on('change:visible', function(evt) {
-              var visible = evt.target.getVisible();
-              var features = evt.target.getSource().getFeatures();
-              for (var i = 0; i < features.length; i++) {
-                if (gaMapUtils.isMeasureFeature(features[i])) {
-                  if (visible) {
-                    this.addOverlays(map, evt.target, features[i]);
-                  } else {
-                    this.removeOverlays(features[i]);
-                  }
-                }
-              }
-            }, this);
-            layer.on('change:opacity', function(evt) {
-              var visible = evt.target.getVisible();
-              var features = evt.target.getSource().getFeatures();
-              for (var i = 0; i < features.length; i++) {
-                if (gaMapUtils.isMeasureFeature(features[i])) {
-                  var overlays = features[i].get('overlays') || [];
-                  for (var j = 0; j < overlays.length; j++) {
-                    overlays[j].getElement().style.opacity = layer.getOpacity();
-                  }
+
+          if (!layer.displayInLayerManager) {
+            return;
+          }
+
+          layer.on('change:visible', function(evt) {
+            this.toggleLayerOverlays(map, evt.target, evt.target.getVisible());
+          }, this);
+
+          layer.on('change:opacity', function(evt) {
+            evt.target.getSource().getFeatures().forEach(function(feat) {
+              if (gaMapUtils.isMeasureFeature(feat)) {
+                var overlays = feat.get('overlays');
+                if (overlays) {
+                  overlays.forEach(function(item) {
+                    item.getElement().style.opacity = layer.getOpacity();
+                  });
                 }
               }
             });
-          }
+          });
         };
       };
       return new Measure();

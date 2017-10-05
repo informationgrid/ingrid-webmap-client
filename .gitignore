@@ -7,3 +7,4 @@ work
 /src/main/java/de/ingrid/mapclient/ConvertConfig.java
 /mf-geoadmin3
 *.stackdump
+src/main/resources/application.override.properties

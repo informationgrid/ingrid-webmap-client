@@ -1,5 +1,6 @@
 goog.provide('ga_map_service');
 
+goog.require('ga_event_service');
 goog.require('ga_measure_service');
 goog.require('ga_networkstatus_service');
 goog.require('ga_stylesfromliterals_service');
@@ -9,6 +10,7 @@ goog.require('ga_urlutils_service');
 (function() {
 
   var module = angular.module('ga_map_service', [
+    'ga_event_service',
     'ga_networkstatus_service',
     'ga_storage_service',
     'ga_stylesfromliterals_service',
@@ -19,10 +21,16 @@ goog.require('ga_urlutils_service');
 
   module.provider('gaTileGrid', function() {
     var origin = [420000, 350000];
-    var defaultResolutions = [4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250,
-        2000, 1750, 1500, 1250, 1000, 750, 650, 500, 250, 100, 50, 20, 10, 5,
-        2.5, 2, 1.5, 1, 0.5];
-    var wmsResolutions = defaultResolutions.concat([0.25, 0.1]);
+
+    function getDefaultResolutions() {
+        return [4000, 3750, 3500, 3250, 3000, 2750, 2500, 2250,
+                2000, 1750, 1500, 1250, 1000, 750, 650, 500, 250,
+                100, 50, 20, 10, 5, 2.5, 2, 1.5, 1, 0.5];
+    }
+
+    function getWmsResolutions() {
+        return getDefaultResolutions().concat([0.25, 0.1]);
+    }
 
     function createTileGrid(resolutions, type) {
       if (type === 'wms') {
@@ -43,11 +51,12 @@ goog.require('ga_urlutils_service');
       return {
         get: function(resolutions, minResolution, type) {
           if (!resolutions) {
-            resolutions = (type == 'wms') ? wmsResolutions : defaultResolutions;
+            resolutions = (type == 'wms') ? getWmsResolutions() :
+                getDefaultResolutions();
           }
           if (minResolution) { // we remove useless resolutions
             for (var i = 0, ii = resolutions.length; i < ii; i++) {
-              if (resolutions[i] === i) {
+              if (resolutions[i] === minResolution) {
                 resolutions = resolutions.splice(0, i + 1);
                 break;
               }
@@ -104,7 +113,7 @@ goog.require('ga_urlutils_service');
           },
           invertedOpacity: {
             get: function() {
-              return (Math.round((1 - this.getOpacity()) * 100) / 100) + '';
+              return Math.round((1 - this.getOpacity()) * 100) / 100;
             },
             set: function(val) {
               this.setOpacity(1 - val);
@@ -193,6 +202,14 @@ goog.require('ga_urlutils_service');
               this.set('timeEnabled', val);
             }
           },
+          timeBehaviour: {
+            get: function() {
+              return this.get('timeBehaviour');
+            },
+            set: function(val) {
+              this.set('timeBehaviour', val);
+            }
+          },
           timestamps: {
             get: function() {
               return this.get('timestamps');
@@ -211,6 +228,7 @@ goog.require('ga_urlutils_service');
                     src instanceof ol.source.TileWMS) {
                   return src.getParams().TIME;
                 }
+                return this.get('time');
               }
               return undefined;
             },
@@ -226,7 +244,12 @@ goog.require('ga_urlutils_service');
                   src.updateDimensions({'Time': val});
                 } else if (src instanceof ol.source.ImageWMS ||
                     src instanceof ol.source.TileWMS) {
-                  src.updateParams({'TIME': val});
+                  if (angular.isDefined(val)) {
+                    src.updateParams({'TIME': val});
+                  } else {
+                    delete src.getParams().TIME;
+                    src.updateParams();
+                  }
                 }
                 this.set('time', val);
               }
@@ -238,6 +261,14 @@ goog.require('ga_urlutils_service');
             },
             set: function(val) {
               this.set('getCesiumImageryProvider', val);
+            }
+          },
+          getCesiumDataSource: {
+            get: function() {
+              return this.get('getCesiumDataSource') || angular.noop;
+            },
+            set: function(val) {
+              this.set('getCesiumDataSource', val);
             }
           },
           altitudeMode: {
@@ -292,12 +323,10 @@ goog.require('ga_urlutils_service');
    *   "click" behavior to avoid conflict with long touch event.
    */
   module.provider('gaMapClick', function() {
-    this.$get = function($timeout, gaBrowserSniffer) {
+    this.$get = function($timeout, gaBrowserSniffer, gaEvent) {
       return {
         listen: function(map, onClick) {
           var down = null;
-          var moving = false;
-          var timeoutPromise = null;
           var touchstartTime;
           var callback = function(evt) {
             // if a draw or a select interaction is active, do
@@ -320,6 +349,10 @@ goog.require('ga_urlutils_service');
           };
 
           var touchstartListener = function(evt) {
+            if (gaEvent.isMouse(evt)) {
+              return;
+            }
+
             // This test only needed for IE10, to fix conflict between click
             // and contextmenu events on desktop
             if (!isMouseRightAction(evt)) {
@@ -329,71 +362,56 @@ goog.require('ga_urlutils_service');
           };
 
           var touchmoveListener = function(evt) {
-            // Fix ie10 on windows surface : when you tap the tablet, it
-            // triggers multiple pointermove events between pointerdown and
-            // pointerup with the exact same coordinates of the pointerdown
-            // event. to avoid a 'false' touchmove event to be dispatched,
-            // we test if the pointer effectively moved.
-            if (down && (!gaBrowserSniffer.msie ||
-                evt.clientX != down.clientX ||
-                evt.clientY != down.clientY)) {
-              moving = true;
+            if (gaEvent.isMouse(evt)) {
+              return;
             }
-          };
 
-          var touchendListener = function(evt) {
-            var now = (new Date()).getTime();
-            if (now - touchstartTime < 300) {
-              if (down && !moving) {
-                if (timeoutPromise) {
-                  $timeout.cancel(timeoutPromise);
-                  timeoutPromise = null;
-                } else {
-                  var clickEvent = down;
-                  timeoutPromise = $timeout(function() {
-                    callback(clickEvent);
-                    timeoutPromise = null;
-                  }, 350, false);
-                }
-              }
-              moving = false;
+            // We authorize a move of 5 pixels max for touch device.
+            if (down &&
+                (evt.clientX < down.clientX - 5 ||
+                evt.clientX > down.clientX + 5 ||
+                evt.clientY < down.clientY - 5 ||
+                evt.clientY > down.clientY + 5)) {
               down = null;
             }
           };
 
-          if (!gaBrowserSniffer.touchDevice) {
-            var deregKey = map.on('singleclick', callback);
-            return function() {
-              ol.Observable.unByKey(deregKey);
-            };
-
-          } else {
-            // We can't register 'singleclick' map event on touch devices
-            // to avoid a conflict between the long press event used for context
-            // popup
-            var viewport = $(map.getViewport());
-            var touchEvents = ['touchstart', 'touchmove', 'touchend'];
-            if (gaBrowserSniffer.msie == 10) {
-              touchEvents = ['MSPointerDown', 'MSPointerMove', 'MSPointerUp'];
-            } else if (gaBrowserSniffer.msie >= 11) {
-              touchEvents = ['pointerdown', 'pointermove', 'pointerup'];
+          var touchendListener = function(evt) {
+            if (gaEvent.isMouse(evt)) {
+              return;
             }
 
-            viewport.on(touchEvents[0], touchstartListener);
-            viewport.on(touchEvents[1], touchmoveListener);
-            viewport.on(touchEvents[2], touchendListener);
-            return function() {
-              viewport.unbind(touchEvents[0], touchstartListener);
-              viewport.unbind(touchEvents[1], touchmoveListener);
-              viewport.unbind(touchEvents[2], touchendListener);
-            };
-          }
+            if (down && (new Date()).getTime() - touchstartTime < 300) {
+              callback(down);
+            }
+            down = null;
+          };
+
+          var deregKey = map.on('singleclick', function(evt) {
+            // We active singleclick only on mouse event to avoid conflict with
+            // contextpopup.
+            if (gaEvent.isMouse(evt)) {
+              callback(evt);
+            }
+          });
+
+          var touchEvents = gaBrowserSniffer.events;
+          var viewport = $(map.getViewport());
+          viewport.on(touchEvents.start, touchstartListener);
+          viewport.on(touchEvents.move, touchmoveListener);
+          viewport.on(touchEvents.end, touchendListener);
+          return function() {
+            ol.Observable.unByKey(deregKey);
+            viewport.unbind(touchEvents.start, touchstartListener);
+            viewport.unbind(touchEvents.move, touchmoveListener);
+            viewport.unbind(touchEvents.end, touchendListener);
+          };
         }
       };
     };
   });
 
-  /*
+  /**
    * Manage BOD layers
    */
   module.provider('gaLayers', function() {
@@ -401,14 +419,22 @@ goog.require('ga_urlutils_service');
     this.$get = function($http, $q, $rootScope, $translate, $window,
         gaBrowserSniffer, gaDefinePropertiesForLayer, gaMapUtils,
         gaNetworkStatus, gaStorage, gaTileGrid, gaUrlUtils,
-        gaStylesFromLiterals, gaGlobalOptions, gaPermalink, 
+        gaStylesFromLiterals, gaGlobalOptions, gaPermalink,
         gaLang, gaTime) {
 
-      var Layers = function(dfltWmsSubdomains,
-          dfltWmtsNativeSubdomains, dfltWmtsMapProxySubdomains,
+      var h2 = function(domainsArray) {
+        if (gaBrowserSniffer.h2) {
+          return domainsArray.slice(1, 2);
+        }
+        return domainsArray;
+      };
+
+      var Layers = function(dfltWmsSubdomains, dfltWmtsNativeSubdomains,
+          dfltWmtsMapProxySubdomains, dfltVectorTilesSubdomains,
           wmsUrlTemplate, wmtsGetTileUrlTemplate,
           wmtsMapProxyGetTileUrlTemplate, terrainTileUrlTemplate,
-          layersConfigUrlTemplate, legendUrlTemplate) {
+          vectorTilesUrlTemplate, layersConfigUrlTemplate,
+          legendUrlTemplate, imageryMetadataUrl) {
         var layers;
 
         // Returns a unique WMS template url (e.g. //wms{s}.geo.admin.ch)
@@ -464,6 +490,18 @@ goog.require('ga_urlutils_service');
               .replace('{Layer}', layer)
               .replace('{Time}', time);
         };
+
+        var cpt;
+        var getVectorTilesUrl = function(layer, time, subdomains) {
+          if (cpt === undefined || cpt >= subdomains.length) {
+            cpt = 0;
+          }
+          return vectorTilesUrlTemplate
+              .replace('{s}', subdomains[cpt++])
+              .replace('{Layer}', layer)
+              .replace('{Time}', time);
+        };
+
         var getLayersConfigUrl = function(lang) {
           return layersConfigUrlTemplate
               .replace('{Lang}', lang);
@@ -494,8 +532,8 @@ goog.require('ga_urlutils_service');
         // storage if they exist otherwise try to load the tiles normally.
         var tileLoadFunction = function(imageTile, src) {
           if (gaBrowserSniffer.mobile) {
-            gaStorage.getTile(gaMapUtils.getTileKey(src), function(err,
-                content) {
+            gaStorage.getTile(gaMapUtils.getTileKey(src)).then(
+                function(content) {
               if (content && $window.URL && $window.atob) {
                 try {
                   var blob = gaMapUtils.dataURIToBlob(content);
@@ -513,7 +551,8 @@ goog.require('ga_urlutils_service');
             });
           } else {
             // INGRID: Load images over REST services
-            imageTile.getImage().src = gaGlobalOptions.defaultCrossOrigin ? gaGlobalOptions.imgproxyUrl + '' + encodeURIComponent(src) : src;
+            imageTile.getImage().src = gaGlobalOptions.defaultCrossOrigin ?
+              gaGlobalOptions.imgproxyUrl + '' + encodeURIComponent(src) : src;
           }
         };
 
@@ -525,7 +564,10 @@ goog.require('ga_urlutils_service');
           }
           lastLangUsed = lang;
           var url = getLayersConfigUrl(lang);
-          return $http.get(url).then(function(response) {
+          return $http.get(url, {
+            cache: true
+          }).then(function(response) {
+
             // Live modifications for 3d test
             if (response.data) {
               // Test layers opaque setting
@@ -540,7 +582,6 @@ goog.require('ga_urlutils_service');
                 'ch.swisstopo.pixelkarte-farbe-pk100.noscale',
                 'ch.swisstopo.pixelkarte-farbe-pk200.noscale',
                 'ch.swisstopo.pixelkarte-farbe-pk500.noscale',
-                'ch.swisstopo.pixelkarte-farbe-pk500.noscale',
                 'ch.swisstopo.pixelkarte-farbe-pk1000.noscale'
               ];
               angular.forEach(ids, function(id) {
@@ -549,19 +590,61 @@ goog.require('ga_urlutils_service');
                 }
               });
 
+              // Test shop layers allowing multiple results in tooltip.
+              ids = [
+                'ch.swisstopo.lubis-luftbilder_farbe',
+                'ch.swisstopo.lubis-luftbilder_schwarzweiss',
+                'ch.swisstopo.lubis-luftbilder_infrarot',
+                'ch.swisstopo.lubis-bildstreifen'
+              ];
+              angular.forEach(ids, function(id) {
+                if (response.data[id]) {
+                  response.data[id].shopMulti = true;
+                }
+              });
+
               // Terrain
-              var lang = gaLang.get();
-              if (lang == 'rm') {
-                lang = 'de';
-              }
+              var lang = gaLang.getNoRm();
               response.data['ch.swisstopo.terrain.3d'] = {
                 type: 'terrain',
                 serverLayerName: 'ch.swisstopo.terrain.3d',
                 timestamps: ['20160115'],
                 attribution: 'swisstopo',
-                attributionUrl: 'http://www.swisstopo.admin.ch/internet/' +
-                    'swisstopo/' + lang + '/home.html'
+                attributionUrl: 'https://www.swisstopo.admin.ch/' + lang +
+                    '/home.html'
               };
+
+              // 3D Tileset
+              var tileset3d = [
+                'ch.swisstopo.swisstlm3d.3d',
+                'ch.swisstopo.bridgestest.3d',
+                'ch.swisstopo.swissnames3d.3d'
+              ];
+              var tilesetTs = [
+                '20161217',
+                '20161121',
+                '20160909'
+              ];
+
+              var params = gaPermalink.getParams();
+              var pTileset3d = params['tileset3d'];
+              var pTilesetTs = params['tilesetTs'];
+
+              tileset3d = pTileset3d ? pTileset3d.split(',') : tileset3d;
+              tilesetTs = pTilesetTs ? pTilesetTs.split(',') : tilesetTs;
+
+              tileset3d.forEach(function(tileset3dId, idx) {
+                if (tileset3dId) {
+                  response.data[tileset3dId] = {
+                    type: 'tileset3d',
+                    serverLayerName: tileset3dId,
+                    timestamps: [tilesetTs[idx]],
+                    attribution: 'swisstopo',
+                    attributionUrl: 'https://www.swisstopo.admin.ch/' + lang +
+                        '/home.html'
+                  };
+                }
+              });
             }
             if (!layers) { // First load
               layers = response.data;
@@ -599,31 +682,54 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium terrain provider.
          */
         this.getCesiumTerrainProviderById = function(bodId) {
-          var provider, config = layers[bodId];
-          var config3d = this.getConfig3d(config);
-          var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
-          var requestedLayer = config3d.serverLayerName || bodId;
-          if (config3d.type == 'terrain') {
-            provider = new Cesium.CesiumTerrainProvider({
-              url: getTerrainTileUrl(requestedLayer, timestamp),
-              availableLevels: window.terrainAvailableLevels,
-              rectangle: gaMapUtils.extentToRectangle(
-                gaGlobalOptions.defaultExtent)
-            });
-            provider.bodId = bodId;
+          var config3d = this.getConfig3d(layers[bodId]);
+          if (!/^terrain$/.test(config3d.type)) {
+            return;
           }
+          var timestamp = this.getLayerTimestampFromYear(config3d,
+              gaTime.get());
+          var requestedLayer = config3d.serverLayerName || bodId;
+          var provider = new Cesium.CesiumTerrainProvider({
+            url: getTerrainTileUrl(requestedLayer, timestamp),
+            availableLevels: window.terrainAvailableLevels,
+            rectangle: gaMapUtils.extentToRectangle(
+              gaGlobalOptions.defaultExtent)
+          });
+          provider.bodId = bodId;
           return provider;
+        };
+
+        /**
+         * Returns an Cesium 3D Tileset.
+         */
+        this.getCesiumTileset3DById = function(bodId) {
+          var config3d = this.getConfig3d(layers[bodId]);
+          if (!/^tileset3d$/.test(config3d.type)) {
+            return;
+          }
+          var timestamp = this.getLayerTimestampFromYear(config3d,
+              gaTime.get());
+          var requestedLayer = config3d.serverLayerName || bodId;
+          var tileset = new Cesium.Cesium3DTileset({
+            url: getVectorTilesUrl(requestedLayer, timestamp,
+                h2(dfltVectorTilesSubdomains)),
+            maximumNumberOfLoadedTiles: 3
+          });
+          tileset.bodId = bodId;
+          return tileset;
         };
 
         /**
          * Returns an Cesium imagery provider.
          */
         this.getCesiumImageryProviderById = function(bodId) {
-          var provider, params, config = layers[bodId];
-          bodId = config.config3d || bodId;
+          var config = layers[bodId];
           var config3d = this.getConfig3d(config);
-          // Only native tiles have a 3d config
-          var hasNativeTiles = !!config.config3d;
+          if (!/^(wms|wmts|aggregate)$/.test(config3d.type)) {
+            return;
+          }
+          var params;
+          bodId = config.config3d || bodId;
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
           var requestedLayer = config3d.wmsLayers || config3d.serverLayerName ||
               bodId;
@@ -645,12 +751,13 @@ goog.require('ga_urlutils_service');
             return providers;
           }
           if (config3d.type == 'wmts') {
+            var hasNativeTiles = !!config.config3d;
             params = {
               url: getWmtsGetTileTpl(requestedLayer, timestamp,
                   '4326', format, hasNativeTiles),
               tileSize: 256,
-              subdomains: hasNativeTiles ? dfltWmtsNativeSubdomains :
-                  dfltWmtsMapProxySubdomains
+              subdomains: hasNativeTiles ? h2(dfltWmtsNativeSubdomains) :
+                  h2(dfltWmtsMapProxySubdomains)
             };
           } else if (config3d.type == 'wms') {
             var tileSize = 512;
@@ -665,36 +772,32 @@ goog.require('ga_urlutils_service');
                     '{eastProjected},{northProjected}',
               width: tileSize,
               height: tileSize,
-              styles: 'default'
+              styles: ''
             };
             if (timestamp) {
               wmsParams.time = timestamp;
             }
             params = {
-              url: getWmsTpl(config3d.wmsUrl, wmsParams),
+              url: getWmsTpl(gaGlobalOptions.wmsUrl, wmsParams),
               tileSize: tileSize,
               subdomains: dfltWmsSubdomains
             };
           }
-          var extent = gaMapUtils.intersectWithDefaultExtent(config3d.extent ||
-              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent());
+          var extent = config3d.extent || gaMapUtils.defaultExtent;
           if (params) {
             var minRetLod = gaMapUtils.getLodFromRes(config3d.maxResolution) ||
                 window.minimumRetrievingLevel;
             var maxRetLod = gaMapUtils.getLodFromRes(config3d.minResolution);
             // Set maxLod as undefined deactivate client zoom.
-            var maxLod = (maxRetLod) ? undefined : 17;
+            var maxLod = (maxRetLod) ? undefined : 18;
             if (maxLod && config3d.resolutions) {
               maxLod = gaMapUtils.getLodFromRes(
                   config3d.resolutions[config3d.resolutions.length - 1]);
             }
-
-            var terrainTimestamp = this.getLayerTimestampFromYear(
-                gaGlobalOptions.defaultTerrain, gaTime.get());
-            provider = new Cesium.UrlTemplateImageryProvider({
+            var provider = new Cesium.UrlTemplateImageryProvider({
               url: params.url,
               subdomains: params.subdomains,
-              minimumRetrievingLevel: minRetLod,
+              minimumLevel: minRetLod,
               maximumRetrievingLevel: maxRetLod,
               // This property active client zoom for next levels.
               maximumLevel: maxLod,
@@ -704,17 +807,32 @@ goog.require('ga_urlutils_service');
               tileHeight: params.tileSize,
               hasAlphaChannel: (format == 'png'),
               availableLevels: window.imageryAvailableLevels,
-              // Experimental: restrict all rasters to terrain availability
-              metadataUrl: getTerrainTileUrl(
-                  gaGlobalOptions.defaultTerrain, terrainTimestamp) + '/'
+              // Experimental: restrict all rasters from 0 - 17 to terrain
+              // availability and 18 to Swiss bbox
+              metadataUrl: imageryMetadataUrl
             });
-          }
-          if (provider) {
             provider.bodId = bodId;
+            return provider;
           }
-          return provider;
         };
 
+        /**
+         * Returns a promise of Cesium DataSource.
+         */
+        this.getCesiumDataSourceById = function(bodId, scene) {
+          var config = layers[bodId];
+          bodId = config.config3d;
+          var config3d = this.getConfig3d(config);
+          if (!/^kml$/.test(config3d.type)) {
+            return;
+          }
+          var dsP = Cesium.KmlDataSource.load(config3d.url, {
+            camera: scene.camera,
+            canvas: scene.canvas,
+            proxy: gaUrlUtils.getCesiumProxy()
+          });
+          return dsP;
+        };
 
         /**
          * Return an ol.layer.Layer object for a layer id.
@@ -723,8 +841,9 @@ goog.require('ga_urlutils_service');
           var layer = layers[bodId];
           var olLayer;
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
-          var crossOrigin = 'anonymous';
-          // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
+          // INGRID: Add check crossOrigin from layers config
+          var crossOrigin = layer.crossOrigin ? 'anonymous' : undefined;
+          // INGRID: Use projection extent if no layer extent exist
           var extent = layer.extent ||
               ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
 
@@ -733,8 +852,7 @@ goog.require('ga_urlutils_service');
           // CORS errors.
           // Currently crossOrigin definition is only used for mouse cursor
           // detection on desktop in TooltipDirective.
-          // INGRID: Disabled crossOrigin for mobile and defaultCrossOrigin
-          if (gaBrowserSniffer.ios || gaBrowserSniffer.mobile || (gaGlobalOptions.defaultCrossOrigin == false && layer.crossOrigin == false)) {
+          if (gaBrowserSniffer.ios) {
             crossOrigin = undefined;
           }
 
@@ -742,45 +860,70 @@ goog.require('ga_urlutils_service');
           var olSource = (layer.timeEnabled) ? null : layer.olSource;
           if (layer.type == 'wmts') {
             if (!olSource) {
+              /*
+              * INGRID: Remove use default wmts template
               var wmtsTplUrl = getWmtsGetTileTpl(layer.serverLayerName, null,
                   '21781', layer.format, true)
                   .replace('{z}', '{TileMatrix}')
                   .replace('{x}', '{TileCol}')
                   .replace('{y}', '{TileRow}');
-              var subdomains = dfltWmtsNativeSubdomains;
+              */
+              // INGRID: Use template from config
+              var wmtsTplUrl = layer.template;
               olSource = layer.olSource = new ol.source.WMTS({
                 dimensions: {
-                  'Time': timestamp
+                  // INGRID: Set timestamp to ''
+                  'Time': timestamp || ''
                 },
-                // Temporary until https://github.com/openlayers/ol3/pull/4964
-                // is merged upstream
-                cacheSize: 2048 * 3,
+                // Workaround: Set a cache size of zero when layer is
+                // timeEnabled see:
+                // https://github.com/geoadmin/mf-geoadmin3/issues/3491
+                cacheSize: layer.timeEnabled ? 0 : 2048,
+                layer: layer.serverLayerName,
+                format: layer.format,
                 projection: gaGlobalOptions.defaultEpsg,
-                requestEncoding: 'REST',
-                tileGrid: gaTileGrid.get(layer.resolutions,
-                    layer.minResolution),
+                // INGRID: Use WMTS properties from layer config
+                requestEncoding: layer.requestEncoding || 'KVP',
+                version: layer.version || '1.0.0',
+                style: layer.style || 'default',
+                matrixSet: layer.matrixSet,
+                // INGRID: Replace tileGrid function
+                tileGrid: new ol.tilegrid.WMTS({
+                    matrixIds: $.map(layer.resolutions,
+                      function(r, i) { return i + ''; }),
+                    origin: layer.origin,
+                    resolutions: layer.resolutions,
+                    tileSize: layer.tileSize || 256,
+                    extent: layer.extent ?
+                      ol.proj.transformExtent(layer.extent, 'EPSG:4326',
+                      gaGlobalOptions.defaultEpsg) : extent
+                }),
                 tileLoadFunction: tileLoadFunction,
-                urls: getImageryUrls(wmtsTplUrl, subdomains),
+                // INGRID: Replace generate urls
+                urls: layer.subdomains ?
+                  getImageryUrls(wmtsTplUrl, layer.subdomains) : [wmtsTplUrl],
                 crossOrigin: crossOrigin
               });
             }
             olLayer = new ol.layer.Tile({
-              extent: extent,
               minResolution: gaNetworkStatus.offline ? null :
                   layer.minResolution,
-              preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
               maxResolution: layer.maxResolution,
               opacity: layer.opacity || 1,
               source: olSource,
+              // INGRID: Get extent from layer config
+              extent: layer.extent ? ol.proj.transformExtent(layer.extent,
+                'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+              preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
               useInterimTilesOnError: gaNetworkStatus.offline
             });
           } else if (layer.type == 'wms') {
             var wmsParams = {
               LAYERS: layer.wmsLayers,
               FORMAT: 'image/' + layer.format,
-              // INGRID: Add version to get getMap request for WMS version 1.1.1.
+              // INGRID: Add version to get getMap request for WMS version 1.1.1
               // Version is define on layers.json.
-              VERSION: layer.version != undefined ? layer.version : '1.3.0',
+              VERSION: layer.version ? layer.version : '1.3.0',
               LANG: gaLang.get()
             };
             if (timestamp) {
@@ -801,21 +944,26 @@ goog.require('ga_urlutils_service');
                 opacity: layer.opacity || 1,
                 source: olSource,
                 // INGRID: Set extent by defaultProjection
-                extent: layer.extent ? ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
+                extent: layer.extent ? ol.proj.transformExtent(layer.extent,
+                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
               });
             } else {
               if (!olSource) {
                 var subdomains = dfltWmsSubdomains;
                 olSource = layer.olSource = new ol.source.TileWMS({
-                  urls: getImageryUrls(getWmsTpl(layer.wmsUrl), subdomains),
+                  /* INGRID: Remove
+                  urls: getImageryUrls(
+                      getWmsTpl(gaGlobalOptions.wmsUrl), subdomains),
+                  */
+                  urls: [layer.wmsUrl],
                   // Temporary until https://github.com/openlayers/ol3/pull/4964
                   // is merged upstream
                   cacheSize: 2048 * 3,
                   params: wmsParams,
                   gutter: layer.gutter || 0,
                   crossOrigin: crossOrigin,
-                  //tileGrid: gaTileGrid.get(layer.resolutions,
-                  //    layer.minResolution, 'wms'),
+                  tileGrid: gaTileGrid.get(layer.resolutions,
+                      layer.minResolution, 'wms'),
                   tileLoadFunction: tileLoadFunction,
                   wrapX: false
                 });
@@ -825,10 +973,11 @@ goog.require('ga_urlutils_service');
                 maxResolution: layer.maxResolution,
                 opacity: layer.opacity || 1,
                 source: olSource,
-                preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
-                useInterimTilesOnError: gaNetworkStatus.offline,
                 // INGRID: Set extent by defaultProjection
-                extent: layer.extent ? ol.proj.transformExtent(layer.extent, 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
+                extent: layer.extent ? ol.proj.transformExtent(layer.extent,
+                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+                preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
+                useInterimTilesOnError: gaNetworkStatus.offline
               });
             }
           } else if (layer.type == 'aggregate') {
@@ -846,7 +995,6 @@ goog.require('ga_urlutils_service');
             });
           } else if (layer.type == 'geojson') {
             // cannot request resources over https in S3
-            var fullUrl = gaGlobalOptions.ogcproxyUrl + layer.geojsonUrl;
             olSource = new ol.source.Vector();
             olLayer = new ol.layer.Vector({
               minResolution: layer.minResolution,
@@ -856,29 +1004,28 @@ goog.require('ga_urlutils_service');
             });
             var setLayerSource = function() {
               var geojsonFormat = new ol.format.GeoJSON();
-              $http.get(fullUrl, {
-                cache: false
-              }).success(function(data) {
-                olSource.clear();
-                olSource.addFeatures(
-                  geojsonFormat.readFeatures(data)
-                );
-              });
-            };
-            var setLayerStyle = function() {
-              // IE doesn't understand agnostic URLs
-              $http.get(location.protocol + layer.styleUrl, {
-                cache: true
-              }).success(function(data) {
-                var olStyleForVector = gaStylesFromLiterals(data);
-                olLayer.setStyle(function(feature, resolution) {
-                  return [olStyleForVector.getFeatureStyle(
-                      feature, resolution)];
+              gaUrlUtils.proxifyUrl(layer.geojsonUrl).then(function(proxyUrl) {
+                $http.get(proxyUrl).then(function(response) {
+                  olSource.clear();
+                  olSource.addFeatures(
+                    geojsonFormat.readFeatures(response.data)
+                  );
                 });
               });
-              // Handle error
             };
-            setLayerStyle();
+
+            // IE doesn't understand agnostic URLs
+            $http.get(location.protocol + layer.styleUrl, {
+              cache: true
+            }).then(function(response) {
+              var olStyleForVector = gaStylesFromLiterals(response.data);
+              olLayer.setStyle(function(feature, resolution) {
+                return [olStyleForVector.getFeatureStyle(
+                    feature, resolution)];
+              });
+            });
+            // TODO: Handle error
+
             if (!layer.updateDelay) {
               setLayerSource();
             }
@@ -889,12 +1036,16 @@ goog.require('ga_urlutils_service');
             olLayer.label = layer.label;
             olLayer.type = layer.type;
             olLayer.timeEnabled = layer.timeEnabled;
+            olLayer.timeBehaviour = layer.timeBehaviour;
             olLayer.timestamps = layer.timestamps;
             olLayer.geojsonUrl = layer.geojsonUrl;
             olLayer.updateDelay = layer.updateDelay;
             var that = this;
             olLayer.getCesiumImageryProvider = function() {
               return that.getCesiumImageryProviderById(bodId);
+            };
+            olLayer.getCesiumDataSource = function(scene) {
+              return that.getCesiumDataSourceById(bodId, scene);
             };
           }
 
@@ -945,20 +1096,20 @@ goog.require('ga_urlutils_service');
         this.getLayerTimestampFromYear = function(configOrBodId, yearStr) {
           var layer = angular.isString(configOrBodId) ?
               this.getLayer(configOrBodId) : configOrBodId;
+          if (!layer.timeEnabled) {
+            // a WMTS/Terrain/Tileset3D layer has at least one timestamp
+            return (layer.type == 'wmts' || layer.type == 'terrain' ||
+                layer.type == 'tileset3d') ? layer.timestamps[0] : undefined;
+          }
           var timestamps = layer.timestamps || [];
           if (angular.isNumber(yearStr)) {
             yearStr = '' + yearStr;
-          }
-          if (!layer.timeEnabled) {
-            // a WMTS/Terrain layer has at least one timestamp
-            return (layer.type == 'wmts' || layer.type == 'terrain') ?
-                timestamps[0] : undefined;
           }
           if (!angular.isDefined(yearStr)) {
             var timeBehaviour = layer.timeBehaviour;
             //check if specific 4/6/8 digit timestamp is specified
             if (/^\d{4}$|^\d{6}$|^\d{8}$/.test(timeBehaviour)) {
-                yearStr = timeBehaviour;
+                yearStr = timeBehaviour.substr(0, 4);
             } else if (timeBehaviour !== 'all' && timestamps.length) {
                 yearStr = timestamps[0];
             }
@@ -1020,23 +1171,19 @@ goog.require('ga_urlutils_service');
           if (!this.isBodLayer(olLayer)) {
             return false;
           }
-          var hasTooltip;
           var parentLayerId = this.getBodParentLayerId(olLayer);
           var bodId = parentLayerId || olLayer.bodId;
-          if (bodId) {
-            hasTooltip = this.getLayerProperty(bodId, 'tooltip');
-          }
-          return !!(bodId && hasTooltip);
+          return this.getLayerProperty(bodId, 'tooltip');
         };
       };
 
-      return new Layers(this.dfltWmsSubdomains,
-          this.dfltWmtsNativeSubdomains, this.dfltWmtsMapProxySubdomains,
+      return new Layers(this.dfltWmsSubdomains, this.dfltWmtsNativeSubdomains,
+          this.dfltWmtsMapProxySubdomains, this.dfltVectorTilesSubdomains,
           this.wmsUrlTemplate, this.wmtsGetTileUrlTemplate,
           this.wmtsMapProxyGetTileUrlTemplate, this.terrainTileUrlTemplate,
-          this.layersConfigUrlTemplate, this.legendUrlTemplate);
+          this.vectorTilesUrlTemplate, this.layersConfigUrlTemplate,
+          this.legendUrlTemplate, this.imageryMetadataUrl);
     };
-
   });
 
   /**
@@ -1044,7 +1191,7 @@ goog.require('ga_urlutils_service');
    */
   module.provider('gaMapUtils', function() {
     this.$get = function($window, gaGlobalOptions, gaUrlUtils, $q,
-        gaDefinePropertiesForLayer, $http) {
+        gaDefinePropertiesForLayer, $http, $rootScope) {
       var resolutions = gaGlobalOptions.resolutions;
       var lodsForRes = gaGlobalOptions.lods;
       var isExtentEmpty = function(extent) {
@@ -1058,13 +1205,14 @@ goog.require('ga_urlutils_service');
       // Level of detail for the default resolution
       var lodForDfltRes = gaGlobalOptions.defaultLod;
       var dfltResIdx = resolutions.indexOf(gaGlobalOptions.defaultResolution);
-
+      var proj = ol.proj.get(gaGlobalOptions.defaultEpsg);
+      var extent = gaGlobalOptions.defaultExtent || proj.getExtent();
       return {
         Z_PREVIEW_LAYER: 1000,
         Z_PREVIEW_FEATURE: 1100,
         Z_FEATURE_OVERLAY: 2000,
         preload: 6, //Number of upper zoom to preload when offline
-        defaultExtent: gaGlobalOptions.defaultExtent,
+        defaultExtent: extent,
         viewResolutions: resolutions,
         defaultResolution: gaGlobalOptions.defaultResolution,
         getViewResolutionForZoom: function(zoom) {
@@ -1113,7 +1261,7 @@ goog.require('ga_urlutils_service');
          * Use by offline to store in local storage.
          */
         getTileKey: function(tileUrl) {
-          return tileUrl.replace(/^\/\/wmts[0-9]/, '');
+          return tileUrl.replace(/^\/\/wmts[0-9]{0,3}/, '');
         },
 
         /**
@@ -1146,140 +1294,146 @@ goog.require('ga_urlutils_service');
           return layer;
         },
 
-        flyToAnimation: function(ol3d, center, destination, defer) {
-          // In degrees
-          var pitch = 50;
-          // Default camera field of view
-          // https://cesiumjs.org/Cesium/Build/Documentation/Camera.html
-          var cameraFieldOfView = 60;
+        flyToAnimation: function(ol3d, center, extent) {
+          var dest;
           var scene = ol3d.getCesiumScene();
-          var globe = scene.globe;
-          var carto = globe.ellipsoid.cartesianToCartographic(destination);
-          var camera = scene.camera;
 
-          $http.get(gaGlobalOptions.apiUrl + '/rest/services/height', {
+          if (extent) {
+            var rect = this.extentToRectangle(extent);
+            dest = scene.camera.getRectangleCameraCoordinates(rect);
+            center = ol.extent.getCenter(extent);
+          }
+
+          return $http.get(gaGlobalOptions.apiUrl + '/rest/services/height', {
             params: {
               easting: center[0],
               northing: center[1]
             }
           }).then(function(response) {
-            var height = carto.height - response.data.height;
+            var defer = $q.defer();
+            var pitch = 50; // In degrees
+            // Default camera field of view
+            // https://cesiumjs.org/Cesium/Build/Documentation/Camera.html
+            var cameraFieldOfView = 60;
+
+            if (!dest) {
+              pitch = 45; // In degrees
+              var projection = ol3d.getOlMap().getView().getProjection();
+              var deg = ol.proj.transform(center, projection, 'EPSG:4326');
+              dest = Cesium.Cartesian3.fromDegrees(deg[0], deg[1],
+                  parseFloat(response.data.height));
+            }
+
+            var carto = scene.globe.ellipsoid.cartesianToCartographic(dest);
+            var height = carto.height;
             var magnitude = Math.tan(
                 Cesium.Math.toRadians(pitch + cameraFieldOfView / 2)) * height;
             // Approx. direction on x and y (only valid for Swiss extent)
-            destination.x += (7 / 8) * magnitude;
-            destination.y += (1 / 8) * magnitude;
-            camera.flyTo({
-              destination: destination,
+            dest.x += (7 / 8) * magnitude;
+            dest.y += (1 / 8) * magnitude;
+
+            scene.camera.flyTo({
+              destination: dest,
               orientation: {
                 pitch: Cesium.Math.toRadians(-pitch)
               },
-              complete: defer.resolve,
-              cancel: defer.resolve
+              complete: function() {
+                defer.resolve();
+                $rootScope.$applyAsync();
+              },
+              cancel: function() {
+                defer.resolve();
+                $rootScope.$applyAsync();
+              }
             });
+            return defer.promise;
           });
         },
 
         moveTo: function(map, ol3d, zoom, center) {
-          var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
-            var projection = ol3d.getOlMap().getView().getProjection();
-            var deg = ol.proj.transform(center, projection, 'EPSG:4326');
-            var destination = Cesium.Cartesian3.fromDegrees(
-                deg[0], deg[1], 3000);
-            this.flyToAnimation(ol3d, center, destination, defer);
-          } else {
-            var view = map.getView();
-            view.setZoom(zoom);
-            view.setCenter(center);
-            defer.resolve();
+            return this.flyToAnimation(ol3d, center, null);
           }
-          return defer.promise;
+          var view = map.getView();
+          view.setZoom(zoom);
+          view.setCenter(center);
+          return $q.when();
         },
 
         zoomToExtent: function(map, ol3d, extent) {
-          var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
-            var camera = ol3d.getCesiumScene().camera;
-            var rectangle = this.extentToRectangle(extent);
-            var destination = camera.getRectangleCameraCoordinates(rectangle);
-            var center = ol.extent.getCenter(extent);
-            this.flyToAnimation(ol3d, center, destination, defer);
-          } else {
-            map.getView().fit(extent, map.getSize());
-            defer.resolve();
+            return this.flyToAnimation(ol3d, null, extent);
           }
-          return defer.promise;
+          map.getView().fit(extent, {
+            size: map.getSize()
+          });
+          return $q.when();
         },
 
         // This function differs from moveTo because it adds panning effect in
         // 2d
         panTo: function(map, ol3d, dest) {
-          var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
             return this.moveTo(null, ol3d, null, dest);
-          } else {
-            var source = map.getView().getCenter();
-            var dist = Math.sqrt(Math.pow(source[0] - dest[0], 2),
-                Math.pow(source[1] - dest[1], 2));
-            var duration = Math.min(Math.sqrt(300 + dist /
-                map.getView().getResolution() * 1000), 3000);
-            var start = +new Date();
-            var pan = ol.animation.pan({
-              duration: duration,
-              source: map.getView().getCenter(),
-              start: start
-            });
-            map.beforeRender(pan);
-            map.getView().setCenter(dest);
-            defer.resolve();
           }
+          var defer = $q.defer();
+          var view = map.getView();
+          var source = view.getCenter();
+          var dist = Math.sqrt(Math.pow(source[0] - dest[0], 2),
+              Math.pow(source[1] - dest[1], 2));
+          var duration = Math.min(Math.sqrt(300 + dist /
+              view.getResolution() * 1000), 3000);
+          view.animate({
+            center: dest,
+            duration: 0
+          }, function(success) {
+            defer.resolve();
+            $rootScope.$applyAsync();
+          });
           return defer.promise;
         },
 
         // This function differs from zoomToExtent because it adds flying effect
         // in 2d
         flyTo: function(map, ol3d, dest, extent) {
-          var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
             return this.zoomToExtent(null, ol3d, extent);
-          } else {
-            var size = map.getSize();
-            var source = map.getView().getCenter();
-            var sourceRes = map.getView().getResolution();
-            var dist = Math.sqrt(Math.pow(source[0] - dest[0], 2),
-                Math.pow(source[1] - dest[1], 2));
-            var duration = Math.min(Math.sqrt(300 + dist / sourceRes * 1000),
-                3000);
-            var destRes = Math.max(
-              (extent[2] - extent[0]) / size[0],
-              (extent[3] - extent[1]) / size[1]);
-            destRes = Math.max(map.getView().constrainResolution(destRes, 0, 0),
-                2.5);
-            var start = +new Date();
-            var pan = ol.animation.pan({
-              duration: duration,
-              source: source,
-              start: start
-            });
-            var bounce = ol.animation.bounce({
-              duration: duration,
-              resolution: Math.max(sourceRes, dist / 1000,
-                  // needed to don't have up an down and up again in zoom
-                  destRes * 1.2),
-              start: start
-            });
-            var zoom = ol.animation.zoom({
-              resolution: sourceRes,
-              duration: duration,
-              start: start
-            });
-            map.beforeRender(pan, zoom, bounce);
-            map.getView().setCenter(dest);
-            map.getView().setResolution(destRes);
-            defer.resolve();
           }
-          return defer.promise;
+          var deferPan = $q.defer();
+          var deferZoom = $q.defer();
+          var size = map.getSize();
+          var source = map.getView().getCenter();
+          var sourceRes = map.getView().getResolution();
+          var dist = Math.sqrt(Math.pow(source[0] - dest[0], 2),
+              Math.pow(source[1] - dest[1], 2));
+          var duration = Math.min(Math.sqrt(300 + dist / sourceRes * 1000),
+              3000);
+          var destRes = Math.max(
+            (extent[2] - extent[0]) / size[0],
+            (extent[3] - extent[1]) / size[1]);
+          destRes = Math.max(map.getView().constrainResolution(destRes, 0, 0),
+              2.5);
+          var view = map.getView();
+          view.animate({
+            center: dest,
+            duration: duration
+          }, function() {
+            deferPan.resolve();
+            $rootScope.$applyAsync();
+          });
+          view.animate({
+            // destRes * 1.2 needed to don't have up an down and up again
+            // in zoom.
+            resolution: Math.max(sourceRes, dist / 1000, destRes * 1.2),
+            duration: duration / 2
+          }, {
+            resolution: destRes,
+            duration: duration / 2,
+          }, function(success) {
+            deferZoom.resolve();
+            $rootScope.$applyAsync();
+          });
+          return $q.all([deferPan.promise, deferZoom.promise]);
         },
 
         // Test if a layer is a KML layer added by the ImportKML tool or
@@ -1320,11 +1474,23 @@ goog.require('ga_urlutils_service');
         isExternalWmsLayer: function(olLayerOrId) {
           if (angular.isString(olLayerOrId)) {
             return /^WMS\|\|/.test(olLayerOrId) &&
-                // INGRID: Length now 6 because adding WMS version and queryable
-                olLayerOrId.split('||').length == 6;
+                olLayerOrId.split('||').length >= 4;
           }
           return !!(olLayerOrId && !olLayerOrId.bodId &&
               this.isWMSLayer(olLayerOrId));
+        },
+
+        // Test if a layer is an external WMTS layer added by the ImportWMTS
+        // tool or permalink
+        isExternalWmtsLayer: function(olLayerOrId) {
+          if (!olLayerOrId) {
+            return false;
+          } else if (angular.isString(olLayerOrId)) {
+            return /^WMTS\|\|/.test(olLayerOrId) &&
+                olLayerOrId.split('||').length === 3;
+          } else {
+            return olLayerOrId.type === 'WMTS';
+          }
         },
 
         // INGRID: External service
@@ -1359,46 +1525,48 @@ goog.require('ga_urlutils_service');
          * Reset map rotation to North
          */
         resetMapToNorth: function(map, ol3d) {
-          var currentRotation, scene;
+          var defer = $q.defer();
           if (ol3d && ol3d.getEnabled()) {
-            scene = ol3d.getCesiumScene();
-            currentRotation = -scene.camera.heading;
-          } else {
-            currentRotation = map.getView().getRotation();
-          }
-          while (currentRotation < -Math.PI) {
-            currentRotation += 2 * Math.PI;
-          }
-          while (currentRotation > Math.PI) {
-            currentRotation -= 2 * Math.PI;
-          }
+            var scene = ol3d.getCesiumScene();
+            var currentRotation = -scene.camera.heading;
 
-          if (scene) {
+            while (currentRotation < -Math.PI) {
+              currentRotation += 2 * Math.PI;
+            }
+
+            while (currentRotation > Math.PI) {
+              currentRotation -= 2 * Math.PI;
+            }
             var bottom = olcs.core.pickBottomPoint(scene);
             if (bottom) {
               olcs.core.setHeadingUsingBottomCenter(scene, currentRotation,
                   bottom);
             }
+            defer.resolve();
           } else {
-            map.beforeRender(ol.animation.rotate({
-              rotation: currentRotation,
-              duration: 1000,
+            map.getView().animate({
+              rotation: 0,
               easing: ol.easing.easeOut
-            }));
-            map.getView().setRotation(0);
+            }, function() {
+              defer.resolve();
+              $rootScope.$applyAsync();
+            });
           }
+          return defer.promise;
         },
 
         intersectWithDefaultExtent: function(extent) {
           if (!extent || extent.length !== 4) {
             return gaGlobalOptions.defaultExtent;
           }
+          /* INGRID: Remove check extent
           extent = [
             Math.max(extent[0], gaGlobalOptions.defaultExtent[0]),
             Math.max(extent[1], gaGlobalOptions.defaultExtent[1]),
             Math.min(extent[2], gaGlobalOptions.defaultExtent[2]),
             Math.min(extent[3], gaGlobalOptions.defaultExtent[3])
           ];
+          */
           if (!isExtentEmpty(extent)) {
             return extent;
           } else {
@@ -1480,6 +1648,20 @@ goog.require('ga_urlutils_service');
               olLayer.getSource &&
               (olLayer.getSource() instanceof ol.source.ImageWMS ||
               olLayer.getSource() instanceof ol.source.TileWMS));
+        },
+
+        // INGRID: Add 'isWMTSLayer'
+        /**
+         * Tests if a layer is a WMTS layer.
+         * @param {ol.layer.Base} an ol layer.
+         *
+         * Returns true if the layer is a WMTS
+         * Returns false if the layer is not a WMTS
+         */
+        isWMTSLayer: function(olLayer) {
+          return !!(olLayer && !(olLayer instanceof ol.layer.Group) &&
+              olLayer.getSource &&
+              (olLayer.getSource() instanceof ol.source.WMTS));
         }
       };
     };
@@ -1507,47 +1689,47 @@ goog.require('ga_urlutils_service');
         },
         permalinked: function(layer) {
           return layer.displayInLayerManager &&
-              !gaMapUtils.isLocalKmlLayer(layer);
+                 !gaMapUtils.isLocalKmlLayer(layer);
         },
         /**
          * Keep only time enabled layer
          */
-        timeEnabledLayersFilter: function(layer) {
-          return !layer.background &&
-                 layer.timeEnabled &&
+        timeEnabled: function(layer) {
+          return layer.timeEnabled &&
                  layer.visible &&
+                 !layer.background &&
                  !layer.preview;
         },
         /**
          * Keep layers with potential tooltip for query tool
          */
         potentialTooltip: function(layer) {
-          return layer.displayInLayerManager &&
+          return !!(layer.displayInLayerManager &&
                  layer.visible &&
                  layer.bodId &&
                  gaLayers.hasTooltipBodLayer(layer) &&
-                 !gaMapUtils.isVectorLayer(layer);
+                 !gaMapUtils.isVectorLayer(layer));
         },
         /**
          * Searchable layers
          */
         searchable: function(layer) {
-          return layer.displayInLayerManager &&
+          return !!(layer.displayInLayerManager &&
                  layer.visible &&
                  layer.bodId &&
-                 gaLayers.getLayerProperty(layer.bodId, 'searchable');
+                 gaLayers.getLayerProperty(layer.bodId, 'searchable'));
         },
         /**
          * Queryable layers (layers with queryable attributes)
          */
         queryable: function(layer) {
-          return layer.displayInLayerManager &&
+          return !!(layer.displayInLayerManager &&
                  layer.visible &&
                  layer.bodId &&
                  gaLayers.getLayerProperty(layer.bodId,
                                            'queryableAttributes') &&
                  gaLayers.getLayerProperty(layer.bodId,
-                                           'queryableAttributes').length > 0;
+                                           'queryableAttributes').length);
         },
         /**
          * Keep only background layers

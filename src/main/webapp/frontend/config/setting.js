@@ -10,11 +10,17 @@ var settingEpsgExtent = undefined;
 //Override default EPSG (default: 'EPSG:3857')
 var settingEpsg = undefined;
 
+//Override supported languages (default: 'EPSG:3857')
+var settingLanguages = '["de", "en"]';
+
 // Override short URL service (default: 'https://is.gd/create.php?format=json')
 var settingShortURLService = undefined;
 
 // Define opensearch URL to search for WMS services. (integrate on map client search field) 
 var settingSearchServiceUrl = 'http://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
+
+// Define gazetter/nominatim zoom level 
+var settingGazetterZoom = 10;
 
 // Define nominatim URL to search for cities, places, countries (integrate on map client search field)
 var settingSearchNominatimUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
@@ -37,27 +43,15 @@ var settingSitemapURL = undefined;
 // Activate to use geodesic
 var settingUseGeodesic = true;
 
-// Override default mouse position projection (Default: 0)
-var settingDefaultMousePositionIndex = 0;
+// Override default mouse position projections
+var settingDefaultMouseProjections = ['EPSG:3857', 'EPSG:4326', 'EPSG:31466', 'EPSG:31467', 'EPSG:31468', 'EPSG:31469', 'EPSG:25832', 'EPSG:25833'];
 
-// Default list on WMS import function
-var settingDefaultWMSList = [
+// Default list on import function
+var settingDefaultImportList = [
      'http://atlas.wsv.bund.de/bwastr/wms?',
-     'http://gdi.uba.de/arcgis/services/BoFlLa/WMS_UBA_BoFlLa_NitratGrundWa_MST/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_FlNetz/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/BoFlLa/WMS_UBA_BoFlLa_CLL_UeberS/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/PrKo/WMS_UBA_PrKo_GFA/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_GWL/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/GeobD/WMS_UBA_GeobD_DE_DGM/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_NitratOberflWa/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/BoFlLa/WMS_UBA_BoFlLa_CLL_UeberS/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_GSK/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_MST/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/Wa/WMS_UBA_Wa_Seetyp/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/BoFlLa/WMS_UBA_BoFlLa_WaldBrRisiko/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/FDaten/WMS_UBA_FDaten_OekologRaumGl/MapServer/WMSServer?',
-     'http://gdi.uba.de/arcgis/services/KlEn/WMS_UBA_KlEn_Kraftw/MapServer/WMSServer?',
-     'http://wms.geo.admin.ch/'
+     'http://atlas.wsv.bund.de/ienc/wms?',
+     'http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml',
+     'http://atlas.wsv.bund.de/ienc/wmts/1.0.0/WMTSCapabilities.xml'
    ];
 
 // Activate social networks services 
@@ -82,3 +76,8 @@ var settingKMLName = 'INGRID';
 
 // Hide of catalog menu
 var settingHideCatalog = false;
+
+// Enable what3words
+var settingEnableW3W = false;
+var w3wUrl = 'https://api.what3words.com';
+var w3wApiKey = 'OM48J50Y';

@@ -2,9 +2,10 @@
   position: relative;
   width: 100%;
   height: 100%;
+  z-index: 0;
 
   .ol-viewport .ol-unselectable {
-    .ga-user-select(none);
+    user-select: none;
   }
   
   .ol-dragbox {
@@ -28,7 +29,7 @@
     .fa-ga-circle {
       font-size: 40px;
     }
-  
+
     .fa-ga-zoom-plus, .fa-ga-zoom-minus {
       font-size: 40px;
     }
@@ -40,7 +41,16 @@
     
     .fa-resize-horizontal, .fa-resize-vertical{
       font-size: 20px;
-      padding: 10px;
+      left: 0;
+      top: 8px;
     }
   }
+
+  &.ga-map-pointer {
+    cursor: pointer;  
+  }
+  &.ga-map-grab {
+    cursor: grabpointer;  
+  }
 }
+
