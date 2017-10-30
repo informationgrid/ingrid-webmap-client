@@ -77,13 +77,9 @@
                 <td>Streckenbezeichnung:</td>
                 <td>{{bwastr_typ}}</td>
               </tr>
-              <tr ng-if="bwastr_lon != undefined">
-                <td>Länge [Dezimalgrad]:</td>
-                <td>{{bwastr_lon}}</td>
-              </tr>
-              <tr ng-if="bwastr_lat != undefined">
-                <td>Breite [Dezimalgrad]:</td>
-                <td>{{bwastr_lat}}</td>
+              <tr ng-if="bwastr_label != undefined">
+                <td>{{bwastr_label}}:</td>
+                <td>{{bwastr_lon}}, {{bwastr_lat}}</td>
               </tr>
               <tr ng-if="bwastr_km != undefined">
                 <td>Station:</td>

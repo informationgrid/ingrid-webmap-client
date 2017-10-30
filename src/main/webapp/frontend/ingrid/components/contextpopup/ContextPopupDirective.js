@@ -180,57 +180,57 @@ goog.require('ga_window_service');
               }
               var projections = [{
                 value: 'EPSG:3857',
-                label: 'Mercator (Breite/Länge)',
+                label: 'Mercator (Breite, Länge) [°]',
                 coordinates: ol.coordinate.format(coord3857,
                   '{y}, {x}', 2)
               }, {
                 value: 'EPSG:4326',
-                label: 'WGS 84 (Breite/Länge)',
+                label: 'WGS 84 (Breite, Länge) [°]',
                 coordinates: ol.coordinate.format(coord4326,
                   '{y}, {x}', 5)
               }, {
                 value: 'EPSG:31466',
-                label: 'GK2 - DHDN (R, H)',
+                label: 'GK2 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31466,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31467',
-                label: 'GK3 - DHDN (R, H)',
+                label: 'GK3 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31467,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31468',
-                label: 'GK4 - DHDN (R, H)',
+                label: 'GK4 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31468,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31469',
-                label: 'GK5 - DHDN (R, H)',
+                label: 'GK5 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31469,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25832',
-                label: 'UTM 32N - ETRS89 (E, N)',
+                label: 'UTM 32N - ETRS89 (E, N) [m]',
                 coordinates: ol.coordinate.format(coord25832,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25833',
-                label: 'UTM 33N - ETRS89 (E, N)',
-                coordinates: ol.coordinate.format(coord25832,
+                label: 'UTM 33N - ETRS89 (E, N) [m]',
+                coordinates: ol.coordinate.format(coord25833,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2166',
-                label: 'GK3 - S42/83 (R, H)',
+                label: 'GK3 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2166,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2167',
-                label: 'GK4 - S42/83 (R, H)',
+                label: 'GK4 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2167,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2168',
-                label: 'GK5 - S42/83 (R, H)',
+                label: 'GK5 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2168,
                   '{x}, {y}', 2)
               }];
@@ -246,6 +246,15 @@ goog.require('ga_window_service');
                 }
               }
               scope.projections = sortProjections;
+
+              // set coord label and coords for bwastr dependent from default CRS 
+              for (var p in projections) {
+                  var proj = projections[p];
+                  if (gaGlobalOptions.defaultEpsg === proj.value) {
+                    scope.bwastr_label = proj.label;
+                    break;
+                  }
+              }
 
               coord4326['lon'] = coord4326[0];
               coord4326['lat'] = coord4326[1];
