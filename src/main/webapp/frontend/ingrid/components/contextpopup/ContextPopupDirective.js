@@ -250,11 +250,12 @@ goog.require('ga_window_service');
               // set coord label and coords for bwastr dependent from
               // default CRS
               for (var p in projections) {
-                  var proj = projections[p];
-                  if (gaGlobalOptions.defaultEpsg === proj.value) {
-                    scope.bwastr_label = proj.label;
-                    break;
-                  }
+                var proj = projections[p];
+                if (gaGlobalOptions.defaultEpsg === proj.value) {
+                  scope.bwastr_label = proj.label;
+                  scope.bwastr_coords = proj.coordinates;
+                  break;
+                }
               }
 
               coord4326['lon'] = coord4326[0];
@@ -442,8 +443,8 @@ goog.require('ga_window_service');
 
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
-                X: Math.round(coordDefault[1], 1),
-                Y: Math.round(coordDefault[0], 1)
+                X: coordDefault[1].toFixed(2),
+                Y: coordDefault[0].toFixed(2)
               };
               var content = '';
               content = '{"limit":200,"queries":[' +
@@ -472,10 +473,8 @@ goog.require('ga_window_service');
                         scope.bwastr_id = result.bwastrid;
                         scope.bwastr_name = result.bwastr_name;
                         scope.bwastr_typ = result.strecken_name;
-                        scope.bwastr_lon = result.geometry.coordinates[0];
-                        scope.bwastr_lat = result.geometry.coordinates[1];
-                        scope.bwastr_km = result.stationierung.km_wert;
-                        scope.bwastr_distance = result.stationierung.offset;
+                        scope.bwastr_km = result.stationierung.km_wert.toFixed(2);
+                        scope.bwastr_distance = result.stationierung.offset.toFixed(2);
                     } else {
                         scope.bwastr_error = result.error.message;
                     }
