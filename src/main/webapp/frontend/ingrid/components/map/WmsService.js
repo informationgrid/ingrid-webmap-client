@@ -191,16 +191,12 @@ goog.require('ga_urlutils_service');
             if (capSplit.length > 0) {
                 var capSplitParams = capSplit[1].split('&');
                 for (var i = 0; i < capSplitParams.length; i++) {
-                    var capSplitParam = capSplitParams[0].toLowerCase();
+                    var capSplitParam = capSplitParams[i].toLowerCase();
                     // INGRID: Check for needed parameters like 'ID'
                     if (capSplitParam.indexOf('request') == -1 &&
                       capSplitParam.indexOf('service') == -1 &&
                       capSplitParam.indexOf('version') == -1) {
-                        if (capParams.startsWith('?')) {
-                            capParams = capParams + '?&' + capSplitParam;
-                        } else {
-                            capParams = capParams + '&' + capSplitParam;
-                        }
+                        capParams = capParams + '&' + capSplitParam;
                     }
                 }
             }
