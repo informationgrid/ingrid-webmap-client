@@ -247,7 +247,8 @@ goog.require('ga_window_service');
               }
               scope.projections = sortProjections;
 
-              // set coord label and coords for bwastr dependent from default CRS 
+              // set coord label and coords for bwastr dependent from
+              // default CRS
               for (var p in projections) {
                   var proj = projections[p];
                   if (gaGlobalOptions.defaultEpsg === proj.value) {
