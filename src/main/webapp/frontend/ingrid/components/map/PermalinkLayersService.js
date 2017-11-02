@@ -292,7 +292,8 @@ goog.require('ga_wmts_service');
                   },
                   {
                     url: infos[2],
-                    label: infos[1],
+                    // INGRID: decode label
+                    label: decodeURIComponent(infos[1]),
                     opacity: opacity || 1,
                     visible: visible,
                     // INGRID: Add default extent by default projection

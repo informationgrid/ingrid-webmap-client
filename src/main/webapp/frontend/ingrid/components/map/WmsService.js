@@ -63,7 +63,8 @@ goog.require('ga_urlutils_service');
         // Test WMS 1.1.1 with  https://wms.geo.bs.ch/wmsBS
         var createWmsLayer = function(params, options, index) {
           options = options || {};
-          options.id = 'WMS||' + options.label + '||' + options.url + '||' +
+          // INGRID: Encode label
+          options.id = 'WMS||' + encodeURIComponent(options.label) + '||' + options.url + '||' +
               params.LAYERS;
 
           // If the WMS has a version specified, we add it in
