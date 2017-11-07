@@ -474,7 +474,8 @@ goog.require('ga_window_service');
                         scope.bwastr_name = result.bwastr_name;
                         scope.bwastr_typ = result.strecken_name;
                         scope.bwastr_km = result.stationierung.km_wert;
-                        scope.bwastr_distance = result.stationierung.offset.toFixed(2);
+                        scope.bwastr_distance = result.stationierung
+                          .offset.toFixed(2);
                     } else {
                         scope.bwastr_error = result.error.message;
                     }

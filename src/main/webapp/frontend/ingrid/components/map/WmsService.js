@@ -64,8 +64,8 @@ goog.require('ga_urlutils_service');
         var createWmsLayer = function(params, options, index) {
           options = options || {};
           // INGRID: Encode label
-          options.id = 'WMS||' + encodeURIComponent(options.label) + '||' + options.url + '||' +
-              params.LAYERS;
+          options.id = 'WMS||' + encodeURIComponent(options.label) + '||' +
+            options.url + '||' + params.LAYERS;
 
           // If the WMS has a version specified, we add it in
           // the id. It's important that the layer keeps the same id as the
@@ -77,7 +77,7 @@ goog.require('ga_urlutils_service');
             if (options.useReprojection) {
               // INGRID: Set to default projection
               // options.projection = 'EPSG:4326';
-              options.projection =   gaGlobalOptions.defaultEpsg;
+              options.projection = gaGlobalOptions.defaultEpsg;
               options.id += '||true';
             }
           } else {
