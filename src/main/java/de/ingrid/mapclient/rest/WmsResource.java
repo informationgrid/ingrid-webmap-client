@@ -456,7 +456,7 @@ public class WmsResource {
                         if(fields != null){
                             String wmsStructureLayers = "";
                             wmsStructureLayers += getSubLayers(fields, xpath, wmsStructureLayers, layerName);
-                            wmsStructure += "<ul>";
+                            wmsStructure += "<ul style=\"padding: 0px;\">";
                             wmsStructure += wmsStructureLayers;
                             wmsStructure += "</ul>";
                         }
@@ -670,9 +670,13 @@ public class WmsResource {
                 Node field = (Node) xpath.evaluate( "./Title", node, XPathConstants.NODE);
                 if(field != null){
                     Node nodeName = (Node) xpath.evaluate( "./Name", node, XPathConstants.NODE);
-                    if(nodeName != null && layername != null){
-                        if(nodeName.getTextContent().trim().equals( layername.trim() )){
-                            isLayerName = true;
+                    String[] splitLayernames = layername.split( "," );
+                    for (int j = 0; j < splitLayernames.length; j++) {
+                        String splitLayername = splitLayernames[j];
+                        if(nodeName != null && splitLayername != null){
+                            if(nodeName.getTextContent().trim().equals( splitLayername.trim() )){
+                                isLayerName = true;
+                            }
                         }
                     }
                 }
