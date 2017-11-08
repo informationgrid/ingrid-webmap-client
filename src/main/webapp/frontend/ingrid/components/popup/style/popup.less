@@ -33,6 +33,28 @@
     max-height: none;
   }
 }
+
+.metadata-structure {
+  padding: 8px;
+
+  ul {
+    list-style-type: none;
+    margin-bottom: 0;
+
+    li {
+      border-bottom: 1px solid #E9E9E9;
+      padding-top: 5px;
+    }
+
+    li.active {
+      background-color: #EEEEEE;
+
+      label {
+        font-weight: bold;
+      }
+    }
+  }
+}
  
 [ga-popup] {
   display: none;
@@ -235,28 +257,6 @@
       left: initial!important;
       top: auto!important; // for IE
       left: auto!important; // for IE
-    }
-  }
-  
-  .metadata-structure {
-    padding: 8px;
-    
-    ul {
-      list-style-type: none;
-      margin-bottom: 0;
-      
-      li {
-        border-bottom: 1px solid #E9E9E9;
-        padding-top: 5px;
-      }
-      
-      li.active {
-        background-color: #EEEEEE;
-        
-        label {
-            font-weight: bold;
-        }
-      }
     }
   }
 }
