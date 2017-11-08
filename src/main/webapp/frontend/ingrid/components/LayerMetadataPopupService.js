@@ -10,13 +10,16 @@ goog.require('ga_wms_service');
     'ga_map_service',
     'ga_popup',
     'ga_wms_service',
+    // INGRID: Add html compile module
+    'angular-bind-html-compile',
     'pascalprecht.translate'
   ]);
 
   module.provider('gaLayerMetadataPopup', function() {
     this.$get = function($translate, $rootScope, $sce, $q, gaPopup, gaLayers,
         gaMapUtils, gaWms, gaLang) {
-      var popupContent = '<div ng-bind-html="options.result.html"></div>';
+      // INGRID: Change html attribute to 'bind-html-compile'
+      var popupContent = '<div bind-html-compile="options.result.html"></div>';
 
       // Called to update the content
       var updateContent = function(popup, layer) {
@@ -88,6 +91,20 @@ goog.require('ga_wms_service');
               $translate.instant('metadata_service_url_link'));
           popup.scope.options.result.html = $sce.trustAsHtml(data);
           popup.scope.options.lang = gaLang.get();
+
+          // INGRID: Add tabs
+          popup.scope.currentTab = 1;
+
+          // INGRID: Tabs management stuff
+          popup.scope.activeTab = function(numTab) {
+              popup.scope.currentTab = numTab;
+          };
+
+          // INGRID: Tabs management stuff
+          popup.scope.getTabClass = function(numTab) {
+            return (numTab === popup.scope.currentTab) ? 'active' : '';
+          };
+
         }, function() {
           popup.scope.options.lang = undefined;
           //FIXME: better error handling
