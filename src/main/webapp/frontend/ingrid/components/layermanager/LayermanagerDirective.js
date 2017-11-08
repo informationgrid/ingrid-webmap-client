@@ -269,12 +269,25 @@ goog.require('ga_urlutils_service');
               gaMapUtils.isExternalWmtsLayer(layer);
         };
 
-// INGRID: Add function for zoomToExtent
+        // INGRID: Add function for zoomToExtent
         scope.hasExtent = function(layer) {
           if (layer.type == 'KML') {
             return true;
           }
           return layer.extent ? true : false;
+        };
+
+        // INGRID: Check layer extent intersects map extent
+        scope.isIntersectsExtent = function(layer) {
+          if (layer) {
+            if (layer.extent) {
+                var extent = layer.extent;
+                var mapExtent = this.map.getView()
+                  .calculateExtent(this.map.getSize());
+                return ol.extent.intersects(mapExtent, extent);
+            }
+          }
+          return false;
         };
 
         scope.showWarning = function(layer) {

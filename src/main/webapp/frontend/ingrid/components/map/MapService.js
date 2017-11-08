@@ -1057,7 +1057,11 @@ goog.require('ga_urlutils_service');
          * undefined if bodId does not exist
          */
         this.getLayer = function(bodId) {
-          return layers[bodId];
+          // INGRID: Check layers
+          if (layers) {
+            return layers[bodId];
+          }
+          return undefined;
         };
 
         /**

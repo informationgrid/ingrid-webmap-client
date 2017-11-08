@@ -4,7 +4,8 @@
         'ga-layer-time-enabled': layer.timeEnabled,
         'ga-layer-warning': layer.useThirdPartyData
       }">
-    <div class="ga-layer-infos ga-grab">
+    <!-- INGRID: Check layer extent intersects map extent -->
+    <div class="ga-layer-infos ga-grab" ng-class="{'extent-outside': !isIntersectsExtent(layer)}">
       <button class="ga-icon ga-btn fa fa-remove-sign"
               ng-click="removeLayer(layer)"></button>
       <label class="ga-checkbox" title="{{layer.label}}">

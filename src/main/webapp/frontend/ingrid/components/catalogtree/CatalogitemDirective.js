@@ -98,7 +98,7 @@ goog.require('ga_previewlayers_service');
               evt.stopPropagation();
             };
 
-// INGRID: Add zoom to extent
+            // INGRID: Add zoom to extent
             $scope.zoomToExtent = function(evt, bodId) {
               var layer = gaLayers.getLayer(bodId);
               if (layer) {
@@ -111,7 +111,7 @@ goog.require('ga_previewlayers_service');
               evt.stopPropagation();
             };
 
-// INGRID: Add hasExtent
+            // INGRID: Add hasExtent
             $scope.hasExtent = function(bodId) {
               var layer = gaLayers.getLayer(bodId);
               if (layer) {
@@ -122,7 +122,22 @@ goog.require('ga_previewlayers_service');
               return false;
             };
 
-// INGRID: Add isLayer
+            // INGRID: Check layer extent intersects map extent
+            $scope.isIntersectsExtent = function(bodId) {
+              var layer = gaLayers.getLayer(bodId);
+              if (layer) {
+                if (layer.extent) {
+                    var extent = ol.proj.transformExtent(layer.extent,
+                        'EPSG:4326', gaGlobalOptions.defaultEpsg);
+                    var mapExtent = this.map.getView()
+                      .calculateExtent(this.map.getSize());
+                    return ol.extent.intersects(mapExtent, extent);
+                }
+              }
+              return false;
+            };
+
+           // INGRID: Add isLayer
            $scope.isLayer = function(bodId) {
              if (bodId) {
                return true;
@@ -130,7 +145,7 @@ goog.require('ga_previewlayers_service');
              return false;
            };
 
-// INGRID: Add isParentLayer
+           // INGRID: Add isParentLayer
            $scope.isParentLayer = function(item) {
              if (item) {
                if (item.layerBodId) {
