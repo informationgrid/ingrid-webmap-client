@@ -448,7 +448,7 @@ public class WmsResource {
                         field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
                         String wmsStructure = "";
                         if(field != null){
-                            wmsStructure += "<h4 class=\"ga-truncate-text\">" + field.getTextContent() + "</h4>";
+                            wmsStructure += "<h4>" + field.getTextContent() + "</h4>";
                             wmsStructure += "<br>";
                         }
 
