@@ -456,8 +456,9 @@ itemscope itemtype="http://schema.org/WebApplication"
               <span translate>choose_theme</span>
             </a>
           </div>
+          <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
           <a id="catalogHeading" class="panel-heading accordion-toggle light collapsed"
-             data-toggle="collapse" href="#catalog"
+             data-toggle="collapse" data-parent="#pulldown-content" href="#catalog"
              ga-collapsible-show="globals.catalogShown">
             <i class="fa fa-caret-down"></i>
             <span>{{topicId | translate}}</span>
@@ -477,8 +478,9 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Selection -->
         <div class="panel" ng-hide="globals.isDrawActive">
+          <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
-             data-toggle="collapse" href="#selection"
+             data-toggle="collapse" data-parent="#pulldown-content" href="#selection"
              ga-collapsible-show="globals.selectionShown">
             <i class="fa fa-caret-down"></i>
             <span translate>layers_displayed</span>
