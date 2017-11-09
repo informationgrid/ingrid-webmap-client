@@ -927,7 +927,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Add setting to define zoom level of gazetter search
           gazetterZoom: settingGazetterZoom || 10,
           // INGRID: Enable what3words
-          enableW3W: settingEnableW3W || false
+          enableW3W: settingEnableW3W || false,
+          // INGRID: Show service name of layer
+          showLayerServiceName: settingShowLayerServiceName || false
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {

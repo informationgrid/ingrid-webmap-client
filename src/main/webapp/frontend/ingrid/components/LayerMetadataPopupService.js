@@ -16,8 +16,9 @@ goog.require('ga_wms_service');
   ]);
 
   module.provider('gaLayerMetadataPopup', function() {
+    // INGRID: Add 'gaGlobalOptions'
     this.$get = function($translate, $rootScope, $sce, $q, gaPopup, gaLayers,
-        gaMapUtils, gaWms, gaLang) {
+        gaMapUtils, gaWms, gaLang, gaGlobalOptions) {
       // INGRID: Change html attribute to 'bind-html-compile'
       var popupContent = '<div bind-html-compile="options.result.html"></div>';
 
@@ -51,49 +52,12 @@ goog.require('ga_wms_service');
             getMetaDataOfLayerWithLegend(encodeURIComponent(id));
         }
         return promise.then(function(resp) {
-          // INGRID: Add replaces to localisation html.
-          var data = resp.data;
-          data = data
-            .replace('metadata_legend', $translate.instant('metadata_legend'))
-            .replace('metadata_information',
-              $translate.instant('metadata_information'))
-            .replace('metadata_service_title',
-              $translate.instant('metadata_service_title'))
-            .replace('metadata_service_id',
-              $translate.instant('metadata_service_id'))
-            .replace('metadata_service_abstract',
-              $translate.instant('metadata_service_abstract'))
-            .replace('metadata_service_fees',
-              $translate.instant('metadata_service_fees'))
-            .replace('metadata_service_accessconstraints',
-              $translate.instant('metadata_service_accessconstraints'))
-            .replace('metadata_service_contactperson',
-              $translate.instant('metadata_service_contactperson'))
-            .replace('metadata_service_organisation',
-              $translate.instant('metadata_service_organisation'))
-            .replace('metadata_service_addresse',
-              $translate.instant('metadata_service_addresse'))
-            .replace('metadata_service_city',
-              $translate.instant('metadata_service_city'))
-            .replace('metadata_service_country',
-              $translate.instant('metadata_service_country'))
-            .replace('metadata_service_phone',
-              $translate.instant('metadata_service_phone'))
-            .replace('metadata_service_fax',
-              $translate.instant('metadata_service_fax'))
-            .replace('metadata_service_mail',
-              $translate.instant('metadata_service_mail'))
-            .replace('metadata_service_resource',
-              $translate.instant('metadata_service_resource'))
-            .replace('metadata_service_url',
-              $translate.instant('metadata_service_url'))
-            .replace('metadata_service_url_link',
-              $translate.instant('metadata_service_url_link'));
-          popup.scope.options.result.html = $sce.trustAsHtml(data);
+          popup.scope.options.result.html = $sce.trustAsHtml(resp.data);
           popup.scope.options.lang = gaLang.get();
 
           // INGRID: Add tabs
           popup.scope.currentTab = 1;
+          popup.scope.showWMSTree = gaGlobalOptions.showLayerServiceName;
 
           // INGRID: Tabs management stuff
           popup.scope.activeTab = function(numTab) {

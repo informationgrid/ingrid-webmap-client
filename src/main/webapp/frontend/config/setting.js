@@ -81,3 +81,6 @@ var settingHideCatalog = false;
 var settingEnableW3W = false;
 var w3wUrl = 'https://api.what3words.com';
 var w3wApiKey = 'OM48J50Y';
+
+// Show service name to layer
+var settingShowLayerServiceName = false;
