@@ -75,9 +75,7 @@ goog.require('ga_urlutils_service');
             options.id += '||' + params.VERSION;
 
             if (options.useReprojection) {
-              // INGRID: Set to default projection
-              // options.projection = 'EPSG:4326';
-              options.projection = gaGlobalOptions.defaultEpsg;
+              options.projection = 'EPSG:4326';
               options.id += '||true';
             }
           } else {
