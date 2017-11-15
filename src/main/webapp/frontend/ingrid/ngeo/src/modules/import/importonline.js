@@ -135,9 +135,8 @@ exports = function($q, $timeout, ngeoFile, gettext, ngeoImportOnlineTemplateUrl)
           scope['userMessage'] = gettext('Downloading file');
           $timeout.cancel(timeoutP);
 
-          // INGRID: Get WMS as JSON
-          if (url.toLowerCase().indexOf("1.1.1") > -1 ||
-            url.toLowerCase().indexOf("1.3.0") > -1) {
+          // INGRID: Get WMS version 1.1.1 as JSON
+          if (url.toLowerCase().indexOf("1.1.1") > -1) {
               url += "&toJson=true";
           }
           // Angularjs doesn't handle onprogress event

@@ -26,23 +26,25 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     if (layer['BoundingBox']) {
       for (let i = 0, ii = layer['BoundingBox'].length; i < ii; i++) {
         const bbox = layer['BoundingBox'][i];
-        const code = bbox['CRS'] || bbox['SRS'];
-        if (code && code.toUpperCase() == projCode.toUpperCase()) {
-          return [parseFloat(bbox['minx']), parseFloat(bbox['miny']), parseFloat(bbox['maxx']), parseFloat(bbox['maxy'])];
+        // INGRID: Check extent for WMS version 1.1.1 and 1.3.0
+        if (bbox['extent'] && bbox['crs']) {
+          const code = bbox['crs'] || bbox['srs'];
+          if (code && code.toUpperCase() == projCode.toUpperCase()) {
+            return bbox['extent'];
+          }
+        } else {
+          const code = bbox['CRS'] || bbox['SRS'];
+          if (code && code.toUpperCase() == projCode.toUpperCase()) {
+            return [parseFloat(bbox['minx']), parseFloat(bbox['miny']), parseFloat(bbox['maxx']), parseFloat(bbox['maxy'])];
+          }
         }
       }
     }
 
-    const wgs84Extent = layer['EX_GeographicBoundingBox'] || layer['LatLonBoundingBox']
+    const wgs84Extent = layer['EX_GeographicBoundingBox'] || layer['LatLonBoundingBox'];
     if (wgs84Extent) {
       // INGRID: Add 'extent'
-      var extent = layer['EX_GeographicBoundingBox'] ? 
-        [
-          parseFloat(wgs84Extent['westBoundLongitude']),
-          parseFloat(wgs84Extent['southBoundLatitude']),
-          parseFloat(wgs84Extent['eastBoundLongitude']),
-          parseFloat(wgs84Extent['northBoundLatitude'])
-        ] :
+      var extent = layer['EX_GeographicBoundingBox'] ||
         [
           parseFloat(wgs84Extent['minx']),
           parseFloat(wgs84Extent['miny']),
@@ -82,7 +84,12 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     }
 
     if (!layer['isInvalid']) {
-      layer['wmsUrl'] = getCap['Capability']['Request']['GetMap']['DCPType']['HTTP']['Get']['OnlineResource']['xlink:href'];
+      const dcpType = getCap['Capability']['Request']['GetMap']['DCPType'];
+      if (dcpType instanceof Array) {
+        layer['wmsUrl'] = dcpType[0]['HTTP']['Get']['OnlineResource']['xlink:href'];  
+      } else {
+        layer['wmsUrl'] = dcpType['HTTP']['Get']['OnlineResource']['xlink:href'];
+      }
       layer['wmsVersion'] = getCap['version'];
       layer['id'] = `WMS||${layer['wmsUrl']}||${layer['Name']}`;
       layer['extent'] = getLayerExtentFromGetCap(layer, proj);
@@ -144,7 +151,11 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
       scope.$watch('getCap', (val) => {
         let err;
         try {
-          val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+          if (val.WMT_MS_Capabilities || val.WMS_Capabilities) {
+            val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+          } else{
+            val = new ol.format.WMSCapabilities().read(val);
+          }
         } catch (e) {
           err = e;
         }
