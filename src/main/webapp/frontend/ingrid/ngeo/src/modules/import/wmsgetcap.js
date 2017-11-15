@@ -75,7 +75,8 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
   // Go through all layers, assign needed properties,
   // and remove useless layers (no name or bad crs without children
   // or no intersection between map extent and layer extent)
-  const getChildLayers = function(getCap, layer, proj) {
+  // INGRID: Add parentLayer param
+  const getChildLayers = function(getCap, layer, proj, parentLayer) {
 
     // If the WMS layer has no name, it can't be displayed
     if (!layer['Name']) {
@@ -94,6 +95,56 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
       layer['wmsVersion'] = getCap['version'];
       layer['id'] = `WMS||${layer['wmsUrl']}||${layer['Name']}`;
       layer['extent'] = getLayerExtentFromGetCap(layer, proj);
+
+      // INGRID: inheritance of parent layer params
+      if (parentLayer) {
+        // INGRID: Check parents 'SRS' or 'CRS'
+        const parentProjList = parentLayer['CRS'] || parentLayer['SRS'] || parentLayer;
+        if (parentProjList) {
+          if (parentProjList instanceof Array) {
+            if (layer['SRS']) {
+              if (layer['SRS'] instanceof Array) {
+                  layer['SRS'] = layer['SRS'].concat(parentProjList.filter(function (item) {
+                      return layer['SRS'].indexOf(item) < 0;
+                  }));
+              } else {
+                if(parentProjList.indexOf(layer['SRS']) == -1){
+                  layer['SRS'] = parentProjList.concat(layer['SRS']);
+                }
+              }
+            } else if (layer['CRS']) {
+              layer['CRS'] = parentProjList.concat(layer['CRS'].filter(function (item) {
+                return parentProjList.indexOf(item) < 0;
+              }));
+            } else if (layer['wmsVersion'] === '1.1.1') {
+              layer['SRS'] = parentProjList; 
+            } else if (layer['wmsVersion'] === '1.3.0') {
+              layer['CRS'] = parentProjList;
+            }
+          }
+        }
+
+        // INGRID: Check parents 'BoundingBox'
+        if (!layer['BoundingBox']) {
+          if (parentLayer['BoundingBox']) {
+            layer['BoundingBox'] = parentLayer['BoundingBox'];
+          }
+        }
+
+        // INGRID: Check parents 'LatLonBoundingBox'
+        if (!layer['LatLonBoundingBox']) {
+          if (parentLayer['LatLonBoundingBox']) {
+            layer['LatLonBoundingBox'] = parentLayer['LatLonBoundingBox'];
+          }
+        }
+
+        // INGRID: Check parents 'extent'
+        if (!layer['extent']) {
+          if (parentLayer['extent']) {
+            layer['extent'] = parentLayer['extent'];
+          }
+        }
+      }
 
       // if the layer has no extent, it is set as invalid.
       // We don't have proj codes list for wms 1.1.1 so we assume the
@@ -114,7 +165,9 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     if (layer.Layer) {
 
       for (let i = 0; i < layer.Layer.length; i++) {
-        const l = getChildLayers(getCap, layer.Layer[i], proj);
+        // INGRID: Add parent param
+        const parent = layer || parentLayer;
+        const l = getChildLayers(getCap, layer.Layer[i], proj, parent);
         if (!l) {
           layer.Layer.splice(i, 1);
           i--;
