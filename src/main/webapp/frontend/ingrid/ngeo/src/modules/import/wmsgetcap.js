@@ -84,9 +84,10 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     }
 
     if (!layer['isInvalid']) {
+      // INGRID: Edit check wmsUrl
       const dcpType = getCap['Capability']['Request']['GetMap']['DCPType'];
       if (dcpType instanceof Array) {
-        layer['wmsUrl'] = dcpType[0]['HTTP']['Get']['OnlineResource']['xlink:href'];  
+        layer['wmsUrl'] = dcpType[0]['HTTP']['Get']['OnlineResource'];  
       } else {
         layer['wmsUrl'] = dcpType['HTTP']['Get']['OnlineResource']['xlink:href'];
       }
@@ -151,6 +152,7 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
       scope.$watch('getCap', (val) => {
         let err;
         try {
+          // INGRID: Read WMS version 1.1.1 as XML
           if (val.WMT_MS_Capabilities || val.WMS_Capabilities) {
             val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
           } else{
