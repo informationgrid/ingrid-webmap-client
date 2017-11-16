@@ -1507,7 +1507,57 @@ goog.require('ga_urlutils_service');
               olService.split('||').length == 3;
           }
           return olService.type == 'WMS';
-       },
+        },
+
+        // INGRID: Add get resolution from scale
+        inRange: function(layer, map) {
+          var resolution = map.getView().getResolution();
+          var minResolution = layer.get('minResolution');
+          var maxResolution = layer.get('maxResolution');
+          var minScale = layer.get('minScale');
+          var maxScale = layer.get('maxScale');
+
+          if (typeof(minScale) == 'string') {
+            minScale = this.getScaleForScaleHint(minScale, map);
+          }
+
+          if (typeof(maxScale) == 'string') {
+            maxScale = this.getScaleForScaleHint(maxScale, map);
+          }
+
+          if (minScale) {
+            minResolution = this.getResolutionForScale(minScale, map);
+          }
+
+          if (maxScale) {
+            maxResolution = this.getResolutionForScale(maxScale, map);
+          }
+          return ((resolution >= minResolution) &&
+            (resolution <= maxResolution));
+        },
+
+        // INGRID: Add get resolution from scale
+        getResolutionForScale: function(scale, map) {
+          var dpi = 25.4 / 0.28;
+          var units = map.getView().getProjection().getUnits();
+          var mpu = ol.proj.METERS_PER_UNIT[units];
+          var res = scale / (mpu * 39.37 * dpi);
+          return res;
+        },
+
+        // INGRID: WMS version 1.1.1 scale to resolution
+        getScaleForScaleHint: function(scale, map) {
+          var rad2 = Math.pow(2, 0.5);
+          var units = map.getView().getProjection().getUnits();
+          var ipm = 39.37;
+          if (scale != 0 && scale != Infinity) {
+            return parseFloat(
+              ((scale / rad2) * ipm *
+              72).toPrecision(13)
+            );
+          }
+          return scale;
+        },
 
         // Test if a feature is a measure
         isMeasureFeature: function(olFeature) {

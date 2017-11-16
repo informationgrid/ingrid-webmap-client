@@ -107,6 +107,10 @@ goog.require('ga_urlutils_service');
             extent: options.extent,
             // INGRID: Add queryable
             queryable: options.queryable,
+            // INGRID: Add minScale
+            minScale: options.minScale,
+            // INGRID: Add maxScale
+            maxScale: options.maxScale,
             source: source
           });
           gaDefinePropertiesForLayer(layer);
@@ -156,6 +160,20 @@ goog.require('ga_urlutils_service');
             LAYERS: getCapLayer.Name,
             VERSION: getCapLayer.wmsVersion
           };
+
+          // INGRID: Add scales
+          var minScale;
+          var maxScale;
+          if (getCapLayer.ScaleHint) {
+            minScale = getCapLayer.ScaleHint.min;
+            maxScale = getCapLayer.ScaleHint.max;
+          }
+          if (getCapLayer.MinScaleDenominator) {
+            minScale = getCapLayer.MinScaleDenominator;
+          } else if (getCapLayer.MaxScaleDenominator) {
+            maxScale = getCapLayer.MaxScaleDenominator;
+          }
+
           var wmsOptions = {
             url: getCapLayer.wmsUrl,
             label: getCapLayer.Title,
@@ -163,6 +181,10 @@ goog.require('ga_urlutils_service');
             extent: getCapLayer.extent,
             // INGRID: Add queryable
             queryable: getCapLayer.queryable,
+            // INGRID: Add minScale
+            minScale: minScale,
+            // INGRID: Add maxScale
+            maxScale: maxScale,
             useReprojection: getCapLayer.useReprojection
           };
           return createWmsLayer(wmsParams, wmsOptions);

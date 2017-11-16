@@ -123,18 +123,14 @@ goog.require('ga_previewlayers_service');
             };
 
             // INGRID: Check layer extent intersects map extent
-            $scope.isIntersectsExtent = function(bodId) {
-              var layer = gaLayers.getLayer(bodId);
-              if (layer) {
-                if (layer.extent) {
-                    var extent = ol.proj.transformExtent(layer.extent,
-                        'EPSG:4326', gaGlobalOptions.defaultEpsg);
-                    var mapExtent = this.map.getView()
-                      .calculateExtent(this.map.getSize());
-                    return ol.extent.intersects(mapExtent, extent);
+            $scope.isInRange = function(bodId) {
+              if (gaGlobalOptions.checkLayerInRange) {
+                var layer = gaLayers.getLayer(bodId);
+                if (layer) {
+                  return gaMapUtils.inRange(layer, this.map);
                 }
               }
-              return false;
+              return true;
             };
 
            // INGRID: Add isLayer

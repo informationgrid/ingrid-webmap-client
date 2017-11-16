@@ -278,16 +278,13 @@ goog.require('ga_urlutils_service');
         };
 
         // INGRID: Check layer extent intersects map extent
-        scope.isIntersectsExtent = function(layer) {
-          if (layer) {
-            if (layer.extent) {
-                var extent = layer.extent;
-                var mapExtent = this.map.getView()
-                  .calculateExtent(this.map.getSize());
-                return ol.extent.intersects(mapExtent, extent);
+        scope.isInRange = function(layer) {
+          if (gaGlobalOptions.checkLayerInRange) {
+            if (layer) {
+              return gaMapUtils.inRange(layer, this.map);
             }
           }
-          return false;
+          return true;
         };
 
         scope.showWarning = function(layer) {
