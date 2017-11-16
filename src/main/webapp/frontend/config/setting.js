@@ -49,7 +49,7 @@ var settingDefaultMouseProjections = ['EPSG:3857', 'EPSG:4326', 'EPSG:31466', 'E
 // Default list on import function
 var settingDefaultImportList = [
      'http://atlas.wsv.bund.de/bwastr/wms?VERSION=1.1.1',
-     'http://atlas.wsv.bund.de/ienc/wms',
+     'http://atlas.wsv.bund.de/ienc/wms?',
      'http://atlas.wsv.bund.de/wadaba/wms?',
      'http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml',
      'http://atlas.wsv.bund.de/ienc/wmts/1.0.0/WMTSCapabilities.xml'
@@ -85,3 +85,6 @@ var w3wApiKey = 'OM48J50Y';
 
 // Show service name to layer
 var settingShowLayerServiceName = false;
+
+// Enable check layer in range
+var settingCheckLayerInRange = true;
