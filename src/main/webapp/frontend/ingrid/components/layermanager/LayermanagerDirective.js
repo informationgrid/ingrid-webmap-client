@@ -45,10 +45,11 @@ goog.require('ga_urlutils_service');
     }
   });
 
+  // INGRID: Add 'gaGlobalOptions'
   module.directive('gaLayermanager', function($compile, $timeout,
       $rootScope, $translate, $window, gaBrowserSniffer, gaLayerFilters,
       gaLayerMetadataPopup, gaLayers, gaAttribution, gaUrlUtils,
-      gaMapUtils) {
+      gaMapUtils, gaGlobalOptions) {
 
     // Timestamps list template
     var tpl =
