@@ -43,4 +43,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <servlet-name>mapfish.print</servlet-name>
         <url-pattern>/pdf/*</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
+    </listener>
 </web-app>

@@ -22,8 +22,6 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -37,13 +35,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -69,7 +67,7 @@ public class ConfigResource {
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             String fileContent = null;
             if(config_dir != null){
-                fileContent = getFileContent(config_dir, filename, ".js", "config/");
+                fileContent = Utils.getFileContent(config_dir, filename, ".js", "config/");
             }
             
             if(fileContent != null){
@@ -93,7 +91,7 @@ public class ConfigResource {
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             String fileContent = null;
             if(config_dir != null){
-                fileContent = getFileContent(config_dir, filename, ".json", "data/");
+                fileContent = Utils.getFileContent(config_dir, filename, ".json", "data/");
             }
             
             if(fileContent != null){
@@ -145,29 +143,5 @@ public class ConfigResource {
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-    }
-    
-    private String getFileContent(String path, String filename, String fileTyp, String prefix){
-        if(!path.endsWith( "/" )){
-            path = path.concat( "/" );
-        }
-        path = path.concat( prefix );
-        File directory = new File(path);
-        if(directory.exists()){
-            File file = new File(path.concat(filename).concat(fileTyp));
-            if(file.exists()){
-                try {
-                    String fileContent = FileUtils.readFileToString( file, "UTF-8");
-                    if(fileContent != null){
-                        return fileContent;
-                    }
-                } catch (IOException e) {
-                    log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
-                }
-            }else{
-                log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
-            }
-        }
-        return null;
     }
 }
