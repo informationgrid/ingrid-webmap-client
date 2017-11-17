@@ -144,7 +144,7 @@ public class SearchResource {
                                     newEntry.put( "weight", 143 );
                                     JSONObject newAttrs = new JSONObject();
                                     newAttrs.put( "origin", "layer" );
-                                    newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
+                                    newAttrs.put( "layer", key );
                                     newAttrs.put( "label", label );
                                     newAttrs.put( "detail", label );
                                     newAttrs.put( "lang", "de" );
