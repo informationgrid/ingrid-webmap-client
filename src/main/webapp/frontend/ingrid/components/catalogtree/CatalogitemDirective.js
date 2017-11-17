@@ -105,7 +105,15 @@ goog.require('ga_previewlayers_service');
                 if (layer.extent) {
                   var extent = ol.proj.transformExtent(layer.extent,
                     'EPSG:4326', gaGlobalOptions.defaultEpsg);
-                  gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                  if(layer.maxScale){
+                    var scale = layer.maxScale;
+                    if(typeof(scale) === 'string'){
+                      scale = gaMapUtils.getScaleForScaleHint(scale, $scope.map);
+                    }
+                    gaMapUtils.zoomToExtentScale($scope.map, undefined, extent, scale);
+                  } else {
+                    gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                  }
                 }
               }
               evt.stopPropagation();

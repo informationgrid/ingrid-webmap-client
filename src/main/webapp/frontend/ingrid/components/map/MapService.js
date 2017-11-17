@@ -194,6 +194,24 @@ goog.require('ga_urlutils_service');
               this.set('extent', val);
             }
           },
+// INGRID: Add minScale functions
+          minScale: {
+            get: function() {
+              return this.get('minScale');
+            },
+            set: function(val) {
+              this.set('minScale', val);
+            }
+          },
+// INGRID: Add maxScale functions
+          maxScale: {
+            get: function() {
+              return this.get('maxScale');
+            },
+            set: function(val) {
+              this.set('maxScale', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');
@@ -943,6 +961,10 @@ goog.require('ga_urlutils_service');
                 maxResolution: layer.maxResolution,
                 opacity: layer.opacity || 1,
                 source: olSource,
+                // INGRID: Add minScale
+                minScale: layer.minScale,
+                // INGRID: Add maxScale
+                maxScale: layer.maxScale,
                 // INGRID: Set extent by defaultProjection
                 extent: layer.extent ? ol.proj.transformExtent(layer.extent,
                   'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
@@ -973,6 +995,10 @@ goog.require('ga_urlutils_service');
                 maxResolution: layer.maxResolution,
                 opacity: layer.opacity || 1,
                 source: olSource,
+                // INGRID: Add minScale
+                minScale: layer.minScale,
+                // INGRID: Add maxScale
+                maxScale: layer.maxScale,
                 // INGRID: Set extent by defaultProjection
                 extent: layer.extent ? ol.proj.transformExtent(layer.extent,
                   'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
@@ -1364,6 +1390,43 @@ goog.require('ga_urlutils_service');
           return $q.when();
         },
 
+        // INGRID: Add function zoomToExtentScale
+        zoomToExtentScale: function(map, ol3d, extent, scale) {
+          if (ol3d && ol3d.getEnabled()) {
+            return this.flyToAnimation(ol3d, null, extent);
+          }
+          var view = map.getView();
+          if (scale && extent) {
+            // We test if the layer extent specified in the
+            // getCapabilities fit the minScale value.
+            const layerExtentScale = view.getResolutionForExtent(extent, map.getSize()) * 39.37 * 72;
+            if (layerExtentScale > scale) {
+              const layerExtentCenter = ol.extent.getCenter(extent);
+              const factor = layerExtentScale / scale;
+              const width = ol.extent.getWidth(extent) / factor;
+              const height = ol.extent.getHeight(extent) / factor;
+              extent = [
+                layerExtentCenter[0] - width / 2,
+                layerExtentCenter[1] - height / 2,
+                layerExtentCenter[0] + width / 2,
+                layerExtentCenter[1] + height / 2
+              ];
+
+              if (extent) {
+                const res = view.constrainResolution(
+                  view.getResolutionForExtent(extent, map.getSize()), 0, -1);
+                  view.setCenter(layerExtentCenter);
+                  view.setResolution(res);
+                }
+                return;
+              }
+            }
+            map.getView().fit(extent, {
+              size: map.getSize()
+            });
+          return $q.when();
+        },
+
         zoomToExtent: function(map, ol3d, extent) {
           if (ol3d && ol3d.getEnabled()) {
             return this.flyToAnimation(ol3d, null, extent);
@@ -1511,11 +1574,22 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add get resolution from scale
         inRange: function(layer, map) {
+          var minResolution;
+          var maxResolution;
+          var minScale;
+          var maxScale;
           var resolution = map.getView().getResolution();
-          var minResolution = layer.get('minResolution');
-          var maxResolution = layer.get('maxResolution');
-          var minScale = layer.get('minScale');
-          var maxScale = layer.get('maxScale');
+          if (layer instanceof ol.layer.Image) {
+            minResolution = layer.get('minResolution');
+            maxResolution = layer.get('maxResolution');
+            minScale = layer.get('minScale');
+            maxScale = layer.get('maxScale');
+          } else {
+            minResolution = layer['minResolution'] || 0;
+            maxResolution = layer['maxResolution'] || Infinity;
+            minScale = layer['minScale'];
+            maxScale = layer['maxScale'];
+          }
 
           if (typeof(minScale) == 'string') {
             minScale = this.getScaleForScaleHint(minScale, map);

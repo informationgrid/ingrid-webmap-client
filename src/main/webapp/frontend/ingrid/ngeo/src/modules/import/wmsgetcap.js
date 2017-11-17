@@ -44,7 +44,7 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
     const wgs84Extent = layer['EX_GeographicBoundingBox'] || layer['LatLonBoundingBox'];
     if (wgs84Extent) {
       // INGRID: Add 'extent'
-      var extent = layer['EX_GeographicBoundingBox'] ||
+      let extent = layer['EX_GeographicBoundingBox'] ||
         [
           parseFloat(wgs84Extent['minx']),
           parseFloat(wgs84Extent['miny']),

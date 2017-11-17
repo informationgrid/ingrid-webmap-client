@@ -170,7 +170,9 @@ goog.require('ga_urlutils_service');
           }
           if (getCapLayer.MinScaleDenominator) {
             minScale = getCapLayer.MinScaleDenominator;
-          } else if (getCapLayer.MaxScaleDenominator) {
+          }
+
+          if (getCapLayer.MaxScaleDenominator) {
             maxScale = getCapLayer.MaxScaleDenominator;
           }
 

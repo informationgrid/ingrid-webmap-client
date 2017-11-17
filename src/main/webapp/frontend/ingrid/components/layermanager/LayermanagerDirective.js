@@ -310,7 +310,15 @@ goog.require('ga_urlutils_service');
               }
             }
           } else {
-            gaMapUtils.zoomToExtent(map, undefined, layer.extent);
+            if(layer.maxScale){
+              var scale = layer.maxScale;
+              if(typeof(scale) === 'string'){
+                scale = gaMapUtils.getScaleForScaleHint(scale, map);
+              }
+              gaMapUtils.zoomToExtentScale(map, undefined, layer.extent, scale);
+            } else {
+              gaMapUtils.zoomToExtent(map, undefined, layer.extent);
+            }
           }
           evt.preventDefault();
         };
