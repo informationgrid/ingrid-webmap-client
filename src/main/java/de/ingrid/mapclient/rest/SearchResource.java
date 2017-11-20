@@ -136,8 +136,10 @@ public class SearchResource {
                                 JSONObject newEntry = new JSONObject();
                                 String label = (String) questJsonEntry.get( "label" );
                                 boolean isSearchable = false;
-                                if(questJsonEntry.get( "searchable" ) != null){
-                                    isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                if(questJsonEntry.has( "searchable" )){
+                                    if(questJsonEntry.get( "searchable" ) != null){
+                                        isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                    }
                                 }
                                 if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
                                     newEntry.put( "id", "" );
@@ -149,7 +151,6 @@ public class SearchResource {
                                     newAttrs.put( "detail", label );
                                     newAttrs.put( "lang", "de" );
                                     newAttrs.put( "staging", "prod" );
-                                    newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
                                     newEntry.put( "attrs", newAttrs );
                                     json.put( newEntry );
                                 }
