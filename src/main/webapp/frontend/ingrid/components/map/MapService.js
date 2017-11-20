@@ -1613,8 +1613,7 @@ goog.require('ga_urlutils_service');
         // INGRID: Add get resolution from scale
         getResolutionForScale: function(scale, map) {
           var dpi = 25.4 / 0.28;
-          var units = map.getView().getProjection().getUnits();
-          var mpu = ol.proj.METERS_PER_UNIT[units];
+          var mpu = map.getView().getProjection().getMetersPerUnit();
           var res = scale / (mpu * 39.37 * dpi);
           return res;
         },
