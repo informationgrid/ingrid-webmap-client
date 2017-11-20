@@ -181,6 +181,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         if(layerWmsLayers != null){
             if(layerWmsLayers.indexOf( "," ) == -1){
                 Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
+                Node parentLayerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/../..", doc, XPathConstants.NODE);
                 if(layerNode != null){
                     log.debug( "Check for Update layer: " + layerWmsLayers);
                     Node fieldNode = null;
@@ -189,6 +190,39 @@ public class CapabilitiesUpdateTask implements Runnable{
                     
                     // MinScale
                     layerKey = "minScale";
+                    if(parentLayerNode != null){
+                        // Check inherit parent value
+                        fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            String text = fieldNode.getTextContent();
+                            String oldText;
+                            try {
+                                oldText = layerJSON.getString(layerKey);
+                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                                    layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                                    hasChanges = true;
+                                }
+                            } catch (JSONException e) {
+                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                                hasChanges = true;
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            String text = fieldNode.getTextContent();
+                            String oldText;
+                            try {
+                                oldText = layerJSON.getString(layerKey);
+                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                                    layerJSON.put( layerKey, fieldNode.getTextContent() );
+                                    hasChanges = true;
+                                }
+                            } catch (JSONException e) {
+                                layerJSON.put( layerKey, fieldNode.getTextContent() );
+                                hasChanges = true;
+                            }
+                        }
+                    }
                     fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
                         String text = fieldNode.getTextContent();
@@ -222,6 +256,41 @@ public class CapabilitiesUpdateTask implements Runnable{
                     
                     // MaxScale
                     layerKey = "maxScale";
+                    if(parentLayerNode != null){
+                        // Check inherit parent value
+                        fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            String text = fieldNode.getTextContent();
+                            String oldText;
+                            try {
+                                oldText = layerJSON.getString(layerKey);
+                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                                    layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                                    hasChanges = true;
+                                }
+                            } catch (JSONException e) {
+                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                                hasChanges = true;
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            String text = fieldNode.getTextContent();
+                            String oldText;
+                            try {
+                                oldText = layerJSON.getString(layerKey);
+                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                                    layerJSON.put( layerKey, fieldNode.getTextContent() );
+                                    hasChanges = true;
+                                }
+                            } catch (JSONException e) {
+                                layerJSON.put( layerKey, fieldNode.getTextContent() );
+                                hasChanges = true;
+                            }
+                        }
+                    }
+                    
+                    layerKey = "maxScale";
                     fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
                         String text = fieldNode.getTextContent();
@@ -252,9 +321,54 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                     }
-                    
                     // Extent
                     layerKey = "extent";
+                    if(parentLayerNode != null){
+                        fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            JSONArray array = new JSONArray();
+                            subFieldNode = (Node) xpath.evaluate("./westBoundLongitude", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./southBoundLatitude", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./eastBoundLongitude", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./northBoundLatitude", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            layerJSON.put( layerKey, array );
+                            hasChanges = true;
+                        }
+                        fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", parentLayerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            JSONArray array = new JSONArray();
+                            subFieldNode = (Node) xpath.evaluate("./@minx", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./@miny", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./@maxx", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            subFieldNode = (Node) xpath.evaluate("./@maxy", fieldNode, XPathConstants.NODE);
+                            if(subFieldNode != null) {
+                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+                            }
+                            layerJSON.put( layerKey, array );
+                            hasChanges = true;
+                        }
+                    }
                     fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
                         JSONArray array = new JSONArray();
