@@ -108,7 +108,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                                 }
                                 doc = mapCapabilities.get( layerWmsUrl );
                                 if(doc == null){
-                                    log.info( "Load capabilities: " + layerWmsUrl);
+                                    log.debug( "Load capabilities: " + layerWmsUrl);
                                     getCapabilities = HttpProxy.doRequest( layerWmsUrl );
                                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                                     docFactory.setValidating(false);
@@ -126,7 +126,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     }
                                 }
                             } catch (Exception e) {
-                                if(errorUrls.contains(layerWmsUrl)){
+                                if(!errorUrls.contains(layerWmsUrl)){
                                     errorUrls.add(layerWmsUrl);
                                 }
                             }
@@ -174,23 +174,39 @@ public class CapabilitiesUpdateTask implements Runnable{
                   log.info( "No layer changes!" );
                 }
                 
+                String mailText = "";
+                
                 if(!errorUrls.isEmpty()){
-                    log.error( "************************" );
-                    log.error( "Error load capabilities:" );
-                    log.error( "************************" );
+                    mailText += "************************\n";
+                    mailText += "Nicht erreichbare Dienste:\n";
+                    mailText += "************************\n";
                     for (String errorUrl : errorUrls) {
-                      log.error( "- " + errorUrl );
+                        mailText += "- " + errorUrl + "\n";
                     }
                 }
                 
                 if(!errorLayernames.isEmpty()){
-                    log.error( "************************" );
-                    log.error( "Missing layer names:" );
-                    log.error( "************************" );
+                    mailText += "************************\n";
+                    mailText += "Nicht vorhandene Layern:\n";
+                    mailText += "************************\n";
                     for (String errorLayername : errorLayernames) {
-                      log.error( "- " + errorLayername );
+                        mailText += "- " + errorLayername + "\n";
                     }
                 }
+                
+                String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
+                String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
+                String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
+                String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
+                String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
+                String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
+                boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
+                String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
+                String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
+                if(!mailText.isEmpty()){
+                    Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
+                }
+                
             } catch (JSONException e) {
                 log.error( "Error generate layers JSON array!" );
             }
