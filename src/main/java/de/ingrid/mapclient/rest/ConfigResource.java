@@ -41,6 +41,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;
 import de.ingrid.mapclient.utils.Utils;
 
 /**
@@ -143,5 +144,14 @@ public class ConfigResource {
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
+    @GET
+    @Path("layerupdate")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response layerUpdateRequest() {
+        CapabilitiesUpdateTask cut = new CapabilitiesUpdateTask();
+        cut.run();
+        return Response.status(Response.Status.OK ).build();
     }
 }
