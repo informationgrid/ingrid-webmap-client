@@ -310,9 +310,9 @@ goog.require('ga_urlutils_service');
               }
             }
           } else {
-            if(layer.maxScale){
+            if (layer.maxScale) {
               var scale = layer.maxScale;
-              if(typeof(scale) === 'string'){
+              if (typeof(scale) === 'string') {
                 scale = gaMapUtils.getScaleForScaleHint(scale, map);
               }
               gaMapUtils.zoomToExtentScale(map, undefined, layer.extent, scale);
