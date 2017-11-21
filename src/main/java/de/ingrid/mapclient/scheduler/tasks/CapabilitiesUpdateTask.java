@@ -202,11 +202,17 @@ public class CapabilitiesUpdateTask implements Runnable{
                 String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
                 boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
                 String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
-                String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
-                if(!mailText.isEmpty()){
-                    Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
-                }
                 
+                boolean sendMail = new Boolean (p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER_MAIL));
+                
+                if(!mailText.isEmpty()){
+                    if(sendMail){
+                        String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
+                        Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
+                    } else {
+                        log.info( mailText );
+                    }
+                }
             } catch (JSONException e) {
                 log.error( "Error generate layers JSON array!" );
             }
