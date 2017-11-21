@@ -28,6 +28,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -69,6 +70,8 @@ public class CapabilitiesUpdateTask implements Runnable{
             try {
                 JSONObject layersJson = new JSONObject( fileContent );
                 HashMap<String, Document> mapCapabilities = new HashMap<String, Document>();
+                ArrayList<String> errorUrls = new ArrayList<String>();
+                ArrayList<String> errorLayernames = new ArrayList<String>();
                 
                 String getCapabilities = null;
                 String url = null;
@@ -111,19 +114,21 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     docFactory.setValidating(false);
                                     doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
                                     mapCapabilities.put( layerWmsUrl, doc );
-                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers);
+                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers, layerWmsUrl, errorLayernames);
                                     if(hasChangesLayer){
                                         hasChanges = hasChangesLayer;
                                     }
                                 } else {
                                     log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers);
+                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers, layerWmsUrl, errorLayernames);
                                     if(hasChangesLayer){
                                         hasChanges = hasChangesLayer;
                                     }
                                 }
                             } catch (Exception e) {
-                                log.error( "Error load capabilities: " + layerWmsUrl );
+                                if(errorUrls.contains(layerWmsUrl)){
+                                    errorUrls.add(layerWmsUrl);
+                                }
                             }
                         } 
                         if(layerWmsUrl != null){
@@ -168,6 +173,24 @@ public class CapabilitiesUpdateTask implements Runnable{
                 } else {
                   log.info( "No layer changes!" );
                 }
+                
+                if(!errorUrls.isEmpty()){
+                    log.error( "************************" );
+                    log.error( "Error load capabilities:" );
+                    log.error( "************************" );
+                    for (String errorUrl : errorUrls) {
+                      log.error( "- " + errorUrl );
+                    }
+                }
+                
+                if(!errorLayernames.isEmpty()){
+                    log.error( "************************" );
+                    log.error( "Missing layer names:" );
+                    log.error( "************************" );
+                    for (String errorLayername : errorLayernames) {
+                      log.error( "- " + errorLayername );
+                    }
+                }
             } catch (JSONException e) {
                 log.error( "Error generate layers JSON array!" );
             }
@@ -176,7 +199,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         log.info("Update WebMapClient capabilitities finished.");
     }
     
-    private boolean updateLayerInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsLayers) throws XPathExpressionException, DOMException, JSONException {
+    private boolean updateLayerInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsLayers, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException {
         boolean hasChanges = false;
         if(layerWmsLayers != null){
             if(layerWmsLayers.indexOf( "," ) == -1){
@@ -423,7 +446,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         hasChanges = true;
                     }
                 } else {
-                  log.debug( "Layer not exists: " + layerWmsLayers);
+                  errorLayernames.add("Layer not exists: " + layerWmsLayers + " on service url: " + layerWmsUrl);
                 }
             }
         }
