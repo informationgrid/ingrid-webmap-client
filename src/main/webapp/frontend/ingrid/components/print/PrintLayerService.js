@@ -40,7 +40,8 @@ goog.require('ga_urlutils_service');
         encodeLayer: getEncodeLayer(gaLayers, gaPrintStyle,
             gaTime, gaMapUtils),
         encodeOverlay: getEncodeOverlay(gaUrlUtils),
-        encodeGraticule: encodeGraticule
+        // INGRID: Change to 'getEncodeGraticule'
+        encodeGraticule: getEncodeGraticule(gaGlobalOptions)
       };
     };
   });
@@ -52,20 +53,25 @@ goog.require('ga_urlutils_service');
   var styleId = 0;
   var format = new ol.format.GeoJSON();
 
-  function encodeGraticule(dpi) {
-    return {
-      'baseURL': 'https://wms.geo.admin.ch/',
-      'opacity': 1,
-      'singleTile': true,
-      'type': 'WMS',
-      'layers': ['org.epsg.grid_2056'],
-      'format': 'image/png',
-      'styles': [''],
-      'customParams': {
-        'TRANSPARENT': true,
-        'MAP_RESOLUTION': dpi
-      }
-    };
+  // INGRID: Add getEncodeGraticule
+  function getEncodeGraticule(gaGlobalOptions) {
+    return encodeGraticule;
+
+    function encodeGraticule(dpi) {
+      return {
+        'baseURL': gaGlobalOptions.defaultPrintGraticuleLayer.url,
+        'opacity': 1,
+        'singleTile': true,
+        'type': 'WMS',
+        'layers': gaGlobalOptions.defaultPrintGraticuleLayer.layers,
+        'format': 'image/png',
+        'styles': [''],
+        'customParams': {
+          'TRANSPARENT': true,
+          'MAP_RESOLUTION': dpi
+        }
+      };
+    }
   };
 
   function getEncodeOverlay(gaUrlUtils) {
