@@ -270,6 +270,8 @@
 "metadata_window_title": "Infobox",
 "metadata_legend": "Legend",
 "metadata_information": "Information",
+"metadata_information_layer": "Layer informationen",
+"metadata_information_service": "Service informationen",
 "metadata_data": "WMS layer data",
 "metadata_structure": "WMS layer tree",
 "metadata_service_title": "Title",

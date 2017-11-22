@@ -355,32 +355,43 @@ public class WmsResource {
         String html = "";
         
         html += "<div class=\"legend-container\">";
-       
-        html += "<div class=\"legend-header\">";
+        html += "<div class=\"legend-footer\">";
+        html += "<span translate>metadata_information_layer</span><br>";
+        html += "<table>";
+        html += "<tbody>";
         if(layerTitle != null){
-            html += "<p class=\"bod-title\">" + layerTitle + "</p>";
+            html += "<tr";
+            if(layerAbstract == null){
+                html += " style=\"border-bottom:0;\"";
+            }
+            html += ">";
+            html += "<td translate>metadata_service_title</td>";
+            html += "<td>" + HtmlEncoder.encode(layerTitle) + "</td>";
+            html += "</tr>";
         }
         if(layerAbstract != null){
-            html += "<p class=\"legend-abstract\">" + layerAbstract + "</p>";
+            html += "<tr style=\"border-bottom:0;\">";
+            html += "<td translate>metadata_service_abstract</td>";
+            html += "<td>" + HtmlEncoder.encode(layerAbstract) + "</td>";
+            html += "</tr>";
         }
-        html += "</div>";
-        
-        html += "<div class=\"legend-footer\">";
+        html += "</tbody>";
+        html += "</table>";
         if(layerLegend.equals( legend )){
             field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", layerField, XPathConstants.NODE);
             if(field != null){
               layerLegend = field.getTextContent();
             }
         }
+        html += "<div class=\"legend\">";
         if(layerLegend != null && !layerLegend.equals( "undefined" )){
-            html += "<br>";
             html += "<span translate>metadata_legend</span><br>";
             html += "<div class=\"img-container\">";
             html += "<img alt=\"layer legend img\" src=\"" + layerLegend + "\">";
             html += "</div>";
         }
-        html += "<br><br>";
-        html += "<span translate>metadata_information</span><br>";
+        html += "</div>";
+        html += "<span translate>metadata_information_service</span><br>";
         html += "<table>";
         html += "<tbody>";
         field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
