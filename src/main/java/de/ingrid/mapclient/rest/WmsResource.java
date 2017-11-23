@@ -30,6 +30,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -187,7 +188,7 @@ public class WmsResource {
                     serviceType = layerSplit[0].trim();
                     if(layerSplit != null && layerSplit.length > 0){
                         if(serviceType.toLowerCase().equals( "wms" )){
-                            layerTitle = layerSplit[1];
+                            layerTitle = URLDecoder.decode(layerSplit[1], "UTF-8" );
                             layerName = layerSplit[3];
                             serviceHost = layerSplit[2];
                             if(serviceHost.indexOf("?") == -1){
@@ -285,7 +286,7 @@ public class WmsResource {
             layerField = field.getParentNode();
             field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
             if(field != null){
-                layerAbstract = HtmlEncoder.encode(field.getTextContent());
+                layerAbstract = field.getTextContent();
             }
         }
         
@@ -366,13 +367,13 @@ public class WmsResource {
             }
             html += ">";
             html += "<td translate>metadata_service_title</td>";
-            html += "<td>" + HtmlEncoder.encode(layerTitle) + "</td>";
+            html += "<td>" + layerTitle + "</td>";
             html += "</tr>";
         }
         if(layerAbstract != null){
             html += "<tr style=\"border-bottom:0;\">";
             html += "<td translate>metadata_service_abstract</td>";
-            html += "<td>" + HtmlEncoder.encode(layerAbstract) + "</td>";
+            html += "<td>" + layerAbstract + "</td>";
             html += "</tr>";
         }
         html += "</tbody>";
@@ -531,11 +532,11 @@ public class WmsResource {
             layerField = field.getParentNode();
             field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
             if(field != null){
-                layerAbstract = HtmlEncoder.encode(field.getTextContent());
+                layerAbstract = field.getTextContent();
             }
             field = (Node) xpath.evaluate( "./Title", layerField, XPathConstants.NODE);
             if(field != null){
-                layerTitle = HtmlEncoder.encode(field.getTextContent());
+                layerTitle = field.getTextContent();
             }
             
         }
