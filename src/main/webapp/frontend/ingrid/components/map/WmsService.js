@@ -106,7 +106,8 @@ goog.require('ga_urlutils_service');
             attribution: options.attribution,
             extent: options.extent,
             // INGRID: Add queryable
-            queryable: options.queryable,
+            queryable: options.queryable === true ||
+              options.queryable === 'true' ? true : false,
             // INGRID: Add minScale
             minScale: options.minScale,
             // INGRID: Add maxScale
@@ -219,7 +220,8 @@ goog.require('ga_urlutils_service');
             // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
             extent: getCapLayer.extent,
             // INGRID: Add queryable
-            queryable: getCapLayer.queryable,
+            queryable: getCapLayer.queryable === true ||
+              getCapLayer.queryable === 'true' ? true : false,
             // INGRID: Add minScale
             minScale: minScale,
             // INGRID: Add maxScale

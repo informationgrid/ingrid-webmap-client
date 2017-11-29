@@ -87,7 +87,7 @@ goog.require('ga_topic_service');
             // INGRID: Check tooltip param
             // INGRID: Add wms layers to 'wmsLayers'
             } else if (gaMapUtils.isWMSLayer(l) &&
-                (gaLayers.hasTooltipBodLayer(l) || !l.bodId)) {
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
               layersToQuery.wmsLayers.push(l);
             }
           });
