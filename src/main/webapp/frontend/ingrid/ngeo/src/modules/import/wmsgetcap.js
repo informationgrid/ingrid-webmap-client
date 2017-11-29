@@ -206,10 +206,14 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
         let err;
         try {
           // INGRID: Read WMS version 1.1.1 as XML
-          if (val.WMT_MS_Capabilities || val.WMS_Capabilities) {
-            val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
-          } else{
-            val = new ol.format.WMSCapabilities().read(val);
+          let capabilities = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+          if (capabilities) {
+            let version = capabilities.version;
+            if (version === '1.3.0') {
+              val = new ol.format.WMSCapabilities().read(val.xmlResponse);
+            } else {
+              val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+            }
           }
         } catch (e) {
           err = e;

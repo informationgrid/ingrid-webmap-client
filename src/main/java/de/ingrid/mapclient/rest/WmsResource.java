@@ -115,6 +115,7 @@ public class WmsResource {
             }
             if(toJson){
                 JSONObject json = XML.toJSONObject( response );
+                json.put( "xmlResponse", response );
                 return json.toString();
             }
             return response;

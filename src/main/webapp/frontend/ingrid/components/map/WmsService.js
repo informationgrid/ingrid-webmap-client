@@ -130,28 +130,65 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add function to get layers
         var getChildLayers = function(layers, layer, map, wmsVersion) {
-            // Go through the child to get valid layers
+          // Go through the child to get valid layers
+          if (layer) {
             if (layer.Layer) {
-                if (layer.Layer.length) {
-                    for (var i = 0; i < layer.Layer.length; i++) {
-                        var tmpLayer = layer.Layer[i];
-                        if (tmpLayer.Name) {
-                            layers.splice(0, 0, tmpLayer);
-                        }
-                        if (tmpLayer.Layer) {
-                            getChildLayers(layers, tmpLayer, map, wmsVersion);
-                        }
+              for (var i = 0; i < layer.Layer.length; i++) {
+                var tmpLayer = layer.Layer[i];
+
+                // INGRID: Check parents 'SRS' or 'CRS'
+                if (tmpLayer['SRS']) {
+                  if (tmpLayer['SRS'] instanceof Array) {
+                    tmpLayer['SRS'] = tmpLayer['SRS'].concat(layer['SRS']
+                      .filter(function(item) {
+                      return tmpLayer['SRS'].indexOf(item) < 0;
+                    }));
+                  } else {
+                    if (layer['SRS'].indexOf(tmpLayer['SRS']) == -1) {
+                      tmpLayer['SRS'] = layer['SRS'].concat(tmpLayer['SRS']);
                     }
-                } else {
-                    var tmpLayer = layer.Layer;
-                    if (tmpLayer.Name) {
-                        layers.splice(0, 0, tmpLayer);
-                    }
-                    if (tmpLayer.Layer) {
-                        getChildLayers(layers, tmpLayer, map, wmsVersion);
-                    }
+                  }
+                } else if (tmpLayer['CRS']) {
+                  tmpLayer['CRS'] = layer['CRS'].concat(tmpLayer['CRS']
+                    .filter(function(item) {
+                    return layer['CRS'].indexOf(item) < 0;
+                  }));
+                } else if (wmsVersion === '1.1.1') {
+                  tmpLayer['SRS'] = layer['SRS'];
+                } else if (wmsVersion === '1.3.0') {
+                  tmpLayer['CRS'] = layer['CRS'];
                 }
+
+                // INGRID: Check parents 'BoundingBox'
+                if (!tmpLayer['BoundingBox']) {
+                  if (layer['BoundingBox']) {
+                    tmpLayer['BoundingBox'] = layer['BoundingBox'];
+                  }
+                }
+
+                // INGRID: Check parents 'LatLonBoundingBox'
+                if (!tmpLayer['LatLonBoundingBox']) {
+                  if (layer['LatLonBoundingBox']) {
+                    tmpLayer['LatLonBoundingBox'] = layer['LatLonBoundingBox'];
+                  }
+                }
+
+                // INGRID: Check parents 'extent'
+                if (!tmpLayer['extent']) {
+                  if (layer['extent']) {
+                    tmpLayer['extent'] = layer['extent'];
+                  }
+                }
+
+                if (tmpLayer.Name) {
+                  layers.splice(0, 0, tmpLayer);
+                }
+                if (tmpLayer.Layer) {
+                  getChildLayers(layers, tmpLayer, map, wmsVersion);
+                }
+              }
             }
+          }
         };
 
         // Create an ol WMS layer from GetCapabilities informations
@@ -162,8 +199,8 @@ goog.require('ga_urlutils_service');
           };
 
           // INGRID: Add scales
-          var minScale;
-          var maxScale;
+          var minScale = undefined;
+          var maxScale = undefined;
           if (getCapLayer.ScaleHint) {
             minScale = getCapLayer.ScaleHint.min;
             maxScale = getCapLayer.ScaleHint.max;
@@ -231,60 +268,93 @@ goog.require('ga_urlutils_service');
               cap + '' + capParams})
             .then(function(response) {
               try {
-              var config = response.config;
-              var data = response.data;
-              var result = data.WMT_MS_Capabilities ||
-                data.WMS_Capabilities;
-              if (result.Capability) {
-                if (result.Capability.Layer) {
+                var config = response.config;
+                var data = response.data;
+                var result = data.WMT_MS_Capabilities ||
+                  data.WMS_Capabilities;
+                var version = result.version;
+                var val;
+                if (version === '1.3.0') {
+                  val = new ol.format.WMSCapabilities().read(data.xmlResponse);
+                } else {
+                  val = result;
+                }
+                if (val.Capability) {
+                  if (val.Capability.Layer) {
                     var layers = [];
-                    getChildLayers(layers, result.Capability.Layer,
-                       map, result.version);
-                      if (layers) {
-                        var hasAddService = false;
-                        for (var i = 0; i < layers.length; i++) {
-                          var layer = layers[i];
-                          var layerParams = {
-                            LAYERS: layer.Name,
-                            VERSION: result.version
-                          };
-                          var visible = false;
-                          if (config.identifier) {
-                            if (layer.Identifier) {
-                                if (layer.Identifier.content) {
-                                    if (layer.Identifier.content ==
-                                      config.identifier) {
-                                        visible = true;
-                                    }
-                                }
+                    var tmpLayer = val.Capability.Layer;
+
+                    // INGRID: Add layer
+                    if (tmpLayer.Name) {
+                      layers.splice(0, 0, tmpLayer);
+                    }
+
+                    // INGRID: Add child layers
+                    if (tmpLayer.Layer) {
+                      getChildLayers(layers, tmpLayer, map, version);
+                    }
+
+                    // INGRID: Check layers params
+                    if (layers) {
+                      var hasAddService = false;
+                      for (var i = 0; i < layers.length; i++) {
+                        var layer = layers[i];
+                        var visible = false;
+                        if (config.identifier) {
+                          if (layer.Identifier) {
+                            var identifier = layer.Identifier.content ||
+                              layer.Identifier;
+                            if (identifier === config.identifier) {
+                              visible = true;
                             }
                           }
-                          var extent = gaGlobalOptions.defaultExtent;
-                          if (layer.EX_GeographicBoundingBox) {
-                            var bbox = layer.EX_GeographicBoundingBox;
-                            extent = [parseFloat(bbox.westBoundLongitude),
-                              parseFloat(bbox.southBoundLatitude),
-                              parseFloat(bbox.eastBoundLongitude),
-                              parseFloat(bbox.northBoundLatitude)];
-                          }else if (layer.LatLonBoundingBox) {
-                            var bbox = layer.LatLonBoundingBox;
-                            extent = [parseFloat(bbox.minx),
-                              parseFloat(bbox.miny),
-                              parseFloat(bbox.maxx),
-                              parseFloat(bbox.maxy)];
-                          }
+                        }
 
-                          var layerOptions = {
-                            url: config.cap,
-                            label: layer.Title,
-                            opacity: 1,
-                            visible: visible,
-                            queryable: parseInt(layer.queryable) == 1 ? true :
-                              false,
-                            extent: ol.proj.transformExtent(extent,
-                              'EPSG:4326', gaGlobalOptions.defaultEpsg)
+                        // INGRID: Get 'extent'
+                        var extent = gaGlobalOptions.defaultExtent;
+                        if (layer.EX_GeographicBoundingBox) {
+                          extent = layer.EX_GeographicBoundingBox;
+                        }else if (layer.LatLonBoundingBox) {
+                          var bbox = layer.LatLonBoundingBox;
+                          extent = [parseFloat(bbox.minx),
+                            parseFloat(bbox.miny),
+                            parseFloat(bbox.maxx),
+                            parseFloat(bbox.maxy)];
+                        }
+
+                        // INGRID: Get 'SRS'
+                        var minScale = undefined;
+                        var maxScale = undefined;
+                        if (layer.ScaleHint) {
+                          minScale = layer.ScaleHint.min;
+                          maxScale = layer.ScaleHint.max;
+                        }
+                        if (layer.MinScaleDenominator) {
+                          minScale = layer.MinScaleDenominator;
+                        }
+
+                        if (layer.MaxScaleDenominator) {
+                          maxScale = layer.MaxScaleDenominator;
+                        }
+
+                        var layerParams = {
+                          LAYERS: layer.Name,
+                          VERSION: version
+                        };
+                        var layerOptions = {
+                          url: config.cap,
+                          label: layer.Title,
+                          opacity: 1,
+                          visible: visible,
+                          queryable: parseInt(layer.queryable) == 1 ? true :
+                            false,
+                          extent: ol.proj.transformExtent(extent,
+                            'EPSG:4326', gaGlobalOptions.defaultEpsg),
+                          minScale: minScale,
+                          maxScale: maxScale
                         };
 
+                        // INGRID: Create WMS layers
                         var olLayer = createWmsLayer(layerParams, layerOptions);
                         olLayer.visible = visible;
                         if (config.index) {
@@ -309,7 +379,6 @@ goog.require('ga_urlutils_service');
                 alert('Fehler beim Laden der URL ' + response.config.cap + '.');
             });
         };
-
 
         // Make a GetLegendGraphic request
         this.getLegend = function(layer) {
