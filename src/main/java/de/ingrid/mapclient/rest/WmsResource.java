@@ -37,6 +37,7 @@ import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -129,6 +130,24 @@ public class WmsResource {
         return null;
     }
 
+    @POST
+    @Path("proxy")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doServiceTransformationRequest(String data, String content, @QueryParam("toJson") boolean toJson) {
+        try {
+            String response = data;
+            if(toJson){
+                JSONObject json = XML.toJSONObject( response );
+                json.put( "xmlResponse", response );
+                return json.toString();
+            }
+            return response;
+        } catch (Exception e) {
+            log.error( "Error transformation service", e );
+        }
+        return null;
+    }
+    
     /**
      * Get WMS response from the given url
      * 

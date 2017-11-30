@@ -21,8 +21,8 @@ goog.require('ngeo.fileService');
     'ga_translation_service'
   ]);
 
-  // INGRID: Add 'gaGlobalOptions'
-  module.controller('GaImportController', function($scope, $q, $document,
+  // INGRID: Add 'gaGlobalOptions' and '$http'
+  module.controller('GaImportController', function($scope, $q, $document, $http,
       $window, $timeout, ngeoFile, gaKml, gaBrowserSniffer, gaWms, gaUrlUtils,
       gaLang, gaPreviewLayers, gaMapUtils, gaWmts, gaGlobalOptions) {
 
@@ -79,8 +79,20 @@ goog.require('ngeo.fileService');
 
       // INGRID: Add check wms objects
       if (ngeoFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
-          data.WMS_Capabilities) {
-        $scope.wmsGetCap = data;
+        data.WMS_Capabilities) {
+        if (ngeoFile.isWmsGetCap(data)) {
+          var url = gaGlobalOptions.proxyUrl;
+          $http.post(url, data, {
+            // INGRID: Add user param
+            params: {
+              toJson: true
+            }
+          }).then(function(response) {
+            $scope.wmsGetCap = response.data;
+          });
+        } else {
+          $scope.wmsGetCap = data;
+        }
         defer.resolve({
           message: 'upload_succeeded'
         });
@@ -108,8 +120,14 @@ goog.require('ngeo.fileService');
           defer.notify(evt);
         });
 
-      } else if (ngeoFile.isWmtsGetCap(data)) {
-        $scope.wmtsGetCap = data;
+      // INGRID: Add check wmts objects
+      } else if (ngeoFile.isWmtsGetCap(data) ||
+        (data.Capabilities && data.xmlResponse)) {
+        if (ngeoFile.isWmtsGetCap(data)) {
+          $scope.wmtsGetCap = data;
+        } else {
+          $scope.wmtsGetCap = data.xmlResponse;
+        }
         defer.resolve({
           message: 'upload_succeeded'
         });
