@@ -144,6 +144,13 @@ exports = function($window, gettext, gettextCatalog, ngeoWmsGetCapTemplateUrl) {
             layer['extent'] = parentLayer['extent'];
           }
         }
+        
+        // INGRID: Check parent 'queryable'
+        if (!layer['queryable']) {
+          if (parentLayer['queryable']) {
+              layer['queryable'] = parentLayer['queryable'];
+          }
+        }
       }
 
       // if the layer has no extent, it is set as invalid.

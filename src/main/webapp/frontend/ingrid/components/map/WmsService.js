@@ -107,7 +107,8 @@ goog.require('ga_urlutils_service');
             extent: options.extent,
             // INGRID: Add queryable
             queryable: options.queryable === true ||
-              options.queryable === 'true' ? true : false,
+              options.queryable === 'true' ||
+              options.queryable === '1' ? true : false,
             // INGRID: Add minScale
             minScale: options.minScale,
             // INGRID: Add maxScale
@@ -181,6 +182,13 @@ goog.require('ga_urlutils_service');
                   }
                 }
 
+                // INGRID: Check parent 'queryable'
+                if (!tmpLayer['queryable']) {
+                  if (layer['queryable']) {
+                    tmpLayer['queryable'] = layer['queryable'];
+                  }
+                }
+
                 if (tmpLayer.Name) {
                   layers.splice(0, 0, tmpLayer);
                 }
@@ -221,7 +229,8 @@ goog.require('ga_urlutils_service');
             extent: getCapLayer.extent,
             // INGRID: Add queryable
             queryable: getCapLayer.queryable === true ||
-              getCapLayer.queryable === 'true' ? true : false,
+              getCapLayer.queryable === 'true' ||
+              getCapLayer.queryable === '1' ? true : false,
             // INGRID: Add minScale
             minScale: minScale,
             // INGRID: Add maxScale
@@ -348,8 +357,10 @@ goog.require('ga_urlutils_service');
                           label: layer.Title,
                           opacity: 1,
                           visible: visible,
-                          queryable: parseInt(layer.queryable) == 1 ? true :
-                            false,
+                          // INGRID: Add queryable
+                          queryable: layer.queryable === true ||
+                            layer.queryable === 'true' ||
+                            layer.queryable === '1' ? true : false,
                           extent: ol.proj.transformExtent(extent,
                             'EPSG:4326', gaGlobalOptions.defaultEpsg),
                           minScale: minScale,
