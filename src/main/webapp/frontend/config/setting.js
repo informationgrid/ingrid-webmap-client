@@ -88,3 +88,6 @@ var settingShowLayerServiceName = false;
 
 // Enable check layer in range
 var settingCheckLayerInRange = true;
+
+// Enable iso xml link on service search info
+var settingShowISOXML = true;

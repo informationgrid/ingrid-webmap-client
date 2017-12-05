@@ -704,7 +704,7 @@ goog.require('ga_urlutils_service');
                     '</div>';
                 }
                 if (attrs.service) {
-                    var url = attrs.service;
+                    var url = attrs.service.split(',')[0];
                     if (url.indexOf('?') == -1) {
                         url = url + '?';
                     }
@@ -730,7 +730,8 @@ goog.require('ga_urlutils_service');
                     url + '">' + url + '</a></div>' +
                     '</div>';
                 }
-                if (attrs.isoxml) {
+                // INGRID: Add 'gaGlobalOptions.showISOXML'
+                if (attrs.isoxml && gaGlobalOptions.showISOXML) {
                     content = content +
                     '<div class="form-group">' +
                     '<label class="col-xs-4 control-label">' +
