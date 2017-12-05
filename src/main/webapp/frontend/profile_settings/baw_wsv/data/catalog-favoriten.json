@@ -3991,6 +3991,32 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
+          "label": "D: TopPlus-Web-Open (geodatenzentrum.de)",
+          "id": 810,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "WMS TopPlus-Web-Open",
+            "id": 811,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web-Open",
+              "layerBodId": "toppluswebopen",
+              "id": 812
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web-Open Graustufen",
+              "layerBodId": "toppluswebgrauopen",
+              "id": 813
+            }]
+          }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
           "label": "D: TopPlus-Web (geodatenzentrum.de)",
           "id": 776,
           "children": [{
@@ -5565,5 +5591,5 @@
       }]
     }
   },
-  "last_id": 812
+  "last_id": 813
 }
