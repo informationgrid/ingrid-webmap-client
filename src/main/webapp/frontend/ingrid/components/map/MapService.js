@@ -907,14 +907,19 @@ goog.require('ga_urlutils_service');
                 matrixSet: layer.matrixSet,
                 // INGRID: Replace tileGrid function
                 tileGrid: new ol.tilegrid.WMTS({
-                    matrixIds: $.map(layer.resolutions,
-                      function(r, i) { return i + ''; }),
-                    origin: layer.origin,
-                    resolutions: layer.resolutions,
-                    tileSize: layer.tileSize || 256,
-                    extent: layer.extent ?
-                      ol.proj.transformExtent(layer.extent, 'EPSG:4326',
-                      gaGlobalOptions.defaultEpsg) : extent
+                  matrixIds: layer.matrixIds || $.map(layer.scales,
+                    function(r, i) { return i + ''; }),
+                  origin: layer.origin,
+                  resolutions: $.map(layer.scales,
+                    function(r, i) {
+                      return r * 0.28E-3 /
+                        ol.proj.get(gaGlobalOptions.defaultEpsg)
+                        .getMetersPerUnit();
+                  }),
+                  tileSize: layer.tileSize || 256,
+                  extent: layer.extent ?
+                    ol.proj.transformExtent(layer.extent, 'EPSG:4326',
+                    gaGlobalOptions.defaultEpsg) : extent
                 }),
                 tileLoadFunction: tileLoadFunction,
                 // INGRID: Replace generate urls
