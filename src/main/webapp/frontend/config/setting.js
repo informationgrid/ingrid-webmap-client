@@ -93,4 +93,4 @@ var settingCheckLayerInRange = true;
 var settingShowISOXML = true;
 
 // Change coord XY for search
-var settingSearchCoordsXY = true;
+var settingSearchCoordsXY = false;
