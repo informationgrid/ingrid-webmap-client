@@ -167,8 +167,13 @@ goog.require('ga_what3words_service');
           var extent = $scope.map.getView().getProjection().getExtent();
           gaSearchGetCoordinate(extent, q).then(function(position) {
             if (position) {
-              gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, position);
-              gaMarkerOverlay.add($scope.map, position, true);
+              // INGRID: On extent search
+              if (position.length === 4) {
+                gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, position);
+              } else {
+                gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, position);
+                gaMarkerOverlay.add($scope.map, position, true);
+              }
             }
           });
 

@@ -91,3 +91,6 @@ var settingCheckLayerInRange = true;
 
 // Enable iso xml link on service search info
 var settingShowISOXML = true;
+
+// Change coord XY for search
+var settingSearchCoordsXY = true;

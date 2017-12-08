@@ -37,7 +37,8 @@ goog.require('ga_reframe_service');
   };
 
   module.provider('gaSearchGetCoordinate', function() {
-    this.$get = function($window, $q, gaReframe) {
+    // INGRID: Add 'gaGlobalOptions'
+    this.$get = function($window, $q, gaReframe, gaGlobalOptions) {
 
       return function(extent, query) {
         var position;
@@ -48,7 +49,9 @@ goog.require('ga_reframe_service');
           var mgrsStr = matchMGRS[0].split(' ').join('');
           if ((mgrsStr.length - MGRSMinimalPrecision) % 2 == 0) {
             var wgs84 = $window.proj4.mgrs.toPoint(mgrsStr);
-            position = ol.proj.transform(wgs84, 'EPSG:4326', 'EPSG:3857');
+            // INGRID: Change 'EPSG:21781' to 'gaGlobalOptions.defaultEpsg'
+            position = ol.proj.transform(wgs84, 'EPSG:4326',
+              gaGlobalOptions.defaultEpsg);
             if (ol.extent.containsCoordinate(extent, position)) {
               return $q.when(roundCoordinates(position));
             }
@@ -87,8 +90,9 @@ goog.require('ga_reframe_service');
           easting = easting + parseFloat(secondE.replace('"' , '')
             .replace('\'\'' , '').replace('′′' , '')
             .replace('″' , '')) / 3600;
+          // INGRID: Change to 'gaGlobalOptions.defaultEpsg'
           position = ol.proj.transform([easting, northing],
-                'EPSG:4326', 'EPSG:3857');
+                'EPSG:4326', gaGlobalOptions.defaultEpsg);
           if (ol.extent.containsCoordinate(
             extent, position)) {
             return $q.when(roundCoordinates(position));
@@ -99,6 +103,7 @@ goog.require('ga_reframe_service');
         if (match) {
           var left = parseFloat(match[1].replace(/\'/g, ''));
           var right = parseFloat(match[2].replace(/\'/g, ''));
+          /*
           //Old school entries like '600 000 200 000'
           if (match[3] != null) {
             left = parseFloat(match[1].replace(/\'/g, '') +
@@ -106,24 +111,69 @@ goog.require('ga_reframe_service');
             right = parseFloat(match[4].replace(/\'/g, '') +
                                match[5].replace(/\'/g, ''));
           }
-          /* INGRID: Change position
           position = [left > right ? left : right,
               right < left ? right : left];
-          */
-          position = [right, left];
+          // LV03 or EPSG:21781
           if (ol.extent.containsCoordinate(extent, position)) {
             return $q.when(roundCoordinates(position));
           }
-
+          */
           // Match decimal notation EPSG:4326
           if (left <= 180 && left >= -180 &&
               right <= 180 && right >= -180) {
             position = [left > right ? right : left,
                 right < left ? left : right];
-            position = ol.proj.transform(position, 'EPSG:4326', 'EPSG:3857');
+            // INGRID: Change 'EPSG:21781' to 'gaGlobalOptions.defaultEpsg'
+            position = ol.proj.transform(position, 'EPSG:4326',
+              gaGlobalOptions.defaultEpsg);
+            if (match[3] != null) {
+              var left2 = parseFloat(match[4].replace(/\'/g, ''));
+              var right2 = parseFloat(match[5].replace(/\'/g, ''));
+              if (left2 <= 180 && left2 >= -180 &&
+                right2 <= 180 && right2 >= -180) {
+                var position2 = [left2 > right2 ? right2 : left2,
+                  right2 < left2 ? left2 : right2];
+                position2 = ol.proj.transform(position2, 'EPSG:4326',
+                  gaGlobalOptions.defaultEpsg);
+              }
+              position = roundCoordinates(position);
+              position2 = roundCoordinates(position2);
+              if (ol.extent.containsCoordinate(extent, position)) {
+                return $q.when([position[0], position[1],
+                  position2[0], position2[1]]);
+              }
+            }
             if (ol.extent.containsCoordinate(extent, position)) {
               return $q.when(roundCoordinates(position));
             }
+          }
+
+          // INGRID: Use default projection
+          if (gaGlobalOptions.searchCoordsXY) {
+            position = [left, right];
+          } else {
+            position = [right, left];
+          }
+
+          // INGRID: use default projection for extent search
+          if (match[3] != null) {
+            var left2 = parseFloat(match[4].replace(/\'/g, ''));
+            var right2 = parseFloat(match[5].replace(/\'/g, ''));
+            var position2;
+            if (gaGlobalOptions.searchCoordsXY) {
+              position2 = [left2, right2];
+            } else {
+              position2 = [right2, left2];
+            }
+            position = roundCoordinates(position);
+            position2 = roundCoordinates(position2);
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when([position[0], position[1],
+                position2[0], position2[1]]);
+            }
+          }
+          if (ol.extent.containsCoordinate(extent, position)) {
+            return $q.when(roundCoordinates(position));
           }
 
           // Match LV95 coordinates

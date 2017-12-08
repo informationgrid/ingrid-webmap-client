@@ -933,7 +933,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Check layer in range
           checkLayerInRange: settingCheckLayerInRange || false,
           // INGRID: Show iso xml link on service search info
-          showISOXML: settingShowISOXML
+          showISOXML: settingShowISOXML,
+          // INGRID: Change coords XY for search
+          searchCoordsXY: settingSearchCoordsXY
         });
 
         module.config(function($translateProvider, gaGlobalOptions) {
