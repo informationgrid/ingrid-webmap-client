@@ -520,6 +520,9 @@ goog.require('ga_urlutils_service');
     var getDpi = function(layoutName, dpiConfig) {
       if (/a4/i.test(layoutName) && dpiConfig.length > 1) {
         return dpiConfig[1].value;
+      // INGRID: Add use higher DPI on A3
+      } else if (/a3/i.test(layoutName) && dpiConfig.length > 2) {
+        return dpiConfig[2].value;
       } else {
         return dpiConfig[0].value;
       }
