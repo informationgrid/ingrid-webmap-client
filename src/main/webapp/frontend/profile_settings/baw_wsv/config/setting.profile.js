@@ -31,3 +31,4 @@ settingDefaultMouseProjections = ['EPSG:25832', 'EPSG:25833', 'EPSG:4326', 'EPSG
 settingEnableW3W = true;
 settingShowLayerServiceName = true;
 settingShowISOXML = false;
+settingSearchCoordsXY = true;
