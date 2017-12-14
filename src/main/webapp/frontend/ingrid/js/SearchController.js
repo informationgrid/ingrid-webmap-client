@@ -4,6 +4,14 @@ goog.provide('ga_search_controller');
   var module = angular.module('ga_search_controller', []);
 
   module.controller('GaSearchController', function($scope, gaGlobalOptions) {
+
+    // Set sr param if possible
+    var sr = '?';
+    if ($scope.map) {
+      var epsgCode = $scope.map.getView().getProjection().getCode();
+      sr += 'sr=' + epsgCode.split(':')[1] + '&';
+    }
+
     $scope.options = {
       // INGRID: Change search layer URL
       searchUrl: '/ingrid-webmap-client/rest/search/query?',
@@ -14,7 +22,7 @@ goog.provide('ga_search_controller');
       // INGRID: Add search BWaStrLocator URL
       searchBwaLocatorUrl: gaGlobalOptions.searchBwaLocatorUrl,
       featureUrl: gaGlobalOptions.cachedApiUrl +
-          '/rest/services/{Topic}/MapServer/{Layer}/{Feature}'
+          '/rest/services/{Topic}/MapServer/{Layer}/{Feature}' + sr
     };
   });
 })();

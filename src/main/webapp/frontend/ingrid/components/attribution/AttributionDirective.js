@@ -1,22 +1,20 @@
 goog.provide('ga_attribution_directive');
 
 goog.require('ga_attribution_service');
-goog.require('ga_browsersniffer_service');
 goog.require('ga_debounce_service');
-goog.require('ga_map_service');
+goog.require('ga_event_service');
 
 (function() {
 
   var module = angular.module('ga_attribution_directive', [
     'ga_attribution_service',
-    'ga_browsersniffer_service',
-    'ga_map_service',
+    'ga_event_service',
     'ga_debounce_service'
   ]);
 
   // INGRID: Add 'gaPermalink'
   module.directive('gaAttribution', function($translate, $window,
-      gaBrowserSniffer, gaAttribution, $rootScope, gaDebounce, gaPermalink) {
+      gaAttribution, $rootScope, gaDebounce, gaEvent, gaPermalink) {
     return {
       restrict: 'A',
       scope: {
@@ -25,23 +23,37 @@ goog.require('ga_map_service');
       },
       link: function(scope, element, attrs) {
 
+        // Display the third party data tooltip, only on mouse events
+        var tooltipOptions = {
+          trigger: 'manual',
+          selector: '.ga-warning-tooltip',
+          title: function() {
+            return $translate.instant('external_data_tooltip');
+          },
+          template:
+            '<div class="tooltip ga-red-tooltip" role="tooltip">' +
+              '<div class="tooltip-arrow"></div>' +
+              '<div class="tooltip-inner"></div>' +
+            '</div>'
+        };
+
+        gaEvent.onMouseOverOut(element, function(evt) {
+          var link = $(evt.target);
+          if (!link.data('bs.tooltip')) {
+            link.tooltip(tooltipOptions);
+          }
+          link.tooltip('show');
+        }, function(evt) {
+          $(evt.target).tooltip('hide');
+        }, tooltipOptions.selector);
+
+        // Display the third party data alert msg
         element.on('click', '.ga-warning-tooltip', function(evt) {
           $window.alert($translate.instant('external_data_warning').
               replace('--URL--', $(evt.target).text()));
+          $(evt.target).tooltip('hide');
         });
 
-        if (!gaBrowserSniffer.mobile) {
-          // Display third party data tooltip
-          element.tooltip({
-            selector: '.ga-warning-tooltip',
-            title: function() {
-              return $translate.instant('external_data_tooltip');
-            },
-            template: '<div class="tooltip ga-red-tooltip" role="tooltip">' +
-                '<div class="tooltip-arrow"></div><div class="tooltip-inner">' +
-                '</div></div>'
-          });
-        }
         var update = function(element, layers) {
           var attrs = {}, list = [], is3dActive = scope.is3dActive();
           if (is3dActive) {
@@ -52,9 +64,9 @@ goog.require('ga_map_service');
 
           // INGRID: Add copyright for OSM layer
           if (gaPermalink.getParams().bgLayer) {
-              if (gaPermalink.getParams().bgLayer == 'osmLayer') {
-                  list.push('<a target=\"new\" href=\"http://www.openstreet' +
-                    'map.org/copyright\">OpenStreetMap contributors</a>');
+              if (gaPermalink.getParams().bgLayer === 'osmLayer') {
+                  list.push('<a target="new" href="http://www.openstreet' +
+                    'map.org/copyright">OpenStreetMap contributors</a>');
               }
           }
           layers.forEach(function(layer) {
@@ -69,7 +81,7 @@ goog.require('ga_map_service');
           });
           var text = list.join(', ');
           element.html(text ? $translate.instant('copyright_data') + text :
-              '');
+            '');
         };
         var updateDebounced = gaDebounce.debounce(update, 133, false);
 
@@ -140,9 +152,9 @@ goog.require('ga_map_service');
             scope.layers = scope.ol3d.getOlMap().getLayers().getArray();
             dereg.push(scope.$watchCollection('layers | filter:layerFilter',
                 function(layers) {
-              layersFiltered = layers;
-              updateDebounced(element, layers);
-            }));
+                  layersFiltered = layers;
+                  updateDebounced(element, layers);
+                }));
             updateDebounced(element, layersFiltered);
           } else {
             dereg.forEach(function(deregFunc) {

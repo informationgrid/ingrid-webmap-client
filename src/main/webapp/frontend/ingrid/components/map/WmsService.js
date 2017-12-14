@@ -1,14 +1,16 @@
 goog.provide('ga_wms_service');
 
-goog.require('ga_map_service');
+goog.require('ga_definepropertiesforlayer_service');
+goog.require('ga_maputils_service');
 goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
 
 (function() {
 
   var module = angular.module('ga_wms_service', [
+    'ga_definepropertiesforlayer_service',
     'pascalprecht.translate',
-    'ga_map_service',
+    'ga_maputils_service',
     'ga_urlutils_service',
     'ga_translation_service'
   ]);
@@ -38,7 +40,7 @@ goog.require('ga_urlutils_service');
           transparent: 'true'
         };
 
-        if (wmsParams.version == '1.1.1') {
+        if (wmsParams.version === '1.1.1') {
           wmsParams.srs = wmsParams.crs;
           delete wmsParams.crs;
           wmsParams.bbox = '{westProjected},{southProjected},' +
@@ -100,7 +102,6 @@ goog.require('ga_urlutils_service');
           var layer = new ol.layer.Image({
             id: options.id,
             url: options.url,
-            type: 'WMS',
             opacity: options.opacity,
             visible: options.visible,
             attribution: options.attribution,
@@ -117,7 +118,7 @@ goog.require('ga_urlutils_service');
           });
           gaDefinePropertiesForLayer(layer);
           // INGRID: Set visible
-          if (options.visible != undefined) {
+          if (options.visible !== undefined) {
               layer.visible = options.visible;
           }
           layer.preview = !!options.preview;
@@ -146,7 +147,7 @@ goog.require('ga_urlutils_service');
                       return tmpLayer['SRS'].indexOf(item) < 0;
                     }));
                   } else {
-                    if (layer['SRS'].indexOf(tmpLayer['SRS']) == -1) {
+                    if (layer['SRS'].indexOf(tmpLayer['SRS']) === -1) {
                       tmpLayer['SRS'] = layer['SRS'].concat(tmpLayer['SRS']);
                     }
                   }
@@ -266,9 +267,9 @@ goog.require('ga_urlutils_service');
                 for (var i = 0; i < capSplitParams.length; i++) {
                     var capSplitParam = capSplitParams[i].toLowerCase();
                     // INGRID: Check for needed parameters like 'ID'
-                    if (capSplitParam.indexOf('request') == -1 &&
-                      capSplitParam.indexOf('service') == -1 &&
-                      capSplitParam.indexOf('version') == -1) {
+                    if (capSplitParam.indexOf('request') === -1 &&
+                      capSplitParam.indexOf('service') === -1 &&
+                      capSplitParam.indexOf('version') === -1) {
                         capParams = capParams + '&' + capSplitParam;
                     }
                 }
@@ -286,7 +287,8 @@ goog.require('ga_urlutils_service');
                 var version = result.version;
                 var val;
                 if (version === '1.3.0') {
-                  val = new ol.format.WMSCapabilities().read(data.xmlResponse);
+                  val = new ol.format.WMSCapabilities().
+                    read(data.xmlResponse);
                 } else {
                   val = result;
                 }
@@ -368,7 +370,8 @@ goog.require('ga_urlutils_service');
                         };
 
                         // INGRID: Create WMS layers
-                        var olLayer = createWmsLayer(layerParams, layerOptions);
+                        var olLayer = createWmsLayer(layerParams,
+                          layerOptions);
                         olLayer.visible = visible;
                         if (config.index) {
                           map.getLayers().insertAt(config.index + i, olLayer);
@@ -397,48 +400,48 @@ goog.require('ga_urlutils_service');
         this.getLegend = function(layer) {
           var defer = $q.defer();
           var params = layer.getSource().getParams();
-            // INGRID: Get legend for all layer (intern and extern)
-            var url = layer.url;
-            if (url == undefined) {
-                if (layer.getSource()) {
-                    if (layer.getSource().urls) {
-                        if (layer.getSource().urls.length > 0) {
-                            url = layer.getSource().urls[0];
-                        }
-                    }
+          // INGRID: Get legend for all layer (intern and extern)
+          var url = layer.url;
+          if (url === undefined) {
+            if (layer.getSource()) {
+              if (layer.getSource().urls) {
+                if (layer.getSource().urls.length > 0) {
+                  url = layer.getSource().urls[0];
                 }
+              }
             }
-            // INGRID: Change alt
-            var html = '<img alt="' +
+          }
+          // INGRID: Change alt
+          var html = '<img alt="' +
               $translate.instant('no_legend_available') + '" src="' +
               gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
-            request: 'GetLegendGraphic',
-            layer: params.LAYERS,
-            style: params.STYLES || 'default',
-            service: 'WMS',
-            version: params.VERSION || '1.3.0',
-            format: 'image/png',
-            sld_version: '1.1.0',
-            lang: gaLang.get()
-          })) + '"></img>';
+                request: 'GetLegendGraphic',
+                layer: params.LAYERS,
+                style: params.STYLES || 'default',
+                service: 'WMS',
+                version: params.VERSION || '1.3.0',
+                format: 'image/png',
+                sld_version: '1.1.0',
+                lang: gaLang.get()
+              })) + '"></img>';
           defer.resolve({data: html});
           return defer.promise;
         };
         // INGRID: Add function to get the layer legend url
         this.getLegendURL = function(layer) {
-            var params = layer.getSource().getParams();
-            // INGRID: Get legend for all layer (intern and extern)
-            var url = layer.url;
-            if (url == undefined) {
-                if (layer.getSource()) {
-                    if (layer.getSource().urls) {
-                        if (layer.getSource().urls.length > 0) {
-                            url = layer.getSource().urls[0];
-                        }
-                    }
+          var params = layer.getSource().getParams();
+          // INGRID: Get legend for all layer (intern and extern)
+          var url = layer.url;
+          if (url === undefined) {
+            if (layer.getSource()) {
+              if (layer.getSource().urls) {
+                if (layer.getSource().urls.length > 0) {
+                  url = layer.getSource().urls[0];
                 }
+              }
             }
-            return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
+          }
+          return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
              request: 'GetLegendGraphic',
              layer: params.LAYERS,
              style: params.style || 'default',

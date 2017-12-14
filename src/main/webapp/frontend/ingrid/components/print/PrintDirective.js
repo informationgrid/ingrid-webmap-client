@@ -2,6 +2,8 @@ goog.provide('ga_print_directive');
 
 goog.require('ga_attribution_service');
 goog.require('ga_browsersniffer_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_printlayer_service');
 goog.require('ga_printstyle_service');
 goog.require('ga_time_service');
@@ -16,12 +18,14 @@ goog.require('ga_urlutils_service');
     'ga_printlayer_service',
     'ga_time_service',
     'ga_attribution_service',
+    'ga_maputils_service',
+    'ga_layers_service',
     'ga_urlutils_service'
   ]);
 
   // INGRID: Add parameter 'gaGlobalOptions'
   module.controller('GaPrintDirectiveController', function($rootScope, $scope,
-      $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils, 
+      $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils,
       gaPermalink, gaBrowserSniffer, gaWaitCursor, gaPrintStyle,
       gaPrintLayer, gaTime, gaAttribution, gaUrlUtils, gaGlobalOptions) {
 
@@ -29,11 +33,11 @@ goog.require('ga_urlutils_service');
     var pdfLegendString = '_big.pdf';
     var printRectangle;
     var deregister = [];
-    var POINTS_PER_INCH = 72; //PostScript points 1/72"
+    var POINTS_PER_INCH = 72; // PostScript points 1/72"
     var MM_PER_INCHES = 25.4;
     var UNITS_RATIO = 39.37; // inches per meter
-    var POLL_INTERVAL = 2000; //interval for multi-page prints (ms)
-    var POLL_MAX_TIME = 600000; //ms (10 minutes)
+    var POLL_INTERVAL = 2000; // interval for multi-page prints (ms)
+    var POLL_MAX_TIME = 600000; // ms (10 minutes)
     var layersYears = [];
     var canceller;
     var currentMultiPrintId;
@@ -74,7 +78,7 @@ goog.require('ga_urlutils_service');
 
     var deactivate = function() {
       var item;
-      while (item = deregister.pop()) {
+      while ((item = deregister.pop())) {
         if (angular.isFunction(item)) {
           item();
         } else {
@@ -97,14 +101,14 @@ goog.require('ga_urlutils_service');
 
     var handlePostCompose = function(evt) {
       var ctx = evt.context,
-          size = $scope.map.getSize(),
-          minx = printRectangle[0],
-          miny = printRectangle[1],
-          maxx = printRectangle[2],
-          maxy = printRectangle[3];
+        size = $scope.map.getSize(),
+        minx = printRectangle[0],
+        miny = printRectangle[1],
+        maxx = printRectangle[2],
+        maxy = printRectangle[3];
 
       var height = size[1] * ol.has.DEVICE_PIXEL_RATIO,
-          width = size[0] * ol.has.DEVICE_PIXEL_RATIO;
+        width = size[0] * ol.has.DEVICE_PIXEL_RATIO;
 
       ctx.beginPath();
       // Outside polygon, must be clockwise
@@ -129,7 +133,6 @@ goog.require('ga_urlutils_service');
       ctx.restore();
     };
 
-
     var getZoomFromScale = function(scale) {
       var i, len;
       var resolution = scale / UNITS_RATIO / POINTS_PER_INCH;
@@ -144,26 +147,15 @@ goog.require('ga_urlutils_service');
       return zoom;
     };
 
-    var getNearestScale = function(target, scales) {
-      var nearest = null;
-      angular.forEach(scales, function(scale) {
-        if (nearest == null ||
-            Math.abs(scale - target) < Math.abs(nearest - target)) {
-              nearest = scale;
-        }
-      });
-      return nearest;
-    };
-
     $scope.downloadUrl = function(url) {
       $scope.options.printsuccess = true;
-      if (gaBrowserSniffer.msie == 9) {
+      if (gaBrowserSniffer.msie === 9) {
         $window.open(url);
       } else {
         $window.location = url;
       }
-      //After standard print, download the pdf Legends
-      //if there are any
+      // After standard print, download the pdf Legends
+      // if there are any
       for (var i = 0; i < pdfLegendsToDownload.length; i++) {
         $window.open(pdfLegendsToDownload[i]);
       }
@@ -208,8 +200,8 @@ goog.require('ga_urlutils_service');
       var qrcodeUrl = $scope.options.qrcodeUrl +
           encodeURIComponent(gaPermalink.getHref(undefined,
           gaGlobalOptions.isParentIFrame));
-      var print_zoom = getZoomFromScale($scope.scale.value);
-      qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + print_zoom);
+      var printZoom = getZoomFromScale($scope.scale.value);
+      qrcodeUrl = qrcodeUrl.replace(/zoom%3D(\d{1,2})/, 'zoom%3D' + printZoom);
       var encLayers = [];
       var encLegends;
       var attributions = [];
@@ -223,7 +215,6 @@ goog.require('ga_urlutils_service');
       var printRectangeCoords = getPrintRectangleCoords();
       var resolution = $scope.map.getView().getResolution();
 
-
       // Re order layer by z-index
       layers.sort(function(a, b) {
         return a.getZIndex() - b.getZIndex();
@@ -233,7 +224,7 @@ goog.require('ga_urlutils_service');
       layers.forEach(function(layer) {
 
         // INGRID: Change 'visible' and 'opacity' function
-        if (!layer.getVisible() || layer.getOpacity() == 0) {
+        if (!layer.getVisible() || layer.getOpacity() === 0) {
           return;
         }
         // Only print layer which have an extent intersecting the print extent
@@ -248,31 +239,31 @@ goog.require('ga_urlutils_service');
         // TODO: issue a warning for the user
         /* INGRID: Remove check proj
         if (layer.getSource && layer.getSource().getProjection()) {
-            var layerProj = layer.getSource().getProjection().getCode();
-            if (layerProj == null) {
-              layerProj = proj.getCode();
-              layer.getSource().setProjection(layerProj);
-            }
-            if (layerProj != proj.getCode()) {
-                return;
-            }
+          var layerProj = layer.getSource().getProjection().getCode();
+          if (!layerProj) {
+            layerProj = proj.getCode();
+            layer.getSource().setProjection(layerProj);
+          }
+          if (layerProj !== proj.getCode()) {
+            return;
+          }
         }
         */
         // Encode layers
-        var encs, encLegend;
+        // INGRID: Add 'enc'
+        var encs, encLegend, enc;
         if (layer instanceof ol.layer.Group) {
           encs = gaPrintLayer.encodeGroup(layer, proj, scaleDenom,
               printRectangeCoords, resolution, dpi);
         } else if (layer.getSource() instanceof ol.source.OSM) {
             // INGRID: Encode OSM
-          var enc = gaPrintLayer.encodeOSM(layer, proj);
+          enc = gaPrintLayer.encodeOSM(layer, proj);
           if (enc) {
             encs = [enc];
           }
         } else {
           var layerConfig = gaLayers.getLayer(layer.bodId) || {};
-          var legendToPrint = $scope.options.legend && layerConfig.hasLegend;
-          var enc = gaPrintLayer.encodeLayer(layer, proj, scaleDenom,
+          enc = gaPrintLayer.encodeLayer(layer, proj, scaleDenom,
               printRectangeCoords, resolution, dpi);
 
           if (layerConfig.timeEnabled && layer.visible && layer.time) {
@@ -281,8 +272,8 @@ goog.require('ga_urlutils_service');
 
           // INGRID: Change check legend
           if ($scope.options.legend &&
-                  ((layerConfig.hasLegend && layerConfig.legendUrl) ||
-                  (layer && layer.type == 'WMS'))) {
+            ((layerConfig.hasLegend && layerConfig.legendUrl) ||
+            (layer && layer.type === 'WMS'))) {
             encLegend = gaPrintLayer.encodeLegend(layer, layerConfig,
                 $scope.options);
 
@@ -312,12 +303,12 @@ goog.require('ga_urlutils_service');
 
           // Add attribution of encoded layers
           var attribution = gaAttribution.getTextFromLayer(layer);
-          if (attribution !== undefined) {
+          if (attribution) {
             if (layer.useThirdPartyData) {
-              if (thirdPartyAttributions.indexOf(attribution) == -1) {
+              if (thirdPartyAttributions.indexOf(attribution) === -1) {
                 thirdPartyAttributions.push(attribution);
               }
-            } else if (attributions.indexOf(attribution) == -1) {
+            } else if (attributions.indexOf(attribution) === -1) {
               attributions.push(attribution);
             }
           }
@@ -348,173 +339,180 @@ goog.require('ga_urlutils_service');
       // FIXME this is a temporary solution
       var overlays = $scope.map.getOverlays();
 
+      // On OL, overlays which stop events are displayed on top of overlays
+      // which don't. So we need to do the same for the print to keep order of
+      // display.
+      var ovStop = [];
+      var ov = [];
       overlays.forEach(function(overlay) {
         var encOverlayLayer = gaPrintLayer.encodeOverlay(overlay,
             resolution, $scope.options);
 
         if (encOverlayLayer) {
-            encLayers.push(encOverlayLayer);
+          var container = $(overlay.getElement()).parent().parent();
+          if (container.hasClass('ol-overlaycontainer-stopevent')) {
+            ovStop.push(encOverlayLayer);
+          } else {
+            ov.push(encOverlayLayer);
+          }
         }
       });
-
+      encLayers = encLayers.concat(ov);
+      encLayers = encLayers.concat(ovStop);
 
       // Get the short link
       var shortLink;
       canceller = $q.defer();
-      gaUrlUtils.shorten(gaPermalink.getHref(), canceller.promise)
-          .then(function(shortUrl) {
-        // INGRID: Return href if no shorturl exists
-        shortLink = shortUrl ?
-          shortUrl.replace('/shorten', '') : gaPermalink.getHref();
-        // INGRID: Add used shortLink for QR
-        if (shortLink) {
-          qrcodeUrl = $scope.options.qrcodeUrl +
-          encodeURIComponent(shortLink);
-        }
+      gaUrlUtils.shorten(gaPermalink.getHref(), canceller.promise).
+          then(function(shortUrl) {
+            // INGRID: Return href if no shorturl exists
+            shortLink = shortUrl ?
+              shortUrl.replace('/shorten', '') : gaPermalink.getHref();
+            // INGRID: Add used shortLink for QR
+            if (shortLink) {
+              qrcodeUrl = $scope.options.qrcodeUrl +
+              encodeURIComponent(shortLink);
+            }
 
-        // Build the complete json then send it to the print server
-        if (!$scope.options.printing) {
-          return;
-        }
-
-        // Build the correct copyright text to display
-        var dataOwner = attributions.join();
-        var thirdPartyDataOwner = thirdPartyAttributions.join();
-        if (dataOwner && thirdPartyDataOwner) {
-          dataOwner = '© ' + dataOwner + ',';
-        } else if (!dataOwner && thirdPartyDataOwner) {
-          thirdPartyDataOwner = '© ' + thirdPartyDataOwner;
-        } else if (dataOwner && !thirdPartyDataOwner) {
-          dataOwner = '© ' + dataOwner;
-          thirdPartyDataOwner = false;
-        }
-        var movieprint = $scope.options.movie && $scope.options.multiprint;
-        var spec = {
-          layout: $scope.layout.name,
-          srs: proj.getCode(),
-          units: proj.getUnits() || 'm',
-          rotation: -((view.getRotation() * 180.0) / Math.PI),
-          // INGRID: Set to comment app
-          //app: 'config',
-          // INGRID: Add logo url
-          logo: gaGlobalOptions.printLogo,
-          // INGRID: Add north arrow logo url
-          northArrow: gaGlobalOptions.printNorthArrow,
-          lang: lang,
-          //use a function to get correct dpi according to layout (A4/A3)
-          dpi: getDpi($scope.layout.name, $scope.dpi),
-          layers: encLayers,
-          legends: encLegends,
-          // INGRID: Add legend title
-          legendTitle: $translate.instant('legend'),
-          enableLegends: (encLegends && encLegends.length > 0),
-          qrcodeurl: qrcodeUrl,
-          movie: movieprint,
-          pages: [
-            angular.extend({
-              center: getPrintRectangleCenterCoord(),
-              bbox: getPrintRectangleCoords(),
-              display: [$scope.layout.map.width, $scope.layout.map.height],
-              // scale has to be one of the advertise by the print server
-              scale: $scope.scale.value,
-              // INGRID: Add comment and title for print
-              comment: $scope.comment ? $scope.comment : '',
-              title: $scope.title ? $scope.title : '',
-              dataOwner: dataOwner,
-              thirdPartyDataOwner: thirdPartyDataOwner,
-              shortLink: shortLink || '',
-              rotation: -((view.getRotation() * 180.0) / Math.PI)
-            }, defaultPage)
-          ]
-        };
-        var startPollTime;
-        var pollErrors;
-        var pollMulti = function(url) {
-          pollMultiPromise = $timeout(function() {
+            // Build the complete json then send it to the print server
             if (!$scope.options.printing) {
               return;
             }
-            canceller = $q.defer();
-            var http = $http.get(url, {
-               timeout: canceller.promise
-            }).then(function(response) {
-              var data = response.data;
-              if (!$scope.options.printing) {
-                return;
-              }
-              if (!data.getURL) {
-                // Write progress using the following logic
-                // First 60% is pdf page creationg
-                // 60-70% is merging of pdf
-                // 70-100% is writing of resulting pdf
-                if (data.filesize) {
-                  var written = data.written || 0;
-                  $scope.options.progress =
+
+            // Build the correct copyright text to display
+            var allDataOwner = attributions.concat(thirdPartyAttributions);
+            allDataOwner = '©' + allDataOwner.join();
+            var movieprint = $scope.options.movie && $scope.options.multiprint;
+            var spec = {
+              layout: $scope.layout.name,
+              srs: proj.getCode(),
+              units: proj.getUnits() || 'm',
+              rotation: -((view.getRotation() * 180.0) / Math.PI),
+              // INGRID: Set to comment app
+              // app: 'config',
+              // INGRID: Add logo url
+              logo: gaGlobalOptions.printLogo,
+              // INGRID: Add north arrow logo url
+              northArrow: gaGlobalOptions.printNorthArrow,
+              lang: lang,
+              // use a function to get correct dpi according to layout (A4/A3)
+              dpi: getDpi($scope.layout.name, $scope.dpi),
+              layers: encLayers,
+              legends: encLegends,
+              // INGRID: Add legend title
+              legendTitle: $translate.instant('legend'),
+              enableLegends: (encLegends && encLegends.length > 0),
+              qrcodeurl: qrcodeUrl,
+              movie: movieprint,
+              pages: [
+                angular.extend({
+                  center: getPrintRectangleCenterCoord(),
+                  bbox: getPrintRectangleCoords(),
+                  display: [$scope.layout.map.width, $scope.layout.map.height],
+                  // scale has to be one of the advertise by the print server
+                  scale: $scope.scale.value,
+                  dataOwner: allDataOwner,
+                  shortLink: shortLink || '',
+                  rotation: -((view.getRotation() * 180.0) / Math.PI),
+                   // INGRID: Add comment and title for print
+                   comment: $scope.comment ? $scope.comment : '',
+                   title: $scope.title ? $scope.title : ''
+                }, defaultPage)
+              ]
+            };
+            var startPollTime;
+            var pollErrors;
+            var pollMulti = function(url) {
+              pollMultiPromise = $timeout(function() {
+                if (!$scope.options.printing) {
+                  return;
+                }
+                var noCacheUrl = url;
+                if (gaBrowserSniffer.msie === 9) {
+                  // #3937: Avoid caching of the request by IE9
+                  noCacheUrl += '&' + (new Date()).getTime();
+                }
+                canceller = $q.defer();
+                $http.get(noCacheUrl, {
+                  timeout: canceller.promise
+                }).then(function(response) {
+                  var data = response.data;
+                  if (!$scope.options.printing) {
+                    return;
+                  }
+                  if (!data.getURL) {
+                    // Write progress using the following logic
+                    // First 60% is pdf page creationg
+                    // 60-70% is merging of pdf
+                    // 70-100% is writing of resulting pdf
+                    if (data.filesize) {
+                      var written = data.written || 0;
+                      $scope.options.progress =
                       (70 + Math.floor(written * 30 / data.filesize)) +
                       '%';
-                } else if (data.total) {
-                  if (angular.isDefined(data.merged)) {
-                    $scope.options.progress =
+                    } else if (data.total) {
+                      if (angular.isDefined(data.merged)) {
+                        $scope.options.progress =
                         (60 + Math.floor(data.done * 10 / data.total)) +
                         '%';
-                  } else if (angular.isDefined(data.done)) {
-                    $scope.options.progress =
+                      } else if (angular.isDefined(data.done)) {
+                        $scope.options.progress =
                         Math.floor(data.done * 60 / data.total) + '%';
-                  }
-                }
+                      }
+                    }
 
-                var now = new Date();
-                //We abort if we waited too long
-                if (now - startPollTime < POLL_MAX_TIME) {
-                  pollMulti(url);
-                } else {
-                  $scope.options.printing = false;
-                }
+                    var now = new Date();
+                    // We abort if we waited too long
+                    if (now - startPollTime < POLL_MAX_TIME) {
+                      pollMulti(url);
+                    } else {
+                      $scope.options.printing = false;
+                    }
+                  } else {
+                    $scope.downloadUrl(data.getURL);
+                  }
+                }, function() {
+                  if ($scope.options.printing === false) {
+                    pollErrors = 0;
+                    return;
+                  }
+                  pollErrors += 1;
+                  if (pollErrors > 2) {
+                    $scope.options.printing = false;
+                  } else {
+                    pollMulti(url);
+                  }
+                });
+              }, POLL_INTERVAL, false);
+            };
+
+            var printUrl = $scope.capabilities.createURL;
+            // When movie is on, we use printmulti
+            if (movieprint) {
+              printUrl = printUrl.replace('/print/', '/printmulti/');
+            }
+            canceller = $q.defer();
+            // INGRID: Change print URL
+            $http.post(printUrl,
+                spec, {
+                  timeout: canceller.promise
+                }).then(function(response) {
+              var data = response.data;
+              if (movieprint) {
+                // start polling process
+                var pollUrl = $scope.options.printPath + 'progress?id=' +
+                data.idToCheck;
+                currentMultiPrintId = data.idToCheck;
+                startPollTime = new Date();
+                pollErrors = 0;
+                pollMulti(pollUrl);
               } else {
                 $scope.downloadUrl(data.getURL);
               }
             }, function() {
-              if ($scope.options.printing == false) {
-                pollErrors = 0;
-                return;
-              }
-              pollErrors += 1;
-              if (pollErrors > 2) {
-                $scope.options.printing = false;
-              } else {
-                pollMulti(url);
-              }
+              $scope.options.printing = false;
             });
-          }, POLL_INTERVAL, false);
-        };
-
-        var printUrl = $scope.capabilities.createURL;
-        //When movie is on, we use printmulti
-        if (movieprint) {
-          printUrl = printUrl.replace('/print/', '/printmulti/');
-        }
-        canceller = $q.defer();
-        // INGRID: Change print URL
-        var http = $http.post(printUrl,
-          spec, {
-          timeout: canceller.promise
-        }).then(function(response) {
-          var data = response.data;
-          if (movieprint) {
-            //start polling process
-            var pollUrl = $scope.options.printPath + 'progress?id=' +
-                data.idToCheck;
-            currentMultiPrintId = data.idToCheck;
-            startPollTime = new Date();
-            pollErrors = 0;
-            pollMulti(pollUrl);
-          } else {
-            $scope.downloadUrl(data.getURL);
-          }
-        }, function() {
-          $scope.options.printing = false;
-        });
-      });
+          });
     };
 
     var getDpi = function(layoutName, dpiConfig) {
@@ -531,20 +529,21 @@ goog.require('ga_urlutils_service');
     var getPrintRectangleCoords = function() {
       // Framebuffer size!!
       var displayCoords = printRectangle.map(function(c) {
-          return c / ol.has.DEVICE_PIXEL_RATIO});
+        return c / ol.has.DEVICE_PIXEL_RATIO
+      });
       // PrintRectangle coordinates have top-left as origin
       var bottomLeft = $scope.map.getCoordinateFromPixel([displayCoords[0],
-          displayCoords[3]]);
+        displayCoords[3]]);
       var topRight = $scope.map.getCoordinateFromPixel([displayCoords[2],
-          displayCoords[1]]);
+        displayCoords[1]]);
       var topLeft = $scope.map.getCoordinateFromPixel([displayCoords[0],
-          displayCoords[1]]);
+        displayCoords[1]]);
       var bottomRight = $scope.map.getCoordinateFromPixel([displayCoords[2],
-          displayCoords[3]]);
+        displayCoords[3]]);
 
       // Always returns an extent [minX, minY, maxX, maxY]
       var printPoly = new ol.geom.Polygon([[bottomLeft, topLeft, topRight,
-          bottomRight, bottomLeft]]);
+        bottomRight, bottomLeft]]);
 
       return printPoly.getExtent();
     };
@@ -554,7 +553,7 @@ goog.require('ga_urlutils_service');
       var rect = getPrintRectangleCoords();
 
       var centerCoords = [rect[0] + (rect[2] - rect[0]) / 2.0,
-          rect[1] + (rect[3] - rect[1]) / 2.0];
+        rect[1] + (rect[3] - rect[1]) / 2.0];
 
       return centerCoords;
     };
@@ -581,12 +580,12 @@ goog.require('ga_urlutils_service');
         testScale = scaleHeight;
       }
       var nextBiggest = null;
-      //The algo below assumes that scales are sorted from
-      //biggest (1:500) to smallest (1:2500000)
+      // The algo below assumes that scales are sorted from
+      // biggest (1:500) to smallest (1:2500000)
       angular.forEach($scope.scales, function(scale) {
         if (nextBiggest == null ||
             testScale > scale.value) {
-              nextBiggest = scale;
+          nextBiggest = scale;
         }
       });
       return nextBiggest;
@@ -602,8 +601,8 @@ goog.require('ga_urlutils_service');
       var h = size.height / POINTS_PER_INCH * MM_PER_INCHES / 1000.0 *
           s / resolution * ol.has.DEVICE_PIXEL_RATIO;
       var mapSize = $scope.map.getSize();
-      var center = [mapSize[0] * ol.has.DEVICE_PIXEL_RATIO / 2 ,
-          mapSize[1] * ol.has.DEVICE_PIXEL_RATIO / 2];
+      var center = [mapSize[0] * ol.has.DEVICE_PIXEL_RATIO / 2,
+        mapSize[1] * ol.has.DEVICE_PIXEL_RATIO / 2];
 
       var minx, miny, maxx, maxy;
 
@@ -616,10 +615,10 @@ goog.require('ga_urlutils_service');
 
     $scope.layers = $scope.map.getLayers().getArray();
     $scope.layerFilter = function(layer) {
-      return layer.bodId == 'ch.swisstopo.zeitreihen' && layer.visible;
+      return layer.bodId === 'ch.swisstopo.zeitreihen' && layer.visible;
     };
     $scope.$watchCollection('layers | filter:layerFilter', function(lrs) {
-      $scope.options.multiprint = (lrs.length == 1);
+      $scope.options.multiprint = (lrs.length === 1);
     });
 
     $scope.$watch('active', function(newVal, oldVal) {
@@ -663,20 +662,20 @@ goog.require('ga_urlutils_service');
   });
 
   module.directive('gaPrint',
-    function(gaBrowserSniffer) {
-      return {
-        restrict: 'A',
-        scope: {
-          map: '=gaPrintMap',
-          options: '=gaPrintOptions',
-          active: '=gaPrintActive'
-        },
-        templateUrl: 'components/print/partials/print.html',
-        controller: 'GaPrintDirectiveController',
-        link: function(scope, elt, attrs, controller) {
-          scope.isIE = gaBrowserSniffer.msie;
-        }
-      };
-    }
+      function(gaBrowserSniffer) {
+        return {
+          restrict: 'A',
+          scope: {
+            map: '=gaPrintMap',
+            options: '=gaPrintOptions',
+            active: '=gaPrintActive'
+          },
+          templateUrl: 'components/print/partials/print.html',
+          controller: 'GaPrintDirectiveController',
+          link: function(scope, elt, attrs, controller) {
+            scope.isIE = gaBrowserSniffer.msie;
+          }
+        };
+      }
   );
 })();

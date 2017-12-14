@@ -1,19 +1,21 @@
 goog.provide('ga_catalogitem_directive');
 
-goog.require('ga_browsersniffer_service');
 goog.require('ga_catalogtree_directive');
+goog.require('ga_event_service');
 goog.require('ga_layermetadatapopup_service');
-goog.require('ga_map_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_previewlayers_service');
 
 (function() {
 
   var module = angular.module('ga_catalogitem_directive', [
-    'ga_browsersniffer_service',
     'ga_catalogtree_directive',
     'ga_layermetadatapopup_service',
-    'ga_map_service',
-    'ga_previewlayers_service'
+    'ga_layers_service',
+    'ga_maputils_service',
+    'ga_previewlayers_service',
+    'ga_event_service'
   ]);
 
   /**
@@ -21,8 +23,8 @@ goog.require('ga_previewlayers_service');
    */
   // INGRID: Add param 'gaGlobalOptions'
   module.directive('gaCatalogitem',
-      function($compile, gaMapUtils, gaLayerMetadataPopup, gaBrowserSniffer,
-          gaPreviewLayers, gaLayers, gaGlobalOptions) {
+      function($compile, gaMapUtils, gaLayerMetadataPopup,
+          gaPreviewLayers, gaLayers, gaEvent, gaGlobalOptions) {
 
         var addBodLayer = function(map, layerBodId) {
           if (gaLayers.getLayer(layerBodId)) {
@@ -178,12 +180,11 @@ goog.require('ga_previewlayers_service');
                   controller.updatePermalink(scope.item.id, value);
                 });
 
-              // INGRID: Split else if for preview of parent layer
               // Leaf
-              } else if (!gaBrowserSniffer.mobile) {
-                iEl.on('mouseenter', function(evt) {
+              } else {
+                gaEvent.onMouseOverOut(iEl, function(evt) {
                   addPreviewLayer(scope.map, scope.item);
-                }).on('mouseleave', function(evt) {
+                }, function(evt) {
                   removePreviewLayer(scope.map);
                 });
               }

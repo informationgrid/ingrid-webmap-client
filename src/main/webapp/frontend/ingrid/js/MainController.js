@@ -2,8 +2,9 @@ goog.provide('ga_main_controller');
 
 goog.require('ga_background_service');
 goog.require('ga_cesium');
-goog.require('ga_map');
+goog.require('ga_layers_service');
 goog.require('ga_map_load_service');
+goog.require('ga_maputils_service');
 goog.require('ga_networkstatus_service');
 goog.require('ga_storage_service');
 goog.require('ga_topic_service');
@@ -57,13 +58,14 @@ goog.require('ga_window_service');
       '</span>';
 
       var map = new ol.Map({
+        moveTolerance: 5,
         controls: ol.control.defaults({
           attribution: false,
           rotate: false,
           zoomOptions: {
             target: toolbar,
             zoomInLabel: $compile(zoomIn)($scope)[0],
-            zoomOutLabel: $compile(zoomOut)($scope)[0],
+            zoomOutLabel: $compile(zoomOut)($scope)[0]
           }
         // INGRID: Configuration of zoom to extent button
         }).extend([
@@ -88,14 +90,13 @@ goog.require('ga_window_service');
         }),
         renderer: 'canvas',
         view: new ol.View({
-            // INGRID: Configuration of map
-            projection: defaultProjection,
-            center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.
+          // INGRID: Configuration of map
+          projection: defaultProjection,
+        //extent: gaMapUtils.defaultExtent,
+          center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.
               defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-            //extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
-            //  'EPSG:4326', gaGlobalOptions.defaultEpsg)
-            //resolution: gaMapUtils.defaultResolution
-            //resolutions: gaMapUtils.viewResolutions
+        //resolution: gaMapUtils.defaultResolution,
+        //resolutions: gaMapUtils.viewResolutions
         }),
         logo: false
       });
@@ -105,13 +106,12 @@ goog.require('ga_window_service');
 
     // Determines if the window has a height <= 550
     var win = $($window);
-    var dismiss = 'none';
 
     // The main controller creates the OpenLayers map object. The map object
     // is central, as most directives/components need a reference to it.
     $scope.map = createMap();
     // Only active if debug=true is specified
-    if (gaPermalink.getParams().debug == 'true') {
+    if (gaPermalink.getParams().debug === 'true') {
       gaMapLoad.init($scope);
     }
 
@@ -131,12 +131,13 @@ goog.require('ga_window_service');
         $window.console.error(error.stack);
         // Avoid the alert comes twice
         $scope.ol3d.getCesiumScene().renderError.removeEventListener(
-           onRenderError);
+            onRenderError);
       };
 
       var cesium = new GaCesium($scope.map, gaPermalink, gaLayers,
-                                gaGlobalOptions, gaBrowserSniffer, $q,
-                                $translate, $rootScope, gaBackground);
+          gaGlobalOptions, gaBrowserSniffer, $q, $translate, $rootScope,
+          gaBackground);
+
       cesium.loaded().then(function(ol3d) {
         $scope.ol3d = ol3d;
         if (!$scope.ol3d) {
@@ -153,7 +154,7 @@ goog.require('ga_window_service');
       }
 
       $scope.map.on('change:target', function(event) {
-        if (!!$scope.map.getTargetElement()) {
+        if ($scope.map.getTargetElement()) {
 
           $scope.$watch('globals.is3dActive', function(active) {
             if (active || $scope.ol3d) {
@@ -235,7 +236,7 @@ goog.require('ga_window_service');
       $scope.topicId = gaTopic.get().id;
 
       if (initWithPrint) {
-        $scope.globals.printShown = true;
+        $scope.globals.isPrintActive = true;
       } else if (initWithFeedback) {
         $scope.globals.feedbackPopupShown = initWithFeedback;
       } else if (initWithDraw) {
@@ -274,21 +275,25 @@ goog.require('ga_window_service');
     $scope.globals = {
       dev3d: gaGlobalOptions.dev3d,
       pegman: gaGlobalOptions.pegman,
-      searchFocused: !gaBrowserSniffer.mobile,
+      searchFocused: false,
       homescreen: false,
       webkit: gaBrowserSniffer.webkit,
       ios: gaBrowserSniffer.ios,
       animation: gaBrowserSniffer.animation,
       offline: gaNetworkStatus.offline,
+      desktop: gaBrowserSniffer.desktop,
+      mobile: gaBrowserSniffer.mobile,
       embed: gaBrowserSniffer.embed,
-      pulldownShown: !(gaBrowserSniffer.mobile || win.width() <= 1024),
-      printShown: false,
+      pulldownShown: false,
       catalogShown: false,
       selectionShown: false,
       feedbackPopupShown: false,
+      settingsShown: false,
+      queryShown: false,
       isShareActive: false,
       isDrawActive: false,
       isFeatureTreeActive: false,
+      isPrintActive: false,
       isSwipeActive: false,
       is3dActive: startWith3D,
       hostIsProd: gaGlobalOptions.hostIsProd,
@@ -297,6 +302,17 @@ goog.require('ga_window_service');
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog
     };
+
+    // gaWindow is efficient only after the dom is ready
+    $document.ready(function() {
+      $scope.$applyAsync(function() {
+        $scope.globals.searchFocused = gaWindow.isWidth('>xs');
+        $scope.globals.pulldownShown = gaWindow.isWidth('>s') &&
+             gaWindow.isHeight('>s');
+        $scope.globals.settingsShown = gaWindow.isWidth('<=m');
+        $scope.globals.queryShown = gaWindow.isWidth('>m');
+      });
+    });
 
     $scope.hidePulldownOnXSmallScreen = function() {
       if (gaWindow.isWidth('xs')) {
@@ -338,62 +354,55 @@ goog.require('ga_window_service');
     // Only iOS Safari
     if (!$window.navigator.standalone && gaBrowserSniffer.ios &&
         gaBrowserSniffer.safari && !gaStorage.getItem('homescreen')) {
-    $timeout(function() {
+      $timeout(function() {
         $scope.globals.homescreen = true;
         $scope.globals.tablet = gaWindow.isWidth('s');
         $scope.$watch('globals.homescreen', function(newVal) {
-          if (newVal == false) {
+          if (newVal === false) {
             gaStorage.setItem('homescreen', 'none');
           }
         });
-    }, 2000);
+      }, 2000);
     }
 
-    // Manage exit of draw mode (only desktop)
-    if (!gaBrowserSniffer.mobile) {
+    // Manage exit of draw mode
+    // Exit Draw mode when pressing ESC or Backspace button
+    $document.keydown(function(evt) {
+      if (evt.which === 8) {
+        if (!/^(input|textarea)$/i.test(evt.target.tagName)) {
+          evt.preventDefault();
+        } else {
+          return;
+        }
+      }
+      if ((evt.which === 8 || evt.which === 27) &&
+          $scope.globals.isDrawActive) {
+        $scope.globals.isDrawActive = false;
+        $scope.$digest();
+      }
+    });
 
-      // Exit Draw mode when pressing ESC or Backspace button
-      $document.keydown(function(evt) {
-        if (evt.which == 8) {
-          if (!/^(input|textarea)$/i.test(evt.target.tagName)) {
-            evt.preventDefault();
-          } else {
-            return;
-          }
-        }
-        if ((evt.which == 8 || evt.which == 27) &&
-            $scope.globals.isDrawActive) {
-          $scope.globals.isDrawActive = false;
-          $scope.$digest();
-        }
-      });
+    // Browser back button management
+    $scope.$watch('globals.isDrawActive', function(isActive) {
+      if (isActive && gaHistory) {
+        gaHistory.replaceState({
+          isDrawActive: false
+        }, '', gaPermalink.getHref());
 
-      // Browser back button management
-      $scope.$watch('globals.isDrawActive', function(isActive) {
-        if (isActive && gaHistory) {
-          gaHistory.replaceState({
-            isDrawActive: false
-          }, '', gaPermalink.getHref());
-
-          gaHistory.pushState(null, '', gaPermalink.getHref());
-        }
-      });
-      $window.onpopstate = function(evt) {
-        // When we go to full screen evt.state is null
-        if (evt.state && evt.state.isDrawActive === false) {
-          $scope.globals.isDrawActive = false;
-          gaPermalink.refresh();
-          $scope.$digest();
-        }
-      };
-    }
+        gaHistory.pushState(null, '', gaPermalink.getHref());
+      }
+    });
+    $window.onpopstate = function(evt) {
+      // When we go to full screen evt.state is null
+      if (evt.state && evt.state.isDrawActive === false) {
+        $scope.globals.isDrawActive = false;
+        gaPermalink.refresh();
+        $scope.$digest();
+      }
+    };
 
     // Management of panels display (only on screen bigger than 480px)
     win.on('resize', function() {
-      if (gaWindow.isWidth('xs')) {
-        return;
-      }
-
       // Hide catalog panel if height is too small
       if (gaWindow.isHeight('<=m')) {
         if ($scope.globals.catalogShown) {
@@ -402,12 +411,32 @@ goog.require('ga_window_service');
           });
         }
       }
+
       // Open share panel by default on phone
       if ($scope.globals.pulldownShown && !$scope.globals.isShareActive &&
           !$scope.globals.isDrawActive && gaWindow.isWidth('xs')) {
         $scope.$applyAsync(function() {
           // INGRID: Set 'isShareActive' to false
           $scope.globals.isShareActive = false;
+        });
+      }
+
+      // Display settings panel
+      if ((gaWindow.isWidth('<=m') && !$scope.globals.settingsShown) ||
+         (gaWindow.isWidth('>m') && $scope.globals.settingsShown)) {
+        $scope.$applyAsync(function() {
+          $scope.globals.settingsShown = !$scope.globals.settingsShown;
+        });
+      }
+
+      // Display query tool
+      if ((gaWindow.isWidth('<=m') && $scope.globals.queryShown) ||
+         (gaWindow.isWidth('>m') && !$scope.globals.queryShown)) {
+        $scope.$applyAsync(function() {
+          $scope.globals.queryShown = !$scope.globals.queryShown;
+          if (!$scope.globals.queryShown) {
+            $scope.globals.isFeatureTreeActive = false;
+          }
         });
       }
     });
@@ -462,4 +491,3 @@ goog.require('ga_window_service');
     }
   });
 })();
-

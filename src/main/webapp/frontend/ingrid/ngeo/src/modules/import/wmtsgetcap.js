@@ -1,4 +1,7 @@
 goog.module('ngeo.wmtsGetCapDirective');
+
+goog.require('ol.extent');
+goog.require('ol.proj');
 goog.module.declareLegacyNamespace();
 
 goog.require('ol.format.WMTSCapabilities');
@@ -49,20 +52,19 @@ exports = function(gettext, gettextCatalog, ngeoWmtsGetCapTemplateUrl) {
       }
 
       if (!layer['isInvalid']) {
-        const getTileMetadata = getCap['OperationsMetadata']['GetTile']['DCP']['HTTP']['Get'][0];
-        const requestEncoding = getTileMetadata['Constraint'][0]['AllowedValues']['Value'][0];
+        const layerOptions = {
+          'layer': layer['Identifier']
+        };
         // INGRID: Add 'tileMatrixSets'
         const tileMatrixSets = getCap['Contents']['TileMatrixSet'];
-        const layerOptions = {
-          'layer': layer['Identifier'],
-          'requestEnconding': requestEncoding
-        };
         // INGRID: Add 'matrixSet' by supportedCRS
-        for (const tileMatrixSet of getCap['Contents']['TileMatrixSet']) {
-          const supportedCRS = tileMatrixSet['SupportedCRS'];
-          if(supportedCRS){
-            if(supportedCRS.indexOf(proj.getCode()) > -1){
+        if (tileMatrixSets) {
+          for (const tileMatrixSet of tileMatrixSets) {
+            const supportedCRS = tileMatrixSet['SupportedCRS'];
+            if(supportedCRS){
+              if(supportedCRS.indexOf(proj.getCode()) > -1){
                 layerOptions['matrixSet'] = tileMatrixSet['Identifier'];
+              }
             }
           }
         }
@@ -120,7 +122,7 @@ exports = function(gettext, gettextCatalog, ngeoWmtsGetCapTemplateUrl) {
 
         if (val && val['Contents'] && val['Contents']['Layer']) {
           scope['layers'] = getLayersList(val, scope['url'],
-              scope['map'].getView().getProjection());
+            scope['map'].getView().getProjection());
         }
       });
 
@@ -157,16 +159,16 @@ exports.module = angular.module('ngeo.wmtsGetCapDirective', [
 ]);
 
 exports.module.value('ngeoWmtsGetCapTemplateUrl',
-    /**
+  /**
      * @param {angular.JQLite} element Element.
      * @param {angular.Attributes} attrs Attributes.
      * @return {string} Template URL.
      */
-    (element, attrs) => {
-      const templateUrl = attrs['ngeoWmtsGetCapTemplateUrl'];
-      return templateUrl !== undefined ? templateUrl :
-          `${ngeo.baseModuleTemplateUrl}/import/partials/wmts-get-cap.html`;
-    });
+  (element, attrs) => {
+    const templateUrl = attrs['ngeoWmtsGetCapTemplateUrl'];
+    return templateUrl !== undefined ? templateUrl :
+      `${ngeo.baseModuleTemplateUrl}/import/partials/wmts-get-cap.html`;
+  });
 
 /**
  * This directive displays the list of layers available in the

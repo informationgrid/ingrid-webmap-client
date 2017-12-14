@@ -13,7 +13,7 @@ goog.require('ga_reframe_service');
     '[0-9]+\\b)("|\'\'|′′|″)';
   var DMSNorth = '[N]';
   var DMSEast = '[E]';
-  var MGRS = '^3[123]\[\\s\a-z]{3}[\\s\\d]*';
+  var MGRS = '^3[123][\\sa-z]{3}[\\s\\d]*';
   var regexpDMSN = new RegExp(DMSDegree +
     '(' + DMSMinute + ')?\\s*' +
     '(' + DMSSecond + ')?\\s*' +
@@ -24,7 +24,7 @@ goog.require('ga_reframe_service');
     DMSEast, 'g');
   var regexpDMSDegree = new RegExp(DMSDegree, 'g');
   var regexpCoordinate = new RegExp(
-    '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
+      '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
     '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
   var regexMGRS = new RegExp(MGRS, 'gi');
   // Grid zone designation for Switzerland + two 100km letters + two digits
@@ -37,7 +37,6 @@ goog.require('ga_reframe_service');
   };
 
   module.provider('gaSearchGetCoordinate', function() {
-    // INGRID: Add 'gaGlobalOptions'
     this.$get = function($window, $q, gaReframe, gaGlobalOptions) {
 
       return function(extent, query) {
@@ -45,13 +44,12 @@ goog.require('ga_reframe_service');
 
         // Parse MGRS notation
         var matchMGRS = query.match(regexMGRS);
-        if (matchMGRS && matchMGRS.length == 1) {
+        if (matchMGRS && matchMGRS.length === 1) {
           var mgrsStr = matchMGRS[0].split(' ').join('');
-          if ((mgrsStr.length - MGRSMinimalPrecision) % 2 == 0) {
+          if ((mgrsStr.length - MGRSMinimalPrecision) % 2 === 0) {
             var wgs84 = $window.proj4.mgrs.toPoint(mgrsStr);
-            // INGRID: Change 'EPSG:21781' to 'gaGlobalOptions.defaultEpsg'
             position = ol.proj.transform(wgs84, 'EPSG:4326',
-              gaGlobalOptions.defaultEpsg);
+                gaGlobalOptions.defaultEpsg);
             if (ol.extent.containsCoordinate(extent, position)) {
               return $q.when(roundCoordinates(position));
             }
@@ -61,59 +59,61 @@ goog.require('ga_reframe_service');
         // Parse degree EPSG:4326 notation
         var matchDMSN = query.match(regexpDMSN);
         var matchDMSE = query.match(regexpDMSE);
-        if (matchDMSN && matchDMSN.length == 1 &&
-            matchDMSE && matchDMSE.length == 1) {
+        if (matchDMSN && matchDMSN.length === 1 &&
+            matchDMSE && matchDMSE.length === 1) {
           var northing = parseFloat(matchDMSN[0].
-            match(regexpDMSDegree)[0].
-            replace('°' , '').replace('º' , ''));
+              match(regexpDMSDegree)[0].
+              replace('°', '').replace('º', ''));
           var easting = parseFloat(matchDMSE[0].
-            match(regexpDMSDegree)[0].
-            replace('°' , '').replace('º' , ''));
+              match(regexpDMSDegree)[0].
+              replace('°', '').replace('º', ''));
           var minuteN = matchDMSN[0].match(DMSMinute) ?
             matchDMSN[0].match(DMSMinute)[0] : '0';
           northing = northing +
-            parseFloat(minuteN.replace('\'' , '').
-              replace('′' , '')) / 60;
+            parseFloat(minuteN.replace('\'', '').
+                replace('′', '')) / 60;
           var minuteE = matchDMSE[0].match(DMSMinute) ?
             matchDMSE[0].match(DMSMinute)[0] : '0';
           easting = easting +
-            parseFloat(minuteE.replace('\'' , '').
-              replace('′' , '')) / 60;
+            parseFloat(minuteE.replace('\'', '').
+                replace('′', '')) / 60;
           var secondN =
             matchDMSN[0].match(DMSSecond) ?
-            matchDMSN[0].match(DMSSecond)[0] : '0';
-          northing = northing + parseFloat(secondN.replace('"' , '')
-            .replace('\'\'' , '').replace('′′' , '')
-            .replace('″' , '')) / 3600;
+              matchDMSN[0].match(DMSSecond)[0] : '0';
+          northing = northing + parseFloat(secondN.replace('"', '').
+              replace('\'\'', '').replace('′′', '').
+              replace('″', '')) / 3600;
           var secondE = matchDMSE[0].match(DMSSecond) ?
             matchDMSE[0].match(DMSSecond)[0] : '0';
-          easting = easting + parseFloat(secondE.replace('"' , '')
-            .replace('\'\'' , '').replace('′′' , '')
-            .replace('″' , '')) / 3600;
-          // INGRID: Change to 'gaGlobalOptions.defaultEpsg'
+          easting = easting + parseFloat(secondE.replace('"', '').
+              replace('\'\'', '').replace('′′', '').
+              replace('″', '')) / 3600;
           position = ol.proj.transform([easting, northing],
-                'EPSG:4326', gaGlobalOptions.defaultEpsg);
-          if (ol.extent.containsCoordinate(
-            extent, position)) {
+              'EPSG:4326', gaGlobalOptions.defaultEpsg);
+          if (ol.extent.containsCoordinate(extent, position)) {
             return $q.when(roundCoordinates(position));
           }
         }
 
         var match = query.match(regexpCoordinate);
         if (match) {
-          var left = parseFloat(match[1].replace(/\'/g, ''));
-          var right = parseFloat(match[2].replace(/\'/g, ''));
+          var left = parseFloat(match[1].replace(/'/g, ''));
+          var right = parseFloat(match[2].replace(/'/g, ''));
+          // INGRID: Add extent search
+          var leftExtent;
+          var rightExtent;
+          var positionExtent;
           /*
-          //Old school entries like '600 000 200 000'
+          // Old school entries like '600 000 200 000'
           if (match[3] != null) {
-            left = parseFloat(match[1].replace(/\'/g, '') +
-                              match[2].replace(/\'/g, ''));
-            right = parseFloat(match[4].replace(/\'/g, '') +
-                               match[5].replace(/\'/g, ''));
+            left = parseFloat(match[1].replace(/'/g, '') +
+                              match[2].replace(/'/g, ''));
+            right = parseFloat(match[4].replace(/'/g, '') +
+                               match[5].replace(/'/g, ''));
           }
           position = [left > right ? left : right,
-              right < left ? right : left];
-          // LV03 or EPSG:21781
+            right < left ? right : left];
+          // Match LV95
           if (ol.extent.containsCoordinate(extent, position)) {
             return $q.when(roundCoordinates(position));
           }
@@ -122,25 +122,26 @@ goog.require('ga_reframe_service');
           if (left <= 180 && left >= -180 &&
               right <= 180 && right >= -180) {
             position = [left > right ? right : left,
-                right < left ? left : right];
-            // INGRID: Change 'EPSG:21781' to 'gaGlobalOptions.defaultEpsg'
+              right < left ? left : right];
             position = ol.proj.transform(position, 'EPSG:4326',
-              gaGlobalOptions.defaultEpsg);
+                gaGlobalOptions.defaultEpsg);
             if (match[3] != null) {
-              var left2 = parseFloat(match[4].replace(/\'/g, ''));
-              var right2 = parseFloat(match[5].replace(/\'/g, ''));
-              if (left2 <= 180 && left2 >= -180 &&
-                right2 <= 180 && right2 >= -180) {
-                var position2 = [left2 > right2 ? right2 : left2,
-                  right2 < left2 ? left2 : right2];
-                position2 = ol.proj.transform(position2, 'EPSG:4326',
+              leftExtent = parseFloat(match[4].replace(/'/g, ''));
+              rightExtent = parseFloat(match[5].replace(/'/g, ''));
+              if (leftExtent <= 180 && leftExtent >= -180 &&
+                rightExtent <= 180 && rightExtent >= -180) {
+                positionExtent = [leftExtent > rightExtent ?
+                  rightExtent : leftExtent,
+                  rightExtent < leftExtent ?
+                  leftExtent : rightExtent];
+                positionExtent = ol.proj.transform(positionExtent, 'EPSG:4326',
                   gaGlobalOptions.defaultEpsg);
               }
               position = roundCoordinates(position);
-              position2 = roundCoordinates(position2);
+              positionExtent = roundCoordinates(positionExtent);
               if (ol.extent.containsCoordinate(extent, position)) {
                 return $q.when([position[0], position[1],
-                  position2[0], position2[1]]);
+                  positionExtent[0], positionExtent[1]]);
               }
             }
             if (ol.extent.containsCoordinate(extent, position)) {
@@ -157,27 +158,26 @@ goog.require('ga_reframe_service');
 
           // INGRID: use default projection for extent search
           if (match[3] != null) {
-            var left2 = parseFloat(match[4].replace(/\'/g, ''));
-            var right2 = parseFloat(match[5].replace(/\'/g, ''));
-            var position2;
+            leftExtent = parseFloat(match[4].replace(/'/g, ''));
+            rightExtent = parseFloat(match[5].replace(/'/g, ''));
             if (gaGlobalOptions.searchCoordsXY) {
-              position2 = [left2, right2];
+              positionExtent = [leftExtent, rightExtent];
             } else {
-              position2 = [right2, left2];
+              positionExtent = [rightExtent, leftExtent];
             }
             position = roundCoordinates(position);
-            position2 = roundCoordinates(position2);
+            positionExtent = roundCoordinates(positionExtent);
             if (ol.extent.containsCoordinate(extent, position)) {
               return $q.when([position[0], position[1],
-                position2[0], position2[1]]);
+                positionExtent[0], positionExtent[1]]);
             }
           }
           if (ol.extent.containsCoordinate(extent, position)) {
             return $q.when(roundCoordinates(position));
           }
 
-          // Match LV95 coordinates
-          return gaReframe.get95To03(position).then(function(position) {
+          // Match LV03 coordinates
+          return gaReframe.get03To95(position).then(function(position) {
             if (ol.extent.containsCoordinate(extent, position)) {
               return roundCoordinates(position);
             }
@@ -195,7 +195,7 @@ goog.require('ga_reframe_service');
     var ignoreTags = ['<b>', '</b>', preHighlight, postHighlight];
 
     var escapeRegExp = function(str) {
-      return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+      return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
     };
 
     var getIndicesToIgnore = function(strIn) {
@@ -204,7 +204,7 @@ goog.require('ga_reframe_service');
         var tag = ignoreTags[i];
         var regex = new RegExp(escapeRegExp(tag), 'gi');
         var result;
-        while (result = regex.exec(strIn)) {
+        while ((result = regex.exec(strIn))) {
           ignoreIndices.push([result.index, result.index + tag.length]);
         }
       }
@@ -223,7 +223,7 @@ goog.require('ga_reframe_service');
     };
 
     var highlightWord = function(strIn, word) {
-      if (!(!!word.length)) {
+      if (!word.length) {
         return strIn;
       }
       var ignoreIndices = getIndicesToIgnore(strIn);
@@ -287,7 +287,7 @@ goog.require('ga_reframe_service');
         if (value && value.length >= 2) {
           input.parameters.push(regs.tk + '=' + value[1]);
         }
-        //Strip token and value from query
+        // Strip token and value from query
         input.query = input.query.replace(res[0], '');
       }
     };
@@ -309,4 +309,3 @@ goog.require('ga_reframe_service');
     };
   });
 })();
-

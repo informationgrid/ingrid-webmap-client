@@ -1,7 +1,9 @@
 goog.provide('ga_printlayer_service');
 
-//INGRID: Add 'ga_map_service'
-goog.require('ga_map_service');
+//INGRID: Add 'ga_wms_service'
+goog.require('ga_wms_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_printstyle_service');
 goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
@@ -9,15 +11,17 @@ goog.require('ga_urlutils_service');
 (function() {
 
   var module = angular.module('ga_printlayer_service', [
-     // INGRID: Add 'ga_map_service'
-    'ga_map_service',
+     // INGRID: Add 'ga_wms_service'
+    'ga_wms_service',
     'ga_translation_service',
     'ga_urlutils_service',
     'ga_printstyle_service',
+    'ga_maputils_service',
+    'ga_layers_service',
     'pascalprecht.translate'
   ]);
 
-  module.provider('gaPrintLayer', function gaPrintLayer() {
+  module.provider('gaPrintLayer', function() {
 
     // INGRID: Add param 'gaWms'
     this.$get = function($document, $translate, gaGlobalOptions,
@@ -30,15 +34,16 @@ goog.require('ga_urlutils_service');
         encodeMatrixIds: getMatrixIds(gaMapUtils),
         encodeBase: encodeBase,
         encodeGroup: getEncodeGroup(gaLayers, gaPrintStyle,
-            gaTime, gaMapUtils),
+            gaTime, gaMapUtils, gaGlobalOptions),
         encodeWMS: encodeWMS,
+        // INGRID: Add OSM
         encodeOSM: encodeOSM,
         encodeDimensions: encodeDimensions,
-        encodeWMTS: getEncodeWMTS(gaTime, gaMapUtils),
+        encodeWMTS: getEncodeWMTS(gaTime, gaMapUtils, gaGlobalOptions),
         encodeFeatures: getEncodeFeatures(gaPrintStyle),
         encodeVector: getEncodeVector(gaPrintStyle),
         encodeLayer: getEncodeLayer(gaLayers, gaPrintStyle,
-            gaTime, gaMapUtils),
+            gaTime, gaMapUtils, gaGlobalOptions),
         encodeOverlay: getEncodeOverlay(gaUrlUtils),
         // INGRID: Change to 'getEncodeGraticule'
         encodeGraticule: getEncodeGraticule(gaGlobalOptions)
@@ -46,9 +51,10 @@ goog.require('ga_urlutils_service');
     };
   });
 
+  /* INGRID: Not in use
   var pdfLegendString = '_big.pdf';
-  var POINTS_PER_INCH = 72; //PostScript points 1/72"
-  var MM_PER_INCHES = 25.4;
+  */
+  var POINTS_PER_INCH = 72; // PostScript points 1/72"
   var UNITS_RATIO = 39.37; // inches per meter
   var styleId = 0;
   var format = new ol.format.GeoJSON();
@@ -75,9 +81,7 @@ goog.require('ga_urlutils_service');
   };
 
   function getEncodeOverlay(gaUrlUtils) {
-    return encodeOverlay;
-
-    function encodeOverlay(overlay, resolution, options) {
+    return function(overlay, resolution, options) {
 
       var encOverlayLayer;
 
@@ -88,8 +92,6 @@ goog.require('ga_urlutils_service');
         return;
       }
       var center = overlay.getPosition();
-      var offset = 5 * resolution;
-
       if (center) {
         var style = 1, $elt = $(elt);
         if ($elt.text()) {
@@ -102,8 +104,7 @@ goog.require('ga_urlutils_service');
           'type': 'Vector',
           'styles': {
             '1': { // Style for marker position
-              'externalGraphic':
-                gaUrlUtils.nonCloudFrontUrl(options.markerUrl),
+              'externalGraphic': options.markerUrl,
               'graphicWidth': 20,
               'graphicHeight': 30,
               // the icon is not perfectly centered in the image
@@ -112,8 +113,7 @@ goog.require('ga_urlutils_service');
               'graphicYOffset': -30
             },
             '2': { // Style for measure tooltip
-              'externalGraphic':
-                gaUrlUtils.nonCloudFrontUrl(options.bubbleUrl),
+              'externalGraphic': options.bubbleUrl,
               'graphicWidth': 97,
               'graphicHeight': 27,
               'graphicXOffset': -48,
@@ -128,7 +128,7 @@ goog.require('ga_urlutils_service');
             '3': { // Style for intermeediate measure tooltip
               'label': $elt.text(),
               'labelXOffset': 0,
-              'labelYOffset': 18,
+              'labelYOffset': 10,
               'fontColor': '#ffffff',
               'fontSize': 8,
               'fontWeight': 'normal',
@@ -158,36 +158,33 @@ goog.require('ga_urlutils_service');
     }
   };
 
-  function getEncodeGroup(gaLayers, gaPrintStyle, gaTime, gaMapUtils) {
-
-    return encodeGroup;
-
-    function encodeGroup(layer, viewProj, scaleDenom, printRectangeCoords,
-      resolution, dpi) {
+  function getEncodeGroup(gaLayers, gaPrintStyle, gaTime,
+      gaMapUtils, gaGlobalOptions) {
+    return function(layer, viewProj, scaleDenom, printRectangeCoords,
+        resolution, dpi) {
       var encs = [];
-        var subLayers = layer.getLayers();
-        subLayers.forEach(function(subLayer, idx, arr) {
-          if (subLayer.visible) {
-            // Is sublayer always not a Group?
-            var enc = encodeBase(layer);
-            var encodeLayer = getEncodeLayer(gaLayers, gaPrintStyle,
-                gaTime, gaMapUtils);
-            var layerEnc = encodeLayer(subLayer, viewProj, scaleDenom,
-                printRectangeCoords, resolution, dpi);
-            if (layerEnc && layerEnc.layer) {
-              $.extend(enc, layerEnc);
-              encs.push(enc.layer);
-            }
+      var subLayers = layer.getLayers();
+      subLayers.forEach(function(subLayer, idx, arr) {
+        if (subLayer.visible) {
+          // Is sublayer always not a Group?
+          var enc = encodeBase(layer);
+          var encodeLayer = getEncodeLayer(gaLayers, gaPrintStyle,
+              gaTime, gaMapUtils, gaGlobalOptions);
+          var layerEnc = encodeLayer(subLayer, viewProj, scaleDenom,
+              printRectangeCoords, resolution, dpi);
+          if (layerEnc && layerEnc.layer) {
+            $.extend(enc, layerEnc);
+            encs.push(enc.layer);
           }
-        });
-        return encs;
+        }
+      });
+      return encs;
     };
   };
 
-  function getEncodeLayer(gaLayers, gaPrintStyle, gaTime, gaMapUtils) {
-    return encodeLayer;
-
-    function encodeLayer(layer, viewProj, scaleDenom, printRectangeCoords,
+  function getEncodeLayer(gaLayers, gaPrintStyle, gaTime, gaMapUtils,
+      gaGlobalOptions) {
+    return function(layer, viewProj, scaleDenom, printRectangeCoords,
         resolution, dpi) {
 
       var encLayer, encLegend;
@@ -202,7 +199,7 @@ goog.require('ga_urlutils_service');
         if (resolution <= maxResolution &&
             resolution >= minResolution) {
           if (src instanceof ol.source.WMTS) {
-            var encodeWMTS = getEncodeWMTS(gaTime, gaMapUtils);
+            var encodeWMTS = getEncodeWMTS(gaTime, gaMapUtils, gaGlobalOptions);
             encLayer = encodeWMTS(layer, layerConfig);
           } else if (src instanceof ol.source.ImageWMS ||
               src instanceof ol.source.TileWMS) {
@@ -211,11 +208,7 @@ goog.require('ga_urlutils_service');
           } else if (src instanceof ol.source.OSM) {
             // INGRID: Add print OSM
             encLayer = encodeOSM(layer, layerConfig);
-          } else if (src instanceof ol.source.Vector ||
-              src instanceof ol.source.ImageVector) {
-            if (src instanceof ol.source.ImageVector) {
-              src = src.getSource();
-            }
+          } else if (src instanceof ol.source.Vector) {
             var encodeVector = getEncodeVector(gaPrintStyle);
             encLayer = encodeVector(layer,
                 src.getFeatures(),
@@ -246,15 +239,11 @@ goog.require('ga_urlutils_service');
   };
 
   function getEncodeVector(gaPrintStyle) {
-
-    return encodeVector;
-
-    function encodeVector(layer, features, scale, printRectangle, dpi) {
+    return function(layer, features, scale, printRectangle, dpi) {
 
       var enc = encodeBase(layer);
       var encStyles = {};
       var encFeatures = [];
-      var stylesDict = {};
 
       // Sort features by geometry type
       var newFeatures = [];
@@ -302,11 +291,8 @@ goog.require('ga_urlutils_service');
   };
 
   function getEncodeFeatures(gaPrintStyle) {
-
-    return encodeFeatures;
-
-    function encodeFeatures(layer, feature, styles, scale,
-      printRectangleCoords, dpi) {
+    return function(layer, feature, styles, scale,
+        printRectangleCoords, dpi) {
 
       dpi = parseInt(dpi) || 150;
       var encStyles = {};
@@ -321,8 +307,6 @@ goog.require('ga_urlutils_service');
           styles = feature.getStyleFunction().call(feature);
         } else if (layer.getStyleFunction()) {
           styles = layer.getStyleFunction()(feature);
-        } else {
-          styles = ol.style.Style.defaultFunction(feature);
         }
       }
       var geometry = feature.getGeometry();
@@ -350,14 +334,14 @@ goog.require('ga_urlutils_service');
       if (geometry instanceof ol.geom.Point &&
           image instanceof ol.style.RegularShape &&
           !(image instanceof ol.style.Circle)) {
-        //var scale = parseFloat($scope.scale.value);
+        // var scale = parseFloat($scope.scale.value);
         var resolution = scale / UNITS_RATIO / POINTS_PER_INCH;
         geometry = gaPrintStyle.olPointToPolygon(
-          feature.getGeometry(),
-          image.getRadius(),
-          resolution,
-          image.getPoints(),
-          image.getRotation()
+            feature.getGeometry(),
+            image.getRadius(),
+            resolution,
+            image.getPoints(),
+            image.getRotation()
         );
         feature = new ol.Feature(geometry);
       }
@@ -370,8 +354,8 @@ goog.require('ga_urlutils_service');
         if (!encFeature.properties) {
           encFeature.properties = {};
         } else {
-         // Fix circular structure to JSON
-         // see: https://github.com/geoadmin/mf-geoadmin3/issues/1213
+          // Fix circular structure to JSON
+          // see: https://github.com/geoadmin/mf-geoadmin3/issues/1213
           delete encFeature.properties.Style;
           delete encFeature.properties.overlays;
         }
@@ -393,6 +377,8 @@ goog.require('ga_urlutils_service');
 
         encStyles[encStyle.id] = encStyle;
       }
+
+      var encodeFeatures = getEncodeFeatures(gaPrintStyle);
 
       // If a feature has a style with a geometryFunction defined, we
       // must also display this geometry with the good style (used for
@@ -417,11 +403,8 @@ goog.require('ga_urlutils_service');
     }
   };
 
-  function getEncodeWMTS(gaTime, gaMapUtils) {
-
-    return encodeWMTS;
-
-    function encodeWMTS(layer, config) {
+  function getEncodeWMTS(gaTime, gaMapUtils, gaGlobalOptions) {
+    return function(layer, config) {
       // config is not defined for external WMTS
       // For internal WMTS layer, we use the simplified
       // mapfish print protocol, and the standard for
@@ -429,29 +412,36 @@ goog.require('ga_urlutils_service');
       // See http://www.mapfish.org/doc/print/protocol.html#wmts
       // TODO: simplified protocol is only valid for LV03 layers!
 
-      var isExternalWmts = angular.equals(config, {});
       var enc = encodeBase(layer);
       var source = layer.getSource();
       var tileGrid = source.getTileGrid();
       var extent = layer.getExtent();
       var requestEncoding = source.getRequestEncoding() || 'REST';
+      // Not all layers have projection assigned
+      var dfltTileMatrixSet = gaGlobalOptions.defaultEpsg.split(':')[1];
+      /* INGRID: Not in used
+      var isExternalWmts = angular.equals(config, {});
+      */
 
       // resourceURL for RESTful, service endpoint for KVP
       var url = source.getUrls()[0];
       var baseUrl = url.replace(/^\/\//, 'https://');
 
-      if (requestEncoding == 'REST') {
+      if (requestEncoding === 'REST') {
         // INGRID: Add replace 'Style'
-        baseUrl = baseUrl
-          .replace(/\{Time\}/i, '{TIME}')
-          .replace(/\{Style\}/i, source.getStyle() || '{Style}')
-          .replace(/\{/g, '%7B')
-          .replace(/\}/g, '%7D')
-          .replace(/wmts\d{1,3}\.geo\.admin\.ch/, 'wmts.geo.admin.ch');
+        baseUrl = baseUrl.
+            replace(/\{Time\}/i, '{TIME}').
+            replace(/\{Style\}/i, source.getStyle() || '{Style}').
+            replace(/\{/g, '%7B').
+            replace(/\}/g, '%7D');
       }
 
       var wmtsDimensions = encodeDimensions(source.getDimensions());
-      // common config
+      var encodeMatrixIds = getMatrixIds(gaMapUtils);
+      var matrices = encodeMatrixIds(tileGrid, extent);
+
+      // use the full monty WMTS definition fo external source
+      // the simplified definition was EPSG:21781 swisstopo only
       angular.extend(enc, {
         type: 'WMTS',
         layer: source.getLayer(),
@@ -461,49 +451,42 @@ goog.require('ga_urlutils_service');
         style: source.getStyle() || 'default',
         dimensions: Object.keys(wmtsDimensions),
         params: wmtsDimensions,
-        matrixSet: source.getMatrixSet() || '21781'
+        matrixSet: source.getMatrixSet() || dfltTileMatrixSet
       });
-
       // INGRID: Remove check 'isExternalWmts'
       /*
       if (!isExternalWmts) {
-
-       angular.extend(enc, {
-         baseURL: baseUrl.slice(0, baseUrl.indexOf('/1.0.0')),
-         zoomOffset: tileGrid.getMinZoom(),
-         tileOrigin: tileGrid.getOrigin(),
-         tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
-         resolutions: tileGrid.getResolutions(),
-         maxExtent: extent
+        angular.extend(enc, {
+          baseURL: baseUrl.slice(0, baseUrl.indexOf('/1.0.0')),
+          zoomOffset: tileGrid.getMinZoom(),
+          tileOrigin: tileGrid.getOrigin(),
+          tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
+          resolutions: tileGrid.getResolutions(),
+          maxExtent: extent
         });
-
-     } else {
+      } else {
        */
-       // use the full monty WMTS definition fo external source
-
-       var encodeMatrixIds = getMatrixIds(gaMapUtils);
-       var matrices = encodeMatrixIds(tileGrid, extent);
-
-       angular.extend(enc, {
-         layer: source.getLayer(),
-         baseURL: baseUrl,
-         matrixIds: matrices
-       });
+        // use the full monty WMTS definition fo external source   
+        angular.extend(enc, {
+          layer: source.getLayer(),
+          baseURL: baseUrl,
+          matrixIds: matrices
+        });
      //}
 
-     var multiPagesPrint = false;
-     if (config.timestamps) {
-       multiPagesPrint = !config.timestamps.some(function(ts) {
-         return ts == '99991231';
-       });
-     }
-     // printing time series
-     if (config.timeEnabled && gaTime.get() == undefined &&
+      var multiPagesPrint = false;
+      if (config.timestamps) {
+        multiPagesPrint = !config.timestamps.some(function(ts) {
+          return ts === '99991231';
+        });
+      }
+      // printing time series
+      if (config.timeEnabled && gaTime.get() === undefined &&
           multiPagesPrint) {
-       enc['timestamps'] = config.timestamps;
-     }
+        enc['timestamps'] = config.timestamps;
+      }
 
-     return enc;
+      return enc;
     }
   };
 
@@ -514,23 +497,37 @@ goog.require('ga_urlutils_service');
     var params = source.getParams();
     var layers = params.LAYERS.split(',') || [];
     var styles = (params.STYLES !== undefined) ?
-        params.STYLES.split(',') :
-        new Array(layers.length).join(',').split(',');
+      params.STYLES.split(',') :
+      new Array(layers.length).join(',').split(',');
     var url = (source.getUrls && source.getUrls()[0]) ||
         (source.getUrl && source.getUrl());
     var epsgCode = (source.getProjection() &&
         source.getProjection().getCode()) || viewProj.getCode();
 
     var customParams = {
-        // INGRID: Remove param 'EXCEPTIONS'
-        //'EXCEPTIONS': 'XML',
-        'TRANSPARENT': 'true',
-        'CRS': epsgCode
-        // INGRID: Remove param 'MAP_RESOLUTION'
-        //'MAP_RESOLUTION': dpi
-      };
+    //INGRID: Remove param 'EXCEPTIONS'
+    //'EXCEPTIONS': 'XML',
+      'TRANSPARENT': 'true'
+    };
     if (params.TIME) {
       customParams['TIME'] = params.TIME;
+    }
+    // Do not try this parameter on not opensource WMS
+    /*
+    var mapservWMS = 'wms(.*).(dev|int|prod|geo|swisstopo).(admin|bgdi).ch';
+    var regexMapservWMS = new RegExp(mapservWMS, 'gi');
+    var match = regexMapservWMS.test(url);
+    if (match) {
+        customParams['MAP_RESOLUTION'] = dpi;
+    }
+    */
+
+    params.VERSION = params.VERSION || '1.3.0';
+    customParams['VERSION'] = params.VERSION;
+    if (params.VERSION === '1.3.0') {
+      customParams['CRS'] = epsgCode;
+    } else {
+      customParams['SRS'] = epsgCode;
     }
 
     angular.extend(enc, {
@@ -562,20 +559,15 @@ goog.require('ga_urlutils_service');
   }
 
   function encodeDimensions(dimensions) {
-
     var params = {};
-
     angular.forEach(dimensions, function(value, key) {
       params[key.toUpperCase()] = value;
     });
-
     return params;
   }
 
   function getMatrixIds(gaMapUtils) {
-    return matrixIds;
-
-    function matrixIds(tilegrid, extent) {
+    return function(tilegrid, extent) {
 
       var matrixIds = [];
       var ids = tilegrid.getMatrixIds();
@@ -591,10 +583,10 @@ goog.require('ga_urlutils_service');
         var maxY = topLeftCorner[1];
         var maxX = extent[2] || defaultExtent[2];
         var minY = extent[1] || defaultExtent[1];
-        var topLeftTile = tilegrid
-            .getTileCoordForCoordAndZ([minX, maxY], z);
-        var bottomRightTile = tilegrid
-            .getTileCoordForCoordAndZ([maxX, minY], z);
+        var topLeftTile = tilegrid.
+            getTileCoordForCoordAndZ([minX, maxY], z);
+        var bottomRightTile = tilegrid.
+            getTileCoordForCoordAndZ([maxX, minY], z);
         var tileWidth = 1 + bottomRightTile[1] - topLeftTile[1];
         var tileHeight = 1 + topLeftTile[2] - bottomRightTile[2];
 
@@ -607,34 +599,34 @@ goog.require('ga_urlutils_service');
         };
         this.push(matrix);
 
-     }, matrixIds);
+      }, matrixIds);
 
-     return matrixIds;
+      return matrixIds;
     }
   };
 
- // INGRID: Add param 'gaWms'
- function getEncodeLegend(gaLang, gaWms) {
-   return encodeLegend;
+  // INGRID: Add param 'gaWms'
+  function getEncodeLegend(gaLang, gaWms) {
+    return function(layer, config, options) {
 
-   function encodeLegend(layer, config, options) {
+      /* INGRID: Not in used
+      var format = '.png';
+      if (options.pdfLegendList.indexOf(layer.bodId) !== -1) {
+        format = pdfLegendString;
+      }
+      */
 
-     var format = '.png';
-     if (options.pdfLegendList.indexOf(layer.bodId) != -1) {
-       format = pdfLegendString;
-     }
-
-     var enc = {
-       // INGRID Check layer label
-       name: config.label || layer.label,
-       classes: []
-     };
-     enc.classes.push({
-       name: '',
-       // INGRID Check layer legend
-       icon: config.legendUrl || gaWms.getLegendURL(layer)
-     });
-     return enc;
+      var enc = {
+        // INGRID Check layer label
+        name: config.label || layer.label,
+        classes: []
+      };
+      enc.classes.push({
+        name: '',
+        // INGRID Check layer legend
+        icon: layer.legendUrl || gaWms.getLegendURL(layer)
+      });
+      return enc;
     }
- }
+  }
 })();

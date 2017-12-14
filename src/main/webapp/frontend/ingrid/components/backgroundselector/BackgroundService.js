@@ -1,13 +1,15 @@
 goog.provide('ga_background_service');
 
-goog.require('ga_map_service');
+goog.require('ga_layers_service');
 goog.require('ga_permalink');
+goog.require('ga_urlutils_service');
 
 (function() {
 
   var module = angular.module('ga_background_service', [
     'ga_permalink',
-    'ga_map_service'
+    'ga_layers_service',
+    'ga_urlutils_service'
   ]);
 
   /**
@@ -39,7 +41,7 @@ goog.require('ga_permalink');
       };
       var getBgById = function(id) {
         for (var i = 0, ii = bgs.length; i < ii; i++) {
-          if (bgs[i].id == id) {
+          if (bgs[i].id === id) {
             return bgs[i];
           }
         }
@@ -55,7 +57,7 @@ goog.require('ga_permalink');
       };
 
       var broadcast = function() {
-        if (gaPermalink.getParams().bgLayer != bg.id) {
+        if (gaPermalink.getParams().bgLayer !== bg.id) {
           gaPermalink.updateParams({bgLayer: bg.id});
         }
         $rootScope.$broadcast('gaBgChange', bg);
@@ -87,17 +89,17 @@ goog.require('ga_permalink');
           // loaded
           bgsP = $q.all([gaTopic.loadConfig(), gaLayers.loadConfig()]).
               then(function() {
-            updateDefaultBgOrder(gaTopic.get().backgroundLayers);
-            var initBg = getBgById(gaPermalink.getParams().bgLayer);
-            if (!initBg) {
-              initBg = getBgByTopic(gaTopic.get());
-            }
-            that.set(map, initBg);
-            $rootScope.$on('gaTopicChange', function(evt, newTopic) {
-              updateDefaultBgOrder(newTopic.backgroundLayers);
-              that.set(map, getBgByTopic(newTopic));
-            });
-          });
+                updateDefaultBgOrder(gaTopic.get().backgroundLayers);
+                var initBg = getBgById(gaPermalink.getParams().bgLayer);
+                if (!initBg) {
+                  initBg = getBgByTopic(gaTopic.get());
+                }
+                that.set(map, initBg);
+                $rootScope.$on('gaTopicChange', function(evt, newTopic) {
+                  updateDefaultBgOrder(newTopic.backgroundLayers);
+                  that.set(map, getBgByTopic(newTopic));
+                });
+              });
 
           return bgsP;
         };
@@ -113,27 +115,27 @@ goog.require('ga_permalink');
         };
 
         this.setById = function(map, newBgId) {
-          if (map && (!bg || newBgId != bg.id)) {
+          if (map && (!bg || newBgId !== bg.id)) {
             var newBg = getBgById(newBgId);
             if (newBg) {
               bg = newBg;
               var layers = map.getLayers();
-              if (bg.id == 'voidLayer') {
+              if (bg.id === 'voidLayer') {
                 if (layers.getLength() > 0 &&
                     layers.item(0).background === true) {
                   layers.removeAt(0);
                 }
               // INGRID: Create OSM layer
-              } else if (bg.id == 'osmLayer') {
-                  var layer = new ol.layer.Tile({
+              } else if (bg.id === 'osmLayer') {
+                  var osm = new ol.layer.Tile({
                       source: new ol.source.OSM()
                   });
-                  layer.background = true;
-                  layer.displayInLayerManager = false;
+                  osm.background = true;
+                  osm.displayInLayerManager = false;
                   if (layers.item(0) && layers.item(0).background) {
-                    layers.setAt(0, layer);
+                    layers.setAt(0, osm);
                   } else {
-                    layers.insertAt(0, layer);
+                    layers.insertAt(0, osm);
                   }
               } else {
                 var layer = gaLayers.getOlLayerById(bg.id);
@@ -146,7 +148,7 @@ goog.require('ga_permalink');
                 }
               }
               broadcast();
-             }
+            }
           }
         };
 

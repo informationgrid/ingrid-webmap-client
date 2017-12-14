@@ -13,6 +13,7 @@ goog.require('ga_measure_service');
   module.controller('GaMousePositionController', function($scope, $translate,
       $window, gaMeasure, gaGlobalOptions) {
 
+    /* INGRID: Not in used
     var coordinatesFormat = function(coordinates) {
       return $translate.instant('coordinates_label') + ': ' +
           gaMeasure.formatCoordinates(coordinates);
@@ -21,6 +22,7 @@ goog.require('ga_measure_service');
     var coordinatesFormatUTM = function(coordinates, zone) {
       return gaMeasure.formatCoordinates(coordinates) + ' ' + zone;
     };
+    */
 
     // TODO INGRID: Change projections. Create by admin/json.
     var projections = [{

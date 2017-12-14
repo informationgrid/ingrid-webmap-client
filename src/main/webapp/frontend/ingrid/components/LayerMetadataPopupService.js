@@ -1,13 +1,15 @@
 goog.provide('ga_layermetadatapopup_service');
 
-goog.require('ga_map_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_popup');
 goog.require('ga_wms_service');
 
 (function() {
 
   var module = angular.module('ga_layermetadatapopup_service', [
-    'ga_map_service',
+    'ga_maputils_service',
+    'ga_layers_service',
     'ga_popup',
     'ga_wms_service',
     // INGRID: Add html compile module
@@ -18,7 +20,7 @@ goog.require('ga_wms_service');
   module.provider('gaLayerMetadataPopup', function() {
     // INGRID: Add 'gaGlobalOptions'
     this.$get = function($translate, $rootScope, $sce, $q, gaPopup, gaLayers,
-        gaMapUtils, gaWms, gaLang, gaGlobalOptions) {
+        gaMapUtils, gaWms, gaLang, $window, gaGlobalOptions) {
       // INGRID: Change html attribute to 'bind-html-compile'
       var popupContent = '<div bind-html-compile="options.result.html"></div>';
 
@@ -33,7 +35,7 @@ goog.require('ga_wms_service');
         }
         */
         var id = layer.bodId;
-        if (id == undefined) {
+        if (id === undefined) {
           id = layer.id;
         }
         // INGRID: Encode id
@@ -71,14 +73,14 @@ goog.require('ga_wms_service');
 
         }, function() {
           popup.scope.options.lang = undefined;
-          //FIXME: better error handling
-          alert('Could not retrieve information for ' + layer.id);
+          // FIXME: better error handling
+          $window.alert('Could not retrieve information for ' + layer.id);
         });
       };
 
       var updateContentLang = function(popup, layer, newLang, open) {
         if ((open || popup.scope.toggle) &&
-            popup.scope.options.lang != newLang) {
+            popup.scope.options.lang !== newLang) {
           return updateContent(popup, layer);
         }
         return $q.when();
@@ -89,9 +91,9 @@ goog.require('ga_wms_service');
 
         var create = function(layer) {
           var result = {html: ''},
-              popup;
+            popup;
 
-          //We assume popup does not exist yet
+          // We assume popup does not exist yet
           popup = gaPopup.create({
             title: $translate.instant('metadata_window_title'),
             destroyOnClose: false,
@@ -124,10 +126,10 @@ goog.require('ga_wms_service');
             if (popup.scope.toggle) {
               popup.close();
             } else {
-              updateContentLang(popup, layer, gaLang.get(), true)
-                  .then(function() {
-                popup.open();
-              });
+              updateContentLang(popup, layer, gaLang.get(), true).
+                  then(function() {
+                    popup.open();
+                  });
             }
           } else {
             create(layer);
