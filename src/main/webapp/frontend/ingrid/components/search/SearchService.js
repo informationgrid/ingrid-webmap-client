@@ -122,9 +122,11 @@ goog.require('ga_reframe_service');
           if (left <= 180 && left >= -180 &&
               right <= 180 && right >= -180) {
             position = [left > right ? right : left,
-              right < left ? left : right];
+              right < left ? left : right
+            ];
             position = ol.proj.transform(position, 'EPSG:4326',
                 gaGlobalOptions.defaultEpsg);
+            // INGRID: Add extent search
             if (match[3] != null) {
               leftExtent = parseFloat(match[4].replace(/'/g, ''));
               rightExtent = parseFloat(match[5].replace(/'/g, ''));
@@ -139,7 +141,8 @@ goog.require('ga_reframe_service');
               }
               position = roundCoordinates(position);
               positionExtent = roundCoordinates(positionExtent);
-              if (ol.extent.containsCoordinate(extent, position)) {
+              if (ol.extent.containsCoordinate(extent, position) &&
+                ol.extent.containsCoordinate(extent, positionExtent)) {
                 return $q.when([position[0], position[1],
                   positionExtent[0], positionExtent[1]]);
               }
@@ -149,6 +152,38 @@ goog.require('ga_reframe_service');
             }
           }
 
+          // INGRID: Add 'UTM' search
+          position = [left > right ? right : left,
+            right < left ? left : right];
+          var utm32;
+          if (query.indexOf("32U") === 0) {
+            utm32 = 'EPSG:25832';
+          } else if (query.indexOf("33U") === 0) {
+            utm32 = 'EPSG:25833';
+          }
+          position = ol.proj.transform(position, utm32,
+            gaGlobalOptions.defaultEpsg);
+          if (match[3] != null) {
+            leftExtent = parseFloat(match[4].replace(/'/g, ''));
+            rightExtent = parseFloat(match[5].replace(/'/g, ''));
+            positionExtent = [leftExtent > rightExtent ?
+              rightExtent : leftExtent,
+              rightExtent < leftExtent ?
+              leftExtent : rightExtent];
+            positionExtent = ol.proj.transform(positionExtent, utm32,
+              gaGlobalOptions.defaultEpsg);
+            position = roundCoordinates(position);
+            positionExtent = roundCoordinates(positionExtent);
+            if (ol.extent.containsCoordinate(extent, position) &&
+              ol.extent.containsCoordinate(extent, positionExtent)) {
+              return $q.when([position[0], position[1],
+                positionExtent[0], positionExtent[1]]);
+            }
+          }
+          if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when(roundCoordinates(position));
+          }
+          
           // INGRID: Use default projection
           if (gaGlobalOptions.searchCoordsXY) {
             position = [left, right];
@@ -167,7 +202,8 @@ goog.require('ga_reframe_service');
             }
             position = roundCoordinates(position);
             positionExtent = roundCoordinates(positionExtent);
-            if (ol.extent.containsCoordinate(extent, position)) {
+            if (ol.extent.containsCoordinate(extent, position) &&
+              ol.extent.containsCoordinate(extent, positionExtent)) {
               return $q.when([position[0], position[1],
                 positionExtent[0], positionExtent[1]]);
             }
