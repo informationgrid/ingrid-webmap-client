@@ -846,7 +846,7 @@ goog.require('ga_urlutils_service');
               '"stationierung":{';
             if (((inputBwaLocatorFrom === '' ||
               inputBwaLocatorFrom === undefined) &&
-              (inputBwaLocatorTo ==='' ||
+              (inputBwaLocatorTo === '' ||
               inputBwaLocatorTo === undefined) &&
               (inputBwaLocatorDistance === '' ||
               inputBwaLocatorDistance === undefined)) ||
