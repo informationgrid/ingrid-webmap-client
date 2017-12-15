@@ -971,7 +971,6 @@ goog.require('ga_urlutils_service');
                     gaDefinePropertiesForLayer(bwaLocatorLayerShort);
                     bwaLocatorLayerShort.label = layerLabel +
                       ' (Abschnitt)';
-                    bwaLocatorLayerShort.type = 'KML';
                     $scope.map.addLayer(bwaLocatorLayerShort);
                   } else {
                     if (full) {
@@ -991,7 +990,6 @@ goog.require('ga_urlutils_service');
                       });
                       gaDefinePropertiesForLayer(bwaLocatorLayerFull);
                       bwaLocatorLayerFull.label = layerLabel;
-                      bwaLocatorLayerFull.type = 'KML';
                       $scope.map.addLayer(bwaLocatorLayerFull);
                     } else {
                       bwaLocatorLayerShort = new ol.layer.Vector({
@@ -1012,7 +1010,6 @@ goog.require('ga_urlutils_service');
                       gaDefinePropertiesForLayer(bwaLocatorLayerShort);
                       bwaLocatorLayerShort.label = layerLabel +
                         ' (Abschnitt)';
-                      bwaLocatorLayerShort.type = 'KML';
                       $scope.map.addLayer(bwaLocatorLayerShort);
                     }
                   }
