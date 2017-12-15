@@ -518,7 +518,7 @@ goog.require('ga_urlutils_service');
     var regexMapservWMS = new RegExp(mapservWMS, 'gi');
     var match = regexMapservWMS.test(url);
     if (match) {
-        customParams['MAP_RESOLUTION'] = dpi;
+      customParams['MAP_RESOLUTION'] = dpi;
     }
     */
 
