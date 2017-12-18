@@ -161,27 +161,29 @@ goog.require('ga_reframe_service');
           } else if (query.indexOf("33U") === 0) {
             utm32 = 'EPSG:25833';
           }
-          position = ol.proj.transform(position, utm32,
-            gaGlobalOptions.defaultEpsg);
-          if (match[3] != null) {
-            leftExtent = parseFloat(match[4].replace(/'/g, ''));
-            rightExtent = parseFloat(match[5].replace(/'/g, ''));
-            positionExtent = [leftExtent > rightExtent ?
-              rightExtent : leftExtent,
-              rightExtent < leftExtent ?
-              leftExtent : rightExtent];
-            positionExtent = ol.proj.transform(positionExtent, utm32,
+          if (utm32) {
+            position = ol.proj.transform(position, utm32,
               gaGlobalOptions.defaultEpsg);
-            position = roundCoordinates(position);
-            positionExtent = roundCoordinates(positionExtent);
-            if (ol.extent.containsCoordinate(extent, position) &&
-              ol.extent.containsCoordinate(extent, positionExtent)) {
-              return $q.when([position[0], position[1],
-                positionExtent[0], positionExtent[1]]);
+            if (match[3] != null) {
+              leftExtent = parseFloat(match[4].replace(/'/g, ''));
+              rightExtent = parseFloat(match[5].replace(/'/g, ''));
+              positionExtent = [leftExtent > rightExtent ?
+                rightExtent : leftExtent,
+                rightExtent < leftExtent ?
+                leftExtent : rightExtent];
+                positionExtent = ol.proj.transform(positionExtent, utm32,
+                  gaGlobalOptions.defaultEpsg);
+                position = roundCoordinates(position);
+                positionExtent = roundCoordinates(positionExtent);
+                if (ol.extent.containsCoordinate(extent, position) &&
+                  ol.extent.containsCoordinate(extent, positionExtent)) {
+                  return $q.when([position[0], position[1],
+                    positionExtent[0], positionExtent[1]]);
+                }
             }
-          }
-          if (ol.extent.containsCoordinate(extent, position)) {
+            if (ol.extent.containsCoordinate(extent, position)) {
               return $q.when(roundCoordinates(position));
+            }
           }
           
           // INGRID: Use default projection
