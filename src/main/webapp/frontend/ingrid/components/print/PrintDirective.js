@@ -192,7 +192,8 @@ goog.require('ga_urlutils_service');
       $scope.options.progress = '';
       // http://mapfish.org/doc/print/protocol.html#print-pdf
       var view = $scope.map.getView();
-      var proj = view.getProjection();
+      // INGRID: Change projection by mouse position control
+      var proj = gaMapUtils.getMousePositionProjection($scope.map);
       var lang = $translate.use();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;
@@ -256,7 +257,7 @@ goog.require('ga_urlutils_service');
           encs = gaPrintLayer.encodeGroup(layer, proj, scaleDenom,
               printRectangeCoords, resolution, dpi);
         } else if (layer.getSource() instanceof ol.source.OSM) {
-            // INGRID: Encode OSM
+          // INGRID: Encode OSM
           enc = gaPrintLayer.encodeOSM(layer, proj);
           if (enc) {
             encs = [enc];
@@ -330,7 +331,8 @@ goog.require('ga_urlutils_service');
 
       // Transform graticule to literal
       if ($scope.options.graticule) {
-        var graticule = gaPrintLayer.encodeGraticule(dpi);
+        // INGRID: Add map
+        var graticule = gaPrintLayer.encodeGraticule(dpi, $scope.map);
 
         encLayers.push(graticule);
       }
@@ -406,17 +408,19 @@ goog.require('ga_urlutils_service');
               movie: movieprint,
               pages: [
                 angular.extend({
-                  center: getPrintRectangleCenterCoord(),
-                  bbox: getPrintRectangleCoords(),
+                  center: ol.proj.transform(getPrintRectangleCenterCoord(),
+                    gaGlobalOptions.defaultEpsg, proj.getCode()),
+                  bbox: ol.proj.transformExtent(getPrintRectangleCoords(),
+                    gaGlobalOptions.defaultEpsg, proj.getCode()),
                   display: [$scope.layout.map.width, $scope.layout.map.height],
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
                   dataOwner: allDataOwner,
                   shortLink: shortLink || '',
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
-                   // INGRID: Add comment and title for print
-                   comment: $scope.comment ? $scope.comment : '',
-                   title: $scope.title ? $scope.title : ''
+                  // INGRID: Add comment and title for print
+                  comment: $scope.comment ? $scope.comment : '',
+                  title: $scope.title ? $scope.title : ''
                 }, defaultPage)
               ]
             };
@@ -518,9 +522,6 @@ goog.require('ga_urlutils_service');
     var getDpi = function(layoutName, dpiConfig) {
       if (/a4/i.test(layoutName) && dpiConfig.length > 1) {
         return dpiConfig[1].value;
-      // INGRID: Add use higher DPI on A3
-      } else if (/a3/i.test(layoutName) && dpiConfig.length > 2) {
-        return dpiConfig[2].value;
       } else {
         return dpiConfig[0].value;
       }

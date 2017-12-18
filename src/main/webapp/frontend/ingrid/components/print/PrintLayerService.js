@@ -1,6 +1,6 @@
 goog.provide('ga_printlayer_service');
 
-//INGRID: Add 'ga_wms_service'
+// INGRID: Add 'ga_wms_service'
 goog.require('ga_wms_service');
 goog.require('ga_layers_service');
 goog.require('ga_maputils_service');
@@ -11,7 +11,7 @@ goog.require('ga_urlutils_service');
 (function() {
 
   var module = angular.module('ga_printlayer_service', [
-     // INGRID: Add 'ga_wms_service'
+    // INGRID: Add 'ga_wms_service'
     'ga_wms_service',
     'ga_translation_service',
     'ga_urlutils_service',
@@ -46,7 +46,7 @@ goog.require('ga_urlutils_service');
             gaTime, gaMapUtils, gaGlobalOptions),
         encodeOverlay: getEncodeOverlay(gaUrlUtils),
         // INGRID: Change to 'getEncodeGraticule'
-        encodeGraticule: getEncodeGraticule(gaGlobalOptions)
+        encodeGraticule: getEncodeGraticule(gaMapUtils, gaGlobalOptions)
       };
     };
   });
@@ -60,16 +60,17 @@ goog.require('ga_urlutils_service');
   var format = new ol.format.GeoJSON();
 
   // INGRID: Add getEncodeGraticule
-  function getEncodeGraticule(gaGlobalOptions) {
-    return encodeGraticule;
-
-    function encodeGraticule(dpi) {
+  function getEncodeGraticule(gaMapUtils, gaGlobalOptions) {
+    return function encodeGraticule(dpi, map) {
+      var mpProj = gaMapUtils.getMousePositionProjection(map);
+      var l = gaGlobalOptions.defaultPrintGraticuleLayer[mpProj.getCode()] ||
+        gaGlobalOptions.defaultPrintGraticuleLayer;
       return {
-        'baseURL': gaGlobalOptions.defaultPrintGraticuleLayer.url,
+        'baseURL': l.url,
         'opacity': 1,
         'singleTile': true,
         'type': 'WMS',
-        'layers': gaGlobalOptions.defaultPrintGraticuleLayer.layers,
+        'layers': l.layers,
         'format': 'image/png',
         'styles': [''],
         'customParams': {
@@ -466,13 +467,13 @@ goog.require('ga_urlutils_service');
         });
       } else {
        */
-        // use the full monty WMTS definition fo external source   
-        angular.extend(enc, {
-          layer: source.getLayer(),
-          baseURL: baseUrl,
-          matrixIds: matrices
-        });
-     //}
+      // use the full monty WMTS definition fo external source   
+      angular.extend(enc, {
+        layer: source.getLayer(),
+        baseURL: baseUrl,
+        matrixIds: matrices
+      });
+      // }
 
       var multiPagesPrint = false;
       if (config.timestamps) {
@@ -505,8 +506,8 @@ goog.require('ga_urlutils_service');
         source.getProjection().getCode()) || viewProj.getCode();
 
     var customParams = {
-    //INGRID: Remove param 'EXCEPTIONS'
-    //'EXCEPTIONS': 'XML',
+    // INGRID: Remove param 'EXCEPTIONS'
+    // 'EXCEPTIONS': 'XML',
       'TRANSPARENT': 'true'
     };
     if (params.TIME) {
@@ -543,19 +544,19 @@ goog.require('ga_urlutils_service');
   }
 
   function encodeOSM(layer, config) {
-      var enc = encodeBase(layer);
-      var source = layer.getSource();
-      var tileGrid = source.getTileGrid();
-      angular.extend(enc, {
-        type: 'OSM',
-        baseURL: 'http://tile.openstreetmap.org',
-        maxExtent: source.getProjection().getExtent(),
-        tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
-        extension: 'png',
-        resolutions: tileGrid.getResolutions(),
-        singleTile: config.singleTile || false
-      });
-      return enc;
+    var enc = encodeBase(layer);
+    var source = layer.getSource();
+    var tileGrid = source.getTileGrid();
+    angular.extend(enc, {
+      type: 'OSM',
+      baseURL: 'http://tile.openstreetmap.org',
+      maxExtent: source.getProjection().getExtent(),
+      tileSize: [tileGrid.getTileSize(), tileGrid.getTileSize()],
+      extension: 'png',
+      resolutions: tileGrid.getResolutions(),
+      singleTile: config.singleTile || false
+    });
+    return enc;
   }
 
   function encodeDimensions(dimensions) {

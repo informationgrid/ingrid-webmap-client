@@ -208,16 +208,16 @@ goog.require('ga_urlutils_service');
 
               if (extent) {
                 const res = view.constrainResolution(
-                  view.getResolutionForExtent(extent, map.getSize()), 0, -1);
-                  view.setCenter(layerExtentCenter);
-                  view.setResolution(res);
-                }
-                return;
+                    view.getResolutionForExtent(extent, map.getSize()), 0, -1);
+                view.setCenter(layerExtentCenter);
+                view.setResolution(res);
               }
+              return;
             }
-            map.getView().fit(extent, {
-              size: map.getSize()
-            });
+          }
+          map.getView().fit(extent, {
+            size: map.getSize()
+          });
           return $q.when();
         },
 
@@ -408,11 +408,11 @@ goog.require('ga_urlutils_service');
             maxScale = layer['maxScale'];
           }
 
-          if (typeof(minScale) == 'string') {
+          if (typeof (minScale) === 'string') {
             minScale = this.getScaleForScaleHint(minScale, map);
           }
 
-          if (typeof(maxScale) == 'string') {
+          if (typeof (maxScale) === 'string') {
             maxScale = this.getScaleForScaleHint(maxScale, map);
           }
 
@@ -441,7 +441,7 @@ goog.require('ga_urlutils_service');
           var ipm = 39.37;
           if (scale !== 0 && scale !== Infinity) {
             return parseFloat(
-              ((scale / rad2) * ipm *
+                ((scale / rad2) * ipm *
               72).toPrecision(13)
             );
           }
@@ -602,6 +602,20 @@ goog.require('ga_urlutils_service');
           return !!(olLayer && !(olLayer instanceof ol.layer.Group) &&
               olLayer.getSource &&
               (olLayer.getSource() instanceof ol.source.WMTS));
+        },
+
+        // INGRID: Get MousePosition projection
+        getMousePositionProjection: function(map) {
+          if (map) {
+            var mapControls = map.getControls().getArray();
+            for (var i = 0; i < mapControls.length; ++i) {
+              var mapControl = mapControls[i];
+              if (mapControl instanceof ol.control.MousePosition) {
+                return mapControl.getProjection();
+              }
+            }
+          }
+          return ol.proj.get(gaGlobalOptions.defaultEpsg);
         }
       };
     };
