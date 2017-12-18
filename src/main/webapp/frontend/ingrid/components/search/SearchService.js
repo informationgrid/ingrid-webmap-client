@@ -155,14 +155,14 @@ goog.require('ga_reframe_service');
           // INGRID: Add 'UTM' search
           position = [left > right ? right : left,
             right < left ? left : right];
-          var utm32;
+          var utmQuery;
           if (query.indexOf("32U") === 0) {
-            utm32 = 'EPSG:25832';
+            utmQuery = 'EPSG:25832';
           } else if (query.indexOf("33U") === 0) {
-            utm32 = 'EPSG:25833';
+            utmQuery = 'EPSG:25833';
           }
-          if (utm32) {
-            position = ol.proj.transform(position, utm32,
+          if (utmQuery) {
+            position = ol.proj.transform(position, utmQuery,
               gaGlobalOptions.defaultEpsg);
             if (match[3] != null) {
               leftExtent = parseFloat(match[4].replace(/'/g, ''));
@@ -171,7 +171,7 @@ goog.require('ga_reframe_service');
                 rightExtent : leftExtent,
                 rightExtent < leftExtent ?
                 leftExtent : rightExtent];
-                positionExtent = ol.proj.transform(positionExtent, utm32,
+                positionExtent = ol.proj.transform(positionExtent, utmQuery,
                   gaGlobalOptions.defaultEpsg);
                 position = roundCoordinates(position);
                 positionExtent = roundCoordinates(positionExtent);
