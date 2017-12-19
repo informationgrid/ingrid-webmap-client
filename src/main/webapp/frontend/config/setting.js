@@ -66,11 +66,14 @@ var settingShareLink = true;
 // Define URL of print logo on PDF  
 var settingPrintLogo = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/print_logo.png';
 
-//Define URL of north arrow icon on PDF
+// Define URL of north arrow icon on PDF
 var settingPrintNorthArrow = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/north_arrow.png';
 
-//Print graticule layer
+// Print graticule layer
 var settingPrintGraticuleLayer = '{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]}';
+
+// Print filename
+var settingPrintFilename = 'Print.InGrid';
 
 // Default prefix for download KML
 var settingKMLName = 'INGRID';

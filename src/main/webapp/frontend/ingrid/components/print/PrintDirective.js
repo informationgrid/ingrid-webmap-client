@@ -453,6 +453,8 @@ goog.require('ga_urlutils_service');
               logo: gaGlobalOptions.printLogo,
               // INGRID: Add north arrow logo url
               northArrow: gaGlobalOptions.printNorthArrow,
+              // INGRID: Add filename
+              outputFilename: gaGlobalOptions.printFilename || 'Print.InGrid',
               lang: lang,
               // use a function to get correct dpi according to layout (A4/A3)
               dpi: getDpi($scope.layout.name, $scope.dpi),
