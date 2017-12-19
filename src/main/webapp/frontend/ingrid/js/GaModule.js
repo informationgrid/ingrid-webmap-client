@@ -21,6 +21,7 @@ goog.require('ga_feedback_controller');
 goog.require('ga_fullscreen');
 goog.require('ga_geolocation');
 goog.require('ga_help');
+goog.require('ga_height_service');
 goog.require('ga_identify_service');
 goog.require('ga_import');
 goog.require('ga_import_controller');
@@ -108,6 +109,7 @@ goog.require('ga_waitcursor_service');
     'ga_geolocation',
     'ga_rotate',
     'ga_identify_service',
+    'ga_height_service',
     'ga_import_controller',
     'ga_main_controller',
     'ga_catalogtree_controller',
@@ -164,8 +166,6 @@ goog.require('ga_waitcursor_service');
         ['100', '101', '102', '103', '104'] :
         ['', '0', '1', '2', '3', '4'];
 
-    gaLayersProvider.imageryMetadataUrl = '//3d.geo.admin.ch/imagery/';
-
     /* INGRID: Change layer service URL
     if (gaGlobalOptions.apiOverwrite) {
       gaLayersProvider.layersConfigUrlTemplate = gaGlobalOptions.apiUrl +
@@ -185,6 +185,7 @@ goog.require('ga_waitcursor_service');
         'layer={Layer}&lang={Lang}&url={URL}&legend={Legend}';
 
   });
+
   module.config(function(gaTopicProvider, gaGlobalOptions) {
     /* INGRID: Change topic service URL
     if (gaGlobalOptions.apiOverwrite) {

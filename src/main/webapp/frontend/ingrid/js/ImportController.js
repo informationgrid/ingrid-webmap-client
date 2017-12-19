@@ -1,18 +1,18 @@
 goog.provide('ga_import_controller');
 
 goog.require('ga_browsersniffer_service');
+goog.require('ga_file_service');
 goog.require('ga_maputils_service');
 goog.require('ga_previewlayers_service');
 goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
 goog.require('ga_vector_service');
 goog.require('ga_wmts_service');
-goog.require('ngeo.fileService');
 
 (function() {
 
   var module = angular.module('ga_import_controller', [
-    'ngeo.fileService',
+    'ga_file_service',
     'ga_browsersniffer_service',
     'ga_maputils_service',
     'ga_urlutils_service',
@@ -23,7 +23,7 @@ goog.require('ngeo.fileService');
 
   // INGRID: Add 'gaGlobalOptions' and '$http'
   module.controller('GaImportController', function($scope, $q, $document, $http,
-      $window, $timeout, ngeoFile, gaBrowserSniffer, gaWms, gaUrlUtils,
+      $window, $timeout, gaFile, gaBrowserSniffer, gaWms, gaUrlUtils,
       gaLang, gaPreviewLayers, gaMapUtils, gaWmts, gaVector, gaGlobalOptions) {
 
     $scope.supportDnd = !gaBrowserSniffer.msie || gaBrowserSniffer.msie > 9;
@@ -37,11 +37,15 @@ goog.require('ngeo.fileService');
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
       } else if (layer.capabilitiesUrl) {
-        return gaWmts.getOlLayerFromGetCapLayer(layer);
+        return gaWmts.getOlLayerFromGetCap($scope.map, $scope.wmtsGetCap,
+            layer.Identifier, {
+              capabilitiesUrl: layer.capabilitiesUrl
+            });
       }
     };
-    $scope.options.addPreviewLayer = function(map, layer) {
-      gaPreviewLayers.addGetCapLayer(map, layer);
+    $scope.options.addPreviewLayer = function(map, getCapLayer) {
+      gaPreviewLayers.addGetCapLayer(map, $scope.wmtsGetCap ||
+          $scope.wmsGetCap, getCapLayer);
     };
     $scope.options.removePreviewLayer = gaPreviewLayers.removeAll;
     $scope.options.transformExtent = gaMapUtils.intersectWithDefaultExtent;
@@ -76,9 +80,9 @@ goog.require('ngeo.fileService');
       file = file || {};
 
       // INGRID: Add check wms objects
-      if (ngeoFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
+      if (gaFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
         data.WMS_Capabilities) {
-        if (ngeoFile.isWmsGetCap(data)) {
+        if (gaFile.isWmsGetCap(data)) {
           var url = gaGlobalOptions.proxyUrl;
           $http.post(url, data, {
             // INGRID: Add user param
@@ -95,7 +99,7 @@ goog.require('ngeo.fileService');
           message: 'upload_succeeded'
         });
 
-      } else if (ngeoFile.isGpx(data) || ngeoFile.isKml(data)) {
+      } else if (gaFile.isGpx(data) || gaFile.isKml(data)) {
 
         gaVector.addToMap($scope.map, data, {
           url: file.url || URL.createObjectURL(file),
@@ -119,9 +123,9 @@ goog.require('ngeo.fileService');
         });
 
       // INGRID: Add check wmts objects
-      } else if (ngeoFile.isWmtsGetCap(data) ||
+      } else if (gaFile.isWmtsGetCap(data) ||
         (data.Capabilities && data.xmlResponse)) {
-        if (ngeoFile.isWmtsGetCap(data)) {
+        if (gaFile.isWmtsGetCap(data)) {
           $scope.wmtsGetCap = data;
         } else {
           $scope.wmtsGetCap = data.xmlResponse;

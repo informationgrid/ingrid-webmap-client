@@ -104,6 +104,7 @@
     "ol.layer.Vector#*",
     "ol.proj.Projection",
     "ol.proj.Projection#*",
+    "ol.proj.equivalent",
     "ol.proj.get",
     "ol.proj.getTransform",
     "ol.proj.transform",
