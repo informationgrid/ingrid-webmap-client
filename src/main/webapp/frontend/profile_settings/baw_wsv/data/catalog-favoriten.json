@@ -328,6 +328,155 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
+          "label": "WSV: LIS-Karte",
+          "id": 814,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "LIS Karte",
+            "layerBodId": "lis",
+            "id": 815,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Inanspruchnahmen",
+              "layerBodId": "lis_inanspruch",
+              "id": 816,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "(Ersatz-) und Investitionsmaßnahmen",
+                "layerBodId": "lis_ersatz_invest",
+                "id": 817
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Flächenzugang/ Flächenabgang",
+                "layerBodId": "lis_flaechenzuab",
+                "id": 818
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kompensation",
+                "layerBodId": "lis_kompensation",
+                "id": 819
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Inanspruchnahmearten",
+                "layerBodId": "lis_weitere_inanspruch",
+                "id": 820
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Öff. rechtl. Verfahren",
+              "layerBodId": "lis_oerverfahren",
+              "id": 821,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Öff. rechtl. Verfahren. Flächen",
+                "layerBodId": "lis_oerverfahren_poly",
+                "id": 822
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Öff. rechtl. Verfahren. Umringe",
+                "layerBodId": "lis_ersatz_invest_linie",
+                "id": 823
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Belastungen",
+              "layerBodId": "lis_belastung",
+              "id": 824,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Naturschutz",
+                "layerBodId": "lis_belastung_naturschutz",
+                "id": 825
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Fischerei",
+                "layerBodId": "lis_belastung_fischerei",
+                "id": 826
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Belastungen",
+                "layerBodId": "lis_belastung_weitere",
+                "id": 827
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Nutzungen",
+              "layerBodId": "lis_nutzung",
+              "id": 828,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Wassersport",
+                "layerBodId": "lis_nutzung_wassersport",
+                "id": 829
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Landwirtschaft",
+                "layerBodId": "lis_nutzung_landwirtschaft",
+                "id": 830
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Jagd",
+                "layerBodId": "lis_nutzung_jagd",
+                "id": 831
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Fischerei",
+                "layerBodId": "lis_nutzung_fischerei",
+                "id": 832
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Leitung",
+                "layerBodId": "lis_nutzung_leitung",
+                "id": 833
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Nutzungsarten",
+                "layerBodId": "lis_nutzung_weitere",
+                "id": 834
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "WSV-Flurstücke",
+              "layerBodId": "lis_kataster",
+              "id": 835
+            }]
+		  }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
           "label": "WSV: PEGELONLINE (WSV/ITZBund)",
           "id": 3,
           "children": [{
@@ -5591,5 +5740,5 @@
       }]
     }
   },
-  "last_id": 813
+  "last_id": 835
 }
