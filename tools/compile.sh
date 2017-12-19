@@ -28,7 +28,6 @@ cp -r ../src/main/webapp/frontend/ingrid/js src/
 cp -r ../src/main/webapp/frontend/ingrid/style src/
 cp -r ../src/main/webapp/frontend/ingrid/img src/
 cp -r ../src/main/webapp/frontend/ingrid/locales src/
-cp -r ../src/main/webapp/frontend/ingrid/ngeo src/
 cp -r ../src/main/webapp/frontend/src/index.mako.html src/
 
 # Add environments
