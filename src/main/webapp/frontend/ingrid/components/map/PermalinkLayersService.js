@@ -315,6 +315,15 @@ goog.require('ga_wmts_service');
                 visible: visible,
                 time: timestamp
               });
+            } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
+              // INGRID: Add external service
+              infos = layerSpec.split('||');
+              try {
+                gaWms.addWmsServiceToMap(map, infos[1], infos[2], index + 1);
+                gaPermalink.deleteParam('layers');
+              } catch (e) {
+                $log.error(e.message);
+              }
             }
           });
 
