@@ -69,22 +69,22 @@ goog.require('ga_previewlayers_service');
 
             $scope.item.active = function(activate) {
               var layer = getOlLayer($scope.map, $scope.item);
-              //setter called
+              // setter called
               if (arguments.length) {
                 if (layer) {
                   layer.visible = activate;
                 }
                 if (activate) {
-                  //INGRID: Remove open parent layer node
-                  //$scope.item.selectedOpen = true;
+                  // INGRID: Remove open parent layer node
+                  // $scope.item.selectedOpen = true;
                   // Add it if it's not already on the map
                   if (!layer) {
                     removePreviewLayer($scope.map);
                     addBodLayer($scope.map, $scope.item.layerBodId);
                   }
                 }
-              } else { //getter called
-                //INGRID: Remove '$scope.item.selectedOpen'
+              } else { // getter called
+                // INGRID: Remove '$scope.item.selectedOpen'
                 return layer && layer.visible;
               }
             };
@@ -109,12 +109,12 @@ goog.require('ga_previewlayers_service');
                     'EPSG:4326', gaGlobalOptions.defaultEpsg);
                   if (layer.maxScale) {
                     var scale = layer.maxScale;
-                    if (typeof(scale) === 'string') {
+                    if (typeof (scale) === 'string') {
                       scale = gaMapUtils.getScaleForScaleHint(scale,
-                       $scope.map);
+                        $scope.map);
                     }
                     gaMapUtils.zoomToExtentScale($scope.map, undefined,
-                     extent, scale);
+                      extent, scale);
                   } else {
                     gaMapUtils.zoomToExtent($scope.map, undefined, extent);
                   }
@@ -128,7 +128,7 @@ goog.require('ga_previewlayers_service');
               var layer = gaLayers.getLayer(bodId);
               if (layer) {
                 if (layer.extent) {
-                    return true;
+                  return true;
                 }
               }
               return false;
@@ -145,25 +145,25 @@ goog.require('ga_previewlayers_service');
               return true;
             };
 
-           // INGRID: Add isLayer
-           $scope.isLayer = function(bodId) {
-             if (bodId) {
-               return true;
-             }
-             return false;
-           };
+            // INGRID: Add isLayer
+            $scope.isLayer = function(bodId) {
+              if (bodId) {
+                return true;
+              }
+              return false;
+            };
 
-           // INGRID: Add isParentLayer
-           $scope.isParentLayer = function(item) {
-             if (item) {
-               if (item.layerBodId) {
-                 if (item.children) {
-                   return true;
-                 }
-               }
-             }
-             return false;
-           };
+            // INGRID: Add isParentLayer
+            $scope.isParentLayer = function(item) {
+              if (item) {
+                if (item.layerBodId) {
+                  if (item.children) {
+                    return true;
+                  }
+                }
+              }
+              return false;
+            };
           },
 
           compile: function(tEl, tAttr) {
@@ -179,9 +179,12 @@ goog.require('ga_previewlayers_service');
                 scope.$watch('item.selectedOpen', function(value) {
                   controller.updatePermalink(scope.item.id, value);
                 });
+               // INGRID: Add preview for parent layers
+               }
 
               // Leaf
-              } else {
+            //} else {
+              if (scope.item.layerBodId) {
                 gaEvent.onMouseOverOut(iEl, function(evt) {
                   addPreviewLayer(scope.map, scope.item);
                 }, function(evt) {
