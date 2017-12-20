@@ -33,3 +33,4 @@ settingShowLayerServiceName = true;
 settingShowISOXML = false;
 settingSearchCoordsXY = true;
 settingPrintFilename = 'Print.GeoPortal.WSV';
+settingPrintDependOnMouseProj = true;

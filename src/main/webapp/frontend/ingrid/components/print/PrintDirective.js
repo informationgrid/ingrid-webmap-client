@@ -250,8 +250,11 @@ goog.require('ga_urlutils_service');
       $scope.options.progress = '';
       // http://mapfish.org/doc/print/protocol.html#print-pdf
       var view = $scope.map.getView();
+      var proj = view.getProjection();
       // INGRID: Change projection by mouse position control
-      var proj = gaMapUtils.getMousePositionProjection($scope.map);
+      if (gaGlobalOptions.printDependOnMouseProj) {
+         proj = gaMapUtils.getMousePositionProjection($scope.map);
+      }
       var lang = $translate.use();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;

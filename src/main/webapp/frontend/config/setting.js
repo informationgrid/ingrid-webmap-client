@@ -75,6 +75,9 @@ var settingPrintGraticuleLayer = '{"url":"http://atlas.wsv.bund.de/netze/wms?", 
 // Print filename
 var settingPrintFilename = 'Print.InGrid';
 
+// Print depend on mouse position control
+var settingPrintDependOnMouseProj = false;
+
 // Default prefix for download KML
 var settingKMLName = 'INGRID';
 

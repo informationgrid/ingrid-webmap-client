@@ -62,9 +62,12 @@ goog.require('ga_urlutils_service');
   // INGRID: Add getEncodeGraticule
   function getEncodeGraticule(gaMapUtils, gaGlobalOptions) {
     return function encodeGraticule(dpi, map) {
-      var mpProj = gaMapUtils.getMousePositionProjection(map);
-      var l = gaGlobalOptions.defaultPrintGraticuleLayer[mpProj.getCode()] ||
-        gaGlobalOptions.defaultPrintGraticuleLayer;
+      var l = gaGlobalOptions.defaultPrintGraticuleLayer;
+      if (gaGlobalOptions.printDependOnMouseProj) {
+        var mpProj = gaMapUtils.getMousePositionProjection(map);
+        l = gaGlobalOptions.defaultPrintGraticuleLayer[mpProj.getCode()] ||
+          gaGlobalOptions.defaultPrintGraticuleLayer;
+      }
       return {
         'baseURL': l.url,
         'opacity': 1,
