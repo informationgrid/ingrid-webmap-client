@@ -4109,6 +4109,55 @@
               "id": 292
             }]
           }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: GST-/VEMAGS-Karte",
+          "id": 836,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "GST-WSV-WMS",
+            "layerBodId": "gst_vemags",
+            "id": 837,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "[512,513] Straßenbrückenanlagen, Wegebrückenanlagen, Bahn- und Straßenbrückenanlagen",
+              "layerBodId": "gst_strassen_bruecken",
+              "id": 838
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Sozialwerk BVBW e.V. Quartiere",
+          "id": 839,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Demo Sozialwerksquartiere WMS",
+            "layerBodId": "sozwk",
+            "id": 840,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Sozialwerksquartiere  (DEMO by ITZBund)",
+              "layerBodId": "sozwk_quatiere",
+              "id": 841
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "sozwk_copyright",
+              "id": 842
+            }]
+          }]
         }]
       },
       {
@@ -5740,5 +5789,5 @@
       }]
     }
   },
-  "last_id": 835
+  "last_id": 842
 }
