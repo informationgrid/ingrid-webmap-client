@@ -240,6 +240,28 @@ goog.require('ga_urlutils_service');
       }
     };
 
+    // INGRID: Add 'hasGraticule'
+    $scope.hasGraticule = function () {
+      var l;
+      var hasGraticule = false;
+      if (gaGlobalOptions.printDependOnMouseProj) {
+        var mpProj = gaMapUtils.getMousePositionProjection($scope.map);
+        l = gaGlobalOptions.defaultPrintGraticuleLayer[mpProj.getCode()];
+      } else {
+        l = gaGlobalOptions.defaultPrintGraticuleLayer;
+      }
+      if (l) {
+        if (l.layers && l.url) {
+            hasGraticule = true;
+        }
+      }
+      $scope.disabled = hasGraticule;
+      if ($scope.options.graticule) {
+        $scope.options.graticule = hasGraticule;
+      }
+      return hasGraticule;
+    };
+
     // Start the print process
     $scope.submit = function() {
       if (!$scope.active) {
@@ -253,7 +275,7 @@ goog.require('ga_urlutils_service');
       var proj = view.getProjection();
       // INGRID: Change projection by mouse position control
       if (gaGlobalOptions.printDependOnMouseProj) {
-         proj = gaMapUtils.getMousePositionProjection($scope.map);
+        proj = gaMapUtils.getMousePositionProjection($scope.map);
       }
       var lang = $translate.use();
       var defaultPage = {};
