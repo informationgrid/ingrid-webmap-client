@@ -40,8 +40,12 @@ goog.require('ga_urlutils_service');
         encodeOSM: encodeOSM,
         encodeDimensions: encodeDimensions,
         encodeWMTS: getEncodeWMTS(gaTime, gaMapUtils, gaGlobalOptions),
-        encodeFeatures: getEncodeFeatures(gaPrintStyle),
-        encodeVector: getEncodeVector(gaPrintStyle),
+        // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
+        encodeFeatures: getEncodeFeatures(gaPrintStyle, gaMapUtils,
+          gaGlobalOptions),
+        // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
+        encodeVector: getEncodeVector(gaPrintStyle, gaMapUtils,
+          gaGlobalOptions),
         encodeLayer: getEncodeLayer(gaLayers, gaPrintStyle,
             gaTime, gaMapUtils, gaGlobalOptions),
         encodeOverlay: getEncodeOverlay(gaUrlUtils),
@@ -188,8 +192,9 @@ goog.require('ga_urlutils_service');
 
   function getEncodeLayer(gaLayers, gaPrintStyle, gaTime, gaMapUtils,
       gaGlobalOptions) {
+    // INGRID: Add 'map'
     return function(layer, viewProj, scaleDenom, printRectangeCoords,
-        resolution, dpi) {
+        resolution, dpi, map) {
 
       var encLayer, encLegend;
 
@@ -213,12 +218,16 @@ goog.require('ga_urlutils_service');
             // INGRID: Add print OSM
             encLayer = encodeOSM(layer, layerConfig);
           } else if (src instanceof ol.source.Vector) {
-            var encodeVector = getEncodeVector(gaPrintStyle);
+            // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
+            var encodeVector = getEncodeVector(gaPrintStyle, gaMapUtils,
+              gaGlobalOptions);
+            // INGRID: Add 'map'
             encLayer = encodeVector(layer,
                 src.getFeatures(),
                 scaleDenom,
                 printRectangeCoords,
-                dpi);
+                dpi,
+                map);
           }
         }
       } else {
@@ -242,8 +251,10 @@ goog.require('ga_urlutils_service');
     return enc;
   };
 
-  function getEncodeVector(gaPrintStyle) {
-    return function(layer, features, scale, printRectangle, dpi) {
+  // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
+  function getEncodeVector(gaPrintStyle, gaMapUtils, gaGlobalOptions) {
+    // INGRID: Add 'map'
+    return function(layer, features, scale, printRectangle, dpi, map) {
 
       var enc = encodeBase(layer);
       var encStyles = {};
@@ -255,7 +266,9 @@ goog.require('ga_urlutils_service');
       var lines = [];
       var points = [];
 
-      var encodeFeatures = getEncodeFeatures(gaPrintStyle);
+      // INGRID: Add 'gaMapUtils', 'gaGlobalOptions', 'map'
+      var encodeFeatures = getEncodeFeatures(gaPrintStyle, gaMapUtils,
+        gaGlobalOptions, map);
 
       angular.forEach(features, function(feature) {
         var geotype = feature.getGeometry().getType();
@@ -272,8 +285,9 @@ goog.require('ga_urlutils_service');
       features = newFeatures.concat(polygons, lines, points);
 
       angular.forEach(features, function(feature) {
+        // INGRID: Add 'map'
         var encoded = encodeFeatures(layer, feature, false,
-            scale, printRectangle, dpi);
+          scale, printRectangle, dpi, map);
 
         encFeatures = encFeatures.concat(encoded.encFeatures);
         angular.extend(encStyles, encoded.encStyles);
@@ -294,9 +308,11 @@ goog.require('ga_urlutils_service');
     };
   };
 
-  function getEncodeFeatures(gaPrintStyle) {
+  // INGRID: Add 'gaMapUtils', 'gaGlobalOptions'
+  function getEncodeFeatures(gaPrintStyle, gaMapUtils, gaGlobalOptions) {
+    // INGRID: Add 'map'
     return function(layer, feature, styles, scale,
-        printRectangleCoords, dpi) {
+        printRectangleCoords, dpi, map) {
 
       dpi = parseInt(dpi) || 150;
       var encStyles = {};
@@ -354,7 +370,20 @@ goog.require('ga_urlutils_service');
       // if the map is not rotated
 
       if (geometry.intersectsExtent(printRectangleCoords)) {
-        var encFeature = format.writeFeatureObject(feature);
+        // INGRID: Transform coordinates
+        var transformFeature = feature;
+        if (gaGlobalOptions.printDependOnMouseProj) {
+          var mpProj = gaMapUtils.getMousePositionProjection(map);
+          if (gaGlobalOptions.defaultEpsg !== mpProj.getCode()) {
+            transformFeature = feature.clone();
+            transformFeature.getGeometry()
+              .transform(gaGlobalOptions.defaultEpsg,
+              mpProj.getCode());
+          }
+        }
+
+        // INGRID: Change 'feature' to 'transformFeature'
+        var encFeature = format.writeFeatureObject(transformFeature);
         if (!encFeature.properties) {
           encFeature.properties = {};
         } else {
@@ -382,7 +411,9 @@ goog.require('ga_urlutils_service');
         encStyles[encStyle.id] = encStyle;
       }
 
-      var encodeFeatures = getEncodeFeatures(gaPrintStyle);
+      // INGRID: Add 'gaMapUtils','gaGlobalOptions'
+      var encodeFeatures = getEncodeFeatures(gaPrintStyle, gaMapUtils,
+        gaGlobalOptions);
 
       // If a feature has a style with a geometryFunction defined, we
       // must also display this geometry with the good style (used for

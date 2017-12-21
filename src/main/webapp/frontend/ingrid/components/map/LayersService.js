@@ -137,11 +137,11 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add function
         var getMetaDataUrlWithLegend = function(layer, lang, legend) {
-            return legendUrlTemplate
-                .replace('{Layer}', layer)
-                .replace('{Lang}', lang)
-                .replace('{Legend}', legend)
-                .replace('{URL}', getLayersConfigUrl(lang));
+          return legendUrlTemplate.
+              replace('{Layer}', layer).
+              replace('{Lang}', lang).
+              replace('{Legend}', legend).
+              replace('{URL}', getLayersConfigUrl(lang));
         };
 
         // Function to remove the blob url from memory.
@@ -153,30 +153,23 @@ goog.require('ga_urlutils_service');
         // The tile load function which loads tiles from local
         // storage if they exist otherwise try to load the tiles normally.
         var tileLoadFunction = function(imageTile, src) {
-          if (gaBrowserSniffer.mobile) {
-            gaStorage.getTile(gaMapUtils.getTileKey(src)).then(
-                function(content) {
-              if (content && $window.URL && $window.atob) {
-                try {
-                  var blob = gaMapUtils.dataURIToBlob(content);
-                  imageTile.getImage().addEventListener('load', revokeBlob);
-                  imageTile.getImage().src = $window.URL.
-                    createObjectURL(blob);
-                } catch (e) {
-                  // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
-                  // encoding problem.
-                  // TODO: fix it
-                  imageTile.getImage().src = content;
-                }
-              } else {
-                imageTile.getImage().src = (content) ? content : src;
+          var onSuccess = function(content) {
+            if (content && $window.URL && $window.atob) {
+              try {
+                var blob = gaMapUtils.dataURIToBlob(content);
+                imageTile.getImage().addEventListener('load', revokeBlob);
+                imageTile.getImage().src = $window.URL.createObjectURL(blob);
+              } catch (e) {
+                // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
+                // encoding problem.
+                // TODO: fix it
+                imageTile.getImage().src = content;
               }
-            });
-          } else {
-            // INGRID: Load images over REST services
-            imageTile.getImage().src = gaGlobalOptions.defaultCrossOrigin ?
-              gaGlobalOptions.imgproxyUrl + '' + encodeURIComponent(src) : src;
-          }
+            } else {
+              imageTile.getImage().src = (content) || src;
+            }
+          };
+          gaStorage.getTile(gaMapUtils.getTileKey(src)).then(onSuccess);
         };
 
         // Load layers config
