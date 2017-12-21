@@ -529,7 +529,7 @@ goog.require('ga_urlutils_service');
               var wmtsTplUrl = config.template;
               olSource = config.olSource = new ol.source.WMTS({
                 dimensions: {
-                  'Time': timestamp || ''
+                  'Time': timestamp
                 },
                 // Workaround: Set a cache size of zero when layer is
                 // timeEnabled see:
@@ -588,9 +588,6 @@ goog.require('ga_urlutils_service');
               VERSION: config.version ? config.version : '1.3.0',
               LANG: gaLang.get()
             };
-            if (timestamp) {
-              wmsParams['TIME'] = timestamp;
-            }
             if (config.singleTile === true) {
               if (!olSource) {
                 olSource = config.olSource = new ol.source.ImageWMS({
@@ -707,11 +704,11 @@ goog.require('ga_urlutils_service');
             gaDefinePropertiesForLayer(olLayer);
             olLayer.bodId = bodId;
             olLayer.label = config.label;
+            olLayer.time = timestamp;
             olLayer.timeEnabled = config.timeEnabled;
             olLayer.timeBehaviour = config.timeBehaviour;
             olLayer.timestamps = config.timestamps;
             olLayer.geojsonUrl = config.geojsonUrl;
-
             olLayer.updateDelay = config.updateDelay;
             var that = this;
             olLayer.getCesiumImageryProvider = function() {

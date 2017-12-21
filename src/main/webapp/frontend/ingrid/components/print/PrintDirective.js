@@ -16,13 +16,14 @@ goog.require('ga_urlutils_service');
     'ga_attribution_service',
     'ga_maputils_service',
     'ga_layers_service',
-    'ga_urlutils_service'
+    'ga_urlutils_service',
+    'ga_translation_service'
   ]);
 
   // INGRID: Add parameter 'gaGlobalOptions'
   module.controller('GaPrintDirectiveController', function($scope,
       $http, $q, $window, $translate, $timeout, gaLayers, gaMapUtils,
-      gaPermalink, gaBrowserSniffer, gaWaitCursor,
+      gaPermalink, gaBrowserSniffer, gaWaitCursor, gaLang,
       gaPrintLayer, gaAttribution, gaUrlUtils, gaGlobalOptions) {
     var pdfLegendString = '_big.pdf';
     var printRectangle;
@@ -277,7 +278,7 @@ goog.require('ga_urlutils_service');
       if (gaGlobalOptions.printDependOnMouseProj) {
         proj = gaMapUtils.getMousePositionProjection($scope.map);
       }
-      var lang = $translate.use();
+      var lang = gaLang.get();
       var defaultPage = {};
       defaultPage['lang' + lang] = true;
       // INGRID: Check iFrame for qrcode
@@ -345,7 +346,7 @@ goog.require('ga_urlutils_service');
         } else {
           var layerConfig = gaLayers.getLayer(layer.bodId) || {};
           var enc = gaPrintLayer.encodeLayer(layer, proj, scaleDenom,
-              printRectangeCoords, resolution, dpi);
+              printRectangeCoords, resolution, dpi, $scope.map);
 
           if (layerConfig.timeEnabled && layer.time) {
             layersYears.push(layer.time);

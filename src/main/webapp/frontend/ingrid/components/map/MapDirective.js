@@ -78,6 +78,7 @@ goog.require('ga_styles_service');
       link: function(scope, element, attrs) {
         var map = scope.map;
         var view = map.getView();
+        var isOpeningIn3d = false;
 
         // set view states based on URL query string
         var queryParams = gaPermalink.getParams();
@@ -176,6 +177,7 @@ goog.require('ga_styles_service');
             var position, heading, pitch;
             if (isFinite(params.lon) && isFinite(params.lat) &&
                 isFinite(params.elevation)) {
+              isOpeningIn3d = true;
               var lon = parseFloat(params.lon);
               var lat = parseFloat(params.lat);
               var elevation = parseFloat(params.elevation);
@@ -240,8 +242,13 @@ goog.require('ga_styles_service');
                     var config2d = layers[bodId].config2d;
                     var overlay = gaMapUtils.getMapOverlayForBodId(map,
                         config2d);
-                    if (!overlay) {
+                    // If the page is openinig directly in 3d we consider the
+                    // default layers were not displayed in 2d initally.
+                    if (isOpeningIn3d || !overlay) {
                       dflt3dStatus.push(config2d);
+                      isOpeningIn3d = false;
+                    }
+                    if (!overlay) {
                       map.addLayer(gaLayers.getOlLayerById(config2d));
                     }
                   }
@@ -364,10 +371,11 @@ goog.require('ga_styles_service');
           // 'propertychange' event.
           // (ex: using layermanager)
           if (switchTimeDeactive) {
+
             for (var i = 0, ii = olLayers.length; i < ii; i++) {
               olLayer = olLayers[i];
               // We update only time enabled bod layers
-              if (olLayer.bodId && olLayer.timeEnabled &&
+              if (olLayer.timeEnabled &&
                   angular.isDefined(olLayer.time) &&
                   olLayer.time.substr(0, 4) !== oldTime) {
                 singleModif = true;
@@ -383,7 +391,6 @@ goog.require('ga_styles_service');
             savedTimeStr = {};
             return;
           }
-
           // In case the user has done a global modification.
           // (ex: using the time selector toggle)
           for (var j = 0, jj = olLayers.length; j < jj; j++) {
@@ -396,11 +403,13 @@ goog.require('ga_styles_service');
                 // We save the current value after a global activation.
                 // (ex: using the time selector toggle)
                 savedTimeStr[olLayer.id] = olLayer.time;
-              } else if (switchTimeDeactive && savedTimeStr[olLayer.id]) {
+              } else if (switchTimeDeactive &&
+                  savedTimeStr.hasOwnProperty(olLayer.id)) {
                 // We apply the saved values after a global deactivation.
                 // (ex: using the time selector toggle)
                 layerTimeStr = savedTimeStr[olLayer.id];
                 savedTimeStr[olLayer.id] = undefined;
+
               }
               olLayer.time = layerTimeStr;
             }

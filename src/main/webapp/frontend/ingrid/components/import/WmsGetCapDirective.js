@@ -95,7 +95,7 @@ goog.provide('ga_wmsgetcap_directive');
           layer.wmsUrl = dcpType.HTTP.Get.OnlineResource['xlink:href'];
         }
         layer.wmsVersion = getCap.version;
-        layer.id = `WMS||${layer.wmsUrl}||${layer.Name}`;
+        layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name;
         layer.extent = getLayerExtentFromGetCap(layer, proj);
 
         // INGRID: inheritance of parent layer params

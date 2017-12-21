@@ -5,7 +5,8 @@ if [ -d "mf-geoadmin3" ] ; then
     # reset mf-geoadmin3 changes
     git reset --hard
     git clean -fd
-    
+    git pull origin master
+
     # clean mf-geoadmin3 build path
     make cleanall 
 else
@@ -16,8 +17,8 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision '28359102aad0cc0dc38b98d28b851fd49c6ce850' (Date: 19. Dezember 2017 14:32:42) ***"
-git checkout 28359102aad0cc0dc38b98d28b851fd49c6ce850
+echo "*** Checkout mf-geoadmin3 revision '303ba6643a3a78ca2779fcb2af40c01c44847f57' (Date: 20. Dezember 2017 10:54:08) ***"
+git checkout 303ba6643a3a78ca2779fcb2af40c01c44847f57
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
