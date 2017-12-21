@@ -34,3 +34,8 @@ settingShowISOXML = false;
 settingSearchCoordsXY = true;
 settingPrintFilename = 'Print.GeoPortal.WSV';
 settingPrintDependOnMouseProj = true;
+settingPrintGraticuleLayer = '{' + 
+  '"EPSG:4326":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]},'+
+  '"EPSG:25832":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]},'+
+  '"EPSG:25833":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]}'+
+'}';
