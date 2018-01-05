@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2017 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2018 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -65,6 +65,8 @@ public enum ConfigurationProvider {
     public static final String KML_MAX_DAYS_FILE_EXIST = "kml.days_of_exist";
     public static final String KML_MAX_DIRECTORY_FILES = "kml.max_directory_files";
     public static final String CONFIG_DIR = "config.dir";
+    public static final String SCHEDULER_UPDATE_LAYER = "scheduler.layer.update";
+    public static final String SCHEDULER_UPDATE_LAYER_MAIL = "scheduler.layer.update.mail";
     
     private Properties properties = null;
     private Properties propertiesOverride = null;

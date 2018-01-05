@@ -37,8 +37,9 @@
     <div class="col-xs-8">
       <div class="checkbox">
         <label class="ga-checkbox" >
-          <input ng-model="options.graticule" type="checkbox"/>
-          <span translate>graticule</span>
+          <!-- INGRID: Add 'disabled' -->
+          <input ng-model="options.graticule" type="checkbox" ng-class="{'disabled': !disabled}" ng-disabled="!hasGraticule()"/>
+          <span ng-disabled="!hasGraticule()" ng-class="{'disabled': !disabled}" translate>graticule</span>
         </label>
       </div>
     </div>

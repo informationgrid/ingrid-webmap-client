@@ -59,7 +59,9 @@ goog.provide('ga_urlutils_service');
             return url;
           }
           var parts = /^(http|https)(:\/\/)(.+)/.exec(url);
+          /* INGRID: Not in used
           var protocol = parts[1];
+          */
           var resource = parts[3];
           // proxy is RESTFful, <service>/<protocol>/<resource>
           // INGRID: Change proxy url
@@ -105,11 +107,11 @@ goog.provide('ga_urlutils_service');
         // Remove proxy from the URL
         this.unProxifyUrl = function(url) {
           if (this.isValid(url)) {
-            var reg = new RegExp(['^(http|https):\/\/(service-proxy.',
-                '(dev|int|prod).bgdi.ch|proxy.geo.admin.ch)',
-                '\/(http|https)\/(.*)'].join(''));
+            var reg = new RegExp(['^(http|https)://(service-proxy.',
+              '(dev|int|prod).bgdi.ch|proxy.geo.admin.ch)',
+              '/(http|https)/(.*)'].join(''));
             var parts = reg.exec(url);
-            if (parts && parts.length == 6) {
+            if (parts && parts.length === 6) {
               return parts[4] + '://' + parts[5];
             }
           }
@@ -142,20 +144,20 @@ goog.provide('ga_urlutils_service');
 
         this.transformIfAgnostic = function(url) {
           if (/^\/\//.test(url)) {
-            url = location.protocol + url;
+            url = $window.location.protocol + url;
           }
           return url;
         };
 
         this.getHostname = function(str) {
-          return decodeURIComponent(str).match(/:\/\/(.[^/]+)/)[1].toString();
+          return ((decodeURIComponent(str).match(/:\/\/(.[^/]+)/) || [])[1] || '').toString();
         };
 
         this.append = function(url, paramString) {
           if (paramString) {
             var parts = (url + ' ').split(/[?&]/);
             url += (parts.pop() === ' ' ? paramString :
-                (parts.length > 0 ? '&' + paramString : '?' + paramString));
+              (parts.length > 0 ? '&' + paramString : '?' + paramString));
           }
           return url;
         };
@@ -170,7 +172,7 @@ goog.provide('ga_urlutils_service');
               if (url.indexOf('?') < 0) {
                   url += '?';
               }
-              if (url.endsWith('?') == false) {
+              if (url.endsWith('?') === false) {
                   url += '&';
               }
               if (url.indexOf(partParamString.split('=')[0]) < 0) {

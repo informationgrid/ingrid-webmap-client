@@ -5,7 +5,8 @@ if [ -d "mf-geoadmin3" ] ; then
     # reset mf-geoadmin3 changes
     git reset --hard
     git clean -fd
-    
+    git pull origin master
+
     # clean mf-geoadmin3 build path
     make cleanall 
 else
@@ -16,8 +17,8 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision 'e891f063df3da5c0f665ec54612eae7c0fbb7ab5' (Date: 26. Juli 2017 10:49:06) ***"
-git checkout e891f063df3da5c0f665ec54612eae7c0fbb7ab5
+echo "*** Checkout mf-geoadmin3 revision '303ba6643a3a78ca2779fcb2af40c01c44847f57' (Date: 20. Dezember 2017 10:54:08) ***"
+git checkout 303ba6643a3a78ca2779fcb2af40c01c44847f57
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
@@ -28,7 +29,6 @@ cp -r ../src/main/webapp/frontend/ingrid/js src/
 cp -r ../src/main/webapp/frontend/ingrid/style src/
 cp -r ../src/main/webapp/frontend/ingrid/img src/
 cp -r ../src/main/webapp/frontend/ingrid/locales src/
-cp -r ../src/main/webapp/frontend/ingrid/ngeo src/
 cp -r ../src/main/webapp/frontend/src/index.mako.html src/
 
 # Add environments

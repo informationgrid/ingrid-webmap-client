@@ -4,9 +4,11 @@ goog.provide('ga_print_controller');
   var module = angular.module('ga_print_controller', []);
 
   module.controller('GaPrintController', function($scope, gaGlobalOptions) {
-      // INGRID: Change print path
-      var printPath = '/ingrid-webmap-client/pdf';
-      var printCachedPath = gaGlobalOptions.cachedPrintUrl + '/print';
+    // INGRID: Change print path
+    var printPath = '/ingrid-webmap-client/pdf';
+    /* INGRID: Not in used
+    var printCachedPath = gaGlobalOptions.cachedPrintUrl + '/print';
+    */
 
     $scope.options = {
       printPath: printPath,
@@ -34,7 +36,7 @@ goog.provide('ga_print_controller');
         'ch.swisstopo.geologie-eiszeit-lgm-raster',
         'ch.swisstopo.geologie-geologische_karte',
         'ch.swisstopo.geologie-hydrogeologische_karte-grundwasservorkommen',
-        'ch.swisstopo.geologie-hydrogeologische_karte-grundwasservulnerabilitaet',
+        'ch.swisstopo.geologie-hydrogeologische_karte-grundwasservulnerabilitaet', // eslint-disable-line max-len
         'ch.swisstopo.geologie-tektonische_karte',
         'ch.kantone.cadastralwebmap-farbe',
         'ch.swisstopo.pixelkarte-farbe-pk1000.noscale',

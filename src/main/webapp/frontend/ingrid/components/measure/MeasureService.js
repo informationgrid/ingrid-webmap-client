@@ -1,17 +1,19 @@
 goog.provide('ga_measure_service');
 
+goog.require('ga_geomutils_service');
 goog.require('ga_measure_filter');
 
 (function() {
 
   var module = angular.module('ga_measure_service', [
-    'ga_measure_filter'
+    'ga_measure_filter',
+    'ga_geomutils_service'
   ]);
 
   module.provider('gaMeasure', function() {
     // INGRID: Add 'gaGlobalOptions'
-    this.$get = function($document, measureFilter, gaMapUtils,
-            gaGlobalOptions) {
+    this.$get = function($document, measureFilter, gaMapUtils, gaGeomUtils,
+      gaGlobalOptions) {
       var Measure = function() {
 
         // Transform 2111333 in 2'111'333
@@ -27,6 +29,7 @@ goog.require('ga_measure_filter');
         // INGRID: Check 'useGeodesic'
         this.getLength = function(geom, useGeodesic) {
           var lineString;
+          geom = gaGeomUtils.multiGeomToSingleGeom(geom);
           if (geom instanceof ol.geom.LineString) {
             lineString = geom;
           } else if (geom instanceof ol.geom.LinearRing) {
@@ -61,6 +64,7 @@ goog.require('ga_measure_filter');
 
         // INGRID: Add check 'useGeodesic'
         this.getArea = function(geom, calculateLineStringArea, useGeodesic) {
+          geom = gaGeomUtils.multiGeomToSingleGeom(geom);
           if (calculateLineStringArea && geom instanceof ol.geom.LineString) {
             return Math.abs(new ol.geom.Polygon([geom.getCoordinates()]).
                 getArea());
@@ -88,6 +92,7 @@ goog.require('ga_measure_filter');
         };
 
         this.getAzimuth = function(geom) {
+          geom = gaGeomUtils.multiGeomToSingleGeom(geom);
           if (!(geom instanceof ol.geom.Polygon) &&
               !(geom instanceof ol.geom.LineString) &&
               !(geom instanceof ol.geom.LinearRing)) {
@@ -119,7 +124,7 @@ goog.require('ga_measure_filter');
         this.getAreaLabel = function(geom, calculateLineStringArea) {
           // INGRID: Add check 'useGeodesic'
           return measureFilter(this.getArea(geom, calculateLineStringArea,
-           gaGlobalOptions.useGeodesic), 'area');
+              gaGlobalOptions.useGeodesic), 'area');
         };
 
         this.getAzimuthLabel = function(geom) {
@@ -134,8 +139,9 @@ goog.require('ga_measure_filter');
             element: tooltipElement,
             offset: [0, -7],
             positioning: 'bottom-center',
+            insertFirst: false,
             stopEvent: angular.isDefined(stopEvent) ?
-                stopEvent : true // for copy/paste
+              stopEvent : true // for copy/paste
           });
           return tooltip;
         };
@@ -164,7 +170,7 @@ goog.require('ga_measure_filter');
               var first = coords[0];
               var last = coords[coords.length - 2];
 
-              if (first[0] != last[0] || first[1] != last[1]) {
+              if (first[0] !== last[0] || first[1] !== last[1]) {
                 pos = undefined;
               }
 
@@ -186,9 +192,9 @@ goog.require('ga_measure_filter');
 
           if (geomLine instanceof ol.geom.LineString) {
             var label = '',
-                delta = 1,
-                // INGRID: Add check 'gaGlobalOptions.useGeodesic'
-                length = this.getLength(geomLine, gaGlobalOptions.useGeodesic);
+              delta = 1,
+              // INGRID: Add check 'gaGlobalOptions.useGeodesic'
+              length = this.getLength(geomLine, gaGlobalOptions.useGeodesic);
             if (this.canShowAzimuthCircle(geomLine)) {
               label += this.getAzimuthLabel(geomLine) + ' / ';
             }
@@ -214,7 +220,7 @@ goog.require('ga_measure_filter');
               delta = 100000 / length;
             } else if (length > 20000) {
               delta = 10000 / length;
-            } else if (length != 0) {
+            } else if (length !== 0) {
               delta = 1000 / length;
             }
             for (var i = delta; i < 1; i += delta, currIdx++) {
@@ -229,9 +235,9 @@ goog.require('ga_measure_filter');
               }
             }
             if (currIdx < overlays.getLength()) {
-             for (var j = overlays.getLength() - 1; j >= currIdx; j--) {
-               overlays.pop();
-             }
+              for (var j = overlays.getLength() - 1; j >= currIdx; j--) {
+                overlays.pop();
+              }
             }
           }
         };
@@ -274,9 +280,9 @@ goog.require('ga_measure_filter');
         this.canShowAzimuthCircle = function(geom) {
           if (geom instanceof ol.geom.LineString) {
             var coords = geom.getCoordinates();
-            if (coords.length == 2 ||
-                (coords.length == 3 && coords[1][0] == coords[2][0] &&
-                coords[1][1] == coords[2][1])) {
+            if (coords.length === 2 ||
+                (coords.length === 3 && coords[1][0] === coords[2][0] &&
+                coords[1][1] === coords[2][1])) {
               return true;
             }
           }

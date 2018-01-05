@@ -4,7 +4,8 @@
         'ga-layer-time-enabled': layer.timeEnabled,
         'ga-layer-warning': layer.useThirdPartyData
       }">
-    <div class="ga-layer-infos ga-grab">
+    <!-- INGRID: Check layer extent intersects map extent -->
+    <div class="ga-layer-infos ga-grab" ng-class="{'extent-outside': !isInRange(layer)}">
       <button class="ga-icon ga-btn fa fa-remove-sign"
               ng-click="removeLayer(layer)"></button>
       <label class="ga-checkbox" title="{{layer.label}}">
@@ -17,10 +18,10 @@
                 ng-class="isDefaultValue(layer.time)"
                 ng-click="displayTimestamps($event, layer)">{{layer.time | gaTimeLabel:layer}}
         </button>
-        <select ng-if="mobile"
-                ng-model="layer.time"
-                ng-options="(i | gaTimeLabel:layer) for i in layer.timestamps">
-          <option ng-if="layer.type == 'wms'" value="" translate>time_all</option>
+        <select ng-model="layer.time"
+                ng-options="(i | gaTimeLabel:layer) for i in layer.timestamps"
+                class="visible-xs-block">
+          <option ng-if="layer.timeBehaviour == 'all'" value="" translate>time_all</option>
         </select>
       </div>
       <button class="ga-icon ga-btn fa fa-user"
@@ -28,13 +29,11 @@
       <button class="ga-icon fa fa-gear"></button>
     </div><!--ga-layer-infos-->
     <div class="ga-layer-tools">
-      <label>
+      <label ng-mouseenter="disableDragAndDrop()" ng-mouseleave="enableDragAndDrop()">
         <div translate>transparency</div>&nbsp;
-        <input  ng-if="useRange" type="range" min="0" max="1" step="0.05" value="1"
-                ng-model="layer.invertedOpacity"
-                ng-mouseenter="disableDragAndDrop()"
-                ng-mouseleave="enableDragAndDrop()"/>
-        <select ng-if="!useRange"  ng-model="layer.invertedOpacity" ng-options="i.key as i.value for i in opacityValues">
+        <input ng-if="useRange()" type="range" min="0" max="1" step="0.05" value="1"
+               ng-model="layer.invertedOpacity" />
+        <select ng-if="!useRange()" ng-model="layer.invertedOpacity" ng-options="i.key as i.value for i in opacityValues">
         </select>
       </label>
       <div class="ga-layer-ordering">

@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2017 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2018 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -55,6 +55,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -64,6 +65,30 @@ import org.xml.sax.SAXException;
 public class Utils {
 
     private static final Logger log = Logger.getLogger( Utils.class );
+
+    public static String getFileContent(String path, String filename, String fileTyp, String prefix){
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" );
+        }
+        path = path.concat( prefix );
+        File directory = new File(path);
+        if(directory.exists()){
+            File file = new File(path.concat(filename).concat(fileTyp));
+            if(file.exists()){
+                try {
+                    String fileContent = FileUtils.readFileToString( file, "UTF-8");
+                    if(fileContent != null){
+                        return fileContent;
+                    }
+                } catch (IOException e) {
+                    log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
+                }
+            }else{
+                log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
+            }
+        }
+        return null;
+    }
 
     public static String checkWMSUrl(String url, String paramString){
         String[] partsParamString = paramString.split("&");

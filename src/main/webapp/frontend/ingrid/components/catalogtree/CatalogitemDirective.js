@@ -1,19 +1,21 @@
 goog.provide('ga_catalogitem_directive');
 
-goog.require('ga_browsersniffer_service');
 goog.require('ga_catalogtree_directive');
+goog.require('ga_event_service');
 goog.require('ga_layermetadatapopup_service');
-goog.require('ga_map_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_previewlayers_service');
 
 (function() {
 
   var module = angular.module('ga_catalogitem_directive', [
-    'ga_browsersniffer_service',
     'ga_catalogtree_directive',
     'ga_layermetadatapopup_service',
-    'ga_map_service',
-    'ga_previewlayers_service'
+    'ga_layers_service',
+    'ga_maputils_service',
+    'ga_previewlayers_service',
+    'ga_event_service'
   ]);
 
   /**
@@ -21,8 +23,8 @@ goog.require('ga_previewlayers_service');
    */
   // INGRID: Add param 'gaGlobalOptions'
   module.directive('gaCatalogitem',
-      function($compile, gaMapUtils, gaLayerMetadataPopup, gaBrowserSniffer,
-          gaPreviewLayers, gaLayers, gaGlobalOptions) {
+      function($compile, gaMapUtils, gaLayerMetadataPopup,
+          gaPreviewLayers, gaLayers, gaEvent, gaGlobalOptions) {
 
         var addBodLayer = function(map, layerBodId) {
           if (gaLayers.getLayer(layerBodId)) {
@@ -67,22 +69,22 @@ goog.require('ga_previewlayers_service');
 
             $scope.item.active = function(activate) {
               var layer = getOlLayer($scope.map, $scope.item);
-              //setter called
+              // setter called
               if (arguments.length) {
                 if (layer) {
                   layer.visible = activate;
                 }
                 if (activate) {
-                  //INGRID: Remove open parent layer node
-                  //$scope.item.selectedOpen = true;
+                  // INGRID: Remove open parent layer node
+                  // $scope.item.selectedOpen = true;
                   // Add it if it's not already on the map
                   if (!layer) {
                     removePreviewLayer($scope.map);
                     addBodLayer($scope.map, $scope.item.layerBodId);
                   }
                 }
-              } else { //getter called
-                //INGRID: Remove '$scope.item.selectedOpen'
+              } else { // getter called
+                // INGRID: Remove '$scope.item.selectedOpen'
                 return layer && layer.visible;
               }
             };
@@ -98,49 +100,70 @@ goog.require('ga_previewlayers_service');
               evt.stopPropagation();
             };
 
-// INGRID: Add zoom to extent
+            // INGRID: Add zoom to extent
             $scope.zoomToExtent = function(evt, bodId) {
               var layer = gaLayers.getLayer(bodId);
               if (layer) {
                 if (layer.extent) {
                   var extent = ol.proj.transformExtent(layer.extent,
                     'EPSG:4326', gaGlobalOptions.defaultEpsg);
-                  gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                  if (layer.maxScale) {
+                    var scale = layer.maxScale;
+                    if (typeof (scale) === 'string') {
+                      scale = gaMapUtils.getScaleForScaleHint(scale,
+                        $scope.map);
+                    }
+                    gaMapUtils.zoomToExtentScale($scope.map, undefined,
+                      extent, scale);
+                  } else {
+                    gaMapUtils.zoomToExtent($scope.map, undefined, extent);
+                  }
                 }
               }
               evt.stopPropagation();
             };
 
-// INGRID: Add hasExtent
+            // INGRID: Add hasExtent
             $scope.hasExtent = function(bodId) {
               var layer = gaLayers.getLayer(bodId);
               if (layer) {
                 if (layer.extent) {
-                    return true;
+                  return true;
                 }
               }
               return false;
             };
 
-// INGRID: Add isLayer
-           $scope.isLayer = function(bodId) {
-             if (bodId) {
-               return true;
-             }
-             return false;
-           };
+            // INGRID: Check layer extent intersects map extent
+            $scope.isInRange = function(bodId) {
+              if (gaGlobalOptions.checkLayerInRange) {
+                var layer = gaLayers.getLayer(bodId);
+                if (layer) {
+                  return gaMapUtils.inRange(layer, this.map);
+                }
+              }
+              return true;
+            };
 
-// INGRID: Add isParentLayer
-           $scope.isParentLayer = function(item) {
-             if (item) {
-               if (item.layerBodId) {
-                 if (item.children) {
-                   return true;
-                 }
-               }
-             }
-             return false;
-           };
+            // INGRID: Add isLayer
+            $scope.isLayer = function(bodId) {
+              if (bodId) {
+                return true;
+              }
+              return false;
+            };
+
+            // INGRID: Add isParentLayer
+            $scope.isParentLayer = function(item) {
+              if (item) {
+                if (item.layerBodId) {
+                  if (item.children) {
+                    return true;
+                  }
+                }
+              }
+              return false;
+            };
           },
 
           compile: function(tEl, tAttr) {
@@ -156,13 +179,15 @@ goog.require('ga_previewlayers_service');
                 scope.$watch('item.selectedOpen', function(value) {
                   controller.updatePermalink(scope.item.id, value);
                 });
+               // INGRID: Add preview for parent layers
+               }
 
-              // INGRID: Split else if for preview of parent layer
               // Leaf
-              } else if (!gaBrowserSniffer.mobile) {
-                iEl.on('mouseenter', function(evt) {
+            //} else {
+              if (scope.item.layerBodId) {
+                gaEvent.onMouseOverOut(iEl, function(evt) {
                   addPreviewLayer(scope.map, scope.item);
-                }).on('mouseleave', function(evt) {
+                }, function(evt) {
                   removePreviewLayer(scope.map);
                 });
               }

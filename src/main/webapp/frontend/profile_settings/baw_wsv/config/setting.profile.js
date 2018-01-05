@@ -29,3 +29,13 @@ settingKMLName = 'ITZBund';
 settingDefaultWMSList = [];
 settingDefaultMouseProjections = ['EPSG:25832', 'EPSG:25833', 'EPSG:4326', 'EPSG:31466', 'EPSG:31467', 'EPSG:31468', 'EPSG:2167', 'EPSG:2168'];
 settingEnableW3W = true;
+settingShowLayerServiceName = true;
+settingShowISOXML = false;
+settingSearchCoordsXY = true;
+settingPrintFilename = 'Print.GeoPortal.WSV';
+settingPrintDependOnMouseProj = true;
+settingPrintGraticuleLayer = '{' + 
+  '"EPSG:4326":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]},'+
+  '"EPSG:25832":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]},'+
+  '"EPSG:25833":{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]}'+
+'}';

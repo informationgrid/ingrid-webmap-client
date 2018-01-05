@@ -1,0 +1,264 @@
+@ga-popup-max-height: 440px;
+@ga-popup-reduced-height: 40px;
+@ga-popup-max-width: 620px;
+
+/* sticked to bottom */
+.ga-bottom-fixed() {
+  max-width: none!important;
+  width: auto!important;
+  top: auto!important;
+  left: 0!important;
+  bottom: 0;
+  right: 0;
+  transform: translate3d(0,0,0)!important;
+  -ms-transform: translateX(0) translateY(0)!important;
+
+  > .arrow {
+    display: none;
+  }
+}
+
+/* full screen */
+.ga-full() {
+  top: 2% !important;
+  left: 2% !important;
+  right: 2%;
+  bottom: 2%;
+  width: auto!important;
+  max-height: none;
+  max-width: none;
+  -webkit-overflow-scrolling: touch;
+
+  .popover-content {
+    max-height: none;
+  }
+}
+
+.metadata-structure {
+  padding: 8px;
+
+  ul {
+    list-style-type: none;
+    margin-bottom: 0;
+
+    li {
+      border-bottom: 1px solid #E9E9E9;
+      padding-top: 5px;
+    }
+
+    li.active {
+      background-color: #EEEEEE;
+      border: 1px solid #fe0000;
+
+      label {
+        font-weight: bold;
+      }
+    }
+  }
+}
+ 
+[ga-popup] {
+  display: none;
+  overflow: hidden;
+  min-width: 260px;
+  max-width: @ga-popup-max-width;
+  min-height: 100px;
+  max-height: @ga-popup-max-height;
+  z-index: 2500; /* on top of the menu but under modals */
+
+  .ga-popup-no-info {
+    padding: 20px 14px;
+  }
+  
+  label {
+    &.ga-checkbox, input, select, textarea {
+      font-weight: normal;
+    }
+  }
+
+  > .popover-content {
+    overflow: auto;
+    width: 100%;
+    max-width: inherit;
+    max-height: (@ga-popup-max-height - 60);
+
+    @media (max-width: @screen-tablet) {
+      width: 100%;
+      height: ~"calc(100% - 36px)";
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+  }
+
+  .ga-buttons {
+    position: absolute;
+    right: 8px;
+    top: 0px;
+    height: 100%;
+
+    @media (max-width: @screen-tablet) {
+      right: 0px;
+    }
+
+    button {
+      width: 18px;
+      height: inherit;
+      opacity: 0.3;
+      visibility: visible;
+      padding: 0;
+      margin: 0;
+      vertical-align: top;
+      color: inherit;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: bold;
+      line-height: inherit;
+      border: none;
+      box-shadow: none;
+      background: none;
+
+      &:hover {
+        opacity: 0.7;
+      }
+      &:active {
+        opacity: 1;
+      }
+
+      &.fa-remove {
+        font-weight: normal;
+        font-size: 18px;
+      }
+
+      &.fa-minus {
+        padding-top: 7px;
+      }
+
+      @media (max-width: @screen-tablet) {
+        width: 30px;
+        font-size: 18px;
+
+        &.fa-remove {
+          font-size: 20px;
+        }
+
+        &.fa-minus {
+          padding-top: 10px;
+        }
+      }
+    }
+  }
+
+  /* POPUP display at the bottom */
+  &.ga-popup-bottom {
+    .ga-bottom-fixed();
+    bottom: 26px;
+  }
+
+  /* POPUP MOBILE display at the bottom */
+  &.ga-popup-bottom, &.ga-popup-mobile-bottom {
+    @media (max-width: @screen-phone) {
+      .ga-bottom-fixed();
+ 
+      > .popover-content {
+        max-height: 250px;
+      }
+    }
+  }
+
+  /* POPUP MOBILE & TABLET display in full screen (ex: metadata popup) */
+  &.ga-popup-tablet-full {
+
+    /* !important is used to override (and so deactivate) draggable styles
+    applied */
+    @media (max-width: @screen-tablet) {
+      .ga-full();
+    }
+
+    @media (max-width: @screen-phone) {
+      position: absolute;
+      overflow: hidden;
+    }
+  }
+
+  /* POPUP MOBILE display in full screen (ex: feedback popup) */
+  &.ga-popup-mobile-full {
+
+    @media (max-width: @screen-phone) {
+      position: absolute;
+      overflow: hidden;
+      .ga-full();
+    }
+  }
+
+  /* REDUCED POPUP */
+  /* !important is used to override (and so deactivate) draggable styles
+  and specific popups styles */
+  &.ga-popup-reduced {
+    position: relative!important;
+    float: left!important;
+    height: unit(@ga-popup-reduced-height, px) !important;
+    min-height:  unit(@ga-popup-reduced-height, px) !important;
+    width: 190px!important;
+    min-width: 190px!important;
+    top: initial!important;
+    left: initial!important;
+    bottom: unit(@footer-height + @ga-popup-reduced-height, px)!important;
+    right: initial!important;
+    top: auto!important; // for IE
+    left: auto!important; // for IE
+    right: auto!important; // for IE
+    z-index: 500;
+    transform: translate3d(0,0,0)!important;
+    -ms-transform: translateX(0) translateY(0)!important;
+
+    &.bottom {
+      margin: 0!important;
+    }
+
+    > .arrow {
+      display: none;
+    }
+
+    transition: bottom 1s ease;
+
+    .popover-title {
+      padding-right: 30px;
+      cursor: pointer;
+      color: white;
+      background-color: red;
+
+      &:active {
+       opacity: 0.3;
+      }
+    }
+
+    .popover-content, .fa-print, .fa-question-circle, .fa-minus {
+      display: none;
+    }
+
+    .fa-remove {
+      opacity: 0.8;
+    }
+
+    @media (max-width: @screen-tablet) {
+      width: 160px!important;
+      min-width: 160px!important;
+      bottom: unit(@ga-popup-reduced-height + 14, px);
+      
+      /* Override ga-popup-tablet-full css */
+      top: initial!important;
+      left: initial!important;
+      top: auto!important; // for IE
+      left: auto!important; // for IE
+    }
+
+    @media (max-width: @screen-phone) {
+      /* Override ga-popup-mobile-full css */
+      top: initial!important;
+      left: initial!important;
+      top: auto!important; // for IE
+      left: auto!important; // for IE
+    }
+  }
+}
+

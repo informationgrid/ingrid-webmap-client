@@ -10,13 +10,19 @@
       <table ng-if="showBWaLocator() == false" >
           <tbody>
           <tr ng-repeat="projection in projections">
-            <td>{{projection.label}}</td>
-            <td>{{projection.coordinates}}</td>
+              <td>{{projection.label}}</td>
+              <td>{{projection.coordinates}}</td>
           </tr>
           <tr ng-if="enableW3W">
-            <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
-            <td>{{w3w}}</td>
+              <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
+              <td>{{w3w}}</td>
           </tr>
+          <!--
+          <tr ng-if="altitude">
+              <td translate>elevation</td>
+              <td>{{altitude | measure:'distance':[' m']:1}}</td>
+          </tr>
+          -->
           <tr>
               <td></td>
               <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
@@ -77,13 +83,9 @@
                 <td>Streckenbezeichnung:</td>
                 <td>{{bwastr_typ}}</td>
               </tr>
-              <tr ng-if="bwastr_lon != undefined">
-                <td>Länge [Dezimalgrad]:</td>
-                <td>{{bwastr_lon}}</td>
-              </tr>
-              <tr ng-if="bwastr_lat != undefined">
-                <td>Breite [Dezimalgrad]:</td>
-                <td>{{bwastr_lat}}</td>
+              <tr ng-if="bwastr_error == undefined && bwastr_label != undefined">
+                <td>{{bwastr_label}}:</td>
+                <td>{{bwastr_coords}}</td>
               </tr>
               <tr ng-if="bwastr_km != undefined">
                 <td>Station:</td>

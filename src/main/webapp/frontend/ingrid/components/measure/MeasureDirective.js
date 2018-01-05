@@ -26,16 +26,25 @@ goog.require('ga_measure_service');
 
           var geom = feature.getGeometry();
           if (geom instanceof ol.geom.Point) {
-            var coord = ol.proj.transform(geom.getCoordinates(),
-                gaGlobalOptions.defaultEpsg, 'EPSG:2056');
-            scope.coord = gaMeasure.formatCoordinates(coord, scope.precision);
+            /* INGRID: Remove format coordinates
+            scope.coord = gaMeasure.formatCoordinates(geom.getCoordinates(),
+                scope.precision);
+            */
+            if (gaGlobalOptions.defaultEpsg === 'EPSG:4326' ||
+              gaGlobalOptions.defaultEpsg === 'EPSG:3857' ) {
+              scope.coord = ol.coordinate.format(geom.getCoordinates(),
+                '{y}, {x}', 2);
+            } else {
+              scope.coord = ol.coordinate.format(geom.getCoordinates(),
+                '{x}, {y}', 2);
+            }
           } else {
             // INGRID: Add check 'useGeodesic'
             scope.distance = gaMeasure.getLength(geom,
               gaGlobalOptions.useGeodesic);
             scope.surface = gaMeasure.getArea(geom, undefined,
               gaGlobalOptions.useGeodesic);
-            //scope.azimuth = gaMeasure.getAzimuth(geom);
+            // scope.azimuth = gaMeasure.getAzimuth(geom);
           }
         };
         var useFeature = function(newFeature) {

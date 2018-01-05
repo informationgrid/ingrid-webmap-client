@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2017 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2018 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -136,20 +136,21 @@ public class SearchResource {
                                 JSONObject newEntry = new JSONObject();
                                 String label = (String) questJsonEntry.get( "label" );
                                 boolean isSearchable = false;
-                                if(questJsonEntry.get( "searchable" ) != null){
-                                    isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                if(questJsonEntry.has( "searchable" )){
+                                    if(questJsonEntry.get( "searchable" ) != null){
+                                        isSearchable = Boolean.valueOf( questJsonEntry.get( "searchable" ).toString());
+                                    }
                                 }
                                 if(isSearchable && label.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ){
                                     newEntry.put( "id", "" );
                                     newEntry.put( "weight", 143 );
                                     JSONObject newAttrs = new JSONObject();
                                     newAttrs.put( "origin", "layer" );
-                                    newAttrs.put( "layer", questJsonEntry.get( "serverLayerName" ) );
+                                    newAttrs.put( "layer", key );
                                     newAttrs.put( "label", label );
                                     newAttrs.put( "detail", label );
                                     newAttrs.put( "lang", "de" );
                                     newAttrs.put( "staging", "prod" );
-                                    newAttrs.put( "topics", questJsonEntry.get( "topics" ) );
                                     newEntry.put( "attrs", newAttrs );
                                     json.put( newEntry );
                                 }

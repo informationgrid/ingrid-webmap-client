@@ -14,7 +14,470 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
-          "label": "WSV: PEGELONLINE WMS (WSV/DLZ-IT)",
+          "label": "WSV: BWaStr Bundeswasserstraßen",
+          "id": 319,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Bundeswasserstrassen WMS (DLZ-IT)",
+            "layerBodId": "-368582521",
+            "id": 320,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Verkehrsnetz",
+              "layerBodId": "-1707758900",
+              "id": 321
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Organisation",
+              "layerBodId": "-932533067",
+              "id": 322,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Außenstellen",
+                "layerBodId": "-1936459979",
+                "id": 323
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Aemter",
+                "layerBodId": "1612255955",
+                "id": 324
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Aussenbezirke",
+                "layerBodId": "-845948670",
+                "id": 325
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Wasserstrassenklassen",
+              "layerBodId": "1844157822",
+              "id": 326
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Text",
+              "layerBodId": "-757531640",
+              "id": 327,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gewaessernamen",
+                "layerBodId": "-1401044780",
+                "id": 328
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Fliessrichtung",
+                "layerBodId": "-437757901",
+                "id": 329
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kilometermarken",
+                "layerBodId": "-605534909",
+                "id": 330
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Ortschaften",
+                "layerBodId": "-1548405898",
+                "id": 331
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "1839705580",
+              "id": 332
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: IENC Binnennavigationskarten",
+          "id": 11,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "InlandENCs der WSV",
+            "layerBodId": "-439576833",
+            "id": 12,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "IENC Blattschnitte",
+              "layerBodId": "2101623002",
+              "id": 13
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "IENC Karten (usage Harbour)",
+              "layerBodId": "-1210917100",
+              "id": 14
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "IENC Karten",
+              "layerBodId": "853158912",
+              "id": 15
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: DBWK2 Digit.BWaStrKarte",
+          "id": 456,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "DBWK2-WMS",
+            "layerBodId": "998641924",
+            "id": 457,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK2",
+              "layerBodId": "-779924547",
+              "id": 458,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Festpunkte u. Ordnungssysteme (bwp)",
+                "layerBodId": "2009773082",
+                "id": 459
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Morphologie / Hydrologie (mor)",
+                "layerBodId": "2009783407",
+                "id": 460
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Anlagen an Wasserstrassen (anl)",
+                "layerBodId": "2009771838",
+                "id": 461
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Liegenschaften (lik)",
+                "layerBodId": "2009782253",
+                "id": 462
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Topographie (top)",
+                "layerBodId": "2009790132",
+                "id": 463
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Automatisierte Liegenschaftskarte (alk)",
+                "layerBodId": "2009771775",
+                "id": 464
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Umwelt (umw)",
+                "layerBodId": "2009791038",
+                "id": 465
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bauwerkskontrolle/ Bauwerksinspektion (ins)",
+                "layerBodId": "2009779533",
+                "id": 466
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK2-Blattschnitt",
+              "layerBodId": "-1224036758",
+              "id": 467
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK2-DGN-Info",
+              "layerBodId": "-270502178",
+              "id": 468
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK2-Blattnamen (DGN-Namen)",
+              "layerBodId": "-1445050918",
+              "id": 469
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "-2063742458",
+              "id": 470
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: WSV-Luftbilder",
+          "id": 364,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Luftbilder der WSV",
+            "layerBodId": "402458520",
+            "id": 365,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "CIR-Luftbilder",
+              "layerBodId": "1047845894",
+              "id": 366,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "CIR-Luftbilder WSV",
+                "layerBodId": "-761580824",
+                "id": 367
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Aktualität CIR-Luftbilder WSV",
+                "layerBodId": "391483512",
+                "id": 368
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem CIR-Luftbilder WSV",
+                "layerBodId": "-509455966",
+                "id": 369
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Luftbilder WSV",
+              "layerBodId": "1047865428",
+              "id": 370,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Luftbilder WSV",
+                "layerBodId": "223399463",
+                "id": 371
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Aktualität Luftbilder WSV",
+                "layerBodId": "-3450357",
+                "id": 372
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem Luftbilder WSV",
+                "layerBodId": "1714110517",
+                "id": 373
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "377160963",
+              "id": 374
+            }]
+          }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: LIS-Karte",
+          "id": 814,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "LIS Karte",
+            "layerBodId": "lis",
+            "id": 815,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Inanspruchnahmen",
+              "layerBodId": "lis_inanspruch",
+              "id": 816,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "(Ersatz-) und Investitionsmaßnahmen",
+                "layerBodId": "lis_ersatz_invest",
+                "id": 817
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Flächenzugang/ Flächenabgang",
+                "layerBodId": "lis_flaechenzuab",
+                "id": 818
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kompensation",
+                "layerBodId": "lis_kompensation",
+                "id": 819
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Inanspruchnahmearten",
+                "layerBodId": "lis_weitere_inanspruch",
+                "id": 820
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Öff. rechtl. Verfahren",
+              "layerBodId": "lis_oerverfahren",
+              "id": 821,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Öff. rechtl. Verfahren. Flächen",
+                "layerBodId": "lis_oerverfahren_poly",
+                "id": 822
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Öff. rechtl. Verfahren. Umringe",
+                "layerBodId": "lis_ersatz_invest_linie",
+                "id": 823
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Belastungen",
+              "layerBodId": "lis_belastung",
+              "id": 824,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Naturschutz",
+                "layerBodId": "lis_belastung_naturschutz",
+                "id": 825
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Fischerei",
+                "layerBodId": "lis_belastung_fischerei",
+                "id": 826
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Belastungen",
+                "layerBodId": "lis_belastung_weitere",
+                "id": 827
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Nutzungen",
+              "layerBodId": "lis_nutzung",
+              "id": 828,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Wassersport",
+                "layerBodId": "lis_nutzung_wassersport",
+                "id": 829
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Landwirtschaft",
+                "layerBodId": "lis_nutzung_landwirtschaft",
+                "id": 830
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Jagd",
+                "layerBodId": "lis_nutzung_jagd",
+                "id": 831
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Fischerei",
+                "layerBodId": "lis_nutzung_fischerei",
+                "id": 832
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Leitung",
+                "layerBodId": "lis_nutzung_leitung",
+                "id": 833
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Weitere Nutzungsarten",
+                "layerBodId": "lis_nutzung_weitere",
+                "id": 834
+              }]
+            },{
+              "category": "layer",
+              "staging": "prod",
+              "label": "WSV-Flurstücke",
+              "layerBodId": "lis_kataster",
+              "id": 835
+            }]
+		  }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: PEGELONLINE (WSV/ITZBund)",
           "id": 3,
           "children": [{
             "category": "layer",
@@ -70,34 +533,1641 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
-          "label": "WSV: IENC-WMS",
-          "id": 11,
+          "label": "WSV: WADABA Wasserstr.Datenbank",
+          "id": 488,
           "children": [{
             "category": "layer",
             "staging": "prod",
-            "label": "InlandENCs der WSV",
-            "layerBodId": "-439576833",
-            "id": 12,
+            "label": "Wasserstraßendatenbank der WSV",
+            "layerBodId": "681631263",
+            "id": 489,
             "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "IENC Blattschnitte",
-              "layerBodId": "2101623002",
-              "id": 13
+              "label": "Gewässerbett",
+              "layerBodId": "1242565298",
+              "id": 490,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "112 Kanalbrückenanlagen",
+                "layerBodId": "-1692669771",
+                "id": 491
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "113 Schifffahrtstunnelanlagen",
+                "layerBodId": "1810952054",
+                "id": 492
+              }]
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "IENC Karten (usage Harbour)",
-              "layerBodId": "-1210917100",
-              "id": 14
+              "label": "Bauten des Gewässerbetts",
+              "layerBodId": "-839261584",
+              "id": 493,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "122 Flussbuhnen",
+                "layerBodId": "872507382",
+                "id": 494
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "123 Grundschwellen, Sohlenschwellen",
+                "layerBodId": "-908170070",
+                "id": 495
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "124 Kiesfänge, Sandfänge",
+                "layerBodId": "2117753417",
+                "id": 496
+              }]
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "IENC Karten",
-              "layerBodId": "853158912",
-              "id": 15
+              "label": "Küstenschutzwerke",
+              "layerBodId": "963479441",
+              "id": 497,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "143 Seebuhnen",
+                "layerBodId": "609479546",
+                "id": 498
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Stauanlagen",
+              "layerBodId": "-65301794",
+              "id": 499,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "211 Talsperrenanlagen",
+                "layerBodId": "1529012813",
+                "id": 500
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "212 Pumpspeicheranlagen",
+                "layerBodId": "919299064",
+                "id": 501
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "213 Wehranlagen, Wasserverteilungsanlagen",
+                "layerBodId": "-626183479",
+                "id": 502
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Anlagen zum Speisen und Entlasten eines Gewässers",
+              "layerBodId": "870488062",
+              "id": 503,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "221 Speisungspumpwerksanlagen",
+                "layerBodId": "824957923",
+                "id": 504
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "222 Einlassbauwerke, Auslassbauwerke, Überläufe",
+                "layerBodId": "-928787283",
+                "id": 505
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "223 Speicherbecken, Hochwasserrückhaltebecken",
+                "layerBodId": "-405949396",
+                "id": 506
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Sperrwerke, Hochwasser- und Sicherheitstore",
+              "layerBodId": "254733585",
+              "id": 507,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "231 Sperrwerksanlagen",
+                "layerBodId": "-118359121",
+                "id": 508
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "232 Hochwassersperrtoranlagen",
+                "layerBodId": "1835316961",
+                "id": 509
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "233 Sicherheitstoranlagen",
+                "layerBodId": "985745407",
+                "id": 510
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Abstiegsanlagen",
+              "layerBodId": "1641113801",
+              "id": 511,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "311 Schiffsschleusenanlagen",
+                "layerBodId": "-605776835",
+                "id": 512
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "312 Schiffshebewerksanlagen",
+                "layerBodId": "-696748343",
+                "id": 513
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "313 Bootsschleusenanlagen",
+                "layerBodId": "-2963332",
+                "id": 514
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "314 Bootsgassenanlagen",
+                "layerBodId": "-613002619",
+                "id": 515
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Anlagen im/am Gewässer",
+              "layerBodId": "-1989260325",
+              "id": 516,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "321 Ausweichstellen",
+                "layerBodId": "-1270854607",
+                "id": 517
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "322 Wendestellen",
+                "layerBodId": "835429063",
+                "id": 518
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "323 Liegestellen, Ankerstellen, Reeden, Koppelstellen",
+                "layerBodId": "-1281137878",
+                "id": 519
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "324 Schutzhäfen, Liegehäfen, feste Bootsschuppen",
+                "layerBodId": "240750900",
+                "id": 520
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "741 Bauhäfen, Liegehäfen, feste Bootsschuppen (Regiebetrieb)",
+                "layerBodId": "1571080977",
+                "id": 521
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Anlagen für Güterumschlag und Personenverkehr",
+              "layerBodId": "-248345301",
+              "id": 522,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "331 Umschlagstellen, Ersatzumschlagstellen",
+                "layerBodId": "464896416",
+                "id": 523
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "332 Leichterstellen",
+                "layerBodId": "-50550298",
+                "id": 524
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "333 Anlegestellen mit festen Landebrücken/Landestegen",
+                "layerBodId": "948474061",
+                "id": 525
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "747 Liegestellen und Anlegestellen mit festen Landebrücken/Landestegen (Regiebetrieb)",
+                "layerBodId": "750544577",
+                "id": 526
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "334 Hafenanlagen",
+                "layerBodId": "1101263987",
+                "id": 527
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "335 Anlegestellen mit schwimmenden Landebrücken/Landestegen",
+                "layerBodId": "677859909",
+                "id": 528
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "742 Schwimmdocks, schwimmende Bootsschuppen und Anlegestellen mit schwimmenden Landebrücken/Landestegen",
+                "layerBodId": "696976516",
+                "id": 529
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Überführungsanlagen",
+              "layerBodId": "-404604755",
+              "id": 530,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "511 Bahnbrückenanlagen",
+                "layerBodId": "411715229",
+                "id": 531
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "512 Straßenbrückenanlagen, Wegebrückenanlagen",
+                "layerBodId": "-1990074190",
+                "id": 532
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "513 Bahn- und Straßenbrückenanlagen",
+                "layerBodId": "1958957841",
+                "id": 533
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "514 Fußgängerbrückenanlagen, Fußgängerstegeanlagen",
+                "layerBodId": "415402599",
+                "id": 534
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "515 Materialtransportbrückenanlagen, Seilbahnanlagen",
+                "layerBodId": "-552962407",
+                "id": 535
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "516 Freileitungen",
+                "layerBodId": "1377965992",
+                "id": 536
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "517 Rohrbrückenanlagen, Kabelbrückenanlagen",
+                "layerBodId": "-97230661",
+                "id": 537
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "höhengleiche Kreuzungsanlagen",
+              "layerBodId": "137441249",
+              "id": 538,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "521 Fähranlagen",
+                "layerBodId": "-1706477291",
+                "id": 539
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Unterführungsanlagen",
+              "layerBodId": "-2104647274",
+              "id": 540,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "531 Bahntunnelanlagen, Bahnunterführungsanlagen",
+                "layerBodId": "-738342842",
+                "id": 541
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "532 Straßentunnelanlagen, Straßenunterführungsanlagen, Wegeunterführungsanlagen",
+                "layerBodId": "1962494066",
+                "id": 542
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "533 Bahn- und Straßentunnelanlagen, Bahn- und Straßenunterführungsanlagen",
+                "layerBodId": "1480024506",
+                "id": 543
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "534 Fußgängertunnelanlagen, Fußgängerunterführungsanlagen",
+                "layerBodId": "-501603489",
+                "id": 544
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "535 Durchlassanlagen",
+                "layerBodId": "1657123214",
+                "id": 545
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "536 Rohrdükeranlagen, Kabledükeranlagen, Rohr- und Kabeldükeranlagen",
+                "layerBodId": "-959975420",
+                "id": 546
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "537 Dükeranlagen",
+                "layerBodId": "-77565649",
+                "id": 547
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Bewässerungs- und Entwässerungsanlagen",
+              "layerBodId": "1163739487",
+              "id": 548,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "614 Einleitungsbauwerke von Entwässerungsanlagen, Sielanlagen",
+                "layerBodId": "-1117681509",
+                "id": 549
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "615 Schöpfwerksanlagen",
+                "layerBodId": "1594050795",
+                "id": 550
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Entnahme- und Einleitungsbauwerke",
+              "layerBodId": "-284137095",
+              "id": 551,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "621 Entnahmebauwerke",
+                "layerBodId": "-946578235",
+                "id": 552
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "622 Einleitungsbauwerke",
+                "layerBodId": "1320827008",
+                "id": 553
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Wasserkraftanlagen",
+              "layerBodId": "-1847606378",
+              "id": 554,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "651 Wasserkraftanlagen",
+                "layerBodId": "847074328",
+                "id": 555
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "hydrologische Messstellen",
+              "layerBodId": "-1920015750",
+              "id": 556,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "250 Anlagen für hydrologische Messstellen",
+                "layerBodId": "-1490219508",
+                "id": 557
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "251 Wasserstandsmesstellen",
+                "layerBodId": "1248271238",
+                "id": 558
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "252 Abflussmessstellen, Durchflussmessstellen",
+                "layerBodId": "-914830270",
+                "id": 559
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "253 Wasserbeschaffenheitsmessstellen",
+                "layerBodId": "1035528049",
+                "id": 560
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "254 hydrometeorologische Messstellen",
+                "layerBodId": "-573569322",
+                "id": 561
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "1540543020",
+              "id": 562
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Übersichtskarte (alle Objekte)",
+              "layerBodId": "-1320829899",
+              "id": 563
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: DBWK1000 Digit.BWaStrKarte 1:1Mio",
+          "id": 293,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Dig. Bundeswasserstr.Karte 1:1Mio - DBWK1000 (DLZ-IT BMVBS)",
+            "layerBodId": "1839887935",
+            "id": 294,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK1000",
+              "layerBodId": "1357099264",
+              "id": 295,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "DBWK",
+                "layerBodId": "1765288225",
+                "id": 296
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright",
+                "layerBodId": "2132422616",
+                "id": 297
+              }]
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: TK Topograf.Karten",
+          "id": 375,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Übersichts- u. Top.Karten (DLZ-IT BVBS)",
+            "layerBodId": "1702688249",
+            "id": 376,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Relief",
+              "layerBodId": "1211128731",
+              "id": 377,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "SRTM/GTopo niedrigaufloesend",
+                "layerBodId": "-1187936589",
+                "id": 378
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "SRTM/GTopo hochaufloesend",
+                "layerBodId": "325807487",
+                "id": 379
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Europ. Grenzen",
+                "layerBodId": "-418437224",
+                "id": 380
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Atlantik,Nord-/Ostseee,Mittelmeer",
+                "layerBodId": "1319579436",
+                "id": 381
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "dbwk1000",
+              "layerBodId": "-1082954597",
+              "id": 382,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr",
+                "layerBodId": "739784655",
+                "id": 383
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "dlm1000",
+              "layerBodId": "-2114911206",
+              "id": 384,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Meer",
+                "layerBodId": "470384335",
+                "id": 385
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Watt",
+                "layerBodId": "470678868",
+                "id": 386
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Orte",
+                "layerBodId": "470456862",
+                "id": 387
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Grenzen der Bundesländer",
+                "layerBodId": "414639684",
+                "id": 388
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr (Flächen)",
+                "layerBodId": "-1493924664",
+                "id": 389
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Inseln",
+                "layerBodId": "961982979",
+                "id": 390
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Flüsse (BWaStr und weitere)",
+                "layerBodId": "518257259",
+                "id": 391
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr (Linien)",
+                "layerBodId": "297449777",
+                "id": 392
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bundesautobahnen",
+                "layerBodId": "1867417054",
+                "id": 393
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TK",
+              "layerBodId": "916689761",
+              "id": 394,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK1000",
+                "layerBodId": "1242561344",
+                "id": 395
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK500",
+                "layerBodId": "1702654452",
+                "id": 396
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK200",
+                "layerBodId": "1702651569",
+                "id": 397
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK100",
+                "layerBodId": "1702650608",
+                "id": 398
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK50",
+                "layerBodId": "470566332",
+                "id": 399
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK25",
+                "layerBodId": "470566244",
+                "id": 400
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TKBlattschnitte",
+              "layerBodId": "-1672805121",
+              "id": 401,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK1000Blattschnitt",
+                "layerBodId": "1149356635",
+                "id": 402
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK500Blattschnitt",
+                "layerBodId": "594991143",
+                "id": 403
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK200Blattschnitt",
+                "layerBodId": "2126593674",
+                "id": 404
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK100Blattschnitt",
+                "layerBodId": "-1657839445",
+                "id": 405
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK50Blattschnitt",
+                "layerBodId": "263940447",
+                "id": 406
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK25Blattschnitt",
+                "layerBodId": "1803426487",
+                "id": 407
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TK",
+              "layerBodId": "1844421012",
+              "id": 408,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_1000",
+                "layerBodId": "778914437",
+                "id": 409
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_500",
+                "layerBodId": "440772111",
+                "id": 410
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_200",
+                "layerBodId": "440769228",
+                "id": 411
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_100",
+                "layerBodId": "440768267",
+                "id": 412
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_50",
+                "layerBodId": "-678518207",
+                "id": 413
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_25",
+                "layerBodId": "-678518295",
+                "id": 414
+              }]
+            }]
+          }]
+        },
+		{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Gradnetz DE",
+          "id": 298,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Gradnetz Deutschland (DLZ-IT der BVBS)",
+            "layerBodId": "1808992453",
+            "id": 299,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Gradnetze_Beschriftung",
+              "layerBodId": "264382081",
+              "id": 300,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_1",
+                "layerBodId": "-497111507",
+                "id": 301
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_1",
+                "layerBodId": "-497124961",
+                "id": 302
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_5",
+                "layerBodId": "-497111503",
+                "id": 303
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_5",
+                "layerBodId": "-497124957",
+                "id": 304
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_10",
+                "layerBodId": "1769412515",
+                "id": 305
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_10",
+                "layerBodId": "1768995441",
+                "id": 306
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_30",
+                "layerBodId": "1769412577",
+                "id": 307
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_30",
+                "layerBodId": "1768995503",
+                "id": 308
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_60",
+                "layerBodId": "1769412670",
+                "id": 309
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetze_Beschriftung_60",
+                "layerBodId": "1768995596",
+                "id": 310
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "crs-info",
+                "layerBodId": "1360067697",
+                "id": 311
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Gradnetz",
+              "layerBodId": "978359777",
+              "id": 312,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetz_1",
+                "layerBodId": "-1335045673",
+                "id": 313
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetz_5",
+                "layerBodId": "-1335045669",
+                "id": 314
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetz_10",
+                "layerBodId": "1563257145",
+                "id": 315
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetz_30",
+                "layerBodId": "1563257207",
+                "id": 316
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gradnetz_60",
+                "layerBodId": "1563257300",
+                "id": 317
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "2095397261",
+              "id": 318
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: UTM-Zonen, Gauss-Krüger-Streifen",
+          "id": 333,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Gauss-Krueger-Streifen und UTM-Zonen Deutschland (DLZ-IT BVBS)",
+            "layerBodId": "307955461",
+            "id": 334,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Zonen",
+              "layerBodId": "893806370",
+              "id": 335,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "UTM-Zonen",
+                "layerBodId": "-1466973100",
+                "id": 336
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "UTM-Zonen_Text",
+                "layerBodId": "1668468280",
+                "id": 337
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "GK-Streifen",
+                "layerBodId": "-1496024866",
+                "id": 338
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "GK-Streifen_Text",
+                "layerBodId": "-1015324690",
+                "id": 339
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "-1839662905",
+              "id": 340
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Gewäss.Einzugsbebiete",
+          "id": 341,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Einzugsgebiete Gewässer DE",
+            "layerBodId": "-430394885",
+            "id": 342,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Meer",
+              "layerBodId": "1269074325",
+              "id": 343,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Einzugsgebiete",
+                "layerBodId": "-2097426622",
+                "id": 344
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bezeichnung Einzugsgebiete",
+                "layerBodId": "-753164952",
+                "id": 345
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Fluss",
+              "layerBodId": "680357823",
+              "id": 346,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Einzugsgebiete",
+                "layerBodId": "-1176032873",
+                "id": 347
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bezeichnung Einzugsgebiete",
+                "layerBodId": "-998157576",
+                "id": 348
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "1174843543",
+              "id": 349
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: DBWK25-500 Digit.BWaStrKarte 1:25.000-500.000",
+          "id": 350,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "DBWK25-500",
+            "layerBodId": "-583888796",
+            "id": 351,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK100",
+              "layerBodId": "315221217",
+              "id": 352,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "DBWK100 WSD Nord",
+                "layerBodId": "552940651",
+                "id": 353
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "DBWK100 WSD Ost",
+                "layerBodId": "1126216536",
+                "id": 354
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "DBWK100 WSD Nordwest",
+                "layerBodId": "-2125027174",
+                "id": 355
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "DBWK25",
+              "layerBodId": "-1113557226",
+              "id": 356,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "DBWK25",
+                "layerBodId": "-160535606",
+                "id": 357
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Kachelsystem",
+              "layerBodId": "1230823471",
+              "id": 358,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem DBWK25",
+                "layerBodId": "1196367554",
+                "id": 359
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem DBWK100 WSD Nord",
+                "layerBodId": "-910287177",
+                "id": 360
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem DBWK100 WSD Ost",
+                "layerBodId": "-1414836340",
+                "id": 361
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Kachelsystem DBWK100 WSD Nordwest",
+                "layerBodId": "1808370918",
+                "id": 362
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "-939899226",
+              "id": 363
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Geograf. Namen, Verwaltungsgrenzen",
+          "id": 473,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Gemeindenamen, Verwaltungsgrenzen (wms_gn-vg)",
+            "layerBodId": "401190877",
+            "id": 474,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Grenzen",
+              "layerBodId": "-761861609",
+              "id": 475,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bundeslaender bl",
+                "layerBodId": "-201257470",
+                "id": 476
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bundeslaender gr",
+                "layerBodId": "-201257309",
+                "id": 477
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Orte",
+              "layerBodId": "-1783601716",
+              "id": 478,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Orte (M 1:100.000)",
+                "layerBodId": "1844655527",
+                "id": 479
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Orte (M 1:1.000.000)",
+                "layerBodId": "1349746537",
+                "id": 480
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Orte ( > M 1:1.000.000)",
+                "layerBodId": "-1534487190",
+                "id": 481
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "-526892881",
+              "id": 482
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Top.Karten ohne automat. Layerumschaltung",
+          "id": 415,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Topografische Karten der WSV",
+            "layerBodId": "60605220",
+            "id": 416,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Relief",
+              "layerBodId": "1846162384",
+              "id": 417,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "SRTM/GTopo niedrigaufloesend",
+                "layerBodId": "1004411176",
+                "id": 418
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "SRTM/GTopo hochaufloesend",
+                "layerBodId": "106166058",
+                "id": 419
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Europ. Grenzen",
+                "layerBodId": "-1816397107",
+                "id": 420
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Atlantik,Nord-/Ostseee,Mittelmeer",
+                "layerBodId": "-1423212767",
+                "id": 421
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "dbwk1000",
+              "layerBodId": "-700970096",
+              "id": 422,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr",
+                "layerBodId": "1374818308",
+                "id": 423
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "dlm1000",
+              "layerBodId": "391262853",
+              "id": 424,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Meer",
+                "layerBodId": "1802887236",
+                "id": 425
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Watt",
+                "layerBodId": "1803181769",
+                "id": 426
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Orte",
+                "layerBodId": "1802959763",
+                "id": 427
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Grenzen der Bundesländer",
+                "layerBodId": "-1865442311",
+                "id": 428
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr (Flächen)",
+                "layerBodId": "-1881008077",
+                "id": 429
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Inseln",
+                "layerBodId": "1597016632",
+                "id": 430
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Flüsse (BWaStr und weitere)",
+                "layerBodId": "-1995659744",
+                "id": 431
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "BWaStr (Linien)",
+                "layerBodId": "-717477028",
+                "id": 432
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Bundesautobahnen",
+                "layerBodId": "-1542234157",
+                "id": 433
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TK",
+              "layerBodId": "-382480874",
+              "id": 434,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK1000",
+                "layerBodId": "1877594997",
+                "id": 435
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK500",
+                "layerBodId": "60571423",
+                "id": 436
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK200",
+                "layerBodId": "60568540",
+                "id": 437
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK100",
+                "layerBodId": "60567579",
+                "id": 438
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK50",
+                "layerBodId": "1803069233",
+                "id": 439
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK25",
+                "layerBodId": "1803069145",
+                "id": 440
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TKBlattschnitte",
+              "layerBodId": "1607235370",
+              "id": 441,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK1000Blattschnitt",
+                "layerBodId": "206680134",
+                "id": 442
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK500Blattschnitt",
+                "layerBodId": "980224220",
+                "id": 443
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK200Blattschnitt",
+                "layerBodId": "-1783140545",
+                "id": 444
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK100Blattschnitt",
+                "layerBodId": "-1272606368",
+                "id": 445
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK50Blattschnitt",
+                "layerBodId": "1938935306",
+                "id": 446
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "TK25Blattschnitt",
+                "layerBodId": "-816545950",
+                "id": 447
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TK",
+              "layerBodId": "-1815512631",
+              "id": 448,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_1000",
+                "layerBodId": "-1841058000",
+                "id": 449
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_500",
+                "layerBodId": "1326088196",
+                "id": 450
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_200",
+                "layerBodId": "1326085313",
+                "id": 451
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_100",
+                "layerBodId": "1326084352",
+                "id": 452
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_50",
+                "layerBodId": "-1065601620",
+                "id": 453
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "copyright_TK_25",
+                "layerBodId": "-1065601708",
+                "id": 454
+              }]
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Hochwasser 2013",
+          "id": 483,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "überschwemmte Flächen Hochwasser Juni 2013",
+            "layerBodId": "2055090177",
+            "id": 484,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Überschwemmungsfläche Juni 2013",
+              "layerBodId": "-675947077",
+              "id": 485
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "copyright",
+              "layerBodId": "-1108460631",
+              "id": 486
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: INSPIRE-TN-W",
+          "id": 565,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Wasserstraßenverkehrsnetz",
+            "id": 566,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Wasserstraßenverbindung",
+              "id": 567,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Binnenwasserstraße",
+                "layerBodId": "-1502752666",
+                "id": 568
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Verkehrsknoten/-punkt",
+              "id": 569,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Wasserstraßenknoten",
+                "layerBodId": "-997405079",
+                "id": 570
+              }]
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Hafengebiet",
+              "layerBodId": "-1336924479",
+              "id": 571
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Kilometermarken",
+              "layerBodId": "2114389429",
+              "id": 572
             }]
           }]
         },
@@ -2044,34 +4114,20 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
-          "label": "WSV: DBWK1000-WMS",
-          "id": 293,
+          "label": "WSV: GST-/VEMAGS-Karte",
+          "id": 836,
           "children": [{
             "category": "layer",
             "staging": "prod",
-            "label": "Dig. Bundeswasserstr.Karte 1:1Mio - DBWK1000 (DLZ-IT BMVBS)",
-            "layerBodId": "1839887935",
-            "id": 294,
+            "label": "GST-WSV-WMS",
+            "layerBodId": "gst_vemags",
+            "id": 837,
             "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "DBWK1000",
-              "layerBodId": "1357099264",
-              "id": 295,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "DBWK",
-                "layerBodId": "1765288225",
-                "id": 296
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright",
-                "layerBodId": "2132422616",
-                "id": 297
-              }]
+              "label": "[512,513] Straßenbrückenanlagen, Wegebrückenanlagen, Bahn- und Straßenbrückenanlagen",
+              "layerBodId": "gst_strassen_bruecken",
+              "id": 838
             }]
           }]
         },
@@ -2079,1886 +4135,27 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
-          "label": "WSV: Netze-WMS",
-          "id": 298,
+          "label": "WSV: Sozialwerk BVBW e.V. Quartiere",
+          "id": 839,
           "children": [{
             "category": "layer",
             "staging": "prod",
-            "label": "Gradnetz Deutschland (DLZ-IT der BVBS)",
-            "layerBodId": "1808992453",
-            "id": 299,
+            "label": "Demo Sozialwerksquartiere WMS",
+            "layerBodId": "sozwk",
+            "id": 840,
             "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "Gradnetze_Beschriftung",
-              "layerBodId": "264382081",
-              "id": 300,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_1",
-                "layerBodId": "-497111507",
-                "id": 301
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_1",
-                "layerBodId": "-497124961",
-                "id": 302
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_5",
-                "layerBodId": "-497111503",
-                "id": 303
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_5",
-                "layerBodId": "-497124957",
-                "id": 304
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_10",
-                "layerBodId": "1769412515",
-                "id": 305
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_10",
-                "layerBodId": "1768995441",
-                "id": 306
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_30",
-                "layerBodId": "1769412577",
-                "id": 307
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_30",
-                "layerBodId": "1768995503",
-                "id": 308
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_60",
-                "layerBodId": "1769412670",
-                "id": 309
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetze_Beschriftung_60",
-                "layerBodId": "1768995596",
-                "id": 310
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "crs-info",
-                "layerBodId": "1360067697",
-                "id": 311
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Gradnetz",
-              "layerBodId": "978359777",
-              "id": 312,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetz_1",
-                "layerBodId": "-1335045673",
-                "id": 313
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetz_5",
-                "layerBodId": "-1335045669",
-                "id": 314
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetz_10",
-                "layerBodId": "1563257145",
-                "id": 315
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetz_30",
-                "layerBodId": "1563257207",
-                "id": 316
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gradnetz_60",
-                "layerBodId": "1563257300",
-                "id": 317
-              }]
+              "label": "Sozialwerksquartiere  (DEMO by ITZBund)",
+              "layerBodId": "sozwk_quatiere",
+              "id": 841
             },
             {
               "category": "layer",
               "staging": "prod",
               "label": "copyright",
-              "layerBodId": "2095397261",
-              "id": 318
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: BWaStr-WMS",
-          "id": 319,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Bundeswasserstrassen WMS (DLZ-IT)",
-            "layerBodId": "-368582521",
-            "id": 320,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Verkehrsnetz",
-              "layerBodId": "-1707758900",
-              "id": 321
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Organisation",
-              "layerBodId": "-932533067",
-              "id": 322,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Außenstellen",
-                "layerBodId": "-1936459979",
-                "id": 323
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aemter",
-                "layerBodId": "1612255955",
-                "id": 324
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aussenbezirke",
-                "layerBodId": "-845948670",
-                "id": 325
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Wasserstrassenklassen",
-              "layerBodId": "1844157822",
-              "id": 326
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Text",
-              "layerBodId": "-757531640",
-              "id": 327,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gewaessernamen",
-                "layerBodId": "-1401044780",
-                "id": 328
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Fliessrichtung",
-                "layerBodId": "-437757901",
-                "id": 329
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kilometermarken",
-                "layerBodId": "-605534909",
-                "id": 330
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Ortschaften",
-                "layerBodId": "-1548405898",
-                "id": 331
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "1839705580",
-              "id": 332
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: Zonen-WMS",
-          "id": 333,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Gauss-Krueger-Streifen und UTM-Zonen Deutschland (DLZ-IT BVBS)",
-            "layerBodId": "307955461",
-            "id": 334,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Zonen",
-              "layerBodId": "893806370",
-              "id": 335,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "UTM-Zonen",
-                "layerBodId": "-1466973100",
-                "id": 336
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "UTM-Zonen_Text",
-                "layerBodId": "1668468280",
-                "id": 337
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "GK-Streifen",
-                "layerBodId": "-1496024866",
-                "id": 338
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "GK-Streifen_Text",
-                "layerBodId": "-1015324690",
-                "id": 339
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "-1839662905",
-              "id": 340
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: GewEinzGeb-WMS",
-          "id": 341,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Einzugsgebiete Gewässer DE",
-            "layerBodId": "-430394885",
-            "id": 342,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Meer",
-              "layerBodId": "1269074325",
-              "id": 343,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Einzugsgebiete",
-                "layerBodId": "-2097426622",
-                "id": 344
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bezeichnung Einzugsgebiete",
-                "layerBodId": "-753164952",
-                "id": 345
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Fluss",
-              "layerBodId": "680357823",
-              "id": 346,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Einzugsgebiete",
-                "layerBodId": "-1176032873",
-                "id": 347
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bezeichnung Einzugsgebiete",
-                "layerBodId": "-998157576",
-                "id": 348
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "1174843543",
-              "id": 349
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: DBWK-25-500-WMS",
-          "id": 350,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "DBWK25-500",
-            "layerBodId": "-583888796",
-            "id": 351,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK100",
-              "layerBodId": "315221217",
-              "id": 352,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "DBWK100 WSD Nord",
-                "layerBodId": "552940651",
-                "id": 353
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "DBWK100 WSD Ost",
-                "layerBodId": "1126216536",
-                "id": 354
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "DBWK100 WSD Nordwest",
-                "layerBodId": "-2125027174",
-                "id": 355
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK25",
-              "layerBodId": "-1113557226",
-              "id": 356,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "DBWK25",
-                "layerBodId": "-160535606",
-                "id": 357
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Kachelsystem",
-              "layerBodId": "1230823471",
-              "id": 358,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem DBWK25",
-                "layerBodId": "1196367554",
-                "id": 359
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem DBWK100 WSD Nord",
-                "layerBodId": "-910287177",
-                "id": 360
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem DBWK100 WSD Ost",
-                "layerBodId": "-1414836340",
-                "id": 361
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem DBWK100 WSD Nordwest",
-                "layerBodId": "1808370918",
-                "id": 362
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "-939899226",
-              "id": 363
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: WSVLuftbilder-WMS",
-          "id": 364,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Luftbilder der WSV",
-            "layerBodId": "402458520",
-            "id": 365,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "CIR-Luftbilder",
-              "layerBodId": "1047845894",
-              "id": 366,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "CIR-Luftbilder WSV",
-                "layerBodId": "-761580824",
-                "id": 367
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aktualität CIR-Luftbilder WSV",
-                "layerBodId": "391483512",
-                "id": 368
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem CIR-Luftbilder WSV",
-                "layerBodId": "-509455966",
-                "id": 369
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Luftbilder WSV",
-              "layerBodId": "1047865428",
-              "id": 370,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Luftbilder WSV",
-                "layerBodId": "223399463",
-                "id": 371
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aktualität Luftbilder WSV",
-                "layerBodId": "-3450357",
-                "id": 372
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kachelsystem Luftbilder WSV",
-                "layerBodId": "1714110517",
-                "id": 373
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "377160963",
-              "id": 374
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: TK-WMS",
-          "id": 375,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Übersichts- u. Top.Karten (DLZ-IT BVBS)",
-            "layerBodId": "1702688249",
-            "id": 376,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Relief",
-              "layerBodId": "1211128731",
-              "id": 377,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "SRTM/GTopo niedrigaufloesend",
-                "layerBodId": "-1187936589",
-                "id": 378
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "SRTM/GTopo hochaufloesend",
-                "layerBodId": "325807487",
-                "id": 379
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Europ. Grenzen",
-                "layerBodId": "-418437224",
-                "id": 380
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Atlantik,Nord-/Ostseee,Mittelmeer",
-                "layerBodId": "1319579436",
-                "id": 381
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "dbwk1000",
-              "layerBodId": "-1082954597",
-              "id": 382,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr",
-                "layerBodId": "739784655",
-                "id": 383
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "dlm1000",
-              "layerBodId": "-2114911206",
-              "id": 384,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Meer",
-                "layerBodId": "470384335",
-                "id": 385
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Watt",
-                "layerBodId": "470678868",
-                "id": 386
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Orte",
-                "layerBodId": "470456862",
-                "id": 387
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Grenzen der Bundesländer",
-                "layerBodId": "414639684",
-                "id": 388
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr (Flächen)",
-                "layerBodId": "-1493924664",
-                "id": 389
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Inseln",
-                "layerBodId": "961982979",
-                "id": 390
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Flüsse (BWaStr und weitere)",
-                "layerBodId": "518257259",
-                "id": 391
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr (Linien)",
-                "layerBodId": "297449777",
-                "id": 392
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bundesautobahnen",
-                "layerBodId": "1867417054",
-                "id": 393
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TK",
-              "layerBodId": "916689761",
-              "id": 394,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK1000",
-                "layerBodId": "1242561344",
-                "id": 395
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK500",
-                "layerBodId": "1702654452",
-                "id": 396
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK200",
-                "layerBodId": "1702651569",
-                "id": 397
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK100",
-                "layerBodId": "1702650608",
-                "id": 398
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK50",
-                "layerBodId": "470566332",
-                "id": 399
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK25",
-                "layerBodId": "470566244",
-                "id": 400
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TKBlattschnitte",
-              "layerBodId": "-1672805121",
-              "id": 401,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK1000Blattschnitt",
-                "layerBodId": "1149356635",
-                "id": 402
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK500Blattschnitt",
-                "layerBodId": "594991143",
-                "id": 403
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK200Blattschnitt",
-                "layerBodId": "2126593674",
-                "id": 404
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK100Blattschnitt",
-                "layerBodId": "-1657839445",
-                "id": 405
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK50Blattschnitt",
-                "layerBodId": "263940447",
-                "id": 406
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK25Blattschnitt",
-                "layerBodId": "1803426487",
-                "id": 407
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TK",
-              "layerBodId": "1844421012",
-              "id": 408,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_1000",
-                "layerBodId": "778914437",
-                "id": 409
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_500",
-                "layerBodId": "440772111",
-                "id": 410
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_200",
-                "layerBodId": "440769228",
-                "id": 411
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_100",
-                "layerBodId": "440768267",
-                "id": 412
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_50",
-                "layerBodId": "-678518207",
-                "id": 413
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_25",
-                "layerBodId": "-678518295",
-                "id": 414
-              }]
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: TKAPPL-WMS",
-          "id": 415,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Topografische Karten der WSV",
-            "layerBodId": "60605220",
-            "id": 416,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Relief",
-              "layerBodId": "1846162384",
-              "id": 417,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "SRTM/GTopo niedrigaufloesend",
-                "layerBodId": "1004411176",
-                "id": 418
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "SRTM/GTopo hochaufloesend",
-                "layerBodId": "106166058",
-                "id": 419
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Europ. Grenzen",
-                "layerBodId": "-1816397107",
-                "id": 420
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Atlantik,Nord-/Ostseee,Mittelmeer",
-                "layerBodId": "-1423212767",
-                "id": 421
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "dbwk1000",
-              "layerBodId": "-700970096",
-              "id": 422,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr",
-                "layerBodId": "1374818308",
-                "id": 423
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "dlm1000",
-              "layerBodId": "391262853",
-              "id": 424,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Meer",
-                "layerBodId": "1802887236",
-                "id": 425
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Watt",
-                "layerBodId": "1803181769",
-                "id": 426
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Orte",
-                "layerBodId": "1802959763",
-                "id": 427
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Grenzen der Bundesländer",
-                "layerBodId": "-1865442311",
-                "id": 428
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr (Flächen)",
-                "layerBodId": "-1881008077",
-                "id": 429
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Inseln",
-                "layerBodId": "1597016632",
-                "id": 430
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Flüsse (BWaStr und weitere)",
-                "layerBodId": "-1995659744",
-                "id": 431
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "BWaStr (Linien)",
-                "layerBodId": "-717477028",
-                "id": 432
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bundesautobahnen",
-                "layerBodId": "-1542234157",
-                "id": 433
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TK",
-              "layerBodId": "-382480874",
-              "id": 434,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK1000",
-                "layerBodId": "1877594997",
-                "id": 435
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK500",
-                "layerBodId": "60571423",
-                "id": 436
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK200",
-                "layerBodId": "60568540",
-                "id": 437
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK100",
-                "layerBodId": "60567579",
-                "id": 438
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK50",
-                "layerBodId": "1803069233",
-                "id": 439
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK25",
-                "layerBodId": "1803069145",
-                "id": 440
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TKBlattschnitte",
-              "layerBodId": "1607235370",
-              "id": 441,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK1000Blattschnitt",
-                "layerBodId": "206680134",
-                "id": 442
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK500Blattschnitt",
-                "layerBodId": "980224220",
-                "id": 443
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK200Blattschnitt",
-                "layerBodId": "-1783140545",
-                "id": 444
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK100Blattschnitt",
-                "layerBodId": "-1272606368",
-                "id": 445
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK50Blattschnitt",
-                "layerBodId": "1938935306",
-                "id": 446
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "TK25Blattschnitt",
-                "layerBodId": "-816545950",
-                "id": 447
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TK",
-              "layerBodId": "-1815512631",
-              "id": 448,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_1000",
-                "layerBodId": "-1841058000",
-                "id": 449
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_500",
-                "layerBodId": "1326088196",
-                "id": 450
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_200",
-                "layerBodId": "1326085313",
-                "id": 451
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_100",
-                "layerBodId": "1326084352",
-                "id": 452
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_50",
-                "layerBodId": "-1065601620",
-                "id": 453
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "copyright_TK_25",
-                "layerBodId": "-1065601708",
-                "id": 454
-              }]
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: DBWK2-WMS",
-          "id": 456,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "DBWK2-WMS",
-            "layerBodId": "998641924",
-            "id": 457,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK2",
-              "layerBodId": "-779924547",
-              "id": 458,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Festpunkte u. Ordnungssysteme (bwp)",
-                "layerBodId": "2009773082",
-                "id": 459
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Morphologie / Hydrologie (mor)",
-                "layerBodId": "2009783407",
-                "id": 460
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Anlagen an Wasserstrassen (anl)",
-                "layerBodId": "2009771838",
-                "id": 461
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Liegenschaften (lik)",
-                "layerBodId": "2009782253",
-                "id": 462
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Topographie (top)",
-                "layerBodId": "2009790132",
-                "id": 463
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Automatisierte Liegenschaftskarte (alk)",
-                "layerBodId": "2009771775",
-                "id": 464
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Umwelt (umw)",
-                "layerBodId": "2009791038",
-                "id": 465
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bauwerkskontrolle/ Bauwerksinspektion (ins)",
-                "layerBodId": "2009779533",
-                "id": 466
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK2-Blattschnitt",
-              "layerBodId": "-1224036758",
-              "id": 467
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK2-DGN-Info",
-              "layerBodId": "-270502178",
-              "id": 468
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "DBWK2-Blattnamen (DGN-Namen)",
-              "layerBodId": "-1445050918",
-              "id": 469
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "-2063742458",
-              "id": 470
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: GN-VG-WMS",
-          "id": 473,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Gemeindenamen, Verwaltungsgrenzen (wms_gn-vg)",
-            "layerBodId": "401190877",
-            "id": 474,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Grenzen",
-              "layerBodId": "-761861609",
-              "id": 475,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bundeslaender bl",
-                "layerBodId": "-201257470",
-                "id": 476
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Bundeslaender gr",
-                "layerBodId": "-201257309",
-                "id": 477
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Orte",
-              "layerBodId": "-1783601716",
-              "id": 478,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Orte (M 1:100.000)",
-                "layerBodId": "1844655527",
-                "id": 479
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Orte (M 1:1.000.000)",
-                "layerBodId": "1349746537",
-                "id": 480
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Orte ( > M 1:1.000.000)",
-                "layerBodId": "-1534487190",
-                "id": 481
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "-526892881",
-              "id": 482
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: Hochwasser-2013-WMS",
-          "id": 483,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "überschwemmte Flächen Hochwasser Juni 2013",
-            "layerBodId": "2055090177",
-            "id": 484,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Überschwemmungsfläche Juni 2013",
-              "layerBodId": "-675947077",
-              "id": 485
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "-1108460631",
-              "id": 486
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: WADABA-WMS",
-          "id": 488,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Wasserstraßendatenbank der WSV",
-            "layerBodId": "681631263",
-            "id": 489,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Gewässerbett",
-              "layerBodId": "1242565298",
-              "id": 490,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "112 Kanalbrückenanlagen",
-                "layerBodId": "-1692669771",
-                "id": 491
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "113 Schifffahrtstunnelanlagen",
-                "layerBodId": "1810952054",
-                "id": 492
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Bauten des Gewässerbetts",
-              "layerBodId": "-839261584",
-              "id": 493,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "122 Flussbuhnen",
-                "layerBodId": "872507382",
-                "id": 494
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "123 Grundschwellen, Sohlenschwellen",
-                "layerBodId": "-908170070",
-                "id": 495
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "124 Kiesfänge, Sandfänge",
-                "layerBodId": "2117753417",
-                "id": 496
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Küstenschutzwerke",
-              "layerBodId": "963479441",
-              "id": 497,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "143 Seebuhnen",
-                "layerBodId": "609479546",
-                "id": 498
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Stauanlagen",
-              "layerBodId": "-65301794",
-              "id": 499,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "211 Talsperrenanlagen",
-                "layerBodId": "1529012813",
-                "id": 500
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "212 Pumpspeicheranlagen",
-                "layerBodId": "919299064",
-                "id": 501
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "213 Wehranlagen, Wasserverteilungsanlagen",
-                "layerBodId": "-626183479",
-                "id": 502
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Anlagen zum Speisen und Entlasten eines Gewässers",
-              "layerBodId": "870488062",
-              "id": 503,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "221 Speisungspumpwerksanlagen",
-                "layerBodId": "824957923",
-                "id": 504
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "222 Einlassbauwerke, Auslassbauwerke, Überläufe",
-                "layerBodId": "-928787283",
-                "id": 505
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "223 Speicherbecken, Hochwasserrückhaltebecken",
-                "layerBodId": "-405949396",
-                "id": 506
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Sperrwerke, Hochwasser- und Sicherheitstore",
-              "layerBodId": "254733585",
-              "id": 507,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "231 Sperrwerksanlagen",
-                "layerBodId": "-118359121",
-                "id": 508
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "232 Hochwassersperrtoranlagen",
-                "layerBodId": "1835316961",
-                "id": 509
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "233 Sicherheitstoranlagen",
-                "layerBodId": "985745407",
-                "id": 510
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Abstiegsanlagen",
-              "layerBodId": "1641113801",
-              "id": 511,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "311 Schiffsschleusenanlagen",
-                "layerBodId": "-605776835",
-                "id": 512
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "312 Schiffshebewerksanlagen",
-                "layerBodId": "-696748343",
-                "id": 513
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "313 Bootsschleusenanlagen",
-                "layerBodId": "-2963332",
-                "id": 514
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "314 Bootsgassenanlagen",
-                "layerBodId": "-613002619",
-                "id": 515
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Anlagen im/am Gewässer",
-              "layerBodId": "-1989260325",
-              "id": 516,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "321 Ausweichstellen",
-                "layerBodId": "-1270854607",
-                "id": 517
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "322 Wendestellen",
-                "layerBodId": "835429063",
-                "id": 518
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "323 Liegestellen, Ankerstellen, Reeden, Koppelstellen",
-                "layerBodId": "-1281137878",
-                "id": 519
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "324 Schutzhäfen, Liegehäfen, feste Bootsschuppen",
-                "layerBodId": "240750900",
-                "id": 520
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "741 Bauhäfen, Liegehäfen, feste Bootsschuppen (Regiebetrieb)",
-                "layerBodId": "1571080977",
-                "id": 521
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Anlagen für Güterumschlag und Personenverkehr",
-              "layerBodId": "-248345301",
-              "id": 522,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "331 Umschlagstellen, Ersatzumschlagstellen",
-                "layerBodId": "464896416",
-                "id": 523
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "332 Leichterstellen",
-                "layerBodId": "-50550298",
-                "id": 524
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "333 Anlegestellen mit festen Landebrücken/Landestegen",
-                "layerBodId": "948474061",
-                "id": 525
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "747 Liegestellen und Anlegestellen mit festen Landebrücken/Landestegen (Regiebetrieb)",
-                "layerBodId": "750544577",
-                "id": 526
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "334 Hafenanlagen",
-                "layerBodId": "1101263987",
-                "id": 527
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "335 Anlegestellen mit schwimmenden Landebrücken/Landestegen",
-                "layerBodId": "677859909",
-                "id": 528
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "742 Schwimmdocks, schwimmende Bootsschuppen und Anlegestellen mit schwimmenden Landebrücken/Landestegen",
-                "layerBodId": "696976516",
-                "id": 529
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Überführungsanlagen",
-              "layerBodId": "-404604755",
-              "id": 530,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "511 Bahnbrückenanlagen",
-                "layerBodId": "411715229",
-                "id": 531
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "512 Straßenbrückenanlagen, Wegebrückenanlagen",
-                "layerBodId": "-1990074190",
-                "id": 532
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "513 Bahn- und Straßenbrückenanlagen",
-                "layerBodId": "1958957841",
-                "id": 533
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "514 Fußgängerbrückenanlagen, Fußgängerstegeanlagen",
-                "layerBodId": "415402599",
-                "id": 534
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "515 Materialtransportbrückenanlagen, Seilbahnanlagen",
-                "layerBodId": "-552962407",
-                "id": 535
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "516 Freileitungen",
-                "layerBodId": "1377965992",
-                "id": 536
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "517 Rohrbrückenanlagen, Kabelbrückenanlagen",
-                "layerBodId": "-97230661",
-                "id": 537
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "höhengleiche Kreuzungsanlagen",
-              "layerBodId": "137441249",
-              "id": 538,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "521 Fähranlagen",
-                "layerBodId": "-1706477291",
-                "id": 539
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Unterführungsanlagen",
-              "layerBodId": "-2104647274",
-              "id": 540,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "531 Bahntunnelanlagen, Bahnunterführungsanlagen",
-                "layerBodId": "-738342842",
-                "id": 541
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "532 Straßentunnelanlagen, Straßenunterführungsanlagen, Wegeunterführungsanlagen",
-                "layerBodId": "1962494066",
-                "id": 542
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "533 Bahn- und Straßentunnelanlagen, Bahn- und Straßenunterführungsanlagen",
-                "layerBodId": "1480024506",
-                "id": 543
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "534 Fußgängertunnelanlagen, Fußgängerunterführungsanlagen",
-                "layerBodId": "-501603489",
-                "id": 544
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "535 Durchlassanlagen",
-                "layerBodId": "1657123214",
-                "id": 545
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "536 Rohrdükeranlagen, Kabledükeranlagen, Rohr- und Kabeldükeranlagen",
-                "layerBodId": "-959975420",
-                "id": 546
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "537 Dükeranlagen",
-                "layerBodId": "-77565649",
-                "id": 547
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Bewässerungs- und Entwässerungsanlagen",
-              "layerBodId": "1163739487",
-              "id": 548,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "614 Einleitungsbauwerke von Entwässerungsanlagen, Sielanlagen",
-                "layerBodId": "-1117681509",
-                "id": 549
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "615 Schöpfwerksanlagen",
-                "layerBodId": "1594050795",
-                "id": 550
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Entnahme- und Einleitungsbauwerke",
-              "layerBodId": "-284137095",
-              "id": 551,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "621 Entnahmebauwerke",
-                "layerBodId": "-946578235",
-                "id": 552
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "622 Einleitungsbauwerke",
-                "layerBodId": "1320827008",
-                "id": 553
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Wasserkraftanlagen",
-              "layerBodId": "-1847606378",
-              "id": 554,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "651 Wasserkraftanlagen",
-                "layerBodId": "847074328",
-                "id": 555
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "hydrologische Messstellen",
-              "layerBodId": "-1920015750",
-              "id": 556,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "250 Anlagen für hydrologische Messstellen",
-                "layerBodId": "-1490219508",
-                "id": 557
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "251 Wasserstandsmesstellen",
-                "layerBodId": "1248271238",
-                "id": 558
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "252 Abflussmessstellen, Durchflussmessstellen",
-                "layerBodId": "-914830270",
-                "id": 559
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "253 Wasserbeschaffenheitsmessstellen",
-                "layerBodId": "1035528049",
-                "id": 560
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "254 hydrometeorologische Messstellen",
-                "layerBodId": "-573569322",
-                "id": 561
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "1540543020",
-              "id": 562
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Übersichtskarte (alle Objekte)",
-              "layerBodId": "-1320829899",
-              "id": 563
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "WSV: INSPIRE-TN-W",
-          "id": 565,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Wasserstraßenverkehrsnetz",
-            "id": 566,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Wasserstraßenverbindung",
-              "id": 567,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Binnenwasserstraße",
-                "layerBodId": "-1502752666",
-                "id": 568
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Verkehrsknoten/-punkt",
-              "id": 569,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Wasserstraßenknoten",
-                "layerBodId": "-997405079",
-                "id": 570
-              }]
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Hafengebiet",
-              "layerBodId": "-1336924479",
-              "id": 571
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "Kilometermarken",
-              "layerBodId": "2114389429",
-              "id": 572
+              "layerBodId": "sozwk_copyright",
+              "id": 842
             }]
           }]
         }]
@@ -3988,8 +4185,59 @@
               "id": 578
             }]
           }]
-        },
-        {
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: TopPlus-Web-Open (geodatenzentrum.de)",
+          "id": 810,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "WMS TopPlus-Web-Open",
+            "id": 811,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web-Open",
+              "layerBodId": "toppluswebopen",
+              "id": 812
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web-Open Graustufen",
+              "layerBodId": "toppluswebgrauopen",
+              "id": 813
+            }]
+          }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: TopPlus-Web (geodatenzentrum.de)",
+          "id": 776,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Web Map Service TopPlus-Web",
+            "id": 777,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web",
+              "layerBodId": "1381342617",
+              "id": 778
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "TopPlus-Web Graustufen",
+              "layerBodId": "-836420283",
+              "id": 779
+            }]
+          }]
+        },{
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -4559,6 +4807,26 @@
           }]
         },
         {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: WebAtlasDE grau (geodatenzentrum.de)",
+          "id": 745,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "WebAtlasDE Layers",
+            "id": 746,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "WebAtlasDE Graustufen",
+              "layerBodId": "1745949389",
+              "id": 747
+            }]
+          }]
+        },
+		{
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -5142,26 +5410,6 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
-          "label": "D: WebAtlasDE grau (geodatenzentrum.de)",
-          "id": 745,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "WebAtlasDE Layers",
-            "id": 746,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "WebAtlasDE Graustufen",
-              "layerBodId": "1745949389",
-              "id": 747
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
           "label": "D: Points of Interest (POI, geodatenzentrum.de)",
           "id": 748,
           "children": [{
@@ -5352,33 +5600,6 @@
               "id": 775
             }]
           }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "D: TopPlus-Web (geodatenzentrum.de)",
-          "id": 776,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Web Map Service TopPlus-Web",
-            "id": 777,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "TopPlus-Web",
-              "layerBodId": "1381342617",
-              "id": 778
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "TopPlus-Web Graustufen",
-              "layerBodId": "-836420283",
-              "id": 779
-            }]
-          }]
         }]
       },
       {
@@ -5388,6 +5609,52 @@
         "label": "National, weitere",
         "id": 781,
         "children": [{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: Openstreetmap",
+          "id": 797,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "OpenStreetMap WMS",
+            "id": 798,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "OSM WMS",
+              "layerBodId": "1013108721",
+              "id": 799
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "OSM WMS DE",
+              "layerBodId": "-1360092110",
+              "id": 800
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "OSM DE",
+              "layerBodId": "217517889",
+              "id": 801
+            }]
+          }]
+        },{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: OpenSeaMap",
+          "id": 795,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "OSeaM WMS",
+            "layerBodId": "-852784967",
+            "id": 796
+          }]
+        },{
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -5476,55 +5743,7 @@
               "id": 794
             }]
           }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "D: OSEAM-WMS",
-          "id": 795,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "OSeaM WMS",
-            "layerBodId": "-852784967",
-            "id": 796
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "D: OSM-WMS",
-          "id": 797,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "OpenStreetMap WMS",
-            "id": 798,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "OSM WMS",
-              "layerBodId": "1013108721",
-              "id": 799
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "OSM WMS DE",
-              "layerBodId": "-1360092110",
-              "id": 800
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "OSM DE",
-              "layerBodId": "217517889",
-              "id": 801
-            }]
-          }]
-        },
+        },    
         {
           "category": "cat71",
           "staging": "prod",
@@ -5570,5 +5789,5 @@
       }]
     }
   },
-  "last_id": 810
+  "last_id": 842
 }

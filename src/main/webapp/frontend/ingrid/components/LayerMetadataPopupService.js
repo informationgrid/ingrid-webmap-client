@@ -1,22 +1,28 @@
 goog.provide('ga_layermetadatapopup_service');
 
-goog.require('ga_map_service');
+goog.require('ga_layers_service');
+goog.require('ga_maputils_service');
 goog.require('ga_popup');
 goog.require('ga_wms_service');
 
 (function() {
 
   var module = angular.module('ga_layermetadatapopup_service', [
-    'ga_map_service',
+    'ga_maputils_service',
+    'ga_layers_service',
     'ga_popup',
     'ga_wms_service',
+    // INGRID: Add html compile module
+    'angular-bind-html-compile',
     'pascalprecht.translate'
   ]);
 
   module.provider('gaLayerMetadataPopup', function() {
+    // INGRID: Add 'gaGlobalOptions'
     this.$get = function($translate, $rootScope, $sce, $q, gaPopup, gaLayers,
-        gaMapUtils, gaWms, gaLang) {
-      var popupContent = '<div ng-bind-html="options.result.html"></div>';
+        gaMapUtils, gaWms, gaLang, $window, gaGlobalOptions) {
+      // INGRID: Change html attribute to 'bind-html-compile'
+      var popupContent = '<div bind-html-compile="options.result.html"></div>';
 
       // Called to update the content
       var updateContent = function(popup, layer) {
@@ -29,7 +35,7 @@ goog.require('ga_wms_service');
         }
         */
         var id = layer.bodId;
-        if (id == undefined) {
+        if (id === undefined) {
           id = layer.id;
         }
         // INGRID: Encode id
@@ -48,56 +54,33 @@ goog.require('ga_wms_service');
             getMetaDataOfLayerWithLegend(encodeURIComponent(id));
         }
         return promise.then(function(resp) {
-          // INGRID: Add replaces to localisation html.
-          var data = resp.data;
-          data = data
-            .replace('metadata_legend', $translate.instant('metadata_legend'))
-            .replace('metadata_information',
-              $translate.instant('metadata_information'))
-            .replace('metadata_service_title',
-              $translate.instant('metadata_service_title'))
-            .replace('metadata_service_id',
-              $translate.instant('metadata_service_id'))
-            .replace('metadata_service_abstract',
-              $translate.instant('metadata_service_abstract'))
-            .replace('metadata_service_fees',
-              $translate.instant('metadata_service_fees'))
-            .replace('metadata_service_accessconstraints',
-              $translate.instant('metadata_service_accessconstraints'))
-            .replace('metadata_service_contactperson',
-              $translate.instant('metadata_service_contactperson'))
-            .replace('metadata_service_organisation',
-              $translate.instant('metadata_service_organisation'))
-            .replace('metadata_service_addresse',
-              $translate.instant('metadata_service_addresse'))
-            .replace('metadata_service_city',
-              $translate.instant('metadata_service_city'))
-            .replace('metadata_service_country',
-              $translate.instant('metadata_service_country'))
-            .replace('metadata_service_phone',
-              $translate.instant('metadata_service_phone'))
-            .replace('metadata_service_fax',
-              $translate.instant('metadata_service_fax'))
-            .replace('metadata_service_mail',
-              $translate.instant('metadata_service_mail'))
-            .replace('metadata_service_resource',
-              $translate.instant('metadata_service_resource'))
-            .replace('metadata_service_url',
-              $translate.instant('metadata_service_url'))
-            .replace('metadata_service_url_link',
-              $translate.instant('metadata_service_url_link'));
-          popup.scope.options.result.html = $sce.trustAsHtml(data);
+          popup.scope.options.result.html = $sce.trustAsHtml(resp.data);
           popup.scope.options.lang = gaLang.get();
+
+          // INGRID: Add tabs
+          popup.scope.currentTab = 1;
+          popup.scope.showWMSTree = gaGlobalOptions.showLayerServiceName;
+
+          // INGRID: Tabs management stuff
+          popup.scope.activeTab = function(numTab) {
+              popup.scope.currentTab = numTab;
+          };
+
+          // INGRID: Tabs management stuff
+          popup.scope.getTabClass = function(numTab) {
+            return (numTab === popup.scope.currentTab) ? 'active' : '';
+          };
+
         }, function() {
           popup.scope.options.lang = undefined;
-          //FIXME: better error handling
-          alert('Could not retrieve information for ' + layer.id);
+          // FIXME: better error handling
+          $window.alert('Could not retrieve information for ' + layer.id);
         });
       };
 
       var updateContentLang = function(popup, layer, newLang, open) {
         if ((open || popup.scope.toggle) &&
-            popup.scope.options.lang != newLang) {
+            popup.scope.options.lang !== newLang) {
           return updateContent(popup, layer);
         }
         return $q.when();
@@ -108,9 +91,9 @@ goog.require('ga_wms_service');
 
         var create = function(layer) {
           var result = {html: ''},
-              popup;
+            popup;
 
-          //We assume popup does not exist yet
+          // We assume popup does not exist yet
           popup = gaPopup.create({
             title: $translate.instant('metadata_window_title'),
             destroyOnClose: false,
@@ -143,10 +126,10 @@ goog.require('ga_wms_service');
             if (popup.scope.toggle) {
               popup.close();
             } else {
-              updateContentLang(popup, layer, gaLang.get(), true)
-                  .then(function() {
-                popup.open();
-              });
+              updateContentLang(popup, layer, gaLang.get(), true).
+                  then(function() {
+                    popup.open();
+                  });
             }
           } else {
             create(layer);

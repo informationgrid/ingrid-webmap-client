@@ -3,6 +3,7 @@ goog.provide('ga_contextpopup_directive');
 goog.require('ga_event_service');
 goog.require('ga_networkstatus_service');
 goog.require('ga_permalink');
+goog.require('ga_height_service');
 goog.require('ga_reframe_service');
 goog.require('ga_what3words_service');
 goog.require('ga_window_service');
@@ -13,6 +14,7 @@ goog.require('ga_window_service');
     'ga_event_service',
     'ga_networkstatus_service',
     'ga_permalink',
+    'ga_height_service',
     'ga_reframe_service',
     'ga_window_service',
     'ga_what3words_service',
@@ -23,7 +25,7 @@ goog.require('ga_window_service');
   module.directive('gaContextPopup',
       function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
           gaNetworkStatus, gaPermalink, gaGlobalOptions, gaLang, gaWhat3Words,
-          gaReframe, gaEvent, gaWindow, gaUrlUtils) {
+          gaReframe, gaEvent, gaWindow, gaHeight, gaUrlUtils) {
         return {
           restrict: 'A',
           replace: true,
@@ -31,18 +33,17 @@ goog.require('ga_window_service');
           scope: {
             map: '=gaContextPopupMap',
             options: '=gaContextPopupOptions',
-            is3dActive: '=gaContextPopupIs3d'
+            isActive: '=gaContextPopupActive'
           },
           link: function(scope, element, attrs) {
-            var heightUrl = scope.options.heightUrl;
             var qrcodeUrl = scope.options.qrcodeUrl;
-            var startPixel, holdPromise, isPopoverShown = false;
+            var holdPromise, isPopoverShown = false;
             var reframeCanceler = $q.defer();
             var heightCanceler = $q.defer();
             var map = scope.map;
             var view = map.getView();
-            // INGRID: Change 'coord21781' to 'coordDefault'
-            var coordDefault, coord4326;
+            var clickCoord, coord4326;
+            var proj = map.getView().getProjection();
             // INGRID: Add BwaStrLocator
             var bwaLocatorUrl = scope.options.bwaLocatorUrl;
 
@@ -89,10 +90,10 @@ goog.require('ga_window_service');
 
             var updateW3W = function() {
               gaWhat3Words.getWords(coord4326[1],
-                                    coord4326[0]).then(function(res) {
+                  coord4326[0]).then(function(res) {
                 scope.w3w = res;
               }, function(response) {
-                if (response.status != -1) { // Error
+                if (response.status !== -1) { // Error
                   scope.w3w = '-';
                 }
               });
@@ -108,33 +109,27 @@ goog.require('ga_window_service');
             };
 
             var handler = function(event) {
-              if (scope.is3dActive) {
+              if (!scope.isActive) {
                 return;
               }
               event.stopPropagation();
               event.preventDefault();
 
-              //On Mac, left-click with ctrlKey also fires
-              //the 'contextmenu' event. But this conflicts
-              //with selectByRectangle feature (in featuretree
-              //directive). So we bail out here if
-              //ctrlKey is pressed
+              // On Mac, left-click with ctrlKey also fires
+              // the 'contextmenu' event. But this conflicts
+              // with selectByRectangle feature (in featuretree
+              // directive). So we bail out here if
+              // ctrlKey is pressed
               if (event.ctrlKey) {
                 return;
               }
 
-              var pixel = (event.originalEvent) ?
-                  map.getEventPixel(event.originalEvent) :
-                  event.pixel;
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              coordDefault = (event.originalEvent) ?
-                  map.getEventCoordinate(event.originalEvent) :
-                  event.coordinate;
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              coord4326 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
-              var coord2056 = ol.proj.transform(coordDefault,
-                  gaGlobalOptions.defaultEpsg, 'EPSG:2056');
+              clickCoord = (event.originalEvent) ?
+                map.getEventCoordinate(event.originalEvent) :
+                event.coordinate;
+              clickCoord[0] = parseFloat(clickCoord[0].toFixed(1));
+              clickCoord[1] = parseFloat(clickCoord[1].toFixed(1));
+              coord4326 = ol.proj.transform(clickCoord, proj, 'EPSG:4326');
               // INGRID: Add coordinates
               var coord3857 = ol.proj.transform(coord4326,
                   'EPSG:4326', 'EPSG:3857');
@@ -157,95 +152,103 @@ goog.require('ga_window_service');
               var coord2168 = ol.proj.transform(coord4326,
                   'EPSG:4326', 'EPSG:2168');
 
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              // and format coordDefault
-              scope.coordDefault = ol.coordinate.format(coordDefault,
-                '{y}, {x}', 2);
               scope.coord4326 = ol.coordinate.format(coord4326, '{y}, {x}', 5);
               var coord4326String = ol.coordinate.toStringHDMS(coord4326, 3).
-                                   replace(/ /g, '');
+                  replace(/ /g, '');
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
-              scope.coord2056 = formatCoordinates(coord2056, 2) + ' *';
+              scope.coord2056 = formatCoordinates(clickCoord, 1);
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
-                var utm_31t = ol.proj.transform(coord4326,
+                var utm31t = ol.proj.transform(coord4326,
                     'EPSG:4326', 'EPSG:32631');
-                scope.coordutm = coordinatesFormatUTM(utm_31t, '(zone 31T)');
+                scope.coordutm = coordinatesFormatUTM(utm31t, '(zone 31T)');
               } else if (coord4326[0] < 12 && coord4326[0] >= 6) {
-                var utm_32t = ol.proj.transform(coord4326,
+                var utm32t = ol.proj.transform(coord4326,
                     'EPSG:4326', 'EPSG:32632');
-                scope.coordutm = coordinatesFormatUTM(utm_32t, '(zone 32T)');
+                scope.coordutm = coordinatesFormatUTM(utm32t, '(zone 32T)');
               } else {
-                  // INGRID: Remove return '-'
-                  // return '-';
+                scope.coordutm = '-';
               }
+
               var projections = [{
                 value: 'EPSG:3857',
-                label: 'Mercator (Breite/Länge)',
+                label: 'Mercator (Breite, Länge) [°]',
                 coordinates: ol.coordinate.format(coord3857,
                   '{y}, {x}', 2)
               }, {
                 value: 'EPSG:4326',
-                label: 'WGS 84 (Breite/Länge)',
+                label: 'WGS 84 (Breite, Länge) [°]',
                 coordinates: ol.coordinate.format(coord4326,
                   '{y}, {x}', 5)
               }, {
                 value: 'EPSG:31466',
-                label: 'GK2 - DHDN (R, H)',
+                label: 'GK2 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31466,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31467',
-                label: 'GK3 - DHDN (R, H)',
+                label: 'GK3 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31467,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31468',
-                label: 'GK4 - DHDN (R, H)',
+                label: 'GK4 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31468,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31469',
-                label: 'GK5 - DHDN (R, H)',
+                label: 'GK5 - DHDN (R, H) [m]',
                 coordinates: ol.coordinate.format(coord31469,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25832',
-                label: 'UTM 32N - ETRS89 (E, N)',
+                label: 'UTM 32N - ETRS89 (E, N) [m]',
                 coordinates: ol.coordinate.format(coord25832,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25833',
-                label: 'UTM 33N - ETRS89 (E, N)',
-                coordinates: ol.coordinate.format(coord25832,
+                label: 'UTM 33N - ETRS89 (E, N) [m]',
+                coordinates: ol.coordinate.format(coord25833,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2166',
-                label: 'GK3 - S42/83 (R, H)',
+                label: 'GK3 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2166,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2167',
-                label: 'GK4 - S42/83 (R, H)',
+                label: 'GK4 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2167,
                   '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2168',
-                label: 'GK5 - S42/83 (R, H)',
+                label: 'GK5 - S42/83 (R, H) [m]',
                 coordinates: ol.coordinate.format(coord2168,
                   '{x}, {y}', 2)
               }];
               var sortProjections = [];
-              for (var gp in gaGlobalOptions.defaultMouseProjections) {
+              var gp, p, projection;
+              for (gp in gaGlobalOptions.defaultMouseProjections) {
                 var gaProj = gaGlobalOptions.defaultMouseProjections[gp];
-                for (var p in projections) {
-                  var proj = projections[p];
-                  if (gaProj === proj.value) {
-                    sortProjections.push(proj);
+                for (p in projections) {
+                  projection = projections[p];
+                  if (gaProj === projection.value) {
+                    sortProjections.push(projection);
                     break;
                   }
                 }
               }
               scope.projections = sortProjections;
+
+              // set coord label and coords for bwastr dependent from
+              // default CRS
+              for (p in projections) {
+                projection = projections[p];
+                if (gaGlobalOptions.defaultEpsg === projection.value) {
+                  scope.bwastr_label = projection.label;
+                  scope.bwastr_coords = projection.coordinates;
+                  break;
+                }
+              }
 
               coord4326['lon'] = coord4326[0];
               coord4326['lat'] = coord4326[1];
@@ -262,27 +265,25 @@ goog.require('ga_window_service');
               scope.$applyAsync(function() {
 
                 /* INGRID: Disable height
-                $http.get(heightUrl, {
-                  params: {
-                    easting: coord21781[0],
-                    northing: coord21781[1],
-                    elevation_model: gaGlobalOptions.defaultElevationModel
-                  },
-                  timeout: heightCanceler.promise
-                }).then(function(response) {
-                  scope.altitude = parseFloat(response.data.height);
-                }, function(response) {
-                  if (response.status != -1) { // Error
-                    scope.altitude = '-';
-                  }
-                });
+                gaHeight.get(scope.map, clickCoord, heightCanceler.promise).
+                    then(function(height) {
+                      scope.altitude = height;
+                    }, function(response) {
+                      if (response.status !== -1) { // Error
+                        scope.altitude = '-';
+                      }
+                    });
 
-                gaReframe.get03To95(coord21781,
-                    reframeCanceler.promise).then(function(coords) {
-                  coord2056 = coords;
-                  scope.coord2056 = formatCoordinates(coord2056, 2);
-                });
+                gaReframe.get95To03(clickCoord, reframeCanceler.promise).
+                    then(function(coords) {
+                      scope.coord21781 = formatCoordinates(coords, 2);
+                    }, function() {
+                      var coords = ol.proj.transform(clickCoord, proj,
+                          'EPSG:21781');
+                      scope.coord21781 = formatCoordinates(coords, 2);
+                    });
                 */
+
                 updateW3W();
               });
 
@@ -295,8 +296,7 @@ goog.require('ga_window_service');
 
               if (gaWindow.isWidth('xs') || gaWindow.isHeight('xs')) {
                 view.animate({
-                  // INGRID: Change 'coord21781' to 'coordDefault'
-                  center: coordDefault,
+                  center: clickCoord,
                   duration: 200
                 }, hidePopoverOnNextChange);
 
@@ -304,14 +304,12 @@ goog.require('ga_window_service');
                 hidePopoverOnNextChange();
               }
 
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              overlay.setPosition(coordDefault);
+              overlay.setPosition(clickCoord);
               element.show();
               // We use a boolean instead of  jquery .is(':visible') selector
               // because that doesn't work with phantomJS.
               isPopoverShown = true;
             };
-
 
             if ('oncontextmenu' in $window) {
               $(map.getViewport()).on('contextmenu', function(event) {
@@ -319,7 +317,6 @@ goog.require('ga_window_service');
                   scope.hidePopover();
                 }
                 $timeout.cancel(holdPromise);
-                startPixel = undefined;
                 handler(event);
               });
               element.on('contextmenu', 'a', function(e) {
@@ -337,7 +334,6 @@ goog.require('ga_window_service');
                   return;
                 }
                 $timeout.cancel(holdPromise);
-                startPixel = event.pixel;
                 holdPromise = $timeout(function() {
                   handler(event);
                 }, 300, false);
@@ -347,20 +343,13 @@ goog.require('ga_window_service');
                   return;
                 }
                 $timeout.cancel(holdPromise);
-                startPixel = undefined;
               });
               map.on('pointermove', function(event) {
                 if (gaEvent.isMouse(event)) {
                   return;
                 }
-                if (startPixel) {
-                  var pixel = event.pixel;
-                  var deltaX = Math.abs(startPixel[0] - pixel[0]);
-                  var deltaY = Math.abs(startPixel[1] - pixel[1]);
-                  if (deltaX + deltaY > 6) {
-                    $timeout.cancel(holdPromise);
-                    startPixel = undefined;
-                  }
+                if (event.dragging) {
+                  $timeout.cancel(holdPromise);
                 }
               });
             }
@@ -373,8 +362,7 @@ goog.require('ga_window_service');
 
             // Listen to permalink change events from the scope.
             scope.$on('gaPermalinkChange', function(event) {
-              // INGRID: Change 'coord21781' to 'coordDefault'
-              if (angular.isDefined(coordDefault) && isPopoverShown) {
+              if (angular.isDefined(clickCoord) && isPopoverShown) {
                 updatePopupLinks();
               }
             });
@@ -394,11 +382,9 @@ goog.require('ga_window_service');
 
             function updatePopupLinks() {
               var p = {
-                // INGRID: Change 'coord21781' to 'coordDefault'
-                X: Math.round(coordDefault[1], 1),
-                Y: Math.round(coordDefault[0], 1)
+                E: Math.round(clickCoord[0], 1),
+                N: Math.round(clickCoord[1], 1)
               };
-
               // INGRID: Create href with portal layout
               scope.contextPermalink = gaPermalink.getHref(p,
                 gaGlobalOptions.isParentIFrame);
@@ -410,10 +396,10 @@ goog.require('ga_window_service');
                   gaWindow.isHeight('>s')) {
                   gaUrlUtils.shorten(scope.contextPermalink).
                     then(function(shortUrl) {
-                    // INGRID: Return href if no shorturl exists
-                    var url = shortUrl ? shortUrl :
+                      // INGRID: Return href if no shorturl exists
+                      var url = shortUrl ? shortUrl :
                         scope.contextPermalink;
-                    scope.qrcodeUrl = qrcodeUrl + '?url=' +
+                      scope.qrcodeUrl = qrcodeUrl + '?url=' +
                         escape(url);
                   });
               }
@@ -432,8 +418,8 @@ goog.require('ga_window_service');
 
               var p = {
                 // INGRID: Change 'coord21781' to 'coordDefault'
-                X: Math.round(coordDefault[1], 1),
-                Y: Math.round(coordDefault[0], 1)
+                X: clickCoord[1].toFixed(2),
+                Y: clickCoord[0].toFixed(2)
               };
               var content = '';
               content = '{"limit":200,"queries":[' +
@@ -458,14 +444,13 @@ goog.require('ga_window_service');
             function updateBWaLocatorData(response) {
                 var result = response.data.result[0];
                 if (result) {
-                    if (result.error == undefined) {
+                    if (result.error === undefined) {
                         scope.bwastr_id = result.bwastrid;
                         scope.bwastr_name = result.bwastr_name;
                         scope.bwastr_typ = result.strecken_name;
-                        scope.bwastr_lon = result.geometry.coordinates[0];
-                        scope.bwastr_lat = result.geometry.coordinates[1];
                         scope.bwastr_km = result.stationierung.km_wert;
-                        scope.bwastr_distance = result.stationierung.offset;
+                        scope.bwastr_distance = result.stationierung
+                          .offset.toFixed(2);
                     } else {
                         scope.bwastr_error = result.error.message;
                     }

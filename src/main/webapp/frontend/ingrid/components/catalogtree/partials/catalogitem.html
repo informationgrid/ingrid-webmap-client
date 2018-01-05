@@ -1,7 +1,8 @@
 <div class="ga-catalogitem-template" ng-switch="!!item.children">
 
+  <!-- INGRID: Check layer extent intersects map extent -->
   <div ng-switch-when="false" class="ga-catalogitem-leaf ga-catalogitem-entry"
-       ng-class="{'ga-catalogitem-selected': item.selectedOpen}">
+       ng-class="{'ga-catalogitem-selected': item.selectedOpen, 'extent-outside': !isInRange(item.layerBodId)}">
     <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
       <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}"/>
       <span></span>
@@ -20,8 +21,8 @@
       <i ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
       {{item.label}}
     </a>
-    <!-- INGRID: Check if item is a parent layer -->
-    <a ng-if="isParentLayer(item)" href="#" class="ga-catalogitem-entry ga-catalogitem-leaf ga-truncate-text" title="{{item.label}}">
+    <!-- INGRID: Check if item is a parent layer and check layer extent intersects map extent -->
+    <a ng-if="isParentLayer(item)" href="#" class="ga-catalogitem-entry ga-catalogitem-leaf ga-truncate-text" title="{{item.label}}" ng-class="{'extent-outside': !isInRange(item.layerBodId)}">
       <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
         <i ng-click="toggle($event)" ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
         <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}">

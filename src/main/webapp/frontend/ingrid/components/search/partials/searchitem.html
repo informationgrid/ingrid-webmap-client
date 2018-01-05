@@ -1,0 +1,21 @@
+<div class="ga-search-item"
+     ng-bind-html="prepareLabel(res.attrs)"
+     title="{{cleanLabel(res.attrs)}}">
+</div>
+<!-- INGRID: Add div -->
+<div class="ga-layer-ordering">
+  <!-- INGRID: Add zoom to extent button -->
+  <button class="ga-btn ga-icon fa fa-zoom-in"
+        ng-if="hasExtent(res.attrs.layer)"
+        ng-click="zoomToExtent($event, res.attrs.layer)">
+  </button>
+  <button class="ga-btn ga-icon fa fa-info-sign"
+        ng-if="type === 'layers'"
+        ng-click="getLegend($event, res.attrs.layer)">
+  </button>
+  <!-- INGRID: Add service info button -->
+  <button class="ga-btn ga-icon fa fa-info-sign"
+        ng-if="type === 'services'"
+        ng-click="getServiceInfo($event, res.attrs)">
+  </button>
+</div>

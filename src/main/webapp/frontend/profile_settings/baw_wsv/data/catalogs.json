@@ -2,7 +2,7 @@
   "topics": [{
     "defaultBackground": "wmts_topplus_web",
     "langs": "de,en",
-    "selectedLayers": [],
+    "selectedLayers": ["lis","lis_inanspruch","lis_ersatz_invest","lis_flaechenzuab","lis_kompensation","lis_weitere_inanspruch","lis_oerverfahren","lis_oerverfahren_poly","lis_ersatz_invest_linie","lis_belastung","lis_belastung_naturschutz","lis_belastung_fischerei","lis_belastung_weitere","lis_kataster","lis_nutzung","lis_nutzung_wassersport","lis_nutzung_landwirtschaft","lis_nutzung_jagd","lis_nutzung_fischerei","lis_nutzung_leitung","lis_nutzung_weitere"],
     "activatedLayers": [],
     "backgroundLayers": ["wmts_topplus_web","wmts_dop_rgb","wmts_osm","wmts_topplus_web_grau"],
     "id": "favoriten"

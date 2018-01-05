@@ -48,8 +48,9 @@ var settingDefaultMouseProjections = ['EPSG:3857', 'EPSG:4326', 'EPSG:31466', 'E
 
 // Default list on import function
 var settingDefaultImportList = [
-     'http://atlas.wsv.bund.de/bwastr/wms?',
+     'http://atlas.wsv.bund.de/bwastr/wms?VERSION=1.1.1',
      'http://atlas.wsv.bund.de/ienc/wms?',
+     'http://atlas.wsv.bund.de/wadaba/wms?',
      'http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml',
      'http://atlas.wsv.bund.de/ienc/wmts/1.0.0/WMTSCapabilities.xml'
    ];
@@ -65,11 +66,17 @@ var settingShareLink = true;
 // Define URL of print logo on PDF  
 var settingPrintLogo = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/print_logo.png';
 
-//Define URL of north arrow icon on PDF
+// Define URL of north arrow icon on PDF
 var settingPrintNorthArrow = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/north_arrow.png';
 
-//Print graticule layer
+// Print graticule layer
 var settingPrintGraticuleLayer = '{"url":"http://atlas.wsv.bund.de/netze/wms?", "layers":["GN","GNB"]}';
+
+// Print filename
+var settingPrintFilename = 'Print.InGrid';
+
+// Print depend on mouse position control
+var settingPrintDependOnMouseProj = false;
 
 // Default prefix for download KML
 var settingKMLName = 'INGRID';
@@ -78,6 +85,18 @@ var settingKMLName = 'INGRID';
 var settingHideCatalog = false;
 
 // Enable what3words
-var settingEnableW3W = false;
+var settingEnableW3W = true;
 var w3wUrl = 'https://api.what3words.com';
 var w3wApiKey = 'OM48J50Y';
+
+// Show service name to layer
+var settingShowLayerServiceName = false;
+
+// Enable check layer in range
+var settingCheckLayerInRange = true;
+
+// Enable iso xml link on service search info
+var settingShowISOXML = true;
+
+// Change coord XY for search
+var settingSearchCoordsXY = false;

@@ -1,5 +1,5 @@
 # allowed DPIs
-dpis: [75, 150, 300]
+dpis: [150]
 
 #
 # the list of allowed hosts
@@ -350,12 +350,11 @@ layouts:
               maxHeight: 420
               iconMaxWidth: 250
               iconMaxHeight: 420
-              defaultScale: 0
+              defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
               classSpace: 5
               layerFontSize: 9
-              defaultScale: 0.5
               columnMargin: 5
               backgroundColor: white
               inline: false
@@ -670,7 +669,7 @@ layouts:
               maxWidth: 0
               iconMaxWidth: 200
               iconMaxHeight: 420
-              defaultScale: 0.5
+              defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
               classSpace: 5
@@ -988,12 +987,11 @@ layouts:
               maxWidth: 0
               iconMaxWidth: 250
               iconMaxHeight: 420
-              defaultScale: 0.5
+              defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
               classSpace: 5
               layerFontSize: 9
-              defaultScale: 0.5
               columnMargin: 5
               backgroundColor: white
               inline: false
@@ -1308,12 +1306,11 @@ layouts:
               maxWidth: 0
               iconMaxWidth: 200
               iconMaxHeight: 420
-              defaultScale: 0.5
+              defaultScale: 0.75
               classIndentation: 3
               layerSpace: 5
               classSpace: 5
-              layerFontSize: 9
-              defaultScale: 0.5
+              layerFontSize: 6
               columnMargin: 5
               backgroundColor: white
               inline: false

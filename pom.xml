@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -326,6 +326,11 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.sauronsoftware.cron4j</groupId>
+            <artifactId>cron4j</artifactId>
+             <version>2.1.1</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>

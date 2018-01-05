@@ -19,22 +19,8 @@ goog.require('ga_browsersniffer_service');
 
       var downloadUrl = this.downloadKmlUrl;
 
-      var pp0 = function(s) {
-        return s.length === 2 ? s : '0' + s;
-      };
-
-      var dateFormat = function(d) {
-        var YYYY = d.getFullYear().toString();
-        var MM = (d.getMonth() + 1).toString(); // getMonth() is zero-based
-        var DD = d.getDate().toString();
-        var hh = d.getHours().toString();
-        var mm = d.getMinutes().toString();
-        var ss = d.getSeconds().toString();
-        return YYYY + pp0(MM) + pp0(DD) + pp0(hh) + pp0(mm) + pp0(ss);
-      };
-
       var useDownloadService = function() {
-        if (gaBrowserSniffer.msie == 9 ||
+        if (gaBrowserSniffer.msie === 9 ||
             gaBrowserSniffer.safari ||
             !gaBrowserSniffer.blob) {
           return true;
@@ -45,15 +31,16 @@ goog.require('ga_browsersniffer_service');
       var ExportKml = function() {
         this.create = function(layer, projection) {
           var kmlString,
-              exportFeatures = [];
+            exportFeatures = [];
           layer.getSource().forEachFeature(function(f) {
-            //We silently ignore Circle elements as they are not supported
-            //in kml
+            // We silently ignore Circle elements as they are not supported
+            // in kml
             if (f.getGeometry().getType() === 'Circle') {
               return;
             }
             var clone = f.clone();
             clone.setId(f.getId());
+            clone.getGeometry().setProperties(f.getGeometry().getProperties());
             clone.getGeometry().transform(projection, 'EPSG:4326');
             var styles;
             // TODO should we test getStyle() too?
@@ -88,8 +75,8 @@ goog.require('ga_browsersniffer_service');
           });
 
           if (exportFeatures.length > 0) {
-            if (exportFeatures.length == 1) {
-              //force the add of a <Document> node
+            if (exportFeatures.length === 1) {
+              // force the add of a <Document> node
               exportFeatures.push(new ol.Feature());
             }
             kmlString = gaKml.getFormat().writeFeatures(exportFeatures);
@@ -112,39 +99,37 @@ goog.require('ga_browsersniffer_service');
         };
 
         this.createAndDownload = function(layer, projection) {
-          var now = dateFormat(new Date());
+          var now = $window.moment().format('YYYYMMDDhhmmss');
           var saveAs = $window.saveAs;
           // INGRID: Edit file name
-          var filename = gaGlobalOptions.settingKMLName +
+          var fileName = gaGlobalOptions.settingKMLName +
               '_KML_' + now + '.kml';
           var charset = $document.characterSet || 'UTF-8';
           var type = 'application/vnd.google-earth.kml+xml;charset=' + charset;
-            var kmlString = this.create(layer, projection);
-            if (kmlString) {
-              if (useDownloadService()) {
-                $http.post(downloadUrl, {
-                  kml: kmlString,
-                  filename: filename
-                }).then(function(response) {
-                  var data = response.data;
-                  if (gaBrowserSniffer.msie == 9) {
-                    $window.open(data.url);
-                  } else {
-                    $window.location = data.url;
-                  }
-                });
-              } else {
-                var blob = new Blob([kmlString],
-                                    {type: type});
-                saveAs(blob, filename);
-              }
+          var kmlString = this.create(layer, projection);
+          if (kmlString) {
+            if (useDownloadService()) {
+              $http.post(downloadUrl, {
+                kml: kmlString,
+                filename: fileName
+              }).then(function(response) {
+                var data = response.data;
+                if (gaBrowserSniffer.msie === 9) {
+                  $window.open(data.url);
+                } else {
+                  $window.location = data.url;
+                }
+              });
+            } else {
+              var blob = new Blob([kmlString],
+                  {type: type});
+              saveAs(blob, fileName);
             }
+          }
         };
       };
 
       return new ExportKml();
-
     };
   });
 })();
-

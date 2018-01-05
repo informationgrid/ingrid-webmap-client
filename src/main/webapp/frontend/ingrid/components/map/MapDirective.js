@@ -23,7 +23,7 @@ goog.require('ga_styles_service');
       },
       link: function(scope, element, attrs) {
         if (!gaPermalink.getParams().debug) {
-          element[0].style['display'] = 'none';
+          element.remove();
           return;
         }
         var inspector;
@@ -31,15 +31,44 @@ goog.require('ga_styles_service');
           if (ol3d && !inspector) {
             var scene = ol3d.getCesiumScene();
             inspector = new Cesium.CesiumInspector(element[0], scene);
+
+            // Hide the menu
+            element.find('.cesium-cesiumInspector-button').click();
           }
         });
       }
     };
   });
+
+  module.directive('gaCesium3dTilesInspector', function(gaPermalink) {
+    return {
+      restrict: 'A',
+      scope: {
+        ol3d: '=gaCesium3dTilesInspectorOl3d'
+      },
+      link: function(scope, element, attrs) {
+        if (!gaPermalink.getParams().debug) {
+          element.remove();
+          return;
+        }
+        var inspector;
+        scope.$watch('::ol3d', function(ol3d) {
+          if (ol3d && !inspector) {
+            var scene = ol3d.getCesiumScene();
+            inspector = new Cesium.Cesium3DTilesInspector(element[0], scene);
+
+            // Hide the menu
+            element.find('.cesium-cesiumInspector-button').click();
+          }
+        });
+      }
+    };
+  });
+
   // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaMap', function($window, $timeout, gaPermalink,
       gaStyleFactory, gaBrowserSniffer, gaLayers, gaDebounce, gaOffline,
-      gaMapUtils, gaGlobalOptions) {
+      gaMapUtils, $translate, gaGlobalOptions) {
     return {
       restrict: 'A',
       scope: {
@@ -49,19 +78,29 @@ goog.require('ga_styles_service');
       link: function(scope, element, attrs) {
         var map = scope.map;
         var view = map.getView();
+        var isOpeningIn3d = false;
 
         // set view states based on URL query string
         var queryParams = gaPermalink.getParams();
-        if (queryParams.Y !== undefined && queryParams.X !== undefined) {
-          var easting = parseFloat(queryParams.Y.replace(/,/g, '.'));
-          var northing = parseFloat(queryParams.X.replace(/,/g, '.'));
+        if ((queryParams.E && queryParams.N) ||
+           (queryParams.X && queryParams.Y)) {
+          var easting = queryParams.Y;
+          var northing = queryParams.X;
+          if (queryParams.E && queryParams.N) {
+            easting = queryParams.E;
+            northing = queryParams.N;
+          }
+
+          easting = parseFloat(easting.replace(/,/g, '.'));
+          northing = parseFloat(northing.replace(/,/g, '.'));
+
           if (isFinite(easting) && isFinite(northing)) {
             var position = [easting, northing];
             /* INGRID: Not used
             if (ol.extent.containsCoordinate(
-                [2420000, 1030000, 2900000, 1350000], position)) {
+                [420000, 30000, 900000, 350000], position)) {
               position = ol.proj.transform([easting, northing],
-                'EPSG:2056', 'EPSG:21781');
+                  'EPSG:21781', view.getProjection().getCode());
             }
             */
             view.setCenter(position);
@@ -102,9 +141,11 @@ goog.require('ga_styles_service');
             // when the directive is instantiated the view may not
             // be defined yet.
             if (center && zoom !== undefined) {
-              var x = center[1].toFixed(2);
-              var y = center[0].toFixed(2);
-              gaPermalink.updateParams({X: x, Y: y, zoom: zoom});
+              var e = center[0].toFixed(2);
+              var n = center[1].toFixed(2);
+              gaPermalink.updateParams({E: e, N: n, zoom: zoom});
+              gaPermalink.deleteParam('X');
+              gaPermalink.deleteParam('Y');
             }
           }
         };
@@ -115,9 +156,9 @@ goog.require('ga_styles_service');
 
         // INGRID: Add default zoom
         // Zoom to default extent
-        if (gaPermalink.getParams().X == undefined &&
-                gaPermalink.getParams().Y == undefined) {
-            if (window.parent.resizeIframe != undefined) {
+        if (gaPermalink.getParams().E === undefined &&
+                gaPermalink.getParams().N === undefined) {
+            if (window.parent.resizeIframe !== undefined) {
                 window.parent.resizeIframe();
                 map.updateSize();
             }
@@ -136,6 +177,7 @@ goog.require('ga_styles_service');
             var position, heading, pitch;
             if (isFinite(params.lon) && isFinite(params.lat) &&
                 isFinite(params.elevation)) {
+              isOpeningIn3d = true;
               var lon = parseFloat(params.lon);
               var lat = parseFloat(params.lat);
               var elevation = parseFloat(params.elevation);
@@ -159,8 +201,8 @@ goog.require('ga_styles_service');
             // update permalink
             camera.moveEnd.addEventListener(gaDebounce.debounce(function() {
               // remove 2d params
-              gaPermalink.deleteParam('X');
-              gaPermalink.deleteParam('Y');
+              gaPermalink.deleteParam('E');
+              gaPermalink.deleteParam('N');
               gaPermalink.deleteParam('zoom');
 
               var position = camera.positionCartographic;
@@ -176,7 +218,7 @@ goog.require('ga_styles_service');
             var dereg = [];
             var setRealPosition = function(itemOrEvt) {
               var item = (itemOrEvt instanceof ol.Overlay) ? itemOrEvt :
-                  itemOrEvt.element;
+                itemOrEvt.element;
               item.set('realPosition', item.getPosition());
               item.setPosition();
               dereg.push(item.on('change:position', function(evt) {
@@ -188,6 +230,41 @@ goog.require('ga_styles_service');
               }));
             };
 
+            // Management of 2d layer with a 3d config to display in 3d. 
+            var dflt3dStatus = [];
+            var showDflt3dLayers = function(map) {
+              // Add 2d layer which have a 3d configuration to display in 3d
+              // by default.
+              gaLayers.loadConfig().then(function(layers) {
+                for (var bodId in layers) {
+                  if (layers.hasOwnProperty(bodId) && layers[bodId].default3d &&
+                      layers[bodId].config2d) {
+                    var config2d = layers[bodId].config2d;
+                    var overlay = gaMapUtils.getMapOverlayForBodId(map,
+                        config2d);
+                    // If the page is openinig directly in 3d we consider the
+                    // default layers were not displayed in 2d initally.
+                    if (isOpeningIn3d || !overlay) {
+                      dflt3dStatus.push(config2d);
+                      isOpeningIn3d = false;
+                    }
+                    if (!overlay) {
+                      map.addLayer(gaLayers.getOlLayerById(config2d));
+                    }
+                  }
+                }
+              });
+            };
+            var hideDflt3dLayers = function(map) {
+              dflt3dStatus.forEach(function(bodId) {
+                var overlay = gaMapUtils.getMapOverlayForBodId(map, bodId);
+                if (overlay) {
+                  map.removeLayer(overlay);
+                }
+              });
+              dflt3dStatus = [];
+            };
+
             // Watch when 3d is enabled to show/hide overlays
             scope.$watch(function() {
               return ol3d.getEnabled();
@@ -196,10 +273,26 @@ goog.require('ga_styles_service');
                 // Hide the overlays
                 map.getOverlays().forEach(setRealPosition);
                 dereg.push(map.getOverlays().on('add', setRealPosition));
+
+                // Show layers we have to display in 3d 
+                showDflt3dLayers(map);
+
+                // Display alert messages that layers can't be displayed in 3d
+                var msg = '';
+                map.getLayers().forEach(function(layer) {
+                  if (!layer.displayIn3d) {
+                    msg = msg + '\n' + layer.label;
+                  }
+                });
+                if (msg) {
+                  msg = $translate.instant('layer_cant_be_displayed_in_3d') +
+                      msg;
+                  $window.alert(msg);
+                }
               } else {
                 // Show the overlays
                 dereg.forEach(function(key) {
-                   ol.Observable.unByKey(key);
+                  ol.Observable.unByKey(key);
                 });
                 dereg = [];
                 map.getOverlays().forEach(function(item) {
@@ -207,6 +300,10 @@ goog.require('ga_styles_service');
                     item.setPosition(item.get('realPosition'));
                   }
                 });
+
+                // Hide layers we have to display in 3d, if it wasn't there in
+                // 2d. 
+                hideDflt3dLayers(map);
               }
             });
           }
@@ -243,7 +340,7 @@ goog.require('ga_styles_service');
               } else { // onafterprint
                 // We use a timeout to be sure the map is resize after
                 // printing
-                $timeout(function() {map.updateSize();}, 500);
+                $timeout(function() { map.updateSize(); }, 500);
               }
             });
           }
@@ -267,19 +364,20 @@ goog.require('ga_styles_service');
         scope.$on('gaTimeChange', function(evt, time, oldTime) {
           var switchTimeActive = (!oldTime && time);
           var switchTimeDeactive = (oldTime && !time);
-          var olLayers = scope.map.getLayers().getArray();
+          var olLayer, olLayers = scope.map.getLayers().getArray();
           var singleModif = false;
 
           // Detection the time change has been triggered by a layer's
           // 'propertychange' event.
           // (ex: using layermanager)
           if (switchTimeDeactive) {
+
             for (var i = 0, ii = olLayers.length; i < ii; i++) {
-              var olLayer = olLayers[i];
+              olLayer = olLayers[i];
               // We update only time enabled bod layers
-              if (olLayer.bodId && olLayer.timeEnabled &&
+              if (olLayer.timeEnabled &&
                   angular.isDefined(olLayer.time) &&
-                  olLayer.time.substr(0, 4) != oldTime) {
+                  olLayer.time.substr(0, 4) !== oldTime) {
                 singleModif = true;
                 break;
               }
@@ -293,11 +391,10 @@ goog.require('ga_styles_service');
             savedTimeStr = {};
             return;
           }
-
           // In case the user has done a global modification.
           // (ex: using the time selector toggle)
-          for (var i = 0, ii = olLayers.length; i < ii; i++) {
-            var olLayer = olLayers[i];
+          for (var j = 0, jj = olLayers.length; j < jj; j++) {
+            olLayer = olLayers[j];
 
             if (olLayer.timeEnabled && olLayer.visible) {
               var layerTimeStr =
@@ -306,11 +403,13 @@ goog.require('ga_styles_service');
                 // We save the current value after a global activation.
                 // (ex: using the time selector toggle)
                 savedTimeStr[olLayer.id] = olLayer.time;
-              } else if (switchTimeDeactive && savedTimeStr[olLayer.id]) {
+              } else if (switchTimeDeactive &&
+                  savedTimeStr.hasOwnProperty(olLayer.id)) {
                 // We apply the saved values after a global deactivation.
                 // (ex: using the time selector toggle)
                 layerTimeStr = savedTimeStr[olLayer.id];
                 savedTimeStr[olLayer.id] = undefined;
+
               }
               olLayer.time = layerTimeStr;
             }
@@ -320,4 +419,3 @@ goog.require('ga_styles_service');
     };
   });
 })();
-
