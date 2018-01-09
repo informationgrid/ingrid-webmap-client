@@ -99,9 +99,12 @@ goog.require('ga_wmts_service');
           message: 'upload_succeeded'
         });
 
-      } else if (gaFile.isGpx(data) || gaFile.isKml(data)) {
+      // INGRID: Change check GPX oder KML
+      } else if (gaFile.isGpx(data) || gaFile.isKml(data) || 
+        gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
-        gaVector.addToMap($scope.map, data, {
+        // INGRID: Change data
+        gaVector.addToMap($scope.map, data.xmlResponse || data, {
           url: file.url || URL.createObjectURL(file),
           useImageVector: gaVector.useImageVector(file.size),
           zoomToExtent: true
