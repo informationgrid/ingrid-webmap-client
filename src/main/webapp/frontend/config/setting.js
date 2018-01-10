@@ -100,3 +100,6 @@ var settingShowISOXML = true;
 
 // Change coord XY for search
 var settingSearchCoordsXY = false;
+
+// Change coord zoom for search
+var settingSearchCoordsZoom = 16;
