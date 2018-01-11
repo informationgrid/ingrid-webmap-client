@@ -95,7 +95,7 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('url', val);
             }
           },
-// INGRID: Add queryable functions
+          // INGRID: Add queryable functions
           queryable: {
             get: function() {
               return this.get('queryable');
@@ -104,7 +104,7 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('queryable', val);
             }
           },
-// INGRID: Add crossOrigin functions
+          // INGRID: Add crossOrigin functions
           crossOrigin: {
             get: function() {
               return this.get('crossOrigin');
@@ -113,7 +113,7 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('crossOrigin', val);
             }
           },
-// INGRID: Add extent functions
+          // INGRID: Add extent functions
           extent: {
             get: function() {
               return this.get('extent');
@@ -122,7 +122,7 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('extent', val);
             }
           },
-// INGRID: Add minScale functions
+          // INGRID: Add minScale functions
           minScale: {
             get: function() {
               return this.get('minScale');
@@ -131,7 +131,7 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('minScale', val);
             }
           },
-// INGRID: Add maxScale functions
+          // INGRID: Add maxScale functions
           maxScale: {
             get: function() {
               return this.get('maxScale');
@@ -186,11 +186,13 @@ goog.provide('ga_definepropertiesforlayer_service');
               if (this instanceof ol.layer.Layer) {
                 var src = this.getSource();
                 if (src instanceof ol.source.WMTS) {
-                  src.updateDimensions({'Time': val});
+                  // INGRID: Update time val
+                  src.updateDimensions({'Time': val || ''});
                 } else if (src instanceof ol.source.ImageWMS ||
                     src instanceof ol.source.TileWMS) {
                   if (angular.isDefined(val)) {
-                    src.updateParams({'TIME': val});
+                    // INGRID: Update time val
+                    src.updateParams({'TIME': val || ''});
                   } else {
                     delete src.getParams().TIME;
                     src.updateParams();
