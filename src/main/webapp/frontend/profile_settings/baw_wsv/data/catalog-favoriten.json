@@ -5620,103 +5620,104 @@
             "category": "layer",
             "staging": "prod",
             "label": "Landschaften",
-            "layerBodId": "sgd_landschaften_all""id": 844,
+            "layerBodId": "sgd_landschaften_all",
+            "id": 844,
             "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "",
+              "label": "Beschriftung",
               "layerBodId": "sgd_landschaften_beschriftung",
-              "id": 707
+              "id": 845
             },
             {
               "category": "layer",
               "staging": "prod",
               "label": "Umringe",
               "layerBodId": "sgd_landschaften_umringe",
-              "id": 708
+              "id": 846
             },
             {
               "category": "layer",
               "staging": "prod",
               "label": "Polygonale Flächendarstellung der Landschaften",
               "layerBodId": "sgd_landschaften_landschaften",
-              "id": 708
+              "id": 847
             },
             {
               "category": "layer",
               "staging": "prod",
               "label": "Themen",
               "layerBodId": "sgd_landschaften_themen",
-              "id": 708,
+              "id": 848,
               "children": [{
                 "category": "layer",
                 "staging": "prod",
                 "label": "Gebirge",
                 "layerBodId": "sgd_landschaften_gebirge",
-                "id": 708
+                "id": 849
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Plateau",
                 "layerBodId": "sgd_landschaften_plateau",
-                "id": 708
+                "id": 850
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Becken",
                 "layerBodId": "sgd_landschaften_becken",
-                "id": 708
+                "id": 851
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Tal",
                 "layerBodId": "sgd_landschaften_tal",
-                "id": 708
+                "id": 852
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Moor",
                 "layerBodId": "sgd_landschaften_moor",
-                "id": 708
+                "id": 853
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Wald",
                 "layerBodId": "sgd_landschaften_wald",
-                "id": 708
+                "id": 854
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Küste",
                 "layerBodId": "sgd_landschaften_kueste",
-                "id": 708
+                "id": 855
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Insel",
                 "layerBodId": "sgd_landschaften_insel",
-                "id": 708
+                "id": 856
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Siedlung",
                 "layerBodId": "sgd_landschaften_siedlung",
-                "id": 708
+                "id": 857
               },
               {
                 "category": "layer",
                 "staging": "prod",
                 "label": "Historisch",
                 "layerBodId": "sgd_landschaften_historisch",
-                "id": 708
+                "id": 858
               }]
             }]
           }]
@@ -5911,5 +5912,5 @@
       }]
     }
   },
-  "last_id": 842
+  "last_id": 858
 }
