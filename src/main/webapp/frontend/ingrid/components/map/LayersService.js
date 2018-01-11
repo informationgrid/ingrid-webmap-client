@@ -585,7 +585,8 @@ goog.require('ga_urlutils_service');
             if (config.singleTile === true) {
               if (!olSource) {
                 olSource = config.olSource = new ol.source.ImageWMS({
-                  url: getImageryUrls(getWmsTpl(gaGlobalOptions.wmsUrl))[0],
+                  // INGRID: Use 'config.wmsUrl'
+                  url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
                   ratio: 1
