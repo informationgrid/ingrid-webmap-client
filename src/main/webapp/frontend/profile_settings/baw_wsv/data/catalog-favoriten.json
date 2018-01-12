@@ -147,6 +147,48 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
+          "label": "WSV: Seekarten des BSH",
+          "id": 858,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "ENC des BSH",
+            "layerBodId": "enc_cc_wms",
+            "id": 859,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Lights",
+              "layerBodId": "enc_cc_lights",
+              "id": 860
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Sounding",
+              "layerBodId": "enc_cc_soundg",
+              "id": 861
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Depth Contour",
+              "layerBodId": "enc_cc_depcnt",
+              "id": 862
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Other",
+              "layerBodId": "enc_cc_other",
+              "id": 863
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
           "label": "WSV: DBWK2 Digit.BWaStrKarte",
           "id": 456,
           "children": [{
