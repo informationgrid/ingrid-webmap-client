@@ -118,7 +118,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 65
+          absoluteY: 85
           absoluteX: 30
           width: 300
           items:
@@ -430,7 +430,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 60
+          absoluteY: 80
           absoluteX: 25
           width: 300
           items:
@@ -743,7 +743,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 65
+          absoluteY: 85
           absoluteX: 30
           width: 405
           items:
@@ -1055,7 +1055,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 60
+          absoluteY: 80
           absoluteX: 25
           width: 300
           items:
