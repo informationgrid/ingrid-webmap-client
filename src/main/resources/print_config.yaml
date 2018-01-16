@@ -52,17 +52,6 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
@@ -70,6 +59,28 @@ layouts:
           absoluteY: 822
           width: 550
           height: 760
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 150
+          absoluteY: 815
+          width: 300
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
@@ -89,8 +100,8 @@ layouts:
 # North arrow
 #---------------------------------------
         - !columns
-          absoluteY: 812
-          absoluteX: 420
+          absoluteY: 805
+          absoluteX: 410
           width: 150
           items:
             - !image
@@ -118,7 +129,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 85
+          absoluteY: 75
           absoluteX: 30
           width: 300
           items:
@@ -193,9 +204,10 @@ layouts:
 # Description
 #---------------------------------------
         - !columns
-          absoluteX: 42
-          absoluteY: 780
+          absoluteX: 40
+          absoluteY: 770
           width: 150
+          condition: comment
           nbColumns: 1
           config:
             borderWidth: 0.5
@@ -205,13 +217,18 @@ layouts:
               - backgroundColor: white
           items:
             - !text
-              condition: title
+              condition: langde
               fontSize: 10
               align: left
               text: |
-                ${title}
+                Kommentar:
             - !text
-              condition: comment
+              condition: langen
+              fontSize: 10
+              align: left
+              text: |
+                Comment:
+            - !text
               fontSize: 10
               align: left
               text: |
@@ -364,17 +381,6 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
@@ -382,6 +388,28 @@ layouts:
           absoluteY: 575
           width: 802
           height: 520
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 230
+          absoluteY: 565
+          width: 400
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
@@ -430,7 +458,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 80
+          absoluteY: 70
           absoluteX: 25
           width: 300
           items:
@@ -506,8 +534,9 @@ layouts:
 #---------------------------------------
         - !columns
           absoluteX: 42
-          absoluteY: 535
+          absoluteY: 515
           width: 150
+          condition: comment
           nbColumns: 1
           config:
             borderWidth: 0.5
@@ -517,13 +546,18 @@ layouts:
               - backgroundColor: white
           items:
             - !text
-              condition: title
+              condition: langde
               fontSize: 10
               align: left
               text: |
-                ${title}
+                Kommentar:
             - !text
-              condition: comment
+              condition: langen
+              fontSize: 10
+              align: left
+              text: |
+                Comment:
+            - !text
               fontSize: 10
               align: left
               text: |
@@ -677,17 +711,6 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
@@ -697,11 +720,33 @@ layouts:
           height: 1108
 
 #---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 220
+          absoluteY: 1162
+          width: 400
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
+
+#---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 62
+          absoluteY: 60
           width: 123
           items:
               - !image
@@ -743,7 +788,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 85
+          absoluteY: 75
           absoluteX: 30
           width: 405
           items:
@@ -819,8 +864,9 @@ layouts:
 #---------------------------------------
         - !columns
           absoluteX: 42
-          absoluteY: 1120
+          absoluteY: 1100
           width: 150
+          condition: comment
           nbColumns: 1
           config:
             borderWidth: 0.5
@@ -830,13 +876,18 @@ layouts:
               - backgroundColor: white
           items:
             - !text
-              condition: title
+              condition: langde
               fontSize: 10
               align: left
               text: |
-                ${title}
+                Kommentar:
             - !text
-              condition: comment
+              condition: langen
+              fontSize: 10
+              align: left
+              text: |
+                Comment:
+            - !text
               fontSize: 10
               align: left
               text: |
@@ -989,17 +1040,6 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
@@ -1009,11 +1049,33 @@ layouts:
           height: 767
 
 #---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 350
+          absoluteY: 812
+          width: 500
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
+
+#---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 52
+          absoluteY: 50
           width: 123
           items:
               - !image
@@ -1055,7 +1117,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 80
+          absoluteY: 70
           absoluteX: 25
           width: 300
           items:
@@ -1133,6 +1195,7 @@ layouts:
           absoluteX: 42
           absoluteY: 763
           width: 150
+          condition: comment
           nbColumns: 1
           config:
             borderWidth: 0.5
@@ -1142,13 +1205,18 @@ layouts:
               - backgroundColor: white
           items:
             - !text
-              condition: title
+              condition: langde
               fontSize: 10
               align: left
               text: |
-                ${title}
+                Kommentar:
             - !text
-              condition: comment
+              condition: langen
+              fontSize: 10
+              align: left
+              text: |
+                Comment:
+            - !text
               fontSize: 10
               align: left
               text: |
