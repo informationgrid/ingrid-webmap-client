@@ -362,13 +362,13 @@
     <!-- ==================== REPOSITORIES ==================== -->
     <repositories>
         <repository>
-            <id>de.ingrid.all</id>
-            <name>InGrid Repo Maven</name>
-            <url>https://dev.informationgrid.eu/archiva/repository/ingrid-all</url>
+          <id>nexus</id>
+          <name>Nexus Repo</name>
+          <url>https://nexus.informationgrid.eu/repository/maven-public</url>
         </repository>
         <repository>
-            <id>org.mapfish</id>
-            <url>http://dev.mapfish.org/maven/repository</url>
+          <id>org.mapfish</id>
+          <url>http://dev.mapfish.org/maven/repository</url>
         </repository>
         <!-- next repository needed for old opengis libs -->
         <repository>
