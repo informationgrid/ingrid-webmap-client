@@ -405,12 +405,14 @@ public class WmsResource {
             }
         }
         html += "<div class=\"legend\">";
+        html += "<span translate>metadata_legend</span><br>";
+        html += "<div class=\"img-container\">";
+        html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
         if(layerLegend != null && !layerLegend.equals( "undefined" )){
-            html += "<span translate>metadata_legend</span><br>";
-            html += "<div class=\"img-container\">";
-            html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"" + layerLegend + "\">";
-            html += "</div>";
+            html += layerLegend;
         }
+        html += "\">";
+        html += "</div>";
         html += "</div>";
         html += "<span translate>metadata_information_service</span><br>";
         html += "<table>";
@@ -583,13 +585,15 @@ public class WmsResource {
             }
             
         }
-        if(layerLegend != null) {
-            html += "<br>";
-            html += "<span translate>metadata_legend</span><br>";
-            html += "<div class=\"img-container\">";
-            html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"" + layerLegend + "\">";
-            html += "</div>";
+        html += "<br>";
+        html += "<span translate>metadata_legend</span><br>";
+        html += "<div class=\"img-container\">";
+        html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
+        if(layerLegend != null && !layerLegend.equals( "undefined" )) {
+            html += layerLegend;
         }
+        html += "\">";
+        html += "</div>";
         html += "<br><br>";
         html += "<span translate>metadata_information</span><br>";
         html += "<table>";
