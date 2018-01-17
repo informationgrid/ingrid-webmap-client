@@ -404,8 +404,12 @@ goog.require('ga_urlutils_service');
           var url = layer.url;
           if (url === undefined) {
             if (layer.getSource()) {
-              if (layer.getSource().getUrl()) {
+              if (layer.getSource().getUrl) {
                 url = layer.getSource().getUrl();
+              } else if (layer.getSource().urls) {
+                if (layer.getSource().urls.length > 0) {
+                  url = layer.getSource().urls[0];
+                }
               }
             }
           }
@@ -432,8 +436,12 @@ goog.require('ga_urlutils_service');
           var url = layer.url;
           if (url === undefined) {
             if (layer.getSource()) {
-              if (layer.getSource().getUrl()) {
+              if (layer.getSource().getUrl) {
                 url = layer.getSource().getUrl();
+              } else if (layer.getSource().urls) {
+                if (layer.getSource().urls.length > 0) {
+                  url = layer.getSource().urls[0];
+                }
               }
             }
           }
