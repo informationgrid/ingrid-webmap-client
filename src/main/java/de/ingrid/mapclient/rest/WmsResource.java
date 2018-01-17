@@ -408,7 +408,7 @@ public class WmsResource {
         if(layerLegend != null && !layerLegend.equals( "undefined" )){
             html += "<span translate>metadata_legend</span><br>";
             html += "<div class=\"img-container\">";
-            html += "<img alt=\"layer legend img\" src=\"" + layerLegend + "\">";
+            html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"" + layerLegend + "\">";
             html += "</div>";
         }
         html += "</div>";
@@ -587,7 +587,7 @@ public class WmsResource {
             html += "<br>";
             html += "<span translate>metadata_legend</span><br>";
             html += "<div class=\"img-container\">";
-            html += "<img alt=\"layer legend img\" src=\"" + layerLegend + "\">";
+            html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"" + layerLegend + "\">";
             html += "</div>";
         }
         html += "<br><br>";
