@@ -659,7 +659,7 @@ goog.require('ga_urlutils_service');
       enc.classes.push({
         name: '',
         // INGRID Check layer legend
-        icon: layer.legendUrl || gaWms.getLegendURL(layer)
+        icon: config.legendUrl || gaWms.getLegendURL(layer)
       });
       return enc;
     }
