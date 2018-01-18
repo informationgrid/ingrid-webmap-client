@@ -30,9 +30,8 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
   var rotateOnEnable = true;
 
   // the maxium extent in EPSG:4326 and radians
-  // INGRID: Set default projection
-  var extent4326 = ol.proj.transformExtent(gaGlobalOptions.defaultExtent,
-      gaGlobalOptions.defaultEpsg, 'EPSG:4326');
+  // INGRID: Set default extent
+  var extent4326 = gaGlobalOptions.defaultExtent;
   extent4326 = extent4326.map(function(angle) {
     return angle * Math.PI / 180;
   });
@@ -95,9 +94,9 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
         },
         createSynchronizers: function(map, scene, dataSources) {
           return [
-            new olcs.GaRasterSynchronizer(map, scene),
+            new olcs.RasterSynchronizer(map, scene),
             new olcs.GaTileset3dSynchronizer(map, scene),
-            new olcs.GaVectorSynchronizer(map, scene),
+            new olcs.VectorSynchronizer(map, scene),
             new olcs.GaKmlSynchronizer(map, scene, dataSources)
           ];
         }
@@ -122,8 +121,9 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
     scene.backgroundColor = Cesium.Color.WHITE;
     scene.globe.depthTestAgainstTerrain = true;
     scene.screenSpaceCameraController.maximumZoomDistance = 500000;
+    // INGRID: Add default OSM terrain
     scene.terrainProvider =
-        gaLayers.getCesiumTerrainProviderById(gaGlobalOptions.defaultTerrain);
+      gaLayers.getCesiumTerrainProviderDefault(gaGlobalOptions.defaultTerrain);
     scene.postRender.addEventListener(limitCamera, scene);
     scene.fog.enabled = fogEnabled;
     scene.fog.density = fogDensity;
@@ -173,6 +173,7 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
   var limitCamera = function() {
     var pos = this.camera.positionCartographic.clone();
     var inside = ol.extent.containsXY(extent4326, pos.longitude, pos.latitude);
+    /* INGRID: Remove check inside
     if (!inside) {
       // add a padding based on the camera height
       var maxHeight = this.screenSpaceCameraController.maximumZoomDistance;
@@ -189,6 +190,7 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
         }
       });
     }
+    */
   };
 
   var enableOl3d = function(ol3d, enable) {

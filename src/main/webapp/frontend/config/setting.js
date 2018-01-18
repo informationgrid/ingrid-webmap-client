@@ -103,3 +103,8 @@ var settingSearchCoordsXY = false;
 
 // Change coord zoom for search
 var settingSearchCoordsZoom = 16;
+
+// Enable 3D
+var settingEnable3D = false;
+
+var settingDefaultTerrain = '//assets.agi.com/stk-terrain/world';
