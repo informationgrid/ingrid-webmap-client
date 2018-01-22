@@ -171,9 +171,9 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
   };
 
   var limitCamera = function() {
+    /* INGRID: Remove check inside
     var pos = this.camera.positionCartographic.clone();
     var inside = ol.extent.containsXY(extent4326, pos.longitude, pos.latitude);
-    /* INGRID: Remove check inside
     if (!inside) {
       // add a padding based on the camera height
       var maxHeight = this.screenSpaceCameraController.maximumZoomDistance;
