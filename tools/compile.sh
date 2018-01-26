@@ -38,6 +38,11 @@ export DEFAULT_EXTENT="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096
 export DEFAULT_EPSG="EPSG:3857"
 export DEFAULT_EPSG_EXTEND="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
 
+# fix Makefile when script is run in a long directory structure
+echo "*** Fix Makefile ***"
+sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
+sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
+
 # make lint
 echo ""
 echo "******************"
