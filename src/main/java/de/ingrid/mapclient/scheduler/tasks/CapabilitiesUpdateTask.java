@@ -210,7 +210,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
                         Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
                     } else {
-                        log.info( "\n" + mailText );
+                        log.debug( "\n" + mailText );
                     }
                 }
             } catch (JSONException e) {
