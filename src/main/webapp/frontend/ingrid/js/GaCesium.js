@@ -30,11 +30,12 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
   var rotateOnEnable = true;
 
   // the maxium extent in EPSG:4326 and radians
-  // INGRID: Set default extent
+  /* INGRID: Set default extent
   var extent4326 = gaGlobalOptions.defaultExtent;
   extent4326 = extent4326.map(function(angle) {
     return angle * Math.PI / 180;
   });
+  */
 
   var intParam = function(name, defaultValue) {
     var params = gaPermalink.getParams();
