@@ -62,6 +62,7 @@ var settingShareGoogle = true;
 var settingShareTwitter = true;
 var settingShareIFrame = true;
 var settingShareLink = true;
+var settingShareQR = true;
 
 // Define URL of print logo on PDF  
 var settingPrintLogo = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/print_logo.png';

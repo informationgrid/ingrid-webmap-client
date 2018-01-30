@@ -1,36 +1,36 @@
 <div class="ga-share-icons">
-  <a class="ga-share-icon" target="_blank"
+  <a class="ga-share-icon" target="_blank" ng-if="enableShareFacebook"
     data-original-title="{{'mail_tooltip' | translate}}"
     href="mailto:?body={{permalinkValue}}">
     <i class="fa fa-envelope-alt"></i>
   </a>
 
-  <a class="ga-share-icon" target="_blank"
+  <a class="ga-share-icon" target="_blank" ng-if="enableShareQR"
     data-original-title="{{'qrcode_tooltip' | translate}}"
     href="{{qrcodegeneratorPath}}?url={{permalinkValue}}">
     <i class="fa fa-qrcode"></i>
   </a>
 
-  <a class="ga-share-icon" target="_blank"
+  <a class="ga-share-icon" target="_blank" ng-if="enableShareFacebook"
     data-original-title="{{'facebook_tooltip' | translate}}"
     href="http://www.facebook.com/sharer.php?u={{encodedPermalinkHref}}&t={{encodedDocumentTitle}}">
     <i class="fa fa-facebook"></i>
   </a>
 
-  <a class="ga-share-icon" target="_blank"
+  <a class="ga-share-icon" target="_blank" ng-if="enableShareTwitter"
     data-original-title="{{'twitter_tooltip' | translate}}"
     href="https://twitter.com/intent/tweet?url={{encodedPermalinkHref}}&text={{encodedDocumentTitle}}">
     <i class="fa fa-twitter"></i>
   </a>
 
-  <a class="ga-share-icon" target="_blank"
+  <a class="ga-share-icon" target="_blank" ng-if="enableShareGoogle"
     data-original-title="{{'google_plus_tooltip' | translate}}"
     href="https://plus.google.com/share?url={{encodedPermalinkHref}}">
     <i class="fa fa-google-plus"></i>
   </a>
 </div>
 
-<div class="ga-share-permalink">
+<div class="ga-share-permalink" ng-if="enableShareLink">
   <label>
     <span translate>share_link</span>:
   </label>
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-<div class="ga-show-more"> <!-- INGRID: Remove 'hidden-xs' -->
+<div class="ga-show-more" ng-if="enableShareIFrame"> <!-- INGRID: Remove 'hidden-xs' -->
   <div ng-click="showMoreClick()">
     <i ng-class="{'fa fa-minus': showMore, 'fa fa-plus': !showMore}"></i>
     <span ng-show="showMore" translate>share_less</span>

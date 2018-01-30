@@ -169,8 +169,9 @@ itemscope itemtype="http://schema.org/WebApplication"
         </a>&nbsp;&nbsp;
         <!-- INGRID: Edit href URL -->
         <a target="_blank" href="/hilfe?hkey=maps-1" translate>help_label</a>&nbsp;&nbsp;
-        <a class="ga-redirect" href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
-        <!-- INGRID: Remove -->
+        <!-- INGRID: Remove on iFrame -->
+        <a class="ga-redirect" ng-if="!globals.isParentIFrame" href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
+        <!-- INGRID: Remove on iFrame -->
         <div ng-controller="GaTranslationController" ng-if="!globals.isParentIFrame">
           <div ga-translation-selector ga-translation-selector-options="options"></div>
         </div>
@@ -914,6 +915,20 @@ itemscope itemtype="http://schema.org/WebApplication"
           searchCoordsXY: settingSearchCoordsXY,
           // INGRID: Add zoom for coordinate search
           searchCoordsZoom: settingSearchCoordsZoom,
+          // INGRID: Enable share facebook
+          enableShareFacebook: settingShareFacebook,
+          // INGRID: Enable share mail
+          enableShareMail: settingShareMail,
+          // INGRID: Enable share google
+          enableShareGoogle: settingShareGoogle,
+          // INGRID: Enable share twitter
+          enableShareTwitter: settingShareTwitter,
+          // INGRID: Enable share iFrame
+          enableShareIFrame: settingShareIFrame,
+          // INGRID: Enable share link
+          enableShareLink: settingShareLink,
+          // INGRID: Enable share QR
+          enableShareQR: settingShareQR,
           apiOverwrite: apiOverwrite
         });
       })();
