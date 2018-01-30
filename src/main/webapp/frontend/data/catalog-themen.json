@@ -9123,6 +9123,19 @@
                     "layerBodId": "comb_energieatlas_2",
                     "id": 9010
                 }]
+            },{
+                "category": "cat70",
+                "staging": "prod",
+                "selectedOpen": false,
+                "label": "WMS Styles Change",
+                "id": 9011,
+                "children": [{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Styles edit DOP",
+                    "layerBodId": "styles_edit",
+                    "id": 9012
+                }]
             }]
         }
     },

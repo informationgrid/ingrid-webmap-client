@@ -590,7 +590,8 @@ goog.require('ga_urlutils_service');
               // INGRID: Add version to get getMap request for WMS version 1.1.1
               // Version is define on layers.json.
               VERSION: config.version ? config.version : '1.3.0',
-              LANG: gaLang.get()
+              LANG: gaLang.get(),
+              STYLES: config.style || ''
             };
             if (config.singleTile === true) {
               if (!olSource) {
