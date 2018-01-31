@@ -371,13 +371,15 @@ public class WmsResource {
             String[] layers = layerName.split(",");
             for (String layer : layers) {
                 Node field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layer+"\"]", doc, XPathConstants.NODE);
-                field = (Node) xpath.evaluate( "./Abstract", field.getParentNode(), XPathConstants.NODE);
                 if(field != null) {
-                    layerAbstracts.add(field.getTextContent());
-                }
-                field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", field.getParentNode(), XPathConstants.NODE);
-                if(field != null){
-                  layerLegends.add(field.getTextContent());
+                    Node abstractField = (Node) xpath.evaluate( "./Abstract", field.getParentNode(), XPathConstants.NODE);
+                    if(abstractField != null) {
+                        layerAbstracts.add(abstractField.getTextContent());
+                    }
+                    field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", field.getParentNode(), XPathConstants.NODE);
+                    if(field != null){
+                      layerLegends.add(field.getTextContent());
+                    }
                 }
             }
             if(layerLegend != null && !layerLegend.equals( "undefined" )){
