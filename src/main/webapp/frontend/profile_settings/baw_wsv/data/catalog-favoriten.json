@@ -4132,23 +4132,9 @@
           "children": [{
             "category": "layer",
             "staging": "prod",
-            "label": "Demo Sozialwerksquartiere WMS",
+            "label": "Sozialwerk BVBW Quartiere",
             "layerBodId": "sozwk",
-            "id": 840,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Sozialwerksquartiere  (DEMO by ITZBund)",
-              "layerBodId": "sozwk_quatiere",
-              "id": 841
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "sozwk_copyright",
-              "id": 842
-            }]
+            "id": 840
           }]
         }]
       },
