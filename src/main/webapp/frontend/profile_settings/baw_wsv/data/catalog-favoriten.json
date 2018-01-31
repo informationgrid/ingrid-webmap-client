@@ -4168,6 +4168,20 @@
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
+          "label": "D: Metadaten Luftbilder Dtld. (MD DOP40 u. DOP20, geodatenzentrum.de",
+          "id": 592,
+          "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "DOP_INFO",
+              "layerBodId": "81870745",
+              "id": 594
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
           "label": "D: TopPlus-Web-Open (geodatenzentrum.de)",
           "id": 810,
           "children": [{
@@ -4305,26 +4319,6 @@
               "label": "grosse Städte (GN250)",
               "layerBodId": "-244004869",
               "id": 591
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "D: Metadaten Luftbilder Dtld. (MD DOP40 u. DOP20, geodatenzentrum.de",
-          "id": 592,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "DOP_INFO",
-            "id": 593,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "DOP_INFO",
-              "layerBodId": "81870745",
-              "id": 594
             }]
           }]
         },
