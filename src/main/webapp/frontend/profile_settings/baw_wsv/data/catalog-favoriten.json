@@ -17,96 +17,40 @@
           "label": "WSV: BWaStr Bundeswasserstraßen",
           "id": 319,
           "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Bundeswasserstrassen WMS (DLZ-IT)",
-            "layerBodId": "-368582521",
-            "id": 320,
-            "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "Verkehrsnetz",
-              "layerBodId": "-1707758900",
+              "label": "BWaStr: Verkehrsnetz",
+              "layerBodId": "bwastr_vnetz",
               "id": 321
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Organisation",
-              "layerBodId": "-932533067",
-              "id": 322,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Außenstellen",
-                "layerBodId": "-1936459979",
-                "id": 323
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aemter",
-                "layerBodId": "1612255955",
-                "id": 324
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aussenbezirke",
-                "layerBodId": "-845948670",
-                "id": 325
-              }]
+              "label": "BWaStr: WaStr-Klassen",
+              "layerBodId": "bwastr_wastr",
+              "id": 322
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Wasserstrassenklassen",
-              "layerBodId": "1844157822",
-              "id": 326
+              "label": "BWaStr: Außenstellen",
+              "layerBodId": "bwastr_direktion",
+              "id": 324
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Text",
-              "layerBodId": "-757531640",
-              "id": 327,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gewaessernamen",
-                "layerBodId": "-1401044780",
-                "id": 328
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Fliessrichtung",
-                "layerBodId": "-437757901",
-                "id": 329
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kilometermarken",
-                "layerBodId": "-605534909",
-                "id": 330
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Ortschaften",
-                "layerBodId": "-1548405898",
-                "id": 331
-              }]
+              "label": "BWaStr: WSÄ",
+              "layerBodId": "bwastr_wsae",
+              "id": 324
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "1839705580",
-              "id": 332
+              "label": "BWaStr: ABz",
+              "layerBodId": "bwastr_abz",
+              "id": 325
             }]
-          }]
         },
         {
           "category": "cat71",
