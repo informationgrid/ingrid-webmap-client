@@ -656,11 +656,30 @@ goog.require('ga_urlutils_service');
         name: config.label || layer.label,
         classes: []
       };
-      enc.classes.push({
-        name: '',
-        // INGRID Check layer legend
-        icon: config.legendUrl || gaWms.getLegendURL(layer)
-      });
+      if (config.legendUrl) {
+        var legends = config.legendUrl.split('|');
+        angular.forEach(legends, function(legend) {
+          enc.classes.push({
+            name: '',
+            icon: legend
+          });
+        });
+      } else {
+        if (layer) {
+          if (layer.getSource()) {
+            var paramLayerNames = layer.getSource().getParams().LAYERS;
+            if (paramLayerNames) {
+              var layerNames = paramLayerNames.split(',');
+              angular.forEach(layerNames, function(layerName) {
+                enc.classes.push({
+                  name: '',
+                  icon: gaWms.getLegendURL(layer, layerName)
+                });
+              });
+            }
+          }
+        }
+      }
       return enc;
     }
   }

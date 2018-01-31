@@ -34,6 +34,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -199,7 +200,6 @@ public class WmsResource {
             String layerLegend = null;
             String layerTitle = null;
             String layerName = null;
-            String layerAbstract = null;
             
             try {
                 if(layer.indexOf("||") > -1){
@@ -269,9 +269,9 @@ public class WmsResource {
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     
                     if(serviceType.toLowerCase().equals( "wms" )){
-                        html = getWmsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerAbstract, layerLegend, legend);
+                        html = getWmsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
                     }else if(serviceType.toLowerCase().equals( "wmts" )){
-                        html = getWmtsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerAbstract, layerLegend);
+                        html = getWmtsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
                     }
                 }
             } catch (Exception e) {
@@ -297,19 +297,8 @@ public class WmsResource {
         return Response.ok(html).build();
     }
 
-    private String getWmsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerAbstract, String layerLegend, String legend) throws XPathExpressionException {
-        Node field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
-        Node layerField = null;
+    private String getWmsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String legend) throws XPathExpressionException {
         String html = "";
-        
-        if(field != null){
-            layerField = field.getParentNode();
-            field = (Node) xpath.evaluate( "./Abstract", layerField, XPathConstants.NODE);
-            if(field != null){
-                layerAbstract = field.getTextContent();
-            }
-        }
-        
         // Create HTML
         html += "<div ng-if=\"showWMSTree\" class=\"tabbable\">";
         
@@ -325,24 +314,24 @@ public class WmsResource {
         html += "<div class=\"tab-content\">";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(1)\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerAbstract, layerLegend, legend, layerField );
+        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
         html += "</div>";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(2)\">";
-        html += getWMSInfoTree(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerAbstract, layerLegend);
+        html += getWMSInfoTree(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         html += "</div>";
         html += "</div>";
 
         html += "<div ng-if=\"!showWMSTree\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerAbstract, layerLegend, legend, layerField );
+        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
         html += "</div>";
         
         return html;
     }
 
-    private String getWMSInfoTree(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerAbstract,
+    private String getWMSInfoTree(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
             String layerLegend) throws XPathExpressionException {
         Node field = null;
         String html = "";
@@ -370,54 +359,82 @@ public class WmsResource {
         return html;
     }
 
-    private String getWMSInfoData(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerAbstract,
-            String layerLegend, String legend, Node layerField) throws XPathExpressionException {
-        Node field = null;
+    private String getWMSInfoData(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
+            String layerLegend, String legend) throws XPathExpressionException {
         String html = "";
-        
         html += "<div class=\"legend-container\">";
         html += "<div class=\"legend-footer\">";
         html += "<span translate>metadata_information_layer</span><br>";
-        html += "<table>";
-        html += "<tbody>";
-        if(layerTitle != null){
-            html += "<tr";
-            if(layerAbstract == null){
-                html += " style=\"border-bottom:0;\"";
+        if (layerName != null) {
+            ArrayList<String> layerAbstracts = new ArrayList<String>();
+            ArrayList<String> layerLegends = new ArrayList<String>();
+            String[] layers = layerName.split(",");
+            for (String layer : layers) {
+                Node field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layer+"\"]", doc, XPathConstants.NODE);
+                field = (Node) xpath.evaluate( "./Abstract", field.getParentNode(), XPathConstants.NODE);
+                if(field != null) {
+                    layerAbstracts.add(field.getTextContent());
+                }
+                field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", field.getParentNode(), XPathConstants.NODE);
+                if(field != null){
+                  layerLegends.add(field.getTextContent());
+                }
             }
-            html += ">";
-            html += "<td translate>metadata_service_title</td>";
-            html += "<td>" + layerTitle + "</td>";
-            html += "</tr>";
-        }
-        if(layerAbstract != null){
-            html += "<tr style=\"border-bottom:0;\">";
-            html += "<td translate>metadata_service_abstract</td>";
-            html += "<td>" + layerAbstract + "</td>";
-            html += "</tr>";
-        }
-        html += "</tbody>";
-        html += "</table>";
-        if(layerLegend.equals( legend )){
-            field = (Node) xpath.evaluate( "./Style/LegendURL/OnlineResource/@href", layerField, XPathConstants.NODE);
-            if(field != null){
-              layerLegend = field.getTextContent();
+            if(layerLegend != null && !layerLegend.equals( "undefined" )){
+                String[] tmpLegends = layerLegend.split("\\|");
+                layerLegends = new ArrayList<String>();
+                for (String tmpLegend : tmpLegends) {
+                    layerLegends.add(tmpLegend);
+                }
+            }
+            
+            html += "<table>";
+            html += "<tbody>";
+            if(layerTitle != null){
+                html += "<tr";
+                if(layerAbstracts.size() == 0){
+                    html += " style=\"border-bottom:0;\"";
+                }
+                html += ">";
+                html += "<td translate>metadata_service_title</td>";
+                html += "<td>" + layerTitle + "</td>";
+                html += "</tr>";
+            }
+            if(layerAbstracts.size() > 0){
+                for(int i=0; i < layerAbstracts.size(); i++) {
+                html += "<tr style=\"border-bottom:0;\">";
+                if(i == 0) {
+                    html += "<td translate>metadata_service_abstract</td>";
+                } else {
+                    html += "<td></td>";
+                }
+                html += "<td>" + layerAbstracts.get(i) + "</td>";
+                html += "</tr>";
+                }
+            }
+            html += "</tbody>";
+            html += "</table>";
+            html += "<div class=\"legend\">";
+            html += "<span translate>metadata_legend</span><br>";
+            html += "<div class=\"img-container\">";
+            if(layerLegends.size() > 0) {
+                for(int i=0; i < layerLegends.size(); i++) {
+                    
+                    html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
+                    html += layerLegends.get(i);
+                    html += "\">";
+                    if(i != layerLegends.size() - 1) {
+                        html += "<hr>";
+                    }
+                }
             }
         }
-        html += "<div class=\"legend\">";
-        html += "<span translate>metadata_legend</span><br>";
-        html += "<div class=\"img-container\">";
-        html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
-        if(layerLegend != null && !layerLegend.equals( "undefined" )){
-            html += layerLegend;
-        }
-        html += "\">";
         html += "</div>";
         html += "</div>";
         html += "<span translate>metadata_information_service</span><br>";
         html += "<table>";
         html += "<tbody>";
-        field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
+        Node field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
         if(field != null){
             html += "<tr>";
             html += "<td translate>metadata_service_title</td>";
@@ -545,10 +562,11 @@ public class WmsResource {
         return html;
     }
 
-    private String getWmtsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerAbstract, String layerLegend) throws XPathExpressionException {
+    private String getWmtsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
         Node field = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
         Node layerField = null;
         String html = "";
+        String layerAbstract = null;
         
         if(field != null){
             layerField = field.getParentNode();

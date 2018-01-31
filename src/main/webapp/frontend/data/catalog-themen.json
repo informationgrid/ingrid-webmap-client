@@ -9122,6 +9122,12 @@
                     "label": "Combine Windenergiegebiete+Windenergieanlagen",
                     "layerBodId": "comb_energieatlas_2",
                     "id": 9010
+                },{
+                    "category": "layer",
+                    "staging": "prod",
+                    "label": "Combine Windenergiegebiete+Biogasanlage",
+                    "layerBodId": "comb_energieatlas_3",
+                    "id": 9013
                 }]
             },{
                 "category": "cat70",
