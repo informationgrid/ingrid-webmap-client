@@ -427,6 +427,8 @@ public class WmsResource {
                         html += "<hr>";
                     }
                 }
+            } else {
+                html += "<img alt=\"{{'no_legend_available' | translate}}\">";
             }
         }
         html += "</div>";
