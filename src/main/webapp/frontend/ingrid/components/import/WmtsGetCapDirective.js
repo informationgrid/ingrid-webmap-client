@@ -51,16 +51,16 @@ goog.provide('ga_wmtsgetcap_directive');
           var tileMatrixSets = getCap.Contents.TileMatrixSet;
           // INGRID: Add 'matrixSet' by supportedCRS
           if (tileMatrixSets) {
-            for (const tileMatrixSet of tileMatrixSets) {
-              const supportedCRS = tileMatrixSet.SupportedCRS;
-              if(supportedCRS){
-                if(supportedCRS.indexOf(proj.getCode()) > -1){
+            for (var tileMatrixSet in tileMatrixSets) {
+              var supportedCRS = tileMatrixSet.SupportedCRS;
+              if (supportedCRS) {
+                if (supportedCRS.indexOf(proj.getCode()) > -1) {
                   layerOptions.matrixSet = tileMatrixSet.Identifier;
                 }
               }
             }
           }
-          if(!layerOptions.matrixSet){
+          if (!layerOptions.matrixSet) {
             layer.isUnsupported = true;
           }
           layer.sourceConfig = ol.source.WMTS.optionsFromCapabilities(getCap,

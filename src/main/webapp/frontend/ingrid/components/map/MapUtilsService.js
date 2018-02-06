@@ -189,13 +189,13 @@ goog.require('ga_urlutils_service');
           if (scale && extent) {
             // We test if the layer extent specified in the
             // getCapabilities fit the minScale value.
-            const layerExtentScale = view.getResolutionForExtent(extent,
-              map.getSize()) * 39.37 * 72;
+            var layerExtentScale = view.getResolutionForExtent(extent,
+                map.getSize()) * 39.37 * 72;
             if (layerExtentScale > scale) {
-              const layerExtentCenter = ol.extent.getCenter(extent);
-              const factor = layerExtentScale / scale;
-              const width = ol.extent.getWidth(extent) / factor;
-              const height = ol.extent.getHeight(extent) / factor;
+              var layerExtentCenter = ol.extent.getCenter(extent);
+              var factor = layerExtentScale / scale;
+              var width = ol.extent.getWidth(extent) / factor;
+              var height = ol.extent.getHeight(extent) / factor;
               extent = [
                 layerExtentCenter[0] - width / 2,
                 layerExtentCenter[1] - height / 2,
@@ -204,7 +204,7 @@ goog.require('ga_urlutils_service');
               ];
 
               if (extent) {
-                const res = view.constrainResolution(
+                var res = view.constrainResolution(
                     view.getResolutionForExtent(extent, map.getSize()), 0, -1);
                 view.setCenter(layerExtentCenter);
                 view.setResolution(res);
