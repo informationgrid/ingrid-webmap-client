@@ -33,11 +33,11 @@ Following the next steps to install the Webmap Client without the portal:
 
    - Install Python 2.7 (https://www.python.org/downloads/)
    
-   - Install cygwin (https://www.cygwin.com/) with the tools wget, make, gcc-core, gcc-g+, unzip, git, curl
+   - Install cygwin (https://www.cygwin.com/) with the tools wget, make, gcc-core, gcc-g+, unzip, git, curl, python (2.7.14-1)
    
    - Install Node.js (https://nodejs.org)
 
-   - Add cygwin home path to system environment variable, for example:
+   - Add cygwin home path to system environment variable (and on eclipse), for example:
 
     ```
     CYGWIN_HOME C:\cygwin

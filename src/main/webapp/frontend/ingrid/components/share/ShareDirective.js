@@ -33,6 +33,21 @@ goog.require('ga_window_service');
           placement: 'bottom'
         });
 
+        // INGRID: Enable share facebook
+        scope.enableShareFacebook = gaGlobalOptions.enableShareFacebook;
+        // INGRID: Enable share mail
+        scope.enableShareMail = gaGlobalOptions.enableShareMail;
+        // INGRID: Enable share google
+        scope.enableShareGoogle = gaGlobalOptions.enableShareGoogle;
+        // INGRID: Enable share twitter
+        scope.enableShareTwitter = gaGlobalOptions.enableShareTwitter;
+        // INGRID: Enable share iFrame
+        scope.enableShareIFrame = gaGlobalOptions.enableShareIFrame;
+        // INGRID: Enable share link
+        scope.enableShareLink = gaGlobalOptions.enableShareLink;
+        // INGRID: Enable share QR
+        scope.enableShareQR = gaGlobalOptions.enableShareQR;
+
         // Store in the scope the permalink value which is bound to
         // the input field
         scope.encodedDocumentTitle = encodeURIComponent(
@@ -46,11 +61,11 @@ goog.require('ga_window_service');
         scope.updateUrl = function() {
           // INGRID: Check iFrame location
           scope.permalinkValue = gaPermalink.getHref(undefined,
-            gaGlobalOptions.isParentIFrame);
+              gaGlobalOptions.isParentIFrame);
           // INGRID: Check iFrame location
           scope.encodedPermalinkHref =
               encodeURIComponent(gaPermalink.getHref(undefined,
-              gaGlobalOptions.isParentIFrame));
+                  gaGlobalOptions.isParentIFrame));
           // assuming document.title never change
           scope.embedValue = gaPermalink.getEmbedHref();
         };
@@ -62,8 +77,7 @@ goog.require('ga_window_service');
               $translate.instant('page_title'));
           gaUrlUtils.shorten(scope.permalinkValue).then(function(shortUrl) {
             // INGRID: Return href if no shorturl exists
-            scope.permalinkValue = shortUrl ?
-              shortUrl : scope.permalinkValue;
+            scope.permalinkValue = shortUrl || scope.permalinkValue;
             scope.urlShortened = true;
             scope.$applyAsync(function() {
               // Auto-select the shortened permalink (not on mobiles)

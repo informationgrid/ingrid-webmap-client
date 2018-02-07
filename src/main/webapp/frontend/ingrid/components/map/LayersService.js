@@ -237,9 +237,11 @@ goog.require('ga_urlutils_service');
 
               // 3D Tileset
               var tileset3d = [
+                /* INGRID: Remove list
                 'ch.swisstopo.swisstlm3d.3d',
                 'ch.swisstopo.swissnames3d.3d',
                 'ch.swisstopo.vegetation.3d'
+                */
               ];
               var tilesetTs = [
                 '20170425',
@@ -332,6 +334,14 @@ goog.require('ga_urlutils_service');
                 gaGlobalOptions.defaultExtent)
           });
           provider.bodId = bodId;
+          return provider;
+        };
+
+        this.getCesiumTerrainProviderDefault = function(defaultTerrain) {
+          var provider = new Cesium.CesiumTerrainProvider({
+            url: defaultTerrain,
+            requestVertexNormals: true
+          });
           return provider;
         };
 
@@ -580,12 +590,14 @@ goog.require('ga_urlutils_service');
               // INGRID: Add version to get getMap request for WMS version 1.1.1
               // Version is define on layers.json.
               VERSION: config.version ? config.version : '1.3.0',
-              LANG: gaLang.get()
+              LANG: gaLang.get(),
+              STYLES: config.style || ''
             };
             if (config.singleTile === true) {
               if (!olSource) {
                 olSource = config.olSource = new ol.source.ImageWMS({
-                  url: getImageryUrls(getWmsTpl(gaGlobalOptions.wmsUrl))[0],
+                  // INGRID: Use 'config.wmsUrl'
+                  url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
                   ratio: 1

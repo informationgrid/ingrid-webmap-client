@@ -107,9 +107,9 @@ goog.require('ga_urlutils_service');
             attribution: options.attribution,
             extent: options.extent,
             // INGRID: Add queryable
-            queryable: options.queryable === true ||
+            queryable: !!(options.queryable === true ||
               options.queryable === 'true' ||
-              options.queryable === '1' ? true : false,
+              options.queryable === '1'),
             // INGRID: Add minScale
             minScale: options.minScale,
             // INGRID: Add maxScale
@@ -229,9 +229,9 @@ goog.require('ga_urlutils_service');
             // INGRID: Remove function 'gaMapUtils.intersectWithDefaultExtent'
             extent: getCapLayer.extent,
             // INGRID: Add queryable
-            queryable: getCapLayer.queryable === true ||
+            queryable: !!(getCapLayer.queryable === true ||
               getCapLayer.queryable === 'true' ||
-              getCapLayer.queryable === '1' ? true : false,
+              getCapLayer.queryable === '1'),
             // INGRID: Add minScale
             minScale: minScale,
             // INGRID: Add maxScale
@@ -360,9 +360,9 @@ goog.require('ga_urlutils_service');
                           opacity: 1,
                           visible: visible,
                           // INGRID: Add queryable
-                          queryable: layer.queryable === true ||
+                          queryable: !!(layer.queryable === true ||
                             layer.queryable === 'true' ||
-                            layer.queryable === '1' ? true : false,
+                            layer.queryable === '1'),
                           extent: ol.proj.transformExtent(extent,
                             'EPSG:4326', gaGlobalOptions.defaultEpsg),
                           minScale: minScale,
@@ -404,7 +404,9 @@ goog.require('ga_urlutils_service');
           var url = layer.url;
           if (url === undefined) {
             if (layer.getSource()) {
-              if (layer.getSource().urls) {
+              if (layer.getSource().getUrl) {
+                url = layer.getSource().getUrl();
+              } else if (layer.getSource().urls) {
                 if (layer.getSource().urls.length > 0) {
                   url = layer.getSource().urls[0];
                 }
@@ -428,13 +430,15 @@ goog.require('ga_urlutils_service');
           return defer.promise;
         };
         // INGRID: Add function to get the layer legend url
-        this.getLegendURL = function(layer) {
+        this.getLegendURL = function(layer, paramLayer) {
           var params = layer.getSource().getParams();
           // INGRID: Get legend for all layer (intern and extern)
           var url = layer.url;
           if (url === undefined) {
             if (layer.getSource()) {
-              if (layer.getSource().urls) {
+              if (layer.getSource().getUrl) {
+                url = layer.getSource().getUrl();
+              } else if (layer.getSource().urls) {
                 if (layer.getSource().urls.length > 0) {
                   url = layer.getSource().urls[0];
                 }
@@ -442,15 +446,15 @@ goog.require('ga_urlutils_service');
             }
           }
           return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
-             request: 'GetLegendGraphic',
-             layer: params.LAYERS,
-             style: params.style || 'default',
-             service: 'WMS',
-             // INGRID: Add 'params.VERSION'
-             version: params.version || params.VERSION || '1.3.0',
-             format: 'image/png',
-             sld_version: '1.1.0'
-           }));
+            request: 'GetLegendGraphic',
+            layer: paramLayer || params.LAYERS,
+            style: params.style || 'default',
+            service: 'WMS',
+            // INGRID: Add 'params.VERSION'
+            version: params.version || params.VERSION || '1.3.0',
+            format: 'image/png',
+            sld_version: '1.1.0'
+          }));
         };
       };
       return new Wms();

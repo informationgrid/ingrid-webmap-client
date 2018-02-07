@@ -831,11 +831,11 @@ goog.require('ga_urlutils_service');
             function selectBWaLocatorData(res, full) {
               if (res) {
                 var inputBwaLocatorFrom = $('#' + res.id +
-                  '_bwalocator_from').val().replace(",",".");
+                  '_bwalocator_from').val().replace(',', '.');
                 var inputBwaLocatorTo = $('#' + res.id +
-                  '_bwalocator_to').val().replace(",",".");
+                  '_bwalocator_to').val().replace(',', '.');
                 var inputBwaLocatorDistance = $('#' + res.id +
-                 '_bwalocator_distance').val().replace(",",".");
+                 '_bwalocator_distance').val().replace(',', '.');
 
                 var content = '{' +
                   '"limit":200,' +
@@ -1013,8 +1013,16 @@ goog.require('ga_urlutils_service');
                         $scope.map.addLayer(bwaLocatorLayerShort);
                       }
                     }
-                    $scope.map.getView().fit(vectorSource.getExtent(),
+                    if(geometry.type === "Point") {
+                      var coords = geometry.coordinates;
+                      if(coords){
+                        gaMapUtils.moveTo($scope.map, $scope.ol3d,
+                          gaGlobalOptions.searchCoordsZoom, coords);
+                      }
+                    } else {
+                      $scope.map.getView().fit(vectorSource.getExtent(),
                         $scope.map.getSize());
+                    }
                   }
                 }
               }

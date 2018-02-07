@@ -93,11 +93,11 @@ goog.require('ga_what3words_service');
 
         // INGRID: Add search nominatim url
         $scope.childoptions.searchNominatimUrl = $scope.options.
-          searchNominatimUrl;
+            searchNominatimUrl;
 
         // INGRID: Add search Bwa Locator url
         $scope.childoptions.searchBwaLocatorUrl = $scope.options.
-          searchBwaLocatorUrl;
+            searchBwaLocatorUrl;
 
         // Result set announces a result selection
         $scope.childoptions.valueSelected = function(strValue) {
@@ -178,7 +178,9 @@ goog.require('ga_what3words_service');
                 if (position.length === 4) {
                   gaMapUtils.zoomToExtent($scope.map, $scope.ol3d, position);
                 } else {
-                  gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, position);
+                  // INGRID: Add zoom from settings
+                  gaMapUtils.moveTo($scope.map, $scope.ol3d,
+                    $scope.options.searchCoordsZoom, position);
                   gaMarkerOverlay.add($scope.map, position, true);
                 }
               }
@@ -195,7 +197,9 @@ goog.require('ga_what3words_service');
                   var newPos = ol.proj.transform([res.geometry.lng,
                     res.geometry.lat], 'EPSG:4326',
                   $scope.map.getView().getProjection());
-                  gaMapUtils.moveTo($scope.map, $scope.ol3d, 8, newPos);
+                  // INGRID: Add zoom from settings
+                  gaMapUtils.moveTo($scope.map, $scope.ol3d,
+                    $scope.options.searchCoordsZoom, newPos);
                   gaMarkerOverlay.add($scope.map, newPos, true);
                 }
               });

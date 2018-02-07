@@ -17,96 +17,40 @@
           "label": "WSV: BWaStr Bundeswasserstraßen",
           "id": 319,
           "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "Bundeswasserstrassen WMS (DLZ-IT)",
-            "layerBodId": "-368582521",
-            "id": 320,
-            "children": [{
               "category": "layer",
               "staging": "prod",
-              "label": "Verkehrsnetz",
-              "layerBodId": "-1707758900",
+              "label": "BWaStr: Verkehrsnetz",
+              "layerBodId": "bwastr_vnetz",
               "id": 321
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Organisation",
-              "layerBodId": "-932533067",
-              "id": 322,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Außenstellen",
-                "layerBodId": "-1936459979",
-                "id": 323
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aemter",
-                "layerBodId": "1612255955",
-                "id": 324
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Aussenbezirke",
-                "layerBodId": "-845948670",
-                "id": 325
-              }]
+              "label": "BWaStr: WaStr-Klassen",
+              "layerBodId": "bwastr_wastr",
+              "id": 322
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Wasserstrassenklassen",
-              "layerBodId": "1844157822",
-              "id": 326
+              "label": "BWaStr: Außenstellen",
+              "layerBodId": "bwastr_direktion",
+              "id": 324
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "Text",
-              "layerBodId": "-757531640",
-              "id": 327,
-              "children": [{
-                "category": "layer",
-                "staging": "prod",
-                "label": "Gewaessernamen",
-                "layerBodId": "-1401044780",
-                "id": 328
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Fliessrichtung",
-                "layerBodId": "-437757901",
-                "id": 329
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Kilometermarken",
-                "layerBodId": "-605534909",
-                "id": 330
-              },
-              {
-                "category": "layer",
-                "staging": "prod",
-                "label": "Ortschaften",
-                "layerBodId": "-1548405898",
-                "id": 331
-              }]
+              "label": "BWaStr: WSÄ",
+              "layerBodId": "bwastr_wsae",
+              "id": 324
             },
             {
               "category": "layer",
               "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "1839705580",
-              "id": 332
+              "label": "BWaStr: ABz",
+              "layerBodId": "bwastr_abz",
+              "id": 325
             }]
-          }]
         },
         {
           "category": "cat71",
@@ -140,6 +84,48 @@
               "label": "IENC Karten",
               "layerBodId": "853158912",
               "id": 15
+            }]
+          }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Seekarten des BSH",
+          "id": 858,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "ENC des BSH",
+            "layerBodId": "enc_cc_wms",
+            "id": 859,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Lights",
+              "layerBodId": "enc_cc_lights",
+              "id": 860
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Sounding",
+              "layerBodId": "enc_cc_soundg",
+              "id": 861
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Depth Contour",
+              "layerBodId": "enc_cc_depcnt",
+              "id": 862
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Other",
+              "layerBodId": "enc_cc_other",
+              "id": 863
             }]
           }]
         },
@@ -324,7 +310,8 @@
               "id": 374
             }]
           }]
-        },{
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -370,7 +357,8 @@
                 "layerBodId": "lis_weitere_inanspruch",
                 "id": 820
               }]
-            },{
+            },
+            {
               "category": "layer",
               "staging": "prod",
               "label": "Öff. rechtl. Verfahren",
@@ -390,7 +378,8 @@
                 "layerBodId": "lis_ersatz_invest_linie",
                 "id": 823
               }]
-            },{
+            },
+            {
               "category": "layer",
               "staging": "prod",
               "label": "Belastungen",
@@ -417,7 +406,8 @@
                 "layerBodId": "lis_belastung_weitere",
                 "id": 827
               }]
-            },{
+            },
+            {
               "category": "layer",
               "staging": "prod",
               "label": "Nutzungen",
@@ -465,15 +455,17 @@
                 "layerBodId": "lis_nutzung_weitere",
                 "id": 834
               }]
-            },{
+            },
+            {
               "category": "layer",
               "staging": "prod",
               "label": "WSV-Flurstücke",
               "layerBodId": "lis_kataster",
               "id": 835
             }]
-		  }]
-        },{
+          }]
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -1376,7 +1368,7 @@
             }]
           }]
         },
-		{
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -4140,23 +4132,9 @@
           "children": [{
             "category": "layer",
             "staging": "prod",
-            "label": "Demo Sozialwerksquartiere WMS",
+            "label": "Sozialwerk BVBW Quartiere",
             "layerBodId": "sozwk",
-            "id": 840,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "Sozialwerksquartiere  (DEMO by ITZBund)",
-              "layerBodId": "sozwk_quatiere",
-              "id": 841
-            },
-            {
-              "category": "layer",
-              "staging": "prod",
-              "label": "copyright",
-              "layerBodId": "sozwk_copyright",
-              "id": 842
-            }]
+            "id": 840
           }]
         }]
       },
@@ -4185,7 +4163,22 @@
               "id": 578
             }]
           }]
-        },{
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: Metadaten Luftbilder Dtld. (MD DOP40 u. DOP20, geodatenzentrum.de",
+          "id": 592,
+          "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "DOP_INFO",
+              "layerBodId": "81870745",
+              "id": 594
+          }]
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -4211,7 +4204,8 @@
               "id": 813
             }]
           }]
-        },{
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -4237,7 +4231,8 @@
               "id": 779
             }]
           }]
-        },{
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -4324,26 +4319,6 @@
               "label": "grosse Städte (GN250)",
               "layerBodId": "-244004869",
               "id": 591
-            }]
-          }]
-        },
-        {
-          "category": "cat71",
-          "staging": "prod",
-          "selectedOpen": false,
-          "label": "D: Metadaten Luftbilder Dtld. (MD DOP40 u. DOP20, geodatenzentrum.de",
-          "id": 592,
-          "children": [{
-            "category": "layer",
-            "staging": "prod",
-            "label": "DOP_INFO",
-            "id": 593,
-            "children": [{
-              "category": "layer",
-              "staging": "prod",
-              "label": "DOP_INFO",
-              "layerBodId": "81870745",
-              "id": 594
             }]
           }]
         },
@@ -4826,7 +4801,7 @@
             }]
           }]
         },
-		{
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -5600,6 +5575,118 @@
               "id": 775
             }]
           }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: Landschaftsnamen",
+          "id": 843,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "Landschaften",
+            "layerBodId": "sgd_landschaften_all",
+            "id": 844,
+            "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Beschriftung",
+              "layerBodId": "sgd_landschaften_beschriftung",
+              "id": 845
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Umringe",
+              "layerBodId": "sgd_landschaften_umringe",
+              "id": 846
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Polygonale Flächendarstellung der Landschaften",
+              "layerBodId": "sgd_landschaften_landschaften",
+              "id": 847
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Themen",
+              "layerBodId": "sgd_landschaften_themen",
+              "id": 848,
+              "children": [{
+                "category": "layer",
+                "staging": "prod",
+                "label": "Gebirge",
+                "layerBodId": "sgd_landschaften_gebirge",
+                "id": 849
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Plateau",
+                "layerBodId": "sgd_landschaften_plateau",
+                "id": 850
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Becken",
+                "layerBodId": "sgd_landschaften_becken",
+                "id": 851
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Tal",
+                "layerBodId": "sgd_landschaften_tal",
+                "id": 852
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Moor",
+                "layerBodId": "sgd_landschaften_moor",
+                "id": 853
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Wald",
+                "layerBodId": "sgd_landschaften_wald",
+                "id": 854
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Küste",
+                "layerBodId": "sgd_landschaften_kueste",
+                "id": 855
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Insel",
+                "layerBodId": "sgd_landschaften_insel",
+                "id": 856
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Siedlung",
+                "layerBodId": "sgd_landschaften_siedlung",
+                "id": 857
+              },
+              {
+                "category": "layer",
+                "staging": "prod",
+                "label": "Historisch",
+                "layerBodId": "sgd_landschaften_historisch",
+                "id": 858
+              }]
+            }]
+          }]
         }]
       },
       {
@@ -5641,7 +5728,8 @@
               "id": 801
             }]
           }]
-        },{
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -5654,7 +5742,8 @@
             "layerBodId": "-852784967",
             "id": 796
           }]
-        },{
+        },
+        {
           "category": "cat71",
           "staging": "prod",
           "selectedOpen": false,
@@ -5743,7 +5832,7 @@
               "id": 794
             }]
           }]
-        },    
+        },
         {
           "category": "cat71",
           "staging": "prod",
@@ -5789,5 +5878,5 @@
       }]
     }
   },
-  "last_id": 842
+  "last_id": 858
 }

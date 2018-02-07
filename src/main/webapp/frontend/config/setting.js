@@ -62,6 +62,7 @@ var settingShareGoogle = true;
 var settingShareTwitter = true;
 var settingShareIFrame = true;
 var settingShareLink = true;
+var settingShareQR = true;
 
 // Define URL of print logo on PDF  
 var settingPrintLogo = location.protocol + '//' + location.host + '/ingrid-webmap-client/frontend/prd/img/print_logo.png';
@@ -100,3 +101,11 @@ var settingShowISOXML = true;
 
 // Change coord XY for search
 var settingSearchCoordsXY = false;
+
+// Change coord zoom for search
+var settingSearchCoordsZoom = 16;
+
+// Enable 3D
+var settingEnable3D = false;
+
+var settingDefaultTerrain = '//assets.agi.com/stk-terrain/world';

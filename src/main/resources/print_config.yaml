@@ -52,31 +52,42 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
-          absoluteX: 22
-          absoluteY: 800
+          absoluteX: 20
+          absoluteY: 822
           width: 550
           height: 760
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 150
+          absoluteY: 815
+          width: 300
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 38
+          absoluteY: 58
           width: 123
           items:
               - !image
@@ -89,8 +100,8 @@ layouts:
 # North arrow
 #---------------------------------------
         - !columns
-          absoluteY: 790
-          absoluteX: 420
+          absoluteY: 805
+          absoluteX: 410
           width: 150
           items:
             - !image
@@ -104,7 +115,7 @@ layouts:
 # QRCode
 #---------------------------------------
         - !columns
-          absoluteY: 100
+          absoluteY: 122
           absoluteX: 509
           width: 64
           items:
@@ -118,7 +129,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 65
+          absoluteY: 75
           absoluteX: 30
           width: 300
           items:
@@ -193,8 +204,8 @@ layouts:
 # Description
 #---------------------------------------
         - !columns
-          absoluteX: 42
-          absoluteY: 780
+          absoluteX: 40
+          absoluteY: 770
           width: 150
           condition: comment
           nbColumns: 1
@@ -253,7 +264,7 @@ layouts:
 # Scalesbar
 #-------------------------------------
         - !columns
-          absoluteY: 87
+          absoluteY: 109
           absoluteX: 378
           width: 128
           config:
@@ -264,7 +275,7 @@ layouts:
                 text: ' '
                 backgroundColor: white
         - !columns
-          absoluteY: 82
+          absoluteY: 104
           absoluteX: 381
           width: 124
           nbColumns: 1
@@ -370,31 +381,42 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
-          absoluteX: 22
-          absoluteY: 555
+          absoluteX: 20
+          absoluteY: 575
           width: 802
           height: 520
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 230
+          absoluteY: 565
+          width: 400
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 35
+          absoluteY: 52
           width: 123
           items:
               - !image
@@ -407,7 +429,7 @@ layouts:
 # North arrow
 #---------------------------------------
         - !columns
-          absoluteY: 545
+          absoluteY: 565
           absoluteX: 660
           width: 150
           items:
@@ -422,7 +444,7 @@ layouts:
 # QRCode
 #---------------------------------------
         - !columns
-          absoluteY: 98
+          absoluteY: 118
           absoluteX: 761
           width: 64
           items:
@@ -436,7 +458,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 60
+          absoluteY: 70
           absoluteX: 25
           width: 300
           items:
@@ -512,7 +534,7 @@ layouts:
 #---------------------------------------
         - !columns
           absoluteX: 42
-          absoluteY: 535
+          absoluteY: 515
           width: 150
           condition: comment
           nbColumns: 1
@@ -571,7 +593,7 @@ layouts:
 # Scalesbar
 #-------------------------------------
         - !columns
-          absoluteY: 83
+          absoluteY: 103
           absoluteX: 626
           width: 128
           config:
@@ -582,7 +604,7 @@ layouts:
                 text: ' '
                 backgroundColor: white
         - !columns
-          absoluteY: 78
+          absoluteY: 98
           absoluteX: 629
           width: 124
           nbColumns: 1
@@ -689,31 +711,42 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
-          absoluteY: 1150
-          absoluteX: 22
+          absoluteY: 1172
+          absoluteX: 20
           width: 802
           height: 1108
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 220
+          absoluteY: 1162
+          width: 400
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 38
+          absoluteY: 60
           width: 123
           items:
               - !image
@@ -726,7 +759,7 @@ layouts:
 # North arrow
 #---------------------------------------
         - !columns
-          absoluteY: 1120
+          absoluteY: 1142
           absoluteX: 660
           width: 150
           items:
@@ -741,7 +774,7 @@ layouts:
 # QRCode
 #---------------------------------------
         - !columns
-          absoluteY: 105
+          absoluteY: 127
           absoluteX: 760
           width: 64
           items:
@@ -755,7 +788,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 65
+          absoluteY: 75
           absoluteX: 30
           width: 405
           items:
@@ -831,7 +864,7 @@ layouts:
 #---------------------------------------
         - !columns
           absoluteX: 42
-          absoluteY: 1120
+          absoluteY: 1100
           width: 150
           condition: comment
           nbColumns: 1
@@ -890,7 +923,7 @@ layouts:
 # Scalesbar
 #-------------------------------------
         - !columns
-          absoluteY: 87
+          absoluteY: 109
           absoluteX: 626
           width: 128
           config:
@@ -901,7 +934,7 @@ layouts:
                 text: ' '
                 backgroundColor: white
         - !columns
-          absoluteY: 82
+          absoluteY: 104
           absoluteX: 629
           width: 124
           nbColumns: 1
@@ -1007,31 +1040,42 @@ layouts:
       items:
 
 #---------------------------------------
-# Title
-#---------------------------------------
-        - !columns
-          items:
-            - !text
-              fontSize: 12
-              align: center
-              text: |
-                ${title}
-
-#---------------------------------------
 # Map
 #---------------------------------------
         - !map
           absoluteX: 20
-          absoluteY: 800
+          absoluteY: 822
           width: 1150
           height: 767
+
+#---------------------------------------
+# Title
+#---------------------------------------
+        - !columns
+          condition: title
+          absoluteX: 350
+          absoluteY: 812
+          width: 500
+          nbColumns: 1
+          config:
+            borderWidth: 0.5
+            borderColor: black
+            cells:
+              - padding: 5
+              - backgroundColor: white
+          items:
+            - !text
+              fontSize: 16
+              align: center
+              text: |
+                ${title}
 
 #---------------------------------------
 # Logo
 #---------------------------------------
         - !columns
           absoluteX: 20
-          absoluteY: 35
+          absoluteY: 50
           width: 123
           items:
               - !image
@@ -1044,7 +1088,7 @@ layouts:
 # North arrow
 #---------------------------------------
         - !columns
-          absoluteY: 763
+          absoluteY: 785
           absoluteX: 1008
           width: 150
           items:
@@ -1059,7 +1103,7 @@ layouts:
 # QRCode
 #---------------------------------------
         - !columns
-          absoluteY: 96
+          absoluteY: 118
           absoluteX: 1107
           width: 64
           items:
@@ -1073,7 +1117,7 @@ layouts:
 # Copyright
 #---------------------------------------
         - !columns
-          absoluteY: 60
+          absoluteY: 70
           absoluteX: 25
           width: 300
           items:
@@ -1208,7 +1252,7 @@ layouts:
 # Scalesbar
 #-------------------------------------
         - !columns
-          absoluteY: 83
+          absoluteY: 105
           absoluteX: 974
           width: 128
           config:
@@ -1219,7 +1263,7 @@ layouts:
                 text: ' '
                 backgroundColor: white
         - !columns
-          absoluteY: 78
+          absoluteY: 100
           absoluteX: 977
           width: 124
           nbColumns: 1

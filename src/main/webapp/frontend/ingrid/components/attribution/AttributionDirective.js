@@ -69,16 +69,19 @@ goog.require('ga_event_service');
                     'map.org/copyright">OpenStreetMap contributors</a>');
               }
           }
-          layers.forEach(function(layer) {
-            var key = gaAttribution.getTextFromLayer(layer, is3dActive);
-            if (!attrs[key]) {
-              var attrib = gaAttribution.getHtmlFromLayer(layer, is3dActive);
-              if (attrib) {
-                attrs[key] = attrib;
-                list.push(attrs[key]);
+          // INGRID: Add if
+          if (layers) {
+            layers.forEach(function(layer) {
+              var key = gaAttribution.getTextFromLayer(layer, is3dActive);
+              if (!attrs[key]) {
+                var attrib = gaAttribution.getHtmlFromLayer(layer, is3dActive);
+                if (attrib) {
+                  attrs[key] = attrib;
+                  list.push(attrs[key]);
+                }
               }
-            }
-          });
+            });
+          }
           var text = list.join(', ');
           element.html(text ? $translate.instant('copyright_data') + text :
             '');

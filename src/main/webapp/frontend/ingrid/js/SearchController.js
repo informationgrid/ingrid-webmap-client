@@ -21,9 +21,11 @@ goog.provide('ga_search_controller');
       searchNominatimUrl: gaGlobalOptions.searchNominatimUrl,
       // INGRID: Add search BWaStrLocator URL
       searchBwaLocatorUrl: gaGlobalOptions.searchBwaLocatorUrl,
+      // INGRID: Add zoom for coordinate search
+      searchCoordsZoom: gaGlobalOptions.searchCoordsZoom,
       featureUrl: gaGlobalOptions.cachedApiUrl +
           '/rest/services/{Topic}/MapServer/{Layer}/{Feature}' + sr
     };
+
   });
 })();
-

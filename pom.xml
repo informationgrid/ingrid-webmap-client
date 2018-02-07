@@ -3,11 +3,11 @@
     <parent>
         <groupId>de.ingrid</groupId>
         <artifactId>ingrid-base-pom</artifactId>
-        <version>4.1.0</version>
+        <version>4.2.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.2.0</version>
+    <version>4.2.1</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -362,13 +362,13 @@
     <!-- ==================== REPOSITORIES ==================== -->
     <repositories>
         <repository>
-            <id>de.ingrid.all</id>
-            <name>InGrid Repo Maven</name>
-            <url>https://dev.informationgrid.eu/archiva/repository/ingrid-all</url>
+          <id>nexus</id>
+          <name>Nexus Repo</name>
+          <url>https://nexus.informationgrid.eu/repository/maven-public</url>
         </repository>
         <repository>
-            <id>org.mapfish</id>
-            <url>http://dev.mapfish.org/maven/repository</url>
+          <id>org.mapfish</id>
+          <url>http://dev.mapfish.org/maven/repository</url>
         </repository>
         <!-- next repository needed for old opengis libs -->
         <repository>
@@ -377,19 +377,5 @@
           <url>http://download.osgeo.org/webdav/geotools/</url>
         </repository>
     </repositories>
-    <distributionManagement>
-        <repository>
-          <uniqueVersion>false</uniqueVersion>
-          <id>de.ingrid.m2</id>
-          <name>InGrid Repo Maven2</name>
-          <url>file:///srv/www/htdocs/ingrid/maven2</url>
-        </repository>
-        <snapshotRepository>
-          <uniqueVersion>false</uniqueVersion>
-          <id>de.ingrid.m2</id>
-          <name>InGrid Repo Maven2</name>
-          <url>file:///srv/www/htdocs/ingrid/maven2</url>
-        </snapshotRepository>
-    </distributionManagement>
     <!-- LEADS TO ERRORS due to malformed files from repo ! <pluginRepositories><pluginRepository><name>oss.sonatype.org</name><id>oss.sonatype.org</id><url>http://oss.sonatype.org/content/groups/public</url></pluginRepository></pluginRepositories> -->
 </project>

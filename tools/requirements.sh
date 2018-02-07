@@ -4,10 +4,11 @@ if [ -r $CYGWIN_HOME/bin/easy_install ]; then
     echo "*** easy_install exist ***"
 else
     echo "*** easy_install install ***"
-    wget --no-check-certificate http://pypi.python.org/packages/source/d/distribute/distribute-0.6.35.tar.gz
+    wget --no-check-certificate https://pypi.python.org/packages/source/d/distribute/distribute-0.6.35.tar.gz
     tar xf distribute-0.6.35.tar.gz
     cd distribute-0.6.35
-    python2.7 setup.py install
+    sed --in-place 's#http://pypi.python.org#https://pypi.python.org#g' ./setuptools/command/easy_install.py
+    python setup.py install
     cd ..
     rm -r distribute-*
 fi

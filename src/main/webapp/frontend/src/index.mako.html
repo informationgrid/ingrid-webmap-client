@@ -95,6 +95,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script src="../src/auth.jsp"></script>
     <!-- INGRID: Add '${versionslashed}' to reload sources -->
     <link href="${s3basepath}style/app.css?v=${versionslashed}" rel="stylesheet"/>
+    <!-- INGRID: Add app.override.css -->
+    <link href="../src/style/app.override.css?v=${versionslashed}" rel="stylesheet"/>
     <!-- INGRID: Settings -->
     <script src="../config/setting.js"></script>
     <script src="/ingrid-webmap-client/rest/config/setting?filename=setting.profile"></script>
@@ -169,8 +171,9 @@ itemscope itemtype="http://schema.org/WebApplication"
         </a>&nbsp;&nbsp;
         <!-- INGRID: Edit href URL -->
         <a target="_blank" href="/hilfe?hkey=maps-1" translate>help_label</a>&nbsp;&nbsp;
-        <a class="ga-redirect" href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
-        <!-- INGRID: Remove -->
+        <!-- INGRID: Remove on iFrame -->
+        <a class="ga-redirect" ng-if="!globals.isParentIFrame" href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
+        <!-- INGRID: Remove on iFrame -->
         <div ng-controller="GaTranslationController" ng-if="!globals.isParentIFrame">
           <div ga-translation-selector ga-translation-selector-options="options"></div>
         </div>
@@ -802,7 +805,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
           // INGRID: Disabled dev3d
-          dev3d: false,
+          dev3d: settingEnable3D || false,
           buildMode: '${mode}',
           version: '${version}',
           pegman: !!window.location.search.match(/(pegman=true)/),
@@ -870,7 +873,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Read setting from settings
           defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
-          defaultTerrain: '${default_terrain}',
+          // INGRID: Change to settingDefaultTerrain
+          defaultTerrain: settingDefaultTerrain,
           // INGRID: Remove '${languages}'
           languages: settingLanguages ? JSON.parse(settingLanguages) : JSON.parse('["de", "en"]'),
           hostIsProd: hostIsProd,
@@ -911,6 +915,22 @@ itemscope itemtype="http://schema.org/WebApplication"
           showISOXML: settingShowISOXML,
           // INGRID: Change coords XY for search
           searchCoordsXY: settingSearchCoordsXY,
+          // INGRID: Add zoom for coordinate search
+          searchCoordsZoom: settingSearchCoordsZoom,
+          // INGRID: Enable share facebook
+          enableShareFacebook: settingShareFacebook,
+          // INGRID: Enable share mail
+          enableShareMail: settingShareMail,
+          // INGRID: Enable share google
+          enableShareGoogle: settingShareGoogle,
+          // INGRID: Enable share twitter
+          enableShareTwitter: settingShareTwitter,
+          // INGRID: Enable share iFrame
+          enableShareIFrame: settingShareIFrame,
+          // INGRID: Enable share link
+          enableShareLink: settingShareLink,
+          // INGRID: Enable share QR
+          enableShareQR: settingShareQR,
           apiOverwrite: apiOverwrite
         });
       })();

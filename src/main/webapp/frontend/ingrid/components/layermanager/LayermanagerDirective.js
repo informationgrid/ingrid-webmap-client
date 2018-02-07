@@ -272,7 +272,7 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add function for zoomToExtent
         scope.hasExtent = function(layer) {
-          if (layer.type === 'KML') {
+          if (layer.type === 'VECTOR') {
             return true;
           }
           return layer.extent ? true : false;
@@ -302,7 +302,7 @@ goog.require('ga_urlutils_service');
 
 // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
-          if (layer.type === 'KML') {
+          if (layer.type === 'VECTOR') {
             if (layer.getSource()) {
               var extent = gaMapUtils.getVectorSourceExtent(layer.getSource());
               if (extent) {

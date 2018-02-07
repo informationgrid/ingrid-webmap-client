@@ -187,6 +187,8 @@ goog.require('ga_previewlayers_service');
               if (scope.item.layerBodId) {
                 gaEvent.onMouseOverOut(iEl, function(evt) {
                   addPreviewLayer(scope.map, scope.item);
+                  // INGRID: Add stop event
+                  evt.stopPropagation();
                 }, function(evt) {
                   removePreviewLayer(scope.map);
                 });

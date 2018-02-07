@@ -56,9 +56,24 @@ goog.require('ga_wmts_service');
       if (!/\.(kml|kmz|xml|txt)/i.test(url) &&
           !/\w+\/\w+\.[a-zA-Z]+$/i.test(url)) {
         // Append WMS GetCapabilities default parameters
+        /* INGRID: Remove
         url = gaUrlUtils.append(url, /wmts/i.test(url) ?
           'SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0' :
           'SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0');
+        */
+        if(!/service=/i.test(url)) {
+          url = gaUrlUtils.append(url, /wmts/i.test(url) ?
+            'SERVICE=WMTS' :
+            'SERVICE=WMS');
+        }
+        if(!/request=/i.test(url)) {
+          url = gaUrlUtils.append(url, 'REQUEST=GetCapabilities');
+        }
+        if(!/version=/i.test(url)) {
+          url = gaUrlUtils.append(url, /wmts/i.test(url) ?
+            'VERSION=1.0.0' :
+            'VERSION=1.3.0');
+        }
 
         // Use lang param only for admin.ch servers
         if (/admin\.ch/.test(url)) {
@@ -99,9 +114,12 @@ goog.require('ga_wmts_service');
           message: 'upload_succeeded'
         });
 
-      } else if (gaFile.isGpx(data) || gaFile.isKml(data)) {
+      // INGRID: Change check GPX oder KML
+      } else if (gaFile.isGpx(data) || gaFile.isKml(data) || 
+        gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
-        gaVector.addToMap($scope.map, data, {
+        // INGRID: Change data
+        gaVector.addToMap($scope.map, data.xmlResponse || data, {
           url: file.url || URL.createObjectURL(file),
           useImageVector: gaVector.useImageVector(file.size),
           zoomToExtent: true

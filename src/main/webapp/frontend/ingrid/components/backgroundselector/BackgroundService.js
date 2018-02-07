@@ -132,6 +132,7 @@ goog.require('ga_urlutils_service');
                   });
                   osm.background = true;
                   osm.displayInLayerManager = false;
+                  osm.displayIn3d = true;
                   if (layers.item(0) && layers.item(0).background) {
                     layers.setAt(0, osm);
                   } else {
