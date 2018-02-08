@@ -177,7 +177,11 @@ goog.provide('ga_wmsgetcap_directive');
 
       // Go through the child to get valid layers
       if (layer.Layer) {
-
+        if(!layer.Layer.length) {
+          var tmpLayers = [];
+          tmpLayers.push(layer.Layer);
+          layer.Layer = tmpLayers;
+        }
         for (var i = 0; i < layer.Layer.length; i++) {
           // INGRID: Add parent param
           var parent = layer || parentLayer;

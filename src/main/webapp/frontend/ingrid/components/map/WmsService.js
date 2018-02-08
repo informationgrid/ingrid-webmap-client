@@ -136,6 +136,11 @@ goog.require('ga_urlutils_service');
           // Go through the child to get valid layers
           if (layer) {
             if (layer.Layer) {
+              if(!layer.Layer.length) {
+                var tmpLayers = [];
+                tmpLayers.push(layer.Layer);
+                layer.Layer = tmpLayers;
+              }
               for (var i = 0; i < layer.Layer.length; i++) {
                 var tmpLayer = layer.Layer[i];
 
@@ -354,6 +359,20 @@ goog.require('ga_urlutils_service');
                           LAYERS: layer.Name,
                           VERSION: version
                         };
+
+                        // INGRID: Use GetMap instead of GetCapabilities-URL
+                        var getMapUrl; 
+                        var dcpType = val.Capability.Request.GetMap.DCPType;
+                        if (dcpType instanceof Array) {
+                          getMapUrl = dcpType[0].HTTP.Get.OnlineResource;
+                        } else {
+                          getMapUrl = dcpType.HTTP.Get
+                            .OnlineResource['xlink:href'];
+                        }
+                        if(getMapUrl) {
+                          config.cap = getMapUrl;
+                        }
+
                         var layerOptions = {
                           url: config.cap,
                           label: layer.Title,
