@@ -136,6 +136,11 @@ goog.require('ga_urlutils_service');
           // Go through the child to get valid layers
           if (layer) {
             if (layer.Layer) {
+              if(!layer.Layer.length) {
+                var tmpLayers = [];
+                tmpLayers.push(layer.Layer);
+                layer.Layer = tmpLayers;
+              }
               for (var i = 0; i < layer.Layer.length; i++) {
                 var tmpLayer = layer.Layer[i];
 
