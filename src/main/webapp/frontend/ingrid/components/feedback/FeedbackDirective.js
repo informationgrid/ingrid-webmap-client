@@ -159,11 +159,13 @@ goog.require('ga_window_service');
           scope.permalinkValue = gaPermalink.getHref(undefined,
             gaGlobalOptions.isParentIFrame);
           // INGRID: Get short url
-          gaUrlUtils.shorten(scope.permalinkValue).
-            then(function(url) {
-              // INGRID: Return href if no shorturl exists
-              scope.shortUrl = url || scope.permalinkValue;
-          });
+          if(scope.active){
+            gaUrlUtils.shorten(scope.permalinkValue).
+              then(function(url) {
+                // INGRID: Return href if no shorturl exists
+                scope.shortUrl = url || scope.permalinkValue;
+            });
+          }
         });
 
         scope.$on('gaDrawingLayer', function(event, data) {
