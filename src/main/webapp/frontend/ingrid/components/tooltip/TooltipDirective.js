@@ -473,10 +473,14 @@ goog.require('ga_window_service');
                     coordinate)) {
                   return;
                 }
+                // INGRID: Add queryLayers
+                var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
+                if (layerToQuery.queryLayers) {
+                  params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get(),
+                    'QUERY_LAYERS': layerToQuery.queryLayers};
+                }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
-                    coordinate, mapRes, mapProj,
-                    // INGRID: Get 'text/html'
-                    {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()});
+                    coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     all.push($http.get(proxyUrl, {
