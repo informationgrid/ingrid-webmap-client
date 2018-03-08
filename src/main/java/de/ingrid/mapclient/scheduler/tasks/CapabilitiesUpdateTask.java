@@ -245,20 +245,20 @@ public class CapabilitiesUpdateTask implements Runnable{
                         // Check inherit parent value
                         fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            getDoubleScale(layerKey, fieldNode, layerJSON, hasChanges);
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            getScale(layerKey, fieldNode, layerJSON, hasChanges);
+                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
                     }
                     fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        getDoubleScale(layerKey, fieldNode, layerJSON, hasChanges);
+                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                     }
                     fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        getScale(layerKey, fieldNode, layerJSON, hasChanges);
+                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
                     }
                     
                     // MaxScale
@@ -267,22 +267,22 @@ public class CapabilitiesUpdateTask implements Runnable{
                         // Check inherit parent value
                         fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            getDoubleScale(layerKey, fieldNode, layerJSON, hasChanges);
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            getScale(layerKey, fieldNode, layerJSON, hasChanges);
+                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
                     }
                     
                     layerKey = "maxScale";
                     fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        getDoubleScale(layerKey, fieldNode, layerJSON, hasChanges);
+                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                     }
                     fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        getScale(layerKey, fieldNode, layerJSON, hasChanges);
+                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
                     }
                     // Extent
                     layerKey = "extent";
@@ -401,34 +401,36 @@ public class CapabilitiesUpdateTask implements Runnable{
         return hasChanges;
     }
     
-    private void getScale(String layerKey, Node fieldNode, JSONObject layerJSON, boolean hasChanges) throws NumberFormatException, DOMException, JSONException {
+    private boolean getScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws NumberFormatException, DOMException, JSONException {
         String text = fieldNode.getTextContent();
         String oldText;
         try {
             oldText = layerJSON.getString(layerKey);
             if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
                 layerJSON.put( layerKey, fieldNode.getTextContent() );
-                hasChanges = true;
+                return true;
             }
         } catch (JSONException e) {
             layerJSON.put( layerKey, fieldNode.getTextContent() );
-            hasChanges = true;
+            return true;
         }
+        return false;
     }
     
-    private void getDoubleScale(String layerKey, Node fieldNode, JSONObject layerJSON, boolean hasChanges) throws NumberFormatException, DOMException, JSONException {
+    private boolean getDoubleScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws NumberFormatException, DOMException, JSONException {
         String text = fieldNode.getTextContent();
         String oldText;
         try {
             oldText = layerJSON.getString(layerKey);
             if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
                 layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                hasChanges = true;
+                return true;
             }
         } catch (JSONException e) {
             layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-            hasChanges = true;
+            return true;
         }
+        return false;
     }
     
     private void getExtent(XPath xpath, Node fieldNode, JSONArray array, String[] fields) throws XPathExpressionException, NumberFormatException, DOMException, JSONException {
