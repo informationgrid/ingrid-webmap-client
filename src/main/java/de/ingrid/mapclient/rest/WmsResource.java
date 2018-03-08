@@ -773,13 +773,15 @@ public class WmsResource {
                     html += " class=\"active\"";
                 }
                 html += ">";
-                html += "<div>";
-                html += "<span title=\"" + field.getTextContent() + "\">";
-                html += "<label class=\"ga-truncate-text ga-checkbox\">";
-                html += field.getTextContent();
-                html += "</label>"; 
-                html += "</span>";
-                html += "</div>";
+                if(field != null) {
+                    html += "<div>";
+                    html += "<span title=\"" + field.getTextContent() + "\">";
+                    html += "<label class=\"ga-truncate-text ga-checkbox\">";
+                    html += field.getTextContent();
+                    html += "</label>"; 
+                    html += "</span>";
+                    html += "</div>";
+                }
                 html += "</li>";
                 
                 NodeList subFields = (NodeList) xpath.evaluate( "./Layer", node, XPathConstants.NODESET );
