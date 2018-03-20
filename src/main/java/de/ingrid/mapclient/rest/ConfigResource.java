@@ -103,50 +103,6 @@ public class ConfigResource {
     }
 
     @GET
-    @Path("help")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response helpRequest(@QueryParam("id") String id, @QueryParam("lang") String lang, @QueryParam("helpUrl") String helpUrl) {
-        if(helpUrl != null && id != null && lang != null){
-            URL url;
-            try {
-                url = new URL(helpUrl.replace( "{lang}", lang ));
-                URLConnection con = url.openConnection();
-                InputStream in = con.getInputStream();
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-            
-                String tmpJson = IOUtils.toString( in, encoding );
-                JSONObject jsonObj = new JSONObject();
-                JSONObject questJsonResult = new JSONObject( tmpJson );
-                if(questJsonResult != null){
-                    JSONObject jsonObjId = (JSONObject) questJsonResult.get(id);
-                    if(jsonObjId != null){
-                        String title = jsonObjId.getString( "title" );
-                        String text = jsonObjId.getString( "text" );
-                        String image = jsonObjId.getString( "image" );
-                        
-                        JSONArray jsonRowObj = new JSONArray();
-                        jsonRowObj.put(id);
-                        jsonRowObj.put(title);
-                        jsonRowObj.put(text);
-                        jsonRowObj.put("");
-                        jsonRowObj.put(image);
-                        
-                        JSONArray jsonRow = new JSONArray();
-                        jsonRow.put( jsonRowObj );
-                        jsonObj.put( "rows", jsonRow );
-                    }
-                }
-                return Response.ok( jsonObj ).build();
-            } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-            }
-        }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-    }
-    
-    @GET
     @Path("layerupdate")
     @Produces(MediaType.APPLICATION_JSON)
     public Response layerUpdateRequest() {
