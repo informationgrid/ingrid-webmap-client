@@ -25,7 +25,7 @@ goog.require('ga_translation_service');
         var url = 'https://www.googleapis.com/fusiontables/v1/query?' +
                   'callback=JSON_CALLBACK';
         */
-        var url = '/ingrid-webmap-client/rest/config/help';
+        var url = '/ingrid-webmap-client/rest/admin/help';
         /* INGRID: Not in used
         var apiKey = 'AIzaSyDT7wmEx97gAG5OnPwKyz2PnCx3yT4j7C0';
         var sqlTmpl = 'select * from 1Tx2VSM1WHZfDXzf8rweRLG1kd23AA4aw8xnZ_3c' +
@@ -43,15 +43,8 @@ goog.require('ga_translation_service');
               replace('{lang}', lang);
           */
           // INGRID: Change '$http.jsonp' to '$http.get' and add replacing.
-          return $http.get(url, {
-            cache: true,
-            params: {
-              lang: lang,
-              id: id,
-              helpUrl: location.protocol + '//' +
-                location.host +
-                '/ingrid-webmap-client/frontend/help/help-{lang}.json'
-            }
+          return $http.get(url + '/' + lang + '/' + id, {
+            cache: true
           }).then(function(response) {
             return response.data;
           });

@@ -1,46 +1,24 @@
-/*-
- * **************************************************-
- * InGrid Map Client
- * ==================================================
- * Copyright (C) 2014 - 2018 wemove digital solutions GmbH
- * ==================================================
- * Licensed under the EUPL, Version 1.1 or – as soon they will be
- * approved by the European Commission - subsequent versions of the
- * EUPL (the "Licence");
- * 
- * You may not use this work except in compliance with the Licence.
- * You may obtain a copy of the Licence at:
- * 
- * http://ec.europa.eu/idabc/eupl5
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the Licence is distributed on an "AS IS" basis,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the Licence for the specific language governing permissions and
- * limitations under the Licence.
- * **************************************************#
- */
 [ga-topic] .ga-topics-sprite-themen {
-  background: url("../img/themen.png");
+  background: url("/ingrid-webmap-client/frontend/prd/img/themen.png");
   width: 140px;
 }
 
 [ga-topic] .ga-topics-sprite-anbieter {
-  background: url("../img/anbieter.png");
+  background: url("/ingrid-webmap-client/frontend/prd/img/anbieter.png");
   width: 140px;
 }
 
 @media (max-width: 768px) {
   [ga-background-selector] .ga-osmLayer {
-    background-image: url("../img/ga-osmLayer.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-osmLayer.png");
     background-size: 38px 38px;
   }
   [ga-background-selector] .ga-webatlasde_light {
-    background-image: url("../img/ga-light.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-light.png");
     background-size: 38px 38px;
   }
   [ga-background-selector] .ga-webatlasde_grau {
-    background-image: url("../img/ga-light-grau.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-light-grau.png");
     background-size: 38px 38px;
   }
   [ga-background-selector].ga-open .ga-bg-layer {
@@ -76,15 +54,15 @@
 }
 @media (min-width: 769px) {
   [ga-background-selector] .ga-osmLayer {
-    background-image: url("../img/ga-osmLayer.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-osmLayer.png");
     background-size: 90px 58px;
   }
   [ga-background-selector] .ga-webatlasde_light {
-    background-image: url("../img/ga-light.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-light.png");
     background-size: 90px 58px;
   }
   [ga-background-selector] .ga-webatlasde_grau {
-    background-image: url("../img/ga-light-grau.png");
+    background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-light-grau.png");
     background-size: 90px 58px;
   }
   [ga-background-selector].ga-open .ga-bg-layer {

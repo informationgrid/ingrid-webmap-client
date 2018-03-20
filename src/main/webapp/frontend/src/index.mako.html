@@ -96,10 +96,19 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- INGRID: Add '${versionslashed}' to reload sources -->
     <link href="${s3basepath}style/app.css?v=${versionslashed}" rel="stylesheet"/>
     <!-- INGRID: Add app.override.css -->
-    <link href="../src/style/app.override.css?v=${versionslashed}" rel="stylesheet"/>
+    <link href="/ingrid-webmap-client/rest/admin/css" rel="stylesheet"/>
     <!-- INGRID: Settings -->
-    <script src="../config/setting.js"></script>
-    <script src="/ingrid-webmap-client/rest/config/setting?filename=setting.profile"></script>
+    <script>
+    var settings;
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.overrideMimeType("application/json");
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+          settings = JSON.parse(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", '/ingrid-webmap-client/rest/admin/setting', true); // true for asynchronous 
+    xmlHttp.send(null);
+    </script>
   </head>
   <body class="{{topicId}} {{langId}}"
         ng-class="{
@@ -283,12 +292,12 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settingCopyrightURL?settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+        <a target="_blank" onclick="window.open(settings['settingCopyrightURL'].value?settings['settingCopyrightURL'].value:'/impressum', 'blank')" translate>copyright_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
         <a target="_blank" ng-if="globals.isParentIFrame"
-            onclick="window.open(settingSitemapURL?settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+            onclick="window.open(settings['settingSitemapURL'].value?settings['settingSitemapURL'].value:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
       </div>
     </div><!-- #footer -->
 
@@ -493,9 +502,9 @@ itemscope itemtype="http://schema.org/WebApplication"
                 <br>
                 -->
                 <!-- INGRID: Edit -->
-                <a target="_blank" onclick="window.open(settingCopyrightURL?settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+                <a target="_blank" onclick="window.open(settings['settingCopyrightURL'].value?settings['settingCopyrightURL'].value:'/impressum', 'blank')" translate>copyright_label</a>
                 <br>
-                <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settingSitemapURL?settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+                <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settings['settingSitemapURL'].value?settings['settingSitemapURL'].value:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
               </p>
             </div>
           </div>
@@ -805,7 +814,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
           // INGRID: Disabled dev3d
-          dev3d: settingEnable3D || false,
+          dev3d: settings['settingEnable3D'].value || false,
           buildMode: '${mode}',
           version: '${version}',
           pegman: !!window.location.search.match(/(pegman=true)/),
@@ -833,49 +842,49 @@ itemscope itemtype="http://schema.org/WebApplication"
           resourceUrl: location.origin + s3pathname + '',
           wmsUrl: wmsUrl,
           // INGRID: Read setting from settings
-          w3wUrl: w3wUrl,
+          w3wUrl: settings['w3wUrl'].value,
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
           lv95tolv03Url: 'https://geodesy.geo.admin.ch/reframe/lv95tolv03',
           // INGRID: Read setting from settings
-          w3wApiKey: w3wApiKey,
+          w3wApiKey: settings['w3wApiKey'].value,
           // INGRID: Change REST service URL
           ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/wms/proxy/?url=',
           // INGRID: Change REST image URL
           imgproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/data/images/?url=',
           // INGRID: Change search services URL (Opensearch)
-          searchServiceUrl : settingSearchServiceUrl,
+          searchServiceUrl : settings['settingSearchServiceUrl'].value,
           // INGRID: Change search nominatim
-          searchNominatimUrl : settingSearchNominatimUrl,
+          searchNominatimUrl : settings['settingSearchNominatimUrl'].value,
           // INGRID: Add search BwaLocator
-          searchBwaLocatorUrl : settingSearchBwaLocatorUrl,
+          searchBwaLocatorUrl : settings['settingSearchBwaLocatorUrl'].value,
           // INGRID: Add search BwaLocator Geo
-          searchBwaLocatorGeoUrl : settingSearchBwaLocatorGeoUrl,
+          searchBwaLocatorGeoUrl : settings['settingSearchBwaLocatorGeoUrl'].value,
           // INGRID: Add search BwaLocator Station
-          searchBwaLocatorStationUrl : settingSearchBwaLocatorStationUrl,
+          searchBwaLocatorStationUrl : settings['settingSearchBwaLocatorStationUrl'].value,
           // INGRID: Short URL service (external)
-          shortURLService : settingShortURLService || 'https://is.gd/create.php?format=json',
+          shortURLService : settings['settingShortURLService'].value || 'https://is.gd/create.php?format=json',
           whitelist: [
             'https://' + window.location.host + '/**',
             'https://www.googleapis.com/**'
           ],
           // INGRID: Read setting from settings
-          defaultTopicId: settingDefaultTopicId || '${default_topic_id}',
+          defaultTopicId: settings['settingDefaultTopicId'].value || '${default_topic_id}',
           translationFallbackCode: '${translation_fallback_code}',
           // INGRID: Read setting from settings
-          defaultExtent: settingExtent ? JSON.parse(settingExtent) : JSON.parse(${default_extent}),
+          defaultExtent: settings['settingExtent'].value || JSON.parse(${default_extent}),
           defaultResolution: ${default_resolution},
           defaultLod: ${default_level_of_detail},
           resolutions: JSON.parse(${resolutions}),
           lods: JSON.parse(${level_of_details}),
           // INGRID: Read setting from settings
-          defaultEpsg: settingEpsg || '${default_epsg}',
+          defaultEpsg: settings['settingEpsg'].value || '${default_epsg}',
           // INGRID: Read setting from settings
-          defaultEpsgExtent: settingEpsgExtent ? JSON.parse(settingEpsgExtent) : JSON.parse(${default_epsg_extend}),
+          defaultEpsgExtent:  settings['settingEpsgExtent'].value || JSON.parse(${default_epsg_extend}),
           defaultElevationModel: '${default_elevation_model}',
           // INGRID: Change to settingDefaultTerrain
-          defaultTerrain: settingDefaultTerrain,
+          defaultTerrain: settings['settingDefaultTerrain'].value,
           // INGRID: Remove '${languages}'
-          languages: settingLanguages ? JSON.parse(settingLanguages) : JSON.parse('["de", "en"]'),
+          languages: settings['settingLanguages'].value || JSON.parse('["de", "en"]'),
           hostIsProd: hostIsProd,
           staging: staging,
           // INGRID: Add property to check is in iFrame
@@ -883,53 +892,53 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name
-          settingKMLName: settingKMLName || 'INGRID',
+          settingKMLName: settings['settingKMLName'].value || 'INGRID',
           // INGRID: Available list of services to import
-          settingDefaultImportList: settingDefaultImportList || [],
+          settingDefaultImportList: settings['settingDefaultImportList'].value || [],
           // INGRID: Add print logo url
-          printLogo: settingPrintLogo,
+          printLogo: settings['settingPrintLogo'].value,
           // INGRID: Add print north arrow logo url
-          printNorthArrow: settingPrintNorthArrow,
+          printNorthArrow: settings['settingPrintNorthArrow'].value,
           // INGRID: Add print filename
-          printFilename: settingPrintFilename,
+          printFilename: settings['settingPrintFilename'].value,
           // INGRID: Print depend on mouse position control
-          printDependOnMouseProj: settingPrintDependOnMouseProj,
+          printDependOnMouseProj: settings['settingPrintDependOnMouseProj'].value,
           // INGRID: Add use geodesic
-          useGeodesic: settingUseGeodesic || true,
+          useGeodesic: settings['settingUseGeodesic'] || true,
           // INGRID: Add default mouse position
-          defaultMouseProjections: settingDefaultMouseProjections,
+          defaultMouseProjections: settings['settingDefaultMouseProjections'].value,
           // INGRID: Add print graticule
-          defaultPrintGraticuleLayer: JSON.parse(settingPrintGraticuleLayer),
+          defaultPrintGraticuleLayer: settings['settingPrintGraticuleLayer'].value,
           // INGRID: Add setting to hide catalog menu
-          isHideCatalog: settingHideCatalog,
+          isHideCatalog: settings['settingHideCatalog'].value,
           // INGRID: Add setting to define zoom level of gazetter search
-          gazetterZoom: settingGazetterZoom || 10,
+          gazetterZoom: settings['settingGazetterZoom'].value || 10,
           // INGRID: Enable what3words
-          enableW3W: settingEnableW3W || false,
+          enableW3W: settings['settingEnableW3W'].value || false,
           // INGRID: Show service name of layer
-          showLayerServiceName: settingShowLayerServiceName || false,
+          showLayerServiceName: settings['settingShowLayerServiceName'].value || false,
           // INGRID: Check layer in range
-          checkLayerInRange: settingCheckLayerInRange || false,
+          checkLayerInRange: settings['settingCheckLayerInRange'].value || false,
           // INGRID: Show iso xml link on service search info
-          showISOXML: settingShowISOXML,
+          showISOXML: settings['settingShowISOXML'].value,
           // INGRID: Change coords XY for search
-          searchCoordsXY: settingSearchCoordsXY,
+          searchCoordsXY: settings['settingSearchCoordsXY'].value,
           // INGRID: Add zoom for coordinate search
-          searchCoordsZoom: settingSearchCoordsZoom,
+          searchCoordsZoom: settings['settingSearchCoordsZoom'].value,
           // INGRID: Enable share facebook
-          enableShareFacebook: settingShareFacebook,
+          enableShareFacebook: settings['settingShareFacebook'].value,
           // INGRID: Enable share mail
-          enableShareMail: settingShareMail,
+          enableShareMail: settings['settingShareMail'].value,
           // INGRID: Enable share google
-          enableShareGoogle: settingShareGoogle,
+          enableShareGoogle: settings['settingShareGoogle'].value,
           // INGRID: Enable share twitter
-          enableShareTwitter: settingShareTwitter,
+          enableShareTwitter: settings['settingShareTwitter'].value,
           // INGRID: Enable share iFrame
-          enableShareIFrame: settingShareIFrame,
+          enableShareIFrame: settings['settingShareIFrame'].value,
           // INGRID: Enable share link
-          enableShareLink: settingShareLink,
+          enableShareLink: settings['settingShareLink'].value,
           // INGRID: Enable share QR
-          enableShareQR: settingShareQR,
+          enableShareQR: settings['settingShareQR'].value,
           apiOverwrite: apiOverwrite
         });
       })();
