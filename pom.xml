@@ -247,7 +247,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>de.ingrid</groupId>
-                    <artifactId>ingrid-base-    </artifactId>
+                    <artifactId>ingrid-base-webapp</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.mortbay.jetty</groupId>

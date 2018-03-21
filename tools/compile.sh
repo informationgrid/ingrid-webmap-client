@@ -29,7 +29,9 @@ cp -r ../frontend/ingrid/js src/
 cp -r ../frontend/ingrid/style src/
 cp -r ../frontend/ingrid/img src/
 cp -r ../frontend/ingrid/locales src/
-cp -r ../frontend/src src/
+cp -r ../frontend/src/index.mako.html src/
+cp -r ../frontend/src/auth.jsp src/
+cp -r ../frontend/src/geoadmin.mako.appcache src/
 
 # Add environments
 echo "*** Export environments ***"
