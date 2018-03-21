@@ -9,6 +9,7 @@ import { Wmslayer } from '../model/wmslayer';
 import { Wmtslayer } from '../model/wmtslayer';
 import { CategoryItem } from '../model/category-item';
 import { Setting } from '../model/setting';
+import { environment } from '../../environments/environment';
 
 const httpJsonOptions = {
   headers: new HttpHeaders({
@@ -16,8 +17,8 @@ const httpJsonOptions = {
   })
 };
 
-const httpApiHost = "http://localhost:8080/ingrid-webmap-client/rest/admin";
-const httpServiceUrl = "http://localhost:8080/ingrid-webmap-client/rest/wms/proxy/?"
+const httpApiHost = environment.httpServiceDomain + "/ingrid-webmap-client/rest/admin";
+const httpServiceUrl = environment.httpServiceDomain + "/ingrid-webmap-client/rest/wms/proxy/?"
 
 @Injectable()
 export class HttpService {
