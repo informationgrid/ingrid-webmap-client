@@ -896,9 +896,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Available list of services to import
           settingDefaultImportList: settings['settingDefaultImportList'].value || [],
           // INGRID: Add print logo url
-          printLogo: settings['settingPrintLogo'].value,
+          printLogo: settings['settingPrintLogo'].value.replace('{location.protocol}',location.protocol).replace('{location.host}',location.host),
           // INGRID: Add print north arrow logo url
-          printNorthArrow: settings['settingPrintNorthArrow'].value,
+          printNorthArrow: settings['settingPrintNorthArrow'].value.replace('{location.protocol}',location.protocol).replace('{location.host}',location.host),
           // INGRID: Add print filename
           printFilename: settings['settingPrintFilename'].value,
           // INGRID: Print depend on mouse position control
