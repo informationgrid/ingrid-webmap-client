@@ -1,0 +1,32 @@
+<form [formGroup]="addCatItemForm" (ngSubmit)="onAddCategoryItem(node)" novalidate>
+  <div class="form-group row" [ngClass]="{
+    'has-danger': addItemLabel.invalid && (addItemLabel.dirty || addItemLabel.touched),
+    'has-success': addItemLabel.valid && (addItemLabel.dirty || addItemLabel.touched)}
+    ">
+    <label class="col-sm-4 col-form-label" for="" translate>label</label>
+    <div class="col-sm-8">
+      <input type="text" formControlName="addItemLabel" class="form-control" name="label" value="" placeholder="{{ ('category_item_label_input') | translate }}" required>
+      <div class="form-control-feedback" 
+          *ngIf="addItemLabel.errors && (addItemLabel.dirty || addItemLabel.touched)">
+        <div *ngIf="addItemLabel.errors.required"><span translate>field_required</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-4 col-form-label" for="" translate>layer</label>
+    <div class="col-sm-8">
+      <select class="form-control" formControlName="addItemLayerBodId" name="layerBodId" >
+        <option value="" selected translate>category_item_layer_select</option>
+        <option [value]="layer.id" *ngFor="let layer of layers" [title]="layer.item.label">{{ layer.id }} ({{ layer.item.label }})</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="addCatItemForm.invalid" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      add
+    </button>
+  </div>
+</form>
+<div class="alert alert-success" *ngIf="isSaveSuccess" translate>category_add_success</div>
+<div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>category_add_unsuccess</div>

@@ -1,0 +1,18 @@
+.card {
+    .card-header {
+        background-color: $color-nobel;
+        cursor: pointer;
+        
+        span {
+            font-weight: 400;
+            color: $color-white;
+        }
+    }
+    .card-header:hover {
+        background-color: $color-white;
+        span {
+            font-weight: 400;
+            color: $color-nobel;
+        }
+    }
+}

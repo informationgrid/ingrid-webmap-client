@@ -1,0 +1,68 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div id="header" class="navbar navbar-fixed-top">
+  <div class="title" translate>app_title</div>
+  <app-translation></app-translation>
+</div>
+<div id="accordion">
+  <!-- Layer -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader" data-toggle="collapse" data-target="#layer" aria-expanded="true" aria-controls="layer">
+      <span translate>layers</span>
+      <span class="badge badge-pill badge-primary">{{ layers.length }}</span>
+    </div>
+    <div id="layer" class="collapse" aria-labelledby="layerHeader" data-parent="#accordion">
+      <div class="card-body">
+        <div id="layers">
+          <app-layer [categories]="categories" [layers]="layers" (updateAppLayers)="updateAppLayers($event)"></app-layer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Category -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center" id="categoryHeader" data-toggle="collapse" data-target="#category" aria-expanded="false" aria-controls="category">
+      <span translate>categories</span>
+      <span class="badge badge-pill badge-primary">{{ categories.length }}</span>
+    </div>
+    <div id="category" class="collapse" aria-labelledby="categoryHeader" data-parent="#accordion">
+      <div class="card-body">
+          <app-category [categories]="categories" [layers]="layers" (updateAppCategories)="updateAppCategories($event)"></app-category>
+      </div>
+    </div>
+  </div>
+  <!-- Setting -->
+  <div class="card">
+    <div class="card-header" id="settingHeader"  data-toggle="collapse" data-target="#setting" aria-expanded="false" aria-controls="setting">
+      <span translate>settings</span>
+    </div>
+    <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
+      <div class="card-body">
+          <app-setting [settings]="settings"></app-setting>
+      </div>
+    </div>
+  </div>
+  <!-- Help -->
+  <div class="card">
+    <div class="card-header" id="helpHeader"  data-toggle="collapse" data-target="#help" aria-expanded="false" aria-controls="help">
+      <span translate>help</span>
+    </div>
+    <div id="help" class="collapse" aria-labelledby="helpHeader" data-parent="#accordion">
+      <div class="card-body">
+          <app-help [settings]="settings"></app-help>
+      </div>
+    </div>
+  </div>
+  <!-- CSS -->
+  <div class="card">
+    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css" aria-expanded="false" aria-controls="css">
+      <span translate>css</span>
+    </div>
+    <div id="css" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
+      <div class="card-body">
+          <app-css></app-css>
+      </div>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

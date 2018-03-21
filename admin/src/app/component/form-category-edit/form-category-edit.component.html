@@ -1,0 +1,52 @@
+<form [formGroup]="editCatItemForm" (ngSubmit)="onEditCategoryItem(node)" novalidate>
+  <div class="form-group row" [ngClass]="{
+    'has-danger': editItemId.invalid && (editItemId.dirty || editItemId.touched),
+    'has-success': editItemId.valid && (editItemId.dirty || editItemId.touched)}
+    ">
+    <label class="col-sm-4 col-form-label" for="" translate>id</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" formControlName="editItemId" name="id" id="id" >
+      <div class="form-control-feedback" 
+          *ngIf="editItemId.errors && (editItemId.dirty || editItemId.touched)">
+        <div *ngIf="editItemId.errors.required"><span translate>field_required</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group row" [ngClass]="{
+    'has-danger': editItemLabel.invalid && (editItemLabel.dirty || editItemLabel.touched),
+    'has-success': editItemLabel.valid && (editItemLabel.dirty || editItemLabel.touched)}
+    ">
+    <label class="col-sm-4 col-form-label" for="" translate>label</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" formControlName="editItemLabel" name="label" id="label" >
+      <div class="form-control-feedback" 
+          *ngIf="editItemLabel.errors && (editItemLabel.dirty || editItemLabel.touched)">
+        <div *ngIf="editItemLabel.errors.required"><span translate>field_required</span></div>
+        {{editItemLabel.errors | json}}
+      </div>
+    </div>
+  </div>
+  <div *ngIf="node.hasChildren" class="form-group row">
+    <label class="col-sm-4 col-form-label" for="" translate>selectedOpen</label>
+    <div class="col-sm-8">
+      <select class="form-control" formControlName="editItemSelectedOpen" name="selectedOpen">
+          <option value="false" translate>false</option>
+          <option value="true" translate>true</option>
+        </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-4 col-form-label" for="" translate>layerBodId</label>
+    <div class="col-sm-8">
+      
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="editCatItemForm.invalid" translate>
+      <i class="fa fa-save" aria-hidden="true"></i>
+      save
+    </button>
+  </div>
+</form>
+<div class="alert alert-success" *ngIf="isSaveSuccess" translate>category_edit_success</div>
+<div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>category_edit_unsuccess</div>

@@ -1,0 +1,21 @@
+<div class="modal-body">
+    <ul *ngIf="languages"class="nav nav-tabs mb-3" role="tablist">
+        <li class="nav-item" *ngFor="let lang of languages.value; let i=index;">
+            <a class="nav-link" [ngClass]="i == 0 ? 'active' : ''" id="pills-help-{{lang}}-tab" data-toggle="pill" href="#tabs-help-{{lang}}" role="tab" [attr.aria-controls]="'pills-help-' + lang" aria-selected="true" translate>{{ lang }}</a>
+        </li>
+    </ul>
+    <div *ngIf="languages && helps" class="tab-content" >
+        <div class="tab-pane fade show" [ngClass]="i == 0 ? 'active' : ''" *ngFor="let lang of languages.value; let i=index;" id="tabs-help-{{lang}}" role="tabpanel" [attr.aria-labelledby]="'pills-help-' + lang + '-tab'">
+            <textarea class="form-control" name="help-{{lang}}" id="help-{{lang}}" rows="20" [value]="helps.get(lang)" #textarea></textarea>
+            <br>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onUpdate(lang, textarea.value)">
+                    <i class="fa fa-save" aria-hidden="true"></i>
+                    <span translate>save</span>
+                </button>
+            </div>
+            <div class="alert alert-success" *ngIf="isSaveSuccess" translate>help_save_success</div>
+            <div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>help_save_unsuccess</div>
+        </div>
+    </div>
+</div>

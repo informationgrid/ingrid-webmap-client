@@ -1,0 +1,24 @@
+.form-control-feedback {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+}
+
+.has-danger {
+    input {
+        border-color: $color-invalid;
+    }
+    .form-control-feedback {
+        color:  $color-invalid;
+    }
+}
+
+.has-success {
+    input {
+        border-color: $color-valid;
+    }
+
+    .form-control-feedback {
+        color:  $color-valid;
+    }
+}

@@ -1,0 +1,12 @@
+<div class="modal-body">
+    <textarea class="form-control" name="css" id="css" rows="20" [value]="css" #textarea ></textarea>
+    <br>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="onUpdate(textarea.value)">
+            <i class="fa fa-save" aria-hidden="true"></i>
+            <span translate>save</span>
+        </button>
+    </div>
+    <div class="alert alert-success" *ngIf="isSaveSuccess" translate>css_save_success</div>
+    <div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>css_save_unsuccess</div>
+</div>

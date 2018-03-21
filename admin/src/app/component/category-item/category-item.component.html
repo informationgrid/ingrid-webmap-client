@@ -1,0 +1,164 @@
+<div class="modal fade" [attr.id]="'editModal' + category.id" tabindex="-1" role="dialog" [attr.aria-labelledby]="'editModalLabel' + category.id" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form #f="ngForm" (ngSubmit)="onUpdateCategory(f)">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel{{ category.id }}"><span translate>category_edit_title</span>: {{ category.id }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- id -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_id" translate>category_id</label>
+            <div class="col-sm-8">
+              <input type="text" [ngModel]="category.id" class="form-control" name="id" id="category_{{ category.id }}_id" [value]="category.id" required>
+            </div>
+          </div>
+          <!-- lang -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_langs" translate>category_langs</label>
+            <div class="col-sm-8">
+              <input type="text" [ngModel]="category.langs" class="form-control" name="langs" id="category_{{ category.id }}_langs" [value]="category.langs" required>
+            </div>
+          </div>
+          <!-- defaultBackground -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_defaultBackground" translate>category_defaultBackground</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="category.defaultBackground">
+                <option [value]="" translate>category_select_layer</option>
+                <option [value]="layer" *ngFor="let layer of category.backgroundLayers" title="{{ layer }}" [selected]="layer === category.defaultBackground">{{ layer }}</option>
+              </select>
+            </div>
+          </div>
+          <!-- backgroundLayers -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_backgroundLayers" translate>category_backgroundLayers</label>
+            <div class="col-sm-8">
+              <ul class="list-group" id="category_{{ category.id }}_backgroundLayers">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of category.backgroundLayers; let i=index;">
+                  {{ item }}
+                  <div>
+                    <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(item, category.backgroundLayers)">
+                      <i class="fa fa-sort-up" aria-hidden="true"></i>
+                    </button>
+                    <button *ngIf="i !== (category.backgroundLayers.length - 1) && category.backgroundLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, category.backgroundLayers)">
+                      <i class="fa fa-sort-down" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, category.backgroundLayers)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <div class="input-group">
+                <select class="form-control" id="category_item_select_new_layerBodId" #selectAddBgLayer>
+                  <option [value]="" selected translate>category_select_layer</option>
+                  <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+                </select>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, category.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- selectedLayers -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_selectedLayers" translate>category_selectedLayers</label>
+            <div class="col-sm-8">
+              <ul class="list-group" id="category_{{ category.id }}_selectedLayers">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of category.selectedLayers; let i=index;">
+                  {{ item }}
+                  <div>
+                    <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(item, category.selectedLayers)">
+                      <i class="fa fa-sort-up" aria-hidden="true"></i>
+                    </button>
+                    <button *ngIf="i !== (category.selectedLayers.length - 1) && category.selectedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, category.selectedLayers)">
+                      <i class="fa fa-sort-down" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, category.selectedLayers)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <div class="input-group">
+                <select class="form-control" id="category_item_select_new_layerBodId" #selectAddSelectLayer>
+                  <option [value]="" selected translate>category_select_layer</option>
+                  <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+                </select>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, category.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- activatedLayers -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_activatedLayers" translate>category_activatedLayers</label>
+            <div class="col-sm-8">
+              <ul class="list-group" id="category_{{ category.id }}_activatedLayers">
+                <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of category.activatedLayers; let i=index;">
+                  {{ item }}
+                  <div>
+                    <button *ngIf="i !== 0 && category.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onUpItem(item, category.activatedLayers)">
+                      <i class="fa fa-sort-up" aria-hidden="true"></i>
+                    </button>
+                    <button *ngIf="i !== (category.activatedLayers.length - 1) && category.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, category.activatedLayers)">
+                      <i class="fa fa-sort-down" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, category.activatedLayers)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+              <div class="input-group">
+                <select class="form-control" id="category_item_select_new_layerBodId" #selectAddActiveLayer>
+                  <option [value]="" selected translate>category_select_layer</option>
+                  <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+                </select>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, category.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary" translate>
+            <i class="fa fa-save" aria-hidden="true"></i>
+            <span translate>save</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" [attr.id]="'delModal' + category.id" tabindex="-1" role="dialog" [attr.aria-labelledby]="'delModalLabel' + category.id" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delModalLabel{{ category.id }}" translate>category_delete_title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span translate>category_delete_text</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="onRemoveCategory(category.id)" translate>delete</button>
+      </div>
+    </div>
+  </div>
+</div>
