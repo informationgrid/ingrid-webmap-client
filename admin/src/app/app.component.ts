@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HttpService } from './_services/http.service';
 import { LayerItem } from './_models/layer-item';
 import { Category } from './_models/category';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   layers: LayerItem[] = [];
   categories: Category[] = [];
   settings: any = {};
+  version: string = environment.version;
 
   ngOnInit() {
     this.httpService.getLayers().subscribe(

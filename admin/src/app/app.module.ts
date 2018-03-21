@@ -27,11 +27,9 @@ import { FormCategoryEditComponent } from './_modules/form-category-edit/form-ca
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { environment } from '../environments/environment';
 
-
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath + "/assets/i18n/");
 }
-
 
 @NgModule({
   declarations: [
