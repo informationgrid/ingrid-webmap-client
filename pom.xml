@@ -155,6 +155,22 @@
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/prd/" />
                                 </copy>
+                                <echo>Copy 'admin'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/admin">
+                                    <fileset dir="${project.basedir}/admin/dist" />
+                                </copy>
+                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/config">
+                                    <fileset dir="${project.basedir}/frontend/config/" />
+                                </copy>
+                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/data">
+                                    <fileset dir="${project.basedir}/frontend/data/" />
+                                </copy>
+                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/help">
+                                    <fileset dir="${project.basedir}/frontend/help/" />
+                                </copy>
                             </tasks>
                         </configuration>
                         <goals>
@@ -231,7 +247,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>de.ingrid</groupId>
-                    <artifactId>ingrid-base-webapp</artifactId>
+                    <artifactId>ingrid-base-    </artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.mortbay.jetty</groupId>
