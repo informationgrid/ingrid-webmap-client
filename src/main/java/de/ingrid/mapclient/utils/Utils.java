@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -138,12 +136,14 @@ public class Utils {
         return defaultValue;
     }
 
-    public static String readFileAsString(File file) throws java.io.IOException {
+    public static String readFileAsString(File file) {
         byte[] buffer = new byte[(int) file.length()];
         BufferedInputStream f = null;
         try {
             f = new BufferedInputStream( new FileInputStream( file ) );
             f.read( buffer );
+        } catch (Exception e) {
+           log.error("Error read file: '" + file.getName() + "'");
         } finally {
             if (f != null)
                 try {

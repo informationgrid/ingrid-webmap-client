@@ -22,9 +22,6 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Properties;
 
 import javax.ws.rs.Consumes;
@@ -35,10 +32,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;

@@ -247,52 +247,47 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSettingRequest() {
         String filename = "setting";
-        if(filename != null && filename.length() > 0){
-            try {
-                JSONObject setting = null;
-                JSONObject profileSetting = null;
-                
-                if(log.isDebugEnabled()){
-                    log.debug( "Load file: " + filename );
-                }
-                String classPath = "";
-                classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-                String fileSetting = classPath + "frontend/";
-                String fileContent = null;
-                if(fileSetting != null){
-                    fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
-                }
-                if(fileContent != null) {
-                    setting = new JSONObject(fileContent);
-                }
-                
-                filename = "setting.profile";
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
-                    fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
-                }
-                
-                if(fileContent != null){
-                    profileSetting = new JSONObject(fileContent);
-                }
-                if(setting != null && profileSetting != null) {
-                    Iterator<?> keys = profileSetting.keys();
-                    while( keys.hasNext() ) {
-                        String key = (String)keys.next();
-                        if ( profileSetting.get(key) instanceof JSONObject ) {
-                            JSONObject profileSet = profileSetting.getJSONObject(key);
-                            if(!profileSet.isNull("value")) {
-                                JSONObject set = setting.getJSONObject(key);
-                                set.put("value", profileSet.get("value"));
-                            }
+        try {
+            JSONObject setting = null;
+            JSONObject profileSetting = null;
+            
+            if(log.isDebugEnabled()){
+                log.debug( "Load file: " + filename );
+            }
+            String classPath = "";
+            classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            String fileSetting = classPath + "frontend/";
+            String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
+            if(fileContent != null) {
+                setting = new JSONObject(fileContent);
+            }
+            
+            filename = "setting.profile";
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(config_dir != null){
+                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
+            }
+            
+            if(fileContent != null){
+                profileSetting = new JSONObject(fileContent);
+            }
+            if(setting != null && profileSetting != null) {
+                Iterator<?> keys = profileSetting.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if ( profileSetting.get(key) instanceof JSONObject ) {
+                        JSONObject profileSet = profileSetting.getJSONObject(key);
+                        if(!profileSet.isNull("value")) {
+                            JSONObject set = setting.getJSONObject(key);
+                            set.put("value", profileSet.get("value"));
                         }
                     }
                 }
-                return Response.ok( setting ).build();
-            } catch (JSONException e) {
-                log.error("Error getSettingRequest: " + e);
             }
+            return Response.ok( setting ).build();
+        } catch (JSONException e) {
+            log.error("Error getSettingRequest: " + e);
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -304,9 +299,7 @@ public class AdministrationResource {
         try {
             JSONObject item = new JSONObject(content);
             JSONObject obj = updateSetting(item);
-            if(obj != null) {
-                return Response.ok( obj ).build();
-            }
+            return Response.ok( obj ).build();
         } catch (JSONException e) {
             log.error("Error POST '/categories/{id}'!");
         }
@@ -319,16 +312,14 @@ public class AdministrationResource {
     @Produces("text/css")
     public Response getCssRequest() {
         String filename = "app.override";
-        if(filename != null && filename.length() > 0){
-            if(log.isDebugEnabled()){
-                log.debug( "Load file: " + filename );
-            }
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
-                String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
-                return Response.ok( fileContent ).build();
-            }
+        if(log.isDebugEnabled()){
+            log.debug( "Load file: " + filename );
+        }
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            return Response.ok( fileContent ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -339,9 +330,7 @@ public class AdministrationResource {
     public Response updateCssRequest(@RequestBody String content) {
         if(content != null) {
             String fileContent = updateCss(content);
-            if(fileContent != null) {
-                return Response.ok( fileContent ).build();
-            }
+            return Response.ok( fileContent ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -352,16 +341,14 @@ public class AdministrationResource {
     public Response getHelpRequest(@PathParam("lang") String lang) {
         if(lang != null) {
             String filename = "help-" + lang;
-            if(filename != null && filename.length() > 0){
-                if(log.isDebugEnabled()){
-                    log.debug( "Load file: " + filename );
-                }
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
-                    String fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
-                    return Response.ok( fileContent ).build();
-                }
+            if(log.isDebugEnabled()){
+                log.debug( "Load file: " + filename );
+            }
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(config_dir != null){
+                String fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
+                return Response.ok( fileContent ).build();
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -384,26 +371,24 @@ public class AdministrationResource {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
                         JSONObject jsonObj = new JSONObject();
-                        if(obj != null){
-                            JSONObject jsonObjId = obj.getJSONObject(id);
-                            if(jsonObjId != null){
-                                String title = jsonObjId.getString( "title" );
-                                String text = jsonObjId.getString( "text" );
-                                String image = jsonObjId.getString( "image" );
-                                
-                                JSONArray jsonRowObj = new JSONArray();
-                                jsonRowObj.put(id);
-                                jsonRowObj.put(title);
-                                jsonRowObj.put(text);
-                                jsonRowObj.put("");
-                                jsonRowObj.put(image);
-                                
-                                JSONArray jsonRow = new JSONArray();
-                                jsonRow.put( jsonRowObj );
-                                jsonObj.put( "rows", jsonRow );
-                            }
-                            return Response.ok( jsonObj ).build();
+                        JSONObject jsonObjId = obj.getJSONObject(id);
+                        if(jsonObjId != null){
+                            String title = jsonObjId.getString( "title" );
+                            String text = jsonObjId.getString( "text" );
+                            String image = jsonObjId.getString( "image" );
+                            
+                            JSONArray jsonRowObj = new JSONArray();
+                            jsonRowObj.put(id);
+                            jsonRowObj.put(title);
+                            jsonRowObj.put(text);
+                            jsonRowObj.put("");
+                            jsonRowObj.put(image);
+                            
+                            JSONArray jsonRow = new JSONArray();
+                            jsonRow.put( jsonRowObj );
+                            jsonObj.put( "rows", jsonRow );
                         }
+                        return Response.ok( jsonObj ).build();
                     } catch (JSONException e) {
                         log.error("Error get help with ID " + id);
                     }
@@ -419,9 +404,7 @@ public class AdministrationResource {
     public Response updatehHelpRequest(@RequestBody String content, @PathParam("lang") String lang) {
         if(content != null) {
             String fileContent = updateHelp(lang, content);
-            if(fileContent != null) {
-                return Response.ok( fileContent ).build();
-            }
+            return Response.ok( fileContent ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -433,9 +416,10 @@ public class AdministrationResource {
         if(config_dir != null){
             fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
         }
-        JSONArray arr = new JSONArray();
+        JSONArray arr = null;
         try {
             JSONObject obj = new JSONObject(fileContent);
+            arr = new JSONArray();
             JSONObject results = obj.getJSONObject("results");
             JSONObject root = results.getJSONObject("root");
             root.put("children", item);
@@ -452,7 +436,7 @@ public class AdministrationResource {
             updateFile("config/setting.profile.json", item);
             return item;
         } catch (Exception e) {
-            log.error("Error 'updateCategoryTree'!");
+            log.error("Error 'updateSetting'!");
         }
         return item;
     }
@@ -462,7 +446,7 @@ public class AdministrationResource {
             updateFile("css/app.override.css", content);
             return content;
         } catch (Exception e) {
-            log.error("Error 'updateCategoryTree'!");
+            log.error("Error 'updateCss'!");
         }
         return content;
     }
@@ -472,7 +456,7 @@ public class AdministrationResource {
             updateFile("help/help-" + lang + ".json", content);
             return content;
         } catch (Exception e) {
-            log.error("Error 'updateCategoryTree'!");
+            log.error("Error 'updateHelp'!");
         }
         return content;
     }
@@ -484,9 +468,10 @@ public class AdministrationResource {
         if(config_dir != null){
             fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
         }
-        JSONArray arr = new JSONArray();
+        JSONArray arr = null;
         try {
             JSONObject obj = new JSONObject(fileContent);
+            arr = new JSONArray();
             if (id != null) {
                 JSONObject tmpObj = new JSONObject();
                 tmpObj.put("id", id);
@@ -780,11 +765,14 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File cpFile = new File(config_dir.concat(filename + ".old"));
-        if(cpFile.exists()){
-            cpFile.delete();
+        if(!cpFile.delete()) {
+            log.error("Error delete file: '" + cpFile.getName() + "'" );
         }
         File file = new File(config_dir.concat(filename));
         file.renameTo( cpFile );
+        if(!file.renameTo( cpFile )) {
+            log.error("Error rename file: '" + file.getName() + "'" );
+        }
         file = new File(config_dir.concat(filename));
         log.info( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
@@ -803,10 +791,14 @@ public class AdministrationResource {
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File cpFile = new File(config_dir.concat(filename + ".old"));
         if(cpFile.exists()){
-            cpFile.delete();
+            if(!cpFile.delete()) {
+                log.error("Error delete file: '" + cpFile.getName() + "'" );
+            }
         }
         File file = new File(config_dir.concat(filename));
-        file.renameTo( cpFile );
+        if(!file.renameTo( cpFile )) {
+            log.error("Error rename file: '" + file.getName() + "'" );
+        }
         file = new File(config_dir.concat(filename));
         log.info( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
@@ -825,7 +817,9 @@ public class AdministrationResource {
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(config_dir.concat(filename));
         if(file.exists()) {
-            file.delete();
+            if(!file.delete()) {
+                log.error("Error delete file: '" + file.getName() + "'" );
+            }
         }
     }
 }
