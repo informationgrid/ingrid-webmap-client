@@ -1,67 +1,67 @@
 {
     "settingDefaultTopicId": {
         "value": "themen",
-        "info": "Default active topic by id (see '../data/catalogs.json')"
-    },
-    "settingExtent": {
-        "value": [0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793],
-        "info": "Override default map extend (default: '[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]')"
-    },
-    "settingEpsgExtent": {
-        "value": [0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793],
-        "info": "Override default map EPSG extend (default: '[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]')"
+        "info": "help_settingDefaultTopicId"
     },
     "settingEpsg": {
         "value": "EPSG:3857",
-        "info": "Override default EPSG (default: 'EPSG:3857')"
+        "info": "help_settingEpsg"
+    },
+    "settingExtent": {
+        "value": [0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793],
+        "info": "help_settingExtent"
+    },
+    "settingEpsgExtent": {
+        "value": [0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793],
+        "info": "help_settingEpsgExtent"
     },
     "settingLanguages": {
         "value": ["de", "en"],
-        "info": "Override supported languages"
+        "info": "help_settingLanguages"
     },
     "settingShortURLService": {
         "value": "https://is.gd/create.php?format=json",
-        "info": "Override short URL service (default: 'https://is.gd/create.php?format=json')"
+        "info": "help_settingShortURLService"
     },
     "settingSearchServiceUrl": {
         "value": "http://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100",
-        "info": "Define opensearch URL to search for WMS services. (integrate on map client search field)"
+        "info": "help_settingSearchServiceUrl"
     },
     "settingGazetterZoom": {
         "value": 10,
-        "info": "Define gazetter/nominatim zoom level "
+        "info": "help_settingGazetterZoom"
     },
     "settingSearchNominatimUrl": {
         "value": "http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de",
-        "info": "Define nominatim URL to search for cities, places, countries (integrate on map client search field)"
+        "info": "help_settingSearchNominatimUrl"
     },
     "settingSearchBwaLocatorUrl": {
         "value": "https://atlas.wsv.bund.de/bwastr-locator/rest/bwastrinfo/query?limit=200%26searchfield=all",
-        "info": "Define DLZ-IT BWaStrLocator URL to search rivers and details (integrate on map client search field)"
+        "info": "help_settingSearchBwaLocatorUrl"
     },
     "settingSearchBwaLocatorGeoUrl": {
         "value": "https://atlas.wsv.bund.de/bwastr-locator/rest/geokodierung/query",
-        "info": "Define BWaStrLocator services URL for river details"
+        "info": "help_settingSearchBwaLocatorGeoUrl"
     },
     "settingSearchBwaLocatorStationUrl": {
         "value": "https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query",
-        "info": "Define BWaStrLocator services URL for river details"
+        "info": "help_settingSearchBwaLocatorStationUrl"
     },
     "settingCopyrightURL": {
         "value": "/impressum",
-        "info": "Override copyright URL (Default: '/impressum')"
+        "info": "help_settingCopyrightURL"
     },
     "settingSitemapURL": {
         "value": "/inhaltsverzeichnis",
-        "info": "Override sitemap URL (Default: '/inhaltsverzeichnis')"
+        "info": "help_settingSitemapURL"
     },
     "settingUseGeodesic": {
         "value": true,
-        "info": "Activate to use geodesic"
+        "info": "help_settingUseGeodesic"
     },
     "settingDefaultMouseProjections": {
         "value": ["EPSG:3857", "EPSG:4326", "EPSG:31466", "EPSG:31467", "EPSG:31468", "EPSG:31469", "EPSG:25832", "EPSG:25833"],
-        "info": "Override default mouse position projections"
+        "info": "help_settingDefaultMouseProjections"
     },
     "settingDefaultImportList": {
         "value": [
@@ -71,102 +71,102 @@
             "http://atlas.wsv.bund.de/bwastr/wmts/1.0.0/WMTSCapabilities.xml",
             "http://atlas.wsv.bund.de/ienc/wmts/1.0.0/WMTSCapabilities.xml"
         ],
-        "info": "Default list on import function"
+        "info": "help_settingDefaultImportList"
     },
     "settingShareFacebook": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareFacebook"
     },
     "settingShareMail": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareMail"
     },
     "settingShareGoogle": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareGoogle"
     },
     "settingShareTwitter": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareTwitter"
     },
     "settingShareIFrame": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareIFrame"
     },
     "settingShareLink": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareLink"
     },
     "settingShareQR": {
         "value": true,
-        "info": "Activate social networks services"
+        "info": "help_settingShareQR"
     },
     "settingPrintLogo": {
         "value": "{location.protocol}//{location.host}/ingrid-webmap-client/frontend/prd/img/print_logo.png",
-        "info": "Define URL of print logo on PDF"
+        "info": "help_settingPrintLogo"
     },
     "settingPrintNorthArrow": {
         "value": "{location.protocol}//{location.host}/ingrid-webmap-client/frontend/prd/img/north_arrow.png",
-        "info": "Define URL of north arrow icon on PDF"
+        "info": "help_settingPrintNorthArrow"
     },
     "settingPrintGraticuleLayer": {
         "value": { "url": "http://atlas.wsv.bund.de/netze/wms?", "layers": ["GN","GNB"] },
-        "info": "Print graticule layer"
+        "info": "help_settingPrintGraticuleLayer"
     },
     "settingPrintFilename": {
         "value": "Print.InGrid",
-        "info": "Print filename"
+        "info": "help_settingPrintFilename"
     },
     "settingPrintDependOnMouseProj": {
         "value": false,
-        "info": "Print depend on mouse position control"
+        "info": "help_settingPrintDependOnMouseProj"
     },
     "settingKMLName": {
         "value": "INGRID",
-        "info": "Default prefix for download KML"
+        "info": "help_settingKMLName"
     },
     "settingHideCatalog": {
         "value": false,
-        "info": "Hide of catalog menu"
+        "info": "help_settingHideCatalog"
     },
     "settingEnableW3W": {
         "value": true,
-        "info": "Enable what3words"
+        "info": "help_settingEnableW3W"
     },
     "w3wUrl": {
         "value": "https://api.what3words.com" ,
-        "info": ""
+        "info": "help_w3wUrl"
     },
     "w3wApiKey": {
         "value": "OM48J50Y",
-        "info": ""
+        "info": "help_w3wApiKey"
     },
     "settingShowLayerServiceName": {
         "value": false,
-        "info": "Show service name to layer"
+        "info": "help_settingShowLayerServiceName"
     },
     "settingCheckLayerInRange": {
         "value": true,
-        "info": "Enable check layer in range"
+        "info": "help_settingCheckLayerInRange"
     },
     "settingShowISOXML": {
         "value": true,
-        "info": "Enable iso xml link on service search info"
+        "info": "help_settingShowISOXML"
     },
     "settingSearchCoordsXY": {
         "value": false,
-        "info": "Change coord XY for search"
+        "info": "help_settingSearchCoordsXY"
     },
     "settingSearchCoordsZoom": {
         "value": 16,
-        "info": "Change coord zoom for search"
+        "info": "help_settingSearchCoordsZoom"
     },
     "settingEnable3D": {
         "value": false,
-        "info": "Enable 3D"
+        "info": "help_settingEnable3D"
     },
     "settingDefaultTerrain": {
         "value": "//assets.agi.com/stk-terrain/world",
-        "info": ""
+        "info": "help_settingDefaultTerrain"
     }
 }
