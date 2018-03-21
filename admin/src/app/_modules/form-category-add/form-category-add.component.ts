@@ -1,10 +1,10 @@
 import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
-import { LayerItem } from '../../model/layer-item';
-import { CategoryItem } from '../../model/category-item';
-import { HttpService } from '../../utils/http.service';
-import { Category } from '../../model/category';
+import { LayerItem } from '../../_models/layer-item';
+import { CategoryItem } from '../../_models/category-item';
+import { HttpService } from '../../_services/http.service';
+import { Category } from '../../_models/category';
 
 @Component({
   selector: 'app-form-category-add',

@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { Setting } from '../../model/setting';
-import { HttpService } from '../../utils/http.service';
+import { Setting } from '../../_models/setting';
+import { HttpService } from '../../_services/http.service';
 
 @Component({
   selector: 'app-help',

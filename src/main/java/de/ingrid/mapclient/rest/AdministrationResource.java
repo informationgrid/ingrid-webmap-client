@@ -769,7 +769,6 @@ public class AdministrationResource {
             log.error("Error delete file: '" + cpFile.getName() + "'" );
         }
         File file = new File(config_dir.concat(filename));
-        file.renameTo( cpFile );
         if(!file.renameTo( cpFile )) {
             log.error("Error rename file: '" + file.getName() + "'" );
         }

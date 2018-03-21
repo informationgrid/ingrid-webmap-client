@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../../utils/http.service';
+import { HttpService } from '../../_services/http.service';
 
 @Component({
   selector: 'app-css',

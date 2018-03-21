@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LayerItem } from '../model/layer-item';
+import { LayerItem } from '../_models/layer-item';
 
 @Pipe({
   name: 'arrayFilter'

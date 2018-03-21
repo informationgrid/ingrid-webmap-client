@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { HttpService } from '../../utils/http.service';
+import { HttpService } from '../../_services/http.service';
 import { Observable } from 'rxjs/Observable';
-import { LayerItem } from '../../model/layer-item';
+import { LayerItem } from '../../_models/layer-item';
 
 @Component({
   selector: 'app-layer-item',

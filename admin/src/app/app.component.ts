@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { HttpService } from './utils/http.service';
-import { LayerItem } from './model/layer-item';
-import { Category } from './model/category';
+import { HttpService } from './_services/http.service';
+import { LayerItem } from './_models/layer-item';
+import { Category } from './_models/category';
 
 @Component({
   selector: 'app-root',

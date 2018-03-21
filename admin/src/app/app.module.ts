@@ -8,22 +8,22 @@ import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { TranslationComponent } from './component/translation/translation.component';
-import { SettingComponent } from './component/setting/setting.component';
-import { CategoryComponent } from './component/category/category.component';
-import { LayerComponent } from './component/layer/layer.component';
-import { MapToIterablePipe } from './pipe/map-to-iterable.pipe';
-import { ArrayFilterPipe } from './pipe/array-filter.pipe';
-import { CategoryItemComponent } from './component/category-item/category-item.component';
-import { LayerItemComponent } from './component/layer-item/layer-item.component';
-import { CategoryTreeComponent } from './component/category-tree/category-tree.component';
+import { TranslationComponent } from './_modules/translation/translation.component';
+import { SettingComponent } from './_modules/setting/setting.component';
+import { CategoryComponent } from './_modules/category/category.component';
+import { LayerComponent } from './_modules/layer/layer.component';
+import { MapToIterablePipe } from './_pipes/map-to-iterable.pipe';
+import { ArrayFilterPipe } from './_pipes/array-filter.pipe';
+import { CategoryItemComponent } from './_modules/category-item/category-item.component';
+import { LayerItemComponent } from './_modules/layer-item/layer-item.component';
+import { CategoryTreeComponent } from './_modules/category-tree/category-tree.component';
 import { TreeModule } from 'angular-tree-component';
-import { MapUtilsService } from './utils/map-utils.service';
-import { HttpService } from './utils/http.service';
-import { HelpComponent } from './component/help/help.component';
-import { CssComponent } from './component/css/css.component';
-import { FormCategoryAddComponent } from './component/form-category-add/form-category-add.component';
-import { FormCategoryEditComponent } from './component/form-category-edit/form-category-edit.component';
+import { MapUtilsService } from './_services/map-utils.service';
+import { HttpService } from './_services/http.service';
+import { HelpComponent } from './_modules/help/help.component';
+import { CssComponent } from './_modules/css/css.component';
+import { FormCategoryAddComponent } from './_modules/form-category-add/form-category-add.component';
+import { FormCategoryEditComponent } from './_modules/form-category-edit/form-category-edit.component';
 import { NgProgressModule } from '@ngx-progressbar/core';
 
 

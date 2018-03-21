@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  httpServiceDomain: 'http://localhost:8080'
+  httpServiceDomain: 'http://localhost:8080',
+  translatePath: ''
 };

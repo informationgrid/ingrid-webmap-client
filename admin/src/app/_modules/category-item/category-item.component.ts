@@ -1,8 +1,8 @@
 import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Category } from '../../model/category';
-import { HttpService } from '../../utils/http.service';
-import { LayerItem } from '../../model/layer-item';
+import { Category } from '../../_models/category';
+import { HttpService } from '../../_services/http.service';
+import { LayerItem } from '../../_models/layer-item';
 
 @Component({
   selector: 'app-category-item',

@@ -1,9 +1,9 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Category } from '../../model/category';
-import { HttpService } from '../../utils/http.service';
-import { LayerItem } from '../../model/layer-item';
-import { CategoryItem } from '../../model/category-item';
+import { Category } from '../../_models/category';
+import { HttpService } from '../../_services/http.service';
+import { LayerItem } from '../../_models/layer-item';
+import { CategoryItem } from '../../_models/category-item';
 import * as $ from 'jquery';
 
 @Component({

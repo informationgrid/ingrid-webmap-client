@@ -1,17 +1,17 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Category } from '../../model/category';
-import { LayerItem } from '../../model/layer-item';
-import { HttpService } from '../../utils/http.service';
+import { Category } from '../../_models/category';
+import { LayerItem } from '../../_models/layer-item';
+import { HttpService } from '../../_services/http.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
-import { MapUtilsService } from '../../utils/map-utils.service';
-import { Layer } from '../../model/layer';
+import { MapUtilsService } from '../../_services/map-utils.service';
+import { Layer } from '../../_models/layer';
 import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from 'angular-tree-component';
-import { LayerType } from '../../model/layer-type.enum';
-import { Wmslayer } from '../../model/wmslayer';
-import { Wmtslayer } from '../../model/wmtslayer';
+import { LayerType } from '../../_models/layer-type.enum';
+import { Wmslayer } from '../../_models/wmslayer';
+import { Wmtslayer } from '../../_models/wmtslayer';
 import { toJS } from "mobx";
 import * as _ from 'lodash';
-import { CategoryItem } from '../../model/category-item';
+import { CategoryItem } from '../../_models/category-item';
 
 @Component({
   selector: 'app-layer',

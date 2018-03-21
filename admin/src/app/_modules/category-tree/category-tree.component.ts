@@ -1,10 +1,10 @@
 import { Component, Input, ViewChild, Output } from '@angular/core';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
-import { CategoryItem } from '../../model/category-item';
+import { CategoryItem } from '../../_models/category-item';
 import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
-import { HttpService } from '../../utils/http.service';
-import { Category } from '../../model/category';
-import { LayerItem } from '../../model/layer-item';
+import { HttpService } from '../../_services/http.service';
+import { Category } from '../../_models/category';
+import { LayerItem } from '../../_models/layer-item';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { FormGroup, FormControl, Validators } from '@angular/forms';

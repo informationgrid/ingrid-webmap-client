@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from "rxjs/observable/forkJoin";
-import { Category } from '../model/category';
-import { LayerItem } from '../model/layer-item';
+import { Category } from '../_models/category';
+import { LayerItem } from '../_models/layer-item';
 import 'rxjs/add/operator/map';
-import { Wmslayer } from '../model/wmslayer';
-import { Wmtslayer } from '../model/wmtslayer';
-import { CategoryItem } from '../model/category-item';
-import { Setting } from '../model/setting';
+import { Wmslayer } from '../_models/wmslayer';
+import { Wmtslayer } from '../_models/wmtslayer';
+import { CategoryItem } from '../_models/category-item';
+import { Setting } from '../_models/setting';
 import { environment } from '../../environments/environment';
 
 const httpJsonOptions = {

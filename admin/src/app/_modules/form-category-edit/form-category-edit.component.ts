@@ -1,9 +1,9 @@
 import { Component, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
-import { LayerItem } from '../../model/layer-item';
-import { Category } from '../../model/category';
-import { HttpService } from '../../utils/http.service';
+import { LayerItem } from '../../_models/layer-item';
+import { Category } from '../../_models/category';
+import { HttpService } from '../../_services/http.service';
 
 @Component({
   selector: 'app-form-category-edit',

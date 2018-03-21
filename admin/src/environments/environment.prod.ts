@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  httpServiceDomain: ''
+  httpServiceDomain: '',
+  translatePath: '/ingrid-webmap-client/'
 };

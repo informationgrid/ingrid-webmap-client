@@ -1,5 +1,5 @@
 import { Component, Input, Output } from '@angular/core';
-import { HttpService } from '../../utils/http.service';
+import { HttpService } from '../../_services/http.service';
 import { NgForm } from '@angular/forms';
 import { EventEmitter } from 'events';
 
