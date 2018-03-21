@@ -25,11 +25,13 @@ import { CssComponent } from './_modules/css/css.component';
 import { FormCategoryAddComponent } from './_modules/form-category-add/form-category-add.component';
 import { FormCategoryEditComponent } from './_modules/form-category-edit/form-category-edit.component';
 import { NgProgressModule } from '@ngx-progressbar/core';
+import { environment } from '../environments/environment';
 
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
+  return new TranslateHttpLoader(http, environment.translatePath + "/assets/i18n/");
 }
+
 
 @NgModule({
   declarations: [
