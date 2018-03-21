@@ -73,4 +73,5 @@ echo "*** Make admin ***"
 echo "********************"
 cd ../admin
 npm install
+ng -v || npm install -g @angular/cli
 ng build -prod --base-href .
