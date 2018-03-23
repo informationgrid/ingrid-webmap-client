@@ -96,19 +96,9 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- INGRID: Add '${versionslashed}' to reload sources -->
     <link href="${s3basepath}style/app.css?v=${versionslashed}" rel="stylesheet"/>
     <!-- INGRID: Add app.override.css -->
-    <link href="/ingrid-webmap-client/rest/admin/css" rel="stylesheet"/>
+    <link href="/ingrid-webmap-client/rest/config/css" rel="stylesheet"/>
     <!-- INGRID: Settings -->
-    <script>
-    var settings;
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.overrideMimeType("application/json");
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-          settings = JSON.parse(xmlHttp.responseText);
-    }
-    xmlHttp.open("GET", '/ingrid-webmap-client/rest/admin/setting', true); // true for asynchronous 
-    xmlHttp.send(null);
-    </script>
+    <script src="/ingrid-webmap-client/rest/config/setting"></script>
   </head>
   <body class="{{topicId}} {{langId}}"
         ng-class="{

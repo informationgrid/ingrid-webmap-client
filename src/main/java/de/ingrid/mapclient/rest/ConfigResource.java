@@ -22,6 +22,7 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.ws.rs.Consumes;
@@ -33,6 +34,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;
@@ -47,31 +50,74 @@ import de.ingrid.mapclient.utils.Utils;
 public class ConfigResource {
 
     private static final Logger log = Logger.getLogger( ConfigResource.class );
-    
+
     @GET
     @Path("setting")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response configRequest(String content, @QueryParam("filename") String filename) {
-        if(filename != null && filename.length() > 0){
+    public Response getSettingRequest() {
+        String filename = "setting";
+        try {
+            JSONObject setting = null;
+            JSONObject profileSetting = null;
+            
             if(log.isDebugEnabled()){
                 log.debug( "Load file: " + filename );
             }
+            String classPath = "";
+            classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            String fileSetting = classPath + "frontend/";
+            String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
+            if(fileContent != null) {
+                setting = new JSONObject(fileContent);
+            }
             
+            filename = "setting.profile";
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
             if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, filename, ".js", "config/");
+                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
             }
             
             if(fileContent != null){
-                return Response.ok( fileContent ).build();
+                profileSetting = new JSONObject(fileContent);
             }
+            if(setting != null && profileSetting != null) {
+                Iterator<?> keys = profileSetting.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if ( profileSetting.get(key) instanceof JSONObject ) {
+                        JSONObject profileSet = profileSetting.getJSONObject(key);
+                        if(!profileSet.isNull("value")) {
+                            JSONObject set = setting.getJSONObject(key);
+                            set.put("value", profileSet.get("value"));
+                        }
+                    }
+                }
+            }
+            return Response.ok( "var settings = " + setting ).build();
+        } catch (JSONException e) {
+            log.error("Error getSettingRequest: " + e);
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
-
+    
+    @GET
+    @Path("css")
+    @Produces("text/css")
+    public Response getCssRequest() {
+        String filename = "app.override";
+        if(log.isDebugEnabled()){
+            log.debug( "Load file: " + filename );
+        }
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            return Response.ok( fileContent ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
     @GET
     @Path("data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
