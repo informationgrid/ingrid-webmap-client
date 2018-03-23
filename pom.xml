@@ -159,17 +159,21 @@
                                 <copy todir="${project.build.directory}/${project.build.finalName}/admin">
                                     <fileset dir="${project.basedir}/admin/dist" />
                                 </copy>
-                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <echo>Copy settings 'config/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/config">
                                     <fileset dir="${project.basedir}/frontend/config/" />
                                 </copy>
-                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <echo>Copy msettings 'data/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/data">
                                     <fileset dir="${project.basedir}/frontend/data/" />
                                 </copy>
-                                <echo>Copy mf-geoadmin 'src/'</echo>
+                                <echo>Copy settings 'help/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/help">
                                     <fileset dir="${project.basedir}/frontend/help/" />
+                                </copy>
+                                <echo>Copy settings 'css/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/css">
+                                    <fileset dir="${project.basedir}/frontend/css/" />
                                 </copy>
                             </tasks>
                         </configuration>
