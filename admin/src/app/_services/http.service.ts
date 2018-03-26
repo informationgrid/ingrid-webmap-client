@@ -143,8 +143,7 @@ export class HttpService {
   getData(){
       return forkJoin(
         this.getLayers(),
-        this.getCategories(),
-        this.getSetting()
+        this.getCategories()
       )
   }
 

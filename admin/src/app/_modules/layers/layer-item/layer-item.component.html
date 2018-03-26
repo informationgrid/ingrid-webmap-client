@@ -1,0 +1,360 @@
+<div class="collapse" id="collapse{{ layer.id }}"  [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
+  <div class="card card-body">
+    <form #f="ngForm" (ngSubmit)="onUpdateLayer(f)">
+      <div class="modal-header">
+        <div>
+          <button *ngIf="!isEdit" type="button" class="btn btn-primary" (click)="isEdit = !isEdit">
+            <i class="fa fa-edit" aria-hidden="true"></i>
+            <span translate>edit</span>
+          </button>
+          <button *ngIf="isEdit" type="submit" class="btn btn-primary">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <span translate>save</span>
+          </button>
+          <button *ngIf="isEdit" type="button" class="btn btn-secondary" (click)="isEdit = !isEdit">
+            <i class="fa fa-ban" aria-hidden="true"></i>
+            <span translate>cancel</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-danger"  data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+          <span translate>delete</span>
+        </button>  
+      </div>
+      <div class="modal-body">
+        <!-- id -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_id" translate>layer_id</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.id }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.id" name="id" class="form-control" id="layer_{{ layer.id }}_id" [value]="layer.id || ''" >
+          </div>
+        </div>
+        <!-- type -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_type" translate>layer_type</label>
+          <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.type }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="type" [ngModel]="layer.item.type">
+              <option value="wms" translate>wms</option>
+              <option value="wmts" translate>wmts</option>
+            </select>
+          </div>
+        </div>
+        <!-- version -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_version" translate>layer_version</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.version }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="version" [ngModel]="layer.item.version">
+              <option *ngIf="isWMTSLayer(layer.item)" value="1.0.0" translate>1.0.0</option>
+              <option *ngIf="isWMSLayer(layer.item)" value="1.1.1" translate>1.1.1</option>
+              <option *ngIf="isWMSLayer(layer.item)" value="1.3.0" translate>1.3.0</option>
+            </select>
+          </div>
+        </div>
+        <!-- label -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_label" translate>layer_label</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.label }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.label" name="label" class="form-control" id="layer_{{ layer.id }}_label" [value]="layer.item.label" >
+          </div>
+        </div>
+        <!-- extent -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_extent" translate>layer_extent</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.extent }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.extent" name="extent" class="form-control" id="layer_{{ layer.id }}_extent" [value]="layer.item.extent" >
+          </div>
+        </div>
+        <!-- WMS -->
+        <div *ngIf="isWMSLayer(layer.item)">
+          <!-- wmsUrl -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_wmsUrl" translate>layer_wmsUrl</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.wmsUrl }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.wmsUrl" name="wmsUrl" class="form-control" id="layer_{{ layer.id }}_wmsUrl" [value]="layer.item.wmsUrl" >
+            </div>
+          </div>
+          <!-- wmsLayers -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_wmsLayers" translate>layer_wmsLayers</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.wmsLayers }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.wmsLayers" name="wmsLayers" class="form-control" id="layer_{{ layer.id }}_wmsLayers" [value]="layer.item.wmsLayers" >
+            </div>
+          </div>
+          <!-- gutter -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_gutter" translate>layer_gutter</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.gutter }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.gutter " name="gutter" class="form-control" id="layer_{{ layer.id }}_gutter" [value]="layer.item.gutter" >
+            </div>
+          </div>
+          <!-- singleTile -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_singleTile" translate>layer_singleTile</label>
+            <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.singleTile }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <select class="form-control" name="singleTile" [ngModel]="layer.item.singleTile">
+                <option [ngValue]="false" translate>false</option>
+                <option [ngValue]="true" translate>true</option>
+              </select>
+            </div>
+          </div>
+          <!-- minScale -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_minScale" translate>layer_minScale</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.minScale }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.minScale" name="minScale" class="form-control" id="layer_{{ layer.id }}_minScale" [value]="layer.item.minScale" >
+            </div>
+          </div>
+          <!-- maxScale -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_maxScale" translate>layer_maxScale</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.maxScale }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.maxScale" name="maxScale" class="form-control" id="layer_{{ layer.id }}_maxScale" [value]="layer.item.maxScale" >
+            </div>
+          </div>
+        </div>
+        <!-- WMTS -->
+        <div *ngIf="isWMTSLayer(layer.item)">
+          <!-- serviceUrl -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_serviceUrl" translate>layer_serviceUrl</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.serviceUrl }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.serviceUrl" name="serviceUrl" class="form-control" id="layer_{{ layer.id }}_serviceUrl" [value]="layer.item.serviceUrl" >
+            </div>
+          </div>
+          <!-- template -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_template" translate>layer_template</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.template }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.template" name="template" class="form-control" id="layer_{{ layer.id }}_template" [value]="layer.item.template" >
+            </div>
+          </div>
+          <!-- matrixSet -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_matrixSet" translate>layer_matrixSet</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.matrixSet }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.matrixSet" name="matrixSet" class="form-control" id="layer_{{ layer.id }}_matrixSet" [value]="layer.item.matrixSet" >
+            </div>
+          </div>
+          <!-- serverLayerName -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_serverLayerName" translate>layer_serverLayerName</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.serverLayerName }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.serverLayerName" name="serverLayerName" class="form-control" id="layer_{{ layer.id }}_serverLayerName" [value]="layer.item.serverLayerName" >
+            </div>
+          </div>
+          <!-- requestEncoding -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_input{{ layer.id }}_requestEncoding" translate>layer_requestEncoding</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.requestEncoding }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.requestEncoding" name="requestEncoding" class="form-control" id="layer_{{ layer.id }}_requestEncoding" [value]="layer.item.requestEncoding" >
+            </div>
+          </div>
+          <!-- origin -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_input{{ layer.id }}_origin" translate>layer_origin</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.origin }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.origin" name="origin" class="form-control" id="layer_input{{ layer.id }}_origin" [value]="layer.item.origin" >
+            </div>
+          </div>
+          <!-- scales -->
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label" for="layer_input{{ layer.id }}_scales" translate>layer_scales</label>
+            <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.scales }}</label>
+            <div *ngIf="isEdit" class="col-sm-9">
+              <input type="text" [ngModel]="layer.item.scales" name="scales" class="form-control" id="layer_input{{ layer.id }}_scales" [value]="layer.item.scales" >
+            </div>
+          </div>
+        </div>
+        <!-- background -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_background" translate>layer_background</label>
+          <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.background }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="background" [ngModel]="layer.item.background">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- format -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_format" translate>layer_format</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.format }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.format" name="format" class="form-control" id="layer_{{ layer.id }}_format" [value]="layer.item.format" >
+          </div>
+        </div>
+        <!-- searchable -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_searchable" translate>layer_searchable</label>
+          <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.searchable }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="searchable" [ngModel]="layer.item.searchable">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- crossOrigin -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_crossOrigin" translate>layer_crossOrigin</label>
+          <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.crossOrigin }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="crossOrigin" [ngModel]="layer.item.crossOrigin">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- highlightable -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_highlightable" translate>layer_highlightable</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.highlightable }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.highlightable" name="highlightable" class="form-control" id="layer_{{ layer.id }}_highlightable" [value]="layer.item.highlightable" >
+          </div>
+        </div>
+        <!-- timestamps -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_timestamps" translate>layer_timestamps</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.timestamps }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.timestamps" name="timestamps" class="form-control" id="layer_{{ layer.id }}_timestamps" [value]="layer.item.timestamps" >
+          </div>
+        </div>
+        <!-- timeEnabled -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_timeEnabled" translate>layer_timeEnabled</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.timeEnabled }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="timeEnabled" [ngModel]="layer.item.timeEnabled">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- timeBehaviour -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_timeBehaviour" translate>layer_timeBehaviour</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.timeBehaviour }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control" id="layer_{{ layer.id }}_timeBehaviour" [value]="layer.item.timeBehaviour" >
+          </div>
+        </div>
+        <!-- hasLegend -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_hasLegend" translate>layer_hasLegend</label>
+          <label *ngIf="!isEdit" class="col-sm-9" translate>{{ layer.item.hasLegend }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="hasLegend" [ngModel]="layer.item.hasLegend">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- legendUrl -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_legendUrl" translate>layer_legendUrl</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.legendUrl }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.legendUrl" name="legendUrl" class="form-control" id="layer_{{ layer.id }}_legendUrl" [value]="layer.item.legendUrl" >
+          </div>
+        </div>
+        <!-- attribution -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_attribution" translate>layer_attribution</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.attribution }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.attribution" name="attribution" class="form-control" id="layer_{{ layer.id }}_attribution" [value]="layer.item.attribution" >
+          </div>
+        </div>
+        <!-- attributionUrl -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_attributionUrl" translate>layer_attributionUrl</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.attributionUrl }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.attributionUrl" name="attributionUrl" class="form-control" id="layer_{{ layer.id }}_attributionUrl" [value]="layer.item.attributionUrl" >
+          </div>
+        </div>
+        <!-- tooltip -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_tooltip" translate>layer_tooltip</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.tooltip }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="tooltip" [ngModel]="layer.item.tooltip">
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
+            </select>
+          </div>
+        </div>
+        <!-- opacity -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_opacity" translate>layer_opacity</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.opacity }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <select class="form-control" name="opacity" [ngModel]="layer.item.opacity">
+              <option [ngValue]="0.0" translate>0%</option>
+              <option [ngValue]="0.1" translate>10%</option>
+              <option [ngValue]="0.2" translate>20%</option>
+              <option [ngValue]="0.3" translate>30%</option>
+              <option [ngValue]="0.4" translate>40%</option>
+              <option [ngValue]="0.5" translate>50%</option>
+              <option [ngValue]="0.6" translate>60%</option>
+              <option [ngValue]="0.7" translate>70%</option>
+              <option [ngValue]="0.8" translate>80%</option>
+              <option [ngValue]="0.9" translate>90%</option>
+              <option [ngValue]="1.0" translate>100%</option>
+            </select>
+          </div>
+        </div>
+        <!-- style -->
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label" for="layer_{{ layer.id }}_style" translate>layer_style</label>
+          <label *ngIf="!isEdit" class="col-sm-9">{{ layer.item.style }}</label>
+          <div *ngIf="isEdit" class="col-sm-9">
+            <input type="text" [ngModel]="layer.item.style" name="style" class="form-control" id="layer_{{ layer.id }}_style" [value]="layer.item.style" >
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal delete -->
+<div class="modal fade" id="delLayerModal{{ layer.id }}" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" translate>layer_item_del_title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p translate>layer_item_del_text</p>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onDeleteLayer(layer.id)" translate>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

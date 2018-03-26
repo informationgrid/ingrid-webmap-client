@@ -20,22 +20,11 @@ export class AppComponent implements OnInit {
   settings: any = {};
   version: string = environment.version;
 
+  hasLoadLayers: boolean = true;
+  hasLoadCategory: boolean = true;
+  hasLoadSetting: boolean = true;
+  
   ngOnInit() {
-    this.httpService.getLayers().subscribe(
-      data => {
-        this.updateAppLayers(data);
-      }
-    );
-    this.httpService.getCategories().subscribe(
-      data => {
-        this.updateAppCategories(data);
-      }
-    );
-    this.httpService.getSetting().subscribe(
-      data => {
-        this.updateAppSettings(data);
-      }
-    );
   }
 
   updateAppLayers(event: LayerItem[]){
