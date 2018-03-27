@@ -43,11 +43,15 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+import de.ingrid.geo.utils.transformation.CoordTransformUtil;
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
@@ -55,6 +59,9 @@ import de.ingrid.mapclient.utils.Utils;
 public class CapabilitiesUpdateTask implements Runnable{
     
     private static final Logger log = Logger.getLogger(CapabilitiesUpdateTask.class);
+    private static final String[] FIELD_XY = {"./@minx", "./@miny", "./@maxx", "./@maxy"};
+    private static final String[] FIELD_BOUND = {"./westBoundLongitude", "./southBoundLatitude", "./eastBoundLongitude", "./northBoundLatitude"};
+    
 
     public void run() {
         log.info("Update WebMapClient capabilitities ...");
@@ -221,7 +228,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         log.info("Update WebMapClient capabilitities finished.");
     }
     
-    private boolean updateLayerInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsLayers, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException {
+    private boolean updateLayerInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsLayers, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
         boolean hasChanges = false;
         if(layerWmsLayers != null){
             if(layerWmsLayers.indexOf( "," ) == -1){
@@ -230,7 +237,6 @@ public class CapabilitiesUpdateTask implements Runnable{
                 if(layerNode != null){
                     log.debug( "Check for Update layer: " + layerWmsLayers);
                     Node fieldNode = null;
-                    Node subFieldNode = null;
                     String layerKey = null;
                     
                     // MinScale
@@ -239,64 +245,20 @@ public class CapabilitiesUpdateTask implements Runnable{
                         // Check inherit parent value
                         fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            String text = fieldNode.getTextContent();
-                            String oldText;
-                            try {
-                                oldText = layerJSON.getString(layerKey);
-                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                    layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                    hasChanges = true;
-                                }
-                            } catch (JSONException e) {
-                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                hasChanges = true;
-                            }
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            String text = fieldNode.getTextContent();
-                            String oldText;
-                            try {
-                                oldText = layerJSON.getString(layerKey);
-                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                    layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                    hasChanges = true;
-                                }
-                            } catch (JSONException e) {
-                                layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                hasChanges = true;
-                            }
+                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
                     }
                     fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        String text = fieldNode.getTextContent();
-                        String oldText;
-                        try {
-                            oldText = layerJSON.getString(layerKey);
-                            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                hasChanges = true;
-                            }
-                        } catch (JSONException e) {
-                            layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                            hasChanges = true;
-                        }
+                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                     }
                     fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        String text = fieldNode.getTextContent();
-                        String oldText;
-                        try {
-                            oldText = layerJSON.getString(layerKey);
-                            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                hasChanges = true;
-                            }
-                        } catch (JSONException e) {
-                            layerJSON.put( layerKey, fieldNode.getTextContent() );
-                            hasChanges = true;
-                        }
+                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
                     }
                     
                     // MaxScale
@@ -305,158 +267,122 @@ public class CapabilitiesUpdateTask implements Runnable{
                         // Check inherit parent value
                         fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            String text = fieldNode.getTextContent();
-                            String oldText;
-                            try {
-                                oldText = layerJSON.getString(layerKey);
-                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                    layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                    hasChanges = true;
-                                }
-                            } catch (JSONException e) {
-                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                hasChanges = true;
-                            }
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            String text = fieldNode.getTextContent();
-                            String oldText;
-                            try {
-                                oldText = layerJSON.getString(layerKey);
-                                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                    layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                    hasChanges = true;
-                                }
-                            } catch (JSONException e) {
-                                layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                hasChanges = true;
-                            }
+                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
                     }
                     
                     layerKey = "maxScale";
                     fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        String text = fieldNode.getTextContent();
-                        String oldText;
-                        try {
-                            oldText = layerJSON.getString(layerKey);
-                            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                                hasChanges = true;
-                            }
-                        } catch (JSONException e) {
-                            layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                            hasChanges = true;
-                        }
+                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                     }
                     fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
-                        String text = fieldNode.getTextContent();
-                        String oldText;
-                        try {
-                            oldText = layerJSON.getString(layerKey);
-                            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                                layerJSON.put( layerKey, fieldNode.getTextContent() );
-                                hasChanges = true;
-                            }
-                        } catch (JSONException e) {
-                            layerJSON.put( layerKey, fieldNode.getTextContent() );
-                            hasChanges = true;
-                        }
+                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
                     }
                     // Extent
                     layerKey = "extent";
+                    String epsg = "EPSG:3857";
+                    try {
+                        String classPath = "";
+                        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                        String fileSetting = classPath + "frontend/config/setting.js";
+                        
+                        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                        String fileSettingProfile = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                        if(!fileSettingProfile.endsWith( "/" )){
+                            fileSettingProfile = fileSettingProfile.concat( "/" );
+                        }
+                        fileSettingProfile = fileSettingProfile.concat( "/config/setting.profile.js" );
+                        
+                        String[] files = { fileSetting, fileSettingProfile};
+                        epsg  = Utils.getPropertyFromJSFiles(files, "settingEpsg = '(.*?)';", "EPSG:3857");
+                    } catch (Exception e1) {
+                        log.error("Error get EPSG! Used default EPSG: " + epsg);
+                    }
+                   
                     if(parentLayerNode != null){
                         fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             JSONArray array = new JSONArray();
-                            subFieldNode = (Node) xpath.evaluate("./westBoundLongitude", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./southBoundLatitude", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./eastBoundLongitude", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./northBoundLatitude", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
+                            getExtent(xpath, fieldNode, array, FIELD_BOUND);
                             layerJSON.put( layerKey, array );
                             hasChanges = true;
                         }
+                        
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+epsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        if(fieldNode != null) {
+                            try {
+                                JSONArray array = new JSONArray();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                transformExtent(epsg, layerKey, array, layerJSON);
+                            } catch (Exception e) {
+                                log.error("Error transform extent!");
+                            }
+                            hasChanges = true;
+                        }
+                        
                         fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             JSONArray array = new JSONArray();
-                            subFieldNode = (Node) xpath.evaluate("./@minx", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./@miny", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./@maxx", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
-                            subFieldNode = (Node) xpath.evaluate("./@maxy", fieldNode, XPathConstants.NODE);
-                            if(subFieldNode != null) {
-                                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                            }
+                            getExtent(xpath, fieldNode, array, FIELD_XY);
                             layerJSON.put( layerKey, array );
+                            hasChanges = true;
+                        }
+                        
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+epsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        if(fieldNode != null) {
+                            try {
+                                JSONArray array = new JSONArray();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                transformExtent(epsg, layerKey, array, layerJSON);
+                            } catch (Exception e) {
+                                log.error("Error transform extent!");
+                            }
                             hasChanges = true;
                         }
                     }
                     fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
                         JSONArray array = new JSONArray();
-                        subFieldNode = (Node) xpath.evaluate("./westBoundLongitude", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./southBoundLatitude", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./eastBoundLongitude", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./northBoundLatitude", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
+                        getExtent(xpath, fieldNode, array, FIELD_BOUND);
                         layerJSON.put( layerKey, array );
+                        hasChanges = true;
+                    }
+                    
+                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+epsg+"\"]", layerNode, XPathConstants.NODE);
+                    if(fieldNode != null) {
+                        try {
+                            JSONArray array = new JSONArray();
+                            getExtent(xpath, fieldNode, array, FIELD_XY);
+                            transformExtent(epsg, layerKey, array, layerJSON);
+                        } catch (Exception e) {
+                            log.error("Error transform extent!");
+                        }
                         hasChanges = true;
                     }
                     
                     fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", layerNode, XPathConstants.NODE);
                     if (fieldNode != null) {
                         JSONArray array = new JSONArray();
-                        subFieldNode = (Node) xpath.evaluate("./@minx", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./@miny", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./@maxx", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
-                        subFieldNode = (Node) xpath.evaluate("./@maxy", fieldNode, XPathConstants.NODE);
-                        if(subFieldNode != null) {
-                            array.put(Double.parseDouble( subFieldNode.getTextContent() ));
-                        }
+                        getExtent(xpath, fieldNode, array, FIELD_XY);
                         layerJSON.put( layerKey, array );
+                        hasChanges = true;
+                    }
+                    
+                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+epsg+"\"]", layerNode, XPathConstants.NODE);
+                    if(fieldNode != null) {
+                        try {
+                            JSONArray array = new JSONArray();
+                            getExtent(xpath, fieldNode, array, FIELD_XY);
+                            transformExtent(epsg, layerKey, array, layerJSON);
+                        } catch (Exception e) {
+                            log.error("Error transform extent!");
+                        }
                         hasChanges = true;
                     }
                     
@@ -473,5 +399,58 @@ public class CapabilitiesUpdateTask implements Runnable{
             }
         }
         return hasChanges;
+    }
+    
+    private boolean getScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws NumberFormatException, DOMException, JSONException {
+        String text = fieldNode.getTextContent();
+        String oldText;
+        try {
+            oldText = layerJSON.getString(layerKey);
+            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                layerJSON.put( layerKey, fieldNode.getTextContent() );
+                return true;
+            }
+        } catch (JSONException e) {
+            layerJSON.put( layerKey, fieldNode.getTextContent() );
+            return true;
+        }
+        return false;
+    }
+    
+    private boolean getDoubleScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws NumberFormatException, DOMException, JSONException {
+        String text = fieldNode.getTextContent();
+        String oldText;
+        try {
+            oldText = layerJSON.getString(layerKey);
+            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                return true;
+            }
+        } catch (JSONException e) {
+            layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+            return true;
+        }
+        return false;
+    }
+    
+    private void getExtent(XPath xpath, Node fieldNode, JSONArray array, String[] fields) throws XPathExpressionException, NumberFormatException, DOMException, JSONException {
+        for (String field : fields) {
+            Node subFieldNode = (Node) xpath.evaluate(field, fieldNode, XPathConstants.NODE);
+            if(subFieldNode != null) {
+                array.put(Double.parseDouble( subFieldNode.getTextContent() ));
+            }
+        }
+    }
+    
+    private void transformExtent(String epsg, String layerKey, JSONArray array, JSONObject layerJSON) throws FactoryException, TransformException, JSONException {
+        String [] splitEPSG = epsg.split(":");
+        double[] min = CoordTransformUtil.getInstance().transformToWGS84(array.getDouble(0), array.getDouble(1), CoordTransformUtil.getInstance().getCoordTypeByEPSGCode(splitEPSG[splitEPSG.length - 1]));
+        double[] max = CoordTransformUtil.getInstance().transformToWGS84(array.getDouble(2), array.getDouble(3), CoordTransformUtil.getInstance().getCoordTypeByEPSGCode(splitEPSG[splitEPSG.length - 1]));
+        JSONArray transformArray = new JSONArray();
+        transformArray.put(min[0]);
+        transformArray.put(min[1]);
+        transformArray.put(max[0]);
+        transformArray.put(max[1]);
+        layerJSON.put( layerKey, transformArray );
     }
 }

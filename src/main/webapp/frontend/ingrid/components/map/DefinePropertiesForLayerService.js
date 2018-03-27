@@ -140,6 +140,15 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('maxScale', val);
             }
           },
+          // INGRID: Add queryLayers functions
+          queryLayers: {
+            get: function() {
+              return this.get('queryLayers');
+            },
+            set: function(val) {
+              this.set('queryLayers', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');

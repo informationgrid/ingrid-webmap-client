@@ -22,13 +22,20 @@
  */
 package de.ingrid.mapclient.utils;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -108,6 +115,42 @@ public class Utils {
           }
         }
         return url;
+    }
+    
+    public static String getPropertyFromJSFiles(String[] paths, String regex, String defaultValue) throws Exception {
+        ArrayList<String> values = new ArrayList<String>();
+        for (String path :  paths) {
+            File file = new File(path);
+            if(file.exists()) {
+                log.debug("Load file: " + path);
+                String content = readFileAsString( file );
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(content);
+                if (matcher.find())
+                {
+                    values.add(matcher.group(1));
+                }
+            }
+        }
+        if(!values.isEmpty()) {
+            return values.get(values.size() - 1);
+        }
+        return defaultValue;
+    }
+
+    public static String readFileAsString(File file) throws java.io.IOException {
+        byte[] buffer = new byte[(int) file.length()];
+        BufferedInputStream f = null;
+        try {
+            f = new BufferedInputStream( new FileInputStream( file ) );
+            f.read( buffer );
+        } finally {
+            if (f != null)
+                try {
+                    f.close();
+                } catch (IOException ignored) {}
+        }
+        return new String( buffer );
     }
     
     public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
@@ -279,3 +322,5 @@ class MailAuthenticator extends Authenticator {
         return new PasswordAuthentication( this.user, this.password );
     }
 }
+
+

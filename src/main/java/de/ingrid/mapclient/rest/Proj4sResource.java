@@ -39,6 +39,7 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 
 import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * Proj4sResource defines the interface for retrieving Proj4s data
@@ -117,27 +118,12 @@ public class Proj4sResource {
         File codeFile = new File( path );
         if (codeFile.exists()) {
             try {
-                return readFileAsString( codeFile );
+                return Utils.readFileAsString( codeFile );
             } catch (IOException e) {
                 return null;
             }
         } else {
             return null;
         }
-    }
-
-    private String readFileAsString(File file) throws java.io.IOException {
-        byte[] buffer = new byte[(int) file.length()];
-        BufferedInputStream f = null;
-        try {
-            f = new BufferedInputStream( new FileInputStream( file ) );
-            f.read( buffer );
-        } finally {
-            if (f != null)
-                try {
-                    f.close();
-                } catch (IOException ignored) {}
-        }
-        return new String( buffer );
     }
 }

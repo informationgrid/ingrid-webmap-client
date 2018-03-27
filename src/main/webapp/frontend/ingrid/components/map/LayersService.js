@@ -608,6 +608,8 @@ goog.require('ga_urlutils_service');
                 maxResolution: config.maxResolution,
                 opacity: config.opacity || 1,
                 source: olSource,
+                // INGRID: Add queryLayers
+                queryLayers: config.queryLayers,
                 // INGRID: Add minScale
                 minScale: config.minScale,
                 // INGRID: Add maxScale
@@ -645,6 +647,8 @@ goog.require('ga_urlutils_service');
                 maxResolution: config.maxResolution,
                 opacity: config.opacity || 1,
                 source: olSource,
+                // INGRID: Add queryLayers
+                queryLayers: config.queryLayers,
                 // INGRID: Add minScale
                 minScale: config.minScale,
                 // INGRID: Add maxScale

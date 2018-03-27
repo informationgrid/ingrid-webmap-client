@@ -58,15 +58,15 @@ goog.provide('ga_urlutils_service');
           if (!this.isValid(url)) {
             return url;
           }
-          var parts = /^(http|https)(:\/\/)(.+)/.exec(url);
           /* INGRID: Not in used
+          var parts = /^(http|https)(:\/\/)(.+)/.exec(url);
           var protocol = parts[1];
-          */
           var resource = parts[3];
+          */
           // proxy is RESTFful, <service>/<protocol>/<resource>
           // INGRID: Change proxy url
           return gaGlobalOptions.proxyUrl +
-              encodeURIComponent(resource);
+              encodeURIComponent(url);
         };
 
         this.proxifyUrlInstant = function(url) {

@@ -809,8 +809,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           buildMode: '${mode}',
           version: '${version}',
           pegman: !!window.location.search.match(/(pegman=true)/),
-          // INGRID: Change mapUrl
-          mapUrl: location.origin + '' + location.pathname,
+          mapUrl: location.origin + pathname,
           // INGRID: Change REST service URL
           apiUrl: location.origin + '/ingrid-webmap-client/rest/data',
           altiUrl: altiUrl,

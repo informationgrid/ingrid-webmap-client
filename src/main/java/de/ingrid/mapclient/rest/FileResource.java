@@ -82,7 +82,7 @@ public class FileResource {
     @POST
     @Path("files")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response fileRequest(String content, @QueryParam("adminId") String mapUserId, @QueryParam("maxDaysOfDeleteFile") String maxDaysOfDeleteFile) {
+    public Response fileRequest(String content, @QueryParam("adminId") String mapUserId, @QueryParam("maxDaysOfDeleteFile") String maxDaysOfDeleteFile) throws IOException {
         String fileId = createKMLFile( content, mapUserId);
         if(fileId != null && fileId.length() > 0){
             String adminId = "";
@@ -138,13 +138,17 @@ public class FileResource {
                 if(mapUserId.equals(user)){
                     // Update file
                     File file = new File( filename );
+                    FileWriter fileWriter = null;
                     try {
-                        FileWriter fileWriter = new FileWriter( file );
+                        fileWriter = new FileWriter( file );
                         fileWriter.write( content );
                         fileWriter.flush();
-                        fileWriter.close();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } finally {
+                        if(fileWriter != null) {
+                            fileWriter.close();
+                        }
                     }
                 }else{
                     // New file
@@ -362,17 +366,23 @@ public class FileResource {
             if(attachementContentDisposition != null){
                 if(attachementContentDisposition.getFileName() != null){
                     file = new File(attachementContentDisposition.getFileName());
+                    OutputStream out = null;
                     try {
-                        OutputStream out = new FileOutputStream(file);
+                        out = new FileOutputStream(file);
                         byte[] buf = new byte[1024];
                         int len;
                         while((len=attachement.read(buf))>0){
                             out.write(buf,0,len);
                         }
-                        out.close();
-                        attachement.close();
                     } catch (Exception e) {
                         e.printStackTrace();
+                    } finally {
+                        if(out != null) {
+                            out.close();
+                        }
+                        if(attachement != null) {
+                            attachement.close();
+                        }
                     }
                 }
             }
@@ -456,7 +466,7 @@ public class FileResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
-    private String createKMLFile(String content, String mapUserId){
+    private String createKMLFile(String content, String mapUserId) throws IOException{
         String filename = "";
         String fileId = "";
         String path = "";
@@ -502,13 +512,17 @@ public class FileResource {
             fileId += content.hashCode();
             filename += fileId;
             File file = new File( filename);
+            FileWriter fileWriter = null;
             try {
-                FileWriter fileWriter = new FileWriter( file );
+                fileWriter = new FileWriter( file );
                 fileWriter.write( content );
                 fileWriter.flush();
-                fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
             }
         }
        return fileId;
