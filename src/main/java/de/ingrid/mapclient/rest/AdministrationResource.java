@@ -137,7 +137,7 @@ public class AdministrationResource {
                 for (int i = 0; i < categories.length(); i++) {
                     JSONObject category = categories.getJSONObject(i);
                     String catId = category.getString("id");
-                    JSONArray cat = getCategoryTree(catId, null);
+                    JSONArray cat = getCategoryTree(catId);
                     for (int j = 0; j < cat.length(); j++) {
                         JSONObject catItem = cat.getJSONObject(j);
                         updateCategoryLayersId(catItem, id, newId);
