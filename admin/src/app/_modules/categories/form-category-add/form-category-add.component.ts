@@ -17,6 +17,8 @@ export class FormCategoryAddComponent {
   @Input() layers: LayerItem[] = [];
   @Input() node: TreeNode;
   @Input() category: Category;
+
+  layerSelection: LayerItem[] = [];
   
   addCatItemForm: FormGroup;
   addItemLabel: FormControl;
@@ -53,6 +55,10 @@ export class FormCategoryAddComponent {
       addItemLayerBodId: ""
     })
   }
+
+  onLayerSelect(event){
+      this.layerSelection = this.layers;
+  };
 
   ngOnChanges(changes: SimpleChanges) {
   }

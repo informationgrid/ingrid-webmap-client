@@ -79,6 +79,13 @@
     "help_settingEnable3D": "3D Funktion aktivieren",
     "help_settingDefaultTerrain": "Terrain für die 3D Funktion",
     "layers" : "Karten",
+    "layers_select" : "Auswahl",
+    "layers_select_cancel" : "Abbrechen",
+    "layers_select_delete" : "Auswahl löschen",
+    "layers_select_del_title" : "Auswahl löschen",
+    "layers_select_del_text" : "Ihre Auswahl wird mit dem Lösch-Button bestätigt.",
+    "layer_item_del_title" : "Karte löschen",
+    "layer_item_del_text" : "Ihre Karte wird mit dem Lösch-Button bestätigt.",
     "layer_new" : "Neue Karte",
     "layer_id" : "ID",
     "layer_wmsUrl" : "WMS-URL",
@@ -175,7 +182,8 @@
     "setting_settingEnable3D" : "3D Funktion aktiv",
     "setting_settingDefaultTerrain" : "Default-URL zum Terrain",
     "search" : "Suchen",
-    "layers_select" : "Auswahl",
-    "layers_select_cancel" : "Abbrechen",
-    "layers_select_delete" : "Auswahl löschen"
+    "paging_previous" : "",
+    "paging_next" : "",
+    "paging_first" : "",
+    "paging_last": ""
 }

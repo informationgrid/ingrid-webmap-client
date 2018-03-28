@@ -15,16 +15,14 @@ export class CssComponent implements OnInit {
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
-    if(!this.css) {
-      this.httpService.getCss().subscribe(
-        data => {
-          this.css = data;
-        },
-        error => {
-          console.log("Error load css!");
-        }
-      );
-    }
+  this.httpService.getCss().subscribe(
+      data => {
+        this.css = data;
+      },
+      error => {
+        console.log("Error load css!");
+      }
+    );
   }
 
   onUpdate(content: string){

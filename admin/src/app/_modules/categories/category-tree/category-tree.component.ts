@@ -4,11 +4,10 @@ import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Category } from '../../../../_models/category';
-import { LayerItem } from '../../../../_models/layer-item';
-import { CategoryItem } from '../../../../_models/category-item';
-import { HttpService } from '../../../../_services/http.service';
-import { ActivatedRoute } from '@angular/router';
+import { Category } from '../../../_models/category';
+import { LayerItem } from '../../../_models/layer-item';
+import { CategoryItem } from '../../../_models/category-item';
+import { HttpService } from '../../../_services/http.service';
 
 @Component({
   selector: 'app-category-tree',
@@ -30,20 +29,10 @@ export class CategoryTreeComponent implements OnInit{
     childrenField: 'children'
   };
 
-  constructor(private httpService: HttpService, private route: ActivatedRoute) { 
-    
-  }
+  constructor(private httpService: HttpService) {}
 
   ngOnInit(){
     this.categoryId = this.category.id;
-    this.loadCategory(this.categoryId);
-  }
-
-  loadCategory(id: string) {
-    this.httpService.getCategory(id)
-    .subscribe( data => {
-        this.categoryTree = data;
-    });
   }
 
   // Node Events

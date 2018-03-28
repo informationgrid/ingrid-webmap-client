@@ -64,14 +64,36 @@ public class AdministrationResource {
     @GET
     @Path("layers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLayerList() {
+    public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText) {
         JSONArray arr = getLayers(null);
+        if(searchText != null) {
+            arr = getFilterArray(arr, searchText, "label");
+        }
         if(arr != null) {
-            return Response.ok( arr ).build();
+            if(currentPage == null && layersPerPage == null) {
+                arr = getLayers(null, true);
+                return Response.ok( arr ).build();
+            } else {
+                int tmpCurrentPage = Integer.parseInt(currentPage);
+                int tmpLayersPerPage = Integer.parseInt(layersPerPage);
+                int lastPage = (int) Math.ceil(arr.length() / (double) tmpLayersPerPage);
+                int totalNumOfLayersPerPage = tmpCurrentPage * tmpLayersPerPage;
+                int firstNumOfLayers = totalNumOfLayersPerPage - tmpLayersPerPage;
+                if( lastPage < 1) {
+                    lastPage= 1;
+                } 
+                if(lastPage < tmpCurrentPage) {
+                    tmpCurrentPage = lastPage;
+                    totalNumOfLayersPerPage = tmpCurrentPage * tmpLayersPerPage;
+                    firstNumOfLayers = totalNumOfLayersPerPage - tmpLayersPerPage;
+                }
+                JSONObject obj = getPaginationArray(arr, tmpCurrentPage, lastPage, firstNumOfLayers, totalNumOfLayersPerPage);
+                return Response.ok( obj ).build();
+            }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
-    
+
     @GET
     @Path("layers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -115,7 +137,7 @@ public class AdministrationResource {
                 for (int i = 0; i < categories.length(); i++) {
                     JSONObject category = categories.getJSONObject(i);
                     String catId = category.getString("id");
-                    JSONArray cat = getCategoryTree(catId);
+                    JSONArray cat = getCategoryTree(catId, null);
                     for (int j = 0; j < cat.length(); j++) {
                         JSONObject catItem = cat.getJSONObject(j);
                         updateCategoryLayersId(catItem, id, newId);
@@ -462,6 +484,10 @@ public class AdministrationResource {
     }
 
     private JSONArray getLayers(String id) {
+       return getLayers(id, false);
+    }
+    
+    private JSONArray getLayers(String id, boolean compress) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         String fileContent = null;
@@ -484,7 +510,16 @@ public class AdministrationResource {
                     if ( obj.get(key) instanceof JSONObject ) {
                         JSONObject tmpObj = new JSONObject();
                         tmpObj.put("id", key);
-                        tmpObj.put("item", obj.get(key));
+                        if(compress) {
+                            JSONObject item = obj.getJSONObject(key);
+                            JSONObject itemCompress = new JSONObject();
+                            itemCompress.put("id", key);
+                            itemCompress.put("label", item.get("label"));
+                            itemCompress.put("background", item.get("background"));
+                            tmpObj.put("item", itemCompress);
+                        } else {
+                            tmpObj.put("item", obj.get(key));
+                        }
                         arr.put(tmpObj);
                     }
                 };
@@ -534,6 +569,49 @@ public class AdministrationResource {
         return id;
     }
 
+    private JSONObject getPaginationArray(JSONArray arr, int currentPage, int lastPage, int firstNumOfLayers, int totalNumOfLayersPerPage) {
+        JSONObject obj = new JSONObject();
+        JSONArray arrPagination = new JSONArray();
+        try {
+            obj.put("firstPage", currentPage);
+            obj.put("lastPage", lastPage);
+            obj.put("totalItemsNum", arr.length());
+            for (int i = firstNumOfLayers; i < totalNumOfLayersPerPage; i++) {
+                if(i <= arr.length() - 1) {
+                    arrPagination.put(arr.get(i));
+                }
+            }
+            obj.put("items", arrPagination);
+        } catch (JSONException e) {
+            log.error("Error on paging layers!");
+        }
+        return obj;
+    }
+
+    private JSONArray getFilterArray(JSONArray arr, String searchText, String key) {
+        JSONArray arrSearch = new JSONArray();
+        for (int i = 0; i < arr.length(); i++) {
+            if(i < arr.length() - 1) {
+                JSONObject obj;
+                try {
+                    obj = arr.getJSONObject(i);
+                    if(obj.has("item")) {
+                        JSONObject item = obj.getJSONObject("item");
+                        if(item.has(key)){
+                            String label = item.getString(key);
+                            if(label.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                               arrSearch.put(obj);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    log.error("Error on search layers!");
+                }
+            }
+        }
+        return arrSearch;
+    }
+
     private JSONArray updateLayer(String id, JSONObject layer) {
         if(id != null && layer != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
@@ -562,7 +640,7 @@ public class AdministrationResource {
                 log.error("Error 'updateLayer'!");
             }
         }
-        return getLayers(null);
+        return getLayers(null, true);
     }
     
     private JSONArray deleteLayer(String id) {
@@ -581,7 +659,7 @@ public class AdministrationResource {
                 log.error("Error 'deleteLayer'!");
             }
         }
-        return getLayers(null);
+        return getLayers(null, true);
     }
     
     private JSONArray deleteLayers(String[] ids) {
@@ -604,7 +682,7 @@ public class AdministrationResource {
                 log.error("Error 'deleteLayer'!");
             }
         }
-        return getLayers(null);
+        return getLayers(null, true);
     }
     
     private JSONArray getCategories() {

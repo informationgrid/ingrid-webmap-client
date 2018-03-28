@@ -20,9 +20,14 @@ import { CategoryItem } from '../../../_models/category-item';
 })
 export class LayerComponent implements OnInit{
 
-  layers: LayerItem[] = [];
-  categories: Category[] = [];
+  @Input() categories: Category[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+
+  layers: LayerItem[] = [];
+  layersCurrentPage: number = 1;
+  layersTotalPage: number = 1;
+  layersPerPage: number = 20;
+  layersTotalNum: number = 0;
 
   searchTypeDefault: string = 'label';
   searchTypeGroup: any = ['label','type'];
@@ -36,6 +41,8 @@ export class LayerComponent implements OnInit{
   isSaveSuccess: boolean = false;
   isSaveUnsuccess: boolean = false;
   isWMSService: boolean = false;
+  hasLoadLayers: boolean = false;
+
   categoryId: string = "";
   category: CategoryItem[] = [];
 
@@ -54,34 +61,79 @@ export class LayerComponent implements OnInit{
     childrenField: 'children'
   }
 
-  constructor(private httpService: HttpService, private mapUtils: MapUtilsService) {
-  }
-  
+  constructor(private httpService: HttpService, private mapUtils: MapUtilsService) {}
+
   ngOnInit(){
-    this.httpService.getData().subscribe(
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+  }  
+  // Paging
+  previousPage(){
+    this.layersCurrentPage--;
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+  }
+
+  nextPage(){
+    this.layersCurrentPage++;
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+  }
+
+  firstPage(){
+    this.layersCurrentPage = 1;
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+  }
+
+  lastPage(){
+    this.layersCurrentPage = this.layersTotalPage;
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+  }
+
+  // Search
+  searchLayers(){
+    this.loadLayers(1, this.layersPerPage, this.searchText);
+  }
+
+  loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string){
+    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText).subscribe(
       data => {
-        this.layers = data[0];
-        this.categories = data[1];
+        this.layers = data.items;
+        this.layersCurrentPage = data.firstPage;
+        this.layersTotalPage = data.lastPage;
+        this.layersTotalNum = data.totalItemsNum;
+        this.hasLoadLayers = true;
       },
       error => {
-
+        console.log("Error load layer per page!");
+        this.hasLoadLayers = false;
       }
     );
   }
-
   updateLayers(event: LayerItem[]){
-    this.layers = event;
-    this.updateAppLayers.emit(event);
+    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
+
+  selectLayer(event){
+    if(!this.selectedLayers){
+     this.selectedLayers = new Array()
+    }
+    if(event.target.checked){
+       this.selectedLayers.push(event.target.value);
+     } else {
+       var index = this.selectedLayers.indexOf(event.target.value, 0);
+       if (index > -1) {
+         this.selectedLayers.splice(index, 1);
+       };
+     }
+     event.stopPropagation();
+   }
 
   deleteSelectedLayers(){
     if(this.selectedLayers.length > 0){
       this.httpService.deleteLayers(this.selectedLayers).subscribe(
         data => {
-          this.layers = data;
           this.updateAppLayers.emit(data);
           this.selectedLayers = new Array();
-          },
+          this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText)
+        },
         error => {
           console.error("Error on remove layer: " + error);
         }
@@ -125,15 +177,16 @@ export class LayerComponent implements OnInit{
     let root = treeModel.getFirstRoot();
     this.check(root, false);
   }
-  onCategoryChange($event){
-    if($event.target.value){
-      this.httpService.getCategory($event.target.value).subscribe(
+  onCategoryChange(event){
+    this.categoryId = event.target.value;
+    if(this.categoryId){
+      this.httpService.getCategory(this.categoryId, null).subscribe(
         data => {
           //const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
           this.category = data;
         },
         error => {
-          console.error("Error get category '" + $event.target.value + "'!");
+          console.error("Error get category '" + this.categoryId + "'!");
         }
       );
     } else{
@@ -193,7 +246,8 @@ export class LayerComponent implements OnInit{
   saveAddedLayers(layerItems: LayerItem[]){
     this.httpService.addLayer(layerItems).subscribe( 
       data => {
-        this.updateAppLayers.emit(data);
+        this.searchText = "";
+        this.loadLayers(1, this.layersPerPage, this.searchText);
       },
       error => {
         console.error("Error add layers!");
@@ -227,7 +281,7 @@ export class LayerComponent implements OnInit{
               categoryTreeModelFocusNode.data.children.unshift(categoryLayer);  
             });
             categoryTreeModel.update();
-            this.httpService.updateCategoryTree(f.value.categoryId, categoryTreeModel.nodes).subscribe(
+            this.httpService.updateCategoryTree(this.categoryId, categoryTreeModel.nodes).subscribe(
               data => {
                 this.isSaveSuccess = true;
                 this.isSaveUnsuccess = !this.isSaveSuccess;

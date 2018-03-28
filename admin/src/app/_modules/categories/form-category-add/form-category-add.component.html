@@ -15,9 +15,9 @@
   <div class="form-group row">
     <label class="col-sm-4 col-form-label" for="" translate>layer</label>
     <div class="col-sm-8">
-      <select class="form-control" formControlName="addItemLayerBodId" name="layerBodId" >
+      <select class="form-control" formControlName="addItemLayerBodId" name="layerBodId">
         <option value="" selected translate>category_item_layer_select</option>
-        <option [value]="layer.id" *ngFor="let layer of layers" [title]="layer.item.label">{{ layer.id }} ({{ layer.item.label }})</option>
+        <option [value]="layer.id" *ngFor="let layer of layers" [title]="layer.item.label">{{ layer.item.label }} ({{ layer.id }})</option>
       </select>
     </div>
   </div>

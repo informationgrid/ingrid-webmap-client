@@ -16,6 +16,15 @@ import { ArrayFilterPipe } from './_pipes/array-filter.pipe';
 import { MapUtilsService } from './_services/map-utils.service';
 import { HttpService } from './_services/http.service';
 import { environment } from '../environments/environment';
+import { LayerItemComponent } from './_modules/layers/layer-item/layer-item.component';
+import { CategoryItemComponent } from './_modules/categories/category-item/category-item.component';
+import { CategoryTreeComponent } from './_modules/categories/category-tree/category-tree.component';
+import { SettingComponent } from './_modules/settings/setting/setting.component';
+import { HelpComponent } from './_modules/helps/help/help.component';
+import { CssComponent } from './_modules/styles/css/css.component';
+import { FormCategoryAddComponent } from './_modules/categories/form-category-add/form-category-add.component';
+import { FormCategoryEditComponent } from './_modules/categories/form-category-edit/form-category-edit.component';
+import { TreeModule } from 'angular-tree-component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath + "/assets/i18n/");
@@ -24,12 +33,27 @@ export function HttpLoaderFactory(http: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    TranslationComponent
+    TranslationComponent,
+    LayerComponent,
+    LayerItemComponent,
+    CategoryComponent,
+    CategoryItemComponent,
+    CategoryTreeComponent,
+    SettingComponent,
+    HelpComponent,
+    CssComponent,
+    MapToIterablePipe,
+    ArrayFilterPipe,
+    FormCategoryAddComponent,
+    FormCategoryEditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TreeModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

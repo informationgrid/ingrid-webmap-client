@@ -10,23 +10,15 @@ import { EventEmitter } from 'events';
 })
 export class SettingComponent implements OnInit {
 
+  @Input() settings: any;
   @Output() updateAppSettings: EventEmitter = new EventEmitter();
 
-  settings: any;
   isSaveSuccess: boolean = false;
   isSaveUnsuccess: boolean = false;
 
   constructor(private httpService : HttpService) { }
 
   ngOnInit() {
-    this.httpService.getSetting().subscribe(
-      data => {
-        this.settings = data;
-      },
-      error => {
-        
-      }
-    );
   }
 
   isString(val){

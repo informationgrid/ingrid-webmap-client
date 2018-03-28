@@ -1,51 +1,61 @@
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarCategory" aria-controls="navBarCategory" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navBarCategory">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <button class="btn btn-outline" type="button" data-toggle="modal" data-target="#addModalCategory" translate>
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          category_new
-        </button>
-      </li>
-    </ul>
-    <form class="form-inline">
-      <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="search">
-    </form>
-  </div>
-</nav>
-
-<div id="categories">
-  <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
-    <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
-      aria-expanded="true" aria-controls="categories">
-      <span>{{category.id}}</span>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center" id="categoryHeader" data-toggle="collapse" data-target="#category" aria-expanded="false" aria-controls="category">
+      <span translate>categories</span>
+      <div>
+        <span *ngIf="categories.length > 0" class="badge badge-pill badge-primary">{{ categories.length }}</span>
+      </div>
     </div>
-    <div class="collapse" id="collapse{{ category.id }}"  [attr.aria-labelledby]="'categoriesHeader' + category.id" data-parent="#categories">
-      <div class="card card-body">
-        <div class="modal-header">
-          <div>
-            <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#editModal' + category.id">
-              <i class="fa fa-edit" aria-hidden="true"></i>
-              <span translate>edit</span>
-            </button>
-          </div>
-          <button class="btn btn-danger" type="button" data-toggle="modal" [attr.data-target]="'#delModal' + category.id">
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            <span translate>delete</span>
-          </button>  
+    <div id="category" class="collapse" aria-labelledby="categoryHeader" data-parent="#accordion">
+      <div class="card-body"><nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarCategory" aria-controls="navBarCategory" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navBarCategory">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <button class="btn btn-outline" type="button" data-toggle="modal" data-target="#addModalCategory" translate>
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                category_new
+              </button>
+            </li>
+          </ul>
+          <form class="form-inline">
+            <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="search">
+          </form>
         </div>
-        <div class="modal-body">
-          <app-category-tree [category]="category" [categoryTree]="categoryTree" [layers]="layers"></app-category-tree>
+      </nav>
+
+      <div id="categories">
+        <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
+          <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
+            aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, this)">
+            <span>{{category.id}}</span>
+          </div>
+          <div class="collapse" id="collapse{{ category.id }}"  [attr.aria-labelledby]="'categoriesHeader' + category.id" data-parent="#categories">
+            <div class="card card-body">
+              <div class="modal-header">
+                <div>
+                  <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#editModal' + category.id">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    <span translate>edit</span>
+                  </button>
+                </div>
+                <button class="btn btn-danger" type="button" data-toggle="modal" [attr.data-target]="'#delModal' + category.id">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  <span translate>delete</span>
+                </button>  
+              </div>
+              <div class="modal-body">
+                <app-category-tree [category]="category" [categoryTree]="categoryTree" [layers]="layers"></app-category-tree>
+              </div>
+            </div>
+          </div>
+          <app-category-item [category]="category" [categories]="categories" [layers]="layers" (updateCategories)="updateCategories($event)"></app-category-item>
         </div>
       </div>
     </div>
-    <app-category-item [category]="category" [categories]="categories" [layers]="layers" (updateCategories)="updateCategories($event)"></app-category-item>
   </div>
 </div>
-
 <div class="modal fade" id="addModalCategory" tabindex="-1" role="dialog" aria-labelledby="addModalLabelCategory" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

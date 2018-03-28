@@ -1,64 +1,73 @@
-<div class="modal-body">
-    <form (ngSubmit)="onUpdate(f)">
-        <div class="form-group row" *ngFor="let setting of settings | mapToIterable">
-            <div class="col-sm-3">
-                <div class=" d-flex justify-content-between align-items-center">
-                    <label class=" col-form-label" for="setting.key" translate>setting_{{ setting.key }}</label>
-                    <button *ngIf="setting.val.info" type="button" class="btn btn-outline-info" data-toggle="collapse" [attr.data-target]="'#info_' + setting.key">
-                        <i class="fa fa-info" aria-hidden="true"></i>
-                    </button>
-                </div>
-                <div *ngIf="setting.val.info" class="collapse" id="info_{{ setting.key }}">
-                    <div>
-                        <small class="form-text text-muted" translate>{{setting.val.info}}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-9">
-                <input *ngIf="isString(setting.val.value)" type="text" [ngModel]="setting.val.value" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
-                <select *ngIf="isBoolean(setting.val.value)" class="form-control" [name]="setting.key" [ngModel]="setting.val.value">
-                    <option [ngValue]="false" translate>false</option>
-                    <option [ngValue]="true" translate>true</option>
-                </select>
-                <input *ngIf="isNumber(setting.val.value)" type="number" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
-                <textarea *ngIf="isObject(setting.val.value) && !isArray(setting.val.value)" class="form-control" [name]="setting.key" [id]="setting.key" rows="5" value="{{ setting.val.value | json }}" #textarea (blur)="onTextAreaBlur(setting, textarea.value)"></textarea>
-                <div *ngIf="isArray(setting.val.value)">
-                    <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let val of setting.val.value; let i=index;">
-                            {{ val }}
-                            <div>
-                            <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(val, setting.val.value)">
-                                <i class="fa fa-sort-up" aria-hidden="true"></i>
-                            </button>
-                            <button *ngIf="i !== (setting.val.value.length - 1) && setting.val.value.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(val, setting.val.value)">
-                                <i class="fa fa-sort-down" aria-hidden="true"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger" (click)="onRemoveItem(val, setting.val.value)">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </button>
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader"  data-toggle="collapse" data-target="#setting" aria-expanded="false" aria-controls="setting">
+        <span translate>settings</span>
+    </div>
+    <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
+        <div class="card-body">
+            <div class="modal-body">
+                <form (ngSubmit)="onUpdate(f)">
+                    <div class="form-group row" *ngFor="let setting of settings | mapToIterable">
+                        <div class="col-sm-3">
+                            <div class=" d-flex justify-content-between align-items-center">
+                                <label class=" col-form-label" for="setting.key" translate>setting_{{ setting.key }}</label>
+                                <button *ngIf="setting.val.info" type="button" class="btn btn-outline-info" data-toggle="collapse" [attr.data-target]="'#info_' + setting.key">
+                                    <i class="fa fa-info" aria-hidden="true"></i>
+                                </button>
                             </div>
-                        </li>
-                    </ul>
-                    <div class="input-group">
-                        <input type="text" class="form-control" [id]="setting.key" #addListItem>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(addListItem.value, setting.val.value)" translate>
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                add
-                            </button>
+                            <div *ngIf="setting.val.info" class="collapse" id="info_{{ setting.key }}">
+                                <div>
+                                    <small class="form-text text-muted" translate>{{setting.val.info}}</small>
+                                </div>
+                            </div>
                         </div>
-                    </div>   
-                </div>
+                        <div class="col-sm-9">
+                            <input *ngIf="isString(setting.val.value)" type="text" [ngModel]="setting.val.value" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
+                            <select *ngIf="isBoolean(setting.val.value)" class="form-control" [name]="setting.key" [ngModel]="setting.val.value">
+                                <option [ngValue]="false" translate>false</option>
+                                <option [ngValue]="true" translate>true</option>
+                            </select>
+                            <input *ngIf="isNumber(setting.val.value)" type="number" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
+                            <textarea *ngIf="isObject(setting.val.value) && !isArray(setting.val.value)" class="form-control" [name]="setting.key" [id]="setting.key" rows="5" value="{{ setting.val.value | json }}" #textarea (blur)="onTextAreaBlur(setting, textarea.value)"></textarea>
+                            <div *ngIf="isArray(setting.val.value)">
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let val of setting.val.value; let i=index;">
+                                        {{ val }}
+                                        <div>
+                                        <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(val, setting.val.value)">
+                                            <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                        </button>
+                                        <button *ngIf="i !== (setting.val.value.length - 1) && setting.val.value.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(val, setting.val.value)">
+                                            <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" (click)="onRemoveItem(val, setting.val.value)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" [id]="setting.key" #addListItem>
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(addListItem.value, setting.val.value)" translate>
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                            add
+                                        </button>
+                                    </div>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" translate>
+                            <i class="fa fa-save" aria-hidden="true"></i>
+                            save
+                        </button>
+                    </div>
+                    <div class="alert alert-success" *ngIf="isSaveSuccess" translate>setting_save_success</div>
+                    <div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>setting_save_unsuccess</div>
+                </form>
             </div>
         </div>
-        <br>
-        <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" translate>
-                <i class="fa fa-save" aria-hidden="true"></i>
-                save
-            </button>
-        </div>
-        <div class="alert alert-success" *ngIf="isSaveSuccess" translate>setting_save_success</div>
-        <div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>setting_save_unsuccess</div>
-    </form>
+    </div>
 </div>

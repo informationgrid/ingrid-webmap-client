@@ -40,16 +40,15 @@ export class CategoryComponent implements OnInit{
   }  
 
   ngOnInit() {
-    this.httpService.getData().subscribe(
-      data => {
-        this.layers = data[0];
-        this.categories = data[1];
-      },
-      error => {;
-      }
-    );
   }
 
+  loadCategory(id: string) {
+    this.httpService.getCategory(id, null)
+    .subscribe( data => {
+        this.categoryTree = data;
+    });
+  }
+  
   updateCategories(event) {
     this.categories = event;
     this.updateAppCategories.emit(event);

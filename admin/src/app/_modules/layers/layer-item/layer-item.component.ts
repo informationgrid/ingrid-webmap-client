@@ -43,11 +43,7 @@ export class LayerItemComponent {
         this.layer.item = f.value;
         this.httpService.updateLayer(this.layer).subscribe(
           data => {
-            this.layers = data;
-            /* Do not update parent
-            this.updateLayers.emit(data);
-            */
-            },
+          },
           error => {
             console.error("Error onUpdateLayer!")
           }
@@ -61,26 +57,11 @@ export class LayerItemComponent {
   onDeleteLayer(id: string){
     this.httpService.deleteLayer(id).subscribe(
       data => {
-        this.updateLayers.emit(data);
+        this.updateLayers.emit();
         },
       error => {
         console.error("Error onDeleteLayer!")
       }
     );
-  }
-
-  selectLayer(event){
-   if(!this.selectedLayers){
-    this.selectedLayers = new Array()
-   }
-   if(event.target.checked){
-      this.selectedLayers.push(event.target.value);
-    } else {
-      var index = this.selectedLayers.indexOf(event.target.value, 0);
-      if (index > -1) {
-        this.selectedLayers.splice(index, 1);
-      };
-    }
-    event.stopPropagation();
   }
 }

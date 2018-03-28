@@ -8,70 +8,14 @@
 </div>
 <div id="accordion">
   <!-- Layer -->
-  <div class="card" routerLink="/layers">
-    <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader" data-toggle="collapse" data-target="#layer" aria-expanded="true" aria-controls="layer">
-      <span translate>layers</span>
-      <span *ngIf="!hasLoadLayers" class="badge badge-pill badge-danger">!</span>
-      <span *ngIf="layers.length > 0" class="badge badge-pill badge-primary">{{ layers.length }}</span>
-    </div>
-    <div id="layer" class="collapse" aria-labelledby="layerHeader" data-parent="#accordion">
-      <div class="card-body">
-        <div id="layers">
-          <router-outlet name="layerContent"></router-outlet>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-layer [categories]="categories" (updateAppLayers)="updateAppLayers($event)"></app-layer>
   <!-- Category -->
-  <div class="card" routerLink="/categories">
-    <div class="card-header d-flex justify-content-between align-items-center" id="categoryHeader" data-toggle="collapse" data-target="#category" aria-expanded="false" aria-controls="category">
-      <span translate>categories</span>
-      <div>
-        <span *ngIf="!hasLoadCategory" class="badge badge-pill badge-danger">!</span>
-        <span *ngIf="categories.length > 0" class="badge badge-pill badge-primary">{{ categories.length }}</span>
-      </div>
-    </div>
-    <div id="category" class="collapse" aria-labelledby="categoryHeader" data-parent="#accordion">
-      <div class="card-body">
-        <router-outlet name="categoryContent"></router-outlet>
-      </div>
-    </div>
-  </div>
+  <app-category [categories]="categories" [layers]="layers" (updateAppCategories)="updateAppCategories($event)"></app-category>
   <!-- Setting -->
-  <div class="card" routerLink="/settings">
-    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader"  data-toggle="collapse" data-target="#setting" aria-expanded="false" aria-controls="setting">
-      <span translate>settings</span>
-      <div>
-        <span *ngIf="!hasLoadSetting" class="badge badge-pill badge-danger">!</span>
-      </div>
-    </div>
-    <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
-      <div class="card-body">
-        <router-outlet name="settingContent"></router-outlet>
-      </div>
-    </div>
-  </div>
+  <app-setting [settings]="settings"></app-setting>
   <!-- Help -->
-  <div class="card" routerLink="/helps">
-    <div class="card-header" id="helpHeader"  data-toggle="collapse" data-target="#help" aria-expanded="false" aria-controls="help">
-      <span translate>help</span>
-    </div>
-    <div id="help" class="collapse" aria-labelledby="helpHeader" data-parent="#accordion">
-      <div class="card-body">
-        <router-outlet name="helpContent"></router-outlet>
-      </div>
-    </div>
-  </div>
+  <app-help [settings]="settings"></app-help>
   <!-- CSS -->
-  <div class="card" routerLink="/styles">
-    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css" aria-expanded="false" aria-controls="css">
-      <span translate>css</span>
-    </div>
-    <div id="css" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
-      <div class="card-body">
-        <router-outlet name="cssContent"></router-outlet>
-      </div>
-    </div>
-  </div>
+  <app-css></app-css>
 </div>
 <router-outlet></router-outlet>

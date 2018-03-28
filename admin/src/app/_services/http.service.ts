@@ -10,6 +10,7 @@ import { Wmtslayer } from '../_models/wmtslayer';
 import { CategoryItem } from '../_models/category-item';
 import { Setting } from '../_models/setting';
 import { environment } from '../../environments/environment';
+import { LayerPaging } from '../_models/layer-paging';
 
 const httpJsonOptions = {
   headers: new HttpHeaders({
@@ -25,6 +26,7 @@ export class HttpService {
 
   constructor(private http: HttpClient) { }
 
+// Layers
   getLayers(): Observable<LayerItem[]>{
     return this.http.get<LayerItem[]>(httpApiHost + "/layers", httpJsonOptions).map(
       res => {
@@ -38,22 +40,35 @@ export class HttpService {
     );
   }
 
+  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string): Observable<LayerPaging>{
+    var url = httpApiHost + "/layers?";
+    if(currentPage){
+      url += "currentPage=" + currentPage;
+    }
+    if(layersPerPage){
+      url += "&layersPerPage=" + layersPerPage;   
+    }
+    if(searchText){
+      url += "&searchText=" + searchText;
+    }
+    return this.http.get<LayerPaging>(url, httpJsonOptions).map(
+      res => {
+        var items: LayerItem[] = [];
+        res.items.forEach(resItem => {
+          items.push(new LayerItem(resItem.id, resItem.item));
+        });
+        return new LayerPaging(res.firstPage, res.lastPage, res.totalItemsNum, items);
+      }
+    );
+  }
+
   getLayer(id: string){
     return this.http.get(httpApiHost + "/layers/" + id, httpJsonOptions);
   }
   
-  updateLayer(layer: LayerItem): Observable<LayerItem[]>{
+  updateLayer(layer: LayerItem){
     let body = JSON.stringify(layer);
-    return this.http.put<LayerItem[]>(httpApiHost + "/layers/" + layer.id, body, httpJsonOptions).map(
-      res => {
-        return res.map(resItem => {
-          return new LayerItem(
-            resItem.id,
-            resItem.item
-          );
-        });
-      }
-    ); 
+    return this.http.put(httpApiHost + "/layers/" + layer.id, body, httpJsonOptions); 
   }
 
   addLayer(layers: LayerItem[]): Observable<LayerItem[]>{
@@ -70,17 +85,8 @@ export class HttpService {
     );
   }
 
-  deleteLayer(id: string): Observable<LayerItem[]>{
-    return this.http.delete<LayerItem[]>(httpApiHost + "/layers/" + id, httpJsonOptions).map(
-      res => {
-        return res.map(resItem => {
-          return new LayerItem(
-            resItem.id,
-            resItem.item
-          );
-        });
-      }
-    ); 
+  deleteLayer(id: string){
+    return this.http.delete(httpApiHost + "/layers/" + id, httpJsonOptions); 
   }
 
   deleteLayers(layers: string[]): Observable<LayerItem[]>{
@@ -88,18 +94,10 @@ export class HttpService {
     layers.forEach(layer => {
       paramIds += layer + ',';
     });
-    return this.http.delete<LayerItem[]>(httpApiHost + "/layers?" + paramIds, httpJsonOptions).map(
-      res => {
-        return res.map(resItem => {
-          return new LayerItem(
-            resItem.id,
-            resItem.item
-          );
-        });
-      }
-    ); 
+    return this.http.delete<LayerItem[]>(httpApiHost + "/layers?" + paramIds, httpJsonOptions); 
   }
 
+// Categories
   getCategories(): Observable<Category[]>{
     return this.http.get<Category[]>(httpApiHost + "/categories", httpJsonOptions).map(
       res => {
@@ -117,8 +115,15 @@ export class HttpService {
     );
   }
  
-  getCategory(id: string): Observable<CategoryItem[]>{
-    return this.http.get<CategoryItem[]>(httpApiHost + "/categories/" + id, httpJsonOptions);
+  getCategory(id: string, nodeId: string): Observable<CategoryItem[]>{
+    var url = httpApiHost + "/categories";
+    if(id){
+      url += "/" + id;
+    }
+    if(nodeId){
+      url += "/" + nodeId;
+    }
+    return this.http.get<CategoryItem[]>(url, httpJsonOptions);
   }
 
   updateCategory(category: Category): Observable<Category[]>{
@@ -143,10 +148,12 @@ export class HttpService {
   getData(){
       return forkJoin(
         this.getLayers(),
-        this.getCategories()
+        this.getCategories(),
+        this.getSetting()
       )
   }
 
+// Service
   getService(url: string) {
     return this.http.get(httpServiceUrl, {
       params: {
@@ -156,6 +163,7 @@ export class HttpService {
     });
   }
 
+// Settings
   getSetting(): Observable<Map<String, Setting>>{
     return this.http.get<Map<String, Setting>>(httpApiHost + "/setting", httpJsonOptions);
   }
@@ -165,6 +173,7 @@ export class HttpService {
     return this.http.put<Map<String, Setting>>(httpApiHost + "/setting", body, httpJsonOptions); 
   }
 
+// Help
   getHelp(lang: string){
     return this.http.get(httpApiHost + "/help/" + lang, {responseType: 'text'});
   }
@@ -173,6 +182,7 @@ export class HttpService {
     return this.http.put(httpApiHost + "/help/" + lang, help, {responseType: 'text'}); 
   }
 
+// CSS
   getCss() {
     return this.http.get(httpApiHost + "/css", {responseType: 'text'});
   }
