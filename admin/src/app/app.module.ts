@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -27,7 +27,7 @@ import { FormCategoryEditComponent } from './_modules/categories/form-category-e
 import { TreeModule } from 'angular-tree-component';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, environment.translatePath + "/assets/i18n/");
+  return new TranslateHttpLoader(http, environment.translatePath + '/assets/i18n/');
 }
 
 @NgModule({

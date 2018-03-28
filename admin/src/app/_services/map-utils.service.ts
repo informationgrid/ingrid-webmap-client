@@ -5,9 +5,9 @@ export class MapUtilsService {
 
   constructor() { }
 
-  addGetCapabilitiesParams(url: string){
-    if(url){
-      if(url.toLowerCase().indexOf("wmts") == -1) {
+  addGetCapabilitiesParams(url: string) {
+    if (url) {
+      if (url.toLowerCase().indexOf('wmts') === -1) {
         if (!/service=/i.test(url)) {
           url = this.appendUrl(url, /wmts/i.test(url) ?
             'SERVICE=WMTS' :
@@ -25,13 +25,13 @@ export class MapUtilsService {
     }
     return url;
   }
-  
+
   appendUrl(url: string, paramString) {
     if (paramString) {
-      var parts = (url + ' ').split(/[?&]/);
+      const parts = (url + ' ').split(/[?&]/);
       url += (parts.pop() === ' ' ? paramString :
         (parts.length > 0 ? '&' + paramString : '?' + paramString));
     }
     return url;
-  };
+  }
 }

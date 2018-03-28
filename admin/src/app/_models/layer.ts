@@ -1,5 +1,5 @@
-import { LayerType } from "./layer-type.enum";
-import { LayerRestEncoding } from "./layer-rest-encoding.enum";
+import { LayerType } from './layer-type.enum';
+import { LayerRestEncoding } from './layer-rest-encoding.enum';
 
 export class Layer {
     type: LayerType;
@@ -20,8 +20,8 @@ export class Layer {
     timestamps: string [];
     timeEnabled: boolean;
     timeBehaviour: string;
-     
-    constructor(type: LayerType){
+
+    constructor(type: LayerType) {
         this.type = type;
         this.background = false;
         this.attribution = '';

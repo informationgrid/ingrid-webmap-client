@@ -13,89 +13,91 @@ export class SettingComponent implements OnInit {
   @Input() settings: any;
   @Output() updateAppSettings: EventEmitter = new EventEmitter();
 
-  isSaveSuccess: boolean = false;
-  isSaveUnsuccess: boolean = false;
+  isSaveSuccess = false;
+  isSaveUnsuccess = false;
 
-  constructor(private httpService : HttpService) { }
+  constructor(private httpService: HttpService) { }
 
   ngOnInit() {
   }
 
-  isString(val){
+  isString(val) {
     return typeof val === 'string';
   }
 
-  isBoolean(val){
+  isBoolean(val) {
     return typeof val === 'boolean';
   }
 
-  isNumber(val){
+  isNumber(val) {
     return typeof val === 'number';
   }
 
-  isObject(val){
-    return (typeof val  === "object");
+  isObject(val) {
+    return (typeof val  === 'object');
   }
 
-  isArray(val) { 
+  isArray(val) {
     return this.isObject(val) && (val instanceof Array);
   }
 
-  onAddItem(value: any, list: any , withDuplicate: boolean){
+  onAddItem(value: any, list: any , withDuplicate) {
     if (value && list) {
-      if(withDuplicate){
+      if (withDuplicate) {
         list.push(value);
       } else {
-        if(list.indexOf(value) == -1) {
+        if (list.indexOf(value) === -1) {
           list.push(value);
         }
       }
     }
     value = null;
   }
-  onRemoveItem(value: any, list: any ){
+  onRemoveItem(value: any, list: any ) {
     if (value && list) {
-      var index = list.indexOf(value, 0);
+      const index = list.indexOf(value, 0);
       if (index > -1) {
         list.splice(index, 1);
-      };
+      }
     }
   }
 
-  onUpItem(value: any, list: any){
+  onUpItem(value: any, list: any) {
     if (value && list) {
       this.onMoveItem(value, list, -1);
     }
   }
 
-  onDownItem(value: any, list: any){
+  onDownItem(value: any, list: any) {
     if (value && list) {
       this.onMoveItem(value, list, 1);
     }
   }
 
-  onMoveItem(value: string, list: any, delta: number){
-    let index = list.indexOf(value);
-    let newIndex = index + delta;
-    if (newIndex < 0  || newIndex == list.length) return;
-    let indexes = [index, newIndex].sort();
+  onMoveItem(value: string, list: any, delta: number) {
+    const index = list.indexOf(value);
+    const newIndex = index + delta;
+    if (newIndex < 0  || newIndex === list.length) {
+      return;
+    }
+    const indexes = [index, newIndex].sort();
     list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
   }
 
-  onTextAreaBlur(setting, val){
-    if(setting && val){
+  onTextAreaBlur(setting, val) {
+    if (setting && val) {
       setting.val.value = JSON.parse(val);
     }
   }
 
-  onUpdate(f: NgForm){
-    if(f.valid){
-      if(f.value){
+  onUpdate(f: NgForm) {
+    if (f.valid) {
+      if (f.value) {
         Object.keys(this.settings).forEach(key => {
-          if(f.value){
-            if(f.value[key]){
-              var val = f.value[key];
-              if(typeof val === 'string'){
+          if (f.value) {
+            if (f.value[key]) {
+              const val = f.value[key];
+              if (typeof val === 'string') {
                 this.settings[key].value = val.trim();
               } else {
                 this.settings[key].value = val;
@@ -115,7 +117,7 @@ export class SettingComponent implements OnInit {
             , 4000);
           },
           error => {
-            console.log("Error save settings!");
+            console.log('Error save settings!');
             this.isSaveUnsuccess = true;
             this.isSaveSuccess = !this.isSaveUnsuccess;
           }
@@ -124,7 +126,7 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  removeAlert(){
+  removeAlert() {
     this.isSaveSuccess = false;
     this.isSaveUnsuccess = false;
   }

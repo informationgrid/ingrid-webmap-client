@@ -11,20 +11,20 @@ import { Category } from '../../../_models/category';
   templateUrl: './form-category-add.component.html',
   styleUrls: ['./form-category-add.component.scss']
 })
-export class FormCategoryAddComponent {
-  
+export class FormCategoryAddComponent implements OnChanges {
+
   @Input() tree: TreeComponent;
   @Input() layers: LayerItem[] = [];
   @Input() node: TreeNode;
   @Input() category: Category;
 
   layerSelection: LayerItem[] = [];
-  
+
   addCatItemForm: FormGroup;
   addItemLabel: FormControl;
   addItemLayerBodId: FormControl;
-  isSaveSuccess: boolean = false;
-  isSaveUnsuccess: boolean = false;
+  isSaveSuccess = false;
+  isSaveUnsuccess = false;
 
   constructor(private httpService: HttpService) {
     this.prepareForm();
@@ -41,9 +41,9 @@ export class FormCategoryAddComponent {
       addItemLayerBodId: this.addItemLayerBodId
     });
   }
-  
-  resetForm(){
-    var formGroup = this.addCatItemForm;
+
+  resetForm() {
+    const formGroup = this.addCatItemForm;
     let control: AbstractControl = null;
     formGroup.markAsUntouched();
     Object.keys(formGroup.controls).forEach((name) => {
@@ -51,25 +51,25 @@ export class FormCategoryAddComponent {
       control.setErrors(null);
     });
     formGroup.setValue({
-      addItemLabel: "",
-      addItemLayerBodId: ""
-    })
+      addItemLabel: '',
+      addItemLayerBodId: ''
+    });
   }
 
-  onLayerSelect(event){
+  onLayerSelect(event) {
       this.layerSelection = this.layers;
-  };
+  }
 
   ngOnChanges(changes: SimpleChanges) {
   }
 
    // On submit form add
    onAddCategoryItem (node: TreeNode) {
-    if(this.addCatItemForm.valid) {
-      if(this.addCatItemForm.value) {
+    if (this.addCatItemForm.valid) {
+      if (this.addCatItemForm.value) {
         const item = new CategoryItem(this.addCatItemForm.value.addItemLabel, this.addCatItemForm.value.addItemLayerBodId, '', undefined);
-        var treeModel;
-        if(!node) {
+        let treeModel;
+        if (!node) {
           treeModel = this.tree.treeModel;
           treeModel.nodes.unshift(item);
         } else {
@@ -91,7 +91,7 @@ export class FormCategoryAddComponent {
           error => {
             this.isSaveUnsuccess = true;
             this.isSaveSuccess = !this.isSaveUnsuccess;
-            console.error("Error onAddCategoryItem tree!")
+            console.error('Error onAddCategoryItem tree!');
           }
         );
       }

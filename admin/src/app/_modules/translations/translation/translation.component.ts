@@ -20,9 +20,9 @@ export class TranslationComponent {
 
   setActive(language: string) {
     if (this.translate.currentLang === language) {
-      return "active";
+      return 'active';
     } else {
-      return "";
+      return '';
     }
   }
 }

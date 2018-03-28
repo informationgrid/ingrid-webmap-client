@@ -1,8 +1,8 @@
-import { LayerRestEncoding } from "./layer-rest-encoding.enum";
-import { Layer } from "./layer";
-import { LayerType } from "./layer-type.enum";
+import { LayerRestEncoding } from './layer-rest-encoding.enum';
+import { Layer } from './layer';
+import { LayerType } from './layer-type.enum';
 
-export class Wmtslayer extends Layer{
+export class Wmtslayer extends Layer {
     serviceUrl: string;
     template: string;
     serverLayerName: string;
@@ -12,18 +12,18 @@ export class Wmtslayer extends Layer{
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
-      
-    constructor(){
+
+    constructor() {
         super(LayerType.wmts);
     }
 
-    generateId(){
-        let id = ''
-        if(this.serviceUrl){
-            id += this.serviceUrl.split("//")[1].split("/")[0];
+    generateId() {
+        let id = '';
+        if (this.serviceUrl) {
+            id += this.serviceUrl.split('//')[1].split('/')[0];
         }
-        if(this.matrixSet){
-            id += "_" + this.matrixSet.replace(",", "_");
+        if (this.matrixSet) {
+            id += '_' + this.matrixSet.replace(',', '_');
         }
         return id;
     }

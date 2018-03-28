@@ -52,7 +52,7 @@
               </button>
             </div>
             <form class="form-inline">
-              <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers(searchText)">
+              <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
             </form>
           </div>
         </nav>

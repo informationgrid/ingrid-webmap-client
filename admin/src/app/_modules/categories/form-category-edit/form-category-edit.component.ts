@@ -10,7 +10,7 @@ import { HttpService } from '../../../_services/http.service';
   templateUrl: './form-category-edit.component.html',
   styleUrls: ['./form-category-edit.component.scss']
 })
-export class FormCategoryEditComponent {
+export class FormCategoryEditComponent implements OnChanges {
 
   @Input() tree: TreeComponent;
   @Input() layers: LayerItem[] = [];
@@ -22,9 +22,9 @@ export class FormCategoryEditComponent {
   editItemLabel: FormControl;
   editItemSelectedOpen: FormControl;
   editItemLayerBodId: FormControl;
-  isSaveSuccess: boolean = false;
-  isSaveUnsuccess: boolean = false;
-  
+  isSaveSuccess = false;
+  isSaveUnsuccess = false;
+
   constructor(private httpService: HttpService) {
     this.prepareForm();
   }
@@ -37,7 +37,7 @@ export class FormCategoryEditComponent {
       Validators.required
     ]);
     this.editItemSelectedOpen = new FormControl();
-    this.editItemLayerBodId = new FormControl();      
+    this.editItemLayerBodId = new FormControl();
     this.editCatItemForm = new FormGroup({
       editItemId: this.editItemId,
       editItemLabel: this.editItemLabel,
@@ -46,51 +46,51 @@ export class FormCategoryEditComponent {
     });
   }
 
-  resetForm(){
-    var formGroup = this.editCatItemForm;
+  resetForm() {
+    const formGroup = this.editCatItemForm;
     let control: AbstractControl = null;
     formGroup.markAsUntouched();
     Object.keys(formGroup.controls).forEach((name) => {
       control = formGroup.controls[name];
       control.setErrors(null);
     });
-    if(this.node){
+    if (this.node) {
       formGroup.setValue({
         editItemId: this.node.data.id,
         editItemLabel: this.node.data.label,
-        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen: false,
-        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ""
+        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen : false,
+        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ''
       });
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(this.node){
+    if (this.node) {
       this.editCatItemForm.setValue({
         editItemId: this.node.data.id,
         editItemLabel: this.node.data.label,
-        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen: false,
-        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ""
+        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen : false,
+        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ''
       });
     }
   }
 
   onEditCategoryItem (node: TreeNode) {
-    if(this.editCatItemForm.valid && node) {
+    if (this.editCatItemForm.valid && node) {
       if (this.editCatItemForm.value) {
-        if(this.editCatItemForm.value.editItemId){
+        if (this.editCatItemForm.value.editItemId) {
           node.data.id = this.editCatItemForm.value.editItemId;
         }
-        if(this.editCatItemForm.value.editItemLabel){
+        if (this.editCatItemForm.value.editItemLabel) {
           node.data.label = this.editCatItemForm.value.editItemLabel;
         }
-        if(this.editCatItemForm.value.editItemLayerBodId){
+        if (this.editCatItemForm.value.editItemLayerBodId) {
           node.data.layerBodId = this.editCatItemForm.value.editItemLayerBodId;
         }
-        if(this.editCatItemForm.value.editItemSelectedOpen){
+        if (this.editCatItemForm.value.editItemSelectedOpen) {
           node.data.selectedOpen = this.editCatItemForm.value.editItemSelectedOpen;
         }
-        var treeModel = node.treeModel;
+        const treeModel = node.treeModel;
         treeModel.update();
         this.httpService.updateCategoryTree(this.category.id, treeModel.nodes).subscribe(
           data => {
@@ -106,7 +106,7 @@ export class FormCategoryEditComponent {
           error => {
             this.isSaveUnsuccess = true;
             this.isSaveSuccess = !this.isSaveUnsuccess;
-            console.error("Error onEditCategoryItem tree!")
+            console.error('Error onEditCategoryItem tree!');
           }
         );
       }

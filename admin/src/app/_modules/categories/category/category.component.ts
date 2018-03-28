@@ -12,32 +12,32 @@ import { Router } from '@angular/router';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
-export class CategoryComponent implements OnInit{
+export class CategoryComponent implements OnInit {
 
   @Input() layers: LayerItem[];
   @Input() categories: Category[];
   @Output() updateAppCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
-  
-  categoryAddUnsuccess: boolean = false;
-  categoryAddSuccess: boolean = false;
-  searchText: string = "";
-  
+
+  categoryAddUnsuccess = false;
+  categoryAddSuccess = false;
+  searchText = '';
+
   categoryTree: CategoryItem[] = [];
-  isOpen: boolean = false;
+  isOpen = false;
 
   addCategoryForm: FormGroup;
   id: FormControl;
-  
-  constructor(private httpService: HttpService) { 
+
+  constructor(private httpService: HttpService) {
     this.id = new FormControl('', [
-      Validators.required, 
-      Validators.minLength(4), 
-      Validators.pattern("^[a-zA-Z0-9_-]*")
+      Validators.required,
+      Validators.minLength(4),
+      Validators.pattern('^[a-zA-Z0-9_-]*')
     ]);
     this.addCategoryForm = new FormGroup({
       id: this.id
     });
-  }  
+  }
 
   ngOnInit() {
   }
@@ -48,7 +48,7 @@ export class CategoryComponent implements OnInit{
         this.categoryTree = data;
     });
   }
-  
+
   updateCategories(event) {
     this.categories = event;
     this.updateAppCategories.emit(event);
@@ -56,13 +56,13 @@ export class CategoryComponent implements OnInit{
 
   // Add new category
   addCategory() {
-    if(this.addCategoryForm.valid){
-      if(this.addCategoryForm.value.id){
+    if (this.addCategoryForm.valid) {
+      if (this.addCategoryForm.value.id) {
         const existCategory = this.categories.filter(
           category => category.id.toLowerCase() === this.addCategoryForm.value.id.toLowerCase()
         );
-        if(existCategory.length === 0){
-          let newCategory = new Category(
+        if (existCategory.length === 0) {
+          const newCategory = new Category(
             this.addCategoryForm.value.id.trim(),
             '',
             '',
@@ -70,14 +70,14 @@ export class CategoryComponent implements OnInit{
             [],
             []
           );
-          if(newCategory){
+          if (newCategory) {
             this.httpService.addCategory(newCategory).subscribe(
               data => {
                 this.categories = data;
                 this.updateAppCategories.emit(data);
               },
               error => {
-                console.error("Error add category!")
+                console.error('Error add category!');
               },
               () => {
                 this.categoryAddUnsuccess = false;
@@ -92,6 +92,5 @@ export class CategoryComponent implements OnInit{
         }
       }
     }
-    $('#addModalCategory')
   }
 }

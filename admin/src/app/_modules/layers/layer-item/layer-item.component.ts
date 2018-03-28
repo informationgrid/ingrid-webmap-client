@@ -12,40 +12,40 @@ export class LayerItemComponent {
 
   @Input() layer: LayerItem;
   @Input() layers: LayerItem[] = [];
-  @Input() enableSelectLayer: boolean = false;
+  @Input() enableSelectLayer = false;
   @Input() selectedLayers: any = new Array();
 
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
-  
-  isEdit: boolean = false;
+
+  isEdit = false;
 
   constructor(private httpService: HttpService) { }
 
-  isWMSLayer(layer){
-    if(layer.type){
-      if(layer.type === "wms"){
+  isWMSLayer(layer) {
+    if (layer.type) {
+      if (layer.type === 'wms') {
         return true;
       }
     }
     return false;
   }
-  isWMTSLayer(layer){
-    if(layer.type){
-      if(layer.type === "wmts"){
+  isWMTSLayer(layer) {
+    if (layer.type) {
+      if (layer.type === 'wmts') {
         return true;
       }
     }
     return false;
   }
   onUpdateLayer(f: NgForm) {
-    if(f.valid){
-      if(f.value) {
+    if (f.valid) {
+      if (f.value) {
         this.layer.item = f.value;
         this.httpService.updateLayer(this.layer).subscribe(
           data => {
           },
           error => {
-            console.error("Error onUpdateLayer!")
+            console.error('Error onUpdateLayer!');
           }
         );
         this.layer.id = f.value.id;
@@ -54,13 +54,13 @@ export class LayerItemComponent {
     }
   }
 
-  onDeleteLayer(id: string){
+  onDeleteLayer(id: string) {
     this.httpService.deleteLayer(id).subscribe(
       data => {
         this.updateLayers.emit();
         },
       error => {
-        console.error("Error onDeleteLayer!")
+        console.error('Error onDeleteLayer!');
       }
     );
   }

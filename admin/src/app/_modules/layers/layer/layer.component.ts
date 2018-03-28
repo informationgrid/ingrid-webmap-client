@@ -9,7 +9,7 @@ import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from
 import { LayerType } from '../../../_models/layer-type.enum';
 import { Wmslayer } from '../../../_models/wmslayer';
 import { Wmtslayer } from '../../../_models/wmtslayer';
-import { toJS } from "mobx";
+import { toJS } from 'mobx';
 import * as _ from 'lodash';
 import { CategoryItem } from '../../../_models/category-item';
 
@@ -18,32 +18,32 @@ import { CategoryItem } from '../../../_models/category-item';
   templateUrl: './layer.component.html',
   styleUrls: ['./layer.component.scss']
 })
-export class LayerComponent implements OnInit{
+export class LayerComponent implements OnInit {
 
   @Input() categories: Category[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
 
   layers: LayerItem[] = [];
-  layersCurrentPage: number = 1;
-  layersTotalPage: number = 1;
-  layersPerPage: number = 20;
-  layersTotalNum: number = 0;
+  layersCurrentPage = 1;
+  layersTotalPage = 1;
+  layersPerPage = 20;
+  layersTotalNum = 0;
 
-  searchTypeDefault: string = 'label';
-  searchTypeGroup: any = ['label','type'];
-  enableSelectLayer: boolean = false;
+  searchTypeDefault = 'label';
+  searchTypeGroup: any = ['label', 'type'];
+  enableSelectLayer = false;
   selectedLayers: any = new Array();
-  searchText: string = "";
-  
-  newLayers: LayerItem[] = [];
-  isUrlLoadSuccess: boolean = false;
-  isUrlLoadUnsuccess: boolean = false;
-  isSaveSuccess: boolean = false;
-  isSaveUnsuccess: boolean = false;
-  isWMSService: boolean = false;
-  hasLoadLayers: boolean = false;
+  searchText = '';
 
-  categoryId: string = "";
+  newLayers: LayerItem[] = [];
+  isUrlLoadSuccess = false;
+  isUrlLoadUnsuccess = false;
+  isSaveSuccess = false;
+  isSaveUnsuccess = false;
+  isWMSService = false;
+  hasLoadLayers = false;
+
+  categoryId = '';
   category: CategoryItem[] = [];
 
   actionMapping: IActionMapping = {
@@ -55,44 +55,44 @@ export class LayerComponent implements OnInit{
     displayField: 'label',
     childrenField: 'children',
     actionMapping: this.actionMapping
-  }
+  };
   optionsCategoryTree: ITreeOptions = {
     displayField: 'label',
     childrenField: 'children'
-  }
+  };
 
   constructor(private httpService: HttpService, private mapUtils: MapUtilsService) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
-  }  
+  }
   // Paging
-  previousPage(){
+  previousPage() {
     this.layersCurrentPage--;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
-  nextPage(){
+  nextPage() {
     this.layersCurrentPage++;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
-  firstPage(){
+  firstPage() {
     this.layersCurrentPage = 1;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
-  lastPage(){
+  lastPage() {
     this.layersCurrentPage = this.layersTotalPage;
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
   // Search
-  searchLayers(){
+  searchLayers() {
     this.loadLayers(1, this.layersPerPage, this.searchText);
   }
 
-  loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string){
+  loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
     this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText).subscribe(
       data => {
         this.layers = data.items;
@@ -102,48 +102,48 @@ export class LayerComponent implements OnInit{
         this.hasLoadLayers = true;
       },
       error => {
-        console.log("Error load layer per page!");
+        console.log('Error load layer per page!');
         this.hasLoadLayers = false;
       }
     );
   }
-  updateLayers(event: LayerItem[]){
+  updateLayers(event: LayerItem[]) {
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
   }
 
-  selectLayer(event){
-    if(!this.selectedLayers){
-     this.selectedLayers = new Array()
+  selectLayer(event) {
+    if (!this.selectedLayers) {
+     this.selectedLayers = new Array();
     }
-    if(event.target.checked){
+    if (event.target.checked) {
        this.selectedLayers.push(event.target.value);
      } else {
-       var index = this.selectedLayers.indexOf(event.target.value, 0);
+       const index = this.selectedLayers.indexOf(event.target.value, 0);
        if (index > -1) {
          this.selectedLayers.splice(index, 1);
-       };
+       }
      }
      event.stopPropagation();
    }
 
-  deleteSelectedLayers(){
-    if(this.selectedLayers.length > 0){
+  deleteSelectedLayers() {
+    if (this.selectedLayers.length > 0) {
       this.httpService.deleteLayers(this.selectedLayers).subscribe(
         data => {
           this.updateAppLayers.emit(data);
           this.selectedLayers = new Array();
-          this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText)
+          this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
         },
         error => {
-          console.error("Error on remove layer: " + error);
+          console.error('Error on remove layer: ' + error);
         }
       );
     }
   }
 
   // Tree functions
-  onUpdateTree( $event ){
-    if($event.treeModel){
+  onUpdateTree( $event ) {
+    if ($event.treeModel) {
       $event.treeModel.expandAll();
     }
   }
@@ -156,12 +156,12 @@ export class LayerComponent implements OnInit{
       node.children.forEach((child) => this.updateChildNodeCheckbox(child, checked));
     }
   }
-  hasSelectedItem(treeModel: TreeModel){
-    let root = treeModel.getFirstRoot();
-    if(root){
+  hasSelectedItem(treeModel: TreeModel) {
+    const root = treeModel.getFirstRoot();
+    if (root) {
       const checkedLayers = [];
       this.getCheckedNode(root, checkedLayers);
-      if(checkedLayers.length > 0){
+      if (checkedLayers.length > 0) {
         return true;
       }
     }
@@ -169,70 +169,70 @@ export class LayerComponent implements OnInit{
   }
 
   // Buttons
-  onSelectAllNodes(treeModel: TreeModel){
-    let root = treeModel.getFirstRoot();
+  onSelectAllNodes(treeModel: TreeModel) {
+    const root = treeModel.getFirstRoot();
     this.check(root, true);
   }
-  onDeselectAllNodes(treeModel: TreeModel){
-    let root = treeModel.getFirstRoot();
+  onDeselectAllNodes(treeModel: TreeModel) {
+    const root = treeModel.getFirstRoot();
     this.check(root, false);
   }
-  onCategoryChange(event){
+  onCategoryChange(event) {
     this.categoryId = event.target.value;
-    if(this.categoryId){
+    if (this.categoryId) {
       this.httpService.getCategory(this.categoryId, null).subscribe(
         data => {
-          //const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
+          // const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
           this.category = data;
         },
         error => {
-          console.error("Error get category '" + this.categoryId + "'!");
+          console.error('Error get category "' + this.categoryId + '"!');
         }
       );
-    } else{
+    } else {
       this.category = [];
     }
   }
-  onAddLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent){
-    var root = layersModel.getFirstRoot();
-    var checkedLayers = [];
-    var layerItems: LayerItem[] = [];
+  onAddLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent) {
+    const root = layersModel.getFirstRoot();
+    const checkedLayers = [];
+    const layerItems: LayerItem[] = [];
     this.getCheckedNode(root, checkedLayers);
     checkedLayers.forEach(l => {
-      var layerItem = new LayerItem(l.generateId(this.layers), l);
+      const layerItem = new LayerItem(l.generateId(this.layers), l);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
     this.saveAddedLayersToCategory(f, layerItems, root, categoryTree);
   }
-  onAddCombineLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent){
-    var root = layersModel.getFirstRoot();
-    var checkedLayers = [];
-    var layerItems: LayerItem[] = [];
+  onAddCombineLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent) {
+    const root = layersModel.getFirstRoot();
+    const checkedLayers = [];
+    const layerItems: LayerItem[] = [];
     this.getCheckedNode(root, checkedLayers);
-    if(checkedLayers.length > 0){
-      var wmsLayers = '';
-      var label = '';
-      var legendUrl = '';
-      var i = 0;
+    if (checkedLayers.length > 0) {
+      let wmsLayers = '';
+      let label = '';
+      let legendUrl = '';
+      let i = 0;
       checkedLayers.forEach(l => {
         i++;
-        if(l.wmsLayers){
+        if (l.wmsLayers) {
           wmsLayers += l.wmsLayers;
         }
-        if(l.legendUrl){
+        if (l.legendUrl) {
           legendUrl += l.legendUrl;
         }
-        if(l.label){
+        if (l.label) {
           label += l.label;
         }
-        if(i != checkedLayers.length){
-          wmsLayers += ",";
-          legendUrl += "|";
-          label += "|";
+        if (i !== checkedLayers.length) {
+          wmsLayers += ',';
+          legendUrl += '|';
+          label += '|';
         }
       });
-      var layer = _.cloneDeep(checkedLayers[0]);
+      const layer = _.cloneDeep(checkedLayers[0]);
       layer.wmsLayers = wmsLayers;
       layer.legendUrl = legendUrl;
       layer.label = label;
@@ -243,14 +243,14 @@ export class LayerComponent implements OnInit{
     this.saveAddedLayersToCategory(f, layerItems, root, categoryTree);
   }
 
-  saveAddedLayers(layerItems: LayerItem[]){
-    this.httpService.addLayer(layerItems).subscribe( 
+  saveAddedLayers(layerItems: LayerItem[]) {
+    this.httpService.addLayer(layerItems).subscribe(
       data => {
-        this.searchText = "";
+        this.searchText = '';
         this.loadLayers(1, this.layersPerPage, this.searchText);
       },
       error => {
-        console.error("Error add layers!");
+        console.error('Error add layers!');
       }
     );
   }
@@ -258,7 +258,7 @@ export class LayerComponent implements OnInit{
     this.getChildCheckedNode(node, list);
   }
   getChildCheckedNode(node, list) {
-    if(node.data.checked){
+    if (node.data.checked) {
       list.push(node.data.layer);
     }
     if (node.children) {
@@ -266,19 +266,17 @@ export class LayerComponent implements OnInit{
     }
   }
 
-  saveAddedLayersToCategory(f: NgForm, layers: LayerItem[], rootLayersModel: TreeNode, categoryTree: TreeComponent){
-    if(f.valid && categoryTree){
-      if(f.value.categoryId){
-        var categoryTreeModel = categoryTree.treeModel;
-        if(categoryTreeModel){
-          var categoryTreeModelFocusNode = categoryTreeModel.focusedNode;
-          if(categoryTreeModelFocusNode){
-            var catItem: CategoryItem;
-            var i: number = 0;
-            var categoryLayers = [];
-            this.getCategoryNode(rootLayersModel, layers, i, categoryLayers);
+  saveAddedLayersToCategory(f: NgForm, layers: LayerItem[], rootLayersModel: TreeNode, categoryTree: TreeComponent) {
+    if (f.valid && categoryTree) {
+      if (f.value.categoryId) {
+        const categoryTreeModel = categoryTree.treeModel;
+        if (categoryTreeModel) {
+          const categoryTreeModelFocusNode = categoryTreeModel.focusedNode;
+          if (categoryTreeModelFocusNode) {
+            const categoryLayers = [];
+            this.getCategoryNode(rootLayersModel, layers, 0, categoryLayers);
             categoryLayers.forEach(categoryLayer => {
-              categoryTreeModelFocusNode.data.children.unshift(categoryLayer);  
+              categoryTreeModelFocusNode.data.children.unshift(categoryLayer);
             });
             categoryTreeModel.update();
             this.httpService.updateCategoryTree(this.categoryId, categoryTreeModel.nodes).subscribe(
@@ -294,7 +292,7 @@ export class LayerComponent implements OnInit{
               error => {
                 this.isSaveUnsuccess = true;
                 this.isSaveSuccess = !this.isSaveUnsuccess;
-                console.error("Error onAddCategoryItem tree!")
+                console.error('Error onAddCategoryItem tree!');
               }
             );
           }
@@ -303,16 +301,16 @@ export class LayerComponent implements OnInit{
     }
   }
   getCategoryNode(node: TreeNode, layers: LayerItem[], i, children) {
-    if(layers.length  > 0){
-      var item: CategoryItem;
-      if(node.data.checked){
+    if (layers.length  > 0) {
+      let item: CategoryItem;
+      if (node.data.checked) {
         item = new CategoryItem(layers[i].item.label, layers[i].id, '', undefined);
         children.push(item);
         i++;
       }
-      if(i != layers.length) {
+      if (i !== layers.length) {
         if (node.children) {
-          if(item) {
+          if (item) {
             children = item.children;
           }
           node.children.forEach((child) => this.getCategoryNode(child, layers, i, children));
@@ -320,42 +318,42 @@ export class LayerComponent implements OnInit{
       }
     }
   }
-  
+
   // Service functions
-  loadService( serviceUrl: string ){
-    if(serviceUrl){
+  loadService( serviceUrl: string ) {
+    if (serviceUrl) {
       serviceUrl = this.mapUtils.addGetCapabilitiesParams(serviceUrl.trim());
       this.httpService.getService(serviceUrl)
-      .subscribe( 
+      .subscribe(
         data => {
-          if (data){
+          if (data) {
             this.newLayers = [];
-            if(data['WMS_Capabilities'] || data['WMT_MS_Capabilities']){
+            if (data['WMS_Capabilities'] || data['WMT_MS_Capabilities']) {
               // WMS
               this.isWMSService = true;
-              let service = data['WMS_Capabilities'] || data['WMT_MS_Capabilities'];
-              let version = service['version'];
-              let cap = service['Capability'];
-              let dcpType = cap['Request']['GetMap']['DCPType'];
+              const service = data['WMS_Capabilities'] || data['WMT_MS_Capabilities'];
+              const version = service['version'];
+              const cap = service['Capability'];
+              const dcpType = cap['Request']['GetMap']['DCPType'];
+              const layer = cap['Layer'];
               let wmsUrl;
-              let layer = cap['Layer'];
               // GetMap-Url
               if (dcpType instanceof Array) {
                 wmsUrl = dcpType[0]['HTTP']['Get']['OnlineResource'];
               } else {
                 wmsUrl = dcpType['HTTP']['Get']['OnlineResource']['xlink:href'];
               }
-              if(layer){
+              if (layer) {
                 this.createWMSLayers(layer, this.newLayers, wmsUrl, version, null, null, null);
               }
-            } else if (data['Capabilities']){
+            } else if (data['Capabilities']) {
               // WMTS
               this.isWMSService = false;
-              let service = data['Capabilities'];
-              let serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
-              let version = service['version'];
-              let layer = service['Contents']['Layer'];
-              let tileMatrixSet = service['Contents']['TileMatrixSet'];
+              const service = data['Capabilities'];
+              const serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
+              const version = service['version'];
+              const layer = service['Contents']['Layer'];
+              const tileMatrixSet = service['Contents']['TileMatrixSet'];
               this.createWMTSLayer(layer, this.newLayers, serviceMetadataUrl, version, tileMatrixSet);
             }
           }
@@ -363,7 +361,7 @@ export class LayerComponent implements OnInit{
           this.isUrlLoadUnsuccess =  !this.isUrlLoadSuccess;
         },
         error => {
-          console.error("Error load " + serviceUrl);
+          console.error('Error load ' + serviceUrl);
           this.isUrlLoadUnsuccess = true;
           this.isUrlLoadSuccess =  !this.isUrlLoadUnsuccess;
         }
@@ -371,8 +369,8 @@ export class LayerComponent implements OnInit{
     }
   }
 
-  createWMSLayers(layer, layers, wmsUrl, version, bbox, minScale, maxScale){
-    let newLayer = new Wmslayer();
+  createWMSLayers(layer, layers, wmsUrl, version, bbox, minScale, maxScale) {
+    const newLayer = new Wmslayer();
     // Version
     newLayer.version = version;
     // Label
@@ -380,65 +378,66 @@ export class LayerComponent implements OnInit{
     // GetMap-URL
     newLayer.wmsUrl = wmsUrl;
     // Name
-    if(layer['Name']){
+    if (layer['Name']) {
       newLayer.wmsLayers = layer['Name'];
     }
     // Extent
     newLayer.extent = bbox;
     // WMS 1.1.1
-    if(layer['LatLonBoundingBox']){
-      let latLonBox = layer['LatLonBoundingBox'];
+    if (layer['LatLonBoundingBox']) {
+      const latLonBox = layer['LatLonBoundingBox'];
       newLayer.extent = [+latLonBox['minx'], +latLonBox['miny'], +latLonBox['maxx'], +latLonBox['maxy']];
     }
     // WMS 1.3.0
-    if(layer['EX_GeographicBoundingBox']){
-      let latLonBox = layer['EX_GeographicBoundingBox'];
-      newLayer.extent = [+latLonBox['westBoundLongitude'], +latLonBox['southBoundLatitude'], +latLonBox['eastBoundLongitude'], +latLonBox['northBoundLatitude']];
+    if (layer['EX_GeographicBoundingBox']) {
+      const latLonBox = layer['EX_GeographicBoundingBox'];
+      newLayer.extent = [+latLonBox['westBoundLongitude'], +latLonBox['southBoundLatitude'],
+        +latLonBox['eastBoundLongitude'], +latLonBox['northBoundLatitude']];
     }
     // Scale
-    if(minScale){
+    if (minScale) {
       newLayer.minScale = +minScale;
     }
-    if(maxScale){
+    if (maxScale) {
       newLayer.maxScale = +maxScale;
     }
     // WMS 1.1.1
-    if(layer['ScaleHint']){
-      let scaleHint = layer['ScaleHint'];
-      if(scaleHint['min']){
+    if (layer['ScaleHint']) {
+      const scaleHint = layer['ScaleHint'];
+      if (scaleHint['min']) {
         newLayer.minScale = +scaleHint['min'];
       }
-      if(scaleHint['max']){
+      if (scaleHint['max']) {
         newLayer.maxScale = +scaleHint['max'];
       }
     }
     // WMS 1.3.0
-    if(layer['MinScaleDenominator']){
+    if (layer['MinScaleDenominator']) {
       newLayer.minScale = +layer['MinScaleDenominator'];
     }
-    if(layer['MaxScaleDenominator']){
+    if (layer['MaxScaleDenominator']) {
       newLayer.maxScale = +layer['MaxScaleDenominator'];
     }
     // Legend-URL
     newLayer.hasLegend = true;
-    if(layer['Style']){
-      let style = layer['Style'];
-      if(style['LegendURL']){
+    if (layer['Style']) {
+      const style = layer['Style'];
+      if (style['LegendURL']) {
         newLayer.legendUrl = style['LegendURL']['OnlineResource']['xlink:href'];
       }
     }
     // queryable
-    if(layer['queryable'] && layer['queryable'] === "1"){
+    if (layer['queryable'] && layer['queryable'] === '1') {
       newLayer.tooltip = true;
     } else {
       newLayer.tooltip = false;
     }
 
 
-    let children = layer['Layer']; 
-    let newLayerChildren = [];
-    if(children) {
-      if(children instanceof Array){
+    const children = layer['Layer'];
+    const newLayerChildren = [];
+    if (children) {
+      if (children instanceof Array) {
         children.forEach(child => {
           this.createWMSLayers(child, newLayerChildren, wmsUrl, version, newLayer.extent, newLayer.minScale, newLayer.maxScale);
         });
@@ -453,46 +452,46 @@ export class LayerComponent implements OnInit{
     });
   }
 
-  createWMTSLayer (layer, layers, serviceMetadataUrl, version, tileMatrixSet){
+  createWMTSLayer (layer, layers, serviceMetadataUrl, version, tileMatrixSet) {
     tileMatrixSet.forEach(tileMatrix => {
-      let newLayer = new Wmtslayer();
+      const newLayer = new Wmtslayer();
       // Label
       newLayer.label = layer['ows:Title'];
       // Version
       newLayer.version = version;
       // ServiceLayerName
-      newLayer.serverLayerName = layer['ows:Identifier']
+      newLayer.serverLayerName = layer['ows:Identifier'];
       // ServiceMetadataUrl
       newLayer.serviceUrl = serviceMetadataUrl;
       // Format
-      if(layer['ResourceURL']){
+      if (layer['ResourceURL']) {
         newLayer.format = layer['ResourceURL']['Format'];
         newLayer.template = layer['ResourceURL']['template'];
       }
       // Style
       newLayer.style = layer['Style']['ows:Identifier'];
       // Extent
-      if(layer['ows:WGS84BoundingBox']){
-        let latLonBox = layer['ows:WGS84BoundingBox'];
-        let lowerCorner = latLonBox['ows:LowerCorner'].split(" ");
-        let upperCorner = latLonBox['ows:UpperCorner'].split(" ");
-        newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]]
+      if (layer['ows:WGS84BoundingBox']) {
+        const latLonBox = layer['ows:WGS84BoundingBox'];
+        const lowerCorner = latLonBox['ows:LowerCorner'].split(' ');
+        const upperCorner = latLonBox['ows:UpperCorner'].split(' ');
+        newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]];
       }
       // MatrixSet
       newLayer.matrixSet = tileMatrix['ows:Identifier'];
       tileMatrix['TileMatrix'].forEach(tm => {
         // Origin
-        let topLeftCorner = tm['TopLeftCorner'].split(" ");
+        const topLeftCorner = tm['TopLeftCorner'].split(' ');
         newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
         // scales
-        let scaleDenominator = tm['ScaleDenominator'];
+        const scaleDenominator = tm['ScaleDenominator'];
         newLayer.scales.push(+scaleDenominator);
         // matrixIds
-        let identifier = tm['ows:Identifier'];
+        const identifier = tm['ows:Identifier'];
         newLayer.matrixIds.push(identifier);
-        
-        let tileHeight = tm['TileHeight'];
-        let tileWidth = tm['TileWidth'];
+
+        const tileHeight = tm['TileHeight'];
+        const tileWidth = tm['TileWidth'];
         newLayer.tileSize = [+tileHeight, +tileWidth];
       });
       layers.push({

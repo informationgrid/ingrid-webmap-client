@@ -5,6 +5,6 @@ export class Category {
         public defaultBackground: string,
         public selectedLayers,
         public backgroundLayers,
-        public activatedLayers){
+        public activatedLayers) {
     }
 }

@@ -14,7 +14,7 @@ import { HttpService } from '../../../_services/http.service';
   templateUrl: './category-tree.component.html',
   styleUrls: ['./category-tree.component.scss']
 })
-export class CategoryTreeComponent implements OnInit{
+export class CategoryTreeComponent implements OnInit {
 
   @Input() category: Category;
   @Input() layers: LayerItem[] = [];
@@ -31,13 +31,13 @@ export class CategoryTreeComponent implements OnInit{
 
   constructor(private httpService: HttpService) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.categoryId = this.category.id;
   }
 
   // Node Events
   onNodeActivate ($event) {
-    if($event.node){
+    if ($event.node) {
       $event.node.expand();
     }
   }
@@ -49,20 +49,20 @@ export class CategoryTreeComponent implements OnInit{
         this.categoryTree = <CategoryItem[]>data;
       },
       error => {
-        console.error("Error update tree!")
+        console.error('Error update tree!');
       }
     );
   }
   onNodeFocus($event) {
-    if($event.node){
+    if ($event.node) {
       $event.node.expand();
     }
   }
 
-  resetFormControl(control: FormControl){
+  resetFormControl(control: FormControl) {
     control.setErrors(null);
     control.markAsPristine();
-    control.markAsUntouched(); 
+    control.markAsUntouched();
   }
 
   // On submit form del
@@ -75,7 +75,7 @@ export class CategoryTreeComponent implements OnInit{
             this.categoryTree = data;
           },
           error => {
-            console.error("Error update tree!")
+            console.error('Error update tree!');
           }
         );
       }

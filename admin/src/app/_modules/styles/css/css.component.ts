@@ -8,9 +8,9 @@ import { HttpService } from '../../../_services/http.service';
 })
 export class CssComponent implements OnInit {
 
-  css: string = "";
-  isSaveSuccess: boolean = false;
-  isSaveUnsuccess: boolean = false;
+  css = '';
+  isSaveSuccess = false;
+  isSaveUnsuccess = false;
 
   constructor(private httpService: HttpService) { }
 
@@ -20,12 +20,12 @@ export class CssComponent implements OnInit {
         this.css = data;
       },
       error => {
-        console.log("Error load css!");
+        console.log('Error load css!');
       }
     );
   }
 
-  onUpdate(content: string){
+  onUpdate(content: string) {
     this.httpService.updateCss(content).subscribe(
       data => {
         this.css = data;
@@ -37,14 +37,14 @@ export class CssComponent implements OnInit {
         , 4000);
       },
       error => {
-        console.log("Error save css!");
+        console.log('Error save css!');
         this.isSaveUnsuccess = true;
         this.isSaveSuccess = !this.isSaveUnsuccess;
       }
-    )
+    );
   }
 
-  removeAlert(){
+  removeAlert() {
     this.isSaveSuccess = false;
     this.isSaveUnsuccess = false;
   }

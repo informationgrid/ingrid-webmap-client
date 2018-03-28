@@ -7,7 +7,7 @@ declare const require: any;
 
 export const environment = {
   production: false,
-  httpServiceDomain: "http://localhost:8080",
-  translatePath: "",
-  version: require("../../package.json").version
+  httpServiceDomain: 'http://localhost:8080',
+  translatePath: '',
+  version: require('../../package.json').version
 };

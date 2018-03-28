@@ -6,8 +6,8 @@ export class CategoryItem {
     layerBodId: string;
     selectedOpen: boolean;
     children: CategoryItem[];
-    
-    constructor(label: string, layerBodId: string, category: string, id: number){
+
+    constructor(label: string, layerBodId: string, category: string, id: number) {
         this.id = id;
         this.label = label;
         this.category = category;
