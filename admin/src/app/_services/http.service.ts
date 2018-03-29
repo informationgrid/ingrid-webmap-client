@@ -62,6 +62,23 @@ export class HttpService {
     );
   }
 
+  getLayersSearch(searchText: string): Observable<LayerItem[]> {
+    let url = httpApiHost + '/layers?';
+    if (searchText) {
+      url += '&searchText=' + searchText;
+    }
+    return this.http.get<LayerItem[]>(url, httpJsonOptions).map(
+      res => {
+        return res.map(resItem => {
+          return new LayerItem(
+            resItem.id,
+            resItem.item
+          );
+        });
+      }
+    );
+  }
+
   getLayer(id: string) {
     return this.http.get(httpApiHost + '/layers/' + id, httpJsonOptions);
   }

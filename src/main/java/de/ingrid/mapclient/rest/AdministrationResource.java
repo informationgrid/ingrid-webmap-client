@@ -65,15 +65,23 @@ public class AdministrationResource {
     @Path("layers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText) {
-        JSONArray arr = getLayers(null);
-        if(searchText != null) {
-            arr = getFilterArray(arr, searchText, "label");
-        }
-        if(arr != null) {
-            if(currentPage == null && layersPerPage == null) {
-                arr = getLayers(null, true);
+        String[] searchKeys = {"label", "id"};
+        if(currentPage == null && layersPerPage == null) {
+            // Get layer list compress
+            JSONArray arr = getLayers(null, true);
+            if(arr != null) {
+                if(searchText != null) {
+                    arr = getFilterArray(arr, searchText, searchKeys);
+                }
                 return Response.ok( arr ).build();
-            } else {
+            }
+        } else {
+            // Get paging layer list compress
+            JSONArray arr = getLayers(null);
+            if(arr != null) {
+                if(searchText != null) {
+                    arr = getFilterArray(arr, searchText, searchKeys);
+                }
                 int tmpCurrentPage = Integer.parseInt(currentPage);
                 int tmpLayersPerPage = Integer.parseInt(layersPerPage);
                 int lastPage = (int) Math.ceil(arr.length() / (double) tmpLayersPerPage);
@@ -514,8 +522,12 @@ public class AdministrationResource {
                             JSONObject item = obj.getJSONObject(key);
                             JSONObject itemCompress = new JSONObject();
                             itemCompress.put("id", key);
-                            itemCompress.put("label", item.get("label"));
-                            itemCompress.put("background", item.get("background"));
+                            if(item.has("label")) {
+                                itemCompress.put("label", item.get("label"));
+                            }
+                            if(item.has("background")) {
+                                itemCompress.put("background", item.get("background"));
+                            }
                             tmpObj.put("item", itemCompress);
                         } else {
                             tmpObj.put("item", obj.get(key));
@@ -588,7 +600,7 @@ public class AdministrationResource {
         return obj;
     }
 
-    private JSONArray getFilterArray(JSONArray arr, String searchText, String key) {
+    private JSONArray getFilterArray(JSONArray arr, String searchText, String[] keys) {
         JSONArray arrSearch = new JSONArray();
         for (int i = 0; i < arr.length(); i++) {
             if(i < arr.length() - 1) {
@@ -597,10 +609,13 @@ public class AdministrationResource {
                     obj = arr.getJSONObject(i);
                     if(obj.has("item")) {
                         JSONObject item = obj.getJSONObject("item");
-                        if(item.has(key)){
-                            String label = item.getString(key);
-                            if(label.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                               arrSearch.put(obj);
+                        for (String key : keys) {
+                            if(item.has(key)){
+                                String value = item.getString(key);
+                                if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                                   arrSearch.put(obj);
+                                   break;
+                                }
                             }
                         }
                     }
