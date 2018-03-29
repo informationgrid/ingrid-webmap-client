@@ -1,9 +1,10 @@
-import { Component, OnChanges, SimpleChanges, Input } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Component, Input, ViewChild, SimpleChanges, OnChanges } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
 import { LayerItem } from '../../../_models/layer-item';
 import { Category } from '../../../_models/category';
 import { HttpService } from '../../../_services/http.service';
+import { CategoryItem } from '../../../_models/category-item';
 
 @Component({
   selector: 'app-form-category-edit',
@@ -17,99 +18,87 @@ export class FormCategoryEditComponent implements OnChanges {
   @Input() node: TreeNode;
   @Input() category: Category;
 
-  editCatItemForm: FormGroup;
-  editItemId: FormControl;
-  editItemLabel: FormControl;
-  editItemSelectedOpen: FormControl;
-  editItemLayerBodId: FormControl;
+  @ViewChild('f') form: NgForm;
+
+  model: CategoryItem;
+
   isSaveSuccess = false;
   isSaveUnsuccess = false;
 
-  constructor(private httpService: HttpService) {
-    this.prepareForm();
-  }
+  searchLayerList: LayerItem[];
 
-  prepareForm() {
-    this.editItemId = new FormControl('', [
-      Validators.required
-    ]);
-    this.editItemLabel = new FormControl('', [
-      Validators.required
-    ]);
-    this.editItemSelectedOpen = new FormControl();
-    this.editItemLayerBodId = new FormControl();
-    this.editCatItemForm = new FormGroup({
-      editItemId: this.editItemId,
-      editItemLabel: this.editItemLabel,
-      editItemSelectedOpen: this.editItemSelectedOpen,
-      editItemLayerBodId: this.editItemLayerBodId
-    });
+  constructor(private httpService: HttpService) {
   }
 
   resetForm() {
-    const formGroup = this.editCatItemForm;
-    let control: AbstractControl = null;
-    formGroup.markAsUntouched();
-    Object.keys(formGroup.controls).forEach((name) => {
-      control = formGroup.controls[name];
-      control.setErrors(null);
-    });
-    if (this.node) {
-      formGroup.setValue({
-        editItemId: this.node.data.id,
-        editItemLabel: this.node.data.label,
-        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen : false,
-        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ''
-      });
-    }
+    this.form.reset(this.model);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.node) {
-      this.editCatItemForm.setValue({
-        editItemId: this.node.data.id,
-        editItemLabel: this.node.data.label,
-        editItemSelectedOpen: this.node.data.selectedOpen ? this.node.data.selectedOpen : false,
-        editItemLayerBodId: this.node.data.layerBodId ? this.node.data.layerBodId : ''
-      });
+       this.model = new CategoryItem(
+          this.node.data.id,
+          this.node.data.label,
+          '',
+          '',
+          this.node.data.layerBodId,
+          this.node.data.selectedOpen,
+          this.node.data.children
+       );
     }
   }
 
-  onEditCategoryItem (node: TreeNode) {
-    if (this.editCatItemForm.valid && node) {
-      if (this.editCatItemForm.value) {
-        if (this.editCatItemForm.value.editItemId) {
-          node.data.id = this.editCatItemForm.value.editItemId;
-        }
-        if (this.editCatItemForm.value.editItemLabel) {
-          node.data.label = this.editCatItemForm.value.editItemLabel;
-        }
-        if (this.editCatItemForm.value.editItemLayerBodId) {
-          node.data.layerBodId = this.editCatItemForm.value.editItemLayerBodId;
-        }
-        if (this.editCatItemForm.value.editItemSelectedOpen) {
-          node.data.selectedOpen = this.editCatItemForm.value.editItemSelectedOpen;
-        }
-        const treeModel = node.treeModel;
-        treeModel.update();
-        this.httpService.updateCategoryTree(this.category.id, treeModel.nodes).subscribe(
-          data => {
-            this.isSaveSuccess = true;
-            this.isSaveUnsuccess = !this.isSaveSuccess;
-            setTimeout(() => {
-                this.isSaveSuccess = false;
-                this.isSaveUnsuccess = false;
-                this.resetForm();
-              }
-            , 4000);
-          },
-          error => {
-            this.isSaveUnsuccess = true;
-            this.isSaveSuccess = !this.isSaveUnsuccess;
-            console.error('Error onEditCategoryItem tree!');
-          }
-        );
+  onLayerListSearch(event, searchText: string) {
+    this.httpService.getLayersSearch(searchText).subscribe(
+      data => {
+        this.searchLayerList = data;
+      },
+      error => {
+        console.log('Error search layers!');
       }
+    );
+  }
+
+  onLayerClick(event, searchText: string) {
+    this.onLayerListSearch(event, searchText);
+  }
+
+  onSelectLayer(event, value: string, ) {
+    this.model.layerBodId = value;
+    this.searchLayerList = null;
+  }
+
+  clearLayerList() {
+    this.searchLayerList = null;
+  }
+
+  onEditCategoryItem (node: TreeNode) {
+    if (this.form.valid && node) {
+      node.data.id = this.model.id;
+      node.data.label = this.model.label;
+      node.data.layerBodId = this.model.layerBodId;
+      node.data.selectedOpen = this.model.selectedOpen;
+
+      const treeModel = node.treeModel;
+      treeModel.update();
+      this.httpService.updateCategoryTree(this.category.id, treeModel.nodes).subscribe(
+        data => {
+          this.isSaveSuccess = true;
+          this.isSaveUnsuccess = !this.isSaveSuccess;
+          setTimeout(() => {
+              this.isSaveSuccess = false;
+              this.isSaveUnsuccess = false;
+              this.searchLayerList = null;
+              this.resetForm();
+            }
+          , 4000);
+        },
+        error => {
+          this.isSaveUnsuccess = true;
+          this.isSaveSuccess = !this.isSaveUnsuccess;
+          console.error('Error onEditCategoryItem tree!');
+        }
+      );
     }
   }
 }

@@ -1,28 +1,44 @@
-<form [formGroup]="addCatItemForm" (ngSubmit)="onAddCategoryItem(node)" novalidate>
+<form #f="ngForm" (ngSubmit)="onAddCategoryItem(node)" novalidate>
   <div class="form-group row" [ngClass]="{
-    'has-danger': addItemLabel.invalid && (addItemLabel.dirty || addItemLabel.touched),
-    'has-success': addItemLabel.valid && (addItemLabel.dirty || addItemLabel.touched)}
+    'has-danger': label.invalid && (label.dirty || label.touched),
+    'has-success': label.valid && (label.dirty || label.touched)}
     ">
-    <label class="col-sm-4 col-form-label" for="" translate>label</label>
+    <label class="col-sm-4 col-form-label" for="label" translate>category_item_add_label</label>
     <div class="col-sm-8">
-      <input type="text" formControlName="addItemLabel" class="form-control" name="label" value="" placeholder="{{ ('category_item_label_input') | translate }}" required>
+      <input type="text" #label="ngModel" [(ngModel)]="model.label" class="form-control" name="label" placeholder="{{ ('category_item_add_label_input') | translate }}" required>
       <div class="form-control-feedback" 
-          *ngIf="addItemLabel.errors && (addItemLabel.dirty || addItemLabel.touched)">
-        <div *ngIf="addItemLabel.errors.required"><span translate>field_required</span></div>
+          *ngIf="label.errors && (label.dirty || label.touched)">
+        <div *ngIf="label.errors.required"><span translate>field_required</span></div>
       </div>
     </div>
   </div>
-  <div class="form-group row">
-    <label class="col-sm-4 col-form-label" for="" translate>layer</label>
+  <div class="form-group row" [ngClass]="{
+    'has-danger': layerBodId.invalid && (layerBodId.dirty || layerBodId.touched),
+    'has-success': layerBodId.valid && (layerBodId.dirty || layerBodId.touched)}
+    ">
+    <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_add_layerBodId</label>
     <div class="col-sm-8">
-      <select class="form-control" formControlName="addItemLayerBodId" name="layerBodId">
-        <option value="" selected translate>category_item_layer_select</option>
-        <option [value]="layer.id" *ngFor="let layer of layers" [title]="layer.item.label">{{ layer.item.label }} ({{ layer.id }})</option>
-      </select>
+      <div class="input-group">
+        <input type="text" #layerBodId="ngModel" [(ngModel)]="model.layerBodId" class="form-control" name="layerBodId" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, model.layerBodId)" (keyup)="onLayerListSearch($event, model.layerBodId)" existonlayerlist [checkList]="layers">
+        <div class="input-group-append" *ngIf="searchLayerList">
+          <button class="btn btn-primary" (click)="clearLayerList()">
+              <i class="fa fa-caret-up" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="form-control-feedback" 
+        *ngIf="layerBodId.errors && (layerBodId.dirty || layerBodId.touched)">
+        <div *ngIf="layerBodId.errors.notExist"><span translate>layerBodId_not_exist</span></div>
+      </div>
+      <ul *ngIf="searchLayerList" class="list-group search-list">
+        <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
+          <span>{{ layer.item.label }} ({{ layer.id }})</span>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="addCatItemForm.invalid" translate>
+    <button type="submit" class="btn btn-primary" [disabled]="f.invalid" translate>
       <i class="fa fa-trash" aria-hidden="true"></i>
       add
     </button>

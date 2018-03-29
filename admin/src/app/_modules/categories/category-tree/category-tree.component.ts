@@ -1,9 +1,7 @@
 import { Component, Input, ViewChild, Output, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
 import * as _ from 'lodash';
 import * as $ from 'jquery';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';
@@ -59,25 +57,19 @@ export class CategoryTreeComponent implements OnInit {
     }
   }
 
-  resetFormControl(control: FormControl) {
-    control.setErrors(null);
-    control.markAsPristine();
-    control.markAsUntouched();
-  }
-
   // On submit form del
   onRemoveCategoryItem(node: TreeNode) {
-      if (node.parent != null) {
-        _.remove(node.parent.data.children, node.data);
-        node.treeModel.update();
-        this.httpService.updateCategoryTree(this.categoryId, node.treeModel.nodes).subscribe(
-          data => {
-            this.categoryTree = data;
-          },
-          error => {
-            console.error('Error update tree!');
-          }
-        );
-      }
+    if (node.parent != null) {
+      _.remove(node.parent.data.children, node.data);
+      node.treeModel.update();
+      this.httpService.updateCategoryTree(this.categoryId, node.treeModel.nodes).subscribe(
+        data => {
+          this.categoryTree = data;
+        },
+        error => {
+          console.error('Error update tree!');
+        }
+      );
+    }
   }
 }

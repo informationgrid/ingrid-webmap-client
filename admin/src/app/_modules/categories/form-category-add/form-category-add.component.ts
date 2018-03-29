@@ -1,5 +1,5 @@
-import { Component, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { Component, Input, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { TreeComponent, TreeNode } from 'angular-tree-component';
 import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';
@@ -11,63 +11,57 @@ import { Category } from '../../../_models/category';
   templateUrl: './form-category-add.component.html',
   styleUrls: ['./form-category-add.component.scss']
 })
-export class FormCategoryAddComponent implements OnChanges {
+export class FormCategoryAddComponent {
 
   @Input() tree: TreeComponent;
   @Input() layers: LayerItem[] = [];
   @Input() node: TreeNode;
   @Input() category: Category;
 
-  layerSelection: LayerItem[] = [];
+  @ViewChild('f') form: NgForm;
 
-  addCatItemForm: FormGroup;
-  addItemLabel: FormControl;
-  addItemLayerBodId: FormControl;
+  model: CategoryItem = new CategoryItem();
+  searchLayerList: LayerItem[];
+
   isSaveSuccess = false;
   isSaveUnsuccess = false;
 
   constructor(private httpService: HttpService) {
-    this.prepareForm();
-  }
-
-  prepareForm() {
-    this.addItemLabel = new FormControl('', [
-      Validators.required
-    ]);
-    this.addItemLayerBodId = new FormControl();
-
-    this.addCatItemForm = new FormGroup({
-      addItemLabel: this.addItemLabel,
-      addItemLayerBodId: this.addItemLayerBodId
-    });
   }
 
   resetForm() {
-    const formGroup = this.addCatItemForm;
-    let control: AbstractControl = null;
-    formGroup.markAsUntouched();
-    Object.keys(formGroup.controls).forEach((name) => {
-      control = formGroup.controls[name];
-      control.setErrors(null);
-    });
-    formGroup.setValue({
-      addItemLabel: '',
-      addItemLayerBodId: ''
-    });
+    this.form.reset();
   }
 
-  onLayerSelect(event) {
-      this.layerSelection = this.layers;
+  onLayerListSearch(event, searchText: string) {
+    this.httpService.getLayersSearch(searchText).subscribe(
+      data => {
+        this.searchLayerList = data;
+      },
+      error => {
+        console.log('Error search layers!');
+      }
+    );
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  onLayerClick(event, searchText: string) {
+    this.onLayerListSearch(event, searchText);
+  }
+
+  onSelectLayer(event, value: string, ) {
+    this.model.layerBodId = value;
+    this.clearLayerList();
+  }
+
+  clearLayerList() {
+    this.searchLayerList = null;
   }
 
    // On submit form add
    onAddCategoryItem (node: TreeNode) {
-    if (this.addCatItemForm.valid) {
-      if (this.addCatItemForm.value) {
-        const item = new CategoryItem(this.addCatItemForm.value.addItemLabel, this.addCatItemForm.value.addItemLayerBodId, '', undefined);
+    if (this.form.valid) {
+      if (this.model) {
+        const item = new CategoryItem(undefined, this.model.label, '', '', this.model.layerBodId, false, [] );
         let treeModel;
         if (!node) {
           treeModel = this.tree.treeModel;
@@ -95,7 +89,6 @@ export class FormCategoryAddComponent implements OnChanges {
           }
         );
       }
-      this.addCatItemForm.reset();
     }
   }
 }

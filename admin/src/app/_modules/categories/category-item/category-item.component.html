@@ -3,7 +3,7 @@
     <div class="modal-content">
       <form #f="ngForm" (ngSubmit)="onUpdateCategory(f)">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel{{ category.id }}"><span translate>category_edit_title</span>: {{ category.id }}</h5>
+          <h5 class="modal-title" id="editModalLabel{{ category.id }}"><span translate>category_edit_title</span> {{ category.id }}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
