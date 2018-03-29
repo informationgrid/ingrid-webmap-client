@@ -25,6 +25,7 @@ import { CssComponent } from './_modules/styles/css/css.component';
 import { FormCategoryAddComponent } from './_modules/categories/form-category-add/form-category-add.component';
 import { FormCategoryEditComponent } from './_modules/categories/form-category-edit/form-category-edit.component';
 import { TreeModule } from 'angular-tree-component';
+import { LayerListValidatorDirective } from './_directives/layer-list-validator.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath + '/assets/i18n/');
@@ -45,7 +46,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     MapToIterablePipe,
     ArrayFilterPipe,
     FormCategoryAddComponent,
-    FormCategoryEditComponent
+    FormCategoryEditComponent,
+    LayerListValidatorDirective
   ],
   imports: [
     BrowserModule,
