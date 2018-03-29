@@ -39,8 +39,7 @@ export class FormCategoryEditComponent implements OnChanges {
        this.model = new CategoryItem(
           this.node.data.id,
           this.node.data.label,
-          '',
-          '',
+          'prod',
           this.node.data.layerBodId,
           this.node.data.selectedOpen,
           this.node.data.children

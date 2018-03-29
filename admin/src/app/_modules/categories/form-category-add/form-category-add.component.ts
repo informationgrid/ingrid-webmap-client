@@ -61,7 +61,7 @@ export class FormCategoryAddComponent {
    onAddCategoryItem (node: TreeNode) {
     if (this.form.valid) {
       if (this.model) {
-        const item = new CategoryItem(undefined, this.model.label, '', '', this.model.layerBodId, false, [] );
+        const item = new CategoryItem(undefined, this.model.label, 'prod', this.model.layerBodId, false, [] );
         let treeModel;
         if (!node) {
           treeModel = this.tree.treeModel;

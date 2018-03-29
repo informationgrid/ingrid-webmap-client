@@ -304,7 +304,7 @@ export class LayerComponent implements OnInit {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
-        item = new CategoryItem(null, layers[i].item.label, '', '', layers[i].id, false, []);
+        item = new CategoryItem(null, layers[i].item.label, 'prod', layers[i].id, false, []);
         children.push(item);
         i++;
       }
