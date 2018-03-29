@@ -92,7 +92,7 @@
           <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
             (keyup.enter)="loadService(newService.value)">
           <div class="input-group-append">
-            <button [disabled]="!newService.value" class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
+            <button class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
           </div>
         </div>
         <br>
@@ -125,18 +125,18 @@
           <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
             <form #f="ngForm">
               <div class="modal-footer d-flex justify-content-between align-items-center">
-                <div class="form-row">      
+                <div class="form-row">
                   <select class="form-control " name="categoryId" [ngModel]="categoryId" (change)="onCategoryChange($event)">
                     <option value="" translate>service_add_to_category</option>
                     <option [value]="category.id" *ngFor="let category of categories" [title]="category.id">{{ category.id }}</option>
                   </select>
                 </div>
                 <div>
-                  <button [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" data-dismiss="modal" (click)="onAddLayers(this.newLayersTree.treeModel, this.f, this.catagoryTree)" translate>
+                  <button [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" (click)="onAddLayers(this.newLayersTree.treeModel, this.f, this.catagoryTree)" translate>
                     <i class="fa fa-check-plus" aria-hidden="true"></i>
                     service_add_all
                   </button>
-                  <button *ngIf="isWMSService" [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" data-dismiss="modal" (click)="onAddCombineLayers(this.newLayersTree.treeModel, this.f, this.catagoryTree)" translate>
+                  <button *ngIf="isWMSService" [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" (click)="onAddCombineLayers(this.newLayersTree.treeModel, this.f, this.catagoryTree)" translate>
                     <i class="fa fa-check-plus" aria-hidden="true"></i>
                     service_combine_add
                   </button>

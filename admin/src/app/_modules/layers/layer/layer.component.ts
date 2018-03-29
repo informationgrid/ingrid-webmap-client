@@ -304,7 +304,7 @@ export class LayerComponent implements OnInit {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
-        item = new CategoryItem(layers[i].item.label, layers[i].id, '', undefined);
+        item = new CategoryItem(null, layers[i].item.label, '', '', layers[i].id, false, []);
         children.push(item);
         i++;
       }
@@ -359,6 +359,11 @@ export class LayerComponent implements OnInit {
           }
           this.isUrlLoadSuccess = true;
           this.isUrlLoadUnsuccess =  !this.isUrlLoadSuccess;
+          setTimeout(() => {
+              this.isUrlLoadSuccess = false;
+              this.isUrlLoadUnsuccess =  false;
+            }
+          , 4000);
         },
         error => {
           console.error('Error load ' + serviceUrl);
