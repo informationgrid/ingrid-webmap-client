@@ -19,7 +19,7 @@
     <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_add_layerBodId</label>
     <div class="col-sm-8">
       <div class="input-group">
-        <input type="text" #layerBodId="ngModel" [(ngModel)]="model.layerBodId" class="form-control" name="layerBodId" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, model.layerBodId)" (keyup)="onLayerListSearch($event, model.layerBodId)" existonlayerlist [checkList]="layers">
+        <input type="text" #layerBodId="ngModel" [(ngModel)]="model.layerBodId" class="form-control" name="layerBodId" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, model.layerBodId)" (keyup)="onLayerListSearch($event, model.layerBodId)" appExistOnLayerList [checkList]="layers">
         <div class="input-group-append" *ngIf="searchLayerList">
           <button class="btn btn-primary" (click)="clearLayerList()">
               <i class="fa fa-caret-up" aria-hidden="true"></i>

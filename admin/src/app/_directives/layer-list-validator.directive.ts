@@ -3,7 +3,7 @@ import { NG_VALIDATORS, NgControl, Validator, ValidatorFn, FormControl } from '@
 import { LayerItem } from '../_models/layer-item';
 
 @Directive({
-  selector: '[existonlayerlist][ngModel]',
+  selector: '[appExistOnLayerList][ngModel]',
   providers: [
     {
       provide: NG_VALIDATORS,
