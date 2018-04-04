@@ -23,8 +23,8 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.httpService.getData().subscribe(
       data => {
-        this.layers = data[0],
-        this.categories = data[1],
+        this.layers = data[0];
+        this.categories = data[1];
         this.settings = data[2];
       }
     );
