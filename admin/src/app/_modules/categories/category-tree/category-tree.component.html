@@ -13,13 +13,14 @@
             </div>
           </div>
         </div>
+        <br>
         <tree-root #tree [nodes]="categoryTree" [options]="options" 
         (activate)="onNodeActivate($event)" (deactivate)="onNodeDeactivate($event)" (moveNode)="onNodeMove($event)"
         (focus)="onNodeFocus($event)">
         <ng-template #treeNodeWrapperTemplate let-node let-index="index">
             <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
               <tree-node-expander [node]="node"></tree-node-expander>
-              <div class="node-content-wrapper"
+              <div class="node-content-wrapper d-flex justify-content-between align-items-center"
                 [class.node-content-wrapper-active]="node.isActive"
                 [class.node-content-wrapper-focused]="node.isFocused"
                 (click)="node.mouseAction('click', $event)"
@@ -29,17 +30,21 @@
                 [treeAllowDrop]="node.allowDrop"
                 [treeDrag]="node"
                 [treeDragEnabled]="node.allowDrag()">
-                <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
-                <span>{{ node.data.label }}</span>
-                <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#addCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                </a>
-                <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#editCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
-                    <i class="fa fa-edit" aria-hidden="true"></i>
-                </a>
-                <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
+                <div>
+                  <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                  <span>{{ node.data.label }}</span>
+                </div>
+                <div>
+                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#addCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </a>
+                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#editCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                      <i class="fa fa-edit" aria-hidden="true"></i>
+                  </a>
+                  <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                </div>
               </div>
             </div>
             <div id="{{ categoryId }}-{{node.data.id}}">
