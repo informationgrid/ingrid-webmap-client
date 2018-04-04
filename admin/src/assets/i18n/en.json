@@ -1,6 +1,6 @@
 {
-    'app_title': 'InGrid Webmap Client Admin-GUI',
-    'categories': 'Categorys',
-    'layers': 'Layers',
-    'settings': 'Settings'
+    "app_title": "InGrid Webmap Client Admin-GUI",
+    "categories": "Categorys",
+    "layers": "Layers",
+    "settings": "Settings"
 }
