@@ -28,7 +28,6 @@ export class CssComponent implements OnInit {
   onUpdate(content: string) {
     this.httpService.updateCss(content).subscribe(
       data => {
-        this.css = data;
         this.isSaveSuccess = true;
         this.isSaveUnsuccess = !this.isSaveSuccess;
         setTimeout(() => {

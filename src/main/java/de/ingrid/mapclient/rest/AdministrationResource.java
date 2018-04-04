@@ -329,7 +329,9 @@ public class AdministrationResource {
         try {
             JSONObject item = new JSONObject(content);
             JSONObject obj = updateSetting(item);
-            return Response.ok( obj ).build();
+            if(obj != null) {
+                return Response.status( Response.Status.OK ).build();
+            }
         } catch (JSONException e) {
             log.error("Error POST '/categories/{id}'!");
         }
@@ -360,7 +362,9 @@ public class AdministrationResource {
     public Response updateCssRequest(@RequestBody String content) {
         if(content != null) {
             String fileContent = updateCss(content);
-            return Response.ok( fileContent ).build();
+            if(fileContent != null) {
+                return Response.status(Response.Status.OK ).build();
+            }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -434,7 +438,9 @@ public class AdministrationResource {
     public Response updatehHelpRequest(@RequestBody String content, @PathParam("lang") String lang) {
         if(content != null) {
             String fileContent = updateHelp(lang, content);
-            return Response.ok( fileContent ).build();
+            if(fileContent != null) {
+                return Response.status( Response.Status.OK ).build();
+            }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -468,7 +474,7 @@ public class AdministrationResource {
         } catch (Exception e) {
             log.error("Error 'updateSetting'!");
         }
-        return item;
+        return null;
     }
     
     private String updateCss(String content) {
@@ -478,7 +484,7 @@ public class AdministrationResource {
         } catch (Exception e) {
             log.error("Error 'updateCss'!");
         }
-        return content;
+        return null;
     }
     
     private String updateHelp(String lang, String content) {
@@ -488,7 +494,7 @@ public class AdministrationResource {
         } catch (Exception e) {
             log.error("Error 'updateHelp'!");
         }
-        return content;
+        return null;
     }
 
     private JSONArray getLayers(String id) {

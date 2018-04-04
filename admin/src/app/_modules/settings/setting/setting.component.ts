@@ -107,7 +107,6 @@ export class SettingComponent implements OnInit {
         });
         this.httpService.updateSetting(this.settings).subscribe(
           data => {
-            this.settings = data;
             this.updateAppSettings.emit(this.settings);
             this.isSaveSuccess = true;
             this.isSaveUnsuccess = !this.isSaveSuccess;

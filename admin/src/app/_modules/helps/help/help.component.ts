@@ -47,7 +47,6 @@ export class HelpComponent implements OnChanges {
   onUpdate(lang: string, content: string) {
     this.httpService.updateHelp(lang, content).subscribe(
       data => {
-        this.helps.set(lang, data);
         this.isSaveSuccess = true;
         this.isSaveUnsuccess = !this.isSaveSuccess;
         setTimeout(() => {
