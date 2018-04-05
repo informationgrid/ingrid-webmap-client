@@ -121,7 +121,6 @@ export class HttpService {
         return res.map(resItem => {
           return new Category(
             resItem.id,
-            resItem.langs,
             resItem.defaultBackground,
             resItem.selectedLayers,
             resItem.backgroundLayers,
@@ -155,6 +154,14 @@ export class HttpService {
 
   deleteCategory(id: string): Observable<Category[]> {
     return this.http.delete<Category[]>(httpApiHost + '/categories/' + id, httpJsonOptions);
+  }
+
+  deleteCategories(categories: string[]): Observable<Category[]> {
+    let paramIds = 'ids=';
+    categories.forEach(category => {
+      paramIds += category + ',';
+    });
+    return this.http.delete<Category[]>(httpApiHost + '/categories?' + paramIds, httpJsonOptions);
   }
 
   updateCategoryTree(id: string, item: any): Observable<CategoryItem[]> {

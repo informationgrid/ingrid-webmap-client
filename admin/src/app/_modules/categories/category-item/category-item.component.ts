@@ -16,6 +16,8 @@ export class CategoryItemComponent implements OnInit  {
   @Input() layers: LayerItem[];
 
   backgroundLayers: LayerItem[];
+  categoryUpdateUnsuccess = false;
+  categoryUpdateSuccess = false;
 
   @Output()
   updateCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
@@ -34,15 +36,23 @@ export class CategoryItemComponent implements OnInit  {
     if (f.valid) {
       if (this.category) {
         this.category.id = f.value.id;
-        this.category.langs = f.value.langs;
         this.category.defaultBackground = f.value.defaultBackground;
         this.httpService.updateCategory(this.category).subscribe(
           data => {
             this.categories = data;
+            this.categoryUpdateSuccess = true;
+            this.categoryUpdateUnsuccess = !this.categoryUpdateSuccess;
             // this.updateCategories.emit(this.categories);
-            },
+            setTimeout(() => {
+              this.categoryUpdateSuccess = false;
+              this.categoryUpdateUnsuccess = false;
+            }
+            , 4000);
+          },
           error => {
             console.error('Error update: ' + this.category.id);
+            this.categoryUpdateUnsuccess = true;
+            this.categoryUpdateSuccess = !this.categoryUpdateUnsuccess;
           }
         );
       }

@@ -254,6 +254,18 @@ public class AdministrationResource {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
+    
+    @DELETE
+    @Path("categories")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCategoriesByIds(@QueryParam("ids") String paramIds) {
+        String[] ids = paramIds.split(",");
+        JSONArray arr = deleteCategories(ids);
+        if(arr != null) {
+            return Response.ok( arr ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
 
     @PUT
     @Path("categorytree/{id}")
@@ -803,6 +815,44 @@ public class AdministrationResource {
         }
         return getCategories();
     }
+    
+    private JSONArray deleteCategories(String[] ids) {
+        if(ids != null) {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            String fileContent = null;
+            if(config_dir != null){
+                fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            }
+            try {
+                JSONObject obj = new JSONObject(fileContent);
+                JSONArray topics = obj.getJSONArray("topics");
+                JSONArray newTopics = new JSONArray();
+                for (int i = 0; i < topics.length(); i++) {
+                    JSONObject tmpObj = topics.getJSONObject(i);
+                    boolean toDelete = false;
+                    for (String id : ids) {
+                        if(id != null && id.length() > 0) {
+                            if(tmpObj.getString("id").equals(id)) {
+                                removeFile("data/catalog-" + id +".json");
+                                toDelete = true;
+                                break;
+                            }
+                        }
+                    }
+                    if(!toDelete) {
+                        newTopics.put(tmpObj);
+                    }
+                }
+                obj.put("topics", newTopics);
+                updateFile("data/catalogs.json", obj);
+            } catch (JSONException e) {
+                log.error("Error 'deleteLayer'!");
+            }
+        }
+        return getCategories();
+    }
+    
     private JSONArray getCategoryTree(String id) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);

@@ -1,35 +1,65 @@
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center" id="categoryHeader" data-toggle="collapse" data-target="#category" aria-expanded="false" aria-controls="category">
+  <div class="card-header d-flex justify-content-between align-items-center" id="categoryHeader" data-toggle="collapse" data-target="#category" aria-expanded="false" aria-controls="category">
+    <div>
       <span translate>categories</span>
-      <div>
-        <span class="badge badge-pill badge-primary">{{ categoriesLength }}</span>
-      </div>
     </div>
-    <div id="category" class="collapse" aria-labelledby="categoryHeader" data-parent="#accordion">
-      <div class="card-body"><nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
+    <div>
+      <span class="badge badge-pill badge-primary">{{ categoriesLength }}</span>
+    </div>
+  </div>
+  <div id="category" class="collapse" aria-labelledby="categoryHeader" data-parent="#accordion">
+    <div class="card-body">
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarCategory" aria-controls="navBarCategory" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navBarCategory">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <button class="btn btn-outline" type="button" data-toggle="modal" data-target="#addModalCategory" translate>
+          <div class="mr-auto">
+            <div>
+              <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addModalCategory" translate>
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 category_new
               </button>
-            </li>
-          </ul>
-          <form class="form-inline">
-            <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="search">
-          </form>
+              <button *ngIf="!enableSelectCategories" class="btn btn-outline" type="button" (click)="enableSelectCategories = !enableSelectCategories" translate>
+                <i class="fa fa-check" aria-hidden="true"></i>
+                layers_select
+              </button>
+              <button *ngIf="enableSelectCategories" class="btn btn-outline" type="button" (click)="enableSelectCategories = !enableSelectCategories" translate>
+                <i class="fa fa-ban" aria-hidden="true"></i>
+                layers_select_cancel
+              </button>
+              <button *ngIf="enableSelectCategories" class="btn btn-danger" type="button" data-toggle="modal" data-target="#delModalCategory" translate>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              layers_select_delete
+              </button>
+            </div>
+          </div>
+          <div>
+            <form class="form-inline">
+              <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="search">
+              <button class="btn btn-outline" type="button" data-toggle="collapse" data-target="#category_info" title="{{ help | translate }}">
+                <i class="fa fa-info" aria-hidden="true"></i>
+              </button>
+            </form>
+          </div>
         </div>
       </nav>
-
       <div id="categories">
+        <div class="collapse" id="category_info">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" translate>category_help_title</h5>
+              <p class="card-text" [innerHTML]="'category_help_text' | translate"></p>
+            </div>
+          </div>
+        </div>
         <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
           <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
             aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, this)">
-            <span>{{category.id}}</span>
+            <span>
+              <input *ngIf="enableSelectCategories" type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
+              {{category.id}}
+            </span>
           </div>
           <div class="collapse" id="collapse{{ category.id }}"  [attr.aria-labelledby]="'categoriesHeader' + category.id" data-parent="#categories">
             <div class="card card-body">
@@ -96,3 +126,26 @@
     </div>
   </div>
 </div>
+
+<!-- Modal delete -->
+<div class="modal fade" id="delModalCategory" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" translate>category_item_del_title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p translate>category_item_del_text</p>
+          <div class="modal-footer">
+            <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="deleteSelectedCategories()" translate>
+              <i class="fa fa-trash" aria-hidden="true"></i>
+              delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

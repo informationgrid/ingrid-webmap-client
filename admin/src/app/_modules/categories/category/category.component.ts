@@ -24,6 +24,8 @@ export class CategoryComponent implements OnChanges {
 
   categoryAddUnsuccess = false;
   categoryAddSuccess = false;
+  enableSelectCategories = false;
+  selectedCategories: any = new Array();
   searchText = '';
 
   categoryTree: CategoryItem[] = [];
@@ -47,6 +49,35 @@ export class CategoryComponent implements OnChanges {
   updateCategories(event) {
     this.categories = event;
     this.updateAppCategories.emit(event);
+  }
+
+  selectCategories(event) {
+    if (!this.selectedCategories) {
+     this.selectedCategories = new Array();
+    }
+    if (event.target.checked) {
+       this.selectedCategories.push(event.target.value);
+     } else {
+       const index = this.selectedCategories.indexOf(event.target.value, 0);
+       if (index > -1) {
+         this.selectedCategories.splice(index, 1);
+       }
+     }
+     event.stopPropagation();
+   }
+
+   deleteSelectedCategories () {
+    if (this.selectedCategories.length > 0) {
+      this.httpService.deleteCategories(this.selectedCategories).subscribe(
+        data => {
+          this.updateAppCategories.emit(data);
+          this.selectedCategories = new Array();
+        },
+        error => {
+          console.error('Error on remove categories: ' + error);
+        }
+      );
+    }
   }
 
   // Add new category
