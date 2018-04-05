@@ -188,13 +188,13 @@ export class HttpService {
   }
 
 // Settings
-  getSetting(): Observable<Map<String, Setting>> {
-    return this.http.get<Map<String, Setting>>(httpApiHost + '/setting', httpJsonOptions);
+  getSetting(): Observable<Setting> {
+    return this.http.get<Setting>(httpApiHost + '/setting', httpJsonOptions);
   }
 
-  updateSetting(setting: any): Observable<Map<String, Setting>> {
+  updateSetting(setting: any): Observable<Setting> {
     const body = JSON.stringify(setting);
-    return this.http.put<Map<String, Setting>>(httpApiHost + '/setting', body, httpJsonOptions);
+    return this.http.put<Setting>(httpApiHost + '/setting', body, httpJsonOptions);
   }
 
 // Help

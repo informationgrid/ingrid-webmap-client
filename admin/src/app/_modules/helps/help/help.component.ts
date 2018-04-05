@@ -12,8 +12,8 @@ export class HelpComponent implements OnChanges {
 
   constructor(private httpService: HttpService, private route: ActivatedRoute) { }
 
-  @Input() settings: any;
-  languages: Setting;
+  @Input() settings: Setting = new Setting();
+  languages: string[] = [];
   helps: Map<String, String>;
   isSaveSuccess = false;
   isSaveUnsuccess = false;
@@ -26,8 +26,8 @@ export class HelpComponent implements OnChanges {
       }
     }
     if (this.languages) {
-      if (this.languages.value.length > 0) {
-        this.languages.value.forEach(lang => {
+      if (this.languages.length > 0) {
+        this.languages.forEach(lang => {
             this.httpService.getHelp(lang).subscribe(
               data => {
                 if (!this.helps) {

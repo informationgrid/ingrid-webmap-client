@@ -10,36 +10,36 @@
                         <div class="col-sm-3">
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class=" col-form-label" for="setting.key" translate>setting_{{ setting.key }}</label>
-                                <button *ngIf="setting.val.info" type="button" class="btn btn-outline-info" data-toggle="collapse" [attr.data-target]="'#info_' + setting.key">
+                                <button type="button" class="btn btn-outline-info" data-toggle="collapse" [attr.data-target]="'#info_' + setting.key">
                                     <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
-                            <div *ngIf="setting.val.info" class="collapse" id="info_{{ setting.key }}">
+                            <div class="collapse" id="info_{{ setting.key }}">
                                 <div>
-                                    <small class="form-text text-muted" translate>{{setting.val.info}}</small>
+                                    <small class="form-text text-muted" translate>help_{{ setting.key }}</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <input *ngIf="isString(setting.val.value)" type="text" [ngModel]="setting.val.value" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
-                            <select *ngIf="isBoolean(setting.val.value)" class="form-control" [name]="setting.key" [ngModel]="setting.val.value">
+                            <input *ngIf="isString(setting.val)" type="text" [ngModel]="setting.val" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val" >
+                            <select *ngIf="isBoolean(setting.val)" class="form-control" [name]="setting.key" [ngModel]="setting.val">
                                 <option [ngValue]="false" translate>false</option>
                                 <option [ngValue]="true" translate>true</option>
                             </select>
-                            <input *ngIf="isNumber(setting.val.value)" type="number" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val.value" >
-                            <textarea *ngIf="isObject(setting.val.value) && !isArray(setting.val.value)" class="form-control" [name]="setting.key" [id]="setting.key" rows="5" value="{{ setting.val.value | json }}" #textarea (blur)="onTextAreaBlur(setting, textarea.value)"></textarea>
-                            <div *ngIf="isArray(setting.val.value)">
+                            <input *ngIf="isNumber(setting.val)" type="number" [name]="setting.key" class="form-control" [id]="setting.key" [value]="setting.val" >
+                            <textarea *ngIf="isObject(setting.val) && !isArray(setting.val)" class="form-control" [name]="setting.key" [id]="setting.key" rows="5" value="{{ setting.val | json }}" #textarea (blur)="onTextAreaBlur(setting, textarea)"></textarea>
+                            <div *ngIf="isArray(setting.val)">
                                 <ul class="list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let val of setting.val.value; let i=index;">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let val of setting.val; let i=index;">
                                         {{ val }}
                                         <div>
-                                        <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(val, setting.val.value)">
+                                        <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(val, setting.val)">
                                             <i class="fa fa-sort-up" aria-hidden="true"></i>
                                         </button>
-                                        <button *ngIf="i !== (setting.val.value.length - 1) && setting.val.value.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(val, setting.val.value)">
+                                        <button *ngIf="i !== (setting.val.length - 1) && setting.val.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(val, setting.val)">
                                             <i class="fa fa-sort-down" aria-hidden="true"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger" (click)="onRemoveItem(val, setting.val.value)">
+                                        <button type="button" class="btn btn-danger" (click)="onRemoveItem(val, setting.val)">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                         </div>
@@ -48,7 +48,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" [id]="setting.key" #addListItem>
                                     <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(addListItem.value, setting.val.value)" translate>
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(addListItem.value, setting.val)" translate>
                                             <i class="fa fa-plus" aria-hidden="true"></i>
                                             add
                                         </button>

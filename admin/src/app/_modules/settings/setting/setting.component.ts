@@ -93,19 +93,7 @@ export class SettingComponent implements OnInit {
   onUpdate(f: NgForm) {
     if (f.valid) {
       if (f.value) {
-        Object.keys(this.settings).forEach(key => {
-          if (f.value) {
-            if (f.value[key]) {
-              const val = f.value[key];
-              if (typeof val === 'string') {
-                this.settings[key].value = val.trim();
-              } else {
-                this.settings[key].value = val;
-              }
-            }
-          }
-        });
-        this.httpService.updateSetting(this.settings).subscribe(
+        this.httpService.updateSetting(f.value).subscribe(
           data => {
             this.updateAppSettings.emit(this.settings);
             this.isSaveSuccess = true;
