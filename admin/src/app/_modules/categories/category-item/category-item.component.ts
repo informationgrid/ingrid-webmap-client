@@ -76,6 +76,7 @@ export class CategoryItemComponent implements OnInit  {
         list.push(value);
       }
     }
+    value = '';
   }
   onRemoveItem(value: any, list: any ) {
     if (value && list) {

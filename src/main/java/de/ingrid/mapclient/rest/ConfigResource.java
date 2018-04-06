@@ -85,12 +85,8 @@ public class ConfigResource {
                 Iterator<?> keys = profileSetting.keys();
                 while( keys.hasNext() ) {
                     String key = (String)keys.next();
-                    if ( profileSetting.get(key) instanceof JSONObject ) {
-                        JSONObject profileSet = profileSetting.getJSONObject(key);
-                        if(!profileSet.isNull("value")) {
-                            JSONObject set = setting.getJSONObject(key);
-                            set.put("value", profileSet.get("value"));
-                        }
+                    if (profileSetting.has(key)) {
+                        setting.put(key, profileSetting.get(key));
                     }
                 }
             }

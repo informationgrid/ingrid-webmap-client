@@ -36,6 +36,7 @@ export class LayerItemWmtsComponent implements OnInit {
         list.push(value);
       }
     }
+    value = '';
   }
 
   onRemoveItem(index, list: any) {
@@ -79,7 +80,6 @@ export class LayerItemWmtsComponent implements OnInit {
             console.error('Error onUpdateLayer!');
           }
         );
-        this.layer.id = f.value.id;
         this.isEdit = !this.isEdit;
       }
     }

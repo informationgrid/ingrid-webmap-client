@@ -1,7 +1,10 @@
 import { LayerType } from './layer-type.enum';
 import { LayerRestEncoding } from './layer-rest-encoding.enum';
+import { ILayerWms } from '../_interfaces/ilayer-wms';
+import { ILayerWmts } from '../_interfaces/ilayer-wmts';
+import { ILayer } from '../_interfaces/ilayer';
 
-export class Layer {
+export class Layer implements ILayer, ILayerWms, ILayerWmts {
     type: LayerType;
     label: string;
     background: boolean;
@@ -21,21 +24,23 @@ export class Layer {
     timeEnabled: boolean;
     timeBehaviour: string;
     tooltip: boolean;
+    wmsUrl: string;
+    wmsLayers: string;
+    singleTile: boolean;
+    gutter: number;
+    minScale: number;
+    maxScale: number;
+    serviceUrl: string;
+    template: string;
+    serverLayerName: string;
+    origin: number[];
+    matrixSet: string;
+    tileSize: number[];
+    scales: number[];
+    matrixIds: string[];
+    requestEncoding: string;
 
     constructor(type: LayerType) {
         this.type = type;
-        this.background = false;
-        this.attribution = '';
-        this.attributionUrl = '';
-        this.highlightable = false;
-        this.hasLegend = false;
-        this.legendUrl = '';
-        this.searchable = true;
-        this.opacity = 1;
-        this.crossOrigin = false;
-        this.timestamps = [];
-        this.timeEnabled = false;
-        this.timeBehaviour = 'last';
-        this.tooltip = false;
     }
 }

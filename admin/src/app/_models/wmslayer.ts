@@ -1,8 +1,9 @@
 import { Layer } from './layer';
 import { LayerType } from './layer-type.enum';
 import { LayerItem } from './layer-item';
+import { ILayerWms } from '../_interfaces/ilayer-wms';
 
-export class Wmslayer extends Layer {
+export class Wmslayer extends Layer implements ILayerWms {
 
     id: string;
     wmsUrl: string;

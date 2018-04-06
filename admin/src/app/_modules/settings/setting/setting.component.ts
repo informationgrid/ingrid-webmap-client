@@ -3,6 +3,7 @@ import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms';
 import {  } from 'events';
 import { Setting } from '../../../_models/setting';
+import { Category } from '../../../_models/category';
 
 @Component({
   selector: 'app-setting',
@@ -12,6 +13,7 @@ import { Setting } from '../../../_models/setting';
 export class SettingComponent implements OnInit {
 
   @Input() settings: Setting = new Setting();
+  @Input() categories: Category[];
   @Output() updateAppSettings: EventEmitter<Setting> = new EventEmitter();
   @ViewChild('f') form: NgForm;
 
@@ -23,17 +25,13 @@ export class SettingComponent implements OnInit {
   ngOnInit() {
   }
 
-  onAddItem(value: any, list: any , withDuplicate) {
+  onAddItem(value: any, list: any) {
     if (value && list) {
-      if (withDuplicate) {
+      if (list.indexOf(value) === -1) {
         list.push(value);
-      } else {
-        if (list.indexOf(value) === -1) {
-          list.push(value);
-        }
       }
     }
-    value = null;
+    value = '';
   }
   onRemoveItem(index: any, list: any ) {
     if (index && list) {

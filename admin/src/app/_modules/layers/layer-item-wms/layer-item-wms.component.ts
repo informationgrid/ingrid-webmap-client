@@ -42,7 +42,6 @@ export class LayerItemWmsComponent implements OnInit {
             console.error('Error onUpdateLayer!');
           }
         );
-        this.layer.id = f.value.id;
         this.isEdit = !this.isEdit;
       }
     }

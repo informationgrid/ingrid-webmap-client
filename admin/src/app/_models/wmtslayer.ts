@@ -1,8 +1,9 @@
 import { LayerRestEncoding } from './layer-rest-encoding.enum';
 import { Layer } from './layer';
 import { LayerType } from './layer-type.enum';
+import { ILayerWmts } from '../_interfaces/ilayer-wmts';
 
-export class Wmtslayer extends Layer {
+export class Wmtslayer extends Layer implements ILayerWmts {
     serviceUrl: string;
     template: string;
     serverLayerName: string;
