@@ -20,6 +20,7 @@ export class Layer {
     timestamps: string [];
     timeEnabled: boolean;
     timeBehaviour: string;
+    tooltip: boolean;
 
     constructor(type: LayerType) {
         this.type = type;
@@ -35,5 +36,6 @@ export class Layer {
         this.timestamps = [];
         this.timeEnabled = false;
         this.timeBehaviour = 'last';
+        this.tooltip = false;
     }
 }

@@ -4,6 +4,7 @@ import { HttpService } from './_services/http.service';
 import { LayerItem } from './_models/layer-item';
 import { Category } from './_models/category';
 import { environment } from '../environments/environment';
+import { Setting } from './_models/setting';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit {
 
   layers: LayerItem[] = [];
   categories: Category[] = [];
-  settings: any = {};
+  settings: Setting = new Setting();
   version: string = environment.version;
 
   ngOnInit() {

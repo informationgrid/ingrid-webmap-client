@@ -9,7 +9,6 @@ export class Wmslayer extends Layer {
     wmsLayers: string;
     singleTile: boolean;
     gutter: number;
-    tooltip: boolean;
     minScale: number;
     maxScale: number;
 

@@ -137,8 +137,10 @@ public class AdministrationResource {
     public Response updateLayerById(@RequestBody String content, @PathParam("id") String id) {
         try {
             JSONObject layer = new JSONObject(content);
-            JSONObject item = layer.getJSONObject("item");
-            String newId = item.getString("id");
+            String newId = id;
+            if(layer.has("id")) {
+                newId = layer.getString("id");
+            }
             if(!id.equals(newId)) {
                 // Update catalogs reference 
                 JSONArray categories = getCategories();
@@ -652,16 +654,14 @@ public class AdministrationResource {
             try {
                 JSONObject obj = new JSONObject(fileContent);
                 JSONObject layerItem = (JSONObject) layer.get("item");
-                String newId = layerItem.getString("id");
+                String newId = layer.getString("id");
                 if(newId != null  && id.equals(newId)) {
-                    layerItem.remove("id");
                     obj.put(id, layerItem);
                 } else {
                     // TODO: Update catalog files.
                     String newObj = obj.toString();
                     newObj = newObj.replaceAll(id, newId);
                     obj = new JSONObject(newObj);
-                    layerItem.remove("id");
                     obj.put(newId, layerItem);
                 }
                 updateFile("data/layers.json", obj);

@@ -37,22 +37,6 @@ export class LayerItemComponent {
     }
     return false;
   }
-  onUpdateLayer(f: NgForm) {
-    if (f.valid) {
-      if (f.value) {
-        this.layer.item = f.value;
-        this.httpService.updateLayer(this.layer).subscribe(
-          data => {
-          },
-          error => {
-            console.error('Error onUpdateLayer!');
-          }
-        );
-        this.layer.id = f.value.id;
-        this.isEdit = !this.isEdit;
-      }
-    }
-  }
 
   onDeleteLayer(id: string) {
     this.httpService.deleteLayer(id).subscribe(

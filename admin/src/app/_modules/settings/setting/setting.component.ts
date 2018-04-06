@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms';
-import { EventEmitter } from 'events';
+import {  } from 'events';
+import { Setting } from '../../../_models/setting';
 
 @Component({
   selector: 'app-setting',
@@ -10,8 +11,9 @@ import { EventEmitter } from 'events';
 })
 export class SettingComponent implements OnInit {
 
-  @Input() settings: any;
-  @Output() updateAppSettings: EventEmitter = new EventEmitter();
+  @Input() settings: Setting = new Setting();
+  @Output() updateAppSettings: EventEmitter<Setting> = new EventEmitter();
+  @ViewChild('f') form: NgForm;
 
   isSaveSuccess = false;
   isSaveUnsuccess = false;
@@ -19,26 +21,6 @@ export class SettingComponent implements OnInit {
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
-  }
-
-  isString(val) {
-    return typeof val === 'string';
-  }
-
-  isBoolean(val) {
-    return typeof val === 'boolean';
-  }
-
-  isNumber(val) {
-    return typeof val === 'number';
-  }
-
-  isObject(val) {
-    return (typeof val  === 'object');
-  }
-
-  isArray(val) {
-    return this.isObject(val) && (val instanceof Array);
   }
 
   onAddItem(value: any, list: any , withDuplicate) {
@@ -53,10 +35,9 @@ export class SettingComponent implements OnInit {
     }
     value = null;
   }
-  onRemoveItem(value: any, list: any ) {
-    if (value && list) {
-      const index = list.indexOf(value, 0);
-      if (index > -1) {
+  onRemoveItem(index: any, list: any ) {
+    if (index && list) {
+       if (index > -1) {
         list.splice(index, 1);
       }
     }
@@ -84,16 +65,16 @@ export class SettingComponent implements OnInit {
     list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
   }
 
-  onTextAreaBlur(setting, val) {
-    if (setting && val) {
-      setting.val.value = JSON.parse(val);
+  onTextAreaBlur(key: string, value: string) {
+    if (key && value) {
+      this.settings[key] = JSON.parse(value);
     }
   }
 
   onUpdate(f: NgForm) {
     if (f.valid) {
       if (f.value) {
-        this.httpService.updateSetting(f.value).subscribe(
+        this.httpService.updateSetting(this.settings).subscribe(
           data => {
             this.updateAppSettings.emit(this.settings);
             this.isSaveSuccess = true;
