@@ -89,7 +89,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <!-- which realm to use for basic auth -->
     <login-config>
         <auth-method>BASIC</auth-method>
-        <realm-name>Tomcat Supported Realm</realm-name>
+        <realm-name>Webmap-Client Admin-GUI Login</realm-name>
     </login-config>
     
     <security-role>
