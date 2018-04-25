@@ -73,6 +73,30 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <servlet-name>mapfish.print</servlet-name>
         <url-pattern>/pdf/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- which resources should be protected -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>MapClient Administration</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Has to be an administrator</description>
+            <role-name>admin-gui</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <!-- which realm to use for basic auth -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Tomcat Supported Realm</realm-name>
+    </login-config>
+    
+    <security-role>
+        <role-name>admin-gui</role-name>
+    </security-role>
+    
+    
     <listener>
         <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
     </listener>
