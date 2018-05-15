@@ -23,7 +23,7 @@ var settingSearchServiceUrl = 'http://dev.informationgrid.eu/opensearch/query?q=
 var settingGazetterZoom = 10;
 
 // Define nominatim URL to search for cities, places, countries (integrate on map client search field)
-var settingSearchNominatimUrl = 'http://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
+var settingSearchNominatimUrl = 'https://nominatim.openstreetmap.org/search?format=json%26countrycodes=de';
 
 // Define DLZ-IT BWaStrLocator URL to search rivers and details (integrate on map client search field)
 var settingSearchBwaLocatorUrl = 'https://atlas.wsv.bund.de/bwastr-locator/rest/bwastrinfo/query?limit=200%26searchfield=all';
