@@ -62,14 +62,14 @@ goog.require('ga_urlutils_service');
             angular.extend(newParams, p);
           }
           // INGRID: Update URL outside of iFrame
-          if (window.document.URL.indexOf(window.location.host) > -1) {
-              if (window.parent.onParamChange !== undefined) {
-                  // INGRID: Delete params from point coordinates
-                  delete params['action'];
-                  delete params['plugid'];
-                  delete params['docid'];
-                  window.parent.onParamChange(params);
-              }
+          if(window.document.referrer.indexOf(window.location.host) > -1){
+            if (window.parent.onParamChange !== undefined) {
+              // INGRID: Delete params from point coordinates
+              delete params['action'];
+              delete params['plugid'];
+              delete params['docid'];
+              window.parent.onParamChange(params);
+            }
           }
           // INGRID: Check for iFrame parent location
           if (isParentIFrame) {
@@ -140,10 +140,10 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Get params from window parent
       var locSearch = loc.search;
-      if (window.document.URL.indexOf(loc.host) > -1) {
+      if (window.document.referrer.indexOf(window.location.host) > -1){
         if (window.parent.urlParams) {
           if (locSearch.startsWith('?')) {
-             locSearch = locSearch.replace('?', '');
+            locSearch = locSearch.replace('?', '');
           }
           if (locSearch.startsWith('&')) {
             locSearch = locSearch.replace('&', '');
@@ -157,7 +157,7 @@ goog.require('ga_urlutils_service');
       }
       // INGRID: Change 'loc.search' to 'locSearch'
       var permalink = new Permalink(
-          base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
+        base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
 
       var lastHref = loc.href;
       $rootScope.$watch(function() {
