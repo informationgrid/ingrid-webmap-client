@@ -62,7 +62,7 @@ goog.require('ga_urlutils_service');
             angular.extend(newParams, p);
           }
           // INGRID: Update URL outside of iFrame
-          if(window.document.referrer.indexOf(window.location.host) > -1){
+          if (window.document.referrer.indexOf(window.location.host) > -1) {
             if (window.parent.onParamChange !== undefined) {
               // INGRID: Delete params from point coordinates
               delete params['action'];
@@ -110,7 +110,10 @@ goog.require('ga_urlutils_service');
         // The main href is the embed permalink but without the name of
         // the html page.
         this.getMainHref = function(p) {
-          return this.getEmbedHref(p).replace(/\/embed\.html\?/, '/?');
+          // INGRID: Change to portal url
+          return this.getEmbedHref(p)
+            .replace(/\/ingrid-webmap-client\/frontend\/prd\/embed\.html\?/,
+            '/kartendienste?');
         };
 
         this.getParams = function() {
@@ -140,7 +143,7 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Get params from window parent
       var locSearch = loc.search;
-      if (window.document.referrer.indexOf(window.location.host) > -1){
+      if (window.document.referrer.indexOf(window.location.host) > -1) {
         if (window.parent.urlParams) {
           if (locSearch.startsWith('?')) {
             locSearch = locSearch.replace('?', '');
@@ -157,7 +160,7 @@ goog.require('ga_urlutils_service');
       }
       // INGRID: Change 'loc.search' to 'locSearch'
       var permalink = new Permalink(
-        base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
+          base, gaUrlUtils.parseKeyValue(locSearch.substring(1)));
 
       var lastHref = loc.href;
       $rootScope.$watch(function() {
