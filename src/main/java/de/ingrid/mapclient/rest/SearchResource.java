@@ -75,11 +75,14 @@ public class SearchResource {
             if (type != null) {
                 if (type.indexOf( "locations" ) > -1) {
                     JSONArray json = new JSONArray();
-                    URL questUrl;
+                    URL questUrl = null;
 
                     // Nominatim
                     try {
                         questUrl = new URL( searchUrl.concat( "&q=" + URLEncoder.encode( searchTerm, "UTF-8" ) ) );
+                        if (log.isDebugEnabled()) {
+                            log.debug( "Requesting nominatim: " + questUrl);                            
+                        }
                         URLConnection con = questUrl.openConnection();
                         InputStream in = con.getInputStream();
                         String encoding = con.getContentEncoding();
@@ -108,7 +111,9 @@ public class SearchResource {
                             newEntry.put( "attrs", newAttrs );
                             json.put( newEntry );
                         }
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                        log.warn( "Problems requesting nominatim: " + questUrl, e);                            
+                    }
                     String responseStr = json.toString();
                     if (json != null) {
                         responseStr = "{\"results\":" + json + "}";
