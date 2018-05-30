@@ -188,6 +188,17 @@ public class AdministrationResource {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
+    
+    @DELETE
+    @Path("layers/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteLayersAll() {
+        JSONArray arr = deleteLayers();
+        if(arr != null) {
+            return Response.ok( arr ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
 
     /* Categories */
     @GET
@@ -269,6 +280,17 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @DELETE
+    @Path("categories/all")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteCategoriesAll() {
+        JSONArray arr = deleteCategories();
+        if(arr != null) {
+            return Response.ok( arr ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
     @PUT
     @Path("categorytree/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -691,25 +713,31 @@ public class AdministrationResource {
         return getLayers(null, true);
     }
     
+    private JSONArray deleteLayers() {
+        return deleteLayers(null);
+    }
+    
     private JSONArray deleteLayers(String[] ids) {
-        if(ids != null) {
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String fileContent = null;
+        if(config_dir != null){
+            fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+        }
+        try {
+            JSONObject obj = new JSONObject(fileContent);
+            if(ids != null) {
                 for (String id : ids) {
                     if(id != null && id.length() > 0) {
                         obj.remove(id);
                     }
                 }
-                updateFile("data/layers.json", obj);
-            } catch (JSONException e) {
-                log.error("Error 'deleteLayer'!");
+            }else {
+                obj = new JSONObject();
             }
+            updateFile("data/layers.json", obj);
+        } catch (JSONException e) {
+            log.error("Error 'deleteLayer'!");
         }
         return getLayers(null, true);
     }
@@ -812,18 +840,22 @@ public class AdministrationResource {
         return getCategories();
     }
     
+    private JSONArray deleteCategories() {
+       return deleteCategories(null); 
+    }
+    
     private JSONArray deleteCategories(String[] ids) {
-        if(ids != null) {
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
-                JSONArray topics = obj.getJSONArray("topics");
-                JSONArray newTopics = new JSONArray();
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String fileContent = null;
+        if(config_dir != null){
+            fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+        }
+        try {
+            JSONObject obj = new JSONObject(fileContent);
+            JSONArray topics = obj.getJSONArray("topics");
+            JSONArray newTopics = new JSONArray();
+            if(ids != null) {
                 for (int i = 0; i < topics.length(); i++) {
                     JSONObject tmpObj = topics.getJSONObject(i);
                     boolean toDelete = false;
@@ -840,11 +872,11 @@ public class AdministrationResource {
                         newTopics.put(tmpObj);
                     }
                 }
-                obj.put("topics", newTopics);
-                updateFile("data/catalogs.json", obj);
-            } catch (JSONException e) {
-                log.error("Error 'deleteLayer'!");
             }
+            obj.put("topics", newTopics);
+            updateFile("data/catalogs.json", obj);
+        } catch (JSONException e) {
+            log.error("Error 'deleteLayer'!");
         }
         return getCategories();
     }

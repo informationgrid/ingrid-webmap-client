@@ -35,7 +35,6 @@ export class CategoryItemComponent implements OnInit  {
   onUpdateCategory(f: NgForm) {
     if (f.valid) {
       if (this.category) {
-        this.category.id = f.value.id;
         this.category.defaultBackground = f.value.defaultBackground;
         this.httpService.updateCategory(this.category).subscribe(
           data => {

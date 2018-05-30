@@ -80,6 +80,18 @@ export class CategoryComponent implements OnChanges {
     }
   }
 
+  deleteAllCategories () {
+    this.httpService.deleteAllCategories().subscribe(
+      data => {
+        this.updateAppCategories.emit(data);
+        this.selectedCategories = new Array();
+      },
+      error => {
+        console.error('Error on remove categories: ' + error);
+      }
+    );
+  }
+
   // Add new category
   addCategory() {
     if (this.form.valid) {

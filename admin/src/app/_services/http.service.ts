@@ -114,6 +114,10 @@ export class HttpService {
     return this.http.delete<LayerItem[]>(httpApiHost + '/layers?' + paramIds, httpJsonOptions);
   }
 
+  deleteAllLayers(): Observable<LayerItem[]> {
+    return this.http.delete<LayerItem[]>(httpApiHost + '/layers/all', httpJsonOptions);
+  }
+
 // Categories
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(httpApiHost + '/categories', httpJsonOptions).map(
@@ -162,6 +166,10 @@ export class HttpService {
       paramIds += category + ',';
     });
     return this.http.delete<Category[]>(httpApiHost + '/categories?' + paramIds, httpJsonOptions);
+  }
+
+  deleteAllCategories(): Observable<Category[]> {
+    return this.http.delete<Category[]>(httpApiHost + '/categories/all', httpJsonOptions);
   }
 
   updateCategoryTree(id: string, item: any): Observable<CategoryItem[]> {

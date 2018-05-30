@@ -141,6 +141,19 @@ export class LayerComponent implements OnInit {
     }
   }
 
+  deleteAllLayers() {
+    this.httpService.deleteAllLayers().subscribe(
+      data => {
+        this.updateAppLayers.emit(data);
+        this.selectedLayers = new Array();
+        this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+      },
+      error => {
+        console.error('Error on remove layer: ' + error);
+      }
+    );
+  }
+
   // Tree functions
   onUpdateTree( $event ) {
     if ($event.treeModel) {

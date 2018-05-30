@@ -20,17 +20,13 @@
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 category_new
               </button>
-              <button *ngIf="!enableSelectCategories" class="btn btn-outline" type="button" (click)="enableSelectCategories = !enableSelectCategories" translate>
-                <i class="fa fa-check" aria-hidden="true"></i>
-                layers_select
-              </button>
-              <button *ngIf="enableSelectCategories" class="btn btn-outline" type="button" (click)="enableSelectCategories = !enableSelectCategories" translate>
-                <i class="fa fa-ban" aria-hidden="true"></i>
-                layers_select_cancel
-              </button>
-              <button *ngIf="enableSelectCategories" class="btn btn-danger" type="button" data-toggle="modal" data-target="#delModalCategory" translate>
+              <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delModalCategory" translate>
                 <i class="fa fa-trash" aria-hidden="true"></i>
-              layers_select_delete
+              categories_select_delete
+              </button>
+              <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delAllModalCategory" translate>
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              categories_all_delete
               </button>
             </div>
           </div>
@@ -57,7 +53,7 @@
           <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
             aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, this)">
             <span>
-              <input *ngIf="enableSelectCategories" type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
+              <input type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
               {{category.id}}
             </span>
           </div>
@@ -149,3 +145,26 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal delete -->
+<div class="modal fade" id="delAllModalCategory" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" translate>categories_all_del_title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p translate>categories_all_del_text</p>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="deleteAllCategories()" translate>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
