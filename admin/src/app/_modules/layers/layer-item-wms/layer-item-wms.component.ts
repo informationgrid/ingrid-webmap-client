@@ -10,8 +10,8 @@ import { HttpService } from '../../../_services/http.service';
 })
 export class LayerItemWmsComponent implements OnInit {
 
-  @Input('layer') layer: LayerItem;
-  @Input('layerId') layerId = '';
+  @Input() layer: LayerItem;
+  @Input() layerId = '';
   @ViewChild('f') form: NgForm;
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   isEdit = false;
