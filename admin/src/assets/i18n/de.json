@@ -10,7 +10,7 @@
     "category_update_success" : "Kategorie wurde aktualisiert.",
     "category_update_unsuccess" : "Fehler beim aktualisieren der Kategorie.",
     "category_add_text" : "Geben Sie eine ID für Ihre neue Kategorie an:",
-    "category_add_title" : "Neuer Kategorie",
+    "category_add_title" : "Neue Kategorie",
     "category_activatedLayers" : "Aktivierte Karten",
     "category_backgroundLayers" : "Hintergrundkarten",
     "category_defaultBackground" : "Default-Hintergrundkarte",
