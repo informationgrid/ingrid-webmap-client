@@ -16,16 +16,6 @@
               <input type="text" #id="ngModel" [(ngModel)]="category.id" class="form-control" name="id" id="category_{{ category.id }}_id" disabled>
             </div>
           </div>
-          <!-- defaultBackground -->
-          <div class="form-group row">
-            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_defaultBackground" translate>category_defaultBackground</label>
-            <div class="col-sm-8">
-              <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="category.defaultBackground">
-                <option value="" translate>category_select_layer</option>
-                <option [value]="layer" *ngFor="let layer of category.backgroundLayers" title="{{ layer }}" >{{ layer }}</option>
-              </select>
-            </div>
-          </div>
           <!-- backgroundLayers -->
           <div class="form-group row">
             <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_backgroundLayers" translate>category_backgroundLayers</label>
@@ -58,6 +48,16 @@
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+          <!-- defaultBackground -->
+          <div class="form-group row">
+            <label class="col-sm-4 col-form-label" for="category_{{ category.id }}_defaultBackground" translate>category_defaultBackground</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="category.defaultBackground">
+                <option value="" translate>category_select_layer</option>
+                <option [value]="layer" *ngFor="let layer of category.backgroundLayers" title="{{ layer }}" >{{ layer }}</option>
+              </select>
             </div>
           </div>
           <!-- selectedLayers -->
