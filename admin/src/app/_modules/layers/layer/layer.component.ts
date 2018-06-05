@@ -260,6 +260,7 @@ export class LayerComponent implements OnInit {
     this.httpService.addLayer(layerItems).subscribe(
       data => {
         this.searchText = '';
+        this.updateAppLayers.emit(data);
         this.loadLayers(1, this.layersPerPage, this.searchText);
       },
       error => {
