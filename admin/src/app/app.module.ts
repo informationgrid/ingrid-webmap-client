@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgProgressModule, NgProgressInterceptor  } from 'ngx-progressbar';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -56,6 +57,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgProgressModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -68,7 +70,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [MapUtilsService, HttpService],
+  providers: [
+    MapUtilsService,
+    HttpService,
+    { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
