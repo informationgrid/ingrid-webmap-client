@@ -55,6 +55,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 
 import com.google.zxing.BarcodeFormat;
@@ -500,8 +501,9 @@ public class FileResource {
         if(listOfFiles.length > maxDirectoryFiles){
             for (File file : listOfFiles) {
                 if (file.isFile()) {
-                    long diff = new Date().getTime() - file.lastModified();
-                    if (diff > maxDaysOfFileExist * 24 * 60 * 60 * 1000) {
+                    Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);;
+                    Date fileDate = new Date(file.lastModified());
+                    if(fileDate.before(limitDate)) {
                         file.delete();
                     }
                 }

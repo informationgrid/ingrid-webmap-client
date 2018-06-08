@@ -389,7 +389,8 @@ goog.require('ga_window_service');
               scope.contextPermalink = gaPermalink.getHref(p,
                 gaGlobalOptions.isParentIFrame);
               scope.crosshairPermalink = gaPermalink.getHref(
-                  angular.extend({crosshair: 'marker'}, p));
+                  angular.extend({crosshair: 'marker'}, p),
+                  gaGlobalOptions.isParentIFrame);
 
               scope.qrcodeUrl = null;
               if (!gaNetworkStatus.offline && gaWindow.isWidth('>=s') &&

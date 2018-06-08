@@ -280,7 +280,8 @@ goog.require('ga_urlutils_service');
           // Enter key
             $scope.removePreview();
             blockEvent = true;
-            $scope.select(res);
+            // INGRID: Add 'evt'
+            $scope.select(res, evt);
           } else if (evt.keyCode === 9) {
           // Tab key
             focusToCategory(!evt.shiftKey, evt);
@@ -778,7 +779,7 @@ goog.require('ga_urlutils_service');
               return $sce.trustAsHtml(l);
             };
 
-            $scope.select = function(res) {
+            $scope.select = function(res, evt) {
               unregisterMove();
               var isLayerToAdd = true;
               // INGRID: Remove existing layers
@@ -797,6 +798,12 @@ goog.require('ga_urlutils_service');
               if (isLayerToAdd) {
                 selectBWaLocatorData(res, true);
               }
+              if (evt){
+                if (evt.keyCode === 13 && evt.target.id) {
+                  evt.preventDefault();
+                  $scope.getBwaLocatorParam(evt, res);
+                } 
+              }
             };
 
             $scope.getBwaLocatorParam = function(evt, res) {
@@ -813,6 +820,10 @@ goog.require('ga_urlutils_service');
               }
               selectBWaLocatorData(res);
             };
+
+            $scope.stopPreEvent = function (evt) {
+              evt.stopPropagation();
+            }
 
             function updateBWaLocatorData(attrs) {
               if (attrs) {
@@ -1013,9 +1024,9 @@ goog.require('ga_urlutils_service');
                         $scope.map.addLayer(bwaLocatorLayerShort);
                       }
                     }
-                    if(geometry.type === "Point") {
+                    if (geometry.type === 'Point') {
                       var coords = geometry.coordinates;
-                      if(coords){
+                      if (coords) {
                         gaMapUtils.moveTo($scope.map, $scope.ol3d,
                           gaGlobalOptions.searchCoordsZoom, coords);
                       }

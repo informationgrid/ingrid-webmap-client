@@ -16,15 +16,15 @@
            <div class="ga-layer-tools">
               <label>
                 <div translate>bwalocator_from</div>&nbsp;
-                <input id="{{bwalocator_from_id}}" type="text" placeholder="{{bwalocator_from_placeholder}}" value=""/>
+                <input id="{{bwalocator_from_id}}" type="text" placeholder="{{bwalocator_from_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
               </label>
               <label>
                 <div translate>bwalocator_to</div>&nbsp;
-                <input id="{{bwalocator_to_id}}" type="text" placeholder="{{bwalocator_to_placeholder}}" value=""/>
+                <input id="{{bwalocator_to_id}}" type="text" placeholder="{{bwalocator_to_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
               </label>
               <label>
                 <div translate>bwalocator_distance</div>&nbsp;
-                <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value=""/>
+                <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
               </label>
               <button class="ga-icon fa fa-chevron-sign-right" ng-click="getBwaLocatorParam($event, res)"></button>
            </div><!--ga-layer-tools-->
