@@ -1,7 +1,6 @@
-import { Component, Input, ViewChild, Output, OnInit } from '@angular/core';
-import { TreeComponent, TreeModel, TreeNode } from 'angular-tree-component';
+import { Component, Input, OnInit } from '@angular/core';
+import { TreeNode } from 'angular-tree-component';
 import * as _ from 'lodash';
-import * as $ from 'jquery';
 import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';

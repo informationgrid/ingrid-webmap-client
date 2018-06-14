@@ -616,7 +616,7 @@ public class AdministrationResource {
         if(obj.has(id)){
             id = generateID(obj, id + "_");
         }
-        return id;
+        return id.replace(".", "_");
     }
 
     private JSONObject getPaginationArray(JSONArray arr, int currentPage, int lastPage, int firstNumOfLayers, int totalNumOfLayersPerPage) {
@@ -855,10 +855,10 @@ public class AdministrationResource {
             JSONObject obj = new JSONObject(fileContent);
             JSONArray topics = obj.getJSONArray("topics");
             JSONArray newTopics = new JSONArray();
-            if(ids != null) {
-                for (int i = 0; i < topics.length(); i++) {
-                    JSONObject tmpObj = topics.getJSONObject(i);
-                    boolean toDelete = false;
+            for (int i = 0; i < topics.length(); i++) {
+                JSONObject tmpObj = topics.getJSONObject(i);
+                boolean toDelete = false;
+                if(ids != null) {
                     for (String id : ids) {
                         if(id != null && id.length() > 0) {
                             if(tmpObj.getString("id").equals(id)) {
@@ -868,9 +868,13 @@ public class AdministrationResource {
                             }
                         }
                     }
-                    if(!toDelete) {
-                        newTopics.put(tmpObj);
-                    }
+                } else {
+                    String id = tmpObj.getString("id");
+                    removeFile("data/catalog-" + id +".json");
+                    toDelete = true;
+                }
+                if(!toDelete) {
+                    newTopics.put(tmpObj);
                 }
             }
             obj.put("topics", newTopics);

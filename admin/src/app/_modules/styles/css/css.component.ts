@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-css',
@@ -9,8 +10,8 @@ import { HttpService } from '../../../_services/http.service';
 export class CssComponent implements OnInit {
 
   css = '';
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   constructor(private httpService: HttpService) { }
 
@@ -28,23 +29,12 @@ export class CssComponent implements OnInit {
   onUpdate(content: string) {
     this.httpService.updateCss(content).subscribe(
       data => {
-        this.isSaveSuccess = true;
-        this.isSaveUnsuccess = !this.isSaveSuccess;
-        setTimeout(() => {
-          this.removeAlert();
-          }
-        , 4000);
+        this.modalSaveSuccess.show();
       },
       error => {
         console.log('Error save css!');
-        this.isSaveUnsuccess = true;
-        this.isSaveSuccess = !this.isSaveUnsuccess;
+        this.modalSaveUnsuccess.show();
       }
     );
-  }
-
-  removeAlert() {
-    this.isSaveSuccess = false;
-    this.isSaveUnsuccess = false;
   }
 }

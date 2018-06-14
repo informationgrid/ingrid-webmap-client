@@ -15,16 +15,40 @@
                         <textarea class="form-control" name="help-{{lang}}" id="help-{{lang}}" rows="20" [value]="helps.get(lang)" #textarea></textarea>
                         <br>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" (click)="onUpdate(lang, textarea.value)">
+                            <button type="button" class="btn btn-primary" (click)="onUpdate(lang, textarea.value)" translate>
                                 <i class="fa fa-save" aria-hidden="true"></i>
-                                <span translate>save</span>
+                                save
                             </button>
                         </div>
-                        <div class="alert alert-success" *ngIf="isSaveSuccess" translate>help_save_success</div>
-                        <div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>help_save_unsuccess</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+    <div class="app-modal-header">
+        <h5 class="modal-title" translate>help_save_success_title</h5>
+    </div>
+    <div class="app-modal-body">
+        <div class="alert alert-success" translate>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        help_save_success_text
+        </div>
+    </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+    <div class="app-modal-header">
+        <h5 class="modal-title" translate>help_save_unsuccess_title</h5>
+    </div>
+    <div class="app-modal-body">
+        <div class="alert alert-danger" translate>
+        <i class="fa fa-exclamation" aria-hidden="true"></i>
+        help_save_unsuccess_text
+        </div>
+    </div>
+</app-modal>

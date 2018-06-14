@@ -66,5 +66,28 @@
     </button>
   </div>
 </form>
-<div class="alert alert-success" *ngIf="isSaveSuccess" translate>category_edit_success</div>
-<div class="alert alert-danger" *ngIf="isSaveUnsuccess" translate>category_edit_unsuccess</div>
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_edit_success_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-success" translate>
+      <i class="fa fa-check" aria-hidden="true"></i>
+      category_edit_success_text
+    </div>
+  </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_edit_unsuccess_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-danger" translate>
+      <i class="fa fa-exclamation" aria-hidden="true"></i>
+      category_edit_unsuccess_text
+    </div>
+  </div>
+</app-modal>

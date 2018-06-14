@@ -32,16 +32,16 @@
                 [treeDragEnabled]="node.allowDrag()">
                 <div>
                   <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
-                  <span>{{ node.data.label }}</span>
+                  {{ node.data.label }}
                 </div>
                 <div>
-                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#addCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm mr-sm-2" href="#addCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </a>
-                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm" href="#editCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
-                      <i class="fa fa-edit" aria-hidden="true"></i>
+                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm mr-sm-2" href="#editCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                    <i class="fa fa-edit" aria-hidden="true"></i>
                   </a>
-                  <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
+                  <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm mr-sm-2" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -68,8 +68,8 @@
 </div>
 
 <!-- Modal delete -->
-<div class="modal fade" id="addCategoryItemLayerModal{{ categoryId }}" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="addCategoryItemLayerModal{{ categoryId }}" >
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" translate>category_item_del_title</h5>
@@ -91,8 +91,8 @@
 </div>
 
 <!-- Modal delete -->
-<div class="modal fade" id="delCategoryItemModal{{ categoryId }}" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="delCategoryItemModal{{ categoryId }}" >
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" translate>category_item_del_title</h5>

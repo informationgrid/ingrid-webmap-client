@@ -1,8 +1,9 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Category } from '../../../_models/category';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-category-item',
@@ -14,10 +15,10 @@ export class CategoryItemComponent implements OnInit  {
   @Input() category: Category;
   @Input() categories: Category[];
   @Input() layers: LayerItem[];
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   backgroundLayers: LayerItem[];
-  categoryUpdateUnsuccess = false;
-  categoryUpdateSuccess = false;
 
   @Output()
   updateCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
@@ -39,19 +40,11 @@ export class CategoryItemComponent implements OnInit  {
         this.httpService.updateCategory(this.category).subscribe(
           data => {
             this.categories = data;
-            this.categoryUpdateSuccess = true;
-            this.categoryUpdateUnsuccess = !this.categoryUpdateSuccess;
-            // this.updateCategories.emit(this.categories);
-            setTimeout(() => {
-              this.categoryUpdateSuccess = false;
-              this.categoryUpdateUnsuccess = false;
-            }
-            , 4000);
+            this.modalSaveSuccess.show();
           },
           error => {
             console.error('Error update: ' + this.category.id);
-            this.categoryUpdateUnsuccess = true;
-            this.categoryUpdateSuccess = !this.categoryUpdateUnsuccess;
+            this.modalSaveUnsuccess.show();
           }
         );
       }
@@ -62,7 +55,7 @@ export class CategoryItemComponent implements OnInit  {
     this.httpService.deleteCategory(id).subscribe(
       data => {
         this.updateCategories.emit(data);
-        },
+      },
       error => {
         console.error('Error remove category: ' + id );
       }

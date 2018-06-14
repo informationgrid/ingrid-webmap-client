@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-layer-item-wmts',
@@ -13,6 +14,8 @@ export class LayerItemWmtsComponent implements OnInit {
   @Input() layer: LayerItem;
   @Input() layerId = '';
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
   isEdit = false;
 
   tmpLayer: LayerItem;
@@ -75,9 +78,11 @@ export class LayerItemWmtsComponent implements OnInit {
         this.layer.id = f.value.id;
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
+            this.modalSaveSuccess.show();
           },
           error => {
             console.error('Error onUpdateLayer!');
+            this.modalSaveUnsuccess.show();
           }
         );
         this.isEdit = !this.isEdit;

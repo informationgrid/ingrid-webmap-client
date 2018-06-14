@@ -28,6 +28,7 @@ export class Wmslayer extends Layer implements ILayerWms {
             id += '_' + this.wmsLayers;
             for (let index = 0; index < id.length; index++) {
                 id = id.replace(',', '_');
+                id = id.replace('.', '_');
             }
         }
         return this.getUniqueId(layers, id, 0);

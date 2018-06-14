@@ -5,6 +5,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';
 import { HttpService } from '../../../_services/http.service';
 import { Category } from '../../../_models/category';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-form-category-add',
@@ -19,12 +20,11 @@ export class FormCategoryAddComponent {
   @Input() category: Category;
 
   @ViewChild('f') form: NgForm;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   model: CategoryItem = new CategoryItem();
   searchLayerList: LayerItem[];
-
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
 
   constructor(private httpService: HttpService) {
   }
@@ -61,31 +61,26 @@ export class FormCategoryAddComponent {
    onAddCategoryItem (node: TreeNode) {
     if (this.form.valid) {
       if (this.model) {
-        const item = new CategoryItem(undefined, this.model.label, 'prod', this.model.layerBodId, false, [] );
+        const item = new CategoryItem(undefined, this.model.label, 'prod', this.model.layerBodId, false);
         let treeModel;
         if (!node) {
           treeModel = this.tree.treeModel;
           treeModel.nodes.unshift(item);
         } else {
           treeModel = node.treeModel;
+          if (!node.data.children) {
+            node.data.children = [];
+          }
           node.data.children.unshift(item);
         }
         treeModel.update();
         this.httpService.updateCategoryTree(this.category.id, treeModel.nodes).subscribe(
           data => {
-            this.isSaveSuccess = true;
-            this.isSaveUnsuccess = !this.isSaveSuccess;
-            setTimeout(() => {
-                this.isSaveSuccess = false;
-                this.isSaveUnsuccess = false;
-                this.resetForm();
-              }
-            , 4000);
+            this.modalSaveSuccess.show();
           },
           error => {
-            this.isSaveUnsuccess = true;
-            this.isSaveSuccess = !this.isSaveUnsuccess;
             console.error('Error onAddCategoryItem tree!');
+            this.modalSaveUnsuccess.show();
           }
         );
       }

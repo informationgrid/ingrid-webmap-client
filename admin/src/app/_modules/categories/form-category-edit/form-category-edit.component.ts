@@ -5,6 +5,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { Category } from '../../../_models/category';
 import { HttpService } from '../../../_services/http.service';
 import { CategoryItem } from '../../../_models/category-item';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-form-category-edit',
@@ -19,12 +20,10 @@ export class FormCategoryEditComponent implements OnChanges {
   @Input() category: Category;
 
   @ViewChild('f') form: NgForm;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   model: CategoryItem;
-
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
-
   searchLayerList: LayerItem[];
 
   constructor(private httpService: HttpService) {
@@ -41,9 +40,11 @@ export class FormCategoryEditComponent implements OnChanges {
           this.node.data.label,
           'prod',
           this.node.data.layerBodId,
-          this.node.data.selectedOpen,
-          this.node.data.children
+          this.node.data.selectedOpen
        );
+       if (this.node.data.children) {
+         this.model.children = this.node.data.children;
+       }
     }
   }
 
@@ -82,20 +83,12 @@ export class FormCategoryEditComponent implements OnChanges {
       treeModel.update();
       this.httpService.updateCategoryTree(this.category.id, treeModel.nodes).subscribe(
         data => {
-          this.isSaveSuccess = true;
-          this.isSaveUnsuccess = !this.isSaveSuccess;
-          setTimeout(() => {
-              this.isSaveSuccess = false;
-              this.isSaveUnsuccess = false;
-              this.searchLayerList = null;
-              this.resetForm();
-            }
-          , 4000);
+          this.modalSaveSuccess.show();
+          this.resetForm();
         },
         error => {
-          this.isSaveUnsuccess = true;
-          this.isSaveSuccess = !this.isSaveUnsuccess;
           console.error('Error onEditCategoryItem tree!');
+          this.modalSaveUnsuccess.show();
         }
       );
     }

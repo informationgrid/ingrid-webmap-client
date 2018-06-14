@@ -29,6 +29,7 @@ import { TreeModule } from 'angular-tree-component';
 import { LayerListValidatorDirective } from './_directives/layer-list-validator.directive';
 import { LayerItemWmsComponent } from './_modules/layers/layer-item-wms/layer-item-wms.component';
 import { LayerItemWmtsComponent } from './_modules/layers/layer-item-wmts/layer-item-wmts.component';
+import { ModalComponent } from './_modules/modals/modal/modal.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath + '/assets/i18n/');
@@ -52,7 +53,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormCategoryEditComponent,
     LayerListValidatorDirective,
     LayerItemWmsComponent,
-    LayerItemWmtsComponent
+    LayerItemWmtsComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-layer-item-wms',
@@ -13,6 +14,8 @@ export class LayerItemWmsComponent implements OnInit {
   @Input() layer: LayerItem;
   @Input() layerId = '';
   @ViewChild('f') form: NgForm;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   isEdit = false;
 
@@ -37,9 +40,11 @@ export class LayerItemWmsComponent implements OnInit {
         this.layer.id = f.value.id;
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
+            this.modalSaveSuccess.show();
           },
           error => {
             console.error('Error onUpdateLayer!');
+            this.modalSaveUnsuccess.show();
           }
         );
         this.isEdit = !this.isEdit;

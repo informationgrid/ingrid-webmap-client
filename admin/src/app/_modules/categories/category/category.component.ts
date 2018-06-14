@@ -3,9 +3,8 @@ import { Category } from '../../../_models/category';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';
-import * as $ from 'jquery';
-import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-category',
@@ -16,14 +15,14 @@ export class CategoryComponent implements OnChanges {
 
   @Input() layers: LayerItem[];
   @Input() categories: Category[];
+  @ViewChild('f') form: NgForm;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   @Output() updateAppCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
 
   model: Category = new Category();
-  @ViewChild('f') form: NgForm;
 
-  categoryAddUnsuccess = false;
-  categoryAddSuccess = false;
   enableSelectCategories = false;
   selectedCategories: any = new Array();
   searchText = '';
@@ -66,21 +65,22 @@ export class CategoryComponent implements OnChanges {
      event.stopPropagation();
    }
 
-   deleteSelectedCategories () {
-    if (this.selectedCategories.length > 0) {
-      this.httpService.deleteCategories(this.selectedCategories).subscribe(
-        data => {
-          this.updateAppCategories.emit(data);
-          this.selectedCategories = new Array();
-        },
-        error => {
-          console.error('Error on remove categories: ' + error);
-        }
-      );
-    }
+   deleteSelectedCategories (modal: ModalComponent) {
+    this.httpService.deleteCategories(this.selectedCategories).subscribe(
+      data => {
+        this.updateAppCategories.emit(data);
+        this.selectedCategories = new Array();
+      },
+      error => {
+        console.error('Error on remove categories: ' + error);
+      },
+      () => {
+        modal.hide();
+      }
+    );
   }
 
-  deleteAllCategories () {
+  deleteAllCategories (modal: ModalComponent) {
     this.httpService.deleteAllCategories().subscribe(
       data => {
         this.updateAppCategories.emit(data);
@@ -88,12 +88,15 @@ export class CategoryComponent implements OnChanges {
       },
       error => {
         console.error('Error on remove categories: ' + error);
+      },
+      () => {
+        modal.hide();
       }
     );
   }
 
   // Add new category
-  addCategory() {
+  addCategory(modal: ModalComponent) {
     if (this.form.valid) {
       const value = this.model.id;
       if (value) {
@@ -106,20 +109,18 @@ export class CategoryComponent implements OnChanges {
               data => {
                 this.categories = data;
                 this.updateAppCategories.emit(data);
+                this.modalSaveSuccess.show();
               },
               error => {
                 console.error('Error add category!');
+                this.modalSaveUnsuccess.show();
               },
               () => {
-                this.categoryAddUnsuccess = false;
-                this.categoryAddSuccess = !this.categoryAddUnsuccess;
+                modal.hide();
                 this.form.reset();
               }
             );
           }
-        } else {
-          this.categoryAddUnsuccess = true;
-          this.categoryAddSuccess = !this.categoryAddUnsuccess;
         }
       }
     }

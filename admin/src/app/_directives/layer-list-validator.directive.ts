@@ -1,5 +1,5 @@
 import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { NG_VALIDATORS, NgControl, Validator, ValidatorFn, FormControl } from '@angular/forms';
+import { NG_VALIDATORS, Validator, ValidatorFn, FormControl } from '@angular/forms';
 import { LayerItem } from '../_models/layer-item';
 
 @Directive({

@@ -1,9 +1,9 @@
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms';
-import {  } from 'events';
 import { Setting } from '../../../_models/setting';
 import { Category } from '../../../_models/category';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-setting',
@@ -16,9 +16,8 @@ export class SettingComponent implements OnInit {
   @Input() categories: Category[];
   @Output() updateAppSettings: EventEmitter<Setting> = new EventEmitter();
   @ViewChild('f') form: NgForm;
-
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   constructor(private httpService: HttpService) { }
 
@@ -75,25 +74,14 @@ export class SettingComponent implements OnInit {
         this.httpService.updateSetting(this.settings).subscribe(
           data => {
             this.updateAppSettings.emit(this.settings);
-            this.isSaveSuccess = true;
-            this.isSaveUnsuccess = !this.isSaveSuccess;
-            setTimeout(() => {
-              this.removeAlert();
-              }
-            , 4000);
+            this.modalSaveSuccess.show();
           },
           error => {
             console.log('Error save settings!');
-            this.isSaveUnsuccess = true;
-            this.isSaveSuccess = !this.isSaveUnsuccess;
+            this.modalSaveUnsuccess.show();
           }
         );
       }
     }
-  }
-
-  removeAlert() {
-    this.isSaveSuccess = false;
-    this.isSaveUnsuccess = false;
   }
 }

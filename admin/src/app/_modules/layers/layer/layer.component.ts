@@ -1,17 +1,15 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
 import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 import { MapUtilsService } from '../../../_services/map-utils.service';
-import { Layer } from '../../../_models/layer';
 import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from 'angular-tree-component';
-import { LayerType } from '../../../_models/layer-type.enum';
 import { Wmslayer } from '../../../_models/wmslayer';
 import { Wmtslayer } from '../../../_models/wmtslayer';
-import { toJS } from 'mobx';
 import * as _ from 'lodash';
 import { CategoryItem } from '../../../_models/category-item';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-layer',
@@ -22,6 +20,8 @@ export class LayerComponent implements OnInit {
 
   @Input() categories: Category[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   layers: LayerItem[] = [];
   layersCurrentPage = 1;
@@ -38,13 +38,12 @@ export class LayerComponent implements OnInit {
   newLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
   isUrlLoadUnsuccess = false;
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
   isWMSService = false;
   hasLoadLayers = false;
 
   categoryId = '';
-  category: CategoryItem[] = [];
+  category = new Map<String, CategoryItem[]>();
+  selectedCategories = new Map<String, Array<TreeNode>>();
 
   actionMapping: IActionMapping = {
     mouse: {
@@ -126,22 +125,23 @@ export class LayerComponent implements OnInit {
      event.stopPropagation();
    }
 
-  deleteSelectedLayers() {
-    if (this.selectedLayers.length > 0) {
-      this.httpService.deleteLayers(this.selectedLayers).subscribe(
-        data => {
-          this.updateAppLayers.emit(data);
-          this.selectedLayers = new Array();
-          this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
-        },
-        error => {
-          console.error('Error on remove layer: ' + error);
-        }
-      );
-    }
+  deleteSelectedLayers(modal: ModalComponent) {
+    this.httpService.deleteLayers(this.selectedLayers).subscribe(
+      data => {
+        this.updateAppLayers.emit(data);
+        this.selectedLayers = new Array();
+        this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+      },
+      error => {
+        console.error('Error on remove layer: ' + error);
+      },
+      () => {
+        modal.hide();
+      }
+    );
   }
 
-  deleteAllLayers() {
+  deleteAllLayers(modal: ModalComponent) {
     this.httpService.deleteAllLayers().subscribe(
       data => {
         this.updateAppLayers.emit(data);
@@ -150,6 +150,9 @@ export class LayerComponent implements OnInit {
       },
       error => {
         console.error('Error on remove layer: ' + error);
+      },
+      () => {
+        modal.hide();
       }
     );
   }
@@ -190,23 +193,62 @@ export class LayerComponent implements OnInit {
     const root = treeModel.getFirstRoot();
     this.check(root, false);
   }
-  onCategoryChange(event) {
-    this.categoryId = event.target.value;
+  onCategoryChange(id) {
+    this.categoryId = id;
     if (this.categoryId) {
       this.httpService.getCategory(this.categoryId, null).subscribe(
         data => {
           // const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
-          this.category = data;
+          this.category.set(id, data);
         },
         error => {
           console.error('Error get category "' + this.categoryId + '"!');
         }
       );
-    } else {
-      this.category = [];
     }
   }
-  onAddLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent) {
+  onSetCategory(id: String, model: TreeModel) {
+    let arr = this.selectedCategories.get(id);
+    if (!arr) {
+      arr = new Array<TreeNode>();
+    }
+    const node = model.getActiveNode();
+    if (arr.indexOf(node) === -1) {
+      arr.push(node);
+    }
+    this.selectedCategories.set(id, arr);
+  }
+  onRemoveCategory(id: String, node: TreeNode) {
+    const arr = this.selectedCategories.get(id);
+    const index = arr.indexOf(node, 0);
+    if (index > -1) {
+      arr.splice(index, 1);
+    }
+    if (arr.length === 0) {
+      this.selectedCategories.delete(id);
+    }
+  }
+  onGetNodeName(node) {
+    let title = '';
+    title += this.getNodeParentTitle(node.parent);
+    title += node.data.label;
+    return title;
+  }
+
+  getNodeParentTitle(node: TreeNode) {
+    let title = '';
+    if (node) {
+      if (node.data.label) {
+        title += node.data.label + ' -> ';
+      }
+    }
+    if (node.parent) {
+      title += this.getNodeParentTitle(node.parent);
+    }
+    return title;
+  }
+
+  onAddLayers(layersModel: TreeModel) {
     const root = layersModel.getFirstRoot();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
@@ -216,9 +258,9 @@ export class LayerComponent implements OnInit {
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(f, layerItems, root, categoryTree);
+    this.saveAddedLayersToCategory(layerItems, root);
   }
-  onAddCombineLayers(layersModel: TreeModel, f: NgForm, categoryTree: TreeComponent) {
+  onAddCombineLayers(layersModel: TreeModel) {
     const root = layersModel.getFirstRoot();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
@@ -253,7 +295,7 @@ export class LayerComponent implements OnInit {
       layerItems.push(layerItem);
     }
     this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(f, layerItems, root, categoryTree);
+    this.saveAddedLayersToCategory(layerItems, root);
   }
 
   saveAddedLayers(layerItems: LayerItem[]) {
@@ -262,9 +304,11 @@ export class LayerComponent implements OnInit {
         this.searchText = '';
         this.updateAppLayers.emit(data);
         this.loadLayers(1, this.layersPerPage, this.searchText);
+        this.modalSaveSuccess.show();
       },
       error => {
         console.error('Error add layers!');
+        this.modalSaveUnsuccess.show();
       }
     );
   }
@@ -280,33 +324,26 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  saveAddedLayersToCategory(f: NgForm, layers: LayerItem[], rootLayersModel: TreeNode, categoryTree: TreeComponent) {
-    if (f.valid && categoryTree) {
-      if (f.value.categoryId) {
-        const categoryTreeModel = categoryTree.treeModel;
-        if (categoryTreeModel) {
-          const categoryTreeModelFocusNode = categoryTreeModel.focusedNode;
-          if (categoryTreeModelFocusNode) {
-            const categoryLayers = [];
-            this.getCategoryNode(rootLayersModel, layers, 0, categoryLayers);
-            categoryLayers.forEach(categoryLayer => {
-              categoryTreeModelFocusNode.data.children.unshift(categoryLayer);
+  saveAddedLayersToCategory(layers: LayerItem[], rootLayersModel: TreeNode) {
+    const categoryLayers = [];
+    this.getCategoryNode(rootLayersModel, layers, 0, categoryLayers);
+    if (this.categories) {
+      for (const c in this.categories) {
+        if (this.category) {
+          const tmpC = this.categories[c];
+          const tmpCategory = this.category.get(tmpC.id);
+          const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
+          if (tmpCategory && tmpSelectedCategory) {
+            tmpCategory.forEach(tmpCatItem => {
+              this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
             });
-            categoryTreeModel.update();
-            this.httpService.updateCategoryTree(this.categoryId, categoryTreeModel.nodes).subscribe(
+            this.httpService.updateCategoryTree(tmpC.id, tmpCategory).subscribe(
               data => {
-                this.isSaveSuccess = true;
-                this.isSaveUnsuccess = !this.isSaveSuccess;
-                setTimeout(() => {
-                    this.isSaveSuccess = false;
-                    this.isSaveUnsuccess = false;
-                  }
-                , 4000);
+                this.modalSaveSuccess.show();
               },
               error => {
-                this.isSaveUnsuccess = true;
-                this.isSaveSuccess = !this.isSaveUnsuccess;
                 console.error('Error onAddCategoryItem tree!');
+                this.modalSaveUnsuccess.show();
               }
             );
           }
@@ -314,20 +351,48 @@ export class LayerComponent implements OnInit {
       }
     }
   }
+
+  addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers) {
+    tmpSelectedCategory.forEach(tmpSelectedCatItem => {
+      const tmpSelectedCatItemId = tmpSelectedCatItem.id;
+      if (tmpCatItem.id === tmpSelectedCatItemId) {
+        categoryLayers.forEach( tmpCatLayer => {
+          if (!tmpCatItem.children) {
+            tmpCatItem.children = [];
+          }
+          tmpCatItem.children.push(tmpCatLayer);
+          const index = tmpSelectedCategory.indexOf(tmpSelectedCatItem, 0);
+          if (index > -1) {
+            tmpSelectedCategory.splice(index, 1);
+          }
+        });
+      }
+      if (tmpCatItem.children) {
+        tmpCatItem.children.forEach(tmpCatChildItem => {
+          this.addLayersToCategoryItem(tmpCatChildItem, tmpSelectedCategory, categoryLayers);
+        });
+      }
+    });
+  }
+
   getCategoryNode(node: TreeNode, layers: LayerItem[], i, children) {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
-        item = new CategoryItem(null, layers[i].item.label, 'prod', layers[i].id, false, []);
+        item = new CategoryItem(null, layers[i].item.label, 'prod', layers[i].id, false);
         children.push(item);
         i++;
       }
       if (i !== layers.length) {
-        if (node.children) {
+        if (node.children && node.children.length > 0) {
           if (item) {
+            item.children = [];
             children = item.children;
           }
-          node.children.forEach((child) => this.getCategoryNode(child, layers, i, children));
+          node.children.forEach((child) => {
+            this.getCategoryNode(child, layers, i, children);
+            i++;
+          });
         }
       }
     }
@@ -350,6 +415,7 @@ export class LayerComponent implements OnInit {
               const cap = service['Capability'];
               const dcpType = cap['Request']['GetMap']['DCPType'];
               const layer = cap['Layer'];
+              const format = cap['Request']['GetMap']['Format'];
               let wmsUrl;
               // GetMap-Url
               if (dcpType instanceof Array) {
@@ -358,7 +424,7 @@ export class LayerComponent implements OnInit {
                 wmsUrl = dcpType['HTTP']['Get']['OnlineResource']['xlink:href'];
               }
               if (layer) {
-                this.createWMSLayers(layer, this.newLayers, wmsUrl, version, null, null, null);
+                this.createWMSLayers(layer, this.newLayers, wmsUrl, version, format, null, null, null);
               }
             } else if (data['Capabilities']) {
               // WMTS
@@ -383,12 +449,13 @@ export class LayerComponent implements OnInit {
           console.error('Error load ' + serviceUrl);
           this.isUrlLoadUnsuccess = true;
           this.isUrlLoadSuccess =  !this.isUrlLoadUnsuccess;
+          this.newLayers = [];
         }
       );
     }
   }
 
-  createWMSLayers(layer, layers, wmsUrl, version, bbox, minScale, maxScale) {
+  createWMSLayers(layer, layers, wmsUrl, version, format, bbox, minScale, maxScale) {
     const newLayer = new Wmslayer();
     // Version
     newLayer.version = version;
@@ -452,16 +519,28 @@ export class LayerComponent implements OnInit {
       newLayer.tooltip = false;
     }
 
+    // format
+    format.forEach(f => {
+      if (!newLayer.format) {
+        if (f.indexOf('image/png') > -1) {
+          newLayer.format = 'png';
+        } else if (f.indexOf('image/jpeg') > -1) {
+          newLayer.format = 'jpeg';
+        } else if (f.indexOf('image/gif') > -1) {
+          newLayer.format = 'gif';
+        }
+      }
+    });
 
     const children = layer['Layer'];
     const newLayerChildren = [];
     if (children) {
       if (children instanceof Array) {
         children.forEach(child => {
-          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, format, newLayer.extent, newLayer.minScale, newLayer.maxScale);
         });
       } else {
-        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, format, newLayer.extent, newLayer.minScale, newLayer.maxScale);
       }
     }
     layers.push({
@@ -484,7 +563,16 @@ export class LayerComponent implements OnInit {
       newLayer.serviceUrl = serviceMetadataUrl;
       // Format
       if (layer['ResourceURL']) {
-        newLayer.format = layer['ResourceURL']['Format'];
+        newLayer.format = layer['ResourceURL']['format'];
+        if (newLayer.format) {
+          if (newLayer.format.indexOf('image/png') > -1) {
+            newLayer.format = 'png';
+          } else if (newLayer.format.indexOf('image/jpeg') > -1) {
+            newLayer.format = 'jpeg';
+          } else if (newLayer.format.indexOf('image/gif') > -1) {
+            newLayer.format = 'gif';
+          }
+        }
         newLayer.template = layer['ResourceURL']['template'];
       }
       // Style
@@ -504,9 +592,15 @@ export class LayerComponent implements OnInit {
         newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
         // scales
         const scaleDenominator = tm['ScaleDenominator'];
+        if (!newLayer.scales) {
+          newLayer.scales = [];
+        }
         newLayer.scales.push(+scaleDenominator);
         // matrixIds
         const identifier = tm['ows:Identifier'];
+        if (!newLayer.matrixIds) {
+          newLayer.matrixIds = [];
+        }
         newLayer.matrixIds.push(identifier);
 
         const tileHeight = tm['TileHeight'];

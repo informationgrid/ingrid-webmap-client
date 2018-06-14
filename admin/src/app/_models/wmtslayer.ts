@@ -1,4 +1,3 @@
-import { LayerRestEncoding } from './layer-rest-encoding.enum';
 import { Layer } from './layer';
 import { LayerType } from './layer-type.enum';
 import { ILayerWmts } from '../_interfaces/ilayer-wmts';

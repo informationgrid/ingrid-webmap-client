@@ -1,7 +1,8 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, ViewChild } from '@angular/core';
 import { Setting } from '../../../_models/setting';
 import { HttpService } from '../../../_services/http.service';
 import { ActivatedRoute } from '@angular/router';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-help',
@@ -15,8 +16,8 @@ export class HelpComponent implements OnChanges {
   @Input() settings: Setting = new Setting();
   languages: string[] = [];
   helps: Map<String, String>;
-  isSaveSuccess = false;
-  isSaveUnsuccess = false;
+  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
+  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.settings) {
@@ -47,23 +48,12 @@ export class HelpComponent implements OnChanges {
   onUpdate(lang: string, content: string) {
     this.httpService.updateHelp(lang, content).subscribe(
       data => {
-        this.isSaveSuccess = true;
-        this.isSaveUnsuccess = !this.isSaveSuccess;
-        setTimeout(() => {
-          this.removeAlert();
-          }
-        , 4000);
+        this.modalSaveSuccess.show();
       },
       error => {
         console.log('Error save help ' + lang);
-        this.isSaveUnsuccess = true;
-        this.isSaveSuccess = !this.isSaveUnsuccess;
+        this.modalSaveUnsuccess.show();
       }
     );
-  }
-
-  removeAlert() {
-    this.isSaveSuccess = false;
-    this.isSaveUnsuccess = false;
   }
 }

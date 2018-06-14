@@ -2,22 +2,22 @@
   <form #f="ngForm" (ngSubmit)="onUpdateLayer(f)">
     <div class="modal-header">
       <div>
-        <button *ngIf="!isEdit" type="button" class="btn btn-primary" (click)="onEdit()">
+        <button *ngIf="!isEdit" type="button" class="btn btn-primary" (click)="onEdit()" translate>
           <i class="fa fa-edit" aria-hidden="true"></i>
-          <span translate>edit</span>
+          edit
         </button>
-        <button *ngIf="isEdit" type="submit" class="btn btn-primary" [disabled]="!f.valid">
+        <button *ngIf="isEdit" type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
           <i class="fa fa-check" aria-hidden="true"></i>
-          <span translate>save</span>
+          save
         </button>
-        <button *ngIf="isEdit" type="button" class="btn btn-secondary" (click)="onCancel()">
+        <button *ngIf="isEdit" type="button" class="btn btn-secondary" (click)="onCancel()" translate>
           <i class="fa fa-ban" aria-hidden="true"></i>
-          <span translate>cancel</span>
+          cancel
         </button>
       </div>
-      <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id">
+      <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
         <i class="fa fa-trash" aria-hidden="true"></i>
-        <span translate>delete</span>
+        delete
       </button>
     </div>
     <div class="modal-body">
@@ -644,3 +644,29 @@
     </div>
   </form>
 </div>
+
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+    <div class="app-modal-header">
+      <h5 class="modal-title" translate>layer_edit_success_title</h5>
+    </div>
+    <div class="app-modal-body">
+      <div class="alert alert-success" translate>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        layer_edit_success_text
+      </div>
+    </div>
+  </app-modal>
+  
+  <!-- Modal save unsuccess-->
+  <app-modal #modalSaveUnsuccess [animateClose]="true">
+    <div class="app-modal-header">
+      <h5 class="modal-title" translate>layer_edit_unsuccess_title</h5>
+    </div>
+    <div class="app-modal-body">
+      <div class="alert alert-danger" translate>
+        <i class="fa fa-exclamation" aria-hidden="true"></i>
+        layer_edit_unsuccess_text
+      </div>
+    </div>
+  </app-modal>

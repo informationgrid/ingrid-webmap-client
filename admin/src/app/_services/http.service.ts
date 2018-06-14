@@ -5,8 +5,6 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { Category } from '../_models/category';
 import { LayerItem } from '../_models/layer-item';
 import 'rxjs/add/operator/map';
-import { Wmslayer } from '../_models/wmslayer';
-import { Wmtslayer } from '../_models/wmtslayer';
 import { CategoryItem } from '../_models/category-item';
 import { Setting } from '../_models/setting';
 import { environment } from '../../environments/environment';
