@@ -23,8 +23,6 @@ import { CategoryTreeComponent } from './_modules/categories/category-tree/categ
 import { SettingComponent } from './_modules/settings/setting/setting.component';
 import { HelpComponent } from './_modules/helps/help/help.component';
 import { CssComponent } from './_modules/styles/css/css.component';
-import { FormCategoryAddComponent } from './_modules/categories/form-category-add/form-category-add.component';
-import { FormCategoryEditComponent } from './_modules/categories/form-category-edit/form-category-edit.component';
 import { TreeModule } from 'angular-tree-component';
 import { LayerListValidatorDirective } from './_directives/layer-list-validator.directive';
 import { LayerItemWmsComponent } from './_modules/layers/layer-item-wms/layer-item-wms.component';
@@ -49,8 +47,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     CssComponent,
     MapToIterablePipe,
     ArrayFilterPipe,
-    FormCategoryAddComponent,
-    FormCategoryEditComponent,
     LayerListValidatorDirective,
     LayerItemWmsComponent,
     LayerItemWmtsComponent,

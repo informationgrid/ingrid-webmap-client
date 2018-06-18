@@ -38,6 +38,16 @@ export class CategoryComponent implements OnChanges {
     this.categoriesLength = this.categories.length;
   }
 
+  showModalAdd (modal: ModalComponent, form: NgForm) {
+    this.model = new Category();
+    if (form) {
+      form.reset({
+        id: this.model.id
+      });
+    }
+    modal.show();
+  }
+
   loadCategory(id: string) {
     this.httpService.getCategory(id, null)
     .subscribe( data => {

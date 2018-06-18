@@ -2,17 +2,9 @@
   <div class="row">
     <!-- Tree -->
     <div class="col-sm">
-        <a data-toggle="collapse" class="btn btn-primary btn-sm" href="#addCategoryItemModal-{{ categoryId }}">
+        <button class="btn btn-primary btn-sm" (click)="showAddModal(modalNodeAdd)">
           <i class="fa fa-plus" aria-hidden="true"></i>
-        </a>
-        <div id="{{ categoryId }}">
-          <div class="collapse multi-collapse" id="addCategoryItemModal-{{ categoryId }}" [attr.data-parent]="'#category-tree-' + categoryId">
-            <div class="card card-body">
-              <h5 class="modal-title" translate>category_item_add_title</h5>
-              <app-form-category-add [tree]="tree" [layers]="layers" [node]="" [category]="category"></app-form-category-add>
-            </div>
-          </div>
-        </div>
+        </button>
         <br>
         <tree-root #tree [nodes]="categoryTree" [options]="options" 
         (activate)="onNodeActivate($event)" (deactivate)="onNodeDeactivate($event)" (moveNode)="onNodeMove($event)"
@@ -35,29 +27,15 @@
                   {{ node.data.label }}
                 </div>
                 <div>
-                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm mr-sm-2" href="#addCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node, formNodeAdd)">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                  </a>
-                  <a *ngIf="node.isFocused" data-toggle="collapse" class="btn btn-primary btn-sm mr-sm-2" href="#editCategoryItemModal-{{ categoryId }}-{{node.data.id}}">
+                  </button>
+                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node, formNodeEdit)">
                     <i class="fa fa-edit" aria-hidden="true"></i>
-                  </a>
+                  </button>
                   <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm mr-sm-2" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
-                </div>
-              </div>
-            </div>
-            <div id="{{ categoryId }}-{{node.data.id}}">
-              <div class="collapse multi-collapse" id="addCategoryItemModal-{{ categoryId }}-{{node.data.id}}" [attr.data-parent]="'#category-tree-' + categoryId">
-                <div class="card card-body">
-                  <h5 class="modal-title" translate>category_item_add_title</h5>
-                  <app-form-category-add [tree]="tree" [layers]="layers" [node]="node" [category]="category"></app-form-category-add>
-                </div>
-              </div>
-              <div class="collapse multi-collapse" id="editCategoryItemModal-{{ categoryId }}-{{node.data.id}}" [attr.data-parent]="'#category-tree-' + categoryId">
-                <div class="card card-body">
-                  <h5 class="modal-title" translate>category_item_edit_title</h5>
-                  <app-form-category-edit [tree]="tree" [layers]="layers" [node]="node" [category]="category"></app-form-category-edit>
                 </div>
               </div>
             </div>
@@ -112,3 +90,161 @@
     </div>
   </div>
 </div>
+
+<!-- Modal Add node-->
+<app-modal #modalNodeAdd [cssClass]="'modal-lg'">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_add_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <form #formNodeAdd="ngForm" (ngSubmit)="onAddCategoryItem(formNodeAdd, tree, modalNodeAdd)" novalidate>
+      <div class="form-group row" [ngClass]="{
+        'has-danger': labelAdd.invalid && (labelAdd.dirty || labelAdd.touched),
+        'has-success': labelAdd.valid && (labelAdd.dirty || labelAdd.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="labelAdd" translate>category_item_add_label</label>
+        <div class="col-sm-8">
+          <input type="text" #labelAdd="ngModel" [(ngModel)]="focusItem.label" class="form-control" name="labelAdd" id="labelAdd" placeholder="{{ ('category_item_add_label_input') | translate }}" required>
+          <div class="form-control-feedback" 
+              *ngIf="labelAdd.errors && (labelAdd.dirty || labelAdd.touched)">
+            <div *ngIf="labelAdd.errors.required"><span translate>field_required</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{
+        'has-danger': layerBodIdAdd.invalid && (layerBodIdAdd.dirty || layerBodIdAdd.touched),
+        'has-success': layerBodIdAdd.valid && (layerBodIdAdd.dirty || layerBodIdAdd.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="layerBodIdAdd" translate>category_item_add_layerBodId</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" id="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="layers">
+            <div class="input-group-append" *ngIf="searchLayerList">
+              <button class="btn btn-primary" (click)="clearLayerList()">
+                  <i class="fa fa-caret-up" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-control-feedback" 
+            *ngIf="layerBodIdAdd.errors && (layerBodIdAdd.dirty || layerBodIdAdd.touched)">
+            <div *ngIf="layerBodIdAdd.errors.notExist"><span translate>layerBodId_not_exist</span></div>
+          </div>
+          <ul *ngIf="searchLayerList" class="list-group search-list">
+            <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
+              <span>{{ layer.item.label }} ({{ layer.id }})</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="app-modal-footer">
+    <button class="btn btn-primary" [disabled]="formNodeAdd.invalid" (click)="formNodeAdd.ngSubmit.emit()" translate>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      add
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal Edit node-->
+<app-modal #modalNodeEdit [cssClass]="'modal-lg'">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_edit_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <form #formNodeEdit="ngForm" (ngSubmit)="onEditCategoryItem(formNodeEdit, tree, modalNodeEdit)" novalidate>
+      <div class="form-group row" [ngClass]="{
+        'has-danger': id.invalid && (id.dirty || id.touched),
+        'has-success': id.valid && (id.dirty || id.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="id" translate>category_item_edit_id</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #id="ngModel" [(ngModel)]="focusItem.id" name="id" id="id" placeholder="{{ ('category_item_edit_id_input') | translate }}" required>
+          <div class="form-control-feedback" 
+              *ngIf="id.errors && (id.dirty || id.touched)">
+            <div *ngIf="id.errors.required"><span translate>field_required</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{
+        'has-danger': label.invalid && (label.dirty || label.touched),
+        'has-success': label.valid && (label.dirty || label.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="label" translate>category_item_edit_label</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #label="ngModel" [(ngModel)]="focusItem.label" name="label" id="label" placeholder="{{ ('category_item_edit_label_input') | translate }}" required>
+          <div class="form-control-feedback" 
+              *ngIf="label.errors && (label.dirty || label.touched)">
+            <div *ngIf="label.errors.required"><span translate>field_required</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="selectedOpen" translate>category_item_edit_selectedOpen</label>
+        <div class="col-sm-8">
+          <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen"  id="selectedOpen">
+              <option value="false" translate>false</option>
+              <option value="true" translate>true</option>
+            </select>
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{
+        'has-danger': layerBodId.invalid && (layerBodId.dirty || layerBodId.touched),
+        'has-success': layerBodId.valid && (layerBodId.dirty || layerBodId.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_edit_layerBodId</label>
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="layers">
+            <div class="input-group-append" *ngIf="searchLayerList">
+              <button class="btn btn-primary" (click)="clearLayerList()">
+                  <i class="fa fa-caret-up" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-control-feedback" 
+              *ngIf="layerBodId.errors && (layerBodId.dirty || layerBodId.touched)">
+            <div *ngIf="layerBodId.errors.notExist"><span translate>layerBodId_not_exist</span></div>
+          </div>
+          <ul *ngIf="searchLayerList" class="list-group search-list">
+            <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
+              <span>{{ layer.item.label }} ({{ layer.id }})</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="app-modal-footer">
+    <button class="btn btn-primary" [disabled]="formNodeEdit.invalid" (click)="formNodeEdit.ngSubmit.emit()" translate>
+      <i class="fa fa-save" aria-hidden="true"></i>
+      save
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_update_success_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-success" translate>
+      <i class="fa fa-check" aria-hidden="true"></i>
+      category_item_update_success_text
+    </div>
+  </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_update_unsuccess_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-danger" translate>
+      <i class="fa fa-exclamation" aria-hidden="true"></i>
+      category_item_update_unsuccess_text
+    </div>
+  </div>
+</app-modal>
