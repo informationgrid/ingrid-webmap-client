@@ -14,7 +14,7 @@
           <div class="collapse navbar-collapse" id="navBarLayer">
             <div class="mr-auto">
               <div class="my-2">
-                <button class="btn btn-primary mr-sm-2" type="button" (click)="modalAddService.show()" translate>
+                <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalAdd()" translate>
                   <i class="fa fa-plus" aria-hidden="true"></i>
                   service_new
                 </button>
@@ -78,61 +78,64 @@
     <h5 class="modal-title" translate>layer_add_title</h5>
   </div>
   <div class="app-modal-body">
-    <p translate>service_item_add_text</p>
-    <div class="input-group">
-      <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
-        (keyup.enter)="loadService(newService.value)">
-      <div class="input-group-append">
-        <button [disabled]="!newService.value" class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
-      </div>
-    </div>
-    <br>
-    <div class="alert alert-success" *ngIf="isUrlLoadSuccess" translate>service_load_success</div>
-    <div class="alert alert-danger" *ngIf="isUrlLoadUnsuccess" translate>service_load_unsuccess</div>
-    <!-- Show layers -->
-    <div class="container">
-      <div class="row">
-        <div class="col-sm">
-          <tree-root #newLayersTree [nodes]="newLayers" [options]="optionsLayersTree" (updateData)="onUpdateTree($event)">
-            <ng-template #treeNodeTemplate let-node let-index="index">
-              <input
-                type="checkbox"
-                class="mr-sm-2"
-                [indeterminate]="node.data.indeterminate"
-                [checked]="node.data.checked">
-              <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
-              {{ node.data.label }}<span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
-            </ng-template>
-          </tree-root>
-        </div>
-        <div class="col-sm">
-          <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
-            <div class="input-group form-group">
-              <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
-                <option value="" translate>service_add_to_category</option>
-                <option [value]="category.id" *ngFor="let category of categories" [title]="category.id">{{ category.id }}</option>
-              </select>
-              <div class="input-group-append">
-                <button [disabled]="!selectCategory.value" class="btn btn-secondary" (click)="modalCategory.show();onCategoryChange(selectCategory.value);" translate>
-                  <i class="fa fa-plus" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div *ngFor="let cat of categories">
-            <div *ngIf="selectedCategories.get(cat.id)">{{ cat.id }}</div>
-            <div class="input-group" *ngFor="let node of selectedCategories.get(cat.id)">
-              <span class="form-control">{{ this.onGetNodeName(node) }}</span>
-              <div class="input-group-append">
-                <button type="button" class="btn btn-outline-danger" (click)="onRemoveCategory(cat.id, node)">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+    <form>
+      <p translate>service_item_add_text</p>
+      <div class="input-group">
+        <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
+          (keyup.enter)="loadService(newService.value)">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
         </div>
       </div>
-    </div>
+      <br>
+      <div class="alert alert-success" *ngIf="isUrlLoadSuccess" translate>service_load_success</div>
+      <div class="alert alert-danger" *ngIf="isUrlLoadUnsuccess" translate>service_load_unsuccess</div>
+      <!-- Show layers -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <tree-root #newLayersTree [nodes]="newLayers" [options]="optionsLayersTree" (updateData)="onUpdateTree($event)">
+              <ng-template #treeNodeTemplate let-node let-index="index">
+                <input
+                  type="checkbox"
+                  class="mr-sm-2"
+                  [indeterminate]="node.data.indeterminate"
+                  [checked]="node.data.checked">
+                <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                {{ node.data.label }}<span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
+              </ng-template>
+            </tree-root>
+          </div>
+          <div class="col-sm">
+            <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
+              <div class="input-group form-group">
+                <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
+                  <option value="" translate>service_add_to_category</option>
+                  <option [value]="category.id" *ngFor="let category of categories" [title]="category.id">{{ category.id }}</option>
+                </select>
+                <div class="input-group-append">
+                  <button [disabled]="!selectCategory.value" class="btn btn-secondary" (click)="modalCategory.show();onCategoryChange(selectCategory.value);" translate>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let cat of categories">
+              <label *ngIf="selectedCategories.get(cat.id)">{{ cat.id }}</label>
+              <div class="input-group" *ngFor="let node of selectedCategories.get(cat.id)">
+                <span class="form-control">{{ this.onGetNodeName(node) }}</span>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-danger" (click)="onRemoveCategory(cat.id, node)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="app-modal-footer" *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
     <button [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary mr-sm-2" (click)="onAddLayers(this.newLayersTree.treeModel, this.categoryTree)" translate>
@@ -204,10 +207,10 @@
   </div>
 </app-modal>
 
-<!-- Modal save unsuccess-->
+<!-- Modal category-->
 <app-modal #modalCategory>
   <div class="app-modal-header">
-    <h5 class="modal-title" translate>layers_save_unsuccess_title</h5>
+    <h5 class="modal-title" translate>layers_category_title</h5>
   </div>
   <div class="app-modal-body">
     <tree-root #categoryTree [nodes]="category.get(categoryId)" [options]="optionsCategoryTree">
@@ -218,7 +221,7 @@
     </tree-root>
   </div>
   <div class="app-modal-footer">
-    <button [disabled]="!categoryTree && !categoryTree.treeModel.getActiveNode()"class="btn btn-primary" (click)="onSetCategory(categoryId, categoryTree.treeModel)" translate>
+    <button [disabled]="!categoryTree || !categoryTree.treeModel.getActiveNode()"class="btn btn-primary" (click)="onSetCategory(categoryId, categoryTree.treeModel)" translate>
       <i class="fa fa-plus" aria-hidden="true"></i>
       add
     </button>

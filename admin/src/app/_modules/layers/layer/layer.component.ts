@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
@@ -20,6 +20,8 @@ export class LayerComponent implements OnInit {
 
   @Input() categories: Category[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @ViewChild('newService') newService: ElementRef;
+  @ViewChild('modalAddService') modalAddService: ModalComponent;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -89,6 +91,13 @@ export class LayerComponent implements OnInit {
   // Search
   searchLayers() {
     this.loadLayers(1, this.layersPerPage, this.searchText);
+  }
+
+  showModalAdd() {
+    this.modalAddService.show();
+    this.newService.nativeElement.value = '';
+    this.newLayers = [];
+    this.selectedCategories = new Map<String, Array<TreeNode>>();
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
@@ -230,8 +239,12 @@ export class LayerComponent implements OnInit {
   }
   onGetNodeName(node) {
     let title = '';
-    title += this.getNodeParentTitle(node.parent);
-    title += node.data.label;
+    if (node) {
+      if (node.parent) {
+        title += this.getNodeParentTitle(node.parent);
+      }
+      title += node.data.label;
+    }
     return title;
   }
 
@@ -241,9 +254,9 @@ export class LayerComponent implements OnInit {
       if (node.data.label) {
         title += node.data.label + ' -> ';
       }
-    }
-    if (node.parent) {
-      title += this.getNodeParentTitle(node.parent);
+      if (node.parent) {
+        title += this.getNodeParentTitle(node.parent);
+      }
     }
     return title;
   }
@@ -260,6 +273,7 @@ export class LayerComponent implements OnInit {
     this.saveAddedLayers(layerItems);
     this.saveAddedLayersToCategory(layerItems, root);
   }
+
   onAddCombineLayers(layersModel: TreeModel) {
     const root = layersModel.getFirstRoot();
     const checkedLayers = [];
@@ -436,8 +450,10 @@ export class LayerComponent implements OnInit {
               const serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
               const version = service['version'];
               const layer = service['Contents']['Layer'];
+              const operations = service['ows:OperationsMetadata'];
+              const encoding = 'REST';
               const tileMatrixSet = service['Contents']['TileMatrixSet'];
-              this.createWMTSLayer(layer, this.newLayers, serviceMetadataUrl, version, tileMatrixSet);
+              this.createWMTSLayer(layer, this.newLayers, serviceMetadataUrl, version, tileMatrixSet, encoding);
             }
           }
           this.isUrlLoadSuccess = true;
@@ -446,7 +462,7 @@ export class LayerComponent implements OnInit {
               this.isUrlLoadSuccess = false;
               this.isUrlLoadUnsuccess =  false;
             }
-          , 4000);
+          , 1000);
         },
         error => {
           console.error('Error load ' + serviceUrl);
@@ -553,13 +569,15 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  createWMTSLayer (layer, layers, serviceMetadataUrl, version, tileMatrixSet) {
+  createWMTSLayer (layer, layers, serviceMetadataUrl, version, tileMatrixSet, encoding) {
     tileMatrixSet.forEach(tileMatrix => {
       const newLayer = new Wmtslayer();
       // Label
       newLayer.label = layer['ows:Title'];
       // Version
       newLayer.version = version;
+      // Encoding
+      newLayer.requestEncoding = encoding;
       // ServiceLayerName
       newLayer.serverLayerName = layer['ows:Identifier'];
       // ServiceMetadataUrl

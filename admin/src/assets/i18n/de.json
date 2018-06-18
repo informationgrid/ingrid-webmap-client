@@ -140,6 +140,7 @@
     "layers_all_del_text" : "Die Löschung aller Karten werden mit dem Lösch-Button bestätigt.",
     "layer_item_del_title" : "Karte löschen",
     "layer_item_del_text" : "Ihre Karte wird mit dem Lösch-Button bestätigt.",
+    "layers_category_title" : "Karten zu Kategorie hinzufügen",
     "layer_new" : "Neue Karte",
     "layer_id" : "ID",
     "layer_wmsUrl" : "WMS-URL",

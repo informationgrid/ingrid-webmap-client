@@ -17,6 +17,14 @@ export class Wmslayer extends Layer implements ILayerWms {
         super(LayerType.wms);
         this.singleTile = false;
         this.gutter = 150;
+        this.background = false;
+        this.crossOrigin = false;
+        this.highlightable = false;
+        this.opacity = 1;
+        this.searchable = true;
+        this.timestamps = [];
+        this.timeEnabled = false;
+        this.timeBehaviour = '';
     }
 
     generateId(layers: LayerItem[]) {
@@ -28,7 +36,6 @@ export class Wmslayer extends Layer implements ILayerWms {
             id += '_' + this.wmsLayers;
             for (let index = 0; index < id.length; index++) {
                 id = id.replace(',', '_');
-                id = id.replace('.', '_');
             }
         }
         return this.getUniqueId(layers, id, 0);
@@ -42,6 +49,6 @@ export class Wmslayer extends Layer implements ILayerWms {
                 return this.getUniqueId(layers, id, i);
             }
         });
-        return id;
+        return id.replace(/\./gi, '_');
     }
 }

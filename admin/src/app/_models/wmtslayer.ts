@@ -15,6 +15,17 @@ export class Wmtslayer extends Layer implements ILayerWmts {
 
     constructor() {
         super(LayerType.wmts);
+        this.background = false;
+        this.crossOrigin = false;
+        this.searchable = true;
+        this.hasLegend = false;
+        this.legendUrl = '';
+        this.tooltip = false;
+        this.opacity = 1;
+        this.timestamps = [];
+        this.timeEnabled = false;
+        this.timeBehaviour = '';
+        this.singleTile = false;
     }
 
     generateId() {
@@ -25,6 +36,6 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         if (this.matrixSet) {
             id += '_' + this.matrixSet.replace(',', '_');
         }
-        return id;
+        return id.replace(/\./gi, '_');
     }
 }
