@@ -27,10 +27,10 @@
                   {{ node.data.label }}
                 </div>
                 <div>
-                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node, formNodeAdd)">
+                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node)">
                     <i class="fa fa-plus" aria-hidden="true"></i>
                   </button>
-                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node, formNodeEdit)">
+                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node)">
                     <i class="fa fa-edit" aria-hidden="true"></i>
                   </button>
                   <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm mr-sm-2" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
@@ -97,7 +97,7 @@
     <h5 class="modal-title" translate>category_item_add_title</h5>
   </div>
   <div class="app-modal-body">
-    <form #formNodeAdd="ngForm" (ngSubmit)="onAddCategoryItem(formNodeAdd, tree, modalNodeAdd)" novalidate>
+    <form #formNodeAdd="ngForm" (ngSubmit)="onAddCategoryItem(tree, modalNodeAdd)" novalidate>
       <div class="form-group row" [ngClass]="{
         'has-danger': labelAdd.invalid && (labelAdd.dirty || labelAdd.touched),
         'has-success': labelAdd.valid && (labelAdd.dirty || labelAdd.touched)}
@@ -152,7 +152,7 @@
     <h5 class="modal-title" translate>category_item_edit_title</h5>
   </div>
   <div class="app-modal-body">
-    <form #formNodeEdit="ngForm" (ngSubmit)="onEditCategoryItem(formNodeEdit, tree, modalNodeEdit)" novalidate>
+    <form #formNodeEdit="ngForm" (ngSubmit)="onEditCategoryItem(tree, modalNodeEdit)" novalidate>
       <div class="form-group row" [ngClass]="{
         'has-danger': id.invalid && (id.dirty || id.touched),
         'has-success': id.valid && (id.dirty || id.touched)}

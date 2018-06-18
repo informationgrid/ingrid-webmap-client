@@ -18,7 +18,6 @@ import { MapUtilsService } from './_services/map-utils.service';
 import { HttpService } from './_services/http.service';
 import { environment } from '../environments/environment';
 import { LayerItemComponent } from './_modules/layers/layer-item/layer-item.component';
-import { CategoryItemComponent } from './_modules/categories/category-item/category-item.component';
 import { CategoryTreeComponent } from './_modules/categories/category-tree/category-tree.component';
 import { SettingComponent } from './_modules/settings/setting/setting.component';
 import { HelpComponent } from './_modules/helps/help/help.component';
@@ -40,7 +39,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     LayerComponent,
     LayerItemComponent,
     CategoryComponent,
-    CategoryItemComponent,
     CategoryTreeComponent,
     SettingComponent,
     HelpComponent,

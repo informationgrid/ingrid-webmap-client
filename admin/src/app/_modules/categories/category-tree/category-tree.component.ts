@@ -18,6 +18,8 @@ export class CategoryTreeComponent implements OnInit {
   @Input() category: Category;
   @Input() layers: LayerItem[] = [];
   @Input() categoryTree: CategoryItem[] = [];
+  @ViewChild('formNodeAdd') formNodeAdd: NgForm;
+  @ViewChild('formNodeEdit') formNodeEdit: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -108,20 +110,15 @@ export class CategoryTreeComponent implements OnInit {
   }
 
   // Add node
-  showAddModal(modal: ModalComponent, node: TreeNode, form: NgForm) {
+  showAddModal(modal: ModalComponent, node: TreeNode) {
     this.focusItem =  new CategoryItem();
     this.focusNode = node;
-    if (form) {
-      form.resetForm({
-        label: null,
-        layerBodId: null
-      });
-    }
+    this.formNodeAdd.reset();
     modal.show();
   }
 
-  onAddCategoryItem (form: NgForm, tree: TreeComponent, modal: ModalComponent) {
-    if (form.valid) {
+  onAddCategoryItem (tree: TreeComponent, modal: ModalComponent) {
+    if (this.formNodeAdd.valid) {
       if (this.focusItem) {
         const item = new CategoryItem(undefined, this.focusItem.label, 'prod', false);
         if (this.focusItem.layerBodId) {
@@ -154,7 +151,7 @@ export class CategoryTreeComponent implements OnInit {
   }
 
   // Edit node
-  showEditModal(modal: ModalComponent, node: TreeNode, form: NgForm) {
+  showEditModal(modal: ModalComponent, node: TreeNode) {
     this.focusNode = node;
     if (this.focusNode) {
       this.focusItem = new CategoryItem(
@@ -169,8 +166,8 @@ export class CategoryTreeComponent implements OnInit {
       if (this.focusNode.data.layerBodId) {
        this.focusItem.layerBodId = this.focusNode.data.layerBodId;
       }
-      if (form) {
-        form.reset({
+      if (this.formNodeEdit) {
+        this.formNodeEdit.reset({
           id: this.focusItem.id,
           label: this.focusItem.label,
           selectedOpen: this.focusItem.selectedOpen,
@@ -181,8 +178,8 @@ export class CategoryTreeComponent implements OnInit {
     modal.show();
   }
 
-  onEditCategoryItem (form: NgForm, tree: TreeComponent, modal: ModalComponent) {
-    if (form.valid) {
+  onEditCategoryItem (tree: TreeComponent, modal: ModalComponent) {
+    if (this.formNodeEdit.valid) {
       this.focusNode.data.id = this.focusItem.id;
       this.focusNode.data.label = this.focusItem.label;
       this.focusNode.data.layerBodId = this.focusItem.layerBodId;

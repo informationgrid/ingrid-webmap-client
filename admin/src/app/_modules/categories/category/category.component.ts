@@ -11,11 +11,12 @@ import { ModalComponent } from '../../modals/modal/modal.component';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
-export class CategoryComponent implements OnChanges {
+export class CategoryComponent implements OnInit, OnChanges {
 
   @Input() layers: LayerItem[];
   @Input() categories: Category[];
-  @ViewChild('f') form: NgForm;
+  @ViewChild('formAdd') formAdd: NgForm;
+  @ViewChild('formEdit') formEdit: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -31,20 +32,44 @@ export class CategoryComponent implements OnChanges {
   categoriesLength = 0;
   isOpen = false;
 
+  backgroundLayers: LayerItem[];
+
   constructor(private httpService: HttpService) {
+  }
+
+  ngOnInit() {
+    if (this.layers) {
+      this.backgroundLayers = this.layers.filter(
+        layer => layer.item.background
+      );
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     this.categoriesLength = this.categories.length;
   }
 
-  showModalAdd (modal: ModalComponent, form: NgForm) {
+  showModalAdd (modal: ModalComponent) {
     this.model = new Category();
-    if (form) {
-      form.reset({
-        id: this.model.id
-      });
-    }
+    this.formAdd.reset();
+    modal.show();
+  }
+
+  showModalEdit (modal: ModalComponent, category: Category) {
+    this.model = category;
+    this.formAdd.reset({
+      id: this.model.id,
+      defaultBackground: this.model.defaultBackground,
+      backgroundLayers: this.model.backgroundLayers,
+      selectedLayers: this.model.selectedLayers,
+      activatedLayers: this.model.activatedLayers
+    });
+    modal.show();
+  }
+
+  showModalDelete (modal: ModalComponent, category: Category) {
+    this.model = category;
+    this.selectedCategories = [category.id];
     modal.show();
   }
 
@@ -107,7 +132,7 @@ export class CategoryComponent implements OnChanges {
 
   // Add new category
   addCategory(modal: ModalComponent) {
-    if (this.form.valid) {
+    if (this.formAdd.valid) {
       const value = this.model.id;
       if (value) {
         const existCategory = this.categories.filter(
@@ -120,19 +145,76 @@ export class CategoryComponent implements OnChanges {
                 this.categories = data;
                 this.updateAppCategories.emit(data);
                 this.modalSaveSuccess.show();
+                modal.hide();
               },
               error => {
                 console.error('Error add category!');
                 this.modalSaveUnsuccess.show();
-              },
-              () => {
-                modal.hide();
-                this.form.reset();
               }
             );
           }
         }
       }
     }
+  }
+
+  // Edit category
+  onUpdateCategory(modal: ModalComponent) {
+    if (this.formEdit.valid) {
+      if (this.model) {
+        this.model.id = this.formEdit.value.id;
+        this.model.defaultBackground = this.formEdit.value.defaultBackground;
+        this.httpService.updateCategory(this.model).subscribe(
+          data => {
+            this.categories = data;
+            this.modalSaveSuccess.show();
+            modal.hide();
+          },
+          error => {
+            console.error('Error update: ' + this.model.id);
+            this.modalSaveUnsuccess.show();
+          }
+        );
+      }
+    }
+  }
+
+  onAddItem(value: any, list: any ) {
+    if (value && list) {
+      if (list.indexOf(value) === -1) {
+        list.push(value);
+      }
+    }
+    value = '';
+  }
+  onRemoveItem(value: any, list: any ) {
+    if (value && list) {
+      const index = list.indexOf(value, 0);
+      if (index > -1) {
+        list.splice(index, 1);
+      }
+    }
+  }
+
+  onUpItem(value: any, list: any) {
+    if (value && list) {
+      this.onMoveItem(value, list, -1);
+    }
+  }
+
+  onDownItem(value: any, list: any) {
+    if (value && list) {
+      this.onMoveItem(value, list, 1);
+    }
+  }
+
+  onMoveItem(value: string, list: any, delta: number) {
+    const index = list.indexOf(value);
+    const newIndex = index + delta;
+    if (newIndex < 0  || newIndex === list.length) {
+      return;
+    }
+    const indexes = [index, newIndex].sort();
+    list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
   }
 }

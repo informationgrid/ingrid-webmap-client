@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navBarCategory">
           <div class="mr-auto">
             <div class="my-2">
-              <button class="btn btn-primary mr-sm-2" type="button" (click)="modalAdd.show()" translate>
+              <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalAdd(modalAdd)" translate>
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 category_new
               </button>
@@ -61,12 +61,12 @@
             <div class="card card-body">
               <div class="modal-header">
                 <div>
-                  <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#editModal' + category.id" translate>
+                  <button class="btn btn-primary" type="button" (click)="showModalEdit(modalEdit, category);" translate>
                     <i class="fa fa-edit" aria-hidden="true"></i>
                     edit
                   </button>
                 </div>
-                <button class="btn btn-danger" type="button" data-toggle="modal" [attr.data-target]="'#delModal' + category.id" translate>
+                <button class="btn btn-danger" type="button" (click)="showModalDelete(modalDelete, category);" translate>
                   <i class="fa fa-trash" aria-hidden="true" ></i>
                   delete
                 </button>  
@@ -76,7 +76,6 @@
               </div>
             </div>
           </div>
-          <app-category-item [category]="category" [categories]="categories" [layers]="layers" (updateCategories)="updateCategories($event)"></app-category-item>
         </div>
       </div>
     </div>
@@ -84,13 +83,13 @@
 </div>
 
 <!-- Modal add -->
-<app-modal #modalAdd [cssClass]="'modal-lg'" [hasFooter]="false">
+<app-modal #modalAdd [cssClass]="'modal-lg'">
   <div class="app-modal-header">
     <h5 class="modal-title" translate>category_add_title</h5>
   </div>
   <div class="app-modal-body">
     <p translate>category_add_text</p>
-    <form #f="ngForm" (ngSubmit)="addCategory(modalAdd)" novalidate>
+    <form #formAdd="ngForm" (ngSubmit)="addCategory(modalAdd)" novalidate>
       <div class="form-group row" [ngClass]="{
         'has-danger': id.invalid && (id.dirty || id.touched),
         'has-success': id.valid && (id.dirty || id.touched)}
@@ -106,13 +105,13 @@
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-          <button type="submit" class="btn btn-primary" [disabled]="!form.valid"translate>
-          <i class="fa fa-save" aria-hidden="true"></i>
-          save
-        </button>
-      </div>
     </form>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="!formAdd.valid" (click)="formAdd.ngSubmit.emit()"translate>
+      <i class="fa fa-save" aria-hidden="true"></i>
+      save
+    </button>
   </div>
 </app-modal>
 
@@ -171,5 +170,137 @@
       <i class="fa fa-exclamation" aria-hidden="true"></i>
       category_add_unsuccess_text
     </div>
+  </div>
+</app-modal>
+
+<!-- Modal edit -->
+<app-modal #modalEdit [cssClass]="'modal-lg'">
+  <div class="app-modal-header">
+    <h5 class="modal-title"><span translate>category_edit_title</span> {{ model.id }}</h5>
+  </div>
+  <div class="app-modal-body">
+    <form #formEdit="ngForm" (ngSubmit)="onUpdateCategory(modalEdit)">
+      <!-- id -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="category_id" translate>category_id</label>
+        <div class="col-sm-8">
+          <input type="text" #id="ngModel" [(ngModel)]="model.id" class="form-control" name="id" id="category_id" disabled>
+        </div>
+      </div>
+      <!-- backgroundLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="category_backgroundLayers" translate>category_backgroundLayers</label>
+        <div class="col-sm-8">
+          <div class="input-group form-group" *ngFor="let item of model.backgroundLayers; let i=index;">
+            <input type="text" class="form-control" value="{{ item }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.backgroundLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.backgroundLayers.length - 1) && model.backgroundLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.backgroundLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.backgroundLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddBgLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option value="osmLayer" translate>osmLayer</option>
+              <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, model.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- defaultBackground -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="category_defaultBackground" translate>category_defaultBackground</label>
+        <div class="col-sm-8">
+          <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="model.defaultBackground">
+            <option value="" translate>category_select_layer</option>
+            <option [value]="layer" *ngFor="let layer of model.backgroundLayers" title="{{ layer }}" >{{ layer }}</option>
+          </select>
+        </div>
+      </div>
+      <!-- selectedLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="category_selectedLayers" translate>category_selectedLayers</label>
+        <div class="col-sm-8">
+          <ul class="list-group" id="category_selectedLayers">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of model.selectedLayers; let i=index;">
+              {{ item }}
+              <div>
+                <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(item, model.selectedLayers)">
+                  <i class="fa fa-sort-up" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, model.selectedLayers)">
+                  <i class="fa fa-sort-down" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddSelectLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, model.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- activatedLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="category_activatedLayers" translate>category_activatedLayers</label>
+        <div class="col-sm-8">
+          <ul class="list-group" id="category_activatedLayers">
+            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of model.activatedLayers; let i=index;">
+              {{ item }}
+              <div>
+                <button *ngIf="i !== 0 && model.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onUpItem(item, model.activatedLayers)">
+                  <i class="fa fa-sort-up" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, model.activatedLayers)">
+                  <i class="fa fa-sort-down" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+          <div class="input-group">
+            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddActiveLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, model.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="!formEdit.valid" (click)="formEdit.ngSubmit.emit()" translate>
+      <i class="fa fa-save" aria-hidden="true"></i>
+      save
+    </button>
   </div>
 </app-modal>
