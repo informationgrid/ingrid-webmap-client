@@ -143,17 +143,20 @@ export class CategoryComponent implements OnInit, OnChanges {
   // Add new category
   addCategory(modal: ModalComponent) {
     if (this.formAdd.valid) {
-      const value = this.model.id;
+      const value = this.formAdd.value.addCatId;
       if (value) {
-        const existCategory = this.categories.filter(
-          category => category.id.toLowerCase() === value.toLowerCase()
-        );
         if (!this.checkCategoryExist(value)) {
           if (this.model) {
-            this.httpService.addCategory(this.model).subscribe(
+            this.model.id = value;
+            const map = new Map<String, String>();
+            map.set(value,  this.formAdd.value.addCatLabel);
+            map.set('' + value + '_service_link_href', '');
+            map.set('' + value + '_service_link_label', '');
+            map.set('topic_' + value + '_tooltip', this.formAdd.value.addCatTooltip ? this.formAdd.value.addCatTooltip : value);
+            this.httpService.addCategoryAndLabel(this.model, map).subscribe(
               data => {
-                this.categories = data;
-                this.updateAppCategories.emit(data);
+                this.categories = data[0];
+                this.updateAppCategories.emit(data[0]);
                 this.modalSaveSuccess.show();
                 modal.hide();
               },

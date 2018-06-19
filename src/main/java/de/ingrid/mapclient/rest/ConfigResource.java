@@ -28,6 +28,7 @@ import java.util.Properties;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -145,5 +146,62 @@ public class ConfigResource {
         CapabilitiesUpdateTask cut = new CapabilitiesUpdateTask();
         cut.run();
         return Response.status(Response.Status.OK ).build();
+    }
+    
+    @GET
+    @Path("locales/{locale}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+        String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        JSONObject locales = new JSONObject();
+        String fileLocalePath = null;
+        String fileContent = null;
+        // Get frontend locale
+        fileLocalePath = classPath + "frontend/prd/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get admin locale
+        fileLocalePath = classPath + "admin/assets/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "i18n/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get profile locale
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            fileContent = Utils.getFileContent(config_dir, locale, "", "locales/");
+            JSONObject profileLocale = new JSONObject(fileContent);
+            if(profileLocale != null) {
+                Iterator<?> keys = profileLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (profileLocale.has(key)) {
+                        locales.put(key, profileLocale.get(key));
+                    }
+                }
+            }
+        }
+        return Response.ok( locales ).build();
     }
 }

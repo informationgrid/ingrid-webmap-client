@@ -29,7 +29,7 @@ import { LayerItemWmtsComponent } from './_modules/layers/layer-item-wmts/layer-
 import { ModalComponent } from './_modules/modals/modal/modal.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, environment.translatePath + '/assets/i18n/');
+  return new TranslateHttpLoader(http, environment.translatePath);
 }
 
 @NgModule({

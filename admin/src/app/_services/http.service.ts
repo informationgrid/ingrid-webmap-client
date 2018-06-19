@@ -149,6 +149,13 @@ export class HttpService {
     return this.http.put<Category[]>(httpApiHost + '/categories/' + category.id, body, httpJsonOptions);
   }
 
+  addCategoryAndLabel(category: Category, locale: Map<String, String>) {
+    return forkJoin(
+      this.addCategory(category),
+      this.updateLocales(locale)
+    );
+  }
+
   addCategory(category: Category): Observable<Category[]> {
     const body = JSON.stringify(category);
     return this.http.post<Category[]>(httpApiHost + '/categories', body, httpJsonOptions);
@@ -219,5 +226,18 @@ export class HttpService {
 
   updateCss(css: string) {
     return this.http.put(httpApiHost + '/css', css, {responseType: 'text'});
+  }
+
+// Locales
+  updateLocales(map: Map<String, String>) {
+    let body = '{';
+    if (map) {
+      map.forEach((value: string, key: string) => {
+        body += '"' + key + '":' + '"' + value + '",';
+      });
+    }
+    body = body.slice(0, -1);
+    body += '}';
+    return this.http.put(httpApiHost + '/locales/de', body, httpJsonOptions);
   }
 }

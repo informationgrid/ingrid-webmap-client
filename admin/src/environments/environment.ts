@@ -8,6 +8,6 @@ declare const require: any;
 export const environment = {
   production: false,
   httpServiceDomain: 'http://localhost:8080',
-  translatePath: '',
+  translatePath: '/assets/i18n/',
   version: require('../../package.json').version
 };

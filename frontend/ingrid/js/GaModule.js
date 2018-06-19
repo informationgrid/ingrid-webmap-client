@@ -133,7 +133,8 @@ goog.require('ga_waitcursor_service');
 
   module.config(function($translateProvider, gaGlobalOptions) {
     $translateProvider.useStaticFilesLoader({
-      prefix: gaGlobalOptions.resourceUrl + 'locales/',
+      // INGRID: Use REST for locales
+      prefix: '/ingrid-webmap-client/rest/config/locales/',
       suffix: '.json'
     });
     $translateProvider.cloakClassName('ng-cloak');

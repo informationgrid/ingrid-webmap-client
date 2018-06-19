@@ -477,6 +477,37 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @PUT
+    @Path("locales/{lang}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateLocaleRequest(@RequestBody String content, @PathParam("lang") String lang) {
+        try {
+            JSONObject locale = null;
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+            if(fileContent != null) {
+                locale = new JSONObject(fileContent);
+            }
+            JSONObject item = new JSONObject(content);
+            if(item != null && locale != null) {
+                Iterator<?> keys = locale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (locale.has(key)) {
+                        item.put(key, locale.get(key));
+                    }
+                }
+            }
+            updateFile("locales/" + lang + ".json", item);
+            return Response.status( Response.Status.OK ).build();
+        } catch (JSONException e) {
+            log.error("Error PUT '/locales'!");
+        }
+        
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
     private JSONArray updateCategoryTree(String id, JSONArray item) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
