@@ -77,20 +77,21 @@ public class Utils {
         }
         path = path.concat( prefix );
         File directory = new File(path);
-        if(directory.exists()){
-            File file = new File(path.concat(filename).concat(fileTyp));
-            if(file.exists()){
-                try {
-                    String fileContent = FileUtils.readFileToString( file, "UTF-8");
-                    if(fileContent != null){
-                        return fileContent;
-                    }
-                } catch (IOException e) {
-                    log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
+        if(!directory.exists()){
+            directory.mkdir();
+        }
+        File file = new File(path.concat(filename).concat(fileTyp));
+        if(file.exists()){
+            try {
+                String fileContent = FileUtils.readFileToString( file, "UTF-8");
+                if(fileContent != null){
+                    return fileContent;
                 }
-            }else{
-                log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
+            } catch (IOException e) {
+                log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
             }
+        }else{
+            log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
         }
         return null;
     }

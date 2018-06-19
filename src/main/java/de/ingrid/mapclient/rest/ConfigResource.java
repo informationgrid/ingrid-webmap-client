@@ -189,8 +189,9 @@ public class ConfigResource {
         // Get profile locale
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, locale, "", "locales/");
+        fileLocalePath = config_dir;
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null){
             JSONObject profileLocale = new JSONObject(fileContent);
             if(profileLocale != null) {
                 Iterator<?> keys = profileLocale.keys();
