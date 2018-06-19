@@ -182,7 +182,7 @@
                                 </div>
                             </div>
                             <div class="input-group form-group">
-                                <input type="text" #langs name="langs" class="form-control" placeholder="{{ ('add') | translate }}">
+                                <input type="text" #langs name="langs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(langs.value, settings.settingLanguages);"
                                         [disabled]="!langs.value">
@@ -435,7 +435,7 @@
                                 </div>
                             </div>
                             <div class="input-group form-group">
-                                <input type="text" #mouseProjs name="mouseProjs" class="form-control" placeholder="{{ ('add') | translate }}">
+                                <input type="text" #mouseProjs name="mouseProjs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(mouseProjs.value, settings.settingDefaultMouseProjections);"
                                         [disabled]="!mouseProjs.value">
@@ -479,7 +479,7 @@
                                 </div>
                             </div>
                             <div class="input-group form-group">
-                                <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add') | translate }}">
+                                <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
                                         [disabled]="!serviceLists.value">

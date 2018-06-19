@@ -98,6 +98,7 @@ export class LayerComponent implements OnInit {
     this.newService.nativeElement.value = '';
     this.newLayers = [];
     this.selectedCategories = new Map<String, Array<TreeNode>>();
+    this.categoryId = '';
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {

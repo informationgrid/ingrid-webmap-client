@@ -130,6 +130,16 @@ export class CategoryComponent implements OnInit, OnChanges {
     );
   }
 
+  checkCategoryExist(value) {
+    const existCategory = this.categories.filter(
+      category => category.id.toLowerCase() === value.toLowerCase()
+    );
+    if (existCategory.length === 0) {
+      return false;
+    }
+    return true;
+  }
+
   // Add new category
   addCategory(modal: ModalComponent) {
     if (this.formAdd.valid) {
@@ -138,7 +148,7 @@ export class CategoryComponent implements OnInit, OnChanges {
         const existCategory = this.categories.filter(
           category => category.id.toLowerCase() === value.toLowerCase()
         );
-        if (existCategory.length === 0) {
+        if (!this.checkCategoryExist(value)) {
           if (this.model) {
             this.httpService.addCategory(this.model).subscribe(
               data => {

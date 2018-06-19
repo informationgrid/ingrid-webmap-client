@@ -91,24 +91,24 @@
     <p translate>category_add_text</p>
     <form #formAdd="ngForm" (ngSubmit)="addCategory(modalAdd)" novalidate>
       <div class="form-group row" [ngClass]="{
-        'has-danger': id.invalid && (id.dirty || id.touched),
-        'has-success': id.valid && (id.dirty || id.touched)}
+        'has-danger': addCatId.invalid && (addCatId.dirty || addCatId.touched),
+        'has-success': addCatId.valid && (addCatId.dirty || addCatId.touched)}
         ">
-        <label class="col-sm-4 col-form-label" for="category_input_new_id" translate>category_id</label>
+        <label class="col-sm-4 col-form-label" for="addCatId" translate>category_id</label>
         <div class="col-sm-8">
-            <input type="text" #id="ngModel" [(ngModel)]="model.id" class="form-control" name="id" id="category_input_new_id" required minlength="4" pattern="^[a-zA-Z0-9_-]*">
-            <div class="form-control-feedback" 
-              *ngIf="id.errors && (id.dirty || id.touched)">
-            <div *ngIf="id.errors.required"><span translate>field_required</span></div>
-            <div *ngIf="id.errors.minlength"><span translate>field_minlength</span> {{ id.errors.minlength.requiredLength }}</div>
-            <div *ngIf="id.errors.pattern"><span translate>field_pattern</span></div>
+          <input type="text" #addCatId="ngModel" [(ngModel)]="model.id" class="form-control" name="addCatId" id="addCatId" required minlength="4" pattern="^[a-zA-Z0-9_-]*">
+          <div class="form-control-feedback" 
+              *ngIf="addCatId.errors && (addCatId.dirty || addCatId.touched)">
+            <div *ngIf="addCatId.errors.required"><span translate>field_required</span></div>
+            <div *ngIf="addCatId.errors.minlength"><span translate>field_minlength</span> {{ addCatId.errors.minlength.requiredLength }}</div>
+            <div *ngIf="addCatId.errors.pattern"><span translate>field_pattern</span></div>
           </div>
         </div>
       </div>
     </form>
   </div>
   <div class="app-modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="!formAdd.valid" (click)="formAdd.ngSubmit.emit()"translate>
+    <button type="submit" class="btn btn-primary" [disabled]="!formAdd.valid || checkCategoryExist(model.id)" (click)="formAdd.ngSubmit.emit()"translate>
       <i class="fa fa-save" aria-hidden="true"></i>
       save
     </button>
