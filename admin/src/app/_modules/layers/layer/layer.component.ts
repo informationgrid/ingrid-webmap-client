@@ -320,6 +320,7 @@ export class LayerComponent implements OnInit {
         this.updateAppLayers.emit(data);
         this.loadLayers(1, this.layersPerPage, this.searchText);
         this.modalSaveSuccess.show();
+        this.modalAddService.hide();
       },
       error => {
         console.error('Error add layers!');
@@ -355,6 +356,7 @@ export class LayerComponent implements OnInit {
             this.httpService.updateCategoryTree(tmpC.id, tmpCategory).subscribe(
               data => {
                 this.modalSaveSuccess.show();
+                this.modalAddService.hide();
               },
               error => {
                 console.error('Error onAddCategoryItem tree!');

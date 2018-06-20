@@ -182,7 +182,7 @@
       <div class="form-group row">
         <label class="col-sm-4 col-form-label" for="selectedOpen" translate>category_item_edit_selectedOpen</label>
         <div class="col-sm-8">
-          <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen"  id="selectedOpen">
+          <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen"  id="selectedOpen" >
               <option value="false" translate>false</option>
               <option value="true" translate>true</option>
             </select>
@@ -195,7 +195,7 @@
         <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_edit_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="layers">
+            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="layers" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>
