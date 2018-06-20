@@ -1,5 +1,6 @@
 {
     "add": "",
+    "add_placeholder": "",
     "app_title": "",
     "categories": "",
     "category_help_title": "",
@@ -17,11 +18,15 @@
     "category_delete_title": "",
     "category_delete_text": "",
     "category_id": "",
+    "category_label": "",
+    "category_tooltip": "",
     "category_langs": "",
     "category_selectedLayers": "",
     "category_item_add_title": "",
     "category_item_add_text": "",
+    "category_item_add_id": "",
     "category_item_add_label": "",
+    "category_item_add_tooltip": "",
     "category_item_add_label_input": "",
     "category_item_add_layerBodId": "",
     "category_item_add_layerBodId_input": "",
@@ -175,7 +180,7 @@
     "layer_origin": "",
     "layer_background": "",
     "layer_highlightable": "",
-    "layer_add_title" :  "Karten hinzufügen",
+    "layer_add_title" : "",
     "layer_tooltip": "",
     "layerBodId_not_exist": "",
     "load": "",
@@ -274,5 +279,6 @@
     "category_add_success_title": "",
     "category_add_success_text": "",
     "category_add_unsuccess_title": "",
-    "category_add_unsuccess_text": ""
+    "category_add_unsuccess_text": "",
+    "refresh": ""
 }

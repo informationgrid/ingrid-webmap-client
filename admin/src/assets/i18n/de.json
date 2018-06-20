@@ -180,7 +180,7 @@
     "layer_origin": "Origin",
     "layer_background": "Hintergrundkarte",
     "layer_highlightable": "Highlightable",
-    "layer_add_title" :  "Karten hinzufügen",
+    "layer_add_title" : "Karten hinzufügen",
     "layer_tooltip": "Tooltip",
     "layerBodId_not_exist": "Die Karte existiert bereits!",
     "load": "Laden",
@@ -279,5 +279,6 @@
     "category_add_success_title": "Änderungen speichern",
     "category_add_success_text": "Änderungen wurden erfolgreich gespeichert!",
     "category_add_unsuccess_title": "Probleme beim Speichern",
-    "category_add_unsuccess_text": "Änderungen wurden nicht gespeichert!"
+    "category_add_unsuccess_text": "Änderungen wurden nicht gespeichert!",
+    "refresh": "Aktualisieren"
 }
