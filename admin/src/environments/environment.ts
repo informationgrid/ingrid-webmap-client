@@ -8,6 +8,6 @@ declare const require: any;
 export const environment = {
   production: false,
   httpServiceDomain: 'http://localhost:8080',
-  translatePath: '/assets/i18n/',
+  translatePath: 'http://localhost:8080/ingrid-webmap-client/rest/config/locales/',
   version: require('../../package.json').version
 };

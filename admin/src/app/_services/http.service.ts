@@ -144,6 +144,12 @@ export class HttpService {
     return this.http.get<CategoryItem[]>(url, httpJsonOptions);
   }
 
+  updateCategoryAndLabel(category: Category, locale: Map<String, String>) {
+    return forkJoin(
+      this.updateCategory(category),
+      this.updateLocales(locale)
+    );
+  }
   updateCategory(category: Category): Observable<Category[]> {
     const body = JSON.stringify(category);
     return this.http.put<Category[]>(httpApiHost + '/categories/' + category.id, body, httpJsonOptions);

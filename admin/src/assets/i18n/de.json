@@ -18,6 +18,8 @@
     "category_delete_title": "Kategorie löschen",
     "category_delete_text": "Soll die Kategorie wirklich gelöscht werden?",
     "category_id": "ID",
+    "category_label": "Label",
+    "category_tooltip": "Tooltip",
     "category_langs": "Sprache",
     "category_selectedLayers": "Selektierte Karten",
     "category_item_add_title" :"Hinzufügen",

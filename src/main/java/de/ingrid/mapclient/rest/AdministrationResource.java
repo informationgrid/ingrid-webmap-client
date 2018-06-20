@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -482,30 +483,54 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateLocaleRequest(@RequestBody String content, @PathParam("lang") String lang) {
         try {
-            JSONObject locale = null;
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
-            if(fileContent != null) {
-                locale = new JSONObject(fileContent);
-            }
-            JSONObject item = new JSONObject(content);
-            if(item != null && locale != null) {
-                Iterator<?> keys = locale.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (locale.has(key)) {
-                        item.put(key, locale.get(key));
-                    }
-                }
-            }
-            updateFile("locales/" + lang + ".json", item);
+            updateLocale(lang, content);
             return Response.status( Response.Status.OK ).build();
         } catch (JSONException e) {
             log.error("Error PUT '/locales'!");
         }
         
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    private void updateLocale(String lang, String content) throws JSONException {
+        JSONObject locale = null;
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+        if(fileContent != null) {
+            locale = new JSONObject(fileContent);
+        }
+        JSONObject item = new JSONObject(content);
+        if(item != null && locale != null) {
+            Iterator<?> keys = item.keys();
+            while( keys.hasNext() ) {
+                String key = (String)keys.next();
+                if (item.has(key)) {
+                    locale.put(key, item.get(key));
+                }
+            }
+            updateFile("locales/" + lang + ".json", locale);
+        } else if(item != null) {
+            updateFile("locales/" + lang + ".json", item);
+        }
+    }
+
+    private void deleteLocale(String lang, ArrayList<String> keys) throws JSONException {
+        JSONObject locale = null;
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+        if(fileContent != null) {
+            locale = new JSONObject(fileContent);
+        }
+        if(locale != null) {
+            for (String key : keys) {
+                if(locale.has(key)) {
+                    locale.remove(key);
+                }
+            }
+            updateFile("locales/" + lang + ".json", locale);
+        }
     }
 
     private JSONArray updateCategoryTree(String id, JSONArray item) {
@@ -864,13 +889,23 @@ public class AdministrationResource {
                 obj.put("topics", newTopics);
                 removeFile("data/catalog-" + id +".json");
                 updateFile("data/catalogs.json", obj);
+                deleteCategoriesLocales(id);
             } catch (JSONException e) {
                 log.error("Error 'deleteCategory'!");
             }
         }
         return getCategories();
     }
-    
+
+    private void deleteCategoriesLocales(String id) throws JSONException {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add(id);
+        list.add("topic_" + id + "_tooltip");
+        list.add(id + "_service_link_href");
+        list.add(id + "_service_link_label");
+        deleteLocale("de", list);
+    }
+
     private JSONArray deleteCategories() {
        return deleteCategories(null); 
     }
@@ -894,6 +929,7 @@ public class AdministrationResource {
                         if(id != null && id.length() > 0) {
                             if(tmpObj.getString("id").equals(id)) {
                                 removeFile("data/catalog-" + id +".json");
+                                deleteCategoriesLocales(id);
                                 toDelete = true;
                                 break;
                             }
@@ -902,6 +938,7 @@ public class AdministrationResource {
                 } else {
                     String id = tmpObj.getString("id");
                     removeFile("data/catalog-" + id +".json");
+                    deleteCategoriesLocales(id);
                     toDelete = true;
                 }
                 if(!toDelete) {

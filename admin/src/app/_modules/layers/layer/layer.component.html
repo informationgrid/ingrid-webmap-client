@@ -111,7 +111,7 @@
               <div class="input-group form-group">
                 <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
                   <option value="" translate>service_add_to_category</option>
-                  <option [value]="category.id" *ngFor="let category of categories" [title]="category.id">{{ category.id }}</option>
+                  <option [value]="category.id" *ngFor="let category of categories" [title]="category.id" translate>{{ category.id }}</option>
                 </select>
                 <div class="input-group-append">
                   <button [disabled]="!selectCategory.value" class="btn btn-secondary" (click)="modalCategory.show();onCategoryChange(selectCategory.value);" translate>
@@ -121,7 +121,7 @@
               </div>
             </div>
             <div *ngFor="let cat of categories">
-              <label *ngIf="selectedCategories.get(cat.id)">{{ cat.id }}</label>
+              <label *ngIf="selectedCategories.get(cat.id)" translate>{{ cat.id }}</label>
               <div class="input-group" *ngFor="let node of selectedCategories.get(cat.id)">
                 <span class="form-control">{{ this.onGetNodeName(node) }}</span>
                 <div class="input-group-append">

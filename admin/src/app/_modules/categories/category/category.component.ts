@@ -5,6 +5,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { CategoryItem } from '../../../_models/category-item';
 import { NgForm } from '@angular/forms';
 import { ModalComponent } from '../../modals/modal/modal.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category',
@@ -34,7 +35,7 @@ export class CategoryComponent implements OnInit, OnChanges {
 
   backgroundLayers: LayerItem[];
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService, private translate: TranslateService) {
   }
 
   ngOnInit() {
@@ -57,12 +58,14 @@ export class CategoryComponent implements OnInit, OnChanges {
 
   showModalEdit (modal: ModalComponent, category: Category) {
     this.model = category;
-    this.formAdd.reset({
+    this.formEdit.reset({
       id: this.model.id,
       defaultBackground: this.model.defaultBackground,
       backgroundLayers: this.model.backgroundLayers,
       selectedLayers: this.model.selectedLayers,
-      activatedLayers: this.model.activatedLayers
+      activatedLayers: this.model.activatedLayers,
+      editCatLabel: this.translate.instant(this.model.id),
+      editCatTooltip: this.translate.instant('topic_' + this.model.id + '_tooltip')
     });
     modal.show();
   }
@@ -111,6 +114,7 @@ export class CategoryComponent implements OnInit, OnChanges {
       },
       () => {
         modal.hide();
+        this.translate.reloadLang(this.translate.getDefaultLang());
       }
     );
   }
@@ -126,6 +130,7 @@ export class CategoryComponent implements OnInit, OnChanges {
       },
       () => {
         modal.hide();
+        this.translate.reloadLang(this.translate.getDefaultLang());
       }
     );
   }
@@ -163,6 +168,9 @@ export class CategoryComponent implements OnInit, OnChanges {
               error => {
                 console.error('Error add category!');
                 this.modalSaveUnsuccess.show();
+              },
+              () => {
+                this.translate.reloadLang(this.translate.getDefaultLang());
               }
             );
           }
@@ -175,17 +183,26 @@ export class CategoryComponent implements OnInit, OnChanges {
   onUpdateCategory(modal: ModalComponent) {
     if (this.formEdit.valid) {
       if (this.model) {
-        this.model.id = this.formEdit.value.id;
         this.model.defaultBackground = this.formEdit.value.defaultBackground;
-        this.httpService.updateCategory(this.model).subscribe(
+        const map = new Map<String, String>();
+        if (this.formEdit.value.editCatLabel) {
+          map.set(this.model.id,  this.formEdit.value.editCatLabel);
+        }
+        if (this.formEdit.value.editCatTooltip) {
+          map.set('topic_' + this.model.id + '_tooltip', this.formEdit.value.editCatTooltip);
+        }
+        this.httpService.updateCategoryAndLabel(this.model, map).subscribe(
           data => {
-            this.categories = data;
+            this.categories = data[0];
             this.modalSaveSuccess.show();
             modal.hide();
           },
           error => {
             console.error('Error update: ' + this.model.id);
             this.modalSaveUnsuccess.show();
+          },
+          () => {
+            this.translate.reloadLang(this.translate.getDefaultLang());
           }
         );
       }

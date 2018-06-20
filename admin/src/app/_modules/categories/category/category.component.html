@@ -52,7 +52,7 @@
         <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
           <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
             aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, this)">
-            <span>
+            <span translate>
               <input type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
               {{category.id}}
             </span>
@@ -204,6 +204,27 @@
         <label class="col-sm-4 col-form-label" for="category_id" translate>category_id</label>
         <div class="col-sm-8">
           <input type="text" #id="ngModel" [(ngModel)]="model.id" class="form-control" name="id" id="category_id" disabled>
+        </div>
+      </div>
+      <!-- label -->
+      <div class="form-group row" [ngClass]="{
+        'has-danger': editCatLabel.invalid && (editCatLabel.dirty || editCatLabel.touched),
+        'has-success': editCatLabel.valid && (editCatLabel.dirty || editCatLabel.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="editCatLabel" translate>category_label</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #editCatLabel="ngModel" [(ngModel)]="formEdit.value.editCatLabel" name="editCatLabel" id="editCatLabel" [value]="formEdit.value.editCatLabel" required>
+          <div class="form-control-feedback" 
+              *ngIf="editCatLabel.errors && (editCatLabel.dirty || editCatLabel.touched)">
+            <div *ngIf="editCatLabel.errors.required"><span translate>field_required</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- tooltip -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="editCatTooltip" translate>category_tooltip</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #editCatTooltip="ngModel" [(ngModel)]="formEdit.value.editCatTooltip" name="editCatTooltip" id="editCatTooltip">
         </div>
       </div>
       <!-- backgroundLayers -->
