@@ -21,16 +21,46 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>de.ingrid.mapclient.rest</param-value>
         </init-param>
-        <!--init-param> <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name> 
+        <!-- 
+        <init-param>
+          <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+          <param-value>de.ingrid.mapclient.cors.CorsFilter</param-value>
+        </init-param>
+        <init-param> 
+            <param-name>com.sun.jersey.spi.container.ResourceFilters</param-name> 
             <param-value>com.sun.jersey.api.container.filter.RolesAllowedResourceFilterFactory</param-value> 
-            </init-param -->
+        </init-param>
+         -->
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <filter>
+	    <filter-name>CorsFilter</filter-name>
+	    <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+	    <init-param>
+	        <param-name>cors.allowed.origins</param-name>
+	        <param-value>*</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>cors.allowed.methods</param-name>
+	        <param-value>GET,POST,PUT,DELETE,HEAD,OPTIONS</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>cors.allowed.headers</param-name>
+	        <param-value>Content-Type</param-value>
+	    </init-param>
+	    <init-param>
+	        <param-name>cors.exposed.headers</param-name>
+	        <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>CorsFilter</filter-name>
+	    <url-pattern> /* </url-pattern>
+	</filter-mapping>
     <servlet-mapping>
         <servlet-name>InGrid Map REST Service</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
-
     <servlet>
         <servlet-name>mapfish.print</servlet-name>
         <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
@@ -43,6 +73,30 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <servlet-name>mapfish.print</servlet-name>
         <url-pattern>/pdf/*</url-pattern>
     </servlet-mapping>
+    
+    <!-- which resources should be protected -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>MapClient Administration</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>Has to be an administrator</description>
+            <role-name>admin-gui</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <!-- which realm to use for basic auth -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>Webmap-Client Admin-GUI Login</realm-name>
+    </login-config>
+    
+    <security-role>
+        <role-name>admin-gui</role-name>
+    </security-role>
+    
+    
     <listener>
         <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
     </listener>

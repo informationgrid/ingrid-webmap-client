@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.3.0</version>
+    <version>4.4.0</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -154,6 +154,26 @@
                                 <echo>Copy mf-geoadmin 'prd/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/prd">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/prd/" />
+                                </copy>
+                                <echo>Copy 'admin'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/admin">
+                                    <fileset dir="${project.basedir}/admin/dist" />
+                                </copy>
+                                <echo>Copy settings 'config/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/config">
+                                    <fileset dir="${project.basedir}/frontend/config/" />
+                                </copy>
+                                <echo>Copy msettings 'data/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/data">
+                                    <fileset dir="${project.basedir}/frontend/data/" />
+                                </copy>
+                                <echo>Copy settings 'help/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/help">
+                                    <fileset dir="${project.basedir}/frontend/help/" />
+                                </copy>
+                                <echo>Copy settings 'css/'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/css">
+                                    <fileset dir="${project.basedir}/frontend/css/" />
                                 </copy>
                             </tasks>
                         </configuration>
@@ -370,10 +390,6 @@
           <id>nexus</id>
           <name>Nexus Repo</name>
           <url>https://nexus.informationgrid.eu/repository/maven-public</url>
-        </repository>
-        <repository>
-          <id>org.mapfish</id>
-          <url>http://dev.mapfish.org/maven/repository</url>
         </repository>
         <!-- next repository needed for old opengis libs -->
         <repository>

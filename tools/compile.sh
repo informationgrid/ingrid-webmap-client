@@ -22,14 +22,16 @@ git checkout 303ba6643a3a78ca2779fcb2af40c01c44847f57
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
-cp -r ../src/main/webapp/frontend/ingrid/scripts ./
-cp -r ../src/main/webapp/frontend/ingrid/lib src/
-cp -r ../src/main/webapp/frontend/ingrid/components src/
-cp -r ../src/main/webapp/frontend/ingrid/js src/
-cp -r ../src/main/webapp/frontend/ingrid/style src/
-cp -r ../src/main/webapp/frontend/ingrid/img src/
-cp -r ../src/main/webapp/frontend/ingrid/locales src/
-cp -r ../src/main/webapp/frontend/src/index.mako.html src/
+cp -r ../frontend/ingrid/scripts ./
+cp -r ../frontend/ingrid/lib src/
+cp -r ../frontend/ingrid/components src/
+cp -r ../frontend/ingrid/js src/
+cp -r ../frontend/ingrid/style src/
+cp -r ../frontend/ingrid/img src/
+cp -r ../frontend/ingrid/locales src/
+cp -r ../frontend/src/index.mako.html src/
+cp -r ../frontend/src/auth.jsp src/
+cp -r ../frontend/src/geoadmin.mako.appcache src/
 
 # Add environments
 echo "*** Export environments ***"
@@ -63,3 +65,14 @@ echo "********************"
 echo "*** Make release ***"
 echo "********************"
 make release
+
+# create admin
+echo ""
+echo "********************"
+echo "*** Make admin ***"
+echo "********************"
+cd ../admin
+npm install
+ng -v || npm install -g @angular/cli
+ng lint
+ng build --prod --base-href .

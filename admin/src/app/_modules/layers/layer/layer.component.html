@@ -1,0 +1,229 @@
+<!-- Layer -->
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader" data-toggle="collapse" data-target="#layer" aria-expanded="true" aria-controls="layer">
+    <span translate>layers</span>
+    <span  class="badge badge-pill badge-primary">{{ layersTotalNum }}</span>
+  </div>
+  <div id="layer" class="collapse" aria-labelledby="layerHeader" data-parent="#accordion">
+    <div class="card-body">
+      <div id="layers">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarLayer" aria-controls="navBarLayer" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navBarLayer">
+            <div class="mr-auto">
+              <div class="my-2">
+                <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalAdd()" translate>
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  service_new
+                </button>
+                <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDelete.show()" translate [disabled]="selectedLayers.length == 0">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  layers_select_delete
+                </button>
+                <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDeleteAll.show()" translate>
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  layers_all_delete
+                </button>
+              </div>
+            </div>
+            <div class="mr-auto my-2">
+              <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === 1" (click)="firstPage()" translate>
+                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                paging_first
+              </button>
+              <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === 1" (click)="previousPage()" translate>
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                paging_previous
+              </button>
+              <span class="mr-sm-2"> {{ layersCurrentPage }} / {{ layersTotalPage }}</span>
+              <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === layersTotalPage" (click)="nextPage()"  translate>
+                paging_next
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === layersTotalPage" (click)="lastPage()"  translate>
+                paging_next
+                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+              </button>
+            </div>
+            <form class="form-inline">
+              <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
+            </form>
+          </div>
+        </nav>
+        <div class="list-group" *ngFor="let layer of layers">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers">
+              <span>
+                <input type="checkbox" (click)="selectLayer($event)" value="{{ layer.id }}">
+                {{layer.item.label}}
+              </span>
+              <div>
+                <span *ngIf="layer.item.status" class="badge badge-pill badge-warning" translate>status_{{ layer.item.status }}</span>
+                <span class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.type | uppercase }}</span>
+              </div>
+            </div>
+            <app-layer-item [layer]="layer" [layers]="layers" [selectedLayers]="selectedLayers" [enableSelectLayer]="enableSelectLayer" (updateLayers)="updateLayers($event)"></app-layer-item>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal add-->
+<app-modal #modalAddService [cssClass]="'modal-lg'">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layer_add_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <form>
+      <p translate>service_item_add_text</p>
+      <div class="input-group">
+        <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
+          (keyup.enter)="loadService(newService.value)">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
+        </div>
+      </div>
+      <br>
+      <div class="alert alert-success" *ngIf="isUrlLoadSuccess" translate>service_load_success</div>
+      <div class="alert alert-danger" *ngIf="isUrlLoadUnsuccess" translate>service_load_unsuccess</div>
+      <!-- Show layers -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <tree-root #newLayersTree [nodes]="newLayers" [options]="optionsLayersTree" (updateData)="onUpdateTree($event)">
+              <ng-template #treeNodeTemplate let-node let-index="index">
+                <input
+                  type="checkbox"
+                  class="mr-sm-2"
+                  [indeterminate]="node.data.indeterminate"
+                  [checked]="node.data.checked">
+                <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                {{ node.data.label }}<span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
+              </ng-template>
+            </tree-root>
+          </div>
+          <div class="col-sm">
+            <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
+              <div class="input-group form-group">
+                <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
+                  <option value="" translate>service_add_to_category</option>
+                  <option [value]="category.id" *ngFor="let category of categories" [title]="category.id" translate>{{ category.id }}</option>
+                </select>
+                <div class="input-group-append">
+                  <button [disabled]="!selectCategory.value" class="btn btn-secondary" (click)="modalCategory.show();onCategoryChange(selectCategory.value);" translate>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngFor="let cat of categories">
+              <label *ngIf="selectedCategories.get(cat.id)" translate>{{ cat.id }}</label>
+              <div class="input-group" *ngFor="let node of selectedCategories.get(cat.id)">
+                <span class="form-control">{{ this.onGetNodeName(node) }}</span>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-danger" (click)="onRemoveCategory(cat.id, node)">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="app-modal-footer" *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
+    <button [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary mr-sm-2" (click)="onAddLayers(this.newLayersTree.treeModel, this.categoryTree)" translate>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      service_add_all
+    </button>
+    <button *ngIf="isWMSService" [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" (click)="onAddCombineLayers(this.newLayersTree.treeModel, this.categoryTree)" translate>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      service_combine_add
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal delete -->
+<app-modal #modalDelete>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_select_del_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>layers_select_del_text</p>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" class="btn btn-danger" (click)="deleteSelectedLayers(modalDelete)" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      delete
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal delete all-->
+<app-modal #modalDeleteAll>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_all_del_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>layers_all_del_text</p>
+  </div>
+  <div class="app-modal-footer">
+      <button type="submit" class="btn btn-danger" (click)="deleteAllLayers(modalDeleteAll)" translate>
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        delete
+      </button>
+  </div>
+</app-modal>
+
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_save_success_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-success" translate>
+      <i class="fa fa-check" aria-hidden="true"></i>
+      layers_save_success_text
+    </div>
+  </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_save_unsuccess_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-danger" translate>
+      <i class="fa fa-exclamation" aria-hidden="true"></i>
+      layers_save_unsuccess_text
+    </div>
+  </div>
+</app-modal>
+
+<!-- Modal category-->
+<app-modal #modalCategory>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layers_category_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <tree-root #categoryTree [nodes]="category.get(categoryId)" [options]="optionsCategoryTree">
+      <ng-template #treeNodeTemplate let-node let-index="index">
+        <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+        {{ node.data.label }}
+      </ng-template>
+    </tree-root>
+  </div>
+  <div class="app-modal-footer">
+    <button [disabled]="!categoryTree || !categoryTree.treeModel.getActiveNode()"class="btn btn-primary" (click)="onSetCategory(categoryId, categoryTree.treeModel)" translate>
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      add
+    </button>
+  </div>
+</app-modal>

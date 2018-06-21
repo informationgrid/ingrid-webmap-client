@@ -22,22 +22,20 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import de.ingrid.mapclient.ConfigurationProvider;
@@ -53,31 +51,70 @@ import de.ingrid.mapclient.utils.Utils;
 public class ConfigResource {
 
     private static final Logger log = Logger.getLogger( ConfigResource.class );
-    
+
     @GET
     @Path("setting")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response configRequest(String content, @QueryParam("filename") String filename) {
-        if(filename != null && filename.length() > 0){
+    public Response getSettingRequest() {
+        String filename = "setting";
+        try {
+            JSONObject setting = null;
+            JSONObject profileSetting = null;
+            
             if(log.isDebugEnabled()){
                 log.debug( "Load file: " + filename );
             }
+            String classPath = "";
+            classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            String fileSetting = classPath + "frontend/";
+            String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
+            if(fileContent != null) {
+                setting = new JSONObject(fileContent);
+            }
             
+            filename = "setting.profile";
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
             if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, filename, ".js", "config/");
+                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
             }
             
             if(fileContent != null){
-                return Response.ok( fileContent ).build();
+                profileSetting = new JSONObject(fileContent);
             }
+            if(setting != null && profileSetting != null) {
+                Iterator<?> keys = profileSetting.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (profileSetting.has(key)) {
+                        setting.put(key, profileSetting.get(key));
+                    }
+                }
+            }
+            return Response.ok( "var settings = " + setting ).build();
+        } catch (JSONException e) {
+            log.error("Error getSettingRequest: " + e);
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
-
+    
+    @GET
+    @Path("css")
+    @Produces("text/css")
+    public Response getCssRequest() {
+        String filename = "app.override";
+        if(log.isDebugEnabled()){
+            log.debug( "Load file: " + filename );
+        }
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            return Response.ok( fileContent ).build();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
     @GET
     @Path("data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -103,55 +140,69 @@ public class ConfigResource {
     }
 
     @GET
-    @Path("help")
-    @Consumes(MediaType.TEXT_PLAIN)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response helpRequest(@QueryParam("id") String id, @QueryParam("lang") String lang, @QueryParam("helpUrl") String helpUrl) {
-        if(helpUrl != null && id != null && lang != null){
-            URL url;
-            try {
-                url = new URL(helpUrl.replace( "{lang}", lang ));
-                URLConnection con = url.openConnection();
-                InputStream in = con.getInputStream();
-                String encoding = con.getContentEncoding();
-                encoding = encoding == null ? "UTF-8" : encoding;
-            
-                String tmpJson = IOUtils.toString( in, encoding );
-                JSONObject jsonObj = new JSONObject();
-                JSONObject questJsonResult = new JSONObject( tmpJson );
-                if(questJsonResult != null){
-                    JSONObject jsonObjId = (JSONObject) questJsonResult.get(id);
-                    if(jsonObjId != null){
-                        String title = jsonObjId.getString( "title" );
-                        String text = jsonObjId.getString( "text" );
-                        String image = jsonObjId.getString( "image" );
-                        
-                        JSONArray jsonRowObj = new JSONArray();
-                        jsonRowObj.put(id);
-                        jsonRowObj.put(title);
-                        jsonRowObj.put(text);
-                        jsonRowObj.put("");
-                        jsonRowObj.put(image);
-                        
-                        JSONArray jsonRow = new JSONArray();
-                        jsonRow.put( jsonRowObj );
-                        jsonObj.put( "rows", jsonRow );
-                    }
-                }
-                return Response.ok( jsonObj ).build();
-            } catch (Exception e) {
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-            }
-        }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-    }
-    
-    @GET
     @Path("layerupdate")
     @Produces(MediaType.APPLICATION_JSON)
     public Response layerUpdateRequest() {
         CapabilitiesUpdateTask cut = new CapabilitiesUpdateTask();
         cut.run();
         return Response.status(Response.Status.OK ).build();
+    }
+    
+    @GET
+    @Path("locales/{locale}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+        String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        JSONObject locales = new JSONObject();
+        String fileLocalePath = null;
+        String fileContent = null;
+        // Get frontend locale
+        fileLocalePath = classPath + "frontend/prd/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get admin locale
+        fileLocalePath = classPath + "admin/assets/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "i18n/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get profile locale
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        fileLocalePath = config_dir;
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null){
+            JSONObject profileLocale = new JSONObject(fileContent);
+            if(profileLocale != null) {
+                Iterator<?> keys = profileLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (profileLocale.has(key)) {
+                        locales.put(key, profileLocale.get(key));
+                    }
+                }
+            }
+        }
+        return Response.ok( locales ).build();
     }
 }

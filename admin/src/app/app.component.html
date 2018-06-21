@@ -1,0 +1,22 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<ng-progress [showSpinner]="true"></ng-progress>
+<div id="header" class="navbar navbar-fixed-top">
+  <div class="title" translate>app_title</div>
+  <div>
+    <app-translation></app-translation>
+    <!-- <span>{{ version }}</span> -->
+  </div>
+</div>
+<div id="accordion">
+  <!-- Layer -->
+  <app-layer [categories]="categories" (updateAppLayers)="updateAppLayers($event)"></app-layer>
+  <!-- Category -->
+  <app-category [categories]="categories" [layers]="layers" (updateAppCategories)="updateAppCategories($event)"></app-category>
+  <!-- Setting -->
+  <app-setting [categories]="categories" [settings]="settings"></app-setting>
+  <!-- Help -->
+  <app-help [settings]="settings"></app-help>
+  <!-- CSS -->
+  <app-css></app-css>
+</div>
+<router-outlet></router-outlet>

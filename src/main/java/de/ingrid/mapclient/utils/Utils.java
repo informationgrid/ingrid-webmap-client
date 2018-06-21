@@ -27,8 +27,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -79,20 +77,21 @@ public class Utils {
         }
         path = path.concat( prefix );
         File directory = new File(path);
-        if(directory.exists()){
-            File file = new File(path.concat(filename).concat(fileTyp));
-            if(file.exists()){
-                try {
-                    String fileContent = FileUtils.readFileToString( file, "UTF-8");
-                    if(fileContent != null){
-                        return fileContent;
-                    }
-                } catch (IOException e) {
-                    log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
+        if(!directory.exists()){
+            directory.mkdir();
+        }
+        File file = new File(path.concat(filename).concat(fileTyp));
+        if(file.exists()){
+            try {
+                String fileContent = FileUtils.readFileToString( file, "UTF-8");
+                if(fileContent != null){
+                    return fileContent;
                 }
-            }else{
-                log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
+            } catch (IOException e) {
+                log.error( "Error read file '" + file.getAbsoluteFile() + "'.");
             }
+        }else{
+            log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
         }
         return null;
     }
@@ -138,12 +137,14 @@ public class Utils {
         return defaultValue;
     }
 
-    public static String readFileAsString(File file) throws java.io.IOException {
+    public static String readFileAsString(File file) {
         byte[] buffer = new byte[(int) file.length()];
         BufferedInputStream f = null;
         try {
             f = new BufferedInputStream( new FileInputStream( file ) );
             f.read( buffer );
+        } catch (Exception e) {
+           log.error("Error read file: '" + file.getName() + "'");
         } finally {
             if (f != null)
                 try {
