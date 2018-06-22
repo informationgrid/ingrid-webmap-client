@@ -34,6 +34,7 @@ export class Setting {
         public settingEnableW3W = false,
         public w3wUrl = '',
         public w3wApiKey = '',
+        public settingShowLayerServiceTree = false,
         public settingShowLayerServiceName = false,
         public settingCheckLayerInRange = false,
         public settingShowISOXML = false,

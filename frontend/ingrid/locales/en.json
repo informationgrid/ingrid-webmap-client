@@ -268,6 +268,7 @@
 "metadata_structure": "WMS layer tree",
 "metadata_service_title": "Title",
 "metadata_service_id": "ID",
+"metadata_service_layer": "Name",
 "metadata_service_abstract": "Summary",
 "metadata_service_fees": "Fees",
 "metadata_service_accessconstraints": "Access constraints",

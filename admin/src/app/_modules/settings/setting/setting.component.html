@@ -853,6 +853,29 @@
                             <input type="text" #w3wApiKey="ngModel" [(ngModel)]="settings.w3wApiKey" name="w3wApiKey" class="form-control">
                         </div>
                     </div>
+                    <!-- settingShowLayerServiceTree -->
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            <div class=" d-flex justify-content-between align-items-center">
+                                <label class="col-form-label" translate>setting_settingShowLayerServiceTree</label>
+                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceTree"
+                                    title="{{ ('help') | translate }}">
+                                    <i class="fa fa-info" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="collapse" id="info_settingShowLayerServiceTree" data-parent="#setting">
+                                <div>
+                                    <small class="form-text text-muted" translate>help_settingShowLayerServiceTree</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <select class="form-control" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" [(ngModel)]="settings.settingShowLayerServiceTree">
+                                <option [ngValue]="false" translate>false</option>
+                                <option [ngValue]="true" translate>true</option>
+                            </select>
+                        </div>
+                    </div>
                     <!-- settingShowLayerServiceName -->
                     <div class="form-group row">
                         <div class="col-sm-3">
