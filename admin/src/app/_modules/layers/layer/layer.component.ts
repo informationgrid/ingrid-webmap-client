@@ -453,10 +453,22 @@ export class LayerComponent implements OnInit {
               const serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
               const version = service['version'];
               const layer = service['Contents']['Layer'];
+              let wmtsLayers: any = [];
+              if (layer instanceof Array) {
+                wmtsLayers = layer;
+              } else {
+                wmtsLayers.push(layer);
+              }
               const operations = service['ows:OperationsMetadata'];
               const encoding = 'REST';
-              const tileMatrixSet = service['Contents']['TileMatrixSet'];
-              this.createWMTSLayer(layer, this.newLayers, serviceMetadataUrl, version, tileMatrixSet, encoding);
+              const tileMatrixSet: any = service['Contents']['TileMatrixSet'];
+              let tileMatrixSets: any[] = [];
+              if (tileMatrixSet instanceof Array) {
+                tileMatrixSets = tileMatrixSet;
+              } else {
+                tileMatrixSets.push(tileMatrixSet);
+              }
+              this.createWMTSLayer(wmtsLayers, this.newLayers, serviceMetadataUrl, version, tileMatrixSets, encoding);
             }
           }
           this.isUrlLoadSuccess = true;
@@ -572,68 +584,70 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  createWMTSLayer (layer, layers, serviceMetadataUrl, version, tileMatrixSet, encoding) {
+  createWMTSLayer (wmtslayers: any[], layers: any[], serviceMetadataUrl: string, version: string, tileMatrixSet: any[], encoding: string) {
     tileMatrixSet.forEach(tileMatrix => {
-      const newLayer = new Wmtslayer();
-      // Label
-      newLayer.label = layer['ows:Title'];
-      // Version
-      newLayer.version = version;
-      // Encoding
-      newLayer.requestEncoding = encoding;
-      // ServiceLayerName
-      newLayer.serverLayerName = layer['ows:Identifier'];
-      // ServiceMetadataUrl
-      newLayer.serviceUrl = serviceMetadataUrl;
-      // Format
-      if (layer['ResourceURL']) {
-        newLayer.format = layer['ResourceURL']['format'];
-        if (newLayer.format) {
-          if (newLayer.format.indexOf('image/png') > -1) {
-            newLayer.format = 'png';
-          } else if (newLayer.format.indexOf('image/jpeg') > -1) {
-            newLayer.format = 'jpeg';
-          } else if (newLayer.format.indexOf('image/gif') > -1) {
-            newLayer.format = 'gif';
+      wmtslayers.forEach(layer => {
+        const newLayer = new Wmtslayer();
+        // Label
+        newLayer.label = layer['ows:Title'];
+        // Version
+        newLayer.version = version;
+        // Encoding
+        newLayer.requestEncoding = encoding;
+        // ServiceLayerName
+        newLayer.serverLayerName = layer['ows:Identifier'];
+        // ServiceMetadataUrl
+        newLayer.serviceUrl = serviceMetadataUrl;
+        // Format
+        if (layer['ResourceURL']) {
+          newLayer.format = layer['ResourceURL']['format'];
+          if (newLayer.format) {
+            if (newLayer.format.indexOf('image/png') > -1) {
+              newLayer.format = 'png';
+            } else if (newLayer.format.indexOf('image/jpeg') > -1) {
+              newLayer.format = 'jpeg';
+            } else if (newLayer.format.indexOf('image/gif') > -1) {
+              newLayer.format = 'gif';
+            }
           }
+          newLayer.template = layer['ResourceURL']['template'];
         }
-        newLayer.template = layer['ResourceURL']['template'];
-      }
-      // Style
-      newLayer.style = layer['Style']['ows:Identifier'];
-      // Extent
-      if (layer['ows:WGS84BoundingBox']) {
-        const latLonBox = layer['ows:WGS84BoundingBox'];
-        const lowerCorner = latLonBox['ows:LowerCorner'].split(' ');
-        const upperCorner = latLonBox['ows:UpperCorner'].split(' ');
-        newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]];
-      }
-      // MatrixSet
-      newLayer.matrixSet = tileMatrix['ows:Identifier'];
-      tileMatrix['TileMatrix'].forEach(tm => {
-        // Origin
-        const topLeftCorner = tm['TopLeftCorner'].split(' ');
-        newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
-        // scales
-        const scaleDenominator = tm['ScaleDenominator'];
-        if (!newLayer.scales) {
-          newLayer.scales = [];
+        // Style
+        newLayer.style = layer['Style']['ows:Identifier'];
+        // Extent
+        if (layer['ows:WGS84BoundingBox']) {
+          const latLonBox = layer['ows:WGS84BoundingBox'];
+          const lowerCorner = latLonBox['ows:LowerCorner'].split(' ');
+          const upperCorner = latLonBox['ows:UpperCorner'].split(' ');
+          newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]];
         }
-        newLayer.scales.push(+scaleDenominator);
-        // matrixIds
-        const identifier = tm['ows:Identifier'];
-        if (!newLayer.matrixIds) {
-          newLayer.matrixIds = [];
-        }
-        newLayer.matrixIds.push(identifier);
+        // MatrixSet
+        newLayer.matrixSet = tileMatrix['ows:Identifier'];
+        tileMatrix['TileMatrix'].forEach(tm => {
+          // Origin
+          const topLeftCorner = tm['TopLeftCorner'].split(' ');
+          newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
+          // scales
+          const scaleDenominator = tm['ScaleDenominator'];
+          if (!newLayer.scales) {
+            newLayer.scales = [];
+          }
+          newLayer.scales.push(+scaleDenominator);
+          // matrixIds
+          const identifier = tm['ows:Identifier'];
+          if (!newLayer.matrixIds) {
+            newLayer.matrixIds = [];
+          }
+          newLayer.matrixIds.push(identifier);
 
-        const tileHeight = tm['TileHeight'];
-        const tileWidth = tm['TileWidth'];
-        newLayer.tileSize = [+tileHeight, +tileWidth];
-      });
-      layers.push({
-        label: newLayer.label,
-        layer: newLayer
+          const tileHeight = tm['TileHeight'];
+          const tileWidth = tm['TileWidth'];
+          newLayer.tileSize = [+tileHeight, +tileWidth];
+        });
+        layers.push({
+          label: newLayer.label,
+          layer: newLayer
+        });
       });
     });
   }
