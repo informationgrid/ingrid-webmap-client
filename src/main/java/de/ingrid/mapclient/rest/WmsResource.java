@@ -394,9 +394,6 @@ public class WmsResource {
             html += "<tbody>";
             if(layerTitle != null){
                 html += "<tr";
-                if(layerAbstracts.size() == 0){
-                    html += " style=\"border-bottom:0;\"";
-                }
                 html += ">";
                 html += "<td translate>metadata_service_title</td>";
                 html += "<td>" + layerTitle + "</td>";
@@ -404,14 +401,43 @@ public class WmsResource {
             }
             if(layerAbstracts.size() > 0){
                 for(int i=0; i < layerAbstracts.size(); i++) {
-                html += "<tr style=\"border-bottom:0;\">";
-                if(i == 0) {
-                    html += "<td translate>metadata_service_abstract</td>";
-                } else {
-                    html += "<td></td>";
+                    if (i == 0 && layers.length <= 1) {
+                        html += "<tr ng-if=\"showWMSName\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                        html += "<tr ng-if=\"!showWMSName\" style=\"border-bottom:0;\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else if (i == 0 && layers.length > 1) {
+                        html += "<tr style=\"border-bottom:0;\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else if(i == layerAbstracts.size() - 1) {
+                        html += "<tr>";
+                        html += "<td></td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else {
+                        html += "<tr style=\"border-bottom:0;\">";
+                        html += "<td></td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    }
                 }
-                html += "<td>" + layerAbstracts.get(i) + "</td>";
-                html += "</tr>";
+            }
+            if(layers.length > 0){
+                for(int i=0; i < layers.length; i++) {
+                    html += "<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">";
+                    if (i == 0) {
+                        html += "<td translate>metadata_service_layer</td>";
+                    } else {
+                        html += "<td></td>";
+                    }
+                    html += "<td>" + layers[i] + "</td>";
+                    html += "</tr>";
                 }
             }
             html += "</tbody>";
@@ -590,7 +616,11 @@ public class WmsResource {
         
         html += "<div class=\"legend-header\">";
         if(layerTitle != null){
-            html += "<p class=\"bod-title\">" + layerTitle + "</p>";
+            html += "<p class=\"bod-title\">" + layerTitle + " ";
+            if(layerName != null) {
+                html += "<span ng-if=\"showWMSName\">(" + layerName + ")</span>";
+            }
+            html += "</p>";
         }
         if(layerAbstract != null){
             html += "<p class=\"legend-abstract\">" + layerAbstract + "</p>";

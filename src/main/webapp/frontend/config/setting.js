@@ -91,7 +91,10 @@ var w3wUrl = 'https://api.what3words.com';
 var w3wApiKey = 'OM48J50Y';
 
 // Show service name to layer
-var settingShowLayerServiceName = false;
+var settingShowLayerServiceName = true;
+
+// Show service tree of layer
+var settingShowLayerServiceTree = true;
 
 // Enable check layer in range
 var settingCheckLayerInRange = true;
