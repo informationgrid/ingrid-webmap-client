@@ -393,7 +393,15 @@ public class WmsResource {
             html += "<table>";
             html += "<tbody>";
             if(layerTitle != null){
-                html += "<tr";
+                html += "<tr ng-if=\"!showWMSName\"";
+                if(layerAbstracts.size() == 0){
+                    html += " style=\"border-bottom:0;\"";
+                }
+                html += ">";
+                html += "<td translate>metadata_service_title</td>";
+                html += "<td>" + layerTitle + "</td>";
+                html += "</tr>";
+                html += "<tr ng-if=\"showWMSName\"";
                 html += ">";
                 html += "<td translate>metadata_service_title</td>";
                 html += "<td>" + layerTitle + "</td>";
