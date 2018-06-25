@@ -1022,6 +1022,7 @@ public class AdministrationResource {
             log.error("Error rename file: '" + file.getName() + "'" );
         }
         file = new File(config_dir.concat(filename));
+        Utils.cleanFileContent(file);
         log.info( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
             try(FileWriter fw = new FileWriter(file, true);
@@ -1048,6 +1049,7 @@ public class AdministrationResource {
             log.error("Error rename file: '" + file.getName() + "'" );
         }
         file = new File(config_dir.concat(filename));
+        Utils.cleanFileContent(file);
         log.info( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
             try(FileWriter fw = new FileWriter(file, true);

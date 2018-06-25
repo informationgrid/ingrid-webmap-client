@@ -25,7 +25,9 @@ package de.ingrid.mapclient.utils;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +73,19 @@ public class Utils {
 
     private static final Logger log = Logger.getLogger( Utils.class );
 
+    public static void cleanFileContent(File file) {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(file);
+        } catch (FileNotFoundException e) {
+           log.error("Error found file: " +  file.getAbsolutePath());
+        }
+        if(writer != null) {
+            writer.print("");
+            writer.close();
+        }
+    }
+    
     public static String getFileContent(String path, String filename, String fileTyp, String prefix){
         if(!path.endsWith( "/" )){
             path = path.concat( "/" );
