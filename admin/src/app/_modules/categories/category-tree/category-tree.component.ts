@@ -120,7 +120,8 @@ export class CategoryTreeComponent implements OnInit {
   onAddCategoryItem (tree: TreeComponent, modal: ModalComponent) {
     if (this.formNodeAdd.valid) {
       if (this.focusItem) {
-        const item = new CategoryItem(undefined, this.focusItem.label, 'prod', false);
+        const item = new CategoryItem(null, this.focusItem.label, 'prod', false);
+        item.id = item.getNextCategoryNodeId(tree.treeModel.nodes, 2);
         if (this.focusItem.layerBodId) {
           item.layerBodId = this.focusItem.layerBodId;
         }
@@ -155,10 +156,10 @@ export class CategoryTreeComponent implements OnInit {
     this.focusNode = node;
     if (this.focusNode) {
       this.focusItem = new CategoryItem(
-         this.focusNode.data.id,
-         this.focusNode.data.label,
-         'prod',
-         this.focusNode.data.selectedOpen
+        this.focusNode.data.id,
+        this.focusNode.data.label,
+        'prod',
+        this.focusNode.data.selectedOpen
       );
       if (this.focusNode.data.children) {
        this.focusItem.children = this.focusNode.data.children;

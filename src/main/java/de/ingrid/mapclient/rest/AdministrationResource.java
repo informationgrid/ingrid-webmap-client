@@ -171,7 +171,8 @@ public class AdministrationResource {
     @Path("layers/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteLayerById(@PathParam("id") String id) {
-        JSONArray arr = deleteLayer(id);
+        String[] ids = id.split(",");
+        JSONArray arr = deleteLayers(ids);
         if(arr != null) {
             return Response.ok( arr ).build();
         }
@@ -360,8 +361,21 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateSetting(@RequestBody String content) {
         try {
-            JSONObject item = new JSONObject(content);
-            JSONObject obj = updateSetting(item);
+            JSONObject setting = null;
+            JSONObject settingProfile = null;
+            String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            String fileSetting = classPath + "frontend/";
+            String fileContent = Utils.getFileContent(fileSetting, "setting", ".json", "config/");
+            if(fileContent != null) {
+                setting = new JSONObject(fileContent);
+            }
+            
+            if(setting != null) {
+                settingProfile = new JSONObject(content);
+            } else {
+                settingProfile = new JSONObject(content);
+            }
+            JSONObject obj = updateSetting(settingProfile);
             if(obj != null) {
                 return Response.status( Response.Status.OK ).build();
             }
@@ -750,25 +764,6 @@ public class AdministrationResource {
         return getLayers(null, true);
     }
     
-    private JSONArray deleteLayer(String id) {
-        if(id != null) {
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
-                obj.remove(id);
-                updateFile("data/layers.json", obj);
-            } catch (JSONException e) {
-                log.error("Error 'deleteLayer'!");
-            }
-        }
-        return getLayers(null, true);
-    }
-    
     private JSONArray deleteLayers() {
         return deleteLayers(null);
     }
@@ -791,6 +786,7 @@ public class AdministrationResource {
             }else {
                 obj = new JSONObject();
             }
+            removeLayersFromCategories(ids);
             updateFile("data/layers.json", obj);
         } catch (JSONException e) {
             log.error("Error 'deleteLayer'!");
@@ -798,6 +794,69 @@ public class AdministrationResource {
         return getLayers(null, true);
     }
     
+    private void removeLayersFromCategories(String[] ids) {
+        JSONArray categories = getCategories();
+        for (int i = 0; i < categories.length(); i++) {
+            try {
+                JSONObject category = categories.getJSONObject(i);
+                String catId = category.getString("id");
+                JSONArray cat = getCategoryTree(catId);
+                JSONArray newCat = new JSONArray();
+                for (int j = 0; j < cat.length(); j++) {
+                    JSONObject catItem = cat.getJSONObject(j);
+                    if(catItem != null) {
+                        removeLayerFromCategory(ids, catItem, newCat);
+                    }
+                }
+                updateCategoryTree(catId, newCat);
+            } catch (JSONException e) {
+                log.error("Error remove layers from category.");
+            }
+        }
+    }
+
+    private void removeLayerFromCategory(String[] ids, JSONObject item, JSONArray list) {
+        JSONObject obj = null;
+        try {
+            boolean layerExist = false;
+            if(item.has("layerBodId")) {
+                String layerBodId = item.getString("layerBodId");
+                if(layerBodId != null) {
+                    if(ids != null) {
+                        for (String id : ids) {
+                            if(layerBodId.equals(id)) {
+                                layerExist = true;
+                            }
+                        }
+                    } else {
+                        layerExist = true;
+                    }
+                }
+            }
+            if (!layerExist) {
+                obj = item;
+                if(item != null) {
+                    if(item.has("children")) {
+                        JSONArray children = item.getJSONArray("children");
+                        if(children != null) {
+                            JSONArray childList = new JSONArray();
+                            for (int j = 0; j < children.length(); j++) {
+                                JSONObject catItem = children.getJSONObject(j);
+                                removeLayerFromCategory(ids, catItem, childList);
+                            }
+                            obj.put("children", childList);
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            log.error("Error remove layers from category: " + e);
+        }
+        if(obj != null) {
+            list.put(obj);
+        }
+    }
+
     private JSONArray getCategories() {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);

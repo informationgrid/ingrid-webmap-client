@@ -20,6 +20,7 @@ export class LayerComponent implements OnInit {
 
   @Input() categories: Category[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @Output() updateAppCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
   @ViewChild('newService') newService: ElementRef;
   @ViewChild('modalAddService') modalAddService: ModalComponent;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
@@ -342,19 +343,26 @@ export class LayerComponent implements OnInit {
 
   saveAddedLayersToCategory(layers: LayerItem[], rootLayersModel: TreeNode) {
     const categoryLayers = [];
-    this.getCategoryNode(rootLayersModel, layers, 0, categoryLayers);
+    this.getCategoryNode(rootLayersModel, layers, categoryLayers);
     if (this.categories) {
       for (const c in this.categories) {
         if (this.category) {
           const tmpC = this.categories[c];
           const tmpCategory = this.category.get(tmpC.id);
           const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
+          let id = 2;
+          categoryLayers.forEach(categoryLayer => {
+            id = categoryLayer.getNextCategoryNodeId(tmpCategory, id);
+            categoryLayer.id = id;
+            id ++;
+          });
           if (tmpCategory && tmpSelectedCategory) {
             tmpCategory.forEach(tmpCatItem => {
               this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
             });
-            this.httpService.updateCategoryTree(tmpC.id, tmpCategory).subscribe(
+            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory).subscribe(
               data => {
+                this.updateAppCategories.emit(data[1]);
                 this.modalSaveSuccess.show();
                 this.modalAddService.hide();
               },
@@ -392,28 +400,25 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  getCategoryNode(node: TreeNode, layers: LayerItem[], i, children) {
+  getCategoryNode(node: TreeNode, layers: LayerItem[], children: any[]) {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
-        item = new CategoryItem(null, layers[i].item.label, 'prod', false);
-        if (layers[i].id) {
-          item.layerBodId = layers[i].id;
+        item = new CategoryItem(null, layers[0].item.label, 'prod', false);
+        if (layers[0].id) {
+          item.layerBodId = layers[0].id;
         }
         children.push(item);
-        i++;
+        layers.splice(0, 1);
       }
-      if (i !== layers.length) {
-        if (node.children && node.children.length > 0) {
-          if (item) {
-            item.children = [];
-            children = item.children;
-          }
-          node.children.forEach((child) => {
-            this.getCategoryNode(child, layers, i, children);
-            i++;
-          });
+      if (node.children && node.children.length > 0) {
+        if (item) {
+          item.children = [];
+          children = item.children;
         }
+        node.children.forEach((child) => {
+          this.getCategoryNode(child, layers, children);
+        });
       }
     }
   }

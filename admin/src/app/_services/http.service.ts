@@ -188,6 +188,12 @@ export class HttpService {
     return this.http.put<CategoryItem[]>(httpApiHost + '/categorytree/' + id, body, httpJsonOptions);
   }
 
+  updateCategoryTreeAndCategories(id: string, item: any) {
+    return forkJoin(
+      this.updateCategoryTree(id, item),
+      this.getCategories()
+    );
+  }
   getData() {
       return forkJoin(
         this.getLayers(),
