@@ -25,10 +25,9 @@ package de.ingrid.mapclient.utils;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -95,6 +94,23 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static void writeFileContent (File file, String content) throws IOException {
+        if(file != null && content != null) {
+            FileWriter fileWriter = null;
+            try {
+                fileWriter = new FileWriter( file );
+                fileWriter.write( content );
+                fileWriter.flush();
+            } catch (IOException e) {
+                log.error("Error update file: " + file.getAbsolutePath());
+            } finally {
+                if (fileWriter != null) {
+                    fileWriter.close();
+                }
+            }
+        }
     }
 
     public static String checkWMSUrl(String url, String paramString){
