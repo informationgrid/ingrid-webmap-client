@@ -30,7 +30,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -139,18 +138,7 @@ public class FileResource {
                 if(mapUserId.equals(user)){
                     // Update file
                     File file = new File( filename );
-                    FileWriter fileWriter = null;
-                    try {
-                        fileWriter = new FileWriter( file );
-                        fileWriter.write( content );
-                        fileWriter.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if(fileWriter != null) {
-                            fileWriter.close();
-                        }
-                    }
+                    Utils.writeFileContent(file, content);
                 }else{
                     // New file
                     fileId = createKMLFile( content, mapUserId);
@@ -224,8 +212,11 @@ public class FileResource {
         
         String content = null;
         if (id != null && id.length() > 0) {
+            path += "" + id;
             try {
-                content = new String( Files.readAllBytes( Paths.get( path + "" + id ) ) );
+                content = new String( Files.readAllBytes( Paths.get( path ) ) );
+                File file = new File( path );
+                Utils.writeFileContent(file, content);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -514,18 +505,7 @@ public class FileResource {
             fileId += content.hashCode();
             filename += fileId;
             File file = new File( filename);
-            FileWriter fileWriter = null;
-            try {
-                fileWriter = new FileWriter( file );
-                fileWriter.write( content );
-                fileWriter.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            }
+            Utils.writeFileContent(file, content);
         }
        return fileId;
     }
