@@ -186,6 +186,36 @@ public class ConfigResource {
                 }
             }
         }
+        // Get frontend override locale
+        fileLocalePath = classPath + "frontend/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get frontend override portal locale
+        fileLocalePath = classPath + "frontend/";
+        fileContent = Utils.getFileContent(fileLocalePath, "override." + locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
         // Get profile locale
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
