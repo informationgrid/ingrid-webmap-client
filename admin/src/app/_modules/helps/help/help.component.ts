@@ -34,7 +34,7 @@ export class HelpComponent implements OnChanges {
                 if (!this.helps) {
                   this.helps = new Map<String, String>();
                 }
-                this.helps.set(lang, data);
+                this.helps.set(lang, JSON.parse(data));
               },
               error => {
                 console.log('Error load help ' + lang);
@@ -45,8 +45,8 @@ export class HelpComponent implements OnChanges {
     }
   }
 
-  onUpdate(lang: string, content: string) {
-    this.httpService.updateHelp(lang, content).subscribe(
+  onUpdate(lang: string) {
+    this.httpService.updateHelp(lang, this.helps.get(lang)).subscribe(
       data => {
         this.modalSaveSuccess.show();
       },

@@ -227,7 +227,7 @@ export class HttpService {
     return this.http.get(httpApiHost + '/help/' + lang, {responseType: 'text'});
   }
 
-  updateHelp(lang: string, help: string) {
+  updateHelp(lang: string, help: any) {
     return this.http.put(httpApiHost + '/help/' + lang, help, {responseType: 'text'});
   }
 

@@ -12,13 +12,55 @@
                 </ul>
                 <div *ngIf="languages && helps" class="tab-content" >
                     <div class="tab-pane fade show" [ngClass]="i == 0 ? 'active' : ''" *ngFor="let lang of languages; let i=index;" id="tabs-help-{{lang}}" role="tabpanel" [attr.aria-labelledby]="'pills-help-' + lang + '-tab'">
-                        <textarea class="form-control" name="help-{{lang}}" id="help-{{lang}}" rows="20" [value]="helps.get(lang)" #textarea></textarea>
-                        <br>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" (click)="onUpdate(lang, textarea.value)" translate>
-                                <i class="fa fa-save" aria-hidden="true"></i>
-                                save
-                            </button>
+                        <div id="help_{{lang}}">
+                            <div class="list-group" *ngFor="let help of helps.get(lang) | mapToIterable">
+                                <div class="card">
+                                    <div class="card-header" id="help_{{lang}}_{{help.key}}" data-toggle="collapse" [attr.data-target]="'#collapse_' + lang + '_'+ help.key" aria-expanded="true" [attr.aria-controls]="'help_' + lang">
+                                        <span>{{help.key}}</span>
+                                        <span *ngIf="help.val.title"> - {{help.val.title}}</span>
+                                    </div>
+                                    <div class="collapse" id="collapse_{{lang}}_{{ help.key }}" [attr.aria-labelledby]="'help_' + lang + '_' + help.key" [attr.data-parent]="'#help_' + lang">
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_title_{{lang}}_{{help.key}}" translate>help_title</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" #title="ngModel" [(ngModel)]="help.val.title" name="title" class="form-control" id="help_title_{{lang}}_{{help.key}}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_text_{{lang}}_{{help.key}}" translate>help_text</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" name="text" id="help_text_{{lang}}_{{help.key}}" rows="10" [(ngModel)]="help.val.text" #text="ngModel" ></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_item_{{lang}}_{{help.key}}" translate>help_image</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" #image="ngModel" [(ngModel)]="help.val.image" name="image" class="form-control" id="help_item_{{lang}}_{{help.key}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" (click)="onUpdate(lang)" translate>
+                                                <i class="fa fa-save" aria-hidden="true"></i>
+                                                save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
