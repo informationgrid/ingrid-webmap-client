@@ -5,8 +5,18 @@
     </div>
     <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
         <div class="card-body">
-            <div class="modal-body">
-                <form #f="ngForm" (ngSubmit)="onUpdate(f)" novalidate>
+            <form #f="ngForm" (ngSubmit)="onUpdate(f)" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="btn btn-secondary" (click)="onReset()" translate>
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
+                        reset
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        save
+                    </button>
+                </div>
+                <div class="modal-body">
                     <!-- settingDefaultTopicId -->
                     <div class="form-group row" [ngClass]="{
                         'has-danger': settingDefaultTopicId.invalid && (settingDefaultTopicId.dirty || settingDefaultTopicId.touched),
@@ -1031,19 +1041,18 @@
                                 class="form-control">
                         </div>
                     </div>
-                    <br>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="onReset()" translate>
-                            <i class="fa fa-repeat" aria-hidden="true"></i>
-                            reset
-                        </button>
-                        <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
-                            <i class="fa fa-save" aria-hidden="true"></i>
-                            save
-                        </button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-secondary" (click)="onReset()" translate>
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
+                        reset
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        save
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

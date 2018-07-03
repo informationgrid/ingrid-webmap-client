@@ -1,15 +1,13 @@
 <div class="card card-body">
   <form #f="ngForm" (ngSubmit)="onUpdateLayer(f)">
     <div class="modal-header">
-      <div>
-        <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
-          <i class="fa fa-check" aria-hidden="true"></i>
-          save
-        </button>
-      </div>
       <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
         <i class="fa fa-trash" aria-hidden="true"></i>
         delete
+      </button>
+      <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        save
       </button>
     </div>
     <div class="modal-body">
@@ -581,6 +579,16 @@
           <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control">
         </div>
       </div>
+    </div>
+    <div class="modal-footer d-flex justify-content-between align-items-center">
+      <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        delete
+      </button>
+      <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        save
+      </button>
     </div>
   </form>
 </div>

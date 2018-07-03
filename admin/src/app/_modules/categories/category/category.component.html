@@ -60,6 +60,10 @@
           <div class="collapse" id="collapse{{ category.id }}"  [attr.aria-labelledby]="'categoriesHeader' + category.id" data-parent="#categories">
             <div class="card card-body">
               <div class="modal-header">
+                <button class="btn btn-danger" type="button" (click)="showModalDelete(modalDelete, category);" translate>
+                  <i class="fa fa-trash" aria-hidden="true" ></i>
+                  delete
+                </button>
                 <div>
                   <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalEdit(modalEdit, category);" translate>
                     <i class="fa fa-edit" aria-hidden="true"></i>
@@ -70,10 +74,6 @@
                     refresh
                   </button>
                 </div>
-                <button class="btn btn-danger" type="button" (click)="showModalDelete(modalDelete, category);" translate>
-                  <i class="fa fa-trash" aria-hidden="true" ></i>
-                  delete
-                </button>  
               </div>
               <div class="modal-body">
                 <app-category-tree [category]="category" [categoryTree]="categoryTree" [layers]="layers"></app-category-tree>
