@@ -73,7 +73,6 @@ export class SettingComponent implements OnInit {
       if (f.value) {
         this.httpService.updateSetting(this.settings).subscribe(
           data => {
-            this.updateAppSettings.emit(this.settings);
             this.modalSaveSuccess.show();
           },
           error => {
@@ -83,5 +82,18 @@ export class SettingComponent implements OnInit {
         );
       }
     }
+  }
+
+  onReset() {
+    this.httpService.resetSetting().subscribe(
+      data => {
+        this.updateAppSettings.emit(data);
+        this.modalSaveSuccess.show();
+      },
+      error => {
+        console.log('Error save settings!');
+        this.modalSaveUnsuccess.show();
+      }
+    );
   }
 }

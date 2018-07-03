@@ -460,6 +460,17 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @PUT
+    @Path("setting/reset")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response resetSetting(@RequestBody String content) {
+        JSONObject obj = updateSetting(new JSONObject());
+        if(obj != null) {
+            return this.getSettingRequest();
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
     @GET
     @Path("css")
     @Produces("text/css")
@@ -598,11 +609,24 @@ public class AdministrationResource {
     @PUT
     @Path("help/{lang}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response updatehHelpRequest(@RequestBody String content, @PathParam("lang") String lang) {
+    public Response updateHelpRequest(@RequestBody String content, @PathParam("lang") String lang) {
         if(content != null) {
             String fileContent = updateHelp(lang, content);
             if(fileContent != null) {
                 return Response.status( Response.Status.OK ).build();
+            }
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    @PUT
+    @Path("help/reset/{lang}/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response resetHelpRequest(@PathParam("lang") String lang, @PathParam("id") String id) {
+        if(lang != null && id != null) {
+            String fileContent = resetHelp(lang, id);
+            if(fileContent != null) {
+                return this.getHelpRequest(lang);
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -755,6 +779,30 @@ public class AdministrationResource {
         return null;
     }
 
+    private String resetHelp(String lang, String id) {
+        try {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(config_dir != null){
+                String fileContent = Utils.getFileContent(config_dir, "help-" + lang, ".json", "help/");
+                if(fileContent != null) {
+                    JSONObject profileHelp = new JSONObject(fileContent);
+                    if(profileHelp != null) {
+                        if(profileHelp.has(id)) {
+                            profileHelp.remove(id);
+                        }
+                        updateFile("help/help-" + lang + ".json", profileHelp.toString());
+                        return profileHelp.toString();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error reset help: " + e);
+        }
+        
+        return null;
+    }
+    
     private JSONArray getLayers(String id) {
        return getLayers(id, false);
     }

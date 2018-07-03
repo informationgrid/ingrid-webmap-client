@@ -15,7 +15,7 @@ export class HelpComponent implements OnChanges {
 
   @Input() settings: Setting = new Setting();
   languages: string[] = [];
-  helps: Map<String, String>;
+  helps: Map<String, any>;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -32,7 +32,7 @@ export class HelpComponent implements OnChanges {
             this.httpService.getHelp(lang).subscribe(
               data => {
                 if (!this.helps) {
-                  this.helps = new Map<String, String>();
+                  this.helps = new Map<String, any>();
                 }
                 this.helps.set(lang, JSON.parse(data));
               },
@@ -49,6 +49,22 @@ export class HelpComponent implements OnChanges {
     this.httpService.updateHelp(lang, this.helps.get(lang)).subscribe(
       data => {
         this.modalSaveSuccess.show();
+      },
+      error => {
+        console.log('Error save help ' + lang);
+        this.modalSaveUnsuccess.show();
+      }
+    );
+  }
+
+  onReset(lang: string, key: string) {
+    this.httpService.resetHelpKey(lang, key).subscribe(
+      data => {
+        this.modalSaveSuccess.show();
+        if (!this.helps) {
+          this.helps = new Map<String, any>();
+        }
+        this.helps.set(lang, JSON.parse(data));
       },
       error => {
         console.log('Error save help ' + lang);

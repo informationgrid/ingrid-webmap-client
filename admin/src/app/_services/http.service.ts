@@ -222,6 +222,10 @@ export class HttpService {
     return this.http.put<Setting>(httpApiHost + '/setting', body, httpJsonOptions);
   }
 
+  resetSetting(): Observable<Setting> {
+    return this.http.put<Setting>(httpApiHost + '/setting/reset', '', httpJsonOptions);
+  }
+
 // Help
   getHelp(lang: string) {
     return this.http.get(httpApiHost + '/help/' + lang, {responseType: 'text'});
@@ -231,6 +235,9 @@ export class HttpService {
     return this.http.put(httpApiHost + '/help/' + lang, help, {responseType: 'text'});
   }
 
+  resetHelpKey(lang: string, id: any) {
+    return this.http.put(httpApiHost + '/help/reset/' + lang + '/' + id, '', {responseType: 'text'});
+  }
 // CSS
   getCss() {
     return this.http.get(httpApiHost + '/css', {responseType: 'text'});

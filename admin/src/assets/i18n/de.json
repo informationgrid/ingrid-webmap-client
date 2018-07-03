@@ -285,5 +285,6 @@
     "category_add_success_text": "Änderungen wurden erfolgreich gespeichert!",
     "category_add_unsuccess_title": "Probleme beim Speichern",
     "category_add_unsuccess_text": "Änderungen wurden nicht gespeichert!",
-    "refresh": "Aktualisieren"
+    "refresh": "Aktualisieren",
+    "reset": "Zurücksetzen"
 }
