@@ -2,17 +2,9 @@
   <form #f="ngForm" (ngSubmit)="onUpdateLayer(f)">
     <div class="modal-header">
       <div>
-        <button *ngIf="!isEdit" type="button" class="btn btn-primary mr-sm-2" (click)="onEdit()" translate>
-          <i class="fa fa-edit" aria-hidden="true"></i>
-          edit
-        </button>
-        <button *ngIf="isEdit" type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
+        <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
           <i class="fa fa-check" aria-hidden="true"></i>
           save
-        </button>
-        <button *ngIf="isEdit" type="button" class="btn btn-secondary mr-sm-2" (click)="onCancel()" translate>
-          <i class="fa fa-ban" aria-hidden="true"></i>
-          cancel
         </button>
       </div>
       <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
@@ -58,7 +50,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" name="id" [ngModel]="layer.id" class="form-control" [readonly]="!isEdit" [value]="layer.id" required>
+          <input type="text" name="id" [ngModel]="layer.id" class="form-control" [value]="layer.id" required>
         </div>
       </div>
       <!-- version -->
@@ -78,7 +70,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="version" #version="ngModel" [(ngModel)]="layer.item.version" [disabled]="!isEdit" required>
+          <select class="form-control" name="version" #version="ngModel" [(ngModel)]="layer.item.version" required>
             <option value="1.1.1" translate>1.1.1</option>
             <option value="1.3.0" translate>1.3.0</option>
           </select>
@@ -101,7 +93,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control" [readonly]="!isEdit">
+          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control">
         </div>
       </div>
       <!-- extent -->
@@ -122,13 +114,13 @@
         </div>
         <div class="col-sm-9">
           <input type="number" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
           <input type="number" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
           <input type="number" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
           <input type="number" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
         </div>
       </div>
       <!-- wmsUrl -->
@@ -148,7 +140,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #wmsUrl="ngModel" [(ngModel)]="layer.item.wmsUrl" name="wmsUrl" class="form-control" [readonly]="!isEdit">
+          <input type="text" #wmsUrl="ngModel" [(ngModel)]="layer.item.wmsUrl" name="wmsUrl" class="form-control">
         </div>
       </div>
       <!-- wmsLayers -->
@@ -168,7 +160,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #wmsLayers="ngModel" [(ngModel)]="layer.item.wmsLayers" name="wmsLayers" class="form-control" [readonly]="!isEdit">
+          <input type="text" #wmsLayers="ngModel" [(ngModel)]="layer.item.wmsLayers" name="wmsLayers" class="form-control">
         </div>
       </div>
       <!-- gutter -->
@@ -188,7 +180,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="number" #gutter="ngModel" [(ngModel)]="layer.item.gutter " name="gutter" class="form-control" [readonly]="!isEdit">
+          <input type="number" #gutter="ngModel" [(ngModel)]="layer.item.gutter " name="gutter" class="form-control">
         </div>
       </div>
       <!-- singleTile -->
@@ -208,7 +200,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #singleTile="ngModel" name="singleTile" [(ngModel)]="layer.item.singleTile" [disabled]="!isEdit">
+          <select class="form-control" #singleTile="ngModel" name="singleTile" [(ngModel)]="layer.item.singleTile">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -231,7 +223,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="number" #minScale="ngModel" [(ngModel)]="layer.item.minScale" name="minScale" class="form-control" [readonly]="!isEdit">
+          <input type="number" #minScale="ngModel" [(ngModel)]="layer.item.minScale" name="minScale" class="form-control">
         </div>
       </div>
       <!-- maxScale -->
@@ -251,7 +243,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="number" #maxScale="ngModel" [(ngModel)]="layer.item.maxScale" name="maxScale" class="form-control" [readonly]="!isEdit">
+          <input type="number" #maxScale="ngModel" [(ngModel)]="layer.item.maxScale" name="maxScale" class="form-control">
         </div>
       </div>
       <!-- background -->
@@ -271,7 +263,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #background="ngModel" name="background" [(ngModel)]="layer.item.background" [disabled]="!isEdit">
+          <select class="form-control" #background="ngModel" name="background" [(ngModel)]="layer.item.background">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -294,7 +286,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control" [readonly]="!isEdit">
+          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control">
         </div>
       </div>
       <!-- searchable -->
@@ -314,7 +306,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #searchable="ngModel" name="searchable" [(ngModel)]="layer.item.searchable" [disabled]="!isEdit">
+          <select class="form-control" #searchable="ngModel" name="searchable" [(ngModel)]="layer.item.searchable">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -337,7 +329,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #crossOrigin="ngModel" name="crossOrigin" [(ngModel)]="layer.item.crossOrigin" [disabled]="!isEdit">
+          <select class="form-control" #crossOrigin="ngModel" name="crossOrigin" [(ngModel)]="layer.item.crossOrigin">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -360,7 +352,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #highlightable="ngModel" name="highlightable" [(ngModel)]="layer.item.highlightable" [disabled]="!isEdit">
+          <select class="form-control" #highlightable="ngModel" name="highlightable" [(ngModel)]="layer.item.highlightable">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -383,7 +375,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #timestamps="ngModel" [(ngModel)]="layer.item.timestamps" name="timestamps" class="form-control" [readonly]="!isEdit">
+          <input type="text" #timestamps="ngModel" [(ngModel)]="layer.item.timestamps" name="timestamps" class="form-control">
         </div>
       </div>
       <!-- timeEnabled -->
@@ -403,7 +395,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #timeEnabled="ngModel" name="timeEnabled" [(ngModel)]="layer.item.timeEnabled" [disabled]="!isEdit">
+          <select class="form-control" #timeEnabled="ngModel" name="timeEnabled" [(ngModel)]="layer.item.timeEnabled">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -427,7 +419,7 @@
         </div>
         <div class="col-sm-9">
           <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control"
-            [readonly]="!isEdit">
+          >
         </div>
       </div>
       <!-- hasLegend -->
@@ -447,7 +439,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend" [disabled]="!isEdit">
+          <select class="form-control" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -470,7 +462,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control" [readonly]="!isEdit">
+          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control">
         </div>
       </div>
       <!-- attribution -->
@@ -490,7 +482,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control" [readonly]="!isEdit">
+          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control">
         </div>
       </div>
       <!-- attributionUrl -->
@@ -511,7 +503,7 @@
         </div>
         <div class="col-sm-9">
           <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control"
-            [readonly]="!isEdit">
+          >
         </div>
       </div>
       <!-- tooltip -->
@@ -531,7 +523,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip" [disabled]="!isEdit">
+          <select class="form-control" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -554,7 +546,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #opacity="ngModel" name="opacity" [(ngModel)]="layer.item.opacity" [disabled]="!isEdit">
+          <select class="form-control" #opacity="ngModel" name="opacity" [(ngModel)]="layer.item.opacity">
             <option [ngValue]="0.0" translate>0%</option>
             <option [ngValue]="0.1" translate>10%</option>
             <option [ngValue]="0.2" translate>20%</option>
@@ -586,7 +578,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control" [readonly]="!isEdit">
+          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control">
         </div>
       </div>
     </div>

@@ -2,17 +2,9 @@
   <form #f="ngForm" (ngSubmit)="onUpdateLayer(f)">
     <div class="modal-header">
       <div>
-        <button *ngIf="!isEdit" type="button" class="btn btn-primary" (click)="onEdit()" translate>
-          <i class="fa fa-edit" aria-hidden="true"></i>
-          edit
-        </button>
-        <button *ngIf="isEdit" type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
+        <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
           <i class="fa fa-check" aria-hidden="true"></i>
           save
-        </button>
-        <button *ngIf="isEdit" type="button" class="btn btn-secondary" (click)="onCancel()" translate>
-          <i class="fa fa-ban" aria-hidden="true"></i>
-          cancel
         </button>
       </div>
       <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
@@ -58,7 +50,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #id="ngModel" [(ngModel)]="layer.id" name="id" class="form-control" [readonly]="!isEdit" required>
+          <input type="text" #id="ngModel" [(ngModel)]="layer.id" name="id" class="form-control" required>
         </div>
       </div>
       <!-- version -->
@@ -78,7 +70,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #version="ngModel" name="version" [(ngModel)]="layer.item.version" [disabled]="!isEdit" required>
+          <select class="form-control" #version="ngModel" name="version" [(ngModel)]="layer.item.version" required>
             <option value="1.0.0" translate>1.0.0</option>
           </select>
         </div>
@@ -100,7 +92,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control" [readonly]="!isEdit"
+          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control"
             required>
         </div>
       </div>
@@ -121,13 +113,13 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group" [readonly]="!isEdit"
+          <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group"
             required>
-          <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group" [readonly]="!isEdit"
+          <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group"
             required>
-          <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group" [readonly]="!isEdit"
+          <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group"
             required>
-          <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group" [readonly]="!isEdit"
+          <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group"
             required>
         </div>
       </div>
@@ -148,7 +140,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #serviceUrl="ngModel" [(ngModel)]="layer.item.serviceUrl" name="serviceUrl" class="form-control" [readonly]="!isEdit"
+          <input type="text" #serviceUrl="ngModel" [(ngModel)]="layer.item.serviceUrl" name="serviceUrl" class="form-control"
             required>
         </div>
       </div>
@@ -169,7 +161,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #template="ngModel" [(ngModel)]="layer.item.template" name="template" class="form-control" [readonly]="!isEdit"
+          <input type="text" #template="ngModel" [(ngModel)]="layer.item.template" name="template" class="form-control"
             required>
         </div>
       </div>
@@ -190,7 +182,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control" [readonly]="!isEdit"
+          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control"
             required>
         </div>
       </div>
@@ -212,7 +204,7 @@
         </div>
         <div class="col-sm-9">
           <input type="text" #serverLayerName="ngModel" [(ngModel)]="layer.item.serverLayerName" name="serverLayerName" class="form-control"
-            [readonly]="!isEdit" required>
+           required>
         </div>
       </div>
       <!-- requestEncoding -->
@@ -232,7 +224,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #requestEncoding="ngModel" name="requestEncoding" [(ngModel)]="layer.item.requestEncoding" [disabled]="!isEdit"
+          <select class="form-control" #requestEncoding="ngModel" name="requestEncoding" [(ngModel)]="layer.item.requestEncoding"
             required>
             <option value="REST" translate>REST</option>
             <option value="KVP" translate>KVP</option>
@@ -256,7 +248,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="background" #background="ngModel" [(ngModel)]="layer.item.background" [disabled]="!isEdit">
+          <select class="form-control" name="background" #background="ngModel" [(ngModel)]="layer.item.background">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -279,7 +271,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control" [readonly]="!isEdit"
+          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control"
             required>
         </div>
       </div>
@@ -300,7 +292,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="searchable" #searchable="ngModel" [(ngModel)]="layer.item.searchable" [disabled]="!isEdit">
+          <select class="form-control" name="searchable" #searchable="ngModel" [(ngModel)]="layer.item.searchable">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -323,7 +315,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="crossOrigin" #crossOrigin="ngModel" [(ngModel)]="layer.item.crossOrigin" [disabled]="!isEdit">
+          <select class="form-control" name="crossOrigin" #crossOrigin="ngModel" [(ngModel)]="layer.item.crossOrigin">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -346,7 +338,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="highlightable" #highlightable="ngModel" [(ngModel)]="layer.item.highlightable" [disabled]="!isEdit">
+          <select class="form-control" name="highlightable" #highlightable="ngModel" [(ngModel)]="layer.item.highlightable">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -369,7 +361,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #timestamps="ngModel" [(ngModel)]="layer.item.timestamps" name="timestamps" class="form-control" [readonly]="!isEdit">
+          <input type="text" #timestamps="ngModel" [(ngModel)]="layer.item.timestamps" name="timestamps" class="form-control">
         </div>
       </div>
       <!-- timeEnabled -->
@@ -389,7 +381,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="timeEnabled" #timeEnabled="ngModel" [(ngModel)]="layer.item.timeEnabled" [disabled]="!isEdit">
+          <select class="form-control" name="timeEnabled" #timeEnabled="ngModel" [(ngModel)]="layer.item.timeEnabled">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -413,7 +405,7 @@
         </div>
         <div class="col-sm-9">
           <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control"
-            [readonly]="!isEdit">
+          >
         </div>
       </div>
       <!-- hasLegend -->
@@ -433,7 +425,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="hasLegend" #hasLegend="ngModel" [(ngModel)]="layer.item.hasLegend" [disabled]="!isEdit">
+          <select class="form-control" name="hasLegend" #hasLegend="ngModel" [(ngModel)]="layer.item.hasLegend">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -456,7 +448,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control" [readonly]="!isEdit">
+          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control">
         </div>
       </div>
       <!-- attribution -->
@@ -476,7 +468,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control" [readonly]="!isEdit">
+          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control">
         </div>
       </div>
       <!-- attributionUrl -->
@@ -497,7 +489,7 @@
         </div>
         <div class="col-sm-9">
           <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control"
-            [readonly]="!isEdit">
+          >
         </div>
       </div>
       <!-- tooltip -->
@@ -517,7 +509,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="tooltip" #tooltip="ngModel" [(ngModel)]="layer.item.tooltip" [disabled]="!isEdit">
+          <select class="form-control" name="tooltip" #tooltip="ngModel" [(ngModel)]="layer.item.tooltip">
             <option [ngValue]="false" translate>false</option>
             <option [ngValue]="true" translate>true</option>
           </select>
@@ -540,7 +532,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="opacity" #opacity="ngModel" [(ngModel)]="layer.item.opacity" [disabled]="!isEdit">
+          <select class="form-control" name="opacity" #opacity="ngModel" [(ngModel)]="layer.item.opacity">
             <option [ngValue]="0.0" translate>0%</option>
             <option [ngValue]="0.1" translate>10%</option>
             <option [ngValue]="0.2" translate>20%</option>
@@ -572,7 +564,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control" [readonly]="!isEdit"
+          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control"
             required>
         </div>
       </div>
@@ -594,9 +586,9 @@
         </div>
         <div class="col-sm-9">
           <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
           <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group"
-            [readonly]="!isEdit" required>
+           required>
         </div>
       </div>
       <!-- scales -->
@@ -617,24 +609,23 @@
         </div>
         <div class="col-sm-9">
           <div class="input-group form-group" *ngFor="let scale of layer.item.scales; let i=index;">
-            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control" [readonly]="!isEdit" required>
+            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control" required>
             <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(scale, layer.item.scales)" *ngIf="isEdit && i !== (layer.item.scales.length - 1) && layer.item.scales.length > 1">
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(scale, layer.item.scales)" *ngIf="i !== (layer.item.scales.length - 1) && layer.item.scales.length > 1">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(scale, layer.item.scales)" *ngIf="isEdit && i !== 0">
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(scale, layer.item.scales)" *ngIf="i !== 0">
                 <i class="fa fa-sort-up" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, layer.item.scales)" *ngIf="isEdit">
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, layer.item.scales)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
           </div>
-          <div class="input-group form-group" *ngIf="isEdit">
-            <input type="number" #scales name="scales" class="form-control" [readonly]="!isEdit" placeholder="{{ ('add') | translate }}">
+          <div class="input-group form-group">
+            <input type="number" #scales name="scales" class="form-control" placeholder="{{ ('add') | translate }}">
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(scales.value, layer.item.scales); scales.value = '';"
-                *ngIf="isEdit">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(scales.value, layer.item.scales); scales.value = '';">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>

@@ -372,6 +372,80 @@ public class AdministrationResource {
             
             if(setting != null) {
                 settingProfile = new JSONObject(content);
+                Iterator<?> keys = setting.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (settingProfile.has(key)) {
+                        Object obj = setting.get(key);
+                        Object objProfile = settingProfile.get(key);
+                        if(obj instanceof String && objProfile instanceof String) {
+                            if(setting.getString(key).equals(settingProfile.getString(key))) {
+                                settingProfile.remove(key);
+                            }
+                        } else if(obj instanceof Boolean && objProfile instanceof Boolean) {
+                            if(setting.getBoolean(key) == settingProfile.getBoolean(key)) {
+                                settingProfile.remove(key);
+                            }
+                        } else if(obj instanceof Integer && objProfile instanceof Integer) {
+                            if(setting.getInt(key) == settingProfile.getInt(key)) {
+                                settingProfile.remove(key);
+                            }
+                        } else if(obj instanceof Double && objProfile instanceof Double) {
+                            if(setting.getDouble(key) == settingProfile.getDouble(key)) {
+                                settingProfile.remove(key);
+                            }
+                        } else if(obj instanceof Long && objProfile instanceof Long) {
+                            if(setting.getLong(key) == settingProfile.getLong(key)) {
+                                settingProfile.remove(key);
+                            }
+                        } else if (obj instanceof JSONArray) {
+                            JSONArray settingArr = setting.getJSONArray(key);
+                            JSONArray settingProfileArr = settingProfile.getJSONArray(key);
+                            if(settingArr != null && settingProfileArr != null) {
+                                boolean isSame = false;
+                                if (settingArr.length() == settingProfileArr.length()) {
+                                    isSame = true;
+                                    for (int i = 0; i < settingArr.length(); i++) {
+                                        Object arrayObj = settingArr.get(i);
+                                        Object arrayProfileObj = settingProfileArr.get(i);
+                                        if(arrayObj instanceof String && arrayProfileObj instanceof String) {
+                                            if(!settingArr.getString(i).equals(settingProfileArr.getString(i))) {
+                                                isSame = false;
+                                                break;
+                                            }
+                                        } else if(arrayObj instanceof Boolean && arrayProfileObj instanceof Boolean) {
+                                            if(settingArr.getBoolean(i) != settingProfileArr.getBoolean(i)) {
+                                                isSame = false;
+                                                break;
+                                            }
+                                        } else if(arrayObj instanceof Integer && arrayProfileObj instanceof Integer) {
+                                            if(settingArr.getInt(i) != settingProfileArr.getInt(i)) {
+                                                isSame = false;
+                                                break;
+                                            }
+                                        } else if(arrayObj instanceof Double && arrayProfileObj instanceof Double) {
+                                            if(settingArr.getDouble(i) != settingProfileArr.getDouble(i)) {
+                                                isSame = false;
+                                                break;
+                                            }
+                                        } else if(arrayObj instanceof Long && arrayProfileObj instanceof Long) {
+                                            if(settingArr.getLong(i) != settingProfileArr.getLong(i)) {
+                                                isSame = false;
+                                                break;
+                                            }
+                                        } else if(arrayObj.getClass() != arrayProfileObj.getClass()) {
+                                            isSame = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if(isSame) {
+                                    settingProfile.remove(key);
+                                }
+                            }
+                        }
+                    }
+                }
             } else {
                 settingProfile = new JSONObject(content);
             }
@@ -398,6 +472,16 @@ public class AdministrationResource {
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(config_dir != null){
             String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            if(fileContent != null) {
+                return Response.ok( fileContent ).build();
+            }
+        }
+        
+        String classPath = "";
+        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        String filePathHelp = classPath + "frontend/";
+        String fileContent = Utils.getFileContent(filePathHelp, filename, ".css", "css/");
+        if(fileContent != null) {
             return Response.ok( fileContent ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -420,17 +504,49 @@ public class AdministrationResource {
     @Path("help/{lang}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getHelpRequest(@PathParam("lang") String lang) {
-        if(lang != null) {
-            String filename = "help-" + lang;
-            if(log.isDebugEnabled()){
-                log.debug( "Load file: " + filename );
+        try {
+            if(lang != null) {
+                String filename = "help-" + lang;
+                if(log.isDebugEnabled()){
+                    log.debug( "Load file: " + filename );
+                }
+                
+                JSONObject help = new JSONObject();
+                JSONObject profileHelp = new JSONObject();
+                
+                if(log.isDebugEnabled()){
+                    log.debug( "Load file: " + filename );
+                }
+                String classPath = "";
+                classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                String filePathHelp = classPath + "frontend/";
+                String fileContent = Utils.getFileContent(filePathHelp, filename, ".json", "help/");
+                if(fileContent != null) {
+                    help = new JSONObject(fileContent);
+                }
+                
+                Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                if(config_dir != null){
+                    fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
+                    if(fileContent != null){
+                        profileHelp = new JSONObject(fileContent);
+                    }
+                }
+                
+                if(help != null && profileHelp != null) {
+                    Iterator<?> keys = profileHelp.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        if (profileHelp.has(key)) {
+                            help.put(key, profileHelp.get(key));
+                        }
+                    }
+                }
+                return Response.ok( help.toString() ).build();
             }
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
-                String fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
-                return Response.ok( fileContent ).build();
-            }
+        } catch (JSONException e) {
+            log.error("Error getHelpRequest: " + e);
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -581,7 +697,16 @@ public class AdministrationResource {
     
     private String updateCss(String content) {
         try {
-            updateFile("css/app.override.css", content);
+            String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            if(classPath != null) {
+                String filePathHelp = classPath + "frontend/";
+                String fileContent = Utils.getFileContent(filePathHelp, "app.override", ".css", "css/");
+                if(fileContent != null) {
+                    if(!fileContent.equals(content)) {
+                        updateFile("css/app.override.css", content);
+                    }
+                }
+            }
             return content;
         } catch (Exception e) {
             log.error("Error 'updateCss'!");
@@ -590,11 +715,42 @@ public class AdministrationResource {
     }
     
     private String updateHelp(String lang, String content) {
+        JSONObject help = null;
+        JSONObject profileHelp = null;
         try {
-            updateFile("help/help-" + lang + ".json", content);
+            String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+            if(classPath != null) {
+                String filePathHelp = classPath + "frontend/";
+                String fileContent = Utils.getFileContent(filePathHelp, "help-" + lang, ".json", "help/");
+                if(fileContent != null) {
+                    help = new JSONObject(fileContent);
+                }
+            }
+            if(content != null) {
+                profileHelp = new JSONObject(content);
+            }
+            
+            if(help != null && profileHelp != null) {
+                Iterator<?> keys = help.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (profileHelp.has(key)) {
+                        JSONObject helpItem = help.getJSONObject(key);
+                        JSONObject helpProfileItem = profileHelp.getJSONObject(key);
+                        if(helpItem.has("title") && helpProfileItem.has("title") && helpItem.getString("title").equals(helpProfileItem.getString("title")) 
+                            && helpItem.has("text") && helpProfileItem.has("text") && helpItem.getString("text").equals(helpProfileItem.getString("text"))
+                            && helpItem.has("image") && helpProfileItem.has("image") &&  helpItem.getString("image").equals(helpProfileItem.getString("image"))){
+                            profileHelp.remove(key);
+                        }
+                    }
+                }
+            } else {
+                profileHelp = new JSONObject();
+            }
+            updateFile("help/help-" + lang + ".json", profileHelp.toString());
             return content;
         } catch (Exception e) {
-            log.error("Error 'updateHelp'!");
+            log.error("Error write profile help: " + e);
         }
         return null;
     }

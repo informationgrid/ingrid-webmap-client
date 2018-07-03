@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
@@ -9,29 +9,17 @@ import { ModalComponent } from '../../modals/modal/modal.component';
   templateUrl: './layer-item-wmts.component.html',
   styleUrls: ['./layer-item-wmts.component.scss']
 })
-export class LayerItemWmtsComponent implements OnInit {
+export class LayerItemWmtsComponent {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
-  isEdit = false;
 
   tmpLayer: LayerItem;
 
   constructor(private httpService: HttpService) { }
-
-  ngOnInit() {
-  }
-
-  onEdit() {
-    this.isEdit = !this.isEdit;
-  }
-
-  onCancel() {
-    this.isEdit = !this.isEdit;
-  }
 
   onAddItem(value: any, list: any ) {
     if (value && list) {
@@ -85,7 +73,6 @@ export class LayerItemWmtsComponent implements OnInit {
             this.modalSaveUnsuccess.show();
           }
         );
-        this.isEdit = !this.isEdit;
       }
     }
   }
