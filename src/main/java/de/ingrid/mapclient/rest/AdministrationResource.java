@@ -539,7 +539,7 @@ public class AdministrationResource {
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                 if(config_dir != null){
-                    fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
+                    fileContent = Utils.getFileContent(config_dir, filename + ".profile", ".json", "help/");
                     if(fileContent != null){
                         profileHelp = new JSONObject(fileContent);
                     }
@@ -575,30 +575,37 @@ public class AdministrationResource {
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                 if(config_dir != null){
-                    String fileContent = Utils.getFileContent(config_dir, filename, ".json", "help/");
-                    try {
-                        JSONObject obj = new JSONObject(fileContent);
-                        JSONObject jsonObj = new JSONObject();
-                        JSONObject jsonObjId = obj.getJSONObject(id);
-                        if(jsonObjId != null){
-                            String title = jsonObjId.getString( "title" );
-                            String text = jsonObjId.getString( "text" );
-                            String image = jsonObjId.getString( "image" );
-                            
-                            JSONArray jsonRowObj = new JSONArray();
-                            jsonRowObj.put(id);
-                            jsonRowObj.put(title);
-                            jsonRowObj.put(text);
-                            jsonRowObj.put("");
-                            jsonRowObj.put(image);
-                            
-                            JSONArray jsonRow = new JSONArray();
-                            jsonRow.put( jsonRowObj );
-                            jsonObj.put( "rows", jsonRow );
+                    Response helps = this.getHelpRequest(lang);
+                    if(helps != null) {
+                        if(helps.getEntity() != null) {
+                            String fileContent = helps.getEntity().toString();
+                            if(fileContent != null) {
+                                try {
+                                    JSONObject obj = new JSONObject(fileContent);
+                                    JSONObject jsonObj = new JSONObject();
+                                    JSONObject jsonObjId = obj.getJSONObject(id);
+                                    if(jsonObjId != null){
+                                        String title = jsonObjId.getString( "title" );
+                                        String text = jsonObjId.getString( "text" );
+                                        String image = jsonObjId.getString( "image" );
+                                        
+                                        JSONArray jsonRowObj = new JSONArray();
+                                        jsonRowObj.put(id);
+                                        jsonRowObj.put(title);
+                                        jsonRowObj.put(text);
+                                        jsonRowObj.put("");
+                                        jsonRowObj.put(image);
+                                        
+                                        JSONArray jsonRow = new JSONArray();
+                                        jsonRow.put( jsonRowObj );
+                                        jsonObj.put( "rows", jsonRow );
+                                    }
+                                    return Response.ok( jsonObj ).build();
+                                } catch (JSONException e) {
+                                    log.error("Error get help with ID " + id);
+                                }
+                            }
                         }
-                        return Response.ok( jsonObj ).build();
-                    } catch (JSONException e) {
-                        log.error("Error get help with ID " + id);
                     }
                 }
             }
@@ -650,7 +657,7 @@ public class AdministrationResource {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+        String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
         if(fileContent != null) {
             locale = new JSONObject(fileContent);
         }
@@ -663,9 +670,9 @@ public class AdministrationResource {
                     locale.put(key, item.get(key));
                 }
             }
-            updateFile("locales/" + lang + ".json", locale);
+            updateFile("locales/" + lang + ".profile.json", locale);
         } else if(item != null) {
-            updateFile("locales/" + lang + ".json", item);
+            updateFile("locales/" + lang + ".profile.json", item);
         }
     }
 
@@ -683,7 +690,7 @@ public class AdministrationResource {
                     locale.remove(key);
                 }
             }
-            updateFile("locales/" + lang + ".json", locale);
+            updateFile("locales/" + lang + ".profile.json", locale);
         }
     }
 
@@ -771,7 +778,7 @@ public class AdministrationResource {
             } else {
                 profileHelp = new JSONObject();
             }
-            updateFile("help/help-" + lang + ".json", profileHelp.toString());
+            updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
             return content;
         } catch (Exception e) {
             log.error("Error write profile help: " + e);
@@ -784,14 +791,14 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(config_dir != null){
-                String fileContent = Utils.getFileContent(config_dir, "help-" + lang, ".json", "help/");
+                String fileContent = Utils.getFileContent(config_dir, "help-" + lang + ".profile", ".json", "help/");
                 if(fileContent != null) {
                     JSONObject profileHelp = new JSONObject(fileContent);
                     if(profileHelp != null) {
                         if(profileHelp.has(id)) {
                             profileHelp.remove(id);
                         }
-                        updateFile("help/help-" + lang + ".json", profileHelp.toString());
+                        updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
                         return profileHelp.toString();
                     }
                 }

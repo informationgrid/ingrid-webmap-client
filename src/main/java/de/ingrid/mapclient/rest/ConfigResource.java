@@ -220,7 +220,7 @@ public class ConfigResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         fileLocalePath = config_dir;
-        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
         if(fileContent != null){
             JSONObject profileLocale = new JSONObject(fileContent);
             if(profileLocale != null) {
