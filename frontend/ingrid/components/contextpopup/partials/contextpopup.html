@@ -84,7 +84,7 @@
                 <td>{{bwastr_typ}}</td>
               </tr>
               <tr ng-if="bwastr_error == undefined && bwastr_label != undefined">
-                <td>{{bwastr_label}}:</td>
+                <td><span ng-bind-html="bwastr_label"></span>:</td>
                 <td>{{bwastr_coords}}</td>
               </tr>
               <tr ng-if="bwastr_km != undefined">
