@@ -512,5 +512,16 @@
 "zoom_in": "Zoom in",
 "zoom_out": "Zoom out",
 "zoom_to_extent_label": "",
-"zoom_to_extent_tiplabel": "In den initialen Bereich zoomen"
+"zoom_to_extent_tiplabel": "In den initialen Bereich zoomen",
+"projection_3857": "<a target=\"_blank\" href=\"https://epsg.io/3857\">Mercator</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Geographische_Breite\">Breite</a>, <a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Geographische_L%C3%A4nge\">Länge</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Grad_(Winkel)\">°</a>]",
+"projection_4326": "<a target=\"_blank\" href=\"https://epsg.io/4326\">WGS 84</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Geographische_Breite\">Breite</a>, <a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Geographische_L%C3%A4nge\">Länge</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Grad_(Winkel)\">°</a>]",
+"projection_31466": "<a target=\"_blank\" href=\"https://epsg.io/31466\">GK2 - DHDN</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_31467": "<a target=\"_blank\" href=\"https://epsg.io/31467\">GK3 - DHDN</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_31468": "<a target=\"_blank\" href=\"https://epsg.io/31468\">GK4 - DHDN</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_31469": "<a target=\"_blank\" href=\"https://epsg.io/31469\">GK5 - DHDN</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_25832": "<a target=\"_blank\" href=\"https://epsg.io/25832\">UTM 32N - ETRS89</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/UTM-Referenzsystem\">E, N</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_25833": "<a target=\"_blank\" href=\"https://epsg.io/25833\">UTM 33N - ETRS89</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/UTM-Referenzsystem\">E, N</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_2166": "<a target=\"_blank\" href=\"https://epsg.io/2166\">GK3 - S42/83</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_2167": "<a target=\"_blank\" href=\"https://epsg.io/2167\">GK4 - S42/83</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]",
+"projection_2168": "<a target=\"_blank\" href=\"https://epsg.io/2168\">GK5 - S42/83</a> (<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Gau%C3%9F-Kr%C3%BCger-Koordinatensystem\">R, H</a>) [<a target=\"_blank\" href=\"https://de.wikipedia.org/wiki/Meter\">m</a>]"
 }
