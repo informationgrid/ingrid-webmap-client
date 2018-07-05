@@ -23,9 +23,10 @@ goog.require('ga_window_service');
 
   // INGRID: Add 'gaUrlUtils', '$translate', '$sce'
   module.directive('gaContextPopup',
-      function($http, $q, $timeout, $window, $rootScope, $translate, $sce, gaBrowserSniffer,
+      function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
           gaNetworkStatus, gaPermalink, gaGlobalOptions, gaLang, gaWhat3Words,
-          gaReframe, gaEvent, gaWindow, gaHeight, gaUrlUtils) {
+          gaReframe, gaEvent, gaWindow, gaHeight, gaUrlUtils, $translate,
+          $sce) {
         return {
           restrict: 'A',
           replace: true,
