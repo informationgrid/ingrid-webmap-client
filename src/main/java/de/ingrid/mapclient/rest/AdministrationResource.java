@@ -450,6 +450,23 @@ public class AdministrationResource {
                 settingProfile = new JSONObject(content);
             }
             JSONObject obj = updateSetting(settingProfile);
+            if(settingProfile.has("settingLanguages")) {
+                JSONArray settingLanguages = settingProfile.getJSONArray("settingLanguages");
+                for (int i = 0; i < settingLanguages.length(); i++) {
+                    String lang = settingLanguages.getString(i);
+                    if(lang != null) {
+                        Response langResponse = this.getHelpRequest(lang);
+                        if(langResponse.getEntity().toString().equals("{}")) {
+                            this.updateHelp(lang, this.getHelpRequest("de").getEntity().toString());
+                        }
+                        ConfigResource cr = new ConfigResource();
+                        Response localeResponse = cr.getLocales(lang+ ".json");
+                        if(localeResponse.getEntity().toString().equals("{}")) {
+                            this.updateLocale(lang, cr.getLocales("de.json").getEntity().toString());
+                        }
+                    }
+                }
+            } 
             if(obj != null) {
                 return Response.status( Response.Status.OK ).build();
             }
@@ -775,8 +792,6 @@ public class AdministrationResource {
                         }
                     }
                 }
-            } else {
-                profileHelp = new JSONObject();
             }
             updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
             return content;
