@@ -559,17 +559,20 @@ export class LayerComponent implements OnInit {
     }
 
     // format
-    format.forEach(f => {
-      if (!newLayer.format) {
-        if (f.indexOf('image/png') > -1) {
-          newLayer.format = 'png';
-        } else if (f.indexOf('image/jpeg') > -1) {
-          newLayer.format = 'jpeg';
-        } else if (f.indexOf('image/gif') > -1) {
-          newLayer.format = 'gif';
-        }
+    if (format) {
+      if (format.indexOf('image/png')){
+        newLayer.format = 'png';
+      } else if (format.indexOf('image/png')) {
+        newLayer.format = 'jpeg';
+      } else if (format.indexOf('image/gif')) {
+        newLayer.format = 'gif';
+      } else {
+        newLayer.format = format[0].replace('image/', '');
       }
-    });
+    }
+    if (!newLayer.format) {
+      newLayer.format = 'png';
+    }
 
     const children = layer['Layer'];
     const newLayerChildren = [];
