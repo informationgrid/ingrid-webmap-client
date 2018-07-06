@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Category } from '../../../_models/category';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
 })
-export class CategoryComponent implements OnInit, OnChanges {
+export class CategoryComponent implements OnChanges {
 
   @Input() layers: LayerItem[];
   @Input() categories: Category[];
@@ -38,14 +38,6 @@ export class CategoryComponent implements OnInit, OnChanges {
   constructor(private httpService: HttpService, private translate: TranslateService) {
   }
 
-  ngOnInit() {
-    if (this.layers) {
-      this.backgroundLayers = this.layers.filter(
-        layer => layer.item.background
-      );
-    }
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     this.categoriesLength = this.categories.length;
   }
@@ -58,6 +50,9 @@ export class CategoryComponent implements OnInit, OnChanges {
 
   showModalEdit (modal: ModalComponent, category: Category) {
     this.model = category;
+    this.backgroundLayers = this.layers.filter(
+      layer => layer.item.background
+    );
     this.formEdit.reset({
       id: this.model.id,
       defaultBackground: this.model.defaultBackground,

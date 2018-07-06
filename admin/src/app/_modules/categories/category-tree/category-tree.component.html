@@ -127,7 +127,7 @@
           </div>
           <div class="form-control-feedback" 
             *ngIf="layerBodIdAdd.errors && (layerBodIdAdd.dirty || layerBodIdAdd.touched)">
-            <div *ngIf="layerBodIdAdd.errors.notExist"><span translate>layerBodId_not_exist</span></div>
+            <div *ngIf="layerBodIdAdd.errors.notExist"><span translate>field_layerBodId_not_exist</span></div>
           </div>
           <ul *ngIf="searchLayerList" class="list-group search-list">
             <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
@@ -204,7 +204,7 @@
           </div>
           <div class="form-control-feedback" 
               *ngIf="layerBodId.errors && (layerBodId.dirty || layerBodId.touched)">
-            <div *ngIf="layerBodId.errors.notExist"><span translate>layerBodId_not_exist</span></div>
+            <div *ngIf="layerBodId.errors.notExist"><span translate>field_layerBodId_not_exist</span></div>
           </div>
           <ul *ngIf="searchLayerList" class="list-group search-list">
             <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">

@@ -100,12 +100,14 @@
         ">
         <label class="col-sm-4 col-form-label" for="addCatId" translate>category_item_add_id</label>
         <div class="col-sm-8">
-          <input type="text" #addCatId="ngModel" [(ngModel)]="formAdd.value.addCatId" class="form-control" name="addCatId" id="addCatId" required minlength="4" pattern="^[a-zA-Z0-9_-]*">
+          <input type="text" #addCatId="ngModel" [(ngModel)]="formAdd.value.addCatId" class="form-control" name="addCatId" id="addCatId" 
+            required minlength="4" pattern="^[a-zA-Z0-9_-]*" appCategoryListValidator [checkList]="categories">
           <div class="form-control-feedback" 
               *ngIf="addCatId.errors && (addCatId.dirty || addCatId.touched)">
             <div *ngIf="addCatId.errors.required"><span translate>field_required</span></div>
             <div *ngIf="addCatId.errors.minlength"><span translate>field_minlength</span> {{ addCatId.errors.minlength.requiredLength }}</div>
             <div *ngIf="addCatId.errors.pattern"><span translate>field_pattern</span></div>
+            <div *ngIf="addCatId.errors.exist"><span translate>field_category_exists</span></div>
           </div>
         </div>
       </div>
