@@ -110,8 +110,19 @@ public class ConfigResource {
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(config_dir != null){
             String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            if(fileContent != null) {
+                return Response.ok( fileContent ).build();
+            }
+        }
+        
+        String classPath = "";
+        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        String filePathHelp = classPath + "frontend/";
+        String fileContent = Utils.getFileContent(filePathHelp, filename, ".css", "css/");
+        if(fileContent != null) {
             return Response.ok( fileContent ).build();
         }
+
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
