@@ -560,7 +560,7 @@ export class LayerComponent implements OnInit {
 
     // format
     if (format) {
-      if (format.indexOf('image/png')){
+      if (format.indexOf('image/png')) {
         newLayer.format = 'png';
       } else if (format.indexOf('image/png')) {
         newLayer.format = 'jpeg';
