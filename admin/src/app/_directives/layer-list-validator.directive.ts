@@ -46,7 +46,7 @@ export class LayerListValidatorDirective implements Validator, OnChanges {
         this.checkList.forEach(layer => {
           if (value === layer.id) {
             isValid = true;
-            return true;
+            return;
           }
         });
         if (isValid) {

@@ -28,6 +28,7 @@ import { LayerItemWmsComponent } from './_modules/layers/layer-item-wms/layer-it
 import { LayerItemWmtsComponent } from './_modules/layers/layer-item-wmts/layer-item-wmts.component';
 import { ModalComponent } from './_modules/modals/modal/modal.component';
 import { CategoryListValidatorDirective } from './_directives/category-list-validator.directive';
+import { TruncatePipe } from './_pipes/truncate.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath);
@@ -50,7 +51,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LayerItemWmsComponent,
     LayerItemWmtsComponent,
     ModalComponent,
-    CategoryListValidatorDirective
+    CategoryListValidatorDirective,
+    TruncatePipe,
   ],
   imports: [
     BrowserModule,

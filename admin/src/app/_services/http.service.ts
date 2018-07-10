@@ -83,7 +83,7 @@ export class HttpService {
 
   updateLayer(layerId: string, layer: LayerItem) {
     const body = JSON.stringify(layer);
-    return this.http.put(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
+    return this.http.put<LayerItem[]>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
   addLayer(layers: LayerItem[]): Observable<LayerItem[]> {

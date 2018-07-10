@@ -46,6 +46,7 @@ export class CategoryListValidatorDirective implements Validator, OnChanges {
         this.checkList.forEach(category => {
           if ((value + '').toLowerCase() === category.id.toLowerCase()) {
             isValid = true;
+            return;
           }
         });
         if (!isValid) {

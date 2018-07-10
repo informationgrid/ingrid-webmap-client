@@ -47,4 +47,8 @@ export class LayerItemComponent {
       }
     );
   }
+
+  updateLayer(layers: LayerItem[]) {
+    this.updateLayers.emit(layers);
+  }
 }

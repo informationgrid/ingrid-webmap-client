@@ -16,7 +16,7 @@ export class LayerItemWmsComponent {
   @ViewChild('f') form: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
-  @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @Output() updateLayer: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
 
   tmpLayer: LayerItem;
 
@@ -29,6 +29,7 @@ export class LayerItemWmsComponent {
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
             this.modalSaveSuccess.show();
+            this.updateLayer.emit(data);
           },
           error => {
             console.error('Error onUpdateLayer!');

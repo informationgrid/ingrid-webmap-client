@@ -242,4 +242,17 @@ export class CategoryComponent implements OnChanges {
     const indexes = [index, newIndex].sort();
     list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
   }
+
+  getLabel(id: string) {
+    let label = id;
+    if (this.layers) {
+      this.layers.forEach(layer => {
+        if (layer.id === id) {
+          label = layer.item.label;
+          return;
+        }
+      });
+    }
+    return label;
+  }
 }
