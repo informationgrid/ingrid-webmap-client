@@ -13,7 +13,7 @@ export class LayerItemWmtsComponent {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
-  @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @Output() updateLayer: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -67,6 +67,7 @@ export class LayerItemWmtsComponent {
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
             this.modalSaveSuccess.show();
+            this.updateLayer.emit(data);
           },
           error => {
             console.error('Error onUpdateLayer!');

@@ -118,7 +118,11 @@ export class LayerComponent implements OnInit {
     );
   }
   updateLayers(event: LayerItem[]) {
-    this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+    if (event) {
+      this.updateAppLayers.emit(event);
+    } else {
+      this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
+    }
   }
 
   selectLayer(event) {

@@ -1,9 +1,9 @@
 <div class="collapse" id="collapse{{ layer.id }}" [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
   <div *ngIf="isWMSLayer(layer.item)">
-    <app-layer-item-wms [layer]="layer" [layerId]="layer.id"></app-layer-item-wms>
+    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wms>
   </div>
   <div *ngIf="isWMTSLayer(layer.item)">
-    <app-layer-item-wmts [layer]="layer" [layerId]="layer.id"></app-layer-item-wmts>
+    <app-layer-item-wmts [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wmts>
   </div>
 </div>
 <!-- Modal delete -->
