@@ -133,7 +133,7 @@ goog.require('ga_urlutils_service');
               'fontSize': 10,
               'fontWeight': 'normal'
             },
-            '3': { // Style for intermeediate measure tooltip
+            '3': { // Style for intermediate measure tooltip
               'label': $elt.text(),
               'labelXOffset': 0,
               'labelYOffset': 10,
@@ -287,7 +287,7 @@ goog.require('ga_urlutils_service');
       angular.forEach(features, function(feature) {
         // INGRID: Add 'map'
         var encoded = encodeFeatures(layer, feature, false,
-          scale, printRectangle, dpi, map);
+            scale, printRectangle, dpi, map);
 
         encFeatures = encFeatures.concat(encoded.encFeatures);
         angular.extend(encStyles, encoded.encStyles);
@@ -315,6 +315,7 @@ goog.require('ga_urlutils_service');
         printRectangleCoords, dpi, map) {
 
       dpi = parseInt(dpi) || 150;
+      var resolution = scale / UNITS_RATIO / POINTS_PER_INCH;
       var encStyles = {};
       var encFeatures = [];
       var encStyle = {
@@ -324,9 +325,9 @@ goog.require('ga_urlutils_service');
       // Get the styles of the feature
       if (!styles) {
         if (feature.getStyleFunction()) {
-          styles = feature.getStyleFunction().call(feature);
+          styles = feature.getStyleFunction().call(feature, resolution);
         } else if (layer.getStyleFunction()) {
-          styles = layer.getStyleFunction()(feature);
+          styles = layer.getStyleFunction()(feature, resolution);
         }
       }
       var geometry = feature.getGeometry();
@@ -355,7 +356,6 @@ goog.require('ga_urlutils_service');
           image instanceof ol.style.RegularShape &&
           !(image instanceof ol.style.Circle)) {
         // var scale = parseFloat($scope.scale.value);
-        var resolution = scale / UNITS_RATIO / POINTS_PER_INCH;
         geometry = gaPrintStyle.olPointToPolygon(
             feature.getGeometry(),
             image.getRadius(),
@@ -384,14 +384,10 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Change 'feature' to 'transformFeature'
         var encFeature = format.writeFeatureObject(transformFeature);
-        if (!encFeature.properties) {
-          encFeature.properties = {};
-        } else {
-          // Fix circular structure to JSON
-          // see: https://github.com/geoadmin/mf-geoadmin3/issues/1213
-          delete encFeature.properties.Style;
-          delete encFeature.properties.overlays;
-        }
+        // We remove all attributes to reduce the size of the request
+        // and to avoid bugs like #1213. The style attribute is always
+        // '_gx_style', which is hardcoded.
+        encFeature.properties = {};
         encFeature.properties._gx_style = encStyle.id;
         encFeatures.push(encFeature);
 
@@ -501,7 +497,7 @@ goog.require('ga_urlutils_service');
         });
       } else {
        */
-      // use the full monty WMTS definition fo external source   
+      // use the full monty WMTS definition fo external source
       angular.extend(enc, {
         layer: source.getLayer(),
         baseURL: baseUrl,

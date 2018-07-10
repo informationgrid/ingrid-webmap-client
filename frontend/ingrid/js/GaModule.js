@@ -145,43 +145,42 @@ goog.require('ga_waitcursor_service');
 
   module.config(function(gaLayersProvider, gaGlobalOptions) {
 
+    var dflt = ['0', '1', '2', '3', '4'];
+    var hundred = ['100', '101', '102', '103', '104'];
+
     // Domains
-    gaLayersProvider.dfltToDSubdomains = ['100', '101', '102', '103', '104'];
-    gaLayersProvider.dfltWmsSubdomains = ['', '0', '1', '2', '3', '4'];
-    gaLayersProvider.wmsUrlTemplate = '//wms{s}.geo.admin.ch/';
+    gaLayersProvider.wmsSubdomains = dflt;
+    gaLayersProvider.wmtsSubdomains = hundred;
+    gaLayersProvider.vectorTilesSubdomains =
+        gaGlobalOptions.staging === 'prod' ? dflt : dflt;
 
-    gaLayersProvider.wmtsSubdomains =
-        ['100', '101', '102', '103', '104'];
-    gaLayersProvider.wmtsUrl = gaGlobalOptions.wmtsUrl;
-    gaLayersProvider.wmtsLV03PathTemplate =
-        '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{y}/{x}.{Format}';
-    gaLayersProvider.wmtsPathTemplate =
+    // Map services urls
+    gaLayersProvider.wmsUrl = gaGlobalOptions.wmsUrl;
+    gaLayersProvider.wmtsUrl = gaGlobalOptions.wmtsUrl +
         '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{x}/{y}.{Format}';
-
-    gaLayersProvider.terrainTileUrlTemplate =
-        '//terrain100.geo.admin.ch/1.0.0/{Layer}/default/{Time}/4326';
-    gaLayersProvider.vectorTilesUrlTemplate = gaGlobalOptions.vectorTilesUrl +
+    gaLayersProvider.wmtsLV03Url = gaGlobalOptions.wmtsUrl +
+        '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{y}/{x}.{Format}';
+    gaLayersProvider.terrainUrl = gaGlobalOptions.terrainUrl +
+        '/1.0.0/{Layer}/default/{Time}/4326';
+    gaLayersProvider.vectorTilesUrl = gaGlobalOptions.vectorTilesUrl +
         '/{Layer}/{Time}/';
-    gaLayersProvider.dfltVectorTilesSubdomains =
-      gaGlobalOptions.staging === 'prod' ?
-        ['100', '101', '102', '103', '104'] :
-        ['', '0', '1', '2', '3', '4'];
 
+    // Api services urls
     /* INGRID: Change layer service URL
     if (gaGlobalOptions.apiOverwrite) {
-      gaLayersProvider.layersConfigUrlTemplate = gaGlobalOptions.apiUrl +
+      gaLayersProvider.layersConfigUrl = gaGlobalOptions.apiUrl +
           '/rest/services/all/MapServer/layersConfig?lang={Lang}';
     } else {
-      gaLayersProvider.layersConfigUrlTemplate = gaGlobalOptions.resourceUrl +
+      gaLayersProvider.layersConfigUrl = gaGlobalOptions.resourceUrl +
           'layersConfig.{Lang}.json';
     }
-    gaLayersProvider.legendUrlTemplate = gaGlobalOptions.apiUrl +
+    gaLayersProvider.legendUrl = gaGlobalOptions.apiUrl +
         '/rest/services/all/MapServer/{Layer}/legend?lang={Lang}';
     */
-    gaLayersProvider.layersConfigUrlTemplate = location.protocol + '//' +
+    gaLayersProvider.layersConfigUrl = location.protocol + '//' +
         location.host +
         '/ingrid-webmap-client/rest/config/data?filename=layers';
-    gaLayersProvider.legendUrlTemplate = location.origin +
+    gaLayersProvider.legendUrl = location.origin +
         '/ingrid-webmap-client/rest/wms/metadata?' +
         'layer={Layer}&lang={Lang}&url={URL}&legend={Legend}';
 
@@ -200,8 +199,8 @@ goog.require('ga_waitcursor_service');
   });
 
   module.config(function(gaExportKmlProvider, gaGlobalOptions) {
-    gaExportKmlProvider.downloadKmlUrl =
-        gaGlobalOptions.apiUrl + '/downloadkml';
+    gaExportKmlProvider.downloadKmlUrl = gaGlobalOptions.apiUrl +
+        '/downloadkml';
   });
 
   module.config(function(gaFileStorageProvider, gaGlobalOptions) {
@@ -239,5 +238,9 @@ goog.require('ga_waitcursor_service');
     var whitelist = $sceDelegateProvider.resourceUrlWhitelist();
     whitelist = whitelist.concat(gaGlobalOptions.whitelist);
     $sceDelegateProvider.resourceUrlWhitelist(whitelist);
+  });
+
+  module.config(function($compileProvider, gaGlobalOptions) {
+    $compileProvider.aHrefSanitizationWhitelist(gaGlobalOptions.hrefRegexp);
   });
 })();

@@ -345,6 +345,7 @@ goog.require('ga_urlutils_service');
           }
         } else {
           var layerConfig = gaLayers.getLayer(layer.bodId) || {};
+          // INGRID: Add map
           var enc = gaPrintLayer.encodeLayer(layer, proj, scaleDenom,
               printRectangeCoords, resolution, dpi, $scope.map);
 
@@ -395,7 +396,7 @@ goog.require('ga_urlutils_service');
         }
       });
 
-      // Display alert message 
+      // Display alert message
       if (msg) {
         msg = $translate.instant('layer_cant_be_printed') + msg;
         $window.alert(msg);
@@ -466,7 +467,7 @@ goog.require('ga_urlutils_service');
 
             // Build the correct copyright text to display
             var allDataOwner = attributions.concat(thirdPartyAttributions);
-            allDataOwner = allDataOwner.join();
+            allDataOwner = allDataOwner.join(', ');
             var movieprint = $scope.options.movie && $scope.options.multiprint;
             var spec = {
               layout: $scope.layout.name,
@@ -501,7 +502,7 @@ goog.require('ga_urlutils_service');
                   display: [$scope.layout.map.width, $scope.layout.map.height],
                   // scale has to be one of the advertise by the print server
                   scale: $scope.scale.value,
-                  dataOwner: allDataOwner ? '©' + allDataOwner : '',
+                  dataOwner: allDataOwner ? '© ' + allDataOwner : '',
                   shortLink: shortLink || '',
                   rotation: -((view.getRotation() * 180.0) / Math.PI),
                   // INGRID: Add comment and title for print
@@ -532,7 +533,11 @@ goog.require('ga_urlutils_service');
               } else {
                 $scope.downloadUrl(data.getURL, pdfLegendsToDownload);
               }
-            }, function() {
+            }, function(response) {
+              if (response.status === 413) {
+                var msg = $translate.instant('print_request_too_large');
+                $window.alert(msg);
+              }
               $scope.options.printing = false;
             });
           });
