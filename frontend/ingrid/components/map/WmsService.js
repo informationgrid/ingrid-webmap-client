@@ -259,8 +259,8 @@ goog.require('ga_urlutils_service');
           };
 
           // INGRID: Add scales
-          var minScale;
-          var maxScale;
+          var minScale = null;
+          var maxScale = null;
           if (getCapLayer.ScaleHint) {
             minScale = getCapLayer.ScaleHint.min;
             maxScale = getCapLayer.ScaleHint.max;

@@ -11,7 +11,7 @@ if [ -d "mf-geoadmin3" ] ; then
     make cleanall 
 else
     echo "*** CLONE REPO ***"
-    # clone repo
+    # clone repo mf-geoadmin3
     git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
     cd ./mf-geoadmin3
 fi

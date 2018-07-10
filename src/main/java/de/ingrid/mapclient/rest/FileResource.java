@@ -405,6 +405,8 @@ public class FileResource {
     public Response getImageRequest(@PathParam("color") String color, @PathParam("icon") String icon) throws IOException{
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        String apiGeo = p.getProperty( ConfigurationProvider.API_URL, "https://api3.geo.admin.ch" ).trim();
+        
         if(!path.endsWith( "/" )){
            path = path.concat( "/" ); 
         }
@@ -437,7 +439,68 @@ public class FileResource {
             return Response.ok(imageFile).build();
         }else{
             if(color != null && icon != null){
-                String url = "https://api3.geo.admin.ch/color/" + color + "/" + icon;
+                String url = apiGeo + "/color/" + color + "/" + icon;
+                if (url != null && url.length() > 0) {
+                    URL tmpUrl;
+                    try {
+                        tmpUrl = new URL(url);
+                        BufferedImage image = ImageIO.read(tmpUrl);
+                        ImageIO.write(image, "png", imageFile);
+                        return Response.ok(imageFile).build();
+                    } catch (MalformedURLException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.NOT_FOUND ).build();
+                    } catch (IOException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                    }
+                }
+            }
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
+    @GET
+    @Path("images/{category}/{icon}")
+    @Produces("image/png")
+    public Response getImageCategoryRequest(@PathParam("category") String category, @PathParam("icon") String icon) throws IOException{
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        String apiGeo = p.getProperty( ConfigurationProvider.API_URL, "https://api3.geo.admin.ch" ).trim();
+        
+        if(!path.endsWith( "/" )){
+           path = path.concat( "/" ); 
+        }
+        File imageDir = new File(path + "img");
+        if(!imageDir.exists()){
+            imageDir.mkdirs();
+        }
+        path = imageDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+         }
+        File colorsDir = new File(path + "color");
+        if(!colorsDir.exists()){
+            colorsDir.mkdirs();
+        }
+        path = colorsDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File categoryDir = new File(path + category);
+        if(!categoryDir.exists()){
+            categoryDir.mkdirs();
+        }
+        path = categoryDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File imageFile = new File(path + icon);
+        if(imageFile.exists()){
+            return Response.ok(imageFile).build();
+        }else{
+            if(categoryDir != null && icon != null){
+                String url = apiGeo + "/images/" + category + "/" + icon;
                 if (url != null && url.length() > 0) {
                     URL tmpUrl;
                     try {
