@@ -494,7 +494,7 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  createWMSLayers(layer, layers, wmsUrl, version, format, bbox, minScale, maxScale) {
+  createWMSLayers(layer, layers, wmsUrl, version, formats, bbox, minScale, maxScale) {
     const newLayer = new Wmslayer();
     // Version
     newLayer.version = version;
@@ -559,15 +559,15 @@ export class LayerComponent implements OnInit {
     }
 
     // format
-    if (format) {
-      if (format.indexOf('image/png')) {
+    if (formats) {
+      if (formats.indexOf('image/png') > -1) {
         newLayer.format = 'png';
-      } else if (format.indexOf('image/png')) {
+      } else if (formats.indexOf('image/png') > -1) {
         newLayer.format = 'jpeg';
-      } else if (format.indexOf('image/gif')) {
+      } else if (formats.indexOf('image/gif') > -1) {
         newLayer.format = 'gif';
       } else {
-        newLayer.format = format[0].replace('image/', '');
+        newLayer.format = formats[0].replace('image/', '');
       }
     }
     if (!newLayer.format) {
@@ -579,10 +579,10 @@ export class LayerComponent implements OnInit {
     if (children) {
       if (children instanceof Array) {
         children.forEach(child => {
-          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, format, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale);
         });
       } else {
-        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, format, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale);
       }
     }
     layers.push({
