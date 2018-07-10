@@ -255,7 +255,7 @@
             <select class="form-control" id="category_item_select_new_layerBodId" #selectAddBgLayer>
               <option value="" selected translate>category_select_layer</option>
               <option value="osmLayer" translate>osmLayer</option>
-              <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+              <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
               <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, model.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
@@ -296,7 +296,7 @@
           <div class="input-group">
             <select class="form-control" id="category_item_select_new_layerBodId" #selectAddSelectLayer>
               <option value="" selected translate>category_select_layer</option>
-              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
               <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, model.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
@@ -327,7 +327,7 @@
           <div class="input-group">
             <select class="form-control" id="category_item_select_new_layerBodId" #selectAddActiveLayer>
               <option value="" selected translate>category_select_layer</option>
-              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label }}</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
               <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, model.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
