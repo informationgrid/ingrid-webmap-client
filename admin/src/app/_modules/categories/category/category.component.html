@@ -238,7 +238,7 @@
         <label class="col-sm-4 col-form-label" for="category_backgroundLayers" translate>category_backgroundLayers</label>
         <div class="col-sm-8">
           <div class="input-group form-group" *ngFor="let item of model.backgroundLayers; let i=index;">
-            <input type="text" class="form-control" value="{{ item }}" disabled/>
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
             <div class="input-group-append">
               <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.backgroundLayers)">
                 <i class="fa fa-sort-up" aria-hidden="true"></i>
@@ -271,7 +271,7 @@
         <div class="col-sm-8">
           <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="model.defaultBackground">
             <option value="" translate>category_select_layer</option>
-            <option [value]="layer" *ngFor="let layer of model.backgroundLayers" title="{{ layer }}" >{{ layer }}</option>
+            <option [value]="layer" *ngFor="let layer of model.backgroundLayers" title="{{ getLabel(layer) }}" >{{ getLabel(layer) }}</option>
           </select>
         </div>
       </div>
@@ -279,22 +279,20 @@
       <div class="form-group row">
         <label class="col-sm-4 col-form-label" for="category_selectedLayers" translate>category_selectedLayers</label>
         <div class="col-sm-8">
-          <ul class="list-group" id="category_selectedLayers">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of model.selectedLayers; let i=index;">
-              {{ item }}
-              <div>
-                <button *ngIf="i !== 0" type="button" class="btn btn-secondary" (click)="onUpItem(item, model.selectedLayers)">
-                  <i class="fa fa-sort-up" aria-hidden="true"></i>
-                </button>
-                <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, model.selectedLayers)">
-                  <i class="fa fa-sort-down" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, model.selectedLayers)">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-              </div>
-            </li>
-          </ul>
+          <div class="input-group form-group" *ngFor="let item of model.selectedLayers; let i=index">
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.selectedLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
           <div class="input-group">
             <select class="form-control" id="category_item_select_new_layerBodId" #selectAddSelectLayer>
               <option value="" selected translate>category_select_layer</option>
@@ -312,22 +310,20 @@
       <div class="form-group row">
         <label class="col-sm-4 col-form-label" for="category_activatedLayers" translate>category_activatedLayers</label>
         <div class="col-sm-8">
-          <ul class="list-group" id="category_activatedLayers">
-            <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let item of model.activatedLayers; let i=index;">
-              {{ item }}
-              <div>
-                <button *ngIf="i !== 0 && model.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onUpItem(item, model.activatedLayers)">
-                  <i class="fa fa-sort-up" aria-hidden="true"></i>
-                </button>
-                <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-secondary" (click)="onDownItem(item, model.activatedLayers)">
-                  <i class="fa fa-sort-down" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-danger" (click)="onRemoveItem(item, model.activatedLayers)">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-              </div>
-            </li>
-          </ul>
+          <div class="input-group form-group" *ngFor="let item of model.activatedLayers; let i=index">
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.activatedLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
           <div class="input-group">
             <select class="form-control" id="category_item_select_new_layerBodId" #selectAddActiveLayer>
               <option value="" selected translate>category_select_layer</option>
