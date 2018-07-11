@@ -188,10 +188,12 @@ export class LayerComponent implements OnInit {
     }
   }
   hasSelectedItem(treeModel: TreeModel) {
-    const root = treeModel.getFirstRoot();
-    if (root) {
+    const roots = treeModel.getVisibleRoots();
+    if (roots) {
       const checkedLayers = [];
-      this.getCheckedNode(root, checkedLayers);
+      roots.forEach(root => {
+        this.getCheckedNode(root, checkedLayers);
+      });
       if (checkedLayers.length > 0) {
         return true;
       }
@@ -201,12 +203,20 @@ export class LayerComponent implements OnInit {
 
   // Buttons
   onSelectAllNodes(treeModel: TreeModel) {
-    const root = treeModel.getFirstRoot();
-    this.check(root, true);
+    const roots = treeModel.getVisibleRoots();
+    if (roots) {
+      roots.forEach(root => {
+        this.check(root, true);
+      });
+    }
   }
   onDeselectAllNodes(treeModel: TreeModel) {
-    const root = treeModel.getFirstRoot();
-    this.check(root, false);
+    const roots = treeModel.getVisibleRoots();
+    if (roots) {
+      roots.forEach(root => {
+        this.check(root, false);
+      });
+    }
   }
   onCategoryChange(id) {
     this.categoryId = id;
@@ -268,23 +278,27 @@ export class LayerComponent implements OnInit {
   }
 
   onAddLayers(layersModel: TreeModel) {
-    const root = layersModel.getFirstRoot();
+    const roots = layersModel.getVisibleRoots();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
-    this.getCheckedNode(root, checkedLayers);
+    roots.forEach(root => {
+      this.getCheckedNode(root, checkedLayers);
+    });
     checkedLayers.forEach(l => {
       const layerItem = new LayerItem(l.generateId(this.layers), l);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(layerItems, root);
+    this.saveAddedLayersToCategory(layerItems, roots);
   }
 
   onAddCombineLayers(layersModel: TreeModel) {
-    const root = layersModel.getFirstRoot();
+    const roots = layersModel.getVisibleRoots();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
-    this.getCheckedNode(root, checkedLayers);
+    roots.forEach(root => {
+       this.getCheckedNode(root, checkedLayers);
+    });
     if (checkedLayers.length > 0) {
       let wmsLayers = '';
       let label = '';
@@ -315,7 +329,7 @@ export class LayerComponent implements OnInit {
       layerItems.push(layerItem);
     }
     this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(layerItems, root);
+    this.saveAddedLayersToCategory(layerItems, roots);
   }
 
   saveAddedLayers(layerItems: LayerItem[]) {
@@ -345,9 +359,9 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  saveAddedLayersToCategory(layers: LayerItem[], rootLayersModel: TreeNode) {
+  saveAddedLayersToCategory(layers: LayerItem[], nodes: Array<TreeNode>) {
     const categoryLayers = [];
-    this.getCategoryNode(rootLayersModel, layers, categoryLayers);
+    this.getCategoryNodes(nodes, layers, categoryLayers);
     if (this.categories) {
       for (const c in this.categories) {
         if (this.category) {
@@ -402,6 +416,16 @@ export class LayerComponent implements OnInit {
         });
       }
     });
+  }
+
+  getCategoryNodes(nodes: Array<TreeNode>, layers: LayerItem[], children: any[]) {
+    if (layers.length  > 0) {
+      if (nodes) {
+        nodes.forEach(node => {
+          this.getCategoryNode(node, layers, children);
+        });
+      }
+    }
   }
 
   getCategoryNode(node: TreeNode, layers: LayerItem[], children: any[]) {
