@@ -386,8 +386,7 @@ goog.require('ga_urlutils_service');
                         }
 
                         // INGRID: Get 'SRS'
-                        var minScale = undefined;
-                        var maxScale = undefined;
+                        var minScale, maxScale;
                         if (layer.ScaleHint) {
                           minScale = layer.ScaleHint.min;
                           maxScale = layer.ScaleHint.max;
