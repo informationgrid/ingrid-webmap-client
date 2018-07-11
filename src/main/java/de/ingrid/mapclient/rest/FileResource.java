@@ -418,7 +418,7 @@ public class FileResource {
         if(!path.endsWith( "/" )){
             path = path.concat( "/" ); 
          }
-        File colorsDir = new File(path + "color");
+        File colorsDir = new File(path + "maki");
         if(!colorsDir.exists()){
             colorsDir.mkdirs();
         }
@@ -479,14 +479,6 @@ public class FileResource {
         if(!path.endsWith( "/" )){
             path = path.concat( "/" ); 
          }
-        File colorsDir = new File(path + "color");
-        if(!colorsDir.exists()){
-            colorsDir.mkdirs();
-        }
-        path = colorsDir.getAbsolutePath();
-        if(!path.endsWith( "/" )){
-            path = path.concat( "/" ); 
-        }
         File categoryDir = new File(path + category);
         if(!categoryDir.exists()){
             categoryDir.mkdirs();
