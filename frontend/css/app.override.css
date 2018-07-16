@@ -36,3 +36,40 @@
     background-size: 90px 58px;
   }
 }
+
+/* BACKGROUND */
+
+[ga-background-selector] .ga-bg-layer-4 {
+  z-index: 1001;
+}
+[ga-background-selector] .ga-bg-layer-5 {
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  [ga-background-selector].ga-open .ga-bg-layer-4 {
+    -webkit-transform: translate3d(0, -245px, 0);
+            transform: translate3d(0, -245px, 0);
+    -ms-transform: translateY(-245px);
+  }
+  [ga-background-selector].ga-open .ga-bg-layer-5 {
+    -webkit-transform: translate3d(0, -294px, 0);
+            transform: translate3d(0, -294px, 0);
+    -ms-transform: translateY(-294px);
+  }
+}
+
+@media (min-width: 769px) {
+  [ga-background-selector].ga-open .ga-bg-layer-4 {
+    -webkit-transform: translate3d(-429px, 0, 0);
+            transform: translate3d(-429px, 0, 0);
+    -ms-transform: translateX(-429px);
+    /* IE 9*/
+  }
+  [ga-background-selector].ga-open .ga-bg-layer-5 {
+    -webkit-transform: translate3d(-530px, 0, 0);
+            transform: translate3d(-530px, 0, 0);
+    -ms-transform: translateX(-530px);
+    /* IE 9*/
+  }
+}
