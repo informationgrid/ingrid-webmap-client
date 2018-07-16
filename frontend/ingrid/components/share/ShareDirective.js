@@ -52,7 +52,7 @@ goog.require('ga_window_service');
         // INGRID: Enable share QR
         scope.enableShareQR = gaGlobalOptions.enableShareQR;
         // INGRID: Enable share QR
-        scope.enableShareWhatsapp = gaGlobalOptions.enableWhatsapp;
+        scope.enableShareWhatsapp = gaGlobalOptions.enableShareWhatsapp;
 
         // Store in the scope the permalink value which is bound to
         // the input field

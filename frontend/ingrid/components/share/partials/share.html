@@ -29,7 +29,8 @@
     <i class="fa fa-google-plus"></i>
   </a>
 
-  <a ng-if="showWhatsapp" class="ga-share-icon" ng-if="enableShareWhatsapp"
+<!-- INGRID: Add target and check setting -->
+  <a ng-if="showWhatsapp && enableShareWhatsapp" target="_parent" class="ga-share-icon"
     data-original-title="{{'whatsapp_tooltip' | translate}}"
     href="whatsapp://send?text={{permalinkValue}}">
     <i class="fa fa-whatsapp"></i>
