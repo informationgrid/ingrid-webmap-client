@@ -1,3 +1,4 @@
+/* CATEGORY IMAGES*/
 [ga-topic] .ga-topics-sprite-themen {
   background: url("/ingrid-webmap-client/frontend/prd/img/themen.png");
   width: 140px;
@@ -8,6 +9,7 @@
   width: 140px;
 }
 
+/* BACKGROUND IMAGES*/
 @media (max-width: 768px) {
   [ga-background-selector] .ga-osmLayer {
     background-image: url("/ingrid-webmap-client/frontend/prd/img/ga-osmLayer.png");
@@ -37,8 +39,7 @@
   }
 }
 
-/* BACKGROUND */
-
+/* BACKGROUND POSITIONS*/
 [ga-background-selector] .ga-bg-layer-4 {
   z-index: 1001;
 }
@@ -58,7 +59,6 @@
     -ms-transform: translateY(-294px);
   }
 }
-
 @media (min-width: 769px) {
   [ga-background-selector].ga-open .ga-bg-layer-4 {
     -webkit-transform: translate3d(-429px, 0, 0);
