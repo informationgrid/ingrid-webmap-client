@@ -305,7 +305,7 @@ goog.require('ga_urlutils_service');
         // INGRID: Add service and add it to map
         this.addWmsServiceToMap = function(map, service, identifier, index) {
             var cap = service;
-            var proxyUrl = gaGlobalOptions.ogcproxyUrl +
+            var proxyUrl = gaGlobalOptions.proxyUrl +
               encodeURIComponent(cap) + '&toJson=true';
 
             // INGRID: Split host from params
