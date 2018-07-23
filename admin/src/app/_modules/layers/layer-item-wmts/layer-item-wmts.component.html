@@ -248,10 +248,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="background" #background="ngModel" [(ngModel)]="layer.item.background">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #background="ngModel" name="background" 
+              [(ngModel)]="layer.item.background">
+          </div>
         </div>
       </div>
       <!-- format -->
@@ -292,10 +292,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="searchable" #searchable="ngModel" [(ngModel)]="layer.item.searchable">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #searchable="ngModel" name="searchable" 
+              [(ngModel)]="layer.item.searchable">
+          </div>
         </div>
       </div>
       <!-- crossOrigin -->
@@ -315,10 +315,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="crossOrigin" #crossOrigin="ngModel" [(ngModel)]="layer.item.crossOrigin">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #crossOrigin="ngModel" name="crossOrigin" 
+              [(ngModel)]="layer.item.crossOrigin">
+          </div>
         </div>
       </div>
       <!-- highlightable -->
@@ -338,10 +338,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="highlightable" #highlightable="ngModel" [(ngModel)]="layer.item.highlightable">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #highlightable="ngModel" name="highlightable" 
+              [(ngModel)]="layer.item.highlightable">
+          </div>
         </div>
       </div>
       <!-- timestamps -->
@@ -381,10 +381,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="timeEnabled" #timeEnabled="ngModel" [(ngModel)]="layer.item.timeEnabled">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #timeEnabled="ngModel" name="timeEnabled" 
+              [(ngModel)]="layer.item.timeEnabled">
+          </div>
         </div>
       </div>
       <!-- timeBehaviour -->
@@ -425,10 +425,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="hasLegend" #hasLegend="ngModel" [(ngModel)]="layer.item.hasLegend">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" 
+              [(ngModel)]="layer.item.hasLegend">
+          </div>
         </div>
       </div>
       <!-- legendUrl -->
@@ -509,10 +509,10 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" name="tooltip" #tooltip="ngModel" [(ngModel)]="layer.item.tooltip">
-            <option [ngValue]="false" translate>false</option>
-            <option [ngValue]="true" translate>true</option>
-          </select>
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" 
+              [(ngModel)]="layer.item.tooltip">
+          </div>
         </div>
       </div>
       <!-- opacity -->
