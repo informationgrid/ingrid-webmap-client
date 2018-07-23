@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" [(ngModel)]="layer.item.type" name="type" class="form-control" [readonly]="true">
+          <input type="text" [(ngModel)]="layer.item.type" name="type" class="form-control" disabled>
         </div>
       </div>
       <!-- id -->
@@ -90,8 +90,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control"
-            required>
+          <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control" required>
         </div>
       </div>
       <!-- extent -->
