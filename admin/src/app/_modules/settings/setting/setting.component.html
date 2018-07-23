@@ -85,32 +85,52 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <input type="number" #settingExtent0="ngModel" [(ngModel)]="settings.settingExtent[0]" name="settingExtent0" class="form-control form-group extent"
-                                required>
-                            <div class="form-control-feedback" *ngIf="settingExtent0.errors && (settingExtent0.dirty || settingExtent0.touched)">
-                                <div *ngIf="settingExtent0.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingExtent0.invalid && (settingExtent0.dirty || settingExtent0.touched)) ,
+                                'has-success': (settingExtent0.valid && (settingExtent0.dirty || settingExtent0.touched))
+                                }">
+                                <input type="number" #settingExtent0="ngModel" [(ngModel)]="settings.settingExtent[0]" name="settingExtent0" class="form-control extent"
+                                    required>
+                                <div class="form-control-feedback" *ngIf="settingExtent0.errors && (settingExtent0.dirty || settingExtent0.touched)">
+                                    <div *ngIf="settingExtent0.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingExtent1="ngModel" [(ngModel)]="settings.settingExtent[1]" name="settingExtent1" class="form-control form-group extent"
-                                required>
-                            <div class="form-control-feedback" *ngIf="settingExtent1.errors && (settingExtent1.dirty || settingExtent1.touched)">
-                                <div *ngIf="settingExtent1.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingExtent1.invalid && (settingExtent1.dirty || settingExtent1.touched)) ,
+                                'has-success': (settingExtent1.valid && (settingExtent1.dirty || settingExtent1.touched))
+                                }">
+                                <input type="number" #settingExtent1="ngModel" [(ngModel)]="settings.settingExtent[1]" name="settingExtent1" class="form-control extent"
+                                    required>
+                                <div class="form-control-feedback" *ngIf="settingExtent1.errors && (settingExtent1.dirty || settingExtent1.touched)">
+                                    <div *ngIf="settingExtent1.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingExtent2="ngModel" [(ngModel)]="settings.settingExtent[2]" name="settingExtent2" class="form-control form-group extent"
-                                required>
-                            <div class="form-control-feedback" *ngIf="settingExtent2.errors && (settingExtent2.dirty || settingExtent2.touched)">
-                                <div *ngIf="settingExtent2.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingExtent2.invalid && (settingExtent2.dirty || settingExtent2.touched)) ,
+                                'has-success': (settingExtent2.valid && (settingExtent2.dirty || settingExtent2.touched))
+                                }">
+                                <input type="number" #settingExtent2="ngModel" [(ngModel)]="settings.settingExtent[2]" name="settingExtent2" class="form-control extent"
+                                    required>
+                                <div class="form-control-feedback" *ngIf="settingExtent2.errors && (settingExtent2.dirty || settingExtent2.touched)">
+                                    <div *ngIf="settingExtent2.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingExtent3="ngModel" [(ngModel)]="settings.settingExtent[3]" name="settingExtent3" class="form-control form-group extent"
-                                required>
-                            <div class="form-control-feedback" *ngIf="settingExtent3.errors && (settingExtent3.dirty || settingExtent3.touched)">
-                                <div *ngIf="settingExtent3.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingExtent3.invalid && (settingExtent3.dirty || settingExtent3.touched)) ,
+                                'has-success': (settingExtent3.valid && (settingExtent3.dirty || settingExtent3.touched))
+                                }">
+                                <input type="number" #settingExtent3="ngModel" [(ngModel)]="settings.settingExtent[3]" name="settingExtent3" class="form-control extent"
+                                    required>
+                                <div class="form-control-feedback" *ngIf="settingExtent3.errors && (settingExtent3.dirty || settingExtent3.touched)">
+                                    <div *ngIf="settingExtent3.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -131,32 +151,52 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <input type="number" #settingEpsgExtent0="ngModel" [(ngModel)]="settings.settingEpsgExtent[0]" name="settingEpsgExtent0"
-                                class="form-control form-group extent" required>
-                            <div class="form-control-feedback" *ngIf="settingEpsgExtent0.errors && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)">
-                                <div *ngIf="settingEpsgExtent0.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingEpsgExtent0.invalid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)) ,
+                                'has-success': (settingEpsgExtent0.valid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched))
+                                }">
+                                <input type="number" #settingEpsgExtent0="ngModel" [(ngModel)]="settings.settingEpsgExtent[0]" name="settingEpsgExtent0"
+                                class="form-control extent" required>
+                                <div class="form-control-feedback" *ngIf="settingEpsgExtent0.errors && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)">
+                                    <div *ngIf="settingEpsgExtent0.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingEpsgExtent1="ngModel" [(ngModel)]="settings.settingEpsgExtent[1]" name="settingEpsgExtent1"
-                                class="form-control form-group extent" required>
-                            <div class="form-control-feedback" *ngIf="settingEpsgExtent1.errors && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)">
-                                <div *ngIf="settingEpsgExtent1.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingEpsgExtent1.invalid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)) ,
+                                'has-success': (settingEpsgExtent1.valid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched))
+                                }">
+                                <input type="number" #settingEpsgExtent1="ngModel" [(ngModel)]="settings.settingEpsgExtent[1]" name="settingEpsgExtent1"
+                                    class="form-control extent" required>
+                                <div class="form-control-feedback" *ngIf="settingEpsgExtent1.errors && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)">
+                                    <div *ngIf="settingEpsgExtent1.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingEpsgExtent2="ngModel" [(ngModel)]="settings.settingEpsgExtent[2]" name="settingEpsgExtent2"
-                                class="form-control form-group extent" required>
-                            <div class="form-control-feedback" *ngIf="settingEpsgExtent2.errors && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)">
-                                <div *ngIf="settingEpsgExtent2.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingEpsgExtent2.invalid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)) ,
+                                'has-success': (settingEpsgExtent2.valid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched))
+                                }">
+                                <input type="number" #settingEpsgExtent2="ngModel" [(ngModel)]="settings.settingEpsgExtent[2]" name="settingEpsgExtent2"
+                                    class="form-control extent" required>
+                                <div class="form-control-feedback" *ngIf="settingEpsgExtent2.errors && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)">
+                                    <div *ngIf="settingEpsgExtent2.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
-                            <input type="number" #settingEpsgExtent3="ngModel" [(ngModel)]="settings.settingEpsgExtent[3]" name="settingEpsgExtent3"
-                                class="form-control form-group extent" required>
-                            <div class="form-control-feedback" *ngIf="settingEpsgExtent3.errors && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)">
-                                <div *ngIf="settingEpsgExtent3.errors.required">
-                                    <span translate>field_required</span>
+                            <div class="form-group" [ngClass]="{
+                                'has-danger': (settingEpsgExtent3.invalid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)) ,
+                                'has-success': (settingEpsgExtent3.valid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched))
+                                }">
+                                <input type="number" #settingEpsgExtent3="ngModel" [(ngModel)]="settings.settingEpsgExtent[3]" name="settingEpsgExtent3"
+                                    class="form-control extent" required>
+                                <div class="form-control-feedback" *ngIf="settingEpsgExtent3.errors && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)">
+                                    <div *ngIf="settingEpsgExtent3.errors.required">
+                                        <span translate>field_required</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -178,9 +218,10 @@
                         </div>
                         <div class="col-sm-9">
                             <div class="input-group form-group" *ngFor="let lang of settings.settingLanguages; let i=index;">
-                                <input type="text" [(ngModel)]="settings.settingLanguages[i]" name="langs{{ i }}" class="form-control" required>
+                                <input type="text" [(ngModel)]="settings.settingLanguages[i]" name="langs{{ i }}" class="form-control" disabled>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" 
+                                        *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
                                         <i class="fa fa-sort-down" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(lang, settings.settingLanguages)" *ngIf="i !== 0">
@@ -393,7 +434,8 @@
                         <div class="col-sm-3">
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingUseGeodesic</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" title="{{ ('help') | translate }}">
+                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" 
+                                    title="{{ ('help') | translate }}">
                                     <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
@@ -404,10 +446,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingUseGeodesic="ngModel" name="settingUseGeodesic" [(ngModel)]="settings.settingUseGeodesic">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingUseGeodesic="ngModel" name="settingUseGeodesic" 
+                                    [(ngModel)]="settings.settingUseGeodesic">
+                            </div>
                         </div>
                     </div>
                     <!-- settingDefaultMouseProjections -->
@@ -429,7 +471,7 @@
                         <div class="col-sm-9">
                             <div class="input-group form-group" *ngFor="let mouseProj of settings.settingDefaultMouseProjections; let i=index;">
                                 <input type="text" [(ngModel)]="settings.settingDefaultMouseProjections[i]" name="mouseProjs{{ i }}" class="form-control"
-                                    required>
+                                disabled>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(mouseProj, settings.settingDefaultMouseProjections)"
                                         *ngIf="i !== (settings.settingDefaultMouseProjections.length - 1) && settings.settingDefaultMouseProjections.length > 1">
@@ -473,7 +515,7 @@
                         </div>
                         <div class="col-sm-9">
                             <div class="input-group form-group" *ngFor="let serviceList of settings.settingDefaultImportList; let i=index;">
-                                <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" required>
+                                <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" disabled>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
                                         *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
@@ -516,10 +558,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareFacebook="ngModel" name="settingShareFacebook" [(ngModel)]="settings.settingShareFacebook">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareFacebook="ngModel" name="settingShareFacebook" 
+                                    [(ngModel)]="settings.settingShareFacebook">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareMail -->
@@ -538,10 +580,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareMail="ngModel" name="settingShareMail" [(ngModel)]="settings.settingShareMail">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareMail="ngModel" name="settingShareMail" 
+                                    [(ngModel)]="settings.settingShareMail">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareGoogle -->
@@ -560,10 +602,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareGoogle="ngModel" name="settingShareGoogle" [(ngModel)]="settings.settingShareGoogle">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareGoogle="ngModel" name="settingShareGoogle" 
+                                    [(ngModel)]="settings.settingShareGoogle">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareTwitter -->
@@ -583,10 +625,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareTwitter="ngModel" name="settingShareTwitter" [(ngModel)]="settings.settingShareTwitter">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareTwitter="ngModel" name="settingShareTwitter" 
+                                    [(ngModel)]="settings.settingShareTwitter">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareIFrame -->
@@ -605,10 +647,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareIFrame="ngModel" name="settingShareIFrame" [(ngModel)]="settings.settingShareIFrame">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareIFrame="ngModel" name="settingShareIFrame" 
+                                    [(ngModel)]="settings.settingShareIFrame">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareLink -->
@@ -627,10 +669,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareLink="ngModel" name="settingShareLink" [(ngModel)]="settings.settingShareLink">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareLink="ngModel" name="settingShareLink" 
+                                    [(ngModel)]="settings.settingShareLink">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareQR -->
@@ -649,10 +691,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareQR="ngModel" name="settingShareQR" [(ngModel)]="settings.settingShareQR">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareQR="ngModel" name="settingShareQR" 
+                                    [(ngModel)]="settings.settingShareQR">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShareWhatsapp -->
@@ -672,10 +714,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp" [(ngModel)]="settings.settingShareWhatsapp">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp" 
+                                    [(ngModel)]="settings.settingShareWhatsapp">
+                            </div>
                         </div>
                     </div>
                     <!-- settingPrintLogo -->
@@ -778,10 +820,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj" [(ngModel)]="settings.settingPrintDependOnMouseProj">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj" 
+                                    [(ngModel)]="settings.settingPrintDependOnMouseProj">
+                            </div>
                         </div>
                     </div>
                     <!-- settingKMLName -->
@@ -820,10 +862,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingHideCatalog="ngModel" name="settingHideCatalog" [(ngModel)]="settings.settingHideCatalog">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog" 
+                                    [(ngModel)]="settings.settingHideCatalog">
+                            </div>
                         </div>
                     </div>
                     <!-- settingEnableW3W -->
@@ -842,10 +884,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingEnableW3W="ngModel" name="settingEnableW3W" [(ngModel)]="settings.settingEnableW3W">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingEnableW3W="ngModel" name="settingEnableW3W" 
+                                    [(ngModel)]="settings.settingEnableW3W">
+                            </div>
                         </div>
                     </div>
                     <!-- w3wUrl -->
@@ -903,10 +945,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" [(ngModel)]="settings.settingShowLayerServiceTree">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" 
+                                    [(ngModel)]="settings.settingShowLayerServiceTree">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShowLayerServiceName -->
@@ -926,10 +968,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShowLayerServiceName="ngModel" name="settingShowLayerServiceName" [(ngModel)]="settings.settingShowLayerServiceName">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" 
+                                    [(ngModel)]="settings.settingShowLayerServiceTree">
+                            </div>
                         </div>
                     </div>
                     <!-- settingCheckLayerInRange -->
@@ -949,10 +991,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange" [(ngModel)]="settings.settingCheckLayerInRange">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange" 
+                                    [(ngModel)]="settings.settingCheckLayerInRange">
+                            </div>
                         </div>
                     </div>
                     <!-- settingShowISOXML -->
@@ -971,10 +1013,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingShowISOXML="ngModel" name="settingShowISOXML" [(ngModel)]="settings.settingShowISOXML">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingShowISOXML="ngModel" name="settingShowISOXML" 
+                                    [(ngModel)]="settings.settingShowISOXML">
+                            </div>
                         </div>
                     </div>
                     <!-- settingSearchCoordsXY -->
@@ -994,10 +1036,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY" [(ngModel)]="settings.settingSearchCoordsXY">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY" 
+                                    [(ngModel)]="settings.settingSearchCoordsXY">
+                            </div>
                         </div>
                     </div>
                     <!-- settingSearchCoordsZoom -->
@@ -1037,10 +1079,10 @@
                             </div>
                         </div>
                         <div class="col-sm-9">
-                            <select class="form-control" #settingEnable3D="ngModel" name="settingEnable3D" [(ngModel)]="settings.settingEnable3D">
-                                <option [ngValue]="false" translate>false</option>
-                                <option [ngValue]="true" translate>true</option>
-                            </select>
+                            <div class="form-check mb-2 mr-sm-2">
+                                <input class="form-check-input" type="checkbox" #settingEnable3D="ngModel" name="settingEnable3D" 
+                                    [(ngModel)]="settings.settingEnable3D">
+                            </div>
                         </div>
                     </div>
                     <!-- settingDefaultTerrain -->
