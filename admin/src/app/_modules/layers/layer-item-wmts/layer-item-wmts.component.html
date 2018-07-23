@@ -113,13 +113,13 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group"
+          <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
             required>
-          <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group"
+          <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
             required>
-          <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group"
+          <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
             required>
-          <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group"
+          <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
             required>
         </div>
       </div>
@@ -585,9 +585,9 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group"
+          <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
            required>
-          <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group"
+          <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
            required>
         </div>
       </div>
@@ -609,7 +609,7 @@
         </div>
         <div class="col-sm-9">
           <div class="input-group form-group" *ngFor="let scale of layer.item.scales; let i=index;">
-            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control" required>
+            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control extent" disabled>
             <div class="input-group-append">
               <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(scale, layer.item.scales)" *ngIf="i !== (layer.item.scales.length - 1) && layer.item.scales.length > 1">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
