@@ -68,11 +68,15 @@ export class SettingComponent implements OnInit {
     }
   }
 
-  onUpdate(f: NgForm) {
-    if (f.valid) {
-      if (f.value) {
+  onUpdate() {
+    if (this.form.valid) {
+      if (this.form.value) {
         this.httpService.updateSetting(this.settings).subscribe(
           data => {
+            this.form.form.markAsPristine();
+            this.form.form.markAsUntouched();
+            this.form.form.updateValueAndValidity();
+            this.updateAppSettings.emit(data);
             this.modalSaveSuccess.show();
           },
           error => {
@@ -87,6 +91,9 @@ export class SettingComponent implements OnInit {
   onReset() {
     this.httpService.resetSetting().subscribe(
       data => {
+        this.form.form.markAsPristine();
+        this.form.form.markAsUntouched();
+        this.form.form.updateValueAndValidity();
         this.updateAppSettings.emit(data);
         this.modalSaveSuccess.show();
       },

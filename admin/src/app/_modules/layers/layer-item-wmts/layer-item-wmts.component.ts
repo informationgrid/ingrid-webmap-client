@@ -13,9 +13,10 @@ export class LayerItemWmtsComponent {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
-  @Output() updateLayer: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @ViewChild('f') form: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
+  @Output() updateLayer: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
 
   tmpLayer: LayerItem;
 
@@ -60,12 +61,15 @@ export class LayerItemWmtsComponent {
     list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
   }
 
-  onUpdateLayer(f: NgForm) {
-    if (f.valid) {
-      if (f.value) {
-        this.layer.id = f.value.id;
+  onUpdateLayer() {
+    if (this.form.valid) {
+      if (this.form.value) {
+        this.layer.id = this.form.value.id;
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
+            this.form.form.markAsPristine();
+            this.form.form.markAsUntouched();
+            this.form.form.updateValueAndValidity();
             this.modalSaveSuccess.show();
             this.updateLayer.emit(data);
           },

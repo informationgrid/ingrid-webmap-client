@@ -467,9 +467,7 @@ public class AdministrationResource {
                     }
                 }
             } 
-            if(obj != null) {
-                return Response.status( Response.Status.OK ).build();
-            }
+            return getSettingRequest();
         } catch (JSONException e) {
             log.error("Error POST '/categories/{id}'!");
         }

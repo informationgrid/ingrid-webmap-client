@@ -22,12 +22,15 @@ export class LayerItemWmsComponent {
 
   constructor(private httpService: HttpService) { }
 
-  onUpdateLayer(f: NgForm) {
-    if (f.valid) {
-      if (f.value) {
-        this.layer.id = f.value.id;
+  onUpdateLayer() {
+    if (this.form.valid) {
+      if (this.form.value) {
+        this.layer.id = this.form.value.id;
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
+            this.form.form.markAsPristine();
+            this.form.form.markAsUntouched();
+            this.form.form.updateValueAndValidity();
             this.modalSaveSuccess.show();
             this.updateLayer.emit(data);
           },
