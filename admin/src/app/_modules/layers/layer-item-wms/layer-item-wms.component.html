@@ -51,10 +51,13 @@
           'has-danger': (id.invalid && (id.dirty || id.touched)) ,
           'has-success': (id.valid && (id.dirty || id.touched))
           }">
-          <input type="text" #id="ngModel" name="id" [ngModel]="layer.id" class="form-control" required>
+          <input type="text" #id="ngModel" name="id" [ngModel]="layer.id" class="form-control" required pattern="^[a-zA-Z0-9_-]*">
           <div class="form-control-feedback" *ngIf="id.errors && (id.dirty || id.touched)">
             <div *ngIf="id.errors.required">
               <span translate>field_required</span>
+            </div>
+            <div *ngIf="id.errors.pattern">
+              <span translate>field_pattern</span>
             </div>
           </div>
         </div>

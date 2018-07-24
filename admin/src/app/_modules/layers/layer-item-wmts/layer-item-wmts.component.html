@@ -51,10 +51,13 @@
           'has-danger': (id.invalid && (id.dirty || id.touched)) ,
           'has-success': (id.valid && (id.dirty || id.touched))
           }">
-          <input type="text" #id="ngModel" [(ngModel)]="layer.id" name="id" class="form-control" required>
+          <input type="text" #id="ngModel" [(ngModel)]="layer.id" name="id" class="form-control" required pattern="^[a-zA-Z0-9_-]*">
           <div class="form-control-feedback" *ngIf="id.errors && (id.dirty || id.touched)">
             <div *ngIf="id.errors.required">
               <span translate>field_required</span>
+            </div>
+            <div *ngIf="id.errors.pattern">
+              <span translate>field_pattern</span>
             </div>
           </div>
         </div>
@@ -125,56 +128,58 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
-          'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
-          }">
-          <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
-            <div *ngIf="extent0.errors.required">
-              <span translate>field_required</span>
+        <div class="col-sm-9">
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
+                    'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
+                    }">
+            <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
+              <div *ngIf="extent0.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
-          'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
-          }">
-          <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
-            <div *ngIf="extent1.errors.required">
-              <span translate>field_required</span>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
+                    'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
+                    }">
+            <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
+              <div *ngIf="extent1.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
-          'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
-          }">
-          <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
-            <div *ngIf="extent2.errors.required">
-              <span translate>field_required</span>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
+                    'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
+                    }">
+            <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
+              <div *ngIf="extent2.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (label.invalid && (label.dirty || label.touched)) ,
-          'has-success': (label.valid && (label.dirty || label.touched))
-          }">
-          <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
-            <div *ngIf="extent3.errors.required">
-              <span translate>field_required</span>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (label.invalid && (label.dirty || label.touched)) ,
+                    'has-success': (label.valid && (label.dirty || label.touched))
+                    }">
+            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+              <div *ngIf="extent3.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
-          </div>
-          <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
-            <div *ngIf="extent3.errors.required">
-              <span translate>field_required</span>
+            <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+              <div *ngIf="extent3.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
         </div>
@@ -255,10 +260,14 @@
           'has-danger': (matrixSet.invalid && (matrixSet.dirty || matrixSet.touched)) ,
           'has-success': (matrixSet.valid && (matrixSet.dirty || matrixSet.touched))
           }">
-          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control" required>
+          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control" required
+            pattern="^[a-zA-Z0-9_-]*">
           <div class="form-control-feedback" *ngIf="matrixSet.errors && (matrixSet.dirty || matrixSet.touched)">
             <div *ngIf="matrixSet.errors.required">
               <span translate>field_required</span>
+            </div>
+            <div *ngIf="matrixSet.errors.pattern">
+              <span translate>field_pattern</span>
             </div>
           </div>
         </div>
@@ -284,10 +293,13 @@
           'has-success': (serverLayerName.valid && (serverLayerName.dirty || serverLayerName.touched))
           }">
           <input type="text" #serverLayerName="ngModel" [(ngModel)]="layer.item.serverLayerName" name="serverLayerName" class="form-control"
-            required>
+            required pattern="^[a-zA-Z0-9_-]*">
           <div class="form-control-feedback" *ngIf="serverLayerName.errors && (serverLayerName.dirty || serverLayerName.touched)">
             <div *ngIf="serverLayerName.errors.required">
               <span translate>field_required</span>
+            </div>
+            <div *ngIf="serverLayerName.errors.pattern">
+              <span translate>field_pattern</span>
             </div>
           </div>
         </div>
@@ -673,27 +685,29 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (origin0.invalid && (origin0.dirty || origin0.touched)) ,
-          'has-success': (origin0.valid && (origin0.dirty || origin0.touched))
-          }">
-          <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="origin0.errors && (origin0.dirty || origin0.touched)">
-            <div *ngIf="origin0.errors.required">
-              <span translate>field_required</span>
+        <div class="col-sm-9">
+          <div class="form-group" [ngClass]="{
+                  'has-danger': (origin0.invalid && (origin0.dirty || origin0.touched)) ,
+                  'has-success': (origin0.valid && (origin0.dirty || origin0.touched))
+                  }">
+            <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="origin0.errors && (origin0.dirty || origin0.touched)">
+              <div *ngIf="origin0.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (origin1.invalid && (origin1.dirty || origin1.touched)) ,
-          'has-success': (origin1.valid && (origin1.dirty || origin1.touched))
-          }">
-          <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
-            required>
-          <div class="form-control-feedback" *ngIf="origin1.errors && (origin1.dirty || origin1.touched)">
-            <div *ngIf="origin1.errors.required">
-              <span translate>field_required</span>
+          <div class="form-group" [ngClass]="{
+                  'has-danger': (origin1.invalid && (origin1.dirty || origin1.touched)) ,
+                  'has-success': (origin1.valid && (origin1.dirty || origin1.touched))
+                  }">
+            <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="origin1.errors && (origin1.dirty || origin1.touched)">
+              <div *ngIf="origin1.errors.required">
+                <span translate>field_required</span>
+              </div>
             </div>
           </div>
         </div>
