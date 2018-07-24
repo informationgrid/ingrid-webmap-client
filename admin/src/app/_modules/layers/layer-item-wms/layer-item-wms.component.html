@@ -47,8 +47,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" name="id" [ngModel]="layer.id" class="form-control" [value]="layer.id" required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (id.invalid && (id.dirty || id.touched)) ,
+          'has-success': (id.valid && (id.dirty || id.touched))
+          }">
+          <input type="text" #id="ngModel" name="id" [ngModel]="layer.id" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="id.errors && (id.dirty || id.touched)">
+            <div *ngIf="id.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- version -->
@@ -90,8 +98,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (label.invalid && (label.dirty || label.touched)) ,
+          'has-success': (label.valid && (label.dirty || label.touched))
+          }">
           <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="label.errors && (label.dirty || label.touched)">
+            <div *ngIf="label.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- extent -->
@@ -111,14 +127,54 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="number" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
-           required>
-          <input type="number" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
-           required>
-          <input type="number" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
-           required>
-          <input type="number" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
-           required>
+          <div class="form-group" [ngClass]="{
+            'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
+            'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
+            }">
+            <input type="number" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
+              <div *ngIf="extent0.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+            'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
+            'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
+            }">
+            <input type="number" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
+              <div *ngIf="extent1.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+            'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
+            'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
+            }">
+            <input type="number" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
+              <div *ngIf="extent2.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+            'has-danger': (extent3.invalid && (extent3.dirty || extent3.touched)) ,
+            'has-success': (extent3.valid && (extent3.dirty || extent3.touched))
+            }">
+            <input type="number" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+              <div *ngIf="extent3.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- wmsUrl -->
@@ -137,8 +193,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (wmsUrl.invalid && (wmsUrl.dirty || wmsUrl.touched)) ,
+          'has-success': (wmsUrl.valid && (wmsUrl.dirty || wmsUrl.touched))
+          }">
           <input type="text" #wmsUrl="ngModel" [(ngModel)]="layer.item.wmsUrl" name="wmsUrl" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="wmsUrl.errors && (wmsUrl.dirty || wmsUrl.touched)">
+            <div *ngIf="wmsUrl.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- wmsLayers -->
@@ -157,8 +221,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (wmsLayers.invalid && (wmsLayers.dirty || wmsLayers.touched)) ,
+          'has-success': (wmsLayers.valid && (wmsLayers.dirty || wmsLayers.touched))
+          }">
           <input type="text" #wmsLayers="ngModel" [(ngModel)]="layer.item.wmsLayers" name="wmsLayers" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="wmsLayers.errors && (wmsLayers.dirty || wmsLayers.touched)">
+            <div *ngIf="wmsLayers.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- gutter -->
@@ -177,8 +249,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (gutter.invalid && (gutter.dirty || gutter.touched)) ,
+          'has-success': (gutter.valid && (gutter.dirty || gutter.touched))
+          }">
           <input type="number" #gutter="ngModel" [(ngModel)]="layer.item.gutter " name="gutter" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="gutter.errors && (gutter.dirty || gutter.touched)">
+            <div *ngIf="gutter.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- singleTile -->
@@ -199,8 +279,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #singleTile="ngModel" name="singleTile" 
-              [(ngModel)]="layer.item.singleTile">
+            <input class="form-check-input" type="checkbox" #singleTile="ngModel" name="singleTile" [(ngModel)]="layer.item.singleTile">
           </div>
         </div>
       </div>
@@ -262,8 +341,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #background="ngModel" name="background" 
-              [(ngModel)]="layer.item.background">
+            <input class="form-check-input" type="checkbox" #background="ngModel" name="background" [(ngModel)]="layer.item.background">
           </div>
         </div>
       </div>
@@ -283,8 +361,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (format.invalid && (format.dirty || format.touched)) ,
+          'has-success': (format.valid && (format.dirty || format.touched))
+          }">
           <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="format.errors && (format.dirty || format.touched)">
+            <div *ngIf="format.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- searchable -->
@@ -305,8 +391,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #searchable="ngModel" name="searchable" 
-              [(ngModel)]="layer.item.searchable">
+            <input class="form-check-input" type="checkbox" #searchable="ngModel" name="searchable" [(ngModel)]="layer.item.searchable">
           </div>
         </div>
       </div>
@@ -328,8 +413,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #crossOrigin="ngModel" name="crossOrigin" 
-              [(ngModel)]="layer.item.crossOrigin">
+            <input class="form-check-input" type="checkbox" #crossOrigin="ngModel" name="crossOrigin" [(ngModel)]="layer.item.crossOrigin">
           </div>
         </div>
       </div>
@@ -351,8 +435,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #highlightable="ngModel" name="highlightable" 
-              [(ngModel)]="layer.item.highlightable">
+            <input class="form-check-input" type="checkbox" #highlightable="ngModel" name="highlightable" [(ngModel)]="layer.item.highlightable">
           </div>
         </div>
       </div>
@@ -394,8 +477,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #timeEnabled="ngModel" name="timeEnabled" 
-              [(ngModel)]="layer.item.timeEnabled">
+            <input class="form-check-input" type="checkbox" #timeEnabled="ngModel" name="timeEnabled" [(ngModel)]="layer.item.timeEnabled">
           </div>
         </div>
       </div>
@@ -416,8 +498,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control"
-          >
+          <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control">
         </div>
       </div>
       <!-- hasLegend -->
@@ -438,8 +519,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" 
-              [(ngModel)]="layer.item.hasLegend">
+            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend">
           </div>
         </div>
       </div>
@@ -500,8 +580,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control"
-          >
+          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control">
         </div>
       </div>
       <!-- tooltip -->
@@ -522,8 +601,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" 
-              [(ngModel)]="layer.item.tooltip">
+            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip">
           </div>
         </div>
       </div>

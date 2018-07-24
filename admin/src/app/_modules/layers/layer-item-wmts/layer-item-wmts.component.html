@@ -47,8 +47,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (id.invalid && (id.dirty || id.touched)) ,
+          'has-success': (id.valid && (id.dirty || id.touched))
+          }">
           <input type="text" #id="ngModel" [(ngModel)]="layer.id" name="id" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="id.errors && (id.dirty || id.touched)">
+            <div *ngIf="id.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- version -->
@@ -89,8 +97,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (label.invalid && (label.dirty || label.touched)) ,
+          'has-success': (label.valid && (label.dirty || label.touched))
+          }">
           <input type="text" #label="ngModel" [(ngModel)]="layer.item.label" name="label" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="label.errors && (label.dirty || label.touched)">
+            <div *ngIf="label.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- extent -->
@@ -109,15 +125,58 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
+          'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
+          }">
           <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
             required>
+          <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
+            <div *ngIf="extent0.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
+          'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
+          }">
           <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
             required>
+          <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
+            <div *ngIf="extent1.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
+          'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
+          }">
           <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
             required>
+          <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
+            <div *ngIf="extent2.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (label.invalid && (label.dirty || label.touched)) ,
+          'has-success': (label.valid && (label.dirty || label.touched))
+          }">
+          <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+            <div *ngIf="extent3.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
           <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
             required>
+          <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+            <div *ngIf="extent3.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- serviceUrl -->
@@ -136,9 +195,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" #serviceUrl="ngModel" [(ngModel)]="layer.item.serviceUrl" name="serviceUrl" class="form-control"
-            required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (serviceUrl.invalid && (serviceUrl.dirty || serviceUrl.touched)) ,
+          'has-success': (serviceUrl.valid && (serviceUrl.dirty || serviceUrl.touched))
+          }">
+          <input type="text" #serviceUrl="ngModel" [(ngModel)]="layer.item.serviceUrl" name="serviceUrl" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="serviceUrl.errors && (serviceUrl.dirty || serviceUrl.touched)">
+            <div *ngIf="serviceUrl.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- template -->
@@ -157,9 +223,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" #template="ngModel" [(ngModel)]="layer.item.template" name="template" class="form-control"
-            required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (template.invalid && (template.dirty || template.touched)) ,
+          'has-success': (template.valid && (template.dirty || template.touched))
+          }">
+          <input type="text" #template="ngModel" [(ngModel)]="layer.item.template" name="template" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="template.errors && (template.dirty || template.touched)">
+            <div *ngIf="template.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- matrixSet -->
@@ -178,9 +251,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control"
-            required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (matrixSet.invalid && (matrixSet.dirty || matrixSet.touched)) ,
+          'has-success': (matrixSet.valid && (matrixSet.dirty || matrixSet.touched))
+          }">
+          <input type="text" #matrixSet="ngModel" [(ngModel)]="layer.item.matrixSet" name="matrixSet" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="matrixSet.errors && (matrixSet.dirty || matrixSet.touched)">
+            <div *ngIf="matrixSet.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- serverLayerName -->
@@ -199,9 +279,17 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (serverLayerName.invalid && (serverLayerName.dirty || serverLayerName.touched)) ,
+          'has-success': (serverLayerName.valid && (serverLayerName.dirty || serverLayerName.touched))
+          }">
           <input type="text" #serverLayerName="ngModel" [(ngModel)]="layer.item.serverLayerName" name="serverLayerName" class="form-control"
-           required>
+            required>
+          <div class="form-control-feedback" *ngIf="serverLayerName.errors && (serverLayerName.dirty || serverLayerName.touched)">
+            <div *ngIf="serverLayerName.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- requestEncoding -->
@@ -221,8 +309,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <select class="form-control" #requestEncoding="ngModel" name="requestEncoding" [(ngModel)]="layer.item.requestEncoding"
-            required>
+          <select class="form-control" #requestEncoding="ngModel" name="requestEncoding" [(ngModel)]="layer.item.requestEncoding" required>
             <option value="REST" translate>REST</option>
             <option value="KVP" translate>KVP</option>
           </select>
@@ -246,8 +333,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #background="ngModel" name="background" 
-              [(ngModel)]="layer.item.background">
+            <input class="form-check-input" type="checkbox" #background="ngModel" name="background" [(ngModel)]="layer.item.background">
           </div>
         </div>
       </div>
@@ -267,9 +353,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control"
-            required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (format.invalid && (format.dirty || format.touched)) ,
+          'has-success': (format.valid && (format.dirty || format.touched))
+          }">
+          <input type="text" #format="ngModel" [(ngModel)]="layer.item.format" name="format" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="format.errors && (format.dirty || format.touched)">
+            <div *ngIf="format.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- searchable -->
@@ -290,8 +383,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #searchable="ngModel" name="searchable" 
-              [(ngModel)]="layer.item.searchable">
+            <input class="form-check-input" type="checkbox" #searchable="ngModel" name="searchable" [(ngModel)]="layer.item.searchable">
           </div>
         </div>
       </div>
@@ -313,8 +405,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #crossOrigin="ngModel" name="crossOrigin" 
-              [(ngModel)]="layer.item.crossOrigin">
+            <input class="form-check-input" type="checkbox" #crossOrigin="ngModel" name="crossOrigin" [(ngModel)]="layer.item.crossOrigin">
           </div>
         </div>
       </div>
@@ -336,8 +427,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #highlightable="ngModel" name="highlightable" 
-              [(ngModel)]="layer.item.highlightable">
+            <input class="form-check-input" type="checkbox" #highlightable="ngModel" name="highlightable" [(ngModel)]="layer.item.highlightable">
           </div>
         </div>
       </div>
@@ -379,8 +469,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #timeEnabled="ngModel" name="timeEnabled" 
-              [(ngModel)]="layer.item.timeEnabled">
+            <input class="form-check-input" type="checkbox" #timeEnabled="ngModel" name="timeEnabled" [(ngModel)]="layer.item.timeEnabled">
           </div>
         </div>
       </div>
@@ -401,8 +490,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control"
-          >
+          <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control">
         </div>
       </div>
       <!-- hasLegend -->
@@ -423,8 +511,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" 
-              [(ngModel)]="layer.item.hasLegend">
+            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend">
           </div>
         </div>
       </div>
@@ -485,8 +572,7 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control"
-          >
+          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control">
         </div>
       </div>
       <!-- tooltip -->
@@ -507,8 +593,7 @@
         </div>
         <div class="col-sm-9">
           <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" 
-              [(ngModel)]="layer.item.tooltip">
+            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip">
           </div>
         </div>
       </div>
@@ -560,9 +645,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
-          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control"
-            required>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (style.invalid && (style.dirty || style.touched)) ,
+          'has-success': (style.valid && (style.dirty || style.touched))
+          }">
+          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="style.errors && (style.dirty || style.touched)">
+            <div *ngIf="style.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- origin -->
@@ -581,11 +673,29 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (origin0.invalid && (origin0.dirty || origin0.touched)) ,
+          'has-success': (origin0.valid && (origin0.dirty || origin0.touched))
+          }">
           <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
-           required>
+            required>
+          <div class="form-control-feedback" *ngIf="origin0.errors && (origin0.dirty || origin0.touched)">
+            <div *ngIf="origin0.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (origin1.invalid && (origin1.dirty || origin1.touched)) ,
+          'has-success': (origin1.valid && (origin1.dirty || origin1.touched))
+          }">
           <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
-           required>
+            required>
+          <div class="form-control-feedback" *ngIf="origin1.errors && (origin1.dirty || origin1.touched)">
+            <div *ngIf="origin1.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
         </div>
       </div>
       <!-- scales -->
@@ -635,26 +745,26 @@
 
 <!-- Modal save success-->
 <app-modal #modalSaveSuccess [animateClose]="true">
-    <div class="app-modal-header">
-      <h5 class="modal-title" translate>layer_edit_success_title</h5>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layer_edit_success_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-success" translate>
+      <i class="fa fa-check" aria-hidden="true"></i>
+      layer_edit_success_text
     </div>
-    <div class="app-modal-body">
-      <div class="alert alert-success" translate>
-        <i class="fa fa-check" aria-hidden="true"></i>
-        layer_edit_success_text
-      </div>
+  </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layer_edit_unsuccess_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <div class="alert alert-danger" translate>
+      <i class="fa fa-exclamation" aria-hidden="true"></i>
+      layer_edit_unsuccess_text
     </div>
-  </app-modal>
-  
-  <!-- Modal save unsuccess-->
-  <app-modal #modalSaveUnsuccess [animateClose]="true">
-    <div class="app-modal-header">
-      <h5 class="modal-title" translate>layer_edit_unsuccess_title</h5>
-    </div>
-    <div class="app-modal-body">
-      <div class="alert alert-danger" translate>
-        <i class="fa fa-exclamation" aria-hidden="true"></i>
-        layer_edit_unsuccess_text
-      </div>
-    </div>
-  </app-modal>
+  </div>
+</app-modal>
