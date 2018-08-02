@@ -36,6 +36,9 @@
                   <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm mr-sm-2" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
+                  <button *ngIf="node.isFocused" type="button" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
+                    <i class="fa fa-globe" aria-hidden="true"></i>
+                  </button>
                 </div>
               </div>
             </div>

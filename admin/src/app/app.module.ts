@@ -32,6 +32,7 @@ import { TruncatePipe } from './_pipes/truncate.pipe';
 import { ShowCapabilitiesDirective } from './_directives/show-capabilities.directive';
 import { ShowLayerOnMapDirective } from './_directives/show-layer-on-map.directive';
 import { ShowURLDirective } from './_directives/show-url.directive';
+import { ShowCategoryOnMapDirective } from './_directives/show-category-on-map.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath);
@@ -59,6 +60,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ShowCapabilitiesDirective,
     ShowLayerOnMapDirective,
     ShowURLDirective,
+    ShowCategoryOnMapDirective,
   ],
   imports: [
     BrowserModule,
