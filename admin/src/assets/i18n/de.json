@@ -289,5 +289,8 @@
     "category_add_unsuccess_title": "Probleme beim Speichern",
     "category_add_unsuccess_text": "Änderungen wurden nicht gespeichert!",
     "refresh": "Aktualisieren",
-    "reset": "Zurücksetzen"
+    "reset": "Zurücksetzen",
+    "status_layer_error": "Nur fehlerhafte Karten",
+    "status_layer_not_exist": "Karte existiert nicht mehr!",
+    "status_service_not_exist": "Dienst existiert nicht mehr!"
 }

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
@@ -41,15 +42,24 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.utils.Utils;
+import de.ingrid.mapclient.Constants;
+import de.ingrid.mapclient.HttpProxy;;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -65,14 +75,14 @@ public class AdministrationResource {
     @GET
     @Path("layers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText) {
+    public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText, @QueryParam("hasStatus") boolean hasStatus) {
         String[] searchKeys = {"label", "id"};
         if(currentPage == null && layersPerPage == null) {
             // Get layer list compress
             JSONArray arr = getLayers(null, true);
             if(arr != null) {
-                if(searchText != null) {
-                    arr = getFilterArray(arr, searchText, searchKeys);
+                if(searchText != null || hasStatus) {
+                    arr = getFilterArray(arr, searchText, searchKeys, hasStatus);
                 }
                 return Response.ok( arr ).build();
             }
@@ -80,8 +90,8 @@ public class AdministrationResource {
             // Get paging layer list compress
             JSONArray arr = getLayers(null);
             if(arr != null) {
-                if(searchText != null) {
-                    arr = getFilterArray(arr, searchText, searchKeys);
+                if(searchText != null || hasStatus) {
+                    arr = getFilterArray(arr, searchText, searchKeys, hasStatus);
                 }
                 int tmpCurrentPage = Integer.parseInt(currentPage);
                 int tmpLayersPerPage = Integer.parseInt(layersPerPage);
@@ -156,9 +166,9 @@ public class AdministrationResource {
                     updateCategoryTree(catId, cat);
                 }
             }
-            JSONArray arr = updateLayer(id, layer);
-            if(arr != null) {
-                return Response.ok( arr ).build();
+            JSONObject obj = updateLayer(id, layer);
+            if(obj != null) {
+                return Response.ok( obj ).build();
             }
         } catch (JSONException e) {
             log.error("Error POST '/layers/{id}'!");
@@ -913,7 +923,7 @@ public class AdministrationResource {
         return obj;
     }
 
-    private JSONArray getFilterArray(JSONArray arr, String searchText, String[] keys) {
+    private JSONArray getFilterArray(JSONArray arr, String searchText, String[] keys, boolean hasStatus) {
         JSONArray arrSearch = new JSONArray();
         for (int i = 0; i < arr.length(); i++) {
             if(i < arr.length() - 1) {
@@ -925,9 +935,25 @@ public class AdministrationResource {
                         for (String key : keys) {
                             if(item.has(key)){
                                 String value = item.getString(key);
-                                if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                                   arrSearch.put(obj);
-                                   break;
+                                if(searchText != null) {
+                                    if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                                       if(hasStatus) {
+                                           if(item.has("status")) {
+                                               arrSearch.put(obj);
+                                           }
+                                       } else {
+                                           arrSearch.put(obj);
+                                       }
+                                       break;
+                                    }
+                                } else {
+                                    if(hasStatus) {
+                                        if(item.has("status")) {
+                                            arrSearch.put(obj);
+                                        }
+                                    } else {
+                                        arrSearch.put(obj);
+                                    }
                                 }
                             }
                         }
@@ -940,7 +966,7 @@ public class AdministrationResource {
         return arrSearch;
     }
 
-    private JSONArray updateLayer(String id, JSONObject layer) {
+    private JSONObject updateLayer(String id, JSONObject layer) {
         if(id != null && layer != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
@@ -950,7 +976,73 @@ public class AdministrationResource {
             }
             try {
                 JSONObject obj = new JSONObject(fileContent);
-                JSONObject layerItem = (JSONObject) layer.get("item");
+                JSONObject layerItem = layer.getJSONObject("item");
+                if(layerItem.has(Constants.LAYER_STATUS)) {
+                    String status = layerItem.getString(Constants.LAYER_STATUS);
+                    String version = null;
+                    if(layerItem.has(Constants.LAYER_VERSION)) {
+                        version = layerItem.getString(Constants.LAYER_VERSION);
+                    }
+                    String layername = null;
+                    if(layerItem.has(Constants.WMS_LAYERNAME)) {
+                        layername = layerItem.getString(Constants.WMS_LAYERNAME);
+                    }
+                    if(layerItem.has(Constants.WMTS_LAYERNAME)) {
+                        layername = layerItem.getString(Constants.WMTS_LAYERNAME);
+                    }
+                    String url = null;
+                    if(layerItem.has(Constants.WMS_URL)) {
+                        url = layerItem.getString(Constants.WMS_URL);
+                        if(url.toLowerCase().indexOf( "?" ) == -1){
+                            url += "?";
+                        }
+                        if(url.toLowerCase().indexOf( "service=" )  == -1){
+                            url += "&SERVICE=WMS";
+                        }
+                        if(url.toLowerCase().indexOf( "request=" )  == -1){
+                            url += "&REQUEST=GetCapabilities";
+                        }
+                        if(url.toLowerCase().indexOf( "version=" )  == -1){
+                            if(version == null) {
+                                url += "&VERSION=1.3.0";
+                            } else {
+                                url += "&VERSION=" + version;
+                            }
+                        }
+                    }
+                    if(layerItem.has(Constants.WMTS_URL)) {
+                        url = layerItem.getString(Constants.WMTS_URL);
+                    }
+                    if(status != null && layername != null && url != null) {
+                        try {
+                            String getCapabilities = HttpProxy.doRequest( url );
+                            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                            docFactory.setValidating(false);
+                            Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                            XPath xpath = XPathFactory.newInstance().newXPath();
+                            Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                            if(layerNode == null) {
+                                layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                            }
+                            switch (status) {
+                            case Constants.STATUS_LAYER_NOT_EXIST:
+                                if(layerNode != null) {
+                                    layerItem.remove(Constants.LAYER_STATUS);
+                                }
+                                break;
+                            case Constants.STATUS_SERVICE_NOT_EXIST:
+                                if(layerNode != null) {
+                                    layerItem.remove(Constants.LAYER_STATUS);
+                                }
+                                break;
+                            default:
+                                break;
+                            }
+                        } catch (Exception e) {
+                           layerItem.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                        }
+                    }
+                }
                 String newId = layer.getString("id");
                 if(newId != null  && id.equals(newId)) {
                     obj.put(id, layerItem);
@@ -966,7 +1058,7 @@ public class AdministrationResource {
                 log.error("Error 'updateLayer'!");
             }
         }
-        return getLayers(null, true);
+        return layer;
     }
     
     private JSONArray deleteLayers() {

@@ -16,7 +16,7 @@ export class LayerItemWmtsComponent {
   @ViewChild('f') form: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
-  @Output() updateLayer: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @Output() updateLayer: EventEmitter<LayerItem> = new EventEmitter<LayerItem>();
 
   tmpLayer: LayerItem;
 
@@ -71,6 +71,7 @@ export class LayerItemWmtsComponent {
             this.form.form.markAsUntouched();
             this.form.form.updateValueAndValidity();
             this.modalSaveSuccess.show();
+            this.layer = data;
             this.updateLayer.emit(data);
           },
           error => {

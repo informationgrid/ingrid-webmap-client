@@ -50,8 +50,8 @@
           </div>
         </div>
         <div class="card" *ngFor="let category of categories | arrayFilter: searchText: 'id'">
-          <div class="card-header d-flex justify-content-between align-items-center" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
-            aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id)">
+          <div class="card-header d-flex justify-content-between align-items-center collapsed" id="categoriesHeader{{ category.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + category.id" 
+            aria-expanded="true" aria-controls="categories" (click)="loadCategory(category.id, $event)">
             <span translate>
               <input type="checkbox" (click)="selectCategories($event)" value="{{ category.id }}">
               {{category.id}}

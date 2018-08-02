@@ -289,5 +289,8 @@
     "category_add_unsuccess_title": "",
     "category_add_unsuccess_text": "",
     "refresh": "",
-    "reset": ""
+    "reset": "",
+    "status_layer_error": "",
+    "status_layer_not_exist": "",
+    "status_service_not_exist": ""
 }

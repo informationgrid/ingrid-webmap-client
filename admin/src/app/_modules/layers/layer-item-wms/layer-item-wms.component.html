@@ -11,6 +11,8 @@
       </button>
     </div>
     <div class="modal-body">
+      <!-- status -->
+      <div *ngIf="layer.item.status" class="alert alert-warning" translate>{{ layer.item.status }}</div>
       <!-- type -->
       <div class="form-group row">
         <div class="col-sm-3">
@@ -47,11 +49,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9" [ngClass]="{
+        <div class="col-sm-9 input-group" [ngClass]="{
           'has-danger': (id.invalid && (id.dirty || id.touched)) ,
           'has-success': (id.valid && (id.dirty || id.touched))
           }">
           <input type="text" #id="ngModel" name="id" [ngModel]="layer.id" class="form-control" required pattern="^[a-zA-Z0-9_-]*">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowLayerOnMap [layerBodId]="layer.id">
+              <i class="fa fa-globe" aria-hidden="true"></i>
+            </button>
+          </div>
           <div class="form-control-feedback" *ngIf="id.errors && (id.dirty || id.touched)">
             <div *ngIf="id.errors.required">
               <span translate>field_required</span>
@@ -196,11 +203,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9" [ngClass]="{
+        <div class="col-sm-9 input-group" [ngClass]="{
           'has-danger': (wmsUrl.invalid && (wmsUrl.dirty || wmsUrl.touched)) ,
           'has-success': (wmsUrl.valid && (wmsUrl.dirty || wmsUrl.touched))
           }">
           <input type="text" #wmsUrl="ngModel" [(ngModel)]="layer.item.wmsUrl" name="wmsUrl" class="form-control" required>
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowCapabilities [layer]="layer.item">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </button>
+          </div>
           <div class="form-control-feedback" *ngIf="wmsUrl.errors && (wmsUrl.dirty || wmsUrl.touched)">
             <div *ngIf="wmsUrl.errors.required">
               <span translate>field_required</span>
@@ -542,8 +554,13 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 input-group">
           <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.legendUrl">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
       <!-- attribution -->
@@ -582,8 +599,13 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 input-group">
           <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.attributionUrl">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
       <!-- tooltip -->

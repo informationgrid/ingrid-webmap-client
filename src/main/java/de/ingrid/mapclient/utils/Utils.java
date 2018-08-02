@@ -30,13 +30,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -65,6 +62,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -149,24 +147,27 @@ public class Utils {
         return url;
     }
     
-    public static String getPropertyFromJSFiles(String[] paths, String regex, String defaultValue) throws Exception {
-        ArrayList<String> values = new ArrayList<String>();
-        for (String path :  paths) {
+    public static String getPropertyFromJSONFiles(String[] paths, String key, String defaultValue) throws Exception {
+        JSONObject values = new JSONObject();
+        for (String path : paths) {
             File file = new File(path);
             if(file.exists()) {
                 log.debug("Load file: " + path);
-                String content = readFileAsString( file );
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(content);
-                if (matcher.find())
-                {
-                    values.add(matcher.group(1));
+                String fileContent = Utils.getFileContent(path, "", "", "");
+                if(fileContent != null) {
+                    JSONObject setting = new JSONObject(fileContent);
+                    Iterator<?> keys = setting.keys();
+                    while( keys.hasNext() ) {
+                        String tmpKey = (String)keys.next();
+                        values.put(tmpKey, setting.get(tmpKey));
+                    }
                 }
             }
         }
-        if(!values.isEmpty()) {
-            return values.get(values.size() - 1);
+        if(values.has(key)) {
+            return values.getString(key);
         }
+        log.debug("Use default value for key: "+ key + "=" + defaultValue);
         return defaultValue;
     }
 

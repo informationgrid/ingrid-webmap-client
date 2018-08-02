@@ -71,11 +71,13 @@ export class CategoryComponent implements OnChanges {
     modal.show();
   }
 
-  loadCategory(id: string) {
-    this.httpService.getCategory(id, null)
-    .subscribe( data => {
-        this.categoryTree = data;
-    });
+  loadCategory(id: string, event) {
+    if (event.currentTarget.classList.contains('collapsed')) {
+      this.httpService.getCategory(id, null)
+      .subscribe( data => {
+          this.categoryTree = data;
+      });
+    }
   }
 
   updateCategories(event) {

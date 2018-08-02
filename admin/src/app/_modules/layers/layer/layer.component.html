@@ -47,24 +47,20 @@
                 <i class="fa fa-angle-double-right" aria-hidden="true"></i>
               </button>
             </div>
-            <form class="form-inline">
-              <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
-            </form>
-          </div>
-        </nav>
-        <div class="list-group" *ngFor="let layer of layers">
-          <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers">
-              <span>
-                <input type="checkbox" (click)="selectLayer($event)" value="{{ layer.id }}">
-                {{layer.item.label}}
-              </span>
-              <div>
-                <span *ngIf="layer.item.status" class="badge badge-pill badge-warning" translate>status_{{ layer.item.status }}</span>
-                <span class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.type | uppercase }}</span>
+            <div>
+              <form class="form-inline">
+                <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
+              </form>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="searchHasStatus" name="searchHasStatus" [(ngModel)]="searchHasStatus" (ngModelChange)="searchLayers()">
+                <label for="searchHasStatus" translate>status_layer_error</label>
               </div>
             </div>
-            <app-layer-item [layer]="layer" [layers]="layers" [selectedLayers]="selectedLayers" [enableSelectLayer]="enableSelectLayer" (updateLayers)="updateLayers($event)"></app-layer-item>
+          </div>
+        </nav>
+        <div class="list-group" *ngFor="let layer of layersPage">
+          <div class="card">
+            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"></app-layer-item>
           </div>
         </div>
       </div>

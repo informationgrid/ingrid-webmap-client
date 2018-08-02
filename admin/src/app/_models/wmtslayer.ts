@@ -35,6 +35,7 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         }
         if (this.matrixSet) {
             id += '_' + this.matrixSet.replace(',', '_');
+            id += '_' + this.matrixSet.replace(':', '_');
         }
         return id.replace(/\./gi, '_');
     }

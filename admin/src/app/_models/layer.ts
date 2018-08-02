@@ -38,6 +38,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
+    status: string;
 
     constructor(type: LayerType) {
         this.type = type;

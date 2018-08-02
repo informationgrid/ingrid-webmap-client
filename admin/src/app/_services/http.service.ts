@@ -38,7 +38,7 @@ export class HttpService {
     );
   }
 
-  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string): Observable<LayerPaging> {
+  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean): Observable<LayerPaging> {
     let url = httpApiHost + '/layers?';
     if (currentPage) {
       url += 'currentPage=' + currentPage;
@@ -48,6 +48,9 @@ export class HttpService {
     }
     if (searchText) {
       url += '&searchText=' + searchText;
+    }
+    if (hasStatus) {
+      url += '&hasStatus=' + hasStatus;
     }
     return this.http.get<LayerPaging>(url, httpJsonOptions).map(
       res => {
@@ -83,7 +86,7 @@ export class HttpService {
 
   updateLayer(layerId: string, layer: LayerItem) {
     const body = JSON.stringify(layer);
-    return this.http.put<LayerItem[]>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
+    return this.http.put<LayerItem>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
   addLayer(layers: LayerItem[]): Observable<LayerItem[]> {

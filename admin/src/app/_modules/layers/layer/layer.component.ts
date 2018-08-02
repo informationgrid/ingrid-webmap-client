@@ -26,7 +26,7 @@ export class LayerComponent implements OnInit {
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
-  layers: LayerItem[] = [];
+  layersPage: LayerItem[] = [];
   layersCurrentPage = 1;
   layersTotalPage = 1;
   layersPerPage = 20;
@@ -37,6 +37,7 @@ export class LayerComponent implements OnInit {
   enableSelectLayer = false;
   selectedLayers: any = new Array();
   searchText = '';
+  searchHasStatus = false;
 
   newLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
@@ -103,9 +104,9 @@ export class LayerComponent implements OnInit {
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
-    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText).subscribe(
+    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText, this.searchHasStatus).subscribe(
       data => {
-        this.layers = data.items;
+        this.layersPage = data.items;
         this.layersCurrentPage = data.firstPage;
         this.layersTotalPage = data.lastPage;
         this.layersTotalNum = data.totalItemsNum;
@@ -117,12 +118,13 @@ export class LayerComponent implements OnInit {
       }
     );
   }
-  updateLayers(event: LayerItem[]) {
-    if (event) {
-      this.updateAppLayers.emit(event);
+  updateLayers(layers: LayerItem[]) {
+    if (layers) {
+      this.layersPage = layers;
     } else {
       this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
     }
+    this.updateAppLayers.emit(this.layersPage);
   }
 
   selectLayer(event) {
@@ -285,7 +287,7 @@ export class LayerComponent implements OnInit {
       this.getCheckedNode(root, checkedLayers);
     });
     checkedLayers.forEach(l => {
-      const layerItem = new LayerItem(l.generateId(this.layers), l);
+      const layerItem = new LayerItem(l.generateId(this.layersPage), l);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
@@ -325,7 +327,7 @@ export class LayerComponent implements OnInit {
       layer.wmsLayers = wmsLayers;
       layer.legendUrl = legendUrl;
       layer.label = label;
-      const layerItem = new LayerItem(layer.generateId(this.layers), layer);
+      const layerItem = new LayerItem(layer.generateId(this.layersPage), layer);
       layerItems.push(layerItem);
     }
     this.saveAddedLayers(layerItems);

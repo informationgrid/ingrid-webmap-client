@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
+import { MapUtilsService } from '../../../_services/map-utils.service';
 
 @Component({
   selector: 'app-layer-item',
@@ -11,28 +12,22 @@ export class LayerItemComponent {
 
   @Input() layer: LayerItem;
   @Input() layers: LayerItem[] = [];
-  @Input() enableSelectLayer = false;
-  @Input() selectedLayers: any = new Array();
-
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
+  @Output() selectLayer: EventEmitter<any> = new EventEmitter<any>();
 
   isEdit = false;
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private mapUtils: MapUtilsService) { }
 
   isWMSLayer(layer) {
     if (layer.type) {
-      if (layer.type === 'wms') {
-        return true;
-      }
+      return this.mapUtils.isWMS(layer.type);
     }
     return false;
   }
   isWMTSLayer(layer) {
     if (layer.type) {
-      if (layer.type === 'wmts') {
-        return true;
-      }
+      return this.mapUtils.isWMTS(layer.type);
     }
     return false;
   }
@@ -48,7 +43,17 @@ export class LayerItemComponent {
     );
   }
 
-  updateLayer(layers: LayerItem[]) {
-    this.updateLayers.emit(layers);
+  updateLayer(layer: LayerItem) {
+    this.layer = layer;
+    this.layers.forEach(l => {
+      if (l.id === layer.id) {
+        l = layer;
+      }
+    });
+    this.updateLayers.emit(this.layers);
+  }
+
+  checkLayer(event) {
+    this.selectLayer.emit(event);
   }
 }

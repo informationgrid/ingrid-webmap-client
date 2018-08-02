@@ -5,6 +5,20 @@ export class MapUtilsService {
 
   constructor() { }
 
+  isWMS(type: string) {
+    if (type.toLowerCase() === 'wms') {
+      return true;
+    }
+    return false;
+  }
+
+  isWMTS(type: string) {
+    if (type.toLowerCase() === 'wmts') {
+      return true;
+    }
+    return false;
+  }
+
   addGetCapabilitiesParams(url: string) {
     if (url) {
       if (url.toLowerCase().indexOf('wmts') === -1) {

@@ -118,7 +118,7 @@
         <label class="col-sm-4 col-form-label" for="layerBodIdAdd" translate>category_item_add_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" id="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="layers">
+            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" id="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>
@@ -131,7 +131,8 @@
           </div>
           <ul *ngIf="searchLayerList" class="list-group search-list">
             <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
-              <span>{{ layer.item.label }} ({{ layer.id }})</span>
+              <p><b>{{ layer.item.label }}</b></p>
+              <span>ID: </span><span>{{ layer.id }}</span>
             </li>
           </ul>
         </div>
@@ -195,7 +196,7 @@
         <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_edit_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="layers" autocomplete="off">
+            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>
@@ -208,7 +209,8 @@
           </div>
           <ul *ngIf="searchLayerList" class="list-group search-list">
             <li *ngFor="let layer of searchLayerList" class="list-group-item list-group-item-action" (click)="onSelectLayer($event, layer.id)">
-              <span>{{ layer.item.label }} ({{ layer.id }})</span>
+              <p><b>{{ layer.item.label }}</b></p>
+              <span>ID: </span><span>{{ layer.id }}</span>
             </li>
           </ul>
         </div>
