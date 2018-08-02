@@ -9,5 +9,6 @@ export const environment = {
   production: false,
   httpServiceDomain: 'http://localhost:8080',
   translatePath: 'http://localhost:8080/ingrid-webmap-client/rest/config/locales/',
+  mapURL: 'http://localhost:8080/kartendienste?',
   version: require('../../package.json').version
 };
