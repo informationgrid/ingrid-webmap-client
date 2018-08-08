@@ -292,5 +292,12 @@
     "reset": "",
     "status_layer_error": "",
     "status_layer_not_exist": "",
-    "status_service_not_exist": ""
+    "status_service_not_exist": "",
+    "service_hasLogin": "",
+    "service_overrideLogin": "",
+    "service_login": "",
+    "service_password": "",
+    "service_login_info": "",
+    "layer_auth": "",
+    "help_layer_auth": ""
 }

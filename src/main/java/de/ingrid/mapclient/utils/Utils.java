@@ -23,6 +23,7 @@
 package de.ingrid.mapclient.utils;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +31,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -62,11 +64,16 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import de.ingrid.mapclient.ConfigurationProvider;
+import sun.misc.BASE64Encoder;
 
 public class Utils {
 
@@ -123,6 +130,86 @@ public class Utils {
                 if (fileWriter != null) {
                     fileWriter.close();
                 }
+            }
+        }
+    }
+
+    public static void createFile(String filename, JSONObject item) throws JSONException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(config_dir.concat(filename));
+        if(!file.exists()){
+            try(FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)){
+                out.println(item.toString());
+            } catch (IOException e) {
+                log.error( "Error write new json file!" );
+            }
+        }
+    }
+    
+    public static void updateFile(String filename, JSONObject item) throws JSONException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File cpFile = new File(config_dir.concat(filename + ".old"));
+        if(cpFile.exists()){
+            if(!cpFile.delete()) {
+                log.error("Error delete file: '" + cpFile.getName() + "'" );
+            }
+        }
+        File file = new File(config_dir.concat(filename));
+        if(!file.renameTo( cpFile )) {
+            log.error("Error rename file: '" + file.getName() + "'" );
+        }
+        file = new File(config_dir.concat(filename));
+        Utils.cleanFileContent(file);
+        log.info( "Update file :" + file.getAbsoluteFile() );
+        if(file != null){
+            try(FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)){
+                out.println(item.toString());
+            } catch (IOException e) {
+                log.error( "Error write new json file!" );
+            }
+        }
+    }
+    
+    public static void updateFile(String filename, String item) {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File cpFile = new File(config_dir.concat(filename + ".old"));
+        if(cpFile.exists()){
+            if(!cpFile.delete()) {
+                log.error("Error delete file: '" + cpFile.getName() + "'" );
+            }
+        }
+        File file = new File(config_dir.concat(filename));
+        if(!file.renameTo( cpFile )) {
+            log.error("Error rename file: '" + file.getName() + "'" );
+        }
+        file = new File(config_dir.concat(filename));
+        Utils.cleanFileContent(file);
+        log.info( "Update file :" + file.getAbsoluteFile() );
+        if(file != null){
+            try(FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter out = new PrintWriter(bw)){
+                out.println(item.toString());
+            } catch (IOException e) {
+                log.error( "Error write new json file!" );
+            }
+        }
+    }
+    
+    public static void removeFile(String filename) throws JSONException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(config_dir.concat(filename));
+        if(file.exists()) {
+            if(!file.delete()) {
+                log.error("Error delete file: '" + file.getName() + "'" );
             }
         }
     }
@@ -341,6 +428,61 @@ public class Utils {
         }
 
         return emailSent;
+    }
+    
+    public static void urlConnectionAuth(URLConnection conn, String login, String password) {
+        String userPassword = login + ":" + password;
+        String encoding = new BASE64Encoder().encode(userPassword.getBytes());
+        conn.setRequestProperty("Authorization", "Basic " + encoding);
+    }
+    
+    public static String setServiceLogin(String fileContent, String url, String login, String password) throws JSONException {
+        JSONObject serviceAuth = new JSONObject(fileContent);
+        String key = url.split("\\?")[0];
+        JSONArray auths = null;
+        if(serviceAuth.has(key)) {
+            serviceAuth.get(key);
+        } else {
+            auths = new JSONArray();
+        }
+        JSONObject loginAuth = null;
+        for (int i = 0; i < auths.length(); i++) {
+            JSONObject auth = auths.getJSONObject(i);
+            if(auth.has("login")) {
+                if(auth.getString("login").equals(login)) {
+                    loginAuth = auth;
+                    loginAuth.put("login", login);
+                    loginAuth.put("password", password);
+                    break;
+                }
+            }
+        }
+        if(loginAuth == null) {
+            loginAuth = new JSONObject();
+            loginAuth.put("login", login);
+            loginAuth.put("password", password);
+            auths.put(loginAuth);
+        }
+        serviceAuth.put(key, auths);
+        
+        return serviceAuth.toString();
+    }
+    
+    public static String getServiceLogin(String fileContent, String url, String login) throws JSONException {
+        JSONObject serviceAuth = new JSONObject(fileContent);
+        String key = url.split("\\?")[0];
+        if(serviceAuth.has(key)){
+            JSONArray auths = serviceAuth.getJSONArray(key);
+            for (int i = 0; i < auths.length(); i++) {
+                JSONObject auth = auths.getJSONObject(i);
+                if(auth.has("login") && auth.has("password")) {
+                    if(login.equals(auth.getString("login"))) {
+                        return auth.getString("password"); 
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
 

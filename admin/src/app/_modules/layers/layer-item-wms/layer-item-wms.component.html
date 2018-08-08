@@ -682,6 +682,26 @@
           <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control">
         </div>
       </div>
+      <!-- auth -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_auth</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_auth_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_auth_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>help_layer_auth</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control">
+        </div>
+      </div>
     </div>
     <div class="modal-footer d-flex justify-content-between align-items-center">
       <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>

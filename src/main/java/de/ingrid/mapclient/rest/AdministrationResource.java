@@ -22,11 +22,6 @@
  */
 package de.ingrid.mapclient.rest;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,9 +52,9 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import de.ingrid.mapclient.ConfigurationProvider;
-import de.ingrid.mapclient.utils.Utils;
 import de.ingrid.mapclient.Constants;
-import de.ingrid.mapclient.HttpProxy;;
+import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.utils.Utils;;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -459,7 +454,6 @@ public class AdministrationResource {
             } else {
                 settingProfile = new JSONObject(content);
             }
-            JSONObject obj = updateSetting(settingProfile);
             if(settingProfile.has("settingLanguages")) {
                 JSONArray settingLanguages = settingProfile.getJSONArray("settingLanguages");
                 for (int i = 0; i < settingLanguages.length(); i++) {
@@ -659,6 +653,59 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @POST
+    @Path("auth")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response addServiceAuth(String content) {
+        String login = null; 
+        String password = null;
+        String url = null;
+        boolean overrideLogin = false;
+        try {
+            JSONObject obj = new JSONObject(content);
+            if(obj != null) {
+                if(obj.has("url")) {
+                    url = obj.getString("url");
+                }
+                if(obj.has("login")) {
+                    login = obj.getString("login");
+                }
+                if(obj.has("password")) {
+                    password = obj.getString("password");
+                }
+                if(obj.has("overrideLogin")) {
+                    overrideLogin = obj.getBoolean("overrideLogin");
+                }
+            }
+            if(login != null && password != null) {
+                Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                String fileContent = null;
+                if(config_dir != null){
+                    fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+                }
+                if(fileContent == null) {
+                    fileContent = "{}";
+                }
+                try {
+                    String existPassword = Utils.getServiceLogin(fileContent, url, login);
+                    if(existPassword == null || overrideLogin) {
+                        String serviceAuth = Utils.setServiceLogin(fileContent, url, login, password);
+                        Utils.updateFile("config/service.auth.json", serviceAuth);
+                    } else {
+                        password = existPassword;
+                    }
+                } catch (Exception e) {
+                    log.error("Error 'service.auth.json'!");
+                }
+                return Response.status( Response.Status.OK ).build();
+            }
+        } catch (Exception e) {
+            log.error( "Error sending WMS request: " + url, e );
+        }
+        return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
     private void updateLocale(String lang, String content) throws JSONException {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
@@ -676,9 +723,9 @@ public class AdministrationResource {
                     locale.put(key, item.get(key));
                 }
             }
-            updateFile("locales/" + lang + ".profile.json", locale);
+            Utils.updateFile("locales/" + lang + ".profile.json", locale);
         } else if(item != null) {
-            updateFile("locales/" + lang + ".profile.json", item);
+            Utils.updateFile("locales/" + lang + ".profile.json", item);
         }
     }
 
@@ -696,7 +743,7 @@ public class AdministrationResource {
                     locale.remove(key);
                 }
             }
-            updateFile("locales/" + lang + ".profile.json", locale);
+            Utils.updateFile("locales/" + lang + ".profile.json", locale);
         }
     }
 
@@ -714,7 +761,7 @@ public class AdministrationResource {
             JSONObject results = obj.getJSONObject("results");
             JSONObject root = results.getJSONObject("root");
             root.put("children", item);
-            updateFile("data/catalog-" + id + ".json", obj);
+            Utils.updateFile("data/catalog-" + id + ".json", obj);
             return item;
         } catch (Exception e) {
             log.error("Error 'updateCategoryTree'!");
@@ -724,7 +771,7 @@ public class AdministrationResource {
 
     private JSONObject updateSetting(JSONObject item) {
         try {
-            updateFile("config/setting.profile.json", item);
+            Utils.updateFile("config/setting.profile.json", item);
             return item;
         } catch (Exception e) {
             log.error("Error 'updateSetting'!");
@@ -740,7 +787,7 @@ public class AdministrationResource {
                 String fileContent = Utils.getFileContent(filePathHelp, "app.override", ".css", "css/");
                 if(fileContent != null) {
                     if(!fileContent.equals(content)) {
-                        updateFile("css/app.override.css", content);
+                        Utils.updateFile("css/app.override.css", content);
                     }
                 }
             }
@@ -782,7 +829,7 @@ public class AdministrationResource {
                     }
                 }
             }
-            updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
+            Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
             return content;
         } catch (Exception e) {
             log.error("Error write profile help: " + e);
@@ -802,7 +849,7 @@ public class AdministrationResource {
                         if(profileHelp.has(id)) {
                             profileHelp.remove(id);
                         }
-                        updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
+                        Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
                         return profileHelp.toString();
                     }
                 }
@@ -889,7 +936,7 @@ public class AdministrationResource {
                     String key = (String)keys.next();
                     newObj.put(key, obj.getJSONObject(key));
                 }
-                updateFile("data/layers.json", newObj);
+                Utils.updateFile("data/layers.json", newObj);
             } catch (JSONException e) {
                 log.error("Error 'updateLayer'!");
             }
@@ -1053,7 +1100,7 @@ public class AdministrationResource {
                     obj = new JSONObject(newObj);
                     obj.put(newId, layerItem);
                 }
-                updateFile("data/layers.json", obj);
+                Utils.updateFile("data/layers.json", obj);
             } catch (JSONException e) {
                 log.error("Error 'updateLayer'!");
             }
@@ -1084,7 +1131,7 @@ public class AdministrationResource {
                 obj = new JSONObject();
             }
             removeLayersFromCategories(ids);
-            updateFile("data/layers.json", obj);
+            Utils.updateFile("data/layers.json", obj);
         } catch (JSONException e) {
             log.error("Error 'deleteLayer'!");
         }
@@ -1189,9 +1236,9 @@ public class AdministrationResource {
             root.put("root", rootItem);
             JSONObject results = new JSONObject();
             results.put("results", root);
-            createFile("data/catalog-" + catelog.getString("id") + ".json", results);
+            Utils.createFile("data/catalog-" + catelog.getString("id") + ".json", results);
             obj.getJSONArray("topics").put(catelog);
-            updateFile("data/catalogs.json", obj);
+            Utils.updateFile("data/catalogs.json", obj);
         } catch (JSONException e) {
             log.error("Error 'addCategory'!");
         }
@@ -1216,7 +1263,7 @@ public class AdministrationResource {
                         break;
                     }
                 }
-                updateFile("data/catalogs.json", obj);
+                Utils.updateFile("data/catalogs.json", obj);
             } catch (JSONException e) {
                 log.error("Error 'updateCategory'!");
             }
@@ -1243,8 +1290,8 @@ public class AdministrationResource {
                     }
                 }
                 obj.put("topics", newTopics);
-                removeFile("data/catalog-" + id +".json");
-                updateFile("data/catalogs.json", obj);
+                Utils.removeFile("data/catalog-" + id +".json");
+                Utils.updateFile("data/catalogs.json", obj);
                 deleteCategoriesLocales(id);
             } catch (JSONException e) {
                 log.error("Error 'deleteCategory'!");
@@ -1284,7 +1331,7 @@ public class AdministrationResource {
                     for (String id : ids) {
                         if(id != null && id.length() > 0) {
                             if(tmpObj.getString("id").equals(id)) {
-                                removeFile("data/catalog-" + id +".json");
+                                Utils.removeFile("data/catalog-" + id +".json");
                                 deleteCategoriesLocales(id);
                                 toDelete = true;
                                 break;
@@ -1293,7 +1340,7 @@ public class AdministrationResource {
                     }
                 } else {
                     String id = tmpObj.getString("id");
-                    removeFile("data/catalog-" + id +".json");
+                    Utils.removeFile("data/catalog-" + id +".json");
                     deleteCategoriesLocales(id);
                     toDelete = true;
                 }
@@ -1302,7 +1349,7 @@ public class AdministrationResource {
                 }
             }
             obj.put("topics", newTopics);
-            updateFile("data/catalogs.json", obj);
+            Utils.updateFile("data/catalogs.json", obj);
         } catch (JSONException e) {
             log.error("Error 'deleteLayer'!");
         }
@@ -1347,84 +1394,6 @@ public class AdministrationResource {
                         updateCategoryLayersId(child, id, newId);
                     }
                 }
-            }
-        }
-    }
-    
-    private void createFile(String filename, JSONObject item) throws JSONException {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
-        if(!file.exists()){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
-        }
-    }
-    
-    private void updateFile(String filename, JSONObject item) throws JSONException {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File cpFile = new File(config_dir.concat(filename + ".old"));
-        if(!cpFile.delete()) {
-            log.error("Error delete file: '" + cpFile.getName() + "'" );
-        }
-        File file = new File(config_dir.concat(filename));
-        if(!file.renameTo( cpFile )) {
-            log.error("Error rename file: '" + file.getName() + "'" );
-        }
-        file = new File(config_dir.concat(filename));
-        Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
-        if(file != null){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
-        }
-    }
-    
-    private void updateFile(String filename, String item) {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File cpFile = new File(config_dir.concat(filename + ".old"));
-        if(cpFile.exists()){
-            if(!cpFile.delete()) {
-                log.error("Error delete file: '" + cpFile.getName() + "'" );
-            }
-        }
-        File file = new File(config_dir.concat(filename));
-        if(!file.renameTo( cpFile )) {
-            log.error("Error rename file: '" + file.getName() + "'" );
-        }
-        file = new File(config_dir.concat(filename));
-        Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
-        if(file != null){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
-        }
-    }
-    
-    private void removeFile(String filename) throws JSONException {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
-        if(file.exists()) {
-            if(!file.delete()) {
-                log.error("Error delete file: '" + file.getName() + "'" );
             }
         }
     }

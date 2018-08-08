@@ -76,11 +76,34 @@
   <div class="app-modal-body">
     <form>
       <p translate>service_item_add_text</p>
-      <div class="input-group">
-        <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
-          (keyup.enter)="loadService(newService.value)">
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
+      <div class="form-group">
+        <div class="input-group">
+          <input type="text" #newService class="form-control" placeholder="{{ ('service_load') | translate }}"
+            (keyup.enter)="loadService(newService.value)">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" (click)="loadService(newService.value)" translate>load</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" data-toggle='collapse' data-target='#serviceLogin' id="hasLogin" name="hasLogin" [(ngModel)]="hasLogin">
+        <label class="form-check-label" for="hasLogin" translate>service_hasLogin</label>
+      </div>
+      <div class="collapse" id="serviceLogin">
+        <div class="form-group row">
+          <div class="col-sm-4">
+            <input type="text" name="login" [(ngModel)]="serviceLogin" class="form-control" placeholder="{{ ('service_login') | translate }}">
+          </div>
+          <div class="col-sm-4">
+            <input type="password" name="password" [(ngModel)]="servicePassword" class="form-control" placeholder="{{ ('service_password') | translate }}">
+          </div>
+          <div class="col-sm-4">
+            <input type="checkbox" class="form-check-input" id="overrideLogin" name="overrideLogin" [(ngModel)]="overrideLogin">
+            <label class="form-check-label" for="overrideLogin" translate>service_overrideLogin</label>
+          </div>
+        </div>
+        <div class="alert alert-info" translate>
+          service_login_info
         </div>
       </div>
       <br>

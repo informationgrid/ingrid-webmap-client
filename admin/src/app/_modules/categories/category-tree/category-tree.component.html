@@ -107,7 +107,7 @@
         ">
         <label class="col-sm-4 col-form-label" for="labelAdd" translate>category_item_add_label</label>
         <div class="col-sm-8">
-          <input type="text" #labelAdd="ngModel" [(ngModel)]="focusItem.label" class="form-control" name="labelAdd" id="labelAdd" placeholder="{{ ('category_item_add_label_input') | translate }}" required>
+          <input type="text" #labelAdd="ngModel" [(ngModel)]="focusItem.label" class="form-control" name="labelAdd" placeholder="{{ ('category_item_add_label_input') | translate }}" required>
           <div class="form-control-feedback" 
               *ngIf="labelAdd.errors && (labelAdd.dirty || labelAdd.touched)">
             <div *ngIf="labelAdd.errors.required"><span translate>field_required</span></div>
@@ -121,7 +121,7 @@
         <label class="col-sm-4 col-form-label" for="layerBodIdAdd" translate>category_item_add_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" id="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
+            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>
@@ -163,7 +163,7 @@
         ">
         <label class="col-sm-4 col-form-label" for="id" translate>category_item_edit_id</label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" #id="ngModel" [(ngModel)]="focusItem.id" name="id" id="id" placeholder="{{ ('category_item_edit_id_input') | translate }}" required>
+          <input type="text" class="form-control" #id="ngModel" [(ngModel)]="focusItem.id" name="id" placeholder="{{ ('category_item_edit_id_input') | translate }}" required>
           <div class="form-control-feedback" 
               *ngIf="id.errors && (id.dirty || id.touched)">
             <div *ngIf="id.errors.required"><span translate>field_required</span></div>
@@ -176,7 +176,7 @@
         ">
         <label class="col-sm-4 col-form-label" for="label" translate>category_item_edit_label</label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" #label="ngModel" [(ngModel)]="focusItem.label" name="label" id="label" placeholder="{{ ('category_item_edit_label_input') | translate }}" required>
+          <input type="text" class="form-control" #label="ngModel" [(ngModel)]="focusItem.label" name="label" placeholder="{{ ('category_item_edit_label_input') | translate }}" required>
           <div class="form-control-feedback" 
               *ngIf="label.errors && (label.dirty || label.touched)">
             <div *ngIf="label.errors.required"><span translate>field_required</span></div>
@@ -186,7 +186,7 @@
       <div class="form-group row">
         <label class="col-sm-4 col-form-label" for="selectedOpen" translate>category_item_edit_selectedOpen</label>
         <div class="col-sm-8">
-          <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen"  id="selectedOpen" >
+          <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen">
               <option value="false" translate>false</option>
               <option value="true" translate>true</option>
             </select>
@@ -199,7 +199,7 @@
         <label class="col-sm-4 col-form-label" for="layerBodId" translate>category_item_edit_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId" id="layerBodId" placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
+            <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId"placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>

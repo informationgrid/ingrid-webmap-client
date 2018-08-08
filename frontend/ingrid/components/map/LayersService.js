@@ -149,24 +149,55 @@ goog.require('ga_urlutils_service');
 
         // The tile load function which loads tiles from local
         // storage if they exist otherwise try to load the tiles normally.
+        /* INGRID: Change onSuccess
         var tileLoadFunction = function(imageTile, src) {
-          var onSuccess = function(content) {
-            if (content && $window.URL && $window.atob) {
-              try {
-                var blob = gaMapUtils.dataURIToBlob(content);
-                imageTile.getImage().addEventListener('load', revokeBlob);
-                imageTile.getImage().src = $window.URL.createObjectURL(blob);
-              } catch (e) {
-                // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
-                // encoding problem.
-                // TODO: fix it
-                imageTile.getImage().src = content;
+        */
+        var tileLoadFunction = function(layer) {
+          return function(imageTile, src) {
+            /* INGRID: Change onSuccess
+              var onSuccess = function(content) {
+              */
+            var onSuccess = function(content, layer) {
+              if (content && $window.URL && $window.atob) {
+                try {
+                  var blob = gaMapUtils.dataURIToBlob(content);
+                  imageTile.getImage().addEventListener('load', revokeBlob);
+                  imageTile.getImage().src = $window.URL.createObjectURL(blob);
+                } catch (e) {
+                  // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
+                  // encoding problem.
+                  // TODO: fix it
+                  imageTile.getImage().src = content;
+                }
+              } else {
+                if (layer.auth) {
+                  imageTile.getImage().src = gaGlobalOptions.imgproxyUrl +
+                    '' + encodeURIComponent(src) + '&login=' + layer.auth;
+                } else {
+                  imageTile.getImage().src = (content) || src;
+                }
               }
-            } else {
-              imageTile.getImage().src = (content) || src;
-            }
+            };
+            /* INGRID: Change onSuccess
+            gaStorage.getTile(gaMapUtils.getTileKey(src)).then(onSuccess);
+            */
+            onSuccess(null, layer);
           };
-          gaStorage.getTile(gaMapUtils.getTileKey(src)).then(onSuccess);
+        };
+
+        // INGRID: Add imageLoadFunction
+        var imageLoadFunction = function(layer) {
+          return function(image, src) {
+            var onSuccess = function(content, layer) {
+              if (layer.auth) {
+                image.getImage().src = gaGlobalOptions.imgproxyUrl +
+                 '' + encodeURIComponent(src) + '&login=' + layer.auth;
+              } else {
+                image.getImage().src = src;
+              }
+            };
+            onSuccess(null, layer);
+          };
         };
 
         // Load layers config
@@ -574,7 +605,7 @@ goog.require('ga_urlutils_service');
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
                     gaGlobalOptions.defaultEpsg) : extent
                 }),
-                tileLoadFunction: tileLoadFunction,
+                tileLoadFunction: tileLoadFunction(config),
                 /* INGRID: Replace generate urls
                 urls: getImageryUrls(wmtsTplUrl, h2(wmtsSubdomains)),
                 */
@@ -590,6 +621,8 @@ goog.require('ga_urlutils_service');
               maxResolution: config.maxResolution,
               opacity: config.opacity || 1,
               source: olSource,
+              // INGRID: Add auth
+              auth: config.auth,
               /* INGRID: Get extent from layer config
               extent: extent,
               */
@@ -618,7 +651,8 @@ goog.require('ga_urlutils_service');
                   url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
-                  ratio: 1
+                  ratio: 1,
+                  imageLoadFunction: imageLoadFunction(config)
                 });
               }
               olLayer = new ol.layer.Image({
@@ -632,6 +666,8 @@ goog.require('ga_urlutils_service');
                 minScale: config.minScale,
                 // INGRID: Add maxScale
                 maxScale: config.maxScale,
+                // INGRID: Add auth
+                auth: config.auth,
                 /* INGRID: Set extent by defaultProjection
                 extent: extent
                 */
@@ -655,7 +691,7 @@ goog.require('ga_urlutils_service');
                   gutter: config.gutter || 0,
                   crossOrigin: crossOrigin,
                   tileGrid: gaTileGrid.get(tileGridMinRes, config.type),
-                  tileLoadFunction: tileLoadFunction,
+                  tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,
                   transition: 0
                 });
@@ -671,6 +707,8 @@ goog.require('ga_urlutils_service');
                 minScale: config.minScale,
                 // INGRID: Add maxScale
                 maxScale: config.maxScale,
+                // INGRID: Add auth
+                auth: config.auth,
                 /* INGRID: Set extent by defaultProjection
                 extent: extent,
                 */
@@ -825,6 +863,12 @@ goog.require('ga_urlutils_service');
         // INGRID: Add function
         this.getMetaDataOfLayerWithLegend = function(bodId, legendUrl) {
           var url = getMetaDataUrlWithLegend(bodId, gaLang.get(), legendUrl);
+          var layer = this.getLayer(bodId);
+          if (layer) {
+            if (layer.auth) {
+              url += '&login=' + layer.auth;
+            }
+          }
           return $http.get(url);
         };
 

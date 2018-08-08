@@ -292,5 +292,12 @@
     "reset": "Zurücksetzen",
     "status_layer_error": "Nur fehlerhafte Karten",
     "status_layer_not_exist": "Karte existiert nicht mehr!",
-    "status_service_not_exist": "Dienst existiert nicht mehr!"
+    "status_service_not_exist": "Dienst existiert nicht mehr!",
+    "service_hasLogin": "Login verwenden",
+    "service_overrideLogin": "Login ersetzen",
+    "service_login": "Benutzername",
+    "service_password": "Passwort",
+    "service_login_info": "Bitte beachten Sie, das Ihre Login-Daten gespeichert werden, sobald Sie Karten hinzufügen. Die Login-Daten werden für die GetMap- und GetFeatureInfo-Anfrage benötigt. Die Anfragen werden dann authentifiziert über den Server Ihrer Portal-Installation geladen.",
+    "layer_auth": "Login",
+    "help_layer_auth": "Hier steht der Benutzername zu dem abgesichertem Dienst, den Sie beim Laden eines Dienstes hinzugefügt haben."
 }

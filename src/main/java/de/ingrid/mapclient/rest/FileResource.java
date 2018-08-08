@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -56,6 +57,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -254,20 +256,39 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login){
         if (url != null && url.length() > 0) {
-            URL tmpUrl;
             try {
-                tmpUrl = new URL(url);
-                BufferedImage image = ImageIO.read(tmpUrl);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", baos);
-                byte[] imageData = baos.toByteArray();
-                return Response.ok(new ByteArrayInputStream(imageData)).build();
+                URL tmpUrl = new URL( url );
+                URLConnection conn = tmpUrl.openConnection();
+                if(login != null) {
+                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                    if(config_dir != null){
+                        String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+                        if(fileContent != null) {
+                            String password = Utils.getServiceLogin(fileContent, url, login);
+                            if(password != null) {
+                                Utils.urlConnectionAuth(conn, login, password);
+                            }
+                        }
+                    }
+                }
+                if (conn != null) {
+                    BufferedImage image = ImageIO.read(conn.getInputStream());
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(image, "png", baos);
+                    byte[] imageData = baos.toByteArray();
+                    return Response.ok(new ByteArrayInputStream(imageData)).build();
+                }
             } catch (MalformedURLException e) {
                 return Response.status(Response.Status.NOT_FOUND ).build();
             } catch (IOException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+            } catch (JSONException e) {
+                log.error("Error get JSON auth: " + login);
+            } catch (Exception e) {
+                log.error("Error getMap for: " + url);
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();

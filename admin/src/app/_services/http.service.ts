@@ -18,6 +18,7 @@ const httpJsonOptions = {
 
 const httpApiHost = environment.httpServiceDomain + '/ingrid-webmap-client/rest/admin';
 const httpServiceUrl = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/?';
+const httpServiceUrlAuth = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/auth?';
 
 @Injectable()
 export class HttpService {
@@ -103,6 +104,13 @@ export class HttpService {
     );
   }
 
+  addLayerAndAuth(layers: LayerItem[], url: string, login: string, password: string, overrideLogin: boolean) {
+    return forkJoin(
+      this.updateAuth(url, login, password, overrideLogin),
+      this.addLayer(layers),
+    );
+  }
+
   deleteLayer(id: string) {
     return this.http.delete(httpApiHost + '/layers/' + id, httpJsonOptions);
   }
@@ -119,6 +127,16 @@ export class HttpService {
     return this.http.delete<LayerItem[]>(httpApiHost + '/layers/all', httpJsonOptions);
   }
 
+// Auth
+  updateAuth(url: string, login: string, password: string, overrideLogin: boolean) {
+    const body = {
+      url: url,
+      login: login,
+      password: password,
+      overrideLogin: overrideLogin
+    };
+    return this.http.post(httpApiHost + '/auth', body, httpJsonOptions);
+  }
 // Categories
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(httpApiHost + '/categories', httpJsonOptions).map(
@@ -206,13 +224,24 @@ export class HttpService {
   }
 
 // Service
-  getService(url: string) {
-    return this.http.get(httpServiceUrl, {
-      params: {
+  getService(url: string, login: string, password: string, overrideLogin: boolean) {
+    if (login && password) {
+      const body = {
         url: url,
-        toJson: 'true'
-      }
-    });
+        toJson: 'true',
+        login: login,
+        password: password,
+        overrideLogin: overrideLogin
+      };
+      return this.http.post(httpServiceUrlAuth, body, httpJsonOptions);
+    } else {
+      return this.http.get(httpServiceUrl, {
+        params: {
+          url: url,
+          toJson: 'true'
+        }
+      });
+    }
   }
 
 // Settings

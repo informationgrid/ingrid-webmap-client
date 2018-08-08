@@ -499,6 +499,9 @@ goog.require('ga_window_service');
                     coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
+                    if(layerToQuery.get("auth")) {
+                      proxyUrl += "&login=" + layerToQuery.get("auth"); 
+                    }
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery

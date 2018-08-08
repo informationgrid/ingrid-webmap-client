@@ -45,6 +45,11 @@ export class LayerComponent implements OnInit {
   isWMSService = false;
   hasLoadLayers = false;
 
+  hasLogin = false;
+  overrideLogin = false;
+  serviceLogin = '';
+  servicePassword = '';
+
   categoryId = '';
   category = new Map<String, CategoryItem[]>();
   selectedCategories = new Map<String, Array<TreeNode>>();
@@ -101,6 +106,8 @@ export class LayerComponent implements OnInit {
     this.newLayers = [];
     this.selectedCategories = new Map<String, Array<TreeNode>>();
     this.categoryId = '';
+    this.serviceLogin = '';
+    this.servicePassword = '';
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
@@ -335,19 +342,36 @@ export class LayerComponent implements OnInit {
   }
 
   saveAddedLayers(layerItems: LayerItem[]) {
-    this.httpService.addLayer(layerItems).subscribe(
-      data => {
-        this.searchText = '';
-        this.updateAppLayers.emit(data);
-        this.loadLayers(1, this.layersPerPage, this.searchText);
-        this.modalSaveSuccess.show();
-        this.modalAddService.hide();
-      },
-      error => {
-        console.error('Error add layers!');
-        this.modalSaveUnsuccess.show();
-      }
-    );
+    if (this.hasLogin && this.serviceLogin && this.servicePassword) {
+      this.httpService.addLayerAndAuth(layerItems, this.newService.nativeElement.value, this.serviceLogin,
+         this.servicePassword, this.overrideLogin).subscribe(
+        data => {
+          this.searchText = '';
+          this.updateAppLayers.emit(data[1]);
+          this.loadLayers(1, this.layersPerPage, this.searchText);
+          this.modalSaveSuccess.show();
+          this.modalAddService.hide();
+        },
+        error => {
+          console.error('Error add layers!');
+          this.modalSaveUnsuccess.show();
+        }
+      );
+    } else {
+      this.httpService.addLayer(layerItems).subscribe(
+        data => {
+          this.searchText = '';
+          this.updateAppLayers.emit(data);
+          this.loadLayers(1, this.layersPerPage, this.searchText);
+          this.modalSaveSuccess.show();
+          this.modalAddService.hide();
+        },
+        error => {
+          console.error('Error add layers!');
+          this.modalSaveUnsuccess.show();
+        }
+      );
+    }
   }
   getCheckedNode(node, list) {
     this.getChildCheckedNode(node, list);
@@ -457,7 +481,13 @@ export class LayerComponent implements OnInit {
   loadService( serviceUrl: string ) {
     if (serviceUrl) {
       serviceUrl = this.mapUtils.addGetCapabilitiesParams(serviceUrl.trim());
-      this.httpService.getService(serviceUrl)
+      let login = null;
+      let password = null;
+      if (this.hasLogin) {
+        login = this.serviceLogin.trim();
+        password = this.servicePassword.trim();
+      }
+      this.httpService.getService(serviceUrl, login, password, this.overrideLogin)
       .subscribe(
         data => {
           if (data) {
@@ -526,6 +556,12 @@ export class LayerComponent implements OnInit {
 
   createWMSLayers(layer, layers, wmsUrl, version, formats, bbox, minScale, maxScale) {
     const newLayer = new Wmslayer();
+
+    if (this.hasLogin) {
+      if (this.serviceLogin) {
+        newLayer.auth = this.serviceLogin;
+      }
+    }
     // Version
     newLayer.version = version;
     // Label
@@ -626,6 +662,11 @@ export class LayerComponent implements OnInit {
     tileMatrixSet.forEach(tileMatrix => {
       wmtslayers.forEach(layer => {
         const newLayer = new Wmtslayer();
+        if (this.hasLogin) {
+          if (this.serviceLogin) {
+            newLayer.auth = this.serviceLogin;
+          }
+        }
         // Label
         newLayer.label = layer['ows:Title'];
         // Version

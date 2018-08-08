@@ -235,7 +235,7 @@
       </div>
       <!-- backgroundLayers -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="category_backgroundLayers" translate>category_backgroundLayers</label>
+        <label class="col-sm-4 col-form-label" translate>category_backgroundLayers</label>
         <div class="col-sm-8">
           <div class="input-group form-group" *ngFor="let item of model.backgroundLayers; let i=index;">
             <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
@@ -252,7 +252,7 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddBgLayer>
+            <select class="form-control" #selectAddBgLayer>
               <option value="" selected translate>category_select_layer</option>
               <option value="osmLayer" translate>osmLayer</option>
               <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
@@ -267,9 +267,9 @@
       </div>
       <!-- defaultBackground -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="category_defaultBackground" translate>category_defaultBackground</label>
+        <label class="col-sm-4 col-form-label" translate>category_defaultBackground</label>
         <div class="col-sm-8">
-          <select class="form-control" id="category_item_select_new_layerBodId" name="defaultBackground" [ngModel]="model.defaultBackground">
+          <select class="form-control" name="defaultBackground" [ngModel]="model.defaultBackground">
             <option value="" translate>category_select_layer</option>
             <option [value]="layer" *ngFor="let layer of model.backgroundLayers" title="{{ getLabel(layer) }}" >{{ getLabel(layer) }}</option>
           </select>
@@ -277,7 +277,7 @@
       </div>
       <!-- selectedLayers -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="category_selectedLayers" translate>category_selectedLayers</label>
+        <label class="col-sm-4 col-form-label" translate>category_selectedLayers</label>
         <div class="col-sm-8">
           <div class="input-group form-group" *ngFor="let item of model.selectedLayers; let i=index">
             <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
@@ -294,7 +294,7 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddSelectLayer>
+            <select class="form-control" #selectAddSelectLayer>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
@@ -308,7 +308,7 @@
       </div>
       <!-- activatedLayers -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="category_activatedLayers" translate>category_activatedLayers</label>
+        <label class="col-sm-4 col-form-label" translate>category_activatedLayers</label>
         <div class="col-sm-8">
           <div class="input-group form-group" *ngFor="let item of model.activatedLayers; let i=index">
             <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
@@ -325,7 +325,7 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" id="category_item_select_new_layerBodId" #selectAddActiveLayer>
+            <select class="form-control" #selectAddActiveLayer>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
