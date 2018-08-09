@@ -929,7 +929,10 @@ public class AdministrationResource {
                     if(obj.has(id)) {
                         id = generateID(obj, id);
                     }
-                    newObj.put(id, tmpObj.get("item"));
+                    JSONObject tmpItem = tmpObj.getJSONObject("item");
+                    if(tmpItem.has("wmsLayers") || tmpItem.has("serverLayerName")) {
+                        newObj.put(id, tmpItem);
+                    }
                 }
                 Iterator<?> keys = obj.keys();
                 while( keys.hasNext() ) {

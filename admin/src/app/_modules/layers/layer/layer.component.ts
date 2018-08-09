@@ -458,9 +458,12 @@ export class LayerComponent implements OnInit {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
-        item = new CategoryItem(null, layers[0].item.label, 'prod', false);
-        if (layers[0].id) {
-          item.layerBodId = layers[0].id;
+        const layer = layers[0];
+        item = new CategoryItem(null, layer.item.label, 'prod', false);
+        if (layer.id && layer.item) {
+          if  (layer.item.wmsLayers || layer.item.serverLayerName) {
+            item.layerBodId = layer.id;
+          }
         }
         children.push(item);
         layers.splice(0, 1);
