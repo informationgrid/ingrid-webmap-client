@@ -12,7 +12,10 @@
     </div>
     <div class="modal-body">
       <!-- status -->
-      <div *ngIf="layer.item.status" class="alert alert-warning" translate>{{ layer.item.status }}</div>
+      <div *ngIf="layer.item.status" class="alert alert-warning">
+        <p translate>{{ layer.item.status }}</p>
+        <p translate>{{ layer.item.status }}_info</p>
+      </div>
       <!-- type -->
       <div class="form-group row">
         <div class="col-sm-3">
