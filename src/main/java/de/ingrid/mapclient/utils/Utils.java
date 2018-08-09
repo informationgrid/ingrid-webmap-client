@@ -441,30 +441,31 @@ public class Utils {
         String key = url.split("\\?")[0];
         JSONArray auths = null;
         if(serviceAuth.has(key)) {
-            serviceAuth.get(key);
+            auths = serviceAuth.getJSONArray(key);
         } else {
             auths = new JSONArray();
         }
         JSONObject loginAuth = null;
-        for (int i = 0; i < auths.length(); i++) {
-            JSONObject auth = auths.getJSONObject(i);
-            if(auth.has("login")) {
-                if(auth.getString("login").equals(login)) {
-                    loginAuth = auth;
-                    loginAuth.put("login", login);
-                    loginAuth.put("password", password);
-                    break;
+        if (auths != null) {
+            for (int i = 0; i < auths.length(); i++) {
+                JSONObject auth = auths.getJSONObject(i);
+                if(auth.has("login")) {
+                    if(auth.getString("login").equals(login)) {
+                        loginAuth = auth;
+                        loginAuth.put("login", login);
+                        loginAuth.put("password", password);
+                        break;
+                    }
                 }
             }
+            if(loginAuth == null) {
+                loginAuth = new JSONObject();
+                loginAuth.put("login", login);
+                loginAuth.put("password", password);
+                auths.put(loginAuth);
+            }
+            serviceAuth.put(key, auths);
         }
-        if(loginAuth == null) {
-            loginAuth = new JSONObject();
-            loginAuth.put("login", login);
-            loginAuth.put("password", password);
-            auths.put(loginAuth);
-        }
-        serviceAuth.put(key, auths);
-        
         return serviceAuth.toString();
     }
     

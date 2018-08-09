@@ -791,13 +791,55 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-9 input-group">
           <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" (click)="showModal(modalAuth)">
+              <i *ngIf="layer.item.auth" class="fa fa-pencil" aria-hidden="true"></i>
+              <i *ngIf="!layer.item.auth" class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </form>
 </div>
+
+<!-- Modal auth -->
+<app-modal #modalAuth>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>layer_edit_auth_account</h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>layer_edit_auth_account_text</p>
+    <form #formAuth="ngForm" (ngSubmit)="editAuth(formAuth, modalAuth)" novalidate>
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <label class="col-form-label" translate>service_login</label>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control" placeholder="{{ ('service_login') | translate }} ..." required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <label class="col-form-label" translate>service_password</label>
+        </div>
+        <div class="col-sm-9">
+          <input type="password" ngModel name="password" class="form-control" placeholder="{{ ('service_password') | translate }} ..." required>
+        </div>
+      </div>
+    </form>
+    <div class="alert alert-info" translate>
+      layer_edit_auth_account_info
+    </div>
+  </div>
+  <div class="app-modal-footer">
+    <button class="btn btn-primary" [disabled]="formAuth.invalid" (click)="formAuth.ngSubmit.emit()" translate>
+      save
+    </button>
+  </div>
+</app-modal>
 
 <!-- Modal save success-->
 <app-modal #modalSaveSuccess [animateClose]="true">

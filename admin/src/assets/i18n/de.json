@@ -299,5 +299,8 @@
     "service_password": "Passwort",
     "service_login_info": "Bitte beachten Sie, das Ihre Login-Daten gespeichert werden, sobald Sie Karten hinzufügen. Die Login-Daten werden für die GetMap- und GetFeatureInfo-Anfrage benötigt. Die Anfragen werden dann authentifiziert über den Server Ihrer Portal-Installation geladen.",
     "layer_auth": "Login",
-    "help_layer_auth": "Hier steht der Benutzername zu dem abgesichertem Dienst, den Sie beim Laden eines Dienstes hinzugefügt haben."
+    "help_layer_auth": "Hier steht der Benutzername zu dem abgesichertem Dienst, den Sie beim Laden eines Dienstes hinzugefügt haben.",
+    "layer_edit_auth_account": "Login-Daten ändern",
+    "layer_edit_auth_account_text": "Ändern Sie hier die Login-Daten für Ihre Karte.",
+    "layer_edit_auth_account_info": "Bei Änderung des Benutzernamens müssen ggf. auch bei andere eingepflegten Karten aus dem Dienst der neuen Benutzername hinterlegt werden."
 }

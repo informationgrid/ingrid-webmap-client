@@ -43,4 +43,37 @@ export class LayerItemWmsComponent {
       }
     }
   }
+
+  showModal(modal) {
+    modal.show();
+  }
+
+  editAuth(form, modal) {
+    if (form.valid) {
+      if (form.value) {
+        if (this.layer.item.wmsUrl) {
+          const url = this.layer.item.wmsUrl.trim();
+          const login = form.value.auth.trim();
+          const password = form.value.password.trim();
+          this.httpService.updateAuth(url, login, password, true).subscribe(
+            data => {
+              form.form.markAsPristine();
+              form.form.markAsUntouched();
+              form.form.updateValueAndValidity();
+              form.value.password = '';
+              form.resetForm(form.value);
+              modal.hide();
+              this.modalSaveSuccess.show();
+            },
+            error => {
+              console.error('Error editAuth!');
+              this.modalSaveUnsuccess.show();
+            }
+          );
+        } else {
+          this.modalSaveUnsuccess.show();
+        }
+      }
+    }
+  }
 }

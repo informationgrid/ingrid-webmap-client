@@ -299,5 +299,8 @@
     "service_password": "",
     "service_login_info": "",
     "layer_auth": "",
-    "help_layer_auth": ""
+    "help_layer_auth": "",
+    "layer_edit_auth_account": "",
+    "layer_edit_auth_account_text": "",
+    "layer_edit_auth_account_info": ""
 }
