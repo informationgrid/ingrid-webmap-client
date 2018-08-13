@@ -1,5 +1,5 @@
 {
-"Invalid layer: unsupported crs": "<br/><br/>Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
+"Invalid layer: unsupported crs": "Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
 "anbieter": "Anbieter",
 "bg_bkg": "BKG",
 "bg_bkg_grau": "BKG Grau",

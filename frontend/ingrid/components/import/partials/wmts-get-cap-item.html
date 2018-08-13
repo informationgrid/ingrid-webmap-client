@@ -6,5 +6,5 @@
   <button class="fa fa-zoom-in ga-btn" ng-disabled="!(layer.extent)"></button>
   {{layer.Title}}
   <!-- INGRID: Add warning for unsupported layer -->
-  <span ng-hide="!(layer.isUnsupported)" translate>Invalid layer: unsupported crs</span>
+  <p ng-hide="!(layer.isUnsupported)" translate>Invalid layer: unsupported crs</p>
 </div>
