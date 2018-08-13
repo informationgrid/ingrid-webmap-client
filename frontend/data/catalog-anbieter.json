@@ -1,10 +1,1 @@
-{
-    "results": {
-        "root": {
-            "category": "root",
-            "staging": "prod",
-            "id": 1,
-            "children": []
-        }
-    }
-}
+{"results":{"root":{"category":"root","staging":"prod","id":1,"children":[]}}}
