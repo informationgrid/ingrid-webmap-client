@@ -1,7 +1,7 @@
 import { Directive, Input, HostListener } from '@angular/core';
 import { TreeNode } from 'angular-tree-component';
 import { environment } from '../../environments/environment';
-import { MapUtilsService } from '../_services/map-utils.service';
+import { UtilsLayers } from '../_modules/utils/utils-layers';
 
 @Directive({
   selector: '[appShowCategoryOnMap]'
@@ -9,7 +9,6 @@ import { MapUtilsService } from '../_services/map-utils.service';
 export class ShowCategoryOnMapDirective {
 
   @Input() node: TreeNode;
-  mapUtils: MapUtilsService = new MapUtilsService();
   constructor() { }
 
   @HostListener('click', ['$event']) onClick($event) {
@@ -19,10 +18,10 @@ export class ShowCategoryOnMapDirective {
 
       let url = environment.mapURL;
       if (categoryParams) {
-        url = this.mapUtils.appendUrl(url, 'catalogNodes=' + categoryParams);
+        url = UtilsLayers.appendUrl(url, 'catalogNodes=' + categoryParams);
       }
       if (layersParams) {
-        url = this.mapUtils.appendUrl(url, 'layers=' + layersParams);
+        url = UtilsLayers.appendUrl(url, 'layers=' + layersParams);
       }
       window.open(url);
     }

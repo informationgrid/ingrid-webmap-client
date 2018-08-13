@@ -3,13 +3,13 @@ import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
-import { MapUtilsService } from '../../../_services/map-utils.service';
 import { TreeComponent, TreeModel, TreeNode, IActionMapping, ITreeOptions } from 'angular-tree-component';
 import { Wmslayer } from '../../../_models/wmslayer';
 import { Wmtslayer } from '../../../_models/wmtslayer';
 import * as _ from 'lodash';
 import { CategoryItem } from '../../../_models/category-item';
 import { ModalComponent } from '../../modals/modal/modal.component';
+import { UtilsLayers } from '../../utils/utils-layers';
 
 @Component({
   selector: 'app-layer',
@@ -69,7 +69,7 @@ export class LayerComponent implements OnInit {
     childrenField: 'children'
   };
 
-  constructor(private httpService: HttpService, private mapUtils: MapUtilsService) {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit() {
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
@@ -295,6 +295,7 @@ export class LayerComponent implements OnInit {
     });
     checkedLayers.forEach(l => {
       const layerItem = new LayerItem(l.generateId(this.layersPage), l);
+      UtilsLayers.cleanupLayersProps(layerItem);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
@@ -483,7 +484,7 @@ export class LayerComponent implements OnInit {
   // Service functions
   loadService( serviceUrl: string ) {
     if (serviceUrl) {
-      serviceUrl = this.mapUtils.addGetCapabilitiesParams(serviceUrl.trim());
+      serviceUrl = UtilsLayers.addGetCapabilitiesParams(serviceUrl.trim());
       let login = null;
       let password = null;
       if (this.hasLogin) {
@@ -626,7 +627,42 @@ export class LayerComponent implements OnInit {
     } else {
       newLayer.tooltip = false;
     }
-
+    if (layer['Dimension']) {
+      if (layer['Dimension']['name']) {
+        // timeEnabled
+        if (layer['Dimension']['name'] === 'time') {
+          newLayer.timeEnabled = true;
+        }
+        // timeBehaviour WMS 1.3.0
+        if (layer['Dimension']['default']) {
+          newLayer.timeBehaviour = layer['Dimension']['default'];
+        } else {
+          newLayer.timeBehaviour = 'all';
+        }
+        // timestamps WMS 1.3.0
+        if (layer['Dimension']['content']) {
+          const ts = layer['Dimension']['content'].split('/');
+          if (ts.length === 3) {
+            this.getYearsPeriodDates(newLayer, ts[0], ts[1], ts[2]);
+          }
+        }
+      }
+    }
+    if (layer['Extent']) {
+      // timeBehaviour WMS 1.1.1
+      if (layer['Extent']['default']) {
+        newLayer.timeBehaviour = layer['Extent']['default'];
+      } else {
+        newLayer.timeBehaviour = 'all';
+      }
+      // timestamps WMS 1.3.0
+      if (layer['Extent']['content']) {
+        const ts = layer['Extent']['content'].split('/');
+        if (ts.length === 3) {
+          this.getYearsPeriodDates(newLayer, ts[0], ts[1], ts[2]);
+        }
+      }
+    }
     // format
     if (formats) {
       if (formats.indexOf('image/png') > -1) {
@@ -662,75 +698,141 @@ export class LayerComponent implements OnInit {
   }
 
   createWMTSLayer (wmtslayers: any[], layers: any[], serviceMetadataUrl: string, version: string, tileMatrixSet: any[], encoding: string) {
-    tileMatrixSet.forEach(tileMatrix => {
-      wmtslayers.forEach(layer => {
-        const newLayer = new Wmtslayer();
-        if (this.hasLogin) {
-          if (this.serviceLogin) {
-            newLayer.auth = this.serviceLogin;
-          }
-        }
-        // Label
-        newLayer.label = layer['ows:Title'];
-        // Version
-        newLayer.version = version;
-        // Encoding
-        newLayer.requestEncoding = encoding;
-        // ServiceLayerName
-        newLayer.serverLayerName = layer['ows:Identifier'];
-        // ServiceMetadataUrl
-        newLayer.serviceUrl = serviceMetadataUrl;
-        // Format
-        if (layer['ResourceURL']) {
-          newLayer.format = layer['ResourceURL']['format'];
-          if (newLayer.format) {
-            if (newLayer.format.indexOf('image/png') > -1) {
-              newLayer.format = 'png';
-            } else if (newLayer.format.indexOf('image/jpeg') > -1) {
-              newLayer.format = 'jpeg';
-            } else if (newLayer.format.indexOf('image/gif') > -1) {
-              newLayer.format = 'gif';
+    wmtslayers.forEach(layer => {
+      let newLayer;
+      let tileMatrixSetLinks: any = [];
+      const layerHasLogin = this.hasLogin;
+      const layerServiceLogin = this.serviceLogin;
+      if (layer['TileMatrixSetLink'] instanceof Array) {
+        tileMatrixSetLinks = layer['TileMatrixSetLink'];
+      } else {
+        tileMatrixSetLinks.push(layer['TileMatrixSetLink']);
+      }
+      tileMatrixSetLinks.forEach(tileMatrixSetLink => {
+        const tileMatrixId = tileMatrixSetLink['TileMatrixSet'];
+        if (tileMatrixId) {
+          tileMatrixSet.forEach(tileMatrix => {
+            if (tileMatrixId === tileMatrix['ows:Identifier']) {
+              newLayer = new Wmtslayer();
+              if (layerHasLogin) {
+                if (layerServiceLogin) {
+                  newLayer.auth = layerServiceLogin;
+                }
+              }
+              // Label
+              newLayer.label = layer['ows:Title']['content'] || layer['ows:Title'];
+              // Version
+              newLayer.version = version;
+              // Encoding
+              newLayer.requestEncoding = encoding;
+              // ServiceLayerName
+              newLayer.serverLayerName = layer['ows:Identifier'];
+              // ServiceMetadataUrl
+              newLayer.serviceUrl = serviceMetadataUrl;
+              // Format
+              if (layer['ResourceURL']) {
+                newLayer.format = layer['ResourceURL']['format'];
+                if (newLayer.format) {
+                  if (newLayer.format.indexOf('image/png') > -1) {
+                    newLayer.format = 'png';
+                  } else if (newLayer.format.indexOf('image/jpeg') > -1) {
+                    newLayer.format = 'jpeg';
+                  } else if (newLayer.format.indexOf('image/gif') > -1) {
+                    newLayer.format = 'gif';
+                  }
+                }
+                newLayer.template = layer['ResourceURL']['template'];
+              }
+              // Style
+              newLayer.style = layer['Style']['ows:Identifier'];
+              // Extent
+              if (layer['ows:WGS84BoundingBox']) {
+                const latLonBox = layer['ows:WGS84BoundingBox'];
+                const lowerCorner = latLonBox['ows:LowerCorner'].split(' ');
+                const upperCorner = latLonBox['ows:UpperCorner'].split(' ');
+                newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]];
+              }
+              // timeEnabled
+              if (layer['Dimension']) {
+                if (layer['Dimension']['ows:Identifier']) {
+                  // timeEnabled
+                  if (layer['Dimension']['ows:Identifier'] === 'time') {
+                    newLayer.timeEnabled = true;
+                    // timeBehaviour
+                    if (layer['Dimension']['Default']) {
+                      newLayer.timeBehaviour = layer['Dimension']['Default'];
+                    } else {
+                      newLayer.timeBehaviour = 'last';
+                    }
+                    // timestamps
+                    if (layer['Dimension']['Value'] instanceof Array) {
+                      const dimValueList = layer['Dimension']['Value'];
+                      dimValueList.forEach(dimValues => {
+                        const dimValue = dimValues.split('/');
+                        if (dimValue.length === 3) {
+                          this.getYearsPeriodDates(newLayer, dimValue[0], dimValue[1], dimValue[2]);
+                        }
+                      });
+                    } else {
+                      const dimValue = layer['Dimension']['Value'].split('/');
+                      if (dimValue.length === 3) {
+                        this.getYearsPeriodDates(newLayer, dimValue[0], dimValue[1], dimValue[2]);
+                      }
+                    }
+                    if (layer['Dimension']['Current'] === 'true') {
+                      newLayer.timestamps.splice(0, 0, 'current');
+                    }
+                  } else {
+                    newLayer.timestamps.splice(0, 0, 'current');
+                  }
+                }
+              }
+              // MatrixSet
+              newLayer.matrixSet = tileMatrix['ows:Identifier'];
+              tileMatrix['TileMatrix'].forEach(tm => {
+                // Origin
+                const topLeftCorner = tm['TopLeftCorner'].split(' ');
+                newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
+                // scales
+                const scaleDenominator = tm['ScaleDenominator'];
+                if (!newLayer.scales) {
+                  newLayer.scales = [];
+                }
+                newLayer.scales.push(+scaleDenominator);
+                // matrixIds
+                const identifier = tm['ows:Identifier'];
+                if (!newLayer.matrixIds) {
+                  newLayer.matrixIds = [];
+                }
+                newLayer.matrixIds.push(identifier);
+              });
+              layers.push({
+                label: newLayer.label,
+                layer: newLayer
+              });
             }
-          }
-          newLayer.template = layer['ResourceURL']['template'];
+          });
         }
-        // Style
-        newLayer.style = layer['Style']['ows:Identifier'];
-        // Extent
-        if (layer['ows:WGS84BoundingBox']) {
-          const latLonBox = layer['ows:WGS84BoundingBox'];
-          const lowerCorner = latLonBox['ows:LowerCorner'].split(' ');
-          const upperCorner = latLonBox['ows:UpperCorner'].split(' ');
-          newLayer.extent = [+lowerCorner[0], +lowerCorner[1], +upperCorner[0], +upperCorner[1]];
-        }
-        // MatrixSet
-        newLayer.matrixSet = tileMatrix['ows:Identifier'];
-        tileMatrix['TileMatrix'].forEach(tm => {
-          // Origin
-          const topLeftCorner = tm['TopLeftCorner'].split(' ');
-          newLayer.origin = [+topLeftCorner[0], +topLeftCorner[1]];
-          // scales
-          const scaleDenominator = tm['ScaleDenominator'];
-          if (!newLayer.scales) {
-            newLayer.scales = [];
-          }
-          newLayer.scales.push(+scaleDenominator);
-          // matrixIds
-          const identifier = tm['ows:Identifier'];
-          if (!newLayer.matrixIds) {
-            newLayer.matrixIds = [];
-          }
-          newLayer.matrixIds.push(identifier);
-
-          const tileHeight = tm['TileHeight'];
-          const tileWidth = tm['TileWidth'];
-          newLayer.tileSize = [+tileHeight, +tileWidth];
-        });
-        layers.push({
-          label: newLayer.label,
-          layer: newLayer
-        });
       });
     });
+  }
+
+  getYearsPeriodDates(newLayer, timestampStart, timestampEnd, timestampPeriod) {
+    const startDate = new Date(timestampStart);
+    const endDate = new Date(timestampEnd);
+    while (startDate <= endDate) {
+      if (timestampStart.length <= 4) {
+        newLayer.timestamps.splice(0, 0, startDate.getFullYear().toString());
+      } else {
+        const date = startDate.toISOString();
+        if (newLayer.type === 'wms') {
+          newLayer.timestamps.splice(0, 0, date);
+        } else {
+          const dateSplit = date.split('T');
+          newLayer.timestamps.splice(0, 0, dateSplit[0]);
+        }
+      }
+      startDate.setFullYear(startDate.getFullYear() + 1);
+    }
   }
 }

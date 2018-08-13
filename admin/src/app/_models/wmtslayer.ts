@@ -8,7 +8,7 @@ export class Wmtslayer extends Layer implements ILayerWmts {
     serverLayerName: string;
     origin: number[];
     matrixSet: string;
-    tileSize: number[];
+    tileSize: number;
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
@@ -33,9 +33,15 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         if (this.serviceUrl) {
             id += this.serviceUrl.split('//')[1].split('/')[0];
         }
+        if (this.serverLayerName) {
+            id += '_' + this.serverLayerName;
+        }
         if (this.matrixSet) {
-            id += '_' + this.matrixSet.replace(',', '_');
-            id += '_' + this.matrixSet.replace(':', '_');
+            id += '_' + this.matrixSet;
+        }
+        for (let index = 0; index < id.length; index++) {
+            id = id.replace(',', '_');
+            id = id.replace(':', '_');
         }
         return id.replace(/\./gi, '_');
     }

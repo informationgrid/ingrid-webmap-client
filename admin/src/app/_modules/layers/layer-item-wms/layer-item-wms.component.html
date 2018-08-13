@@ -267,16 +267,8 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (gutter.invalid && (gutter.dirty || gutter.touched)) ,
-          'has-success': (gutter.valid && (gutter.dirty || gutter.touched))
-          }">
-          <input type="number" #gutter="ngModel" [(ngModel)]="layer.item.gutter " name="gutter" class="form-control" required>
-          <div class="form-control-feedback" *ngIf="gutter.errors && (gutter.dirty || gutter.touched)">
-            <div *ngIf="gutter.errors.required">
-              <span translate>field_required</span>
-            </div>
-          </div>
+        <div class="col-sm-9">
+          <input type="number" #gutter="ngModel" [(ngModel)]="layer.item.gutter " name="gutter" class="form-control">
         </div>
       </div>
       <!-- singleTile -->
@@ -299,6 +291,26 @@
           <div class="form-check mb-2 mr-sm-2">
             <input class="form-check-input" type="checkbox" #singleTile="ngModel" name="singleTile" [(ngModel)]="layer.item.singleTile">
           </div>
+        </div>
+      </div>
+      <!-- tileSize -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_tileSize</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tileSize_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_tileSize_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>help_layer_tileSize</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <input type="number" #tileSize="ngModel" [(ngModel)]="layer.item.tileSize " name="tileSize" class="form-control">
         </div>
       </div>
       <!-- minScale -->
@@ -457,26 +469,6 @@
           </div>
         </div>
       </div>
-      <!-- timestamps -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_timestamps</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_timestamps_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_timestamps_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>help_layer_timestamps</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <input type="text" #timestamps="ngModel" [(ngModel)]="layer.item.timestamps" name="timestamps" class="form-control">
-        </div>
-      </div>
       <!-- timeEnabled -->
       <div class="form-group row">
         <div class="col-sm-3">
@@ -499,6 +491,47 @@
           </div>
         </div>
       </div>
+      <!-- timestamps -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" for="layer_input{{ layer.id }}_timestamps" translate>layer_timestamps</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_timestamps_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_timestamps_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>help_layer_timestamps</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group form-group" *ngFor="let timestamp of layer.item.timestamps; let i=index;">
+            <input type="text" [(ngModel)]="layer.item.timestamps[i]" name="timestamps{{ i }}" class="form-control extent" disabled>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(timestamp, layer.item.timestamps)" *ngIf="i !== (layer.item.timestamps.length - 1) && layer.item.timestamps.length > 1">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(timestamp, layer.item.timestamps)" *ngIf="i !== 0">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, layer.item.timestamps)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group form-group">
+            <input type="text" #timestamps name="timestamps" class="form-control" placeholder="{{ ('add') | translate }}">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(timestamps.value, layer.item.timestamps); timestamps.value = '';">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- timeBehaviour -->
       <div class="form-group row">
         <div class="col-sm-3">
@@ -516,7 +549,11 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour" name="timeBehaviour" class="form-control">
+          <select class="form-control" name="timeBehaviour" #timeBehaviour="ngModel" [(ngModel)]="layer.item.timeBehaviour">
+            <option value="all" translate>all</option>
+            <option value="last" translate>last</option>
+            <option [value]="timestamp" *ngFor="let timestamp of layer.item.timestamps" [title]="timestamp" translate>{{ timestamp }}</option>
+          </select>
         </div>
       </div>
       <!-- hasLegend -->

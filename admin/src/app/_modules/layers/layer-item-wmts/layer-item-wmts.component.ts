@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { ModalComponent } from '../../modals/modal/modal.component';
+import { UtilsLayers } from '../../utils/utils-layers';
 
 @Component({
   selector: 'app-layer-item-wmts',
@@ -23,48 +24,26 @@ export class LayerItemWmtsComponent {
   constructor(private httpService: HttpService) { }
 
   onAddItem(value: any, list: any ) {
-    if (value && list) {
-      if (list.indexOf(value) === -1) {
-        list.push(value);
-      }
-    }
-    value = '';
+    UtilsLayers.onAddItem(value, list);
   }
 
   onRemoveItem(index, list: any) {
-    if (index && list) {
-      if (index > -1) {
-        list.splice(index, 1);
-      }
-    }
+    UtilsLayers.onRemoveItem(index, list);
   }
 
   onUpItem(value: any, list: any) {
-    if (value && list) {
-      this.onMoveItem(value, list, -1);
-    }
+    UtilsLayers.onUpItem(value, list);
   }
 
   onDownItem(value: any, list: any) {
-    if (value && list) {
-      this.onMoveItem(value, list, 1);
-    }
-  }
-
-  onMoveItem(value: string, list: any, delta: number) {
-    const index = list.indexOf(value);
-    const newIndex = index + delta;
-    if (newIndex < 0  || newIndex === list.length) {
-      return;
-    }
-    const indexes = [index, newIndex].sort();
-    list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
+    UtilsLayers.onDownItem(value, list);
   }
 
   onUpdateLayer() {
     if (this.form.valid) {
       if (this.form.value) {
         this.layer.id = this.form.value.id;
+        UtilsLayers.cleanupLayersProps(this.layer);
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
             this.form.form.markAsPristine();

@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
-import { MapUtilsService } from '../../../_services/map-utils.service';
+import { UtilsLayers } from '../../utils/utils-layers';
 
 @Component({
   selector: 'app-layer-item',
@@ -17,17 +17,17 @@ export class LayerItemComponent {
 
   isEdit = false;
 
-  constructor(private httpService: HttpService, private mapUtils: MapUtilsService) { }
+  constructor(private httpService: HttpService) { }
 
   isWMSLayer(layer) {
     if (layer.type) {
-      return this.mapUtils.isWMS(layer.type);
+      return UtilsLayers.isWMS(layer.type);
     }
     return false;
   }
   isWMTSLayer(layer) {
     if (layer.type) {
-      return this.mapUtils.isWMTS(layer.type);
+      return UtilsLayers.isWMTS(layer.type);
     }
     return false;
   }

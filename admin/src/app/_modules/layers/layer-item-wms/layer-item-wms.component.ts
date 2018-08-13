@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { ModalComponent } from '../../modals/modal/modal.component';
+import { UtilsLayers } from '../../utils/utils-layers';
 
 @Component({
   selector: 'app-layer-item-wms',
@@ -22,10 +23,27 @@ export class LayerItemWmsComponent {
 
   constructor(private httpService: HttpService) { }
 
+  onAddItem(value: any, list: any ) {
+    UtilsLayers.onAddItem(value, list);
+  }
+
+  onRemoveItem(index, list: any) {
+    UtilsLayers.onRemoveItem(index, list);
+  }
+
+  onUpItem(value: any, list: any) {
+    UtilsLayers.onUpItem(value, list);
+  }
+
+  onDownItem(value: any, list: any) {
+    UtilsLayers.onDownItem(value, list);
+  }
+
   onUpdateLayer() {
     if (this.form.valid) {
       if (this.form.value) {
         this.layer.id = this.form.value.id;
+        UtilsLayers.cleanupLayersProps(this.layer);
         this.httpService.updateLayer(this.layerId, this.layer).subscribe(
           data => {
             this.form.form.markAsPristine();

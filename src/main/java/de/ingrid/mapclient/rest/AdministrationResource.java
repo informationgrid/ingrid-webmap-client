@@ -454,6 +454,7 @@ public class AdministrationResource {
             } else {
                 settingProfile = new JSONObject(content);
             }
+            updateSetting(settingProfile);
             if(settingProfile.has("settingLanguages")) {
                 JSONArray settingLanguages = settingProfile.getJSONArray("settingLanguages");
                 for (int i = 0; i < settingLanguages.length(); i++) {

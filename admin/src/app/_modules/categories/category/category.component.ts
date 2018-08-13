@@ -6,6 +6,7 @@ import { CategoryItem } from '../../../_models/category-item';
 import { NgForm } from '@angular/forms';
 import { ModalComponent } from '../../modals/modal/modal.component';
 import { TranslateService } from '@ngx-translate/core';
+import { UtilsLayers } from '../../utils/utils-layers';
 
 @Component({
   selector: 'app-category',
@@ -207,42 +208,19 @@ export class CategoryComponent implements OnChanges {
   }
 
   onAddItem(value: any, list: any ) {
-    if (value && list) {
-      if (list.indexOf(value) === -1) {
-        list.push(value);
-      }
-    }
-    value = '';
+    UtilsLayers.onAddItem(value, list);
   }
-  onRemoveItem(value: any, list: any ) {
-    if (value && list) {
-      const index = list.indexOf(value, 0);
-      if (index > -1) {
-        list.splice(index, 1);
-      }
-    }
+
+  onRemoveItem(index, list: any) {
+    UtilsLayers.onRemoveItem(index, list);
   }
 
   onUpItem(value: any, list: any) {
-    if (value && list) {
-      this.onMoveItem(value, list, -1);
-    }
+    UtilsLayers.onUpItem(value, list);
   }
 
   onDownItem(value: any, list: any) {
-    if (value && list) {
-      this.onMoveItem(value, list, 1);
-    }
-  }
-
-  onMoveItem(value: string, list: any, delta: number) {
-    const index = list.indexOf(value);
-    const newIndex = index + delta;
-    if (newIndex < 0  || newIndex === list.length) {
-      return;
-    }
-    const indexes = [index, newIndex].sort();
-    list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
+    UtilsLayers.onDownItem(value, list);
   }
 
   getLabel(id: string) {

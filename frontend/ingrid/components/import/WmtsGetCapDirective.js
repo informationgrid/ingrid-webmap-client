@@ -49,13 +49,20 @@ goog.provide('ga_wmtsgetcap_directive');
           };
           // INGRID: Add 'tileMatrixSets'
           var tileMatrixSets = getCap.Contents.TileMatrixSet;
+          var tileMatrixSetLink = layer.TileMatrixSetLink;
           // INGRID: Add 'matrixSet' by supportedCRS
-          if (tileMatrixSets) {
-            for (var tileMatrixSet in tileMatrixSets) {
-              var supportedCRS = tileMatrixSet.SupportedCRS;
-              if (supportedCRS) {
-                if (supportedCRS.indexOf(proj.getCode()) > -1) {
-                  layerOptions.matrixSet = tileMatrixSet.Identifier;
+          if (tileMatrixSets && tileMatrixSetLink) {
+            for (var layerTMIndex in tileMatrixSetLink) {
+              var layerTM = tileMatrixSetLink[layerTMIndex];
+              for (var tileMatrixSetIndex in tileMatrixSets) {
+                var tileMatrixSet = tileMatrixSets[tileMatrixSetIndex];
+                if(layerTM.TileMatrixSet === tileMatrixSet.Identifier) {
+                  var supportedCRS = tileMatrixSet.SupportedCRS;
+                  if (supportedCRS) {
+                    if (supportedCRS.indexOf(proj.getCode()) > -1) {
+                      layerOptions.matrixSet = tileMatrixSet.Identifier;
+                    }
+                  }
                 }
               }
             }

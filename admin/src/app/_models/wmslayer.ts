@@ -16,7 +16,7 @@ export class Wmslayer extends Layer implements ILayerWms {
     constructor() {
         super(LayerType.wms);
         this.singleTile = false;
-        this.gutter = 150;
+        this.gutter = 0;
         this.background = false;
         this.crossOrigin = false;
         this.highlightable = false;
@@ -34,10 +34,10 @@ export class Wmslayer extends Layer implements ILayerWms {
         }
         if (this.wmsLayers) {
             id += '_' + this.wmsLayers;
-            for (let index = 0; index < id.length; index++) {
-                id = id.replace(',', '_');
-                id = id.replace(':', '_');
-            }
+        }
+        for (let index = 0; index < id.length; index++) {
+            id = id.replace(',', '_');
+            id = id.replace(':', '_');
         }
         return this.getUniqueId(layers, id, 0);
     }

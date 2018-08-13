@@ -14,7 +14,6 @@ import { CategoryComponent } from './_modules/categories/category/category.compo
 import { LayerComponent } from './_modules/layers/layer/layer.component';
 import { MapToIterablePipe } from './_pipes/map-to-iterable.pipe';
 import { ArrayFilterPipe } from './_pipes/array-filter.pipe';
-import { MapUtilsService } from './_services/map-utils.service';
 import { HttpService } from './_services/http.service';
 import { environment } from '../environments/environment';
 import { LayerItemComponent } from './_modules/layers/layer-item/layer-item.component';
@@ -79,7 +78,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [
-    MapUtilsService,
     HttpService,
     { provide: HTTP_INTERCEPTORS, useClass: NgProgressInterceptor, multi: true }
   ],
