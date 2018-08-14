@@ -103,4 +103,21 @@ export class UtilsLayers {
         list.splice(indexes[0], 2, list[indexes[1]], list[indexes[0]]);
     }
 
+    static replaceIdChar(id: string) {
+        id = id.replace(/\./gi, '_');
+        id = id.replace(/\:/gi, '_');
+        id = id.replace(/\,/gi, '_');
+        return id;
+    }
+
+    static getUniqueId(layers: LayerItem[], id: string, i: number, defaultId: String) {
+        layers.forEach(layer => {
+            if (layer.id === id) {
+                i++;
+                id = defaultId + '_' + i;
+                id = this.getUniqueId(layers, id, i, defaultId);
+            }
+        });
+        return id;
+    }
 }

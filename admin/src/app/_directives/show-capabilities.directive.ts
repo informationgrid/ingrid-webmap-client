@@ -1,6 +1,6 @@
 import { Directive, Input, HostListener } from '@angular/core';
 import { Layer } from '../_models/layer';
-import { UtilsLayers } from '../_modules/utils/utils-layers';
+import { UtilsLayers } from '../_shared/utils/utils-layers';
 
 @Directive({
   selector: '[appShowCapabilities]'

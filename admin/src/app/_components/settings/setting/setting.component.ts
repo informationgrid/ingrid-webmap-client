@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Setting } from '../../../_models/setting';
 import { Category } from '../../../_models/category';
 import { ModalComponent } from '../../modals/modal/modal.component';
-import { UtilsLayers } from '../../utils/utils-layers';
+import { UtilsLayers } from '../../../_shared/utils/utils-layers';
 
 @Component({
   selector: 'app-setting',

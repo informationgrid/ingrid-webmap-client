@@ -2,6 +2,7 @@ import { Layer } from './layer';
 import { LayerType } from './layer-type.enum';
 import { LayerItem } from './layer-item';
 import { ILayerWms } from '../_interfaces/ilayer-wms';
+import { UtilsLayers } from '../_shared/utils/utils-layers';
 
 export class Wmslayer extends Layer implements ILayerWms {
 
@@ -35,21 +36,7 @@ export class Wmslayer extends Layer implements ILayerWms {
         if (this.wmsLayers) {
             id += '_' + this.wmsLayers;
         }
-        for (let index = 0; index < id.length; index++) {
-            id = id.replace(',', '_');
-            id = id.replace(':', '_');
-        }
-        return this.getUniqueId(layers, id, 0);
-    }
-
-    getUniqueId(layers: LayerItem[], id: string, i: number) {
-        layers.forEach(layer => {
-            if (layer.id === id) {
-                i++;
-                id += '_' + i;
-                return this.getUniqueId(layers, id, i);
-            }
-        });
-        return id.replace(/\./gi, '_');
+        id = UtilsLayers.replaceIdChar(id);
+        return UtilsLayers.getUniqueId(layers, id, 0, id);
     }
 }

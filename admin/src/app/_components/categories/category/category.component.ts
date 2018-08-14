@@ -6,7 +6,7 @@ import { CategoryItem } from '../../../_models/category-item';
 import { NgForm } from '@angular/forms';
 import { ModalComponent } from '../../modals/modal/modal.component';
 import { TranslateService } from '@ngx-translate/core';
-import { UtilsLayers } from '../../utils/utils-layers';
+import { UtilsLayers } from '../../../_shared/utils/utils-layers';
 
 @Component({
   selector: 'app-category',

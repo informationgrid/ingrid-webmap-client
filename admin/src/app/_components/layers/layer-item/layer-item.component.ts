@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
-import { UtilsLayers } from '../../utils/utils-layers';
+import { UtilsLayers } from '../../../_shared/utils/utils-layers';
 
 @Component({
   selector: 'app-layer-item',

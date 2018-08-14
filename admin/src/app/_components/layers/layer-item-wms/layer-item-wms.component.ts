@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { ModalComponent } from '../../modals/modal/modal.component';
-import { UtilsLayers } from '../../utils/utils-layers';
+import { UtilsLayers } from '../../../_shared/utils/utils-layers';
 
 @Component({
   selector: 'app-layer-item-wms',

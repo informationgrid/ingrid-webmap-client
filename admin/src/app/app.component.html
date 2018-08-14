@@ -9,7 +9,7 @@
 </div>
 <div id="accordion">
   <!-- Layer -->
-  <app-layer [categories]="categories" (updateAppLayers)="updateAppLayers($event)" (updateAppCategories)="updateAppCategories($event)"></app-layer>
+  <app-layer [categories]="categories" [layers]="layers" (updateAppLayers)="updateAppLayers($event)" (updateAppCategories)="updateAppCategories($event)"></app-layer>
   <!-- Category -->
   <app-category [categories]="categories" [layers]="layers" (updateAppCategories)="updateAppCategories($event)"></app-category>
   <!-- Setting -->

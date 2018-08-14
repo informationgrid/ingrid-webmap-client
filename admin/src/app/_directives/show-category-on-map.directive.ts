@@ -1,7 +1,7 @@
 import { Directive, Input, HostListener } from '@angular/core';
 import { TreeNode } from 'angular-tree-component';
 import { environment } from '../../environments/environment';
-import { UtilsLayers } from '../_modules/utils/utils-layers';
+import { UtilsLayers } from '../_shared/utils/utils-layers';
 
 @Directive({
   selector: '[appShowCategoryOnMap]'

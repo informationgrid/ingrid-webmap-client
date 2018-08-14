@@ -9,7 +9,7 @@ import { Wmtslayer } from '../../../_models/wmtslayer';
 import * as _ from 'lodash';
 import { CategoryItem } from '../../../_models/category-item';
 import { ModalComponent } from '../../modals/modal/modal.component';
-import { UtilsLayers } from '../../utils/utils-layers';
+import { UtilsLayers } from '../../../_shared/utils/utils-layers';
 
 @Component({
   selector: 'app-layer',
@@ -19,6 +19,7 @@ import { UtilsLayers } from '../../utils/utils-layers';
 export class LayerComponent implements OnInit {
 
   @Input() categories: Category[] = [];
+  @Input() layers: LayerItem[] = [];
   @Output() updateAppLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   @Output() updateAppCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
   @ViewChild('newService') newService: ElementRef;
@@ -294,7 +295,7 @@ export class LayerComponent implements OnInit {
       this.getCheckedNode(root, checkedLayers);
     });
     checkedLayers.forEach(l => {
-      const layerItem = new LayerItem(l.generateId(this.layersPage), l);
+      const layerItem = new LayerItem(l.generateId(this.layers), l);
       UtilsLayers.cleanupLayersProps(layerItem);
       layerItems.push(layerItem);
     });
@@ -335,7 +336,7 @@ export class LayerComponent implements OnInit {
       layer.wmsLayers = wmsLayers;
       layer.legendUrl = legendUrl;
       layer.label = label;
-      const layerItem = new LayerItem(layer.generateId(this.layersPage), layer);
+      const layerItem = new LayerItem(layer.generateId(this.layers), layer);
       layerItems.push(layerItem);
     }
     this.saveAddedLayers(layerItems);
