@@ -838,13 +838,15 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-9 input-group">
-          <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-primary btn-sm" (click)="showModal(modalAuth)">
-              <i *ngIf="layer.item.auth" class="fa fa-pencil" aria-hidden="true"></i>
-              <i *ngIf="!layer.item.auth" class="fa fa-plus" aria-hidden="true"></i>
-            </button>
+        <div class="col-sm-9">
+          <div class="input-group form-group">
+            <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="showModal(modalAuth)">
+                <i *ngIf="layer.item.auth" class="fa fa-pencil" aria-hidden="true"></i>
+                <i *ngIf="!layer.item.auth" class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>

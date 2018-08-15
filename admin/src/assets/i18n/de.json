@@ -116,6 +116,7 @@
     "layer_maxScale": "Max-Scale",
     "layer_maxScale_help": "Definieren Sie einen Max-Scale der Karte.",
     "layer_scales": "Scales",
+    "layer_scales_help": "Tragen Sie aus dem TileMatrixSet den TileMatrix-ScaleDenominator der Karte ein.",
     "layer_serviceUrl": "Service-URL",
     "layer_serviceUrl_help": "Tragen Sie hier die WMTS-ServiceMetadataURL ein.",
     "layer_template": "Template",
