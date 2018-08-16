@@ -17,8 +17,8 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision 'c2fbddcbc2f38259b19cb420ced4734cb41f2bba' (Date: Freitag, 6. Juli 2018 09:19:57) ***"
-git checkout c2fbddcbc2f38259b19cb420ced4734cb41f2bba
+echo "*** Checkout mf-geoadmin3 revision '3aa882828a1659eebbc88572125a38dd3e2154bd' (Date: Mittwoch, 15. August 2018 08:57:10) ***"
+git checkout 3aa882828a1659eebbc88572125a38dd3e2154bd
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
