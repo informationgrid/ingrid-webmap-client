@@ -6,8 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,7 +14,6 @@ import java.util.Properties;
 import javax.servlet.ServletException;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.mapfish.print.MapPrinter;
@@ -112,38 +109,38 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                         Iterator<?> keys = auths.keys();
                         ArrayList<String> tmpLogins = new ArrayList<String>();
                         while( keys.hasNext() ) {
-                            String key = (String)keys.next();
-                            if (auths.has(key)) {
-                                JSONArray authLogins = auths.getJSONArray(key);
-                                for (int i = 0; i < authLogins.length(); i++) {
-                                    JSONObject authLogin = authLogins.getJSONObject(i);
-                                    URI uri = new URI(key);
-                                    String host =  uri.getHost();
-                                    String port =  uri.getScheme() == "https" ? "443" : "80";
-                                    String login = null;
-                                    String password = null;
-                                    if(authLogin.has("login")) {
-                                        login = authLogin.getString("login");
-                                    }
-                                    if(authLogin.has("password")) {
-                                        password = authLogin.getString("password");
-                                    }
-                                    if(login != null && password != null) {
-                                        if(!tmpLogins.contains(host)) {
-                                            tmpLogins.add(host);
-                                            try(FileWriter fw = new FileWriter(app, true);
-                                                BufferedWriter bw = new BufferedWriter(fw);
-                                                PrintWriter out = new PrintWriter(bw))
-                                            {
-                                                out.println("  - !basicAuth");
-                                                out.println("      matcher: !dnsMatch");
-                                                out.println("        host: " + host);
-                                                out.println("        port: " + port);
-                                                out.println("      username: " + login);
-                                                out.println("      password: " + password);
-                                                //more code
-                                            } catch (IOException e) {
-                                            }
+                            String host = (String)keys.next();
+                            if (auths.has(host)) {
+                                JSONObject authLogin = auths.getJSONObject(host);
+                                String login = null;
+                                String password = null;
+                                String port = null;
+                                if(authLogin.has("login")) {
+                                    login = authLogin.getString("login");
+                                }
+                                if(authLogin.has("password")) {
+                                    password = authLogin.getString("password");
+                                }
+                                if(authLogin.has("port")) {
+                                    port = authLogin.getString("port");
+                                } else {
+                                    port = "80";
+                                }
+                                if(login != null && password != null) {
+                                    if(!tmpLogins.contains(host)) {
+                                        tmpLogins.add(host);
+                                        try(FileWriter fw = new FileWriter(app, true);
+                                            BufferedWriter bw = new BufferedWriter(fw);
+                                            PrintWriter out = new PrintWriter(bw))
+                                        {
+                                            out.println("  - !basicAuth");
+                                            out.println("      matcher: !dnsMatch");
+                                            out.println("        host: " + host);
+                                            out.println("        port: " + port);
+                                            out.println("      username: " + login);
+                                            out.println("      password: " + password);
+                                            //more code
+                                        } catch (IOException e) {
                                         }
                                     }
                                 }
@@ -155,8 +152,6 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 LOGGER.error("Error get auth json.");
             } catch (IOException e) {
                 LOGGER.error("Error create auth yaml.");
-            } catch (URISyntaxException e1) {
-                LOGGER.error("Error create URI.");
             }
         }
         

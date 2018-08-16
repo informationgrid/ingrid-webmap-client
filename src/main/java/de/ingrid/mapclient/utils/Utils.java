@@ -31,6 +31,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,7 +66,6 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.w3c.dom.Document;
@@ -436,50 +437,34 @@ public class Utils {
         conn.setRequestProperty("Authorization", "Basic " + encoding);
     }
     
-    public static String setServiceLogin(String fileContent, String url, String login, String password) throws JSONException {
+    public static String setServiceLogin(String fileContent, String url, String login, String password) throws JSONException, URISyntaxException {
+        URI uri = new URI(url);
         JSONObject serviceAuth = new JSONObject(fileContent);
-        String key = url.split("\\?")[0];
-        JSONArray auths = null;
-        if(serviceAuth.has(key)) {
-            auths = serviceAuth.getJSONArray(key);
-        } else {
-            auths = new JSONArray();
-        }
         JSONObject loginAuth = null;
-        if (auths != null) {
-            for (int i = 0; i < auths.length(); i++) {
-                JSONObject auth = auths.getJSONObject(i);
-                if(auth.has("login")) {
-                    if(auth.getString("login").equals(login)) {
-                        loginAuth = auth;
-                        loginAuth.put("login", login);
-                        loginAuth.put("password", password);
-                        break;
-                    }
-                }
+        String host = uri.getHost();
+        if(serviceAuth.has(host)) {
+            loginAuth = serviceAuth.getJSONObject(host);
+        } else {
+            loginAuth = new JSONObject();
+            loginAuth.put("login", login);
+            loginAuth.put("password", password);
+            if(uri.getScheme().equals("https")) {
+                loginAuth.put("port", "443");
             }
-            if(loginAuth == null) {
-                loginAuth = new JSONObject();
-                loginAuth.put("login", login);
-                loginAuth.put("password", password);
-                auths.put(loginAuth);
-            }
-            serviceAuth.put(key, auths);
         }
+        serviceAuth.put(host, loginAuth);
         return serviceAuth.toString();
     }
     
-    public static String getServiceLogin(String fileContent, String url, String login) throws JSONException {
+    public static String getServiceLogin(String fileContent, String url, String login) throws JSONException, URISyntaxException {
+        URI uri = new URI(url);
         JSONObject serviceAuth = new JSONObject(fileContent);
-        String key = url.split("\\?")[0];
+        String key = uri.getHost();
         if(serviceAuth.has(key)){
-            JSONArray auths = serviceAuth.getJSONArray(key);
-            for (int i = 0; i < auths.length(); i++) {
-                JSONObject auth = auths.getJSONObject(i);
-                if(auth.has("login") && auth.has("password")) {
-                    if(login.equals(auth.getString("login"))) {
-                        return auth.getString("password"); 
-                    }
+            JSONObject auth = serviceAuth.getJSONObject(key);
+            if(auth.has("login") && auth.has("password")) {
+                if(login.equals(auth.getString("login"))) {
+                    return auth.getString("password"); 
                 }
             }
         }
