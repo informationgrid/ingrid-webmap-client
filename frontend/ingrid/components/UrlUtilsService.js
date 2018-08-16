@@ -15,8 +15,10 @@ goog.provide('ga_urlutils_service');
         var URL_REGEXP = new RegExp('^(blob:)?(ftp|http|https):\\/\\/' +
                                     '(?:\\w+(?::\\w+)?@)?' +
                                     '[^\\s/]+(?::\\d+)?' +
-                                    '(?:\\/[\\w#!:.?+=&%@\\- /' +
+                                    '(?:\\/[\\w#!:.?+=&%@{}\\- /' +
                                     '[\\]$\'()*,;~]*)?$');
+
+        var SUBDOMAINS_REGEXP = /\{s(:(([\w,]?)+))?\}/;
 
         // Test validity of a URL
         this.isValid = function(url) {
@@ -64,7 +66,10 @@ goog.provide('ga_urlutils_service');
           var resource = parts[3];
           */
           // proxy is RESTFful, <service>/<protocol>/<resource>
-          // INGRID: Change proxy url
+          /* INGRID: Change proxy url
+          return gaGlobalOptions.proxyUrl + protocol + '/' +
+              encodeURIComponent(resource);
+          */
           return gaGlobalOptions.proxyUrl +
               encodeURIComponent(url);
         };
@@ -89,8 +94,9 @@ goog.provide('ga_urlutils_service');
         };
 
         this.proxifyUrl = function(url) {
-          var that = this;
+          // var that = this;
           var deferred = $q.defer();
+          /* INGRID: Load all over proxy
           if (!this.isBlob(url) && this.isHttps(url) &&
               !this.isAdminValid(url) && !/.*kmz$/.test(url)) {
             this.isCorsEnabled(url).then(function(enabled) {
@@ -99,8 +105,11 @@ goog.provide('ga_urlutils_service');
               deferred.resolve(that.buildProxyUrl(url));
             });
           } else {
+          */
             deferred.resolve(this.proxifyUrlInstant(url));
+          /*
           }
+          */
           return deferred.promise;
         };
 
@@ -170,13 +179,13 @@ goog.provide('ga_urlutils_service');
             var partParamString = partsParamString[i];
             if (tmpUrl.indexOf(partParamString.toLowerCase()) < 0) {
               if (url.indexOf('?') < 0) {
-                  url += '?';
+                url += '?';
               }
               if (url.endsWith('?') === false) {
-                  url += '&';
+                url += '&';
               }
               if (url.indexOf(partParamString.split('=')[0]) < 0) {
-                  url += partParamString;
+                url += partParamString;
               }
             }
           }
@@ -251,6 +260,40 @@ goog.provide('ga_urlutils_service');
             // Ignore any invalid uri component
           }
         };
+
+        // Returns the subdomains as an array, for example:
+        // wms{s:,0,1,2}.geo.admin.ch returns [''', 0, 1, 2]
+        this.parseSubdomainsTpl = function(tpl) {
+          var sd;
+          if (tpl) {
+            var matches = tpl.match(SUBDOMAINS_REGEXP);
+            if (matches && matches.length > 2 &&
+                matches[2] && matches[2].length) {
+              sd = matches[2].split(',');
+            }
+          }
+          return sd
+        }
+
+        // Returns true if the url has a subdomains template in it
+        // like: wms{s:,0,1,2}.geo.admin.ch
+        this.hasSubdomainsTpl = function(tpl) {
+          return SUBDOMAINS_REGEXP.test(tpl || '');
+        }
+
+        // Replace subdomains regexp
+        this.getMultidomainsUrls = function(tpl, dfltSubdomains) {
+          if (!this.hasSubdomainsTpl(tpl)) {
+            return [tpl];
+          }
+          var urls = [];
+          var subdomains = this.parseSubdomainsTpl(tpl) ||
+              dfltSubdomains || [''];
+          subdomains.forEach(function(subdomain) {
+            urls.push(tpl.replace(SUBDOMAINS_REGEXP, subdomain));
+          });
+          return urls;
+        }
       };
 
       return new UrlUtils(this.shortenUrl);

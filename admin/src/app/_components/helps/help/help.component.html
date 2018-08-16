@@ -1,0 +1,100 @@
+<div class="card">
+    <div class="card-header" id="helpHeader"  data-toggle="collapse" data-target="#help" aria-expanded="false" aria-controls="help">
+        <span translate>help</span>
+    </div>
+    <div id="help" class="collapse" aria-labelledby="helpHeader" data-parent="#accordion">
+        <div class="card-body">
+            <div class="modal-body">
+                <ul *ngIf="languages" class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" *ngFor="let lang of languages; let i=index;">
+                        <a class="nav-link" [ngClass]="i == 0 ? 'active' : ''" id="pills-help-{{lang}}-tab" data-toggle="pill" href="#tabs-help-{{lang}}" role="tab" [attr.aria-controls]="'pills-help-' + lang" aria-selected="true" translate>{{ lang }}</a>
+                    </li>
+                </ul>
+                <div *ngIf="languages && helps" class="tab-content" >
+                    <div class="tab-pane fade show" [ngClass]="i == 0 ? 'active' : ''" *ngFor="let lang of languages; let i=index;" id="tabs-help-{{lang}}" role="tabpanel" [attr.aria-labelledby]="'pills-help-' + lang + '-tab'">
+                        <div id="help_{{lang}}">
+                            <div class="list-group" *ngFor="let help of helps.get(lang) | mapToIterable">
+                                <div class="card">
+                                    <div class="card-header" id="help_{{lang}}_{{help.key}}" data-toggle="collapse" [attr.data-target]="'#collapse_' + lang + '_'+ help.key" aria-expanded="true" [attr.aria-controls]="'help_' + lang">
+                                        <span>{{help.key}}</span>
+                                        <span *ngIf="help.val.title"> - {{help.val.title}}</span>
+                                    </div>
+                                    <div class="collapse" id="collapse_{{lang}}_{{ help.key }}" [attr.aria-labelledby]="'help_' + lang + '_' + help.key" [attr.data-parent]="'#help_' + lang">
+                                        <div class="modal-body">
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_title_{{lang}}_{{help.key}}" translate>help_title</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" #title="ngModel" [(ngModel)]="help.val.title" name="title" class="form-control" id="help_title_{{lang}}_{{help.key}}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_text_{{lang}}_{{help.key}}" translate>help_text</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <textarea class="form-control" name="text" id="help_text_{{lang}}_{{help.key}}" rows="10" [(ngModel)]="help.val.text" #text="ngModel" ></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-sm-3">
+                                                    <div class=" d-flex justify-content-between align-items-center">
+                                                        <label class="col-form-label" for="help_item_{{lang}}_{{help.key}}" translate>help_image</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" #image="ngModel" [(ngModel)]="help.val.image" name="image" class="form-control" id="help_item_{{lang}}_{{help.key}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-between align-items-center">
+                                            <button type="button" class="btn btn-secondary" (click)="onReset(lang, help.key)" translate>
+                                                <i class="fa fa-repeat" aria-hidden="true"></i>
+                                                reset
+                                            </button>
+                                            <button type="button" class="btn btn-primary" (click)="onUpdate(lang)" translate>
+                                                <i class="fa fa-save" aria-hidden="true"></i>
+                                                save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal save success-->
+<app-modal #modalSaveSuccess [animateClose]="true">
+    <div class="app-modal-header">
+        <h5 class="modal-title" translate>help_save_success_title</h5>
+    </div>
+    <div class="app-modal-body">
+        <div class="alert alert-success" translate>
+        <i class="fa fa-check" aria-hidden="true"></i>
+        help_save_success_text
+        </div>
+    </div>
+</app-modal>
+
+<!-- Modal save unsuccess-->
+<app-modal #modalSaveUnsuccess [animateClose]="true">
+    <div class="app-modal-header">
+        <h5 class="modal-title" translate>help_save_unsuccess_title</h5>
+    </div>
+    <div class="app-modal-body">
+        <div class="alert alert-danger" translate>
+        <i class="fa fa-exclamation" aria-hidden="true"></i>
+        help_save_unsuccess_text
+        </div>
+    </div>
+</app-modal>

@@ -1,9 +1,10 @@
 goog.provide('ga_contextpopup_directive');
 
 goog.require('ga_event_service');
-goog.require('ga_networkstatus_service');
 goog.require('ga_permalink');
 goog.require('ga_height_service');
+goog.require('ga_measure_service');
+goog.require('ga_networkstatus_service');
 goog.require('ga_reframe_service');
 goog.require('ga_what3words_service');
 goog.require('ga_window_service');
@@ -15,17 +16,19 @@ goog.require('ga_window_service');
     'ga_networkstatus_service',
     'ga_permalink',
     'ga_height_service',
+    'ga_measure_service',
     'ga_reframe_service',
     'ga_window_service',
     'ga_what3words_service',
     'pascalprecht.translate'
   ]);
 
-  // INGRID: Add 'gaUrlUtils'
+  // INGRID: Add 'gaUrlUtils', '$translate', '$sce'
   module.directive('gaContextPopup',
       function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
           gaNetworkStatus, gaPermalink, gaGlobalOptions, gaLang, gaWhat3Words,
-          gaReframe, gaEvent, gaWindow, gaHeight, gaUrlUtils) {
+          gaReframe, gaEvent, gaWindow, gaHeight, gaMeasure, gaUrlUtils,
+          $translate, $sce) {
         return {
           restrict: 'A',
           replace: true,
@@ -68,18 +71,10 @@ goog.require('ga_window_service');
 
             // INGRID: Add 'showBWaStrLocator'
             scope.showBWaLocator = function() {
-                if (gaGlobalOptions.searchBwaLocatorStationUrl) {
-                    return true;
-                }
-                return false;
-            };
-
-            var formatCoordinates = function(coord, prec, ignoreThousand) {
-              var fCoord = ol.coordinate.toStringXY(coord, prec);
-              if (!ignoreThousand) {
-                fCoord = fCoord.replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+              if (gaGlobalOptions.searchBwaLocatorStationUrl) {
+                return true;
               }
-              return fCoord;
+              return false;
             };
 
             var coordinatesFormatUTM = function(coordinates, zone) {
@@ -156,7 +151,7 @@ goog.require('ga_window_service');
               var coord4326String = ol.coordinate.toStringHDMS(coord4326, 3).
                   replace(/ /g, '');
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
-              scope.coord2056 = formatCoordinates(clickCoord, 1);
+              scope.coord2056 = gaMeasure.formatCoordinates(clickCoord, 1);
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
                 var utm31t = ol.proj.transform(coord4326,
                     'EPSG:4326', 'EPSG:32631');
@@ -171,59 +166,59 @@ goog.require('ga_window_service');
 
               var projections = [{
                 value: 'EPSG:3857',
-                label: 'Mercator (Breite, Länge) [°]',
+                label: $sce.trustAsHtml($translate.instant('projection_3857')),
                 coordinates: ol.coordinate.format(coord3857,
-                  '{y}, {x}', 2)
+                    '{y}, {x}', 2)
               }, {
                 value: 'EPSG:4326',
-                label: 'WGS 84 (Breite, Länge) [°]',
+                label: $sce.trustAsHtml($translate.instant('projection_4326')),
                 coordinates: ol.coordinate.format(coord4326,
-                  '{y}, {x}', 5)
+                    '{y}, {x}', 5)
               }, {
                 value: 'EPSG:31466',
-                label: 'GK2 - DHDN (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_31466')),
                 coordinates: ol.coordinate.format(coord31466,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31467',
-                label: 'GK3 - DHDN (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_31467')),
                 coordinates: ol.coordinate.format(coord31467,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31468',
-                label: 'GK4 - DHDN (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_31468')),
                 coordinates: ol.coordinate.format(coord31468,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:31469',
-                label: 'GK5 - DHDN (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_31469')),
                 coordinates: ol.coordinate.format(coord31469,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25832',
-                label: 'UTM 32N - ETRS89 (E, N) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_25832')),
                 coordinates: ol.coordinate.format(coord25832,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:25833',
-                label: 'UTM 33N - ETRS89 (E, N) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_25833')),
                 coordinates: ol.coordinate.format(coord25833,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2166',
-                label: 'GK3 - S42/83 (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_2166')),
                 coordinates: ol.coordinate.format(coord2166,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2167',
-                label: 'GK4 - S42/83 (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_2167')),
                 coordinates: ol.coordinate.format(coord2167,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }, {
                 value: 'EPSG:2168',
-                label: 'GK5 - S42/83 (R, H) [m]',
+                label: $sce.trustAsHtml($translate.instant('projection_2168')),
                 coordinates: ol.coordinate.format(coord2168,
-                  '{x}, {y}', 2)
+                    '{x}, {y}', 2)
               }];
               var sortProjections = [];
               var gp, p, projection;
@@ -276,11 +271,11 @@ goog.require('ga_window_service');
 
                 gaReframe.get95To03(clickCoord, reframeCanceler.promise).
                     then(function(coords) {
-                      scope.coord21781 = formatCoordinates(coords, 2);
+                      scope.coord21781 = gaMeasure.formatCoordinates(coords, 2);
                     }, function() {
                       var coords = ol.proj.transform(clickCoord, proj,
                           'EPSG:21781');
-                      scope.coord21781 = formatCoordinates(coords, 2);
+                      scope.coord21781 = gaMeasure.formatCoordinates(coords, 2);
                     });
                 */
 
@@ -291,7 +286,7 @@ goog.require('ga_window_service');
 
               // INGRID: Add get 'BWaStrLocator' data
               if (gaGlobalOptions.searchBwaLocatorStationUrl) {
-                  getBWaLocatorData();
+                getBWaLocatorData();
               }
 
               if (gaWindow.isWidth('xs') || gaWindow.isHeight('xs')) {
@@ -387,7 +382,7 @@ goog.require('ga_window_service');
               };
               // INGRID: Create href with portal layout
               scope.contextPermalink = gaPermalink.getHref(p,
-                gaGlobalOptions.isParentIFrame);
+                  gaGlobalOptions.isParentIFrame);
               scope.crosshairPermalink = gaPermalink.getHref(
                   angular.extend({crosshair: 'marker'}, p),
                   gaGlobalOptions.isParentIFrame);
@@ -395,14 +390,13 @@ goog.require('ga_window_service');
               scope.qrcodeUrl = null;
               if (!gaNetworkStatus.offline && gaWindow.isWidth('>=s') &&
                   gaWindow.isHeight('>s')) {
-                  gaUrlUtils.shorten(scope.contextPermalink).
+                gaUrlUtils.shorten(scope.contextPermalink).
                     then(function(shortUrl) {
                       // INGRID: Return href if no shorturl exists
-                      var url = shortUrl ? shortUrl :
-                        scope.contextPermalink;
+                      var url = shortUrl || scope.contextPermalink;
                       scope.qrcodeUrl = qrcodeUrl + '?url=' +
                         escape(url);
-                  });
+                    });
               }
             }
 
@@ -433,29 +427,29 @@ goog.require('ga_window_service');
                 ']}';
 
               $http.get(bwaLocatorUrl + '&data=' + content, {
-                  params: {
-                    'url': gaGlobalOptions.searchBwaLocatorStationUrl,
-                    'data': content
-                  }
-                }).then(function(response) {
-                    updateBWaLocatorData(response);
-                });
+                params: {
+                  'url': gaGlobalOptions.searchBwaLocatorStationUrl,
+                  'data': content
+                }
+              }).then(function(response) {
+                updateBWaLocatorData(response);
+              });
             }
 
             function updateBWaLocatorData(response) {
-                var result = response.data.result[0];
-                if (result) {
-                    if (result.error === undefined) {
-                        scope.bwastr_id = result.bwastrid;
-                        scope.bwastr_name = result.bwastr_name;
-                        scope.bwastr_typ = result.strecken_name;
-                        scope.bwastr_km = result.stationierung.km_wert;
-                        scope.bwastr_distance = result.stationierung
-                          .offset.toFixed(2);
-                    } else {
-                        scope.bwastr_error = result.error.message;
-                    }
+              var result = response.data.result[0];
+              if (result) {
+                if (result.error === undefined) {
+                  scope.bwastr_id = result.bwastrid;
+                  scope.bwastr_name = result.bwastr_name;
+                  scope.bwastr_typ = result.strecken_name;
+                  scope.bwastr_km = result.stationierung.km_wert;
+                  scope.bwastr_distance = result.stationierung.
+                      offset.toFixed(2);
+                } else {
+                  scope.bwastr_error = result.error.message;
                 }
+              }
             }
           }
         };

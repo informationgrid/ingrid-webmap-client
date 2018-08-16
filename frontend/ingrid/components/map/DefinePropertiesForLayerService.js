@@ -149,6 +149,15 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('queryLayers', val);
             }
           },
+          // INGRID: Add auth functions
+          auth: {
+            get: function() {
+              return this.get('auth');
+            },
+            set: function(val) {
+              this.set('auth', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');
@@ -264,6 +273,10 @@ goog.provide('ga_definepropertiesforlayer_service');
             value: null
           },
           updateDelay: {
+            writable: true,
+            value: null
+          },
+          externalStyleUrl: {
             writable: true,
             value: null
           },

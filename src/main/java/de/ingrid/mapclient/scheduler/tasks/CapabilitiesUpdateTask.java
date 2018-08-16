@@ -49,10 +49,12 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import de.ingrid.geo.utils.transformation.CoordTransformUtil;
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -62,13 +64,22 @@ public class CapabilitiesUpdateTask implements Runnable{
     private static final String[] FIELD_XY = {"./@minx", "./@miny", "./@maxx", "./@maxy"};
     private static final String[] FIELD_BOUND = {"./westBoundLongitude", "./southBoundLatitude", "./eastBoundLongitude", "./northBoundLatitude"};
     
-
+    private static String defaultEpsg = "EPSG:3857";
+    private static String defaultExtent = "[0,0,0,0]";
+    
     public void run() {
         log.info("Update WebMapClient capabilitities ...");
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         String fileContent = null;
         boolean hasChanges = false;
+        
+        try {
+            defaultEpsg = getSettingProperty("settingEpsg", "EPSG:3857");
+            defaultExtent = getSettingProperty("settingExtent", "[0,0,0,0]");
+        } catch (Exception e) {
+            log.info("Use default value :" + defaultEpsg);
+        }
         
         if(config_dir != null){
             fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
@@ -81,7 +92,6 @@ public class CapabilitiesUpdateTask implements Runnable{
                 ArrayList<String> errorLayernames = new ArrayList<String>();
                 
                 String getCapabilities = null;
-                String url = null;
                 Document doc = null;
                 XPath xpath = XPathFactory.newInstance().newXPath();
                 
@@ -89,13 +99,17 @@ public class CapabilitiesUpdateTask implements Runnable{
                 while( keys.hasNext() ) {
                     String key = (String)keys.next();
                     JSONObject layerJSON = layersJson.getJSONObject( key );
+                    // Reset values
+                    layerJSON.remove(Constants.LAYER_STATUS);
+                    if(!layerJSON.has("extent")) {
+                        hasChanges = true;
+                        layerJSON.put("extent", new JSONArray(defaultExtent));
+                    }
                     String layerVersion = layerJSON.getString( "version" );
                     String layerType = layerJSON.getString( "type" );
-                    if(layerType.equals( "wms" )) {
-                        String layerWmsUrl = layerJSON.getString( "wmsUrl" );
-                        String layerWmsLayers = layerJSON.getString( "wmsLayers" );
-                        if((url != null && layerWmsUrl != null && !layerWmsUrl.equals( url )) ||
-                            url == null && layerWmsUrl != null){
+                    if(layerType.equals( de.ingrid.mapclient.Constants.TYPE_WMS )) {
+                        String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
+                        if(layerWmsUrl != null){
                             try {
                                 if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
                                     layerWmsUrl += "?";
@@ -113,33 +127,73 @@ public class CapabilitiesUpdateTask implements Runnable{
                                         layerWmsUrl += "&VERSION=" + layerVersion;
                                     }
                                 }
-                                doc = mapCapabilities.get( layerWmsUrl );
-                                if(doc == null){
-                                    log.debug( "Load capabilities: " + layerWmsUrl);
-                                    getCapabilities = HttpProxy.doRequest( layerWmsUrl );
-                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                    docFactory.setValidating(false);
-                                    doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                    mapCapabilities.put( layerWmsUrl, doc );
-                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers, layerWmsUrl, errorLayernames);
-                                    if(hasChangesLayer){
-                                        hasChanges = hasChangesLayer;
+                                if(!errorUrls.contains(layerWmsUrl)) {
+                                    doc = mapCapabilities.get( layerWmsUrl );
+                                    if(doc == null){
+                                        log.debug( "Load capabilities: " + layerWmsUrl);
+                                        getCapabilities = HttpProxy.doRequest( layerWmsUrl );
+                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                        docFactory.setValidating(false);
+                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                        mapCapabilities.put( layerWmsUrl, doc );
+                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames);
+                                        if(hasChangesLayer){
+                                            hasChanges = hasChangesLayer;
+                                        }
+                                    } else {
+                                        log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
+                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames);
+                                        if(hasChangesLayer){
+                                            hasChanges = hasChangesLayer;
+                                        }
                                     }
                                 } else {
-                                    log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                    boolean hasChangesLayer = updateLayerInformation(doc, xpath, layerType, layerJSON, layerWmsLayers, layerWmsUrl, errorLayernames);
-                                    if(hasChangesLayer){
-                                        hasChanges = hasChangesLayer;
-                                    }
+                                    hasChanges = true;
+                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                 }
                             } catch (Exception e) {
+                                hasChanges = true;
+                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                 if(!errorUrls.contains(layerWmsUrl)){
                                     errorUrls.add(layerWmsUrl);
                                 }
                             }
                         } 
-                        if(layerWmsUrl != null){
-                            url = layerWmsUrl;
+                    } else if(layerType.equals( Constants.TYPE_WMTS )) {
+                        String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
+                        if(layerWtmsUrl != null){
+                            try {
+                                if(!errorUrls.contains(layerWtmsUrl)) {
+                                    doc = mapCapabilities.get( layerWtmsUrl );
+                                    if(doc == null){
+                                        log.debug( "Load capabilities: " + layerWtmsUrl);
+                                        getCapabilities = HttpProxy.doRequest( layerWtmsUrl );
+                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                        docFactory.setValidating(false);
+                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                        mapCapabilities.put( layerWtmsUrl, doc );
+                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames);
+                                        if(hasChangesLayer){
+                                            hasChanges = hasChangesLayer;
+                                        }
+                                    } else {
+                                        log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
+                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames);
+                                        if(hasChangesLayer){
+                                            hasChanges = hasChangesLayer;
+                                        }
+                                    }
+                                } else {
+                                    hasChanges = true;
+                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                }
+                            } catch (Exception e) {
+                                hasChanges = true;
+                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                if(!errorUrls.contains(layerWtmsUrl)){
+                                    errorUrls.add(layerWtmsUrl);
+                                }
+                            }
                         }
                     }
                 }
@@ -228,8 +282,112 @@ public class CapabilitiesUpdateTask implements Runnable{
         log.info("Update WebMapClient capabilitities finished.");
     }
     
-    private boolean updateLayerInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsLayers, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
+    private String getSettingProperty(String key, String defaultValue) throws Exception {
+        String classPath = "";
+        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        String fileSetting = classPath + "frontend/config/setting.json";
+        
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String fileSettingProfile = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(!fileSettingProfile.endsWith( "/" )){
+            fileSettingProfile = fileSettingProfile.concat( "/" );
+        }
+        fileSettingProfile = fileSettingProfile.concat( "/config/setting.profile.json" );
+        
+        String[] files = { fileSetting, fileSettingProfile };
+        return Utils.getPropertyFromJSONFiles(files, key, defaultValue);
+    }
+
+    private boolean updateLayerWTMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
+            String layerWtmsUrl, ArrayList<String> errorLayernames) throws JSONException, XPathExpressionException {
         boolean hasChanges = false;
+        String layerWtmsLayers = layerJSON.getString( "serverLayerName" );
+        String matrixSet = layerJSON.getString( "matrixSet" );
+        if(layerWtmsLayers != null){
+            Node layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerWtmsLayers+"\"]/..", doc, XPathConstants.NODE);
+            Node layerMatrixSetNode = (Node) xpath.evaluate("./TileMatrixSetLink/TileMatrixSet[text()=\"" +matrixSet + "\"]/..", layerNode, XPathConstants.NODE);
+            if(layerMatrixSetNode != null && layerNode != null) {
+                // Extent
+                Node layerLowerCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/LowerCorner", layerNode, XPathConstants.NODE);
+                Node layerUpperCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/UpperCorner", layerNode, XPathConstants.NODE);
+                if(layerLowerCornerNode != null && layerUpperCornerNode != null) {
+                    JSONArray array = new JSONArray();
+                    String lowerCorner = layerLowerCornerNode.getTextContent().trim();
+                    if(lowerCorner.indexOf(" ") > -1) {
+                        array.put(Double.parseDouble(lowerCorner.split(" ")[0]));
+                        array.put(Double.parseDouble(lowerCorner.split(" ")[1]));
+                    }
+                    String upperCorner = layerUpperCornerNode.getTextContent().trim();
+                    if(upperCorner.indexOf(" ") > -1) {
+                        array.put(Double.parseDouble(upperCorner.split(" ")[0]));
+                        array.put(Double.parseDouble(upperCorner.split(" ")[1]));
+                    }
+                    if(array.length() > 0 ) {
+                        hasChanges = true;
+                        layerJSON.put("extent", array);
+                    }
+                }
+                // Format
+                Node layerFormatNode = (Node) xpath.evaluate("./Format", layerNode, XPathConstants.NODE);
+                if(layerFormatNode != null) {
+                    String format = layerFormatNode.getTextContent().trim().replace("image/", "");
+                    if(!layerJSON.getString("format").equals(format)) {
+                        hasChanges = true;
+                        layerJSON.put("format", format);
+                    }
+                }
+                // Template
+                Node layerTemplateNode = (Node) xpath.evaluate("./ResourceURL/@template", layerNode, XPathConstants.NODE);
+                if(layerTemplateNode != null) {
+                    String template = layerTemplateNode.getTextContent().trim();
+                    if(!layerJSON.getString("template").equals(template)) {
+                        hasChanges = true;
+                        layerJSON.put("template", template);
+                    }
+                }
+                // Style
+                Node tileMatrixSetNode = (Node) xpath.evaluate("//TileMatrixSet/Identifier[text()=\""+matrixSet+"\"]/..", doc, XPathConstants.NODE);
+                if(tileMatrixSetNode != null) {
+                    // Scales
+                    NodeList scalesNodeList = (NodeList) xpath.evaluate("./TileMatrix/ScaleDenominator", tileMatrixSetNode, XPathConstants.NODESET);
+                    if(scalesNodeList != null && scalesNodeList.getLength() > 0) {
+                        JSONArray array = new JSONArray();
+                        for (int i = 0; i < scalesNodeList.getLength(); i++) {
+                            Node node = scalesNodeList.item(i);
+                            array.put(Double.parseDouble(node.getTextContent().trim()));
+                        }
+                        if(array.length() > 0 ) {
+                            hasChanges = true;
+                            layerJSON.put("scales", array);
+                        }
+                    }
+                    // Origin
+                    Node originNode = (Node) xpath.evaluate("./TileMatrix/TopLeftCorner", tileMatrixSetNode, XPathConstants.NODE);
+                    if (originNode != null) {
+                        JSONArray array = new JSONArray();
+                        String origin = originNode.getTextContent().trim();
+                        if(origin.indexOf(" ") > -1) {
+                            array.put(Double.parseDouble(origin.split(" ")[0]));
+                            array.put(Double.parseDouble(origin.split(" ")[1]));
+                        }
+                        if(array.length() > 0 ) {
+                            hasChanges = true;
+                            layerJSON.put("origin", array);
+                        }
+                    }
+                }
+            } else {
+                hasChanges = true;
+                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
+                errorLayernames.add("Layer not exists: " + layerWtmsLayers + " on service url: " + layerWtmsUrl);
+              }
+        }
+        return hasChanges;
+    }
+
+    private boolean updateLayerWMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
+        boolean hasChanges = false;
+        String layerWmsLayers = layerJSON.getString( "wmsLayers" );
         if(layerWmsLayers != null){
             if(layerWmsLayers.indexOf( "," ) == -1){
                 Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
@@ -286,25 +444,6 @@ public class CapabilitiesUpdateTask implements Runnable{
                     }
                     // Extent
                     layerKey = "extent";
-                    String epsg = "EPSG:3857";
-                    try {
-                        String classPath = "";
-                        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-                        String fileSetting = classPath + "frontend/config/setting.js";
-                        
-                        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                        String fileSettingProfile = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                        if(!fileSettingProfile.endsWith( "/" )){
-                            fileSettingProfile = fileSettingProfile.concat( "/" );
-                        }
-                        fileSettingProfile = fileSettingProfile.concat( "/config/setting.profile.js" );
-                        
-                        String[] files = { fileSetting, fileSettingProfile};
-                        epsg  = Utils.getPropertyFromJSFiles(files, "settingEpsg = '(.*?)';", "EPSG:3857");
-                    } catch (Exception e1) {
-                        log.error("Error get EPSG! Used default EPSG: " + epsg);
-                    }
-                   
                     if(parentLayerNode != null){
                         fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
@@ -314,12 +453,12 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                         
-                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+epsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
                         if(fieldNode != null) {
                             try {
                                 JSONArray array = new JSONArray();
                                 getExtent(xpath, fieldNode, array, FIELD_XY);
-                                transformExtent(epsg, layerKey, array, layerJSON);
+                                transformExtent(defaultEpsg, layerKey, array, layerJSON);
                             } catch (Exception e) {
                                 log.error("Error transform extent!");
                             }
@@ -334,12 +473,12 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                         
-                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+epsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
                         if(fieldNode != null) {
                             try {
                                 JSONArray array = new JSONArray();
                                 getExtent(xpath, fieldNode, array, FIELD_XY);
-                                transformExtent(epsg, layerKey, array, layerJSON);
+                                transformExtent(defaultEpsg, layerKey, array, layerJSON);
                             } catch (Exception e) {
                                 log.error("Error transform extent!");
                             }
@@ -354,12 +493,12 @@ public class CapabilitiesUpdateTask implements Runnable{
                         hasChanges = true;
                     }
                     
-                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+epsg+"\"]", layerNode, XPathConstants.NODE);
+                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
                     if(fieldNode != null) {
                         try {
                             JSONArray array = new JSONArray();
                             getExtent(xpath, fieldNode, array, FIELD_XY);
-                            transformExtent(epsg, layerKey, array, layerJSON);
+                            transformExtent(defaultEpsg, layerKey, array, layerJSON);
                         } catch (Exception e) {
                             log.error("Error transform extent!");
                         }
@@ -374,18 +513,17 @@ public class CapabilitiesUpdateTask implements Runnable{
                         hasChanges = true;
                     }
                     
-                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+epsg+"\"]", layerNode, XPathConstants.NODE);
+                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
                     if(fieldNode != null) {
                         try {
                             JSONArray array = new JSONArray();
                             getExtent(xpath, fieldNode, array, FIELD_XY);
-                            transformExtent(epsg, layerKey, array, layerJSON);
+                            transformExtent(defaultEpsg, layerKey, array, layerJSON);
                         } catch (Exception e) {
                             log.error("Error transform extent!");
                         }
                         hasChanges = true;
                     }
-                    
                     // LegendUrl
                     layerKey = "legendUrl";
                     fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResources/@href", layerNode, XPathConstants.NODE);
@@ -394,8 +532,15 @@ public class CapabilitiesUpdateTask implements Runnable{
                         hasChanges = true;
                     }
                 } else {
+                  layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
                   errorLayernames.add("Layer not exists: " + layerWmsLayers + " on service url: " + layerWmsUrl);
                 }
+            } else {
+                String[] layers = layerWmsLayers.split(",");
+                for (String layer : layers) {
+                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
+                }
+                
             }
         }
         return hasChanges;

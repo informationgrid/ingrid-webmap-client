@@ -32,8 +32,13 @@ export class AppComponent implements OnInit {
   }
 
   updateAppLayers(event: LayerItem[]) {
-    this.layers = event;
+    this.httpService.getLayers().subscribe(
+      data => {
+        this.layers = data;
+      }
+    );
   }
+
   updateAppCategories(event) {
     this.categories = event;
   }

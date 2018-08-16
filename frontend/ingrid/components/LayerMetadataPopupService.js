@@ -59,7 +59,8 @@ goog.require('ga_wms_service');
 
           // INGRID: Add tabs
           popup.scope.currentTab = 1;
-          popup.scope.showWMSTree = gaGlobalOptions.showLayerServiceName;
+          popup.scope.showWMSTree = gaGlobalOptions.showLayerServiceTree;
+          popup.scope.showWMSName = gaGlobalOptions.showLayerServiceName;
 
           // INGRID: Tabs management stuff
           popup.scope.activeTab = function(numTab) {

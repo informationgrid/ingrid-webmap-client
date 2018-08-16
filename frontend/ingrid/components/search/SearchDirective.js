@@ -136,7 +136,7 @@ goog.require('ga_what3words_service');
           $scope.query = '';
           $scope.childoptions.searchUrl = '';
           $scope.childoptions.query = '';
-          $scope.input.blur();
+          $scope.input.trigger('blur');
         };
 
         $scope.preClear = function(evt) {
@@ -231,7 +231,7 @@ goog.require('ga_what3words_service');
           $scope.topicLoaded = true;
           if ($scope.searchFocused) {
             $timeout(function() {
-              $scope.input.focus();
+              $scope.input.trigger('focus');
             }, 0, false);
           }
           startQuery($scope.query);
@@ -302,7 +302,7 @@ goog.require('ga_what3words_service');
                 if (firstRes.length === 1 &&
                     firstRes[0].className.indexOf('ga-search-result') > -1) {
                   evt.preventDefault();
-                  firstRes.focus();
+                  firstRes.trigger('focus');
                 }
               }
             };
@@ -317,7 +317,7 @@ goog.require('ga_what3words_service');
                 $timeout(function() {
                   var renderedResults = element.find('.ga-search-item');
                   if (renderedResults.length === 1) {
-                    renderedResults.click();
+                    renderedResults.trigger('click');
                   }
                 });
               }

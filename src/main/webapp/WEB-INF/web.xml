@@ -63,7 +63,7 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </servlet-mapping>
     <servlet>
         <servlet-name>mapfish.print</servlet-name>
-        <servlet-class>org.mapfish.print.servlet.MapPrinterServlet</servlet-class>
+        <servlet-class>de.ingrid.mapclient.print.servlet.IngridMapPrinterServlet</servlet-class>
         <init-param>
             <param-name>config</param-name>
             <param-value>WEB-INF/classes/print_config.yaml</param-value>

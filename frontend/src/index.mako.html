@@ -137,11 +137,6 @@ itemscope itemtype="http://schema.org/WebApplication"
       </script>
     <![endif]-->
 
-    <!-- INGRID: Remove icon
-    <div ng-cloak class="corner-ribbon" ng-show="globals.is3dActive">
-      3D - BETA
-    </div>
-    -->
     <div ng-controller="GaSeoController">
       <div ga-seo ga-seo-options="options" ga-seo-map="map"></div>
     </div>
@@ -199,6 +194,9 @@ itemscope itemtype="http://schema.org/WebApplication"
 % endif
     <div id="loader"></div>
     <div tabindex="1" ga-map ga-map-map="map" ga-map-ol3d="::ol3d">
+      <div ng-cloak class="corner-ribbon" ng-show="globals.is3dActive">
+        3D - BETA
+      </div>
   % if device == 'embed':
       <a ng-cloak translate-cloak id="bigMapLink" target="_blank" href="{{toMainHref}}">
         <div>
@@ -311,7 +309,7 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
     </div>
 
-    <!-- Display a modal if the page has been open by th shop -->
+    <!-- Display a modal if the page has been open by the shop -->
     <div ga-shop-msg></div>
 % endif
 
@@ -561,7 +559,7 @@ itemscope itemtype="http://schema.org/WebApplication"
            id="profile-popup"
            class="ga-popup-bottom">
         <div ng-controller="GaProfileController">
-          <div ng-if="toggle"
+          <div ng-if="toggle && !options.isReduced"
                ga-profile="feature"
                ga-profile-map="::map"
                ga-profile-layer="layer"
@@ -705,6 +703,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     <script src="lib/localforage.js"></script>
     <script src="lib/filesaver.js"></script>
     <script src="lib/moment-with-customlocales.js"></script>
+    <script src="lib/gyronorm.complete.js"></script>
     <script src="lib/Cesium/Cesium.js"></script>
 
 
@@ -789,18 +788,25 @@ itemscope itemtype="http://schema.org/WebApplication"
           return url;
         }
 
+        // Map services urls
+        var wmsUrl = setBackend(prtl + '${wms_url}',  prtl + '${wms_tech_url}', 'wms_url');
+        var wmtsUrl = setBackend(prtl + '${wmts_url}', prtl + '${wmts_tech_url}', 'wmts_url');
+        var terrainUrl = setBackend(prtl + '${terrain_url}', prtl + '${terrain_tech_url}', 'terrain_url');
+        var vectorTilesUrl = setBackend(prtl + '${vectortiles_url}', prtl + '${vectortiles_tech_url}', 'vectortiles_url');
+
+        // Api services urls
         var defaultApiUrl = prtl + '${api_url}';
         var apiUrl = setBackend(defaultApiUrl, prtl + '${api_tech_url}', 'api_url');
         var altiUrl = setBackend(prtl + '${alti_url}', prtl + '${alti_tech_url}', 'alti_url');
-        var mapproxyUrl = setBackend(prtl + '${mapproxy_url}', prtl + '${mapproxy_tech_url}', 'mapproxy_url');
-        var vectorTilesUrl = setBackend(prtl + '${vectortiles_url}', prtl + '${vectortiles_tech_url}', 'vectortiles_url');
-        var wmsUrl = setBackend(prtl + '${wms_url}',  prtl + '${wms_tech_url}', 'wms_url');
         var shopUrl = setBackend(prtl + '${shop_url}', prtl + '${shop_tech_url}', 'shop_url');
         var publicUrl = setBackend(prtl + '${public_url}', prtl + '${public_tech_url}', 'public_url');
         var printUrl = setBackend(prtl + '${print_url}', prtl + '${print_tech_url}', 'print_url');
         var proxyUrl = prtl + '${proxy_url}' + '/';
         var apiOverwrite = !!(getParam('api_url') || env);
-        var wmtsUrl = setBackend(prtl + '${wmts_url}', prtl + '${wmts_tech_url}', 'wmts_url');
+        var localhostRegexp = new RegExp('https?:\/\/localhost:[0-9]{1,5}');
+        if (localhostRegexp.test(wmtsUrl)){
+           wmtsUrl = wmtsUrl.replace('https:', 'http:');
+        }
         module.constant('gaGlobalOptions', {
           //dev3d to be removed once 3d goes live
           // INGRID: Disabled dev3d
@@ -809,36 +815,55 @@ itemscope itemtype="http://schema.org/WebApplication"
           version: '${version}',
           pegman: !!window.location.search.match(/(pegman=true)/),
           mapUrl: location.origin + pathname,
+
+          // Map services urls
+          wmsUrl: wmsUrl,
+          wmtsUrl: wmtsUrl,
+          terrainUrl: terrainUrl,
+          vectorTilesUrl: vectorTilesUrl,
+
+          // Api services urls
           // INGRID: Change REST service URL
           apiUrl: location.origin + '/ingrid-webmap-client/rest/data',
           altiUrl: altiUrl,
           printUrl: printUrl,
           // INGRID: Change 'proxyUrl'
           proxyUrl:  location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/wms/proxy/?url=',
-          mapproxyUrl: mapproxyUrl,
-          vectorTilesUrl: vectorTilesUrl,
           shopUrl: shopUrl,
           // INGRID: Change REST service URL
           publicUrl: location.origin + '/ingrid-webmap-client/rest/data',
           // INGRID: Change RegExp
           publicUrlRegexp: new RegExp('ingrid-webmap-client\/rest\/data\/'),
           adminUrlRegexp: adminUrlRegexp,
+          hrefRegexp: new RegExp('${href_regexp}'),
           cachedApiUrl: apiUrl + cacheAdd,
           cachedAltiUrl: altiUrl + cacheAdd,
-          wmtsUrl: wmtsUrl,
           imageryMetadataUrl: '//3d.geo.admin.ch/imagery/',
           cachedPrintUrl: printUrl + cacheAdd,
           // INGRID: Remove '${versionslashed}'
           resourceUrl: location.origin + s3pathname + '',
-          wmsUrl: wmsUrl,
           // INGRID: Read setting from settings
           w3wUrl: settings.w3wUrl,
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
           lv95tolv03Url: 'https://geodesy.geo.admin.ch/reframe/lv95tolv03',
           // INGRID: Read setting from settings
           w3wApiKey: settings.w3wApiKey,
-          // INGRID: Change REST service URL
-          ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/wms/proxy/?url=',
+          whitelist: [
+            'https://' + window.location.host + '/**',
+            'https://www.googleapis.com/**'
+          ],
+
+          // App state values
+          // INGRID: Read setting from settings
+          defaultTopicId: settings.settingDefaultTopicId || '${default_topic_id}',
+          translationFallbackCode: '${translation_fallback_code}',
+          // INGRID: Remove '${languages}'
+          languages: settings.settingLanguages || JSON.parse('["de", "en"]'),
+          hostIsProd: hostIsProd,
+          staging: staging,
+          apiOverwrite: apiOverwrite,
+
+          // INGRID settings
           // INGRID: Change REST image URL
           imgproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client/rest/data/images/?url=',
           // INGRID: Change search services URL (Opensearch)
@@ -853,30 +878,6 @@ itemscope itemtype="http://schema.org/WebApplication"
           searchBwaLocatorStationUrl : settings.settingSearchBwaLocatorStationUrl,
           // INGRID: Short URL service (external)
           shortURLService : settings.settingShortURLService || 'https://is.gd/create.php?format=json',
-          whitelist: [
-            'https://' + window.location.host + '/**',
-            'https://www.googleapis.com/**'
-          ],
-          // INGRID: Read setting from settings
-          defaultTopicId: settings.settingDefaultTopicId || '${default_topic_id}',
-          translationFallbackCode: '${translation_fallback_code}',
-          // INGRID: Read setting from settings
-          defaultExtent: settings.settingExtent || JSON.parse(${default_extent}),
-          defaultResolution: ${default_resolution},
-          defaultLod: ${default_level_of_detail},
-          resolutions: JSON.parse(${resolutions}),
-          lods: JSON.parse(${level_of_details}),
-          // INGRID: Read setting from settings
-          defaultEpsg: settings.settingEpsg || '${default_epsg}',
-          // INGRID: Read setting from settings
-          defaultEpsgExtent:  settings.settingEpsgExtent || JSON.parse(${default_epsg_extend}),
-          defaultElevationModel: '${default_elevation_model}',
-          // INGRID: Change to settingDefaultTerrain
-          defaultTerrain: settings.settingDefaultTerrain,
-          // INGRID: Remove '${languages}'
-          languages: settings.settingLanguages || JSON.parse('["de", "en"]'),
-          hostIsProd: hostIsProd,
-          staging: staging,
           // INGRID: Add property to check is in iFrame
           isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
           // INGRID: Load map images over rest
@@ -907,7 +908,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           enableW3W: settings.settingEnableW3W || false,
           // INGRID: Show service name of layer
           showLayerServiceName: settings.settingShowLayerServiceName || false,
-          // INGRID: Check layer in range
+          // INGRID: Show service tree of layer
+          showLayerServiceTree: settings.settingShowLayerServiceTree || false,
+         // INGRID: Check layer in range
           checkLayerInRange: settings.settingCheckLayerInRange || false,
           // INGRID: Show iso xml link on service search info
           showISOXML: settings.settingShowISOXML,
@@ -929,7 +932,26 @@ itemscope itemtype="http://schema.org/WebApplication"
           enableShareLink: settings.settingShareLink,
           // INGRID: Enable share QR
           enableShareQR: settings.settingShareQR,
-          apiOverwrite: apiOverwrite
+          // INGRID: Enable share Whatsapp
+          enableShareWhatsapp: settings.settingShareWhatsapp,
+
+          // Map state values
+          // INGRID: Read setting from settings
+          defaultExtent: settings.settingExtent || JSON.parse(${default_extent}),
+          defaultResolution: ${default_resolution},
+          // INGRID: Read setting from settings
+          defaultEpsg: settings.settingEpsg || '${default_epsg}',
+          // INGRID: Read setting from settings
+          defaultEpsgExtent:  settings.settingEpsgExtent || JSON.parse(${default_epsg_extend}),
+          defaultElevationModel: '${default_elevation_model}',
+          // INGRID: Change to settingDefaultTerrain
+          defaultTerrain: settings.settingDefaultTerrain,
+          defaultLod: ${default_level_of_detail},
+          resolutions: JSON.parse(${resolutions}),
+          lods: JSON.parse(${level_of_details}),
+          tileGridOrigin: JSON.parse(${tilegrid_origin}),
+          tileGridResolutions: JSON.parse(${tilegrid_resolutions}),
+          tileGridWmtsDfltMinRes: ${tilegrid_wmts_dflt_min_res}
         });
       })();
 
@@ -940,7 +962,7 @@ itemscope itemtype="http://schema.org/WebApplication"
        *  ( see http://stackoverflow.com/a/13235711/29655 )
        */
       (function(){
-        $(window).bind("orientationchange", function(){
+        $(window).on('orientationchange', function(){
           $('#header').hide();
           setTimeout(function(){
             $('#header').show();

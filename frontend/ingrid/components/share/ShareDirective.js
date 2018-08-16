@@ -1,5 +1,6 @@
 goog.provide('ga_share_directive');
 
+goog.require('ga_browsersniffer_service');
 goog.require('ga_permalink');
 goog.require('ga_urlutils_service');
 goog.require('ga_window_service');
@@ -7,6 +8,7 @@ goog.require('ga_window_service');
 (function() {
 
   var module = angular.module('ga_share_directive', [
+    'ga_browsersniffer_service',
     'ga_permalink',
     'ga_urlutils_service',
     'ga_window_service',
@@ -15,7 +17,8 @@ goog.require('ga_window_service');
 
   // INGRID: Add param 'gaGlobalOptions'
   module.directive('gaShare', function($http, $rootScope, $timeout, $translate,
-      $window, gaPermalink, gaUrlUtils, gaWindow, gaGlobalOptions) {
+      $window, gaPermalink, gaUrlUtils, gaWindow, gaBrowserSniffer,
+      gaGlobalOptions) {
     return {
       restrict: 'A',
       scope: {
@@ -28,6 +31,7 @@ goog.require('ga_window_service');
 
         scope.qrcodegeneratorPath = scope.options.qrcodegeneratorPath;
         scope.showMore = false;
+        scope.showWhatsapp = !!gaBrowserSniffer.ios || gaBrowserSniffer.android;
 
         $('.ga-share-icon').tooltip({
           placement: 'bottom'
@@ -47,6 +51,8 @@ goog.require('ga_window_service');
         scope.enableShareLink = gaGlobalOptions.enableShareLink;
         // INGRID: Enable share QR
         scope.enableShareQR = gaGlobalOptions.enableShareQR;
+        // INGRID: Enable share QR
+        scope.enableShareWhatsapp = gaGlobalOptions.enableShareWhatsapp;
 
         // Store in the scope the permalink value which is bound to
         // the input field
@@ -82,7 +88,7 @@ goog.require('ga_window_service');
             scope.$applyAsync(function() {
               // Auto-select the shortened permalink (not on mobiles)
               if (gaWindow.isWidth('>s')) {
-                permalinkInput.focus();
+                permalinkInput.trigger('focus');
               }
             });
           });
@@ -99,7 +105,7 @@ goog.require('ga_window_service');
               if (!iframeInput) {
                 iframeInput = $('.ga-share-embed input');
               }
-              iframeInput.focus();
+              iframeInput.trigger('focus');
             }, 0, false);
           }
           scope.showMore = !scope.showMore;

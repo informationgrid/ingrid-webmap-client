@@ -34,10 +34,12 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     serverLayerName: string;
     origin: number[];
     matrixSet: string;
-    tileSize: number[];
+    tileSize: number;
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
+    status: string;
+    auth: string;
 
     constructor(type: LayerType) {
         this.type = type;

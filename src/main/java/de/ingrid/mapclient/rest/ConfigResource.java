@@ -110,8 +110,19 @@ public class ConfigResource {
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(config_dir != null){
             String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            if(fileContent != null) {
+                return Response.ok( fileContent ).build();
+            }
+        }
+        
+        String classPath = "";
+        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+        String filePathHelp = classPath + "frontend/";
+        String fileContent = Utils.getFileContent(filePathHelp, filename, ".css", "css/");
+        if(fileContent != null) {
             return Response.ok( fileContent ).build();
         }
+
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
@@ -186,11 +197,41 @@ public class ConfigResource {
                 }
             }
         }
+        // Get frontend override locale
+        fileLocalePath = classPath + "frontend/";
+        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
+        // Get frontend override portal locale
+        fileLocalePath = classPath + "frontend/";
+        fileContent = Utils.getFileContent(fileLocalePath, "override." + locale, "", "locales/");
+        if(fileContent != null) {
+            JSONObject frontendLocale = new JSONObject(fileContent);
+            if(frontendLocale != null) {
+                Iterator<?> keys = frontendLocale.keys();
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if (frontendLocale.has(key)) {
+                        locales.put(key, frontendLocale.get(key));
+                    }
+                }
+            }
+        }
         // Get profile locale
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         fileLocalePath = config_dir;
-        fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
+        fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
         if(fileContent != null){
             JSONObject profileLocale = new JSONObject(fileContent);
             if(profileLocale != null) {

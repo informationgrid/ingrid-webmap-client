@@ -1,6 +1,8 @@
 import { Layer } from './layer';
 import { LayerType } from './layer-type.enum';
 import { ILayerWmts } from '../_interfaces/ilayer-wmts';
+import { LayerItem } from './layer-item';
+import { UtilsLayers } from '../_shared/utils/utils-layers';
 
 export class Wmtslayer extends Layer implements ILayerWmts {
     serviceUrl: string;
@@ -8,7 +10,7 @@ export class Wmtslayer extends Layer implements ILayerWmts {
     serverLayerName: string;
     origin: number[];
     matrixSet: string;
-    tileSize: number[];
+    tileSize: number;
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
@@ -28,14 +30,18 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         this.singleTile = false;
     }
 
-    generateId() {
+    generateId(layers: LayerItem[]) {
         let id = '';
         if (this.serviceUrl) {
             id += this.serviceUrl.split('//')[1].split('/')[0];
         }
-        if (this.matrixSet) {
-            id += '_' + this.matrixSet.replace(',', '_');
+        if (this.serverLayerName) {
+            id += '_' + this.serverLayerName;
         }
-        return id.replace(/\./gi, '_');
+        if (this.matrixSet) {
+            id += '_' + this.matrixSet;
+        }
+        id = UtilsLayers.replaceIdChar(id);
+        return UtilsLayers.getUniqueId(layers, id, 0, id);
     }
 }

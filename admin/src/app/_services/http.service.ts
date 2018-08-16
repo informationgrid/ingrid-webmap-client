@@ -18,6 +18,7 @@ const httpJsonOptions = {
 
 const httpApiHost = environment.httpServiceDomain + '/ingrid-webmap-client/rest/admin';
 const httpServiceUrl = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/?';
+const httpServiceUrlAuth = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/auth?';
 
 @Injectable()
 export class HttpService {
@@ -38,7 +39,7 @@ export class HttpService {
     );
   }
 
-  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string): Observable<LayerPaging> {
+  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean): Observable<LayerPaging> {
     let url = httpApiHost + '/layers?';
     if (currentPage) {
       url += 'currentPage=' + currentPage;
@@ -48,6 +49,9 @@ export class HttpService {
     }
     if (searchText) {
       url += '&searchText=' + searchText;
+    }
+    if (hasStatus) {
+      url += '&hasStatus=' + hasStatus;
     }
     return this.http.get<LayerPaging>(url, httpJsonOptions).map(
       res => {
@@ -83,7 +87,7 @@ export class HttpService {
 
   updateLayer(layerId: string, layer: LayerItem) {
     const body = JSON.stringify(layer);
-    return this.http.put(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
+    return this.http.put<LayerItem>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
   addLayer(layers: LayerItem[]): Observable<LayerItem[]> {
@@ -97,6 +101,13 @@ export class HttpService {
           );
         });
       }
+    );
+  }
+
+  addLayerAndAuth(layers: LayerItem[], url: string, login: string, password: string, overrideLogin: boolean) {
+    return forkJoin(
+      this.updateAuth(url, login, password, overrideLogin),
+      this.addLayer(layers),
     );
   }
 
@@ -116,6 +127,16 @@ export class HttpService {
     return this.http.delete<LayerItem[]>(httpApiHost + '/layers/all', httpJsonOptions);
   }
 
+// Auth
+  updateAuth(url: string, login: string, password: string, overrideLogin: boolean) {
+    const body = {
+      url: url,
+      login: login,
+      password: password,
+      overrideLogin: overrideLogin
+    };
+    return this.http.post(httpApiHost + '/auth', body, httpJsonOptions);
+  }
 // Categories
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(httpApiHost + '/categories', httpJsonOptions).map(
@@ -188,6 +209,12 @@ export class HttpService {
     return this.http.put<CategoryItem[]>(httpApiHost + '/categorytree/' + id, body, httpJsonOptions);
   }
 
+  updateCategoryTreeAndCategories(id: string, item: any) {
+    return forkJoin(
+      this.updateCategoryTree(id, item),
+      this.getCategories()
+    );
+  }
   getData() {
       return forkJoin(
         this.getLayers(),
@@ -197,13 +224,24 @@ export class HttpService {
   }
 
 // Service
-  getService(url: string) {
-    return this.http.get(httpServiceUrl, {
-      params: {
+  getService(url: string, login: string, password: string, overrideLogin: boolean) {
+    if (login && password) {
+      const body = {
         url: url,
-        toJson: 'true'
-      }
-    });
+        toJson: 'true',
+        login: login,
+        password: password,
+        overrideLogin: overrideLogin
+      };
+      return this.http.post(httpServiceUrlAuth, body, httpJsonOptions);
+    } else {
+      return this.http.get(httpServiceUrl, {
+        params: {
+          url: url,
+          toJson: 'true'
+        }
+      });
+    }
   }
 
 // Settings
@@ -216,15 +254,22 @@ export class HttpService {
     return this.http.put<Setting>(httpApiHost + '/setting', body, httpJsonOptions);
   }
 
+  resetSetting(): Observable<Setting> {
+    return this.http.put<Setting>(httpApiHost + '/setting/reset', '', httpJsonOptions);
+  }
+
 // Help
   getHelp(lang: string) {
     return this.http.get(httpApiHost + '/help/' + lang, {responseType: 'text'});
   }
 
-  updateHelp(lang: string, help: string) {
+  updateHelp(lang: string, help: any) {
     return this.http.put(httpApiHost + '/help/' + lang, help, {responseType: 'text'});
   }
 
+  resetHelpKey(lang: string, id: any) {
+    return this.http.put(httpApiHost + '/help/reset/' + lang + '/' + id, '', {responseType: 'text'});
+  }
 // CSS
   getCss() {
     return this.http.get(httpApiHost + '/css', {responseType: 'text'});

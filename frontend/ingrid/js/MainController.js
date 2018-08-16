@@ -38,8 +38,9 @@ goog.require('ga_window_service');
     var createMap = function() {
       var toolbar = $('#zoomButtons')[0];
       var defaultProjection = ol.proj.get(gaGlobalOptions.defaultEpsg);
+
       // INGRID: Disable defaultProjection extent
-      if (defaultProjection.getExtent() == null) {
+      if (!defaultProjection.getExtent()) {
           defaultProjection.setExtent(ol.proj.
             transformExtent(gaGlobalOptions.defaultEpsgExtent, 'EPSG:4326',
             gaGlobalOptions.defaultEpsg));
@@ -306,14 +307,12 @@ goog.require('ga_window_service');
     };
 
     // gaWindow is efficient only after the dom is ready
-    $document.ready(function() {
-      $scope.$applyAsync(function() {
-        $scope.globals.searchFocused = gaWindow.isWidth('>xs');
-        $scope.globals.pulldownShown = gaWindow.isWidth('>s') &&
-             gaWindow.isHeight('>s');
-        $scope.globals.settingsShown = gaWindow.isWidth('<=m');
-        $scope.globals.queryShown = gaWindow.isWidth('>m');
-      });
+    $scope.$applyAsync(function() {
+      $scope.globals.searchFocused = gaWindow.isWidth('>xs');
+      $scope.globals.pulldownShown = gaWindow.isWidth('>s') &&
+           gaWindow.isHeight('>s');
+      $scope.globals.settingsShown = gaWindow.isWidth('<=m');
+      $scope.globals.queryShown = gaWindow.isWidth('>m');
     });
 
     $scope.hidePulldownOnXSmallScreen = function() {
@@ -369,7 +368,7 @@ goog.require('ga_window_service');
 
     // Manage exit of draw mode
     // Exit Draw mode when pressing ESC or Backspace button
-    $document.keydown(function(evt) {
+    $document.on('keydown', function(evt) {
       if (evt.which === 8) {
         if (!/^(input|textarea)$/i.test(evt.target.tagName)) {
           evt.preventDefault();
@@ -446,7 +445,7 @@ goog.require('ga_window_service');
     // Hide a panel clicking on its heading
     var hidePanel = function(id) {
       if ($('#' + id).hasClass('in')) {
-        $('#' + id + 'Heading').click();
+        $('#' + id + 'Heading').trigger('click');
       }
     };
 

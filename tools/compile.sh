@@ -11,14 +11,14 @@ if [ -d "mf-geoadmin3" ] ; then
     make cleanall 
 else
     echo "*** CLONE REPO ***"
-    # clone repo
+    # clone repo mf-geoadmin3
     git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
     cd ./mf-geoadmin3
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision '303ba6643a3a78ca2779fcb2af40c01c44847f57' (Date: 20. Dezember 2017 10:54:08) ***"
-git checkout 303ba6643a3a78ca2779fcb2af40c01c44847f57
+echo "*** Checkout mf-geoadmin3 revision '3aa882828a1659eebbc88572125a38dd3e2154bd' (Date: Mittwoch, 15. August 2018 08:57:10) ***"
+git checkout 3aa882828a1659eebbc88572125a38dd3e2154bd
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
@@ -28,7 +28,6 @@ cp -r ../frontend/ingrid/components src/
 cp -r ../frontend/ingrid/js src/
 cp -r ../frontend/ingrid/style src/
 cp -r ../frontend/ingrid/img src/
-cp -r ../frontend/ingrid/locales src/
 cp -r ../frontend/src/index.mako.html src/
 cp -r ../frontend/src/auth.jsp src/
 cp -r ../frontend/src/geoadmin.mako.appcache src/

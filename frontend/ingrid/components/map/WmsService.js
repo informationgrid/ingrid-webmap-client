@@ -1,7 +1,9 @@
 goog.provide('ga_wms_service');
 
 goog.require('ga_definepropertiesforlayer_service');
+goog.require('ga_layers_service');
 goog.require('ga_maputils_service');
+goog.require('ga_tilegrid_service');
 goog.require('ga_translation_service');
 goog.require('ga_urlutils_service');
 
@@ -10,9 +12,11 @@ goog.require('ga_urlutils_service');
   var module = angular.module('ga_wms_service', [
     'ga_definepropertiesforlayer_service',
     'pascalprecht.translate',
+    'ga_layers_service',
     'ga_maputils_service',
     'ga_urlutils_service',
-    'ga_translation_service'
+    'ga_translation_service',
+    'ga_tilegrid_service'
   ]);
 
   /**
@@ -21,9 +25,12 @@ goog.require('ga_urlutils_service');
   module.provider('gaWms', function() {
     // INGRID: Add parameter '$http', '$translate'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
-        gaGlobalOptions, $q, gaLang, $http, $translate) {
+        gaGlobalOptions, $q, gaLang, gaLayers, gaTileGrid, $http, $translate) {
 
-      var getCesiumImageryProvider = function(layer) {
+      // Default subdomains for external WMS
+      var DFLT_SUBDOMAINS = ['', '0', '1', '2', '3', '4'];
+
+      var getCesiumImageryProvider = function(layer, subdomains) {
         var params = layer.getSource().getParams();
         var wmsParams = {
           layers: params.LAYERS,
@@ -50,13 +57,17 @@ goog.require('ga_urlutils_service');
         var extent = gaGlobalOptions.defaultExtent;
         return new Cesium.UrlTemplateImageryProvider({
           minimumRetrievingLevel: gaGlobalOptions.minimumRetrievingLevel,
-          url: gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue(wmsParams)),
+          url: new Cesium.Resource({
+            url: gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue(wmsParams)),
+            proxy: gaUrlUtils.getCesiumProxy()
+          }),
           rectangle: gaMapUtils.extentToRectangle(extent),
-          proxy: gaUrlUtils.getCesiumProxy(),
           tilingScheme: new Cesium.GeographicTilingScheme(),
           hasAlphaChannel: true,
           availableLevels: gaGlobalOptions.imageryAvailableLevels,
-          metadataUrl: gaGlobalOptions.imageryMetadataUrl
+          metadataUrl: gaGlobalOptions.imageryMetadataUrl,
+          subdomains: gaUrlUtils.parseSubdomainsTpl(layer.url) ||
+              DFLT_SUBDOMAINS
         });
       };
 
@@ -65,9 +76,25 @@ goog.require('ga_urlutils_service');
         // Test WMS 1.1.1 with  https://wms.geo.bs.ch/wmsBS
         var createWmsLayer = function(params, options, index) {
           options = options || {};
+
+          // We get the gutter and the tileGridMinRes from the layersConfig
+          // if possible.
+          var tileGridMinRes;
+          var config = gaLayers.getLayer(params.LAYERS);
+          if (config) {
+            if (config.gutter) {
+              options.gutter = config.gutter;
+            }
+
+            tileGridMinRes = config.tileGridMinRes;
+            if (config.resolutions) {
+              tileGridMinRes = config.resolutions.slice(-1)[0];
+            }
+          }
+
           // INGRID: Encode label
           options.id = 'WMS||' + encodeURIComponent(options.label) + '||' +
-            options.url + '||' + params.LAYERS;
+              options.url + '||' + params.LAYERS;
 
           // If the WMS has a version specified, we add it in
           // the id. It's important that the layer keeps the same id as the
@@ -81,8 +108,8 @@ goog.require('ga_urlutils_service');
               options.id += '||true';
             }
           } else {
-            // INGRID: Add empty version
-            params.VERSION = '';
+            // Set the default wms version
+            params.VERSION = '1.3.0';
           }
 
           // INGRID: Add queryable
@@ -92,14 +119,31 @@ goog.require('ga_urlutils_service');
             options.id += '||';
           }
 
-          var source = new ol.source.ImageWMS({
+          // If the url contains a template for subdomains we display the layer
+          // as tiled WMS.
+          var urls = gaUrlUtils.getMultidomainsUrls(options.url,
+              DFLT_SUBDOMAINS);
+          var SourceClass = ol.source.ImageWMS;
+          var LayerClass = ol.layer.Image;
+          var tileGrid;
+
+          if (urls.length > 1) {
+            SourceClass = ol.source.TileWMS;
+            LayerClass = ol.layer.Tile;
+            tileGrid = gaTileGrid.get(tileGridMinRes, 'wms');
+          }
+
+          var source = new SourceClass({
             params: params,
-            url: options.url,
+            url: urls[0],
+            urls: urls,
+            gutter: options.gutter || 0,
             ratio: options.ratio || 1,
-            projection: options.projection
+            projection: options.projection,
+            tileGrid: tileGrid
           });
 
-          var layer = new ol.layer.Image({
+          var layer = new LayerClass({
             id: options.id,
             url: options.url,
             opacity: options.opacity,
@@ -114,7 +158,8 @@ goog.require('ga_urlutils_service');
             minScale: options.minScale,
             // INGRID: Add maxScale
             maxScale: options.maxScale,
-            source: source
+            source: source,
+            transition: 0
           });
           gaDefinePropertiesForLayer(layer);
           // INGRID: Set visible
@@ -214,8 +259,8 @@ goog.require('ga_urlutils_service');
           };
 
           // INGRID: Add scales
-          var minScale = undefined;
-          var maxScale = undefined;
+          var minScale = null;
+          var maxScale = null;
           if (getCapLayer.ScaleHint) {
             minScale = getCapLayer.ScaleHint.min;
             maxScale = getCapLayer.ScaleHint.max;
@@ -260,7 +305,7 @@ goog.require('ga_urlutils_service');
         // INGRID: Add service and add it to map
         this.addWmsServiceToMap = function(map, service, identifier, index) {
             var cap = service;
-            var proxyUrl = gaGlobalOptions.ogcproxyUrl +
+            var proxyUrl = gaGlobalOptions.proxyUrl +
               encodeURIComponent(cap) + '&toJson=true';
 
             // INGRID: Split host from params
@@ -341,8 +386,7 @@ goog.require('ga_urlutils_service');
                         }
 
                         // INGRID: Get 'SRS'
-                        var minScale = undefined;
-                        var maxScale = undefined;
+                        var minScale, maxScale;
                         if (layer.ScaleHint) {
                           minScale = layer.ScaleHint.min;
                           maxScale = layer.ScaleHint.max;

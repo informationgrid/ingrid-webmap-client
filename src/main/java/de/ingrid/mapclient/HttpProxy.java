@@ -28,6 +28,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+import de.ingrid.mapclient.utils.Utils;
+
 /**
  * HttpProxy is used to call remote services to eliminate cross domain issues.
  * 
@@ -46,6 +48,10 @@ public class HttpProxy {
      * @throws Exception
      */
     public static String doRequest(String urlStr) throws Exception {
+        return doRequest(urlStr, null, null);
+    }
+
+    public static String doRequest(String urlStr, String login, String password) throws Exception {
         StringBuffer response = new StringBuffer();
 
         // add protocol if missing
@@ -60,7 +66,9 @@ public class HttpProxy {
         try {
             URL url = new URL( urlStr );
             URLConnection conn = url.openConnection();
-
+            if(login != null && password  != null) {
+                Utils.urlConnectionAuth(conn, login, password);
+            }
             SniffedInputStream responseInputStream = new SniffedInputStream( conn.getInputStream() );
 
             // read the response into the string buffer

@@ -30,12 +30,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -57,6 +57,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jettison.json.JSONException;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -139,18 +140,7 @@ public class FileResource {
                 if(mapUserId.equals(user)){
                     // Update file
                     File file = new File( filename );
-                    FileWriter fileWriter = null;
-                    try {
-                        fileWriter = new FileWriter( file );
-                        fileWriter.write( content );
-                        fileWriter.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if(fileWriter != null) {
-                            fileWriter.close();
-                        }
-                    }
+                    Utils.writeFileContent(file, content);
                 }else{
                     // New file
                     fileId = createKMLFile( content, mapUserId);
@@ -224,8 +214,11 @@ public class FileResource {
         
         String content = null;
         if (id != null && id.length() > 0) {
+            path += "" + id;
             try {
-                content = new String( Files.readAllBytes( Paths.get( path + "" + id ) ) );
+                content = new String( Files.readAllBytes( Paths.get( path ) ) );
+                File file = new File( path );
+                Utils.writeFileContent(file, content);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -263,20 +256,39 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login){
         if (url != null && url.length() > 0) {
-            URL tmpUrl;
             try {
-                tmpUrl = new URL(url);
-                BufferedImage image = ImageIO.read(tmpUrl);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(image, "png", baos);
-                byte[] imageData = baos.toByteArray();
-                return Response.ok(new ByteArrayInputStream(imageData)).build();
+                URL tmpUrl = new URL( url );
+                URLConnection conn = tmpUrl.openConnection();
+                if(login != null) {
+                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                    if(config_dir != null){
+                        String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+                        if(fileContent != null) {
+                            String password = Utils.getServiceLogin(fileContent, url, login);
+                            if(password != null) {
+                                Utils.urlConnectionAuth(conn, login, password);
+                            }
+                        }
+                    }
+                }
+                if (conn != null) {
+                    BufferedImage image = ImageIO.read(conn.getInputStream());
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(image, "png", baos);
+                    byte[] imageData = baos.toByteArray();
+                    return Response.ok(new ByteArrayInputStream(imageData)).build();
+                }
             } catch (MalformedURLException e) {
                 return Response.status(Response.Status.NOT_FOUND ).build();
             } catch (IOException e) {
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+            } catch (JSONException e) {
+                log.error("Error get JSON auth: " + login);
+            } catch (Exception e) {
+                log.error("Error getMap for: " + url);
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -414,6 +426,8 @@ public class FileResource {
     public Response getImageRequest(@PathParam("color") String color, @PathParam("icon") String icon) throws IOException{
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        String apiGeo = p.getProperty( ConfigurationProvider.API_URL, "https://api3.geo.admin.ch" ).trim();
+        
         if(!path.endsWith( "/" )){
            path = path.concat( "/" ); 
         }
@@ -425,7 +439,7 @@ public class FileResource {
         if(!path.endsWith( "/" )){
             path = path.concat( "/" ); 
          }
-        File colorsDir = new File(path + "color");
+        File colorsDir = new File(path + "maki");
         if(!colorsDir.exists()){
             colorsDir.mkdirs();
         }
@@ -446,7 +460,60 @@ public class FileResource {
             return Response.ok(imageFile).build();
         }else{
             if(color != null && icon != null){
-                String url = "https://api3.geo.admin.ch/color/" + color + "/" + icon;
+                String url = apiGeo + "/color/" + color + "/" + icon;
+                if (url != null && url.length() > 0) {
+                    URL tmpUrl;
+                    try {
+                        tmpUrl = new URL(url);
+                        BufferedImage image = ImageIO.read(tmpUrl);
+                        ImageIO.write(image, "png", imageFile);
+                        return Response.ok(imageFile).build();
+                    } catch (MalformedURLException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.NOT_FOUND ).build();
+                    } catch (IOException e) {
+                        log.error( e );
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+                    }
+                }
+            }
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
+    @GET
+    @Path("images/{category}/{icon}")
+    @Produces("image/png")
+    public Response getImageCategoryRequest(@PathParam("category") String category, @PathParam("icon") String icon) throws IOException{
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./kml/" ).trim();
+        String apiGeo = p.getProperty( ConfigurationProvider.API_URL, "https://api3.geo.admin.ch" ).trim();
+        
+        if(!path.endsWith( "/" )){
+           path = path.concat( "/" ); 
+        }
+        File imageDir = new File(path + "img");
+        if(!imageDir.exists()){
+            imageDir.mkdirs();
+        }
+        path = imageDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+         }
+        File categoryDir = new File(path + category);
+        if(!categoryDir.exists()){
+            categoryDir.mkdirs();
+        }
+        path = categoryDir.getAbsolutePath();
+        if(!path.endsWith( "/" )){
+            path = path.concat( "/" ); 
+        }
+        File imageFile = new File(path + icon);
+        if(imageFile.exists()){
+            return Response.ok(imageFile).build();
+        }else{
+            if(categoryDir != null && icon != null){
+                String url = apiGeo + "/images/" + category + "/" + icon;
                 if (url != null && url.length() > 0) {
                     URL tmpUrl;
                     try {
@@ -514,18 +581,7 @@ public class FileResource {
             fileId += content.hashCode();
             filename += fileId;
             File file = new File( filename);
-            FileWriter fileWriter = null;
-            try {
-                fileWriter = new FileWriter( file );
-                fileWriter.write( content );
-                fileWriter.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-            }
+            Utils.writeFileContent(file, content);
         }
        return fileId;
     }

@@ -1,0 +1,10 @@
+.modal {
+    background: rgba(0,0,0,0.6);
+}
+
+.modal-body {
+    overflow: auto;
+    width: 100%;
+    max-width: inherit;
+    max-height: 600px;
+}

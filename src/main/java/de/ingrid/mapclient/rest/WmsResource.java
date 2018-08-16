@@ -35,6 +35,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -67,6 +68,7 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.iplug.opensearch.communication.OSCommunication;
+import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -100,9 +102,24 @@ public class WmsResource {
     @GET
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
+    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login) {
         try {
-            String response = HttpProxy.doRequest( url );
+            String response = null;
+            if(login != null) {
+                Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                if(config_dir != null){
+                    String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+                    if(fileContent != null) {
+                        String password = Utils.getServiceLogin(fileContent, url, login);
+                        if(password != null) {
+                            response = HttpProxy.doRequest( url, login, password);
+                        }
+                    }
+                }
+            } else {
+                response = HttpProxy.doRequest( url );
+            }
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                 // Remove script tags on getFeatureInfo response.
                 Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
@@ -131,6 +148,58 @@ public class WmsResource {
         return null;
     }
 
+    @POST
+    @Path("proxy/auth")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doCapabilitiesWithLoginRequest(String content) {
+        String login = null; 
+        String password = null;
+        String response = null;
+        String url = null;
+        boolean toJson = false;
+        try {
+            JSONObject obj = new JSONObject(content);
+            if(obj != null) {
+                if(obj.has("url")) {
+                    url = obj.getString("url");
+                }
+                if(obj.has("login")) {
+                    login = obj.getString("login");
+                }
+                if(obj.has("password")) {
+                    password = obj.getString("password");
+                }
+                if(obj.has("toJson")) {
+                    toJson = obj.getBoolean("toJson");
+                }
+            }
+            response = HttpProxy.doRequest( url, login, password );
+            if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
+                // Remove script tags on getFeatureInfo response.
+                Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
+                        Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+                return p.matcher(response).replaceAll("");
+            } else {
+                // Replace "," to "." on bounding box.
+                response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
+                response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
+                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+            }
+            if(toJson){
+                JSONObject json = XML.toJSONObject( response );
+                json.put( "xmlResponse", response );
+                return json.toString();
+            }
+            return response;
+        } catch (IOException ex) {
+            log.error( "Error sending WMS request: " + url, ex );
+            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+        } catch (Exception e) {
+            log.error( "Error sending WMS request: " + url, e );
+        }
+        return null;
+    }
     @POST
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
@@ -188,7 +257,7 @@ public class WmsResource {
     @GET
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
-    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend) {
+    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login) {
         String html = "";
         String response = null;
         boolean hasError = false;
@@ -262,7 +331,18 @@ public class WmsResource {
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    response = HttpProxy.doRequest( serviceCapabilitiesURL );
+                    String password = null;
+                    if(login != null) {
+                        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                        if(config_dir != null){
+                            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+                            if(fileContent != null) {
+                                password = Utils.getServiceLogin(fileContent, serviceCapabilitiesURL, login);
+                            }
+                        }
+                    }
+                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login, password);
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     docFactory.setValidating(false);
                     Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
@@ -393,7 +473,7 @@ public class WmsResource {
             html += "<table>";
             html += "<tbody>";
             if(layerTitle != null){
-                html += "<tr";
+                html += "<tr ng-if=\"!showWMSName\"";
                 if(layerAbstracts.size() == 0){
                     html += " style=\"border-bottom:0;\"";
                 }
@@ -401,17 +481,51 @@ public class WmsResource {
                 html += "<td translate>metadata_service_title</td>";
                 html += "<td>" + layerTitle + "</td>";
                 html += "</tr>";
+                html += "<tr ng-if=\"showWMSName\"";
+                html += ">";
+                html += "<td translate>metadata_service_title</td>";
+                html += "<td>" + layerTitle + "</td>";
+                html += "</tr>";
             }
             if(layerAbstracts.size() > 0){
                 for(int i=0; i < layerAbstracts.size(); i++) {
-                html += "<tr style=\"border-bottom:0;\">";
-                if(i == 0) {
-                    html += "<td translate>metadata_service_abstract</td>";
-                } else {
-                    html += "<td></td>";
+                    if (i == 0 && layers.length <= 1) {
+                        html += "<tr ng-if=\"showWMSName\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                        html += "<tr ng-if=\"!showWMSName\" style=\"border-bottom:0;\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else if (i == 0 && layers.length > 1) {
+                        html += "<tr style=\"border-bottom:0;\">";
+                        html += "<td translate>metadata_service_abstract</td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else if(i == layerAbstracts.size() - 1) {
+                        html += "<tr>";
+                        html += "<td></td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    } else {
+                        html += "<tr style=\"border-bottom:0;\">";
+                        html += "<td></td>";
+                        html += "<td>" + layerAbstracts.get(i) + "</td>";
+                        html += "</tr>";
+                    }
                 }
-                html += "<td>" + layerAbstracts.get(i) + "</td>";
-                html += "</tr>";
+            }
+            if(layers.length > 0){
+                for(int i=0; i < layers.length; i++) {
+                    html += "<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">";
+                    if (i == 0) {
+                        html += "<td translate>metadata_service_layer</td>";
+                    } else {
+                        html += "<td></td>";
+                    }
+                    html += "<td>" + layers[i] + "</td>";
+                    html += "</tr>";
                 }
             }
             html += "</tbody>";
@@ -590,7 +704,11 @@ public class WmsResource {
         
         html += "<div class=\"legend-header\">";
         if(layerTitle != null){
-            html += "<p class=\"bod-title\">" + layerTitle + "</p>";
+            html += "<p class=\"bod-title\">" + layerTitle + " ";
+            if(layerName != null) {
+                html += "<span ng-if=\"showWMSName\">(" + layerName + ")</span>";
+            }
+            html += "</p>";
         }
         if(layerAbstract != null){
             html += "<p class=\"legend-abstract\">" + layerAbstract + "</p>";

@@ -1,0 +1,40 @@
+<div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers">
+  <span>
+    <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
+    {{layer.item.label}}
+  </span>
+  <div>
+    <span *ngIf="layer.item.status" class="badge badge-pill badge-warning mr-sm-2" title="{{ layer.item.status | translate }}"><i class="fa fa-info"></i></span>
+    <span class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.type | uppercase }}</span>
+  </div>
+</div>
+<div class="collapse" id="collapse{{ layer.id }}" [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
+  <div *ngIf="isWMSLayer(layer.item)">
+    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wms>
+  </div>
+  <div *ngIf="isWMTSLayer(layer.item)">
+    <app-layer-item-wmts [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wmts>
+  </div>
+</div>
+<!-- Modal delete -->
+<div class="modal fade" id="delLayerModal{{ layer.id }}" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" translate>layer_item_del_title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p translate>layer_item_del_text</p>
+        <div class="modal-footer">
+          <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onDeleteLayer(layer.id)" translate>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

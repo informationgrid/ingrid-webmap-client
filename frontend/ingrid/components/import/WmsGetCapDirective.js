@@ -1,12 +1,15 @@
 goog.provide('ga_wmsgetcap_directive');
 
+goog.require('ga_urlutils_service');
+
 (function() {
 
   var module = angular.module('ga_wmsgetcap_directive', [
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ga_urlutils_service'
   ]);
 
-  module.directive('gaWmsGetCap', function($window, $translate) {
+  module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -223,16 +226,25 @@ goog.provide('ga_wmsgetcap_directive');
         scope.$watch('getCap', function(val) {
           var err = void 0;
           try {
-         // INGRID: Read WMS version 1.1.1 as XML
-          let capabilities = val.WMT_MS_Capabilities || val.WMS_Capabilities;
-          if (capabilities) {
-            let version = capabilities.version;
-            if (version === '1.3.0') {
-              val = new ol.format.WMSCapabilities().read(val.xmlResponse);
-            } else {
-              val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+            /* INGRID: Read WMS version 1.1.1 as XML
+            val = new ol.format.WMSCapabilities().read(val);
+            // A wms GetCap never contains template url so if we want to use
+            // template url for subdomains we need to force the value in the
+            // GetCap.
+            if (gaUrlUtils.hasSubdomainsTpl(scope.options.wmsGetCapUrl)) {
+              val.Capability.Request.GetMap.DCPType[0].HTTP.Get.
+                  OnlineResource = scope.options.wmsGetCapUrl;
             }
-          }
+            */
+            let capabilities = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+            if (capabilities) {
+              let version = capabilities.version;
+              if (version === '1.3.0') {
+                val = new ol.format.WMSCapabilities().read(val.xmlResponse);
+              } else {
+                val = val.WMT_MS_Capabilities || val.WMS_Capabilities;
+              }
+            }
           } catch (e) {
             err = e;
           }

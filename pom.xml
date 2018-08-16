@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>4.4.0</version>
+    <version>4.4.3</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -139,10 +139,6 @@
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/lib">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/lib/" />
                                 </copy>
-                                <echo>Copy mf-geoadmin 'src/locales'</echo>
-                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/locales">
-                                    <fileset dir="${project.basedir}/mf-geoadmin3/src/locales/" />
-                                </copy>
                                 <echo>Copy mf-geoadmin 'src/style'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/src/style">
                                     <fileset dir="${project.basedir}/mf-geoadmin3/src/style/" />
@@ -174,6 +170,10 @@
                                 <echo>Copy settings 'css/'</echo>
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/css">
                                     <fileset dir="${project.basedir}/frontend/css/" />
+                                </copy>
+                                <echo>Copy override 'locales'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/frontend/locales">
+                                    <fileset dir="${project.basedir}/frontend/locales/" />
                                 </copy>
                             </tasks>
                         </configuration>

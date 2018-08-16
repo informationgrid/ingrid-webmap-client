@@ -142,10 +142,21 @@ goog.require('ga_window_service');
                 },
                 undefined,
                 function(layer) {
-                // INGRID: Add check for crossOrigin
-                return gaLayers.hasTooltipBodLayer(layer) &&
-                  layer.getSource().crossOrigin;
-              });
+                  /* INGRID: Add check for crossOrigin
+                  // EDGE: An IndexSizeError is triggered by the
+                  // map.forEachLayerAtPixel when the mouse is outside the
+                  // extent of switzerland (west, north). So we avoid triggering
+                  // this function outside a layer's extent.
+                  var extent = layer.getExtent();
+                  if (extent && !ol.extent.containsXY(extent, coord[0],
+                      coord[1])) {
+                    return false;
+                  }
+                  return gaLayers.hasTooltipBodLayer(layer);
+                  */
+                  return gaLayers.hasTooltipBodLayer(layer) &&
+                    layer.getSource().crossOrigin;
+                });
           }
           if (!hasQueryableLayer) {
             feature = findVectorFeature(map, pixel);
@@ -423,11 +434,16 @@ goog.require('ga_window_service');
                 var pickedObjects = scope.ol3d.getCesiumScene().
                     drillPick(position3d, 10);
                 for (var i = 0, ii = pickedObjects.length; i < ii; i++) {
+                  var feat;
                   var prim = pickedObjects[i].primitive;
                   var entity = pickedObjects[i].id;
-                  var feat = prim.olFeature || entity.olFeature;
-                  var lay = prim.olLayer || entity.olLayer;
+                  if (prim && prim.olFeature) {
+                    feat = prim.olFeature;
+                  } else if (entity && entity.olFeature) {
+                    feat = entity.olFeature;
+                  }
                   if (isFeatureQueryable(feat)) {
+                    var lay = prim.olLayer || entity.olLayer;
                     showVectorFeature(feat, lay);
                     all.push($q.when(1));
                     break;
@@ -483,6 +499,9 @@ goog.require('ga_window_service');
                     coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
+                    if(layerToQuery.get("auth")) {
+                      proxyUrl += "&login=" + layerToQuery.get("auth"); 
+                    }
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery

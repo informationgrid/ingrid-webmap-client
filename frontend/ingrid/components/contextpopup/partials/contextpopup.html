@@ -10,7 +10,7 @@
       <table ng-if="showBWaLocator() == false" >
           <tbody>
           <tr ng-repeat="projection in projections">
-              <td>{{projection.label}}</td>
+              <td ng-bind-html="projection.label"></td>
               <td>{{projection.coordinates}}</td>
           </tr>
           <tr ng-if="enableW3W">
@@ -49,7 +49,7 @@
           <table>
             <tbody>
               <tr ng-repeat="projection in projections">
-                <td>{{projection.label}}</td>
+                <td ng-bind-html="projection.label"></td>
                 <td>{{projection.coordinates}}</td>
               </tr>
               <tr ng-if="enableW3W">
@@ -84,7 +84,7 @@
                 <td>{{bwastr_typ}}</td>
               </tr>
               <tr ng-if="bwastr_error == undefined && bwastr_label != undefined">
-                <td>{{bwastr_label}}:</td>
+                <td><span ng-bind-html="bwastr_label"></span>:</td>
                 <td>{{bwastr_coords}}</td>
               </tr>
               <tr ng-if="bwastr_km != undefined">

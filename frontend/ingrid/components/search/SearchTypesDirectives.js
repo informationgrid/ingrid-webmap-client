@@ -109,7 +109,7 @@ goog.require('ga_urlutils_service');
 
   var focusElement = function(el, evt) {
     evt.preventDefault();
-    el[0].focus();
+    el.trigger('focus');
   };
 
   var elExists = function(el) {

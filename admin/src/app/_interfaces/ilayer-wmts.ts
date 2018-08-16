@@ -6,7 +6,7 @@ export interface ILayerWmts extends ILayer {
     serverLayerName: string;
     origin: number[];
     matrixSet: string;
-    tileSize: number[];
+    tileSize: number;
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;

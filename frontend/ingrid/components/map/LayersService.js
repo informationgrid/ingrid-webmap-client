@@ -49,28 +49,30 @@ goog.require('ga_urlutils_service');
         return domainsArray;
       };
 
-      var geojsonPromises = {}
+      var geojsonPromises = {};
 
-      var Layers = function(wmsUrlTemplate, dfltWmsSubdomains,
-          dfltVectorTilesSubdomains,
-          wmtsUrl, wmtsLV03PathTemplate, wmtsPathTemplate, wmtsSubdomains,
-          terrainTileUrlTemplate, vectorTilesUrlTemplate,
-          layersConfigUrlTemplate, legendUrlTemplate) {
+      var stylePromises = {};
+
+      var Layers = function(
+          wmsSubdomains,
+          wmtsSubdomains,
+          vectorTilesSubdomains,
+          wmsUrl,
+          wmtsUrl,
+          wmtsLV03Url,
+          terrainUrl,
+          vectorTilesUrl,
+          layersConfigUrl,
+          legendUrl) {
+
         var layers;
 
         // Returns a unique WMS template url (e.g. //wms{s}.geo.admin.ch)
-        var getWmsTpl = function(wmsUrl, wmsParams) {
-          var tpl = wmsUrl;
-          /* INGRID: Remove check of URL
-          if (/wms.geo/.test(wmsUrl)) {
-            tpl = undefined;
-          }
-          */
-          if (tpl && /(request|service|version)/i.test(tpl)) {
-            tpl = gaUrlUtils.remove(tpl, ['request', 'service', 'version'],
+        var getWmsTpl = function(url, wmsParams) {
+          if (url && /(request|service|version)/i.test(url)) {
+            url = gaUrlUtils.remove(url, ['request', 'service', 'version'],
                 true);
           }
-          var url = (tpl || wmsUrlTemplate);
           if (wmsParams) {
             url = gaUrlUtils.append(url, gaUrlUtils.toKeyValue(wmsParams));
           }
@@ -91,14 +93,9 @@ goog.require('ga_urlutils_service');
         var getWmtsGetTileTpl = function(layer, tileMatrixSet, format) {
           var tpl;
           if (tileMatrixSet === '21781') {
-            tpl = wmtsUrl + wmtsLV03PathTemplate;
+            tpl = wmtsLV03Url;
           } else {
-            if (tileMatrixSet === '4326' &&
-                  layer === 'ch.swisstopo.swissimage-product') {
-              tpl = '//tod{s}.prod.bgdi.ch' + wmtsPathTemplate;
-            } else {
-              tpl = wmtsUrl + wmtsPathTemplate;
-            }
+            tpl = wmtsUrl;
           }
           var url = tpl.replace('{Layer}', layer).replace('{Format}', format);
           if (tileMatrixSet) {
@@ -107,8 +104,8 @@ goog.require('ga_urlutils_service');
           return url;
         };
 
-        var getTerrainTileUrl = function(layer, time) {
-          return terrainTileUrlTemplate.
+        var getTerrainUrl = function(layer, time) {
+          return terrainUrl.
               replace('{Layer}', layer).
               replace('{Time}', time);
         };
@@ -118,26 +115,26 @@ goog.require('ga_urlutils_service');
           if (cpt === undefined || cpt >= subdomains.length) {
             cpt = 0;
           }
-          return vectorTilesUrlTemplate.
+          return vectorTilesUrl.
               replace('{s}', subdomains[cpt++]).
               replace('{Layer}', layer).
               replace('{Time}', time);
         };
 
         var getLayersConfigUrl = function(lang) {
-          return layersConfigUrlTemplate.
+          return layersConfigUrl.
               replace('{Lang}', lang);
         };
 
         var getMetaDataUrl = function(layer, lang) {
-          return legendUrlTemplate.
+          return legendUrl.
               replace('{Layer}', layer).
               replace('{Lang}', lang);
         };
 
         // INGRID: Add function
         var getMetaDataUrlWithLegend = function(layer, lang, legend) {
-          return legendUrlTemplate.
+          return legendUrl.
               replace('{Layer}', layer).
               replace('{Lang}', lang).
               replace('{Legend}', legend).
@@ -152,24 +149,55 @@ goog.require('ga_urlutils_service');
 
         // The tile load function which loads tiles from local
         // storage if they exist otherwise try to load the tiles normally.
+        /* INGRID: Change onSuccess
         var tileLoadFunction = function(imageTile, src) {
-          var onSuccess = function(content) {
-            if (content && $window.URL && $window.atob) {
-              try {
-                var blob = gaMapUtils.dataURIToBlob(content);
-                imageTile.getImage().addEventListener('load', revokeBlob);
-                imageTile.getImage().src = $window.URL.createObjectURL(blob);
-              } catch (e) {
-                // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
-                // encoding problem.
-                // TODO: fix it
-                imageTile.getImage().src = content;
+        */
+        var tileLoadFunction = function(layer) {
+          return function(imageTile, src) {
+            /* INGRID: Change onSuccess
+              var onSuccess = function(content) {
+              */
+            var onSuccess = function(content, layer) {
+              if (content && $window.URL && $window.atob) {
+                try {
+                  var blob = gaMapUtils.dataURIToBlob(content);
+                  imageTile.getImage().addEventListener('load', revokeBlob);
+                  imageTile.getImage().src = $window.URL.createObjectURL(blob);
+                } catch (e) {
+                  // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
+                  // encoding problem.
+                  // TODO: fix it
+                  imageTile.getImage().src = content;
+                }
+              } else {
+                if (layer.auth) {
+                  imageTile.getImage().src = gaGlobalOptions.imgproxyUrl +
+                    '' + encodeURIComponent(src) + '&login=' + layer.auth;
+                } else {
+                  imageTile.getImage().src = (content) || src;
+                }
               }
-            } else {
-              imageTile.getImage().src = (content) || src;
-            }
+            };
+            /* INGRID: Change onSuccess
+            gaStorage.getTile(gaMapUtils.getTileKey(src)).then(onSuccess);
+            */
+            onSuccess(null, layer);
           };
-          gaStorage.getTile(gaMapUtils.getTileKey(src)).then(onSuccess);
+        };
+
+        // INGRID: Add imageLoadFunction
+        var imageLoadFunction = function(layer) {
+          return function(image, src) {
+            var onSuccess = function(content, layer) {
+              if (layer.auth) {
+                image.getImage().src = gaGlobalOptions.imgproxyUrl +
+                 '' + encodeURIComponent(src) + '&login=' + layer.auth;
+              } else {
+                image.getImage().src = src;
+              }
+            };
+            onSuccess(null, layer);
+          };
         };
 
         // Load layers config
@@ -216,6 +244,7 @@ goog.require('ga_urlutils_service');
                 'ch.swisstopo.lubis-luftbilder_farbe',
                 'ch.swisstopo.lubis-luftbilder_schwarzweiss',
                 'ch.swisstopo.lubis-luftbilder_infrarot',
+                'ch.swisstopo.lubis-terrestrische_aufnahmen',
                 'ch.swisstopo.lubis-bildstreifen'
               ];
               angular.forEach(ids, function(id) {
@@ -328,20 +357,12 @@ goog.require('ga_urlutils_service');
               gaTime.get());
           var requestedLayer = config3d.serverLayerName || bodId;
           var provider = new Cesium.CesiumTerrainProvider({
-            url: getTerrainTileUrl(requestedLayer, timestamp),
+            url: getTerrainUrl(requestedLayer, timestamp),
             availableLevels: gaGlobalOptions.terrainAvailableLevels,
             rectangle: gaMapUtils.extentToRectangle(
                 gaGlobalOptions.defaultExtent)
           });
           provider.bodId = bodId;
-          return provider;
-        };
-
-        this.getCesiumTerrainProviderDefault = function(defaultTerrain) {
-          var provider = new Cesium.CesiumTerrainProvider({
-            url: defaultTerrain,
-            requestVertexNormals: true
-          });
           return provider;
         };
 
@@ -358,7 +379,7 @@ goog.require('ga_urlutils_service');
           var requestedLayer = config3d.serverLayerName || bodId;
           var tileset = new Cesium.Cesium3DTileset({
             url: getVectorTilesUrl(requestedLayer, timestamp,
-                h2(dfltVectorTilesSubdomains)),
+                h2(vectorTilesSubdomains)),
             maximumNumberOfLoadedTiles: 3
           });
           tileset.bodId = bodId;
@@ -432,9 +453,9 @@ goog.require('ga_urlutils_service');
               wmsParams.time = '{Time}';
             }
             params = {
-              url: getWmsTpl(gaGlobalOptions.wmsUrl, wmsParams),
+              url: getWmsTpl(wmsUrl, wmsParams),
               tileSize: tileSize,
-              subdomains: dfltWmsSubdomains
+              subdomains: wmsSubdomains
             };
           }
           var extent = config3d.extent || gaMapUtils.defaultExtent;
@@ -486,10 +507,12 @@ goog.require('ga_urlutils_service');
           if (!/^kml$/.test(config3d.type)) {
             return;
           }
-          var dsP = Cesium.KmlDataSource.load(config3d.url, {
-            camera: scene.camera,
-            canvas: scene.canvas,
+          var dsP = Cesium.KmlDataSource.load(new Cesium.Resource({
+            url: config3d.url,
             proxy: gaUrlUtils.getCesiumProxy()
+          }), {
+            camera: scene.camera,
+            canvas: scene.canvas
           });
           return dsP;
         };
@@ -497,15 +520,27 @@ goog.require('ga_urlutils_service');
         /**
          * Return an ol.layer.Layer object for a layer id.
          */
-        this.getOlLayerById = function(bodId) {
+        this.getOlLayerById = function(bodId, opts) {
           var config = layers[bodId];
           var olLayer;
           var timestamp = this.getLayerTimestampFromYear(bodId, gaTime.get());
-          // INGRID: Add check crossOrigin from layers config
+          /* INGRID: Add check crossOrigin from layers config
+          var crossOrigin = 'anonymous';
+          */
           var crossOrigin = config.crossOrigin ? 'anonymous' : undefined;
-          // INGRID: Use projection extent if no layer extent exist
+          /* INGRID: Use projection extent if no layer extent exist
+          var extent = config.extent || gaMapUtils.defaultExtent;
+          */
           var extent = config.extent ||
               ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
+
+          // The tileGridMinRes is the resolution at which the client
+          // zoom is activated. It's different from the config.minResolution
+          // value at which the layer stop being displayed.
+          var tileGridMinRes = config.tileGridMinRes;
+          if (config.resolutions) {
+            tileGridMinRes = config.resolutions.slice(-1)[0];
+          }
 
           // For some obscure reasons, on iOS, displaying a base 64 image
           // in a tile with an existing crossOrigin attribute generates
@@ -521,6 +556,9 @@ goog.require('ga_urlutils_service');
           if (config.type === 'wmts') {
             if (!olSource) {
               /* INGRID: Remove use default wmts template
+              if (!tileGridMinRes) {
+                tileGridMinRes = gaGlobalOptions.tileGridWmtsDfltMinRes;
+              }
               var tileMatrixSet = gaGlobalOptions.defaultEpsg.split(':')[1];
               var wmtsTplUrl = getWmtsGetTileTpl(config.serverLayerName,
                   tileMatrixSet, config.format).
@@ -542,12 +580,16 @@ goog.require('ga_urlutils_service');
                 layer: config.serverLayerName,
                 format: config.format,
                 projection: gaGlobalOptions.defaultEpsg,
-                // INGRID: Use WMTS properties from layer config
+                /* INGRID: Use WMTS properties from layer config
+                requestEncoding: 'REST',
+                */
                 requestEncoding: config.requestEncoding || 'KVP',
                 version: config.version || '1.0.0',
                 style: config.style || 'default',
                 matrixSet: config.matrixSet,
-                // INGRID: Replace tileGrid function
+                /* INGRID: Replace tileGrid function
+                tileGrid: gaTileGrid.get(tileGridMinRes),
+                */
                 tileGrid: new ol.tilegrid.WMTS({
                   matrixIds: config.matrixIds || $.map(config.scales,
                     function(r, i) { return i + ''; }),
@@ -563,8 +605,10 @@ goog.require('ga_urlutils_service');
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
                     gaGlobalOptions.defaultEpsg) : extent
                 }),
-                tileLoadFunction: tileLoadFunction,
-                // INGRID: Replace generate urls
+                tileLoadFunction: tileLoadFunction(config),
+                /* INGRID: Replace generate urls
+                urls: getImageryUrls(wmtsTplUrl, h2(wmtsSubdomains)),
+                */
                 urls: config.subdomains ?
                   getImageryUrls(wmtsTplUrl, config.subdomains) : [wmtsTplUrl],
                 crossOrigin: crossOrigin,
@@ -577,7 +621,11 @@ goog.require('ga_urlutils_service');
               maxResolution: config.maxResolution,
               opacity: config.opacity || 1,
               source: olSource,
-              // INGRID: Get extent from layer config
+              // INGRID: Add auth
+              auth: config.auth,
+              /* INGRID: Get extent from layer config
+              extent: extent,
+              */
               extent: config.extent ? ol.proj.transformExtent(config.extent,
                 'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
               preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
@@ -590,17 +638,21 @@ goog.require('ga_urlutils_service');
               // INGRID: Add version to get getMap request for WMS version 1.1.1
               // Version is define on layers.json.
               VERSION: config.version ? config.version : '1.3.0',
-              LANG: gaLang.get(),
-              STYLES: config.style || ''
+              // INGRID: Add style
+              STYLES: config.style || '',
+              LANG: gaLang.get()
             };
             if (config.singleTile === true) {
               if (!olSource) {
                 olSource = config.olSource = new ol.source.ImageWMS({
-                  // INGRID: Use 'config.wmsUrl'
+                  /* INGRID: Use 'config.wmsUrl'
+                  url: getImageryUrls(getWmsTpl(wmsUrl), wmsSubdomains)[0],
+                  */
                   url: config.wmsUrl,
                   params: wmsParams,
                   crossOrigin: crossOrigin,
-                  ratio: 1
+                  ratio: 1,
+                  imageLoadFunction: imageLoadFunction(config)
                 });
               }
               olLayer = new ol.layer.Image({
@@ -614,19 +666,22 @@ goog.require('ga_urlutils_service');
                 minScale: config.minScale,
                 // INGRID: Add maxScale
                 maxScale: config.maxScale,
-                // INGRID: Set extent by defaultProjection
+                // INGRID: Add auth
+                auth: config.auth,
+                /* INGRID: Set extent by defaultProjection
+                extent: extent
+                */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
                   'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
               });
             } else {
               if (!olSource) {
                 /* INGRID: Not in used
-                var subdomains = dfltWmsSubdomains;
+                var subdomains = wmsSubdomains;
                 */
                 olSource = config.olSource = new ol.source.TileWMS({
                   /* INGRID: Remove
-                  urls: getImageryUrls(
-                      getWmsTpl(gaGlobalOptions.wmsUrl), subdomains),
+                  urls: getImageryUrls(getWmsTpl(wmsUrl), wmsSubdomains),
                   */
                   urls: [config.wmsUrl],
                   // Temporary until https://github.com/openlayers/ol3/pull/4964
@@ -635,9 +690,8 @@ goog.require('ga_urlutils_service');
                   params: wmsParams,
                   gutter: config.gutter || 0,
                   crossOrigin: crossOrigin,
-                  tileGrid: gaTileGrid.get(config.resolutions,
-                      config.minResolution, config.type),
-                  tileLoadFunction: tileLoadFunction,
+                  tileGrid: gaTileGrid.get(tileGridMinRes, config.type),
+                  tileLoadFunction: tileLoadFunction(config),
                   wrapX: false,
                   transition: 0
                 });
@@ -653,7 +707,11 @@ goog.require('ga_urlutils_service');
                 minScale: config.minScale,
                 // INGRID: Add maxScale
                 maxScale: config.maxScale,
-                // INGRID: Set extent by defaultProjection
+                // INGRID: Add auth
+                auth: config.auth,
+                /* INGRID: Set extent by defaultProjection
+                extent: extent,
+                */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
                   'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
@@ -699,16 +757,26 @@ goog.require('ga_urlutils_service');
                     return olSource.getFeatures();
                   });
                 });
-
+            var styleUrl;
+            if (opts && opts.externalStyleUrl &&
+                gaUrlUtils.isValid(opts.externalStyleUrl)) {
+              styleUrl = opts.externalStyleUrl;
+            } else {
+              styleUrl = $window.location.protocol + config.styleUrl;
+            }
             // IE doesn't understand agnostic URLs
-            $http.get($window.location.protocol + config.styleUrl, {
-              cache: true
-            }).then(function(response) {
-              var olStyleForVector = gaStylesFromLiterals(response.data);
-              olLayer.setStyle(function(feature, resolution) {
-                return [olStyleForVector.getFeatureStyle(feature, resolution)];
-              });
-            });
+            stylePromises[bodId] = gaUrlUtils.proxifyUrl(styleUrl).
+                then(function(proxyStyleUrl) {
+                  return $http.get(proxyStyleUrl, {
+                    cache: styleUrl === proxyStyleUrl
+                  }).then(function(response) {
+                    var olStyleForVector = gaStylesFromLiterals(response.data);
+                    olLayer.setStyle(function(feature, res) {
+                      return [olStyleForVector.getFeatureStyle(feature, res)];
+                    });
+                    return olStyleForVector;
+                  });
+                });
           }
           if (angular.isDefined(olLayer)) {
             gaDefinePropertiesForLayer(olLayer);
@@ -720,6 +788,9 @@ goog.require('ga_urlutils_service');
             olLayer.timestamps = config.timestamps;
             olLayer.geojsonUrl = config.geojsonUrl;
             olLayer.updateDelay = config.updateDelay;
+            olLayer.externalStyleUrl = opts && opts.externalStyleUrl ?
+              opts.externalStyleUrl : null;
+            olLayer.useThirdPartyData = !(!opts) && !(!opts.externalStyleUrl);
             var that = this;
             olLayer.getCesiumImageryProvider = function() {
               return that.getCesiumImageryProviderById(bodId, olLayer);
@@ -734,21 +805,33 @@ goog.require('ga_urlutils_service');
           return olLayer;
         };
 
+        this.getLayerStylePromise = function(bodId) {
+          return stylePromises[bodId];
+        };
+
         // Returns promise of layer with its features when layers are added.
         this.getLayerPromise = function(bodId) {
-          return geojsonPromises[bodId];
-        }
+          var p, config = this.getLayer(bodId);
+          if (config && /geojson/.test(config.type)) {
+            p = geojsonPromises[bodId];
+            if (!p) {
+              // Fill the geojsonPromises array
+              // TODO: Not nice to create a layer and not using it.
+              this.getOlLayerById(bodId);
+              p = geojsonPromises[bodId];
+            }
+          }
+          return p || $q.reject();
+        };
 
         /**
          * Returns layers definition for given bodId. Returns
          * undefined if bodId does not exist
          */
         this.getLayer = function(bodId) {
-          // INGRID: Check layers
           if (layers) {
             return layers[bodId];
           }
-          return undefined;
         };
 
         this.getConfig3d = function(config) {
@@ -780,6 +863,12 @@ goog.require('ga_urlutils_service');
         // INGRID: Add function
         this.getMetaDataOfLayerWithLegend = function(bodId, legendUrl) {
           var url = getMetaDataUrlWithLegend(bodId, gaLang.get(), legendUrl);
+          var layer = this.getLayer(bodId);
+          if (layer) {
+            if (layer.auth) {
+              url += '&login=' + layer.auth;
+            }
+          }
           return $http.get(url);
         };
 
@@ -863,7 +952,7 @@ goog.require('ga_urlutils_service');
             config = this.getConfig3d(config) || config;
           }
           // If the layer's config has no tooltip property we try to get the
-          // value from the parent. 
+          // value from the parent.
           if (!angular.isDefined(config.tooltip) && config.parentLayerId) {
             config = this.getLayer(config.parentLayerId);
           }
@@ -871,93 +960,17 @@ goog.require('ga_urlutils_service');
         };
       };
 
-      return new Layers(this.wmsUrlTemplate, this.dfltWmsSubdomains,
-          this.dfltVectorTilesSubdomains,
-          this.wmtsUrl, this.wmtsLV03PathTemplate, this.wmtsPathTemplate,
-          this.wmtsSubdomains, this.terrainTileUrlTemplate,
-          this.vectorTilesUrlTemplate, this.layersConfigUrlTemplate,
-          this.legendUrlTemplate);
-    };
-  });
-
-  /**
-   * Service provides different kinds of filter for
-   * layers in the map
-   */
-  module.provider('gaLayerFilters', function() {
-    this.$get = function(gaLayers, gaMapUtils) {
-      return {
-        /**
-         * Filters out background layers, preview
-         * layers, draw, measure.
-         * In other words, all layers that
-         * were actively added by the user and that
-         * appear in the layer manager
-         */
-        selected: function(layer) {
-          return layer.displayInLayerManager;
-        },
-        selectedAndVisible: function(layer) {
-          return layer.displayInLayerManager && layer.visible;
-        },
-        permalinked: function(layer) {
-          return layer.displayInLayerManager && !!layer.id &&
-                 !gaMapUtils.isLocalKmlLayer(layer) &&
-                 !gaMapUtils.isLocalGpxLayer(layer);
-        },
-        /**
-         * Keep only time enabled layer
-         */
-        timeEnabled: function(layer) {
-          return layer.timeEnabled &&
-                 layer.visible &&
-                 !layer.background &&
-                 !layer.preview;
-        },
-        /**
-         * Keep layers with potential tooltip for query tool
-         */
-        potentialTooltip: function(layer) {
-          return !!(layer.displayInLayerManager &&
-                 layer.visible &&
-                 layer.bodId &&
-                 gaLayers.hasTooltipBodLayer(layer) &&
-                 !gaMapUtils.isVectorLayer(layer));
-        },
-        /**
-         * Searchable layers
-         */
-        searchable: function(layer) {
-          return !!(layer.displayInLayerManager &&
-                 layer.visible &&
-                 layer.bodId &&
-                 gaLayers.getLayerProperty(layer.bodId, 'searchable'));
-        },
-        /**
-         * Queryable layers (layers with queryable attributes)
-         */
-        queryable: function(layer) {
-          return !!(layer.displayInLayerManager &&
-                 layer.visible &&
-                 layer.bodId &&
-                 gaLayers.getLayerProperty(layer.bodId,
-                     'queryableAttributes') &&
-                 gaLayers.getLayerProperty(layer.bodId,
-                     'queryableAttributes').length);
-        },
-        /**
-         * Keep only background layers
-         */
-        background: function(layer) {
-          return layer.background;
-        },
-        /**
-         * "Real-time" layers (only geojson layers for now)
-         */
-        realtime: function(layer) {
-          return layer.updateDelay != null;
-        }
-      };
+      return new Layers(
+          this.wmsSubdomains,
+          this.wmtsSubdomains,
+          this.vectorTilesSubdomains,
+          this.wmsUrl,
+          this.wmtsUrl,
+          this.wmtsLV03Url,
+          this.terrainUrl,
+          this.vectorTilesUrl,
+          this.layersConfigUrl,
+          this.legendUrl);
     };
   });
 })();

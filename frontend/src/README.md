@@ -20,10 +20,10 @@ REST-Schnittstelle für allgemeine Dateien (z.B. KML). (Wird mitgeliefert!)
 
     publicUrl : location.origin + '/ingrid-webmap-client/rest/data'
 
-## ogcproxyUrl
+## proxyUrl
 REST-Schnittstelle für die Anfrage nach WMS-Diensten. (Wird mitgeliefert!)
 
-    ogcproxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/wms/proxy/?url='
+    proxyUrl : location.protocol + '//' + location.host + '/ingrid-webmap-client' + '/rest/wms/proxy/?url='
 
 ## imgproxyUrl
 REST-Schnittstelle für die Anfrage nach Images. (Wird mitgeliefert!)
