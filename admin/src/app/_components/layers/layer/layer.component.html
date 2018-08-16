@@ -91,16 +91,18 @@
       </div>
       <div class="collapse" id="serviceLogin">
         <div class="form-group row">
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <input type="text" name="login" [(ngModel)]="serviceLogin" class="form-control" placeholder="{{ ('service_login') | translate }}">
           </div>
-          <div class="col-sm-4">
+          <div class="col-sm-6">
             <input type="password" name="password" [(ngModel)]="servicePassword" class="form-control" placeholder="{{ ('service_password') | translate }}">
           </div>
+          <!--
           <div class="col-sm-4">
             <input type="checkbox" class="form-check-input" id="overrideLogin" name="overrideLogin" [(ngModel)]="overrideLogin">
             <label class="form-check-label" for="overrideLogin" translate>service_overrideLogin</label>
           </div>
+          -->
         </div>
         <div class="alert alert-info" translate>
           service_login_info
