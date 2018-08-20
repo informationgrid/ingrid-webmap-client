@@ -34,10 +34,10 @@ var settingSearchBwaLocatorGeoUrl = 'https://atlas.wsv.bund.de/bwastr-locator/re
 // Define BWaStrLocator services URL for river details
 var settingSearchBwaLocatorStationUrl = 'https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query';
 
-//Override copyright URL (Default: '/datenschutzbestimmung')
+// Override copyright URL (Default: '/datenschutzbestimmung')
 var settingCopyrightURL = undefined;
 
-//Override disclaimer URL (Default: '/impressum')
+// Override disclaimer URL (Default: '/impressum')
 var settingDisclaimerURL = undefined;
 
 // Override sitemap URL (Default: '/inhaltsverzeichnis')
