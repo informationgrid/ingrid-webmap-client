@@ -21,7 +21,7 @@ pipeline {
                 ) {
 
                     // Run the maven build
-                    sh 'mvn clean deploy -Dmaven.test.failure.ignore=true'
+                    sh 'mvn clean deploy -X-Dmaven.test.failure.ignore=true'
 
                 } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
             }
