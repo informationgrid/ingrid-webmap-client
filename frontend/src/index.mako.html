@@ -280,12 +280,15 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settings.settingCopyrightURL?settings.settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+        <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" ng-if="globals.isParentIFrame"
-            onclick="window.open(settings.settingSitemapURL?settings.settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+        <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+      </div>
+      <div class="pull-right">
+        <!-- INGRID: Edit href URL -->
+        <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
       </div>
     </div><!-- #footer -->
 
@@ -490,9 +493,11 @@ itemscope itemtype="http://schema.org/WebApplication"
                 <br>
                 -->
                 <!-- INGRID: Edit -->
-                <a target="_blank" onclick="window.open(settings.settingCopyrightURL?settings.settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+                <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
                 <br>
-                <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settings.settingSitemapURL?settings.settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+                <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+                <br>
+                <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
               </p>
             </div>
           </div>
