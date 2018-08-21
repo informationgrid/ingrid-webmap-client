@@ -62,7 +62,7 @@ goog.require('ga_urlutils_service');
             angular.extend(newParams, p);
           }
           // INGRID: Update URL outside of iFrame
-          if (window.document.referrer.indexOf(window.location.host) > -1) {
+          if (isParentIFrame) {
             if (window.parent.onParamChange !== undefined) {
               // INGRID: Delete params from point coordinates
               delete params['action'];
@@ -143,7 +143,7 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Get params from window parent
       var locSearch = loc.search;
-      if (window.document.referrer.indexOf(window.location.host) > -1) {
+      if (window.parent.iframe) {
         if (window.parent.urlParams) {
           if (locSearch.startsWith('?')) {
             locSearch = locSearch.replace('?', '');
