@@ -886,7 +886,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Short URL service (external)
           shortURLService : settings.settingShortURLService || 'https://is.gd/create.php?format=json',
           // INGRID: Add property to check is in iFrame
-          isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
+          isParentIFrame: window.parent.iframe ? true : false,
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name
