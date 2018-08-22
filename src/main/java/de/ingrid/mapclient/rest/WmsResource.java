@@ -116,7 +116,12 @@ public class WmsResource {
                 response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
             }
             if(toJson){
-                JSONObject json = XML.toJSONObject( response );
+                JSONObject json;
+                try {
+                    json = XML.toJSONObject( response );
+                } catch (JSONException e) {
+                    json = new JSONObject();
+                }
                 json.put( "xmlResponse", response );
                 return json.toString();
             }
@@ -125,7 +130,6 @@ public class WmsResource {
             log.error( "Error sending WMS request: " + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-
             log.error( "Error sending WMS request: " + url, e );
         }
         return null;
