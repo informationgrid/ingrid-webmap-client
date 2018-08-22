@@ -892,14 +892,12 @@ goog.require('ga_urlutils_service');
                   if (inputBwaLocatorDistance !== '' &&
                     inputBwaLocatorDistance !== undefined) {
                     if ((inputBwaLocatorFrom === '' ||
-                      inputBwaLocatorFrom === undefined)) {
+                      inputBwaLocatorFrom === undefined) &&
+                      (inputBwaLocatorTo === '' ||
+                      inputBwaLocatorTo === undefined)) {
                       content = content + '"km_von":' + res.attrs.km_von;
                       content = content + ',';
-                    }
-                    if ((inputBwaLocatorTo === '' ||
-                      inputBwaLocatorTo === undefined)) {
                       content = content + '"km_bis":' + res.attrs.km_bis;
-                      content = content + ',';
                     }
                     content = content + ',';
                     content = content + '"offset":' + inputBwaLocatorDistance;
