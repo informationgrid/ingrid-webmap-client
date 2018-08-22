@@ -350,8 +350,9 @@ goog.require('ga_urlutils_service');
          */
         this.getCesiumTerrainProviderById = function(bodId) {
           // INGRID: Use default url on settings
+          var provider;
           if (!layers[bodId]) {
-            var provider = new Cesium.CesiumTerrainProvider({
+            provider = new Cesium.CesiumTerrainProvider({
               url: bodId,
               requestVertexNormals: true
             });
@@ -364,7 +365,7 @@ goog.require('ga_urlutils_service');
             var timestamp = this.getLayerTimestampFromYear(config3d,
                 gaTime.get());
             var requestedLayer = config3d.serverLayerName || bodId;
-            var provider = new Cesium.CesiumTerrainProvider({
+            provider = new Cesium.CesiumTerrainProvider({
               url: getTerrainUrl(requestedLayer, timestamp),
               availableLevels: gaGlobalOptions.terrainAvailableLevels,
               rectangle: gaMapUtils.extentToRectangle(
