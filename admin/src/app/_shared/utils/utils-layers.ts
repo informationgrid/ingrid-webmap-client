@@ -65,6 +65,9 @@ export class UtilsLayers {
     }
 
     static onAddItem(value: any, list: any) {
+        if (!list) {
+            list = [];
+        }
         if (value && list) {
             if (list.indexOf(value) === -1) {
                 list.push(value);
@@ -72,6 +75,14 @@ export class UtilsLayers {
         }
         value = '';
     }
+
+    static onAddItemNumber(value: any, list: any) {
+        if (typeof value === 'string') {
+          value = +value;
+        }
+        this.onAddItem(value, list);
+    }
+
 
     static onRemoveItem(index, list: any) {
         if (list) {

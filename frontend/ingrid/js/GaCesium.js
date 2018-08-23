@@ -97,9 +97,9 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
         },
         createSynchronizers: function(map, scene, dataSources) {
           return [
-            new olcs.RasterSynchronizer(map, scene),
+            new olcs.GaRasterSynchronizer(map, scene),
             new olcs.GaTileset3dSynchronizer(map, scene),
-            new olcs.VectorSynchronizer(map, scene),
+            new olcs.GaVectorSynchronizer(map, scene),
             new olcs.GaKmlSynchronizer(map, scene, dataSources)
           ];
         }
@@ -126,7 +126,7 @@ var GaCesium = function(map, gaPermalink, gaLayers, gaGlobalOptions,
     scene.screenSpaceCameraController.maximumZoomDistance = 500000;
     // INGRID: Add default OSM terrain
     scene.terrainProvider =
-      gaLayers.getCesiumTerrainProviderDefault(gaGlobalOptions.defaultTerrain);
+      gaLayers.getCesiumTerrainProviderById(gaGlobalOptions.defaultTerrain);
     scene.postRender.addEventListener(limitCamera, scene);
     scene.fog.enabled = fogEnabled;
     scene.fog.density = fogDensity;

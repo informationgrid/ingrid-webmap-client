@@ -349,21 +349,31 @@ goog.require('ga_urlutils_service');
          * Returns an Cesium terrain provider.
          */
         this.getCesiumTerrainProviderById = function(bodId) {
-          var config3d = this.getConfig3d(layers[bodId]);
-          if (!/^terrain$/.test(config3d.type)) {
-            return;
+          // INGRID: Use default url on settings
+          var provider;
+          if (!layers[bodId]) {
+            provider = new Cesium.CesiumTerrainProvider({
+              url: bodId,
+              requestVertexNormals: true
+            });
+            return provider;
+          } else {
+            var config3d = this.getConfig3d(layers[bodId]);
+            if (!/^terrain$/.test(config3d.type)) {
+              return;
+            }
+            var timestamp = this.getLayerTimestampFromYear(config3d,
+                gaTime.get());
+            var requestedLayer = config3d.serverLayerName || bodId;
+            provider = new Cesium.CesiumTerrainProvider({
+              url: getTerrainUrl(requestedLayer, timestamp),
+              availableLevels: gaGlobalOptions.terrainAvailableLevels,
+              rectangle: gaMapUtils.extentToRectangle(
+                  gaGlobalOptions.defaultExtent)
+            });
+            provider.bodId = bodId;
+            return provider;
           }
-          var timestamp = this.getLayerTimestampFromYear(config3d,
-              gaTime.get());
-          var requestedLayer = config3d.serverLayerName || bodId;
-          var provider = new Cesium.CesiumTerrainProvider({
-            url: getTerrainUrl(requestedLayer, timestamp),
-            availableLevels: gaGlobalOptions.terrainAvailableLevels,
-            rectangle: gaMapUtils.extentToRectangle(
-                gaGlobalOptions.defaultExtent)
-          });
-          provider.bodId = bodId;
-          return provider;
         };
 
         /**

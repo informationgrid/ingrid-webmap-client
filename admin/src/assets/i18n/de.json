@@ -195,6 +195,8 @@
     "setting_settingCopyrightURL_help": "Tragen Sie hier die URL zu Ihrer Copyright-Seite ein. Im Webmap Client wird der Link unter rechts dargestellt.",
     "setting_settingSitemapURL": "Sitemap URL",
     "setting_settingSitemapURL_help": "Tragen Sie hier die URL zu Ihrer Sitemap-Seite ein. Im Webmap Client wird der Link unter rechts dargestellt.",
+    "setting_settingDisclaimerURL": "Impressum URL",
+    "setting_settingDisclaimerURL_help": "Tragen Sie hier die URL zu Ihrer Impressum-Seite ein. Im Webmap Client wird der Link unter rechts dargestellt.",
     "setting_settingUseGeodesic": "Verwendung von Geodesic",
     "setting_settingUseGeodesic_help": "(De-)aktivieren Sie hier die Verwendung von Geodesic zum Messen in Ihrem Webmap Client ein.",
     "setting_settingDefaultMouseProjections": "Default Mauszeiger-Projektion",

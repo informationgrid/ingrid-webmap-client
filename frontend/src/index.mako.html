@@ -21,6 +21,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <meta name='yandex-verification' content='4795f82c05657028'/>
     <!-- this tag enables the search bot forwarding to _escaped_fragment_= urls for SEO. It can be used instead of the ugly hasbang -->
     <meta name="fragment" content="!"/>
+    <!-- INGRID: Add referrer -->
+    <meta name="referrer" content="origin"/>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, minimal-ui"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -280,12 +282,15 @@ itemscope itemtype="http://schema.org/WebApplication"
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" onclick="window.open(settings.settingCopyrightURL?settings.settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+        <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
       </div>
       <div class="pull-right">
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" ng-if="globals.isParentIFrame"
-            onclick="window.open(settings.settingSitemapURL?settings.settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+        <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+      </div>
+      <div class="pull-right">
+        <!-- INGRID: Edit href URL -->
+        <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
       </div>
     </div><!-- #footer -->
 
@@ -490,9 +495,11 @@ itemscope itemtype="http://schema.org/WebApplication"
                 <br>
                 -->
                 <!-- INGRID: Edit -->
-                <a target="_blank" onclick="window.open(settings.settingCopyrightURL?settings.settingCopyrightURL:'/impressum', 'blank')" translate>copyright_label</a>
+                <a target="_blank" onclick="window.open(settings.settingCopyrightURL, 'blank')" translate>copyright_label</a>
                 <br>
-                <a target="_blank" ng-if="globals.isParentIFrame" onclick="window.open(settings.settingSitemapURL?settings.settingSitemapURL:'/inhaltsverzeichnis', 'blank')" translate>Sitemap</a>
+                <a target="_blank" onclick="window.open(settings.settingDisclaimerURL, 'blank')" translate>disclaimer_label</a>
+                <br>
+                <a target="_blank" onclick="window.open(settings.settingSitemapURL, 'blank')" translate>Sitemap</a>
               </p>
             </div>
           </div>
@@ -879,7 +886,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Short URL service (external)
           shortURLService : settings.settingShortURLService || 'https://is.gd/create.php?format=json',
           // INGRID: Add property to check is in iFrame
-          isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
+          isParentIFrame: window.parent.iframe ? true : false,
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name

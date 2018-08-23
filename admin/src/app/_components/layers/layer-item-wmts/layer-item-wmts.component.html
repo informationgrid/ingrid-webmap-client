@@ -815,7 +815,7 @@
           <div class="input-group form-group">
             <input type="number" #scales name="scales" class="form-control" placeholder="{{ ('add') | translate }}">
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(scales.value, layer.item.scales); scales.value = '';">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItemNumber(scales.value, layer.item.scales); scales.value = '';">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>

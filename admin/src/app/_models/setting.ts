@@ -14,6 +14,7 @@ export class Setting {
         public settingSearchBwaLocatorStationUrl = '',
         public settingCopyrightURL = '',
         public settingSitemapURL = '',
+        public settingDisclaimerURL = '',
         public settingUseGeodesic = false,
         public settingDefaultMouseProjections = false,
         public settingDefaultImportList: string[] = [],
