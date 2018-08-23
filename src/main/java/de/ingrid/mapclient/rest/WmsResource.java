@@ -120,6 +120,9 @@ public class WmsResource {
             } else {
                 response = HttpProxy.doRequest( url );
             }
+            if(response.indexOf("<?xml") == -1) {
+               response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+            }
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                 // Remove script tags on getFeatureInfo response.
                 Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
@@ -136,11 +139,11 @@ public class WmsResource {
                 JSONObject json;
                 try {
                     json = XML.toJSONObject( response );
+                    json.put( "xmlResponse", response );
+                    return json.toString();
                 } catch (JSONException e) {
-                    json = new JSONObject();
+                    log.error("Error create json object" + response);
                 }
-                json.put( "xmlResponse", response );
-                return json.toString();
             }
             return response;
         } catch (IOException ex) {
@@ -177,6 +180,9 @@ public class WmsResource {
                     toJson = obj.getBoolean("toJson");
                 }
             }
+            if(response.indexOf("<?xml") == -1) {
+                response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+             }
             response = HttpProxy.doRequest( url, login, password );
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                 // Remove script tags on getFeatureInfo response.
