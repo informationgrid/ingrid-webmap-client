@@ -11,8 +11,9 @@
     "settingSearchBwaLocatorUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/bwastrinfo/query?limit=200%26searchfield=all",
     "settingSearchBwaLocatorGeoUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/geokodierung/query",
     "settingSearchBwaLocatorStationUrl": "https://atlas.wsv.bund.de/bwastr-locator/rest/stationierung/query",
-    "settingCopyrightURL": "/impressum",
+    "settingCopyrightURL": "/datenschutzbestimmung",
     "settingSitemapURL": "/inhaltsverzeichnis",
+    "settingDisclaimerURL": "/impressum",
     "settingUseGeodesic": true,
     "settingDefaultMouseProjections": ["EPSG:3857", "EPSG:4326", "EPSG:31466", "EPSG:31467", "EPSG:31468", "EPSG:31469", "EPSG:25832", "EPSG:25833"],
     "settingDefaultImportList": [

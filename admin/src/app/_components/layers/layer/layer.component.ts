@@ -296,7 +296,6 @@ export class LayerComponent implements OnInit {
     });
     checkedLayers.forEach(l => {
       const layerItem = new LayerItem(l.generateId(this.layers), l);
-      UtilsLayers.cleanupLayersProps(layerItem);
       layerItems.push(layerItem);
     });
     this.saveAddedLayers(layerItems);
@@ -629,38 +628,55 @@ export class LayerComponent implements OnInit {
       newLayer.tooltip = false;
     }
     if (layer['Dimension']) {
-      if (layer['Dimension']['name']) {
-        // timeEnabled
-        if (layer['Dimension']['name'] === 'time') {
-          newLayer.timeEnabled = true;
-        }
-        // timeBehaviour WMS 1.3.0
-        if (layer['Dimension']['default']) {
-          newLayer.timeBehaviour = layer['Dimension']['default'];
-        } else {
-          newLayer.timeBehaviour = 'all';
-        }
-        // timestamps WMS 1.3.0
-        if (layer['Dimension']['content']) {
-          const ts = layer['Dimension']['content'].split('/');
-          if (ts.length === 3) {
-            this.getYearsPeriodDates(newLayer, ts[0], ts[1], ts[2]);
+      const dimensions = layer['Dimension'];
+      let dimensionTime;
+      if (dimensions instanceof Array) {
+        dimensions.forEach(dimension => {
+          if (dimension['name']) {
+            if (dimension['name'] === 'time') {
+              dimensionTime = dimension;
+            }
+          }
+        });
+      } else {
+        dimensionTime = dimensions;
+      }
+      if (dimensionTime) {
+        if (dimensionTime['name']) {
+          // timeEnabled
+          if (dimensionTime['name'] === 'time') {
+            newLayer.timeEnabled = true;
+          }
+          // timeBehaviour WMS 1.3.0
+          if (dimensionTime['default']) {
+            if (dimensionTime['default'] === 'current') {
+              newLayer.timeBehaviour = 'last';
+            } else {
+              newLayer.timeBehaviour = dimensionTime['default'];
+            }
+          } else {
+            newLayer.timeBehaviour = 'all';
+          }
+          // timestamps WMS 1.3.0
+          if (dimensionTime['content']) {
+            this.getYearsPeriodDates(newLayer, dimensionTime['content']);
           }
         }
       }
-    }
-    if (layer['Extent']) {
-      // timeBehaviour WMS 1.1.1
-      if (layer['Extent']['default']) {
-        newLayer.timeBehaviour = layer['Extent']['default'];
-      } else {
-        newLayer.timeBehaviour = 'all';
-      }
-      // timestamps WMS 1.3.0
-      if (layer['Extent']['content']) {
-        const ts = layer['Extent']['content'].split('/');
-        if (ts.length === 3) {
-          this.getYearsPeriodDates(newLayer, ts[0], ts[1], ts[2]);
+      if (layer['Extent']) {
+        // timeBehaviour WMS 1.1.1
+        if (layer['Extent']['default']) {
+          if (layer['Extent']['default'] === 'current') {
+            newLayer.timeBehaviour = 'last';
+          } else {
+            newLayer.timeBehaviour = layer['Extent']['default'];
+          }
+        } else {
+          newLayer.timeBehaviour = 'all';
+        }
+        // timestamps WMS 1.1.1
+        if (layer['Extent']['content']) {
+          this.getYearsPeriodDates(newLayer, layer['Extent']['content']);
         }
       }
     }
@@ -755,36 +771,45 @@ export class LayerComponent implements OnInit {
               }
               // timeEnabled
               if (layer['Dimension']) {
-                if (layer['Dimension']['ows:Identifier']) {
-                  // timeEnabled
-                  if (layer['Dimension']['ows:Identifier'] === 'time') {
-                    newLayer.timeEnabled = true;
-                    // timeBehaviour
-                    if (layer['Dimension']['Default']) {
-                      newLayer.timeBehaviour = layer['Dimension']['Default'];
-                    } else {
-                      newLayer.timeBehaviour = 'last';
-                    }
-                    // timestamps
-                    if (layer['Dimension']['Value'] instanceof Array) {
-                      const dimValueList = layer['Dimension']['Value'];
-                      dimValueList.forEach(dimValues => {
-                        const dimValue = dimValues.split('/');
-                        if (dimValue.length === 3) {
-                          this.getYearsPeriodDates(newLayer, dimValue[0], dimValue[1], dimValue[2]);
-                        }
-                      });
-                    } else {
-                      const dimValue = layer['Dimension']['Value'].split('/');
-                      if (dimValue.length === 3) {
-                        this.getYearsPeriodDates(newLayer, dimValue[0], dimValue[1], dimValue[2]);
+                const dimensions = layer['Dimension'];
+                let dimensionTime;
+                if (dimensions instanceof Array) {
+                  dimensions.forEach(dimension => {
+                    if (dimension['ows:Identifier']) {
+                      if (dimension['ows:Identifier'] === 'time') {
+                        dimensionTime = dimension;
                       }
                     }
-                    if (layer['Dimension']['Current'] === 'true') {
+                  });
+                } else {
+                  dimensionTime = dimensions;
+                }
+                if (dimensionTime) {
+                  if (dimensionTime['ows:Identifier']) {
+                    // timeEnabled
+                    if (dimensionTime['ows:Identifier'] === 'time') {
+                      newLayer.timeEnabled = true;
+                      // timeBehaviour
+                      if (dimensionTime['Default']) {
+                        newLayer.timeBehaviour = dimensionTime['Default'];
+                      } else {
+                        newLayer.timeBehaviour = 'last';
+                      }
+                      // timestamps
+                      if (dimensionTime['Value'] instanceof Array) {
+                        const dimValueList = dimensionTime['Value'];
+                        dimValueList.forEach(dimValues => {
+                          this.getYearsPeriodDates(newLayer, dimValues);
+                        });
+                      } else {
+                        this.getYearsPeriodDates(newLayer, dimensionTime['Value']);
+                      }
+                      if (dimensionTime['Current'] === 'true') {
+                        newLayer.timestamps.splice(0, 0, 'current');
+                      }
+                    } else {
                       newLayer.timestamps.splice(0, 0, 'current');
                     }
-                  } else {
-                    newLayer.timestamps.splice(0, 0, 'current');
                   }
                 }
               }
@@ -818,22 +843,37 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  getYearsPeriodDates(newLayer, timestampStart, timestampEnd, timestampPeriod) {
-    const startDate = new Date(timestampStart);
-    const endDate = new Date(timestampEnd);
-    while (startDate <= endDate) {
-      if (timestampStart.length <= 4) {
-        newLayer.timestamps.splice(0, 0, startDate.getFullYear().toString());
-      } else {
-        const date = startDate.toISOString();
-        if (newLayer.type === 'wms') {
-          newLayer.timestamps.splice(0, 0, date);
-        } else {
-          const dateSplit = date.split('T');
-          newLayer.timestamps.splice(0, 0, dateSplit[0]);
+  getYearsPeriodDates(newLayer, dimension) {
+    if (dimension.indexOf('/') > -1) {
+      const ts = dimension.split('/');
+      if (ts.length === 3) {
+        const timestampStart = ts[0];
+        const timestampEnd = ts[1];
+        const timestampPeriod = ts[2];
+        const startDate = new Date(timestampStart);
+        const endDate = new Date(timestampEnd);
+        while (startDate <= endDate) {
+          if (timestampStart.length <= 4) {
+            newLayer.timestamps.splice(0, 0, startDate.getFullYear().toString());
+          } else {
+            const date = startDate.toISOString();
+            if (newLayer.type === 'wms') {
+              newLayer.timestamps.splice(0, 0, date);
+            } else {
+              const dateSplit = date.split('T');
+              newLayer.timestamps.splice(0, 0, dateSplit[0]);
+            }
+          }
+          startDate.setFullYear(startDate.getFullYear() + 1);
         }
       }
-      startDate.setFullYear(startDate.getFullYear() + 1);
+    } else if (dimension.indexOf(',') > -1) {
+      const ts = dimension.split(',');
+      ts.forEach(t => {
+        newLayer.timestamps.splice(0, 0, t);
+      });
+    } else {
+      newLayer.timestamps.push(dimension);
     }
   }
 }

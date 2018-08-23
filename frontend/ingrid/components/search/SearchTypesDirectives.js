@@ -369,7 +369,8 @@ goog.require('ga_urlutils_service');
               var e = parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions);
               unregisterMove();
               // Gazetteer results that are not points zoom to full bbox extent
-              if (res.attrs.origin === 'gazetteer') {
+              if (res.attrs.origin === 'gazetteer' && !res.attrs.lat
+                  && !res.attrs.lon) {
                 isGazetteerPoly = (Math.abs(e[0] - e[2]) > 100 &&
                                    Math.abs(e[1] - e[3]) > 100);
 
@@ -798,11 +799,11 @@ goog.require('ga_urlutils_service');
               if (isLayerToAdd) {
                 selectBWaLocatorData(res, true);
               }
-              if (evt){
+              if (evt) {
                 if (evt.keyCode === 13 && evt.target.id) {
                   evt.preventDefault();
                   $scope.getBwaLocatorParam(evt, res);
-                } 
+                }
               }
             };
 
@@ -821,7 +822,7 @@ goog.require('ga_urlutils_service');
               selectBWaLocatorData(res);
             };
 
-            $scope.stopPreEvent = function (evt) {
+            $scope.stopPreEvent = function(evt) {
               evt.stopPropagation();
             }
 
@@ -891,14 +892,12 @@ goog.require('ga_urlutils_service');
                   if (inputBwaLocatorDistance !== '' &&
                     inputBwaLocatorDistance !== undefined) {
                     if ((inputBwaLocatorFrom === '' ||
-                      inputBwaLocatorFrom === undefined)) {
+                      inputBwaLocatorFrom === undefined) &&
+                      (inputBwaLocatorTo === '' ||
+                      inputBwaLocatorTo === undefined)) {
                       content = content + '"km_von":' + res.attrs.km_von;
                       content = content + ',';
-                    }
-                    if ((inputBwaLocatorTo === '' ||
-                      inputBwaLocatorTo === undefined)) {
                       content = content + '"km_bis":' + res.attrs.km_bis;
-                      content = content + ',';
                     }
                     content = content + ',';
                     content = content + '"offset":' + inputBwaLocatorDistance;
@@ -1028,11 +1027,11 @@ goog.require('ga_urlutils_service');
                       var coords = geometry.coordinates;
                       if (coords) {
                         gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                          gaGlobalOptions.searchCoordsZoom, coords);
+                            gaGlobalOptions.searchCoordsZoom, coords);
                       }
                     } else {
                       $scope.map.getView().fit(vectorSource.getExtent(),
-                        $scope.map.getSize());
+                          $scope.map.getSize());
                     }
                   }
                 }

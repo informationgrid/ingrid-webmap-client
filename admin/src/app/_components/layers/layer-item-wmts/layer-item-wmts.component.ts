@@ -27,6 +27,10 @@ export class LayerItemWmtsComponent {
     UtilsLayers.onAddItem(value, list);
   }
 
+  onAddItemNumber(value: any, list: number[] ) {
+    UtilsLayers.onAddItemNumber(value, list);
+  }
+
   onRemoveItem(index, list: any) {
     UtilsLayers.onRemoveItem(index, list);
   }

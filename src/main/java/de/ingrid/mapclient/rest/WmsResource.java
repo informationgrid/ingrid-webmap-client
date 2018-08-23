@@ -120,6 +120,9 @@ public class WmsResource {
             } else {
                 response = HttpProxy.doRequest( url );
             }
+            if(response.indexOf("<?xml") == -1) {
+               response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+            }
             if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                 // Remove script tags on getFeatureInfo response.
                 Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
@@ -133,16 +136,20 @@ public class WmsResource {
                 response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
             }
             if(toJson){
-                JSONObject json = XML.toJSONObject( response );
-                json.put( "xmlResponse", response );
-                return json.toString();
+                JSONObject json;
+                try {
+                    json = XML.toJSONObject( response );
+                    json.put( "xmlResponse", response );
+                    return json.toString();
+                } catch (JSONException e) {
+                    log.error("Error create json object" + response);
+                }
             }
             return response;
         } catch (IOException ex) {
             log.error( "Error sending WMS request: " + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-
             log.error( "Error sending WMS request: " + url, e );
         }
         return null;
@@ -174,24 +181,31 @@ public class WmsResource {
                 }
             }
             response = HttpProxy.doRequest( url, login, password );
-            if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
-                // Remove script tags on getFeatureInfo response.
-                Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
-                        Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-                return p.matcher(response).replaceAll("");
-            } else {
-                // Replace "," to "." on bounding box.
-                response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
-                response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
-                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+            if(response != null) {
+                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
+                    // Remove script tags on getFeatureInfo response.
+                    Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
+                            Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+                    return p.matcher(response).replaceAll("");
+                } else {
+                    // Replace "," to "." on bounding box.
+                    response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
+                    response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
+                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                }
+                if(toJson){
+                    JSONObject json;
+                    try {
+                        json = XML.toJSONObject( response );
+                    } catch (JSONException e) {
+                        json = new JSONObject();
+                    }
+                    json.put( "xmlResponse", response );
+                    return json.toString();
+                }
+                return response;
             }
-            if(toJson){
-                JSONObject json = XML.toJSONObject( response );
-                json.put( "xmlResponse", response );
-                return json.toString();
-            }
-            return response;
         } catch (IOException ex) {
             log.error( "Error sending WMS request: " + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
