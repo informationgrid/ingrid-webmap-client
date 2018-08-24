@@ -49,40 +49,45 @@ public class HttpProxy {
      */
     public static String doRequest(String urlStr) throws Exception {
         String result = null;
-        StringBuffer response = new StringBuffer();
-
-        // add protocol if missing
-        if (!urlStr.startsWith( "https://" )) {
-            if (!urlStr.startsWith( "http://" )) {
-                urlStr = "http://" + urlStr;
-            }
-        }
-
-        // send request
-        InputStream is = null;
-        try {
-            URL url = new URL( urlStr );
-            URLConnection conn = url.openConnection();
-
-            is = new BufferedInputStream(conn.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String inputLine = "";
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            result = response.toString();
-        }
-        catch (Exception e) {
-            result = null;
-        }
-        finally {
-            if (is != null) {
-                try { 
-                    is.close(); 
-                } 
-                catch (IOException e) {
+        if(urlStr != null) {
+            StringBuffer response = new StringBuffer();
+    
+            // add protocol if missing
+            if (!urlStr.startsWith( "https://" )) {
+                if (!urlStr.startsWith( "http://" )) {
+                    urlStr = "http://" + urlStr;
                 }
-            }   
+            }
+    
+            // send request
+            InputStream is = null;
+            try {
+                URL url = new URL( urlStr );
+                URLConnection conn = url.openConnection();
+    
+                is = new BufferedInputStream(conn.getInputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String inputLine = "";
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                result = response.toString();
+            }
+            catch (Exception e) {
+                result = null;
+            }
+            finally {
+                if (is != null) {
+                    try { 
+                        is.close(); 
+                    } 
+                    catch (IOException e) {
+                    }
+                }   
+            }
+            if(urlStr.startsWith("http:") && (result == null || result.trim().length() == 0)){
+                result = doRequest(urlStr.replace("http:", "https:"));
+            }
         }
         return result;
     }
