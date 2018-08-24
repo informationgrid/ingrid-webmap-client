@@ -20,9 +20,11 @@ pipeline {
                     mavenSettingsConfig: '2529f595-4ac5-44c6-8b4f-f79b5c3f4bae'
                 ) {
                     // Disable jenkins maven agent 
-                    export JENKINS_MAVEN_AGENT_DISABLED=true
                     // Run the maven build
-                    sh 'mvn clean deploy -Dmaven.test.failure.ignore=true'
+                    sh """
+                    export JENKINS_MAVEN_AGENT_DISABLED=true
+                    mvn clean deploy -Dmaven.test.failure.ignore=true
+                    """
 
                 } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
             }
