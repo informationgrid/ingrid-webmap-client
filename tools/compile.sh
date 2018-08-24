@@ -44,26 +44,12 @@ echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
 
-# make lint
+# make lint debug and releaseversion
 echo ""
 echo "******************"
-echo "*** Make lint ***"
+echo "*** Make lint, debug and release ***"
 echo "******************"
-make lint
-
-# make dev version
-echo ""
-echo "******************"
-echo "*** Make debug ***"
-echo "******************"
-make debug
-
-# make prod version
-echo ""
-echo "********************"
-echo "*** Make release ***"
-echo "********************"
-make release
+make lint debug release
 
 # create admin
 echo ""
