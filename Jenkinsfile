@@ -19,12 +19,9 @@ pipeline {
                     // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
                     mavenSettingsConfig: '2529f595-4ac5-44c6-8b4f-f79b5c3f4bae'
                 ) {
-                    // Disable jenkins maven agent 
+
                     // Run the maven build
-                    sh """
-                    export JENKINS_MAVEN_AGENT_DISABLED=true
-                    mvn clean deploy -Dmaven.test.failure.ignore=true
-                    """
+                    sh 'mvn clean deploy -Dmaven.test.failure.ignore=true'
 
                 } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
             }
