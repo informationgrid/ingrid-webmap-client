@@ -887,7 +887,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           hostIsProd: hostIsProd,
           staging: staging,
           // INGRID: Add property to check is in iFrame
-          isParentIFrame: window.parent.iframe ? true : false,
+          isParentIFrame: window.document.referrer.length == 0 ? false : (window.document.referrer.indexOf(window.location.host) > -1 ? (window.parent.iframe ? true : false) : true),
           // INGRID: Load map images over rest
           defaultCrossOrigin: false,
           // INGRID: KML download name
