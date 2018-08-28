@@ -102,7 +102,7 @@ public class WmsResource {
     @GET
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login) {
+    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
         try {
             String response = null;
             if(login != null) {
@@ -111,7 +111,9 @@ public class WmsResource {
                 if(config_dir != null){
                     String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
                     if(fileContent != null) {
-                        String password = Utils.getServiceLogin(fileContent, url, login);
+                        if(password == null) {
+                            password = Utils.getServiceLogin(fileContent, url, login);
+                        }
                         if(password != null) {
                             response = HttpProxy.doRequest( url, login, password);
                         }
@@ -151,8 +153,8 @@ public class WmsResource {
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( "Error sending WMS request: " + url, e );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
-        return null;
     }
 
     @POST
@@ -161,7 +163,6 @@ public class WmsResource {
     public String doCapabilitiesWithLoginRequest(String content) {
         String login = null; 
         String password = null;
-        String response = null;
         String url = null;
         boolean toJson = false;
         try {
@@ -180,39 +181,11 @@ public class WmsResource {
                     toJson = obj.getBoolean("toJson");
                 }
             }
-            response = HttpProxy.doRequest( url, login, password );
-            if(response != null) {
-                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
-                    // Remove script tags on getFeatureInfo response.
-                    Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
-                            Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-                    return p.matcher(response).replaceAll("");
-                } else {
-                    // Replace "," to "." on bounding box.
-                    response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
-                    response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
-                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                }
-                if(toJson){
-                    JSONObject json;
-                    try {
-                        json = XML.toJSONObject( response );
-                    } catch (JSONException e) {
-                        json = new JSONObject();
-                    }
-                    json.put( "xmlResponse", response );
-                    return json.toString();
-                }
-                return response;
-            }
-        } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
-            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+            return doWmsRequest(url, toJson, login, password);
         } catch (Exception e) {
             log.error( "Error sending WMS request: " + url, e );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
-        return null;
     }
     @POST
     @Path("proxy")
