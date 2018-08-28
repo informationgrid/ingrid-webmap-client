@@ -44,10 +44,6 @@ echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
 
-# fix Makefile when open jdk kicks in with JAVA_TOOL_OPTIONS message
-# see https://stackoverflow.com/questions/11683715/suppressing-the-picked-up-java-options-message
-sed -i -e 's/java -jar/SILENT_JAVA_TOOL_OPTIONS=\"\$JAVA_TOOL_OPTIONS\";unset JAVA_TOOL_OPTIONS;java -jar/g' Makefile
-
 # make lint
 echo ""
 echo "******************"
