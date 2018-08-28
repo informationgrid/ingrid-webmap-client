@@ -65,4 +65,4 @@ echo "********************"
 echo "*** Make release ***"
 echo "********************"
 make release > release.log
-cat release .log
+cat release.log
