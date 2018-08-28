@@ -142,11 +142,11 @@ public class WmsResource {
                     JSONObject json;
                     try {
                         json = XML.toJSONObject( response );
-                        json.put( "xmlResponse", response );
-                        return json.toString();
                     } catch (JSONException e) {
-                        log.error("Error create json object" + response);
+                        json = new JSONObject();
                     }
+                    json.put( "xmlResponse", response );
+                    return json.toString();
                 }
             }
             return response;
