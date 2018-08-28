@@ -48,18 +48,21 @@ echo ""
 echo "******************"
 echo "*** Make lint ***"
 echo "******************"
-make lint > /dev/null
+make lint > lint.log
+cat lint.log
 
 # make dev version
 echo ""
 echo "******************"
 echo "*** Make debug ***"
 echo "******************"
-make debug > /dev/null
+make debug > debug.log
+cat debug.log
 
 # make prod version
 echo ""
 echo "********************"
 echo "*** Make release ***"
 echo "********************"
-make release > /dev/null
+make release > release.log
+cat release .log
