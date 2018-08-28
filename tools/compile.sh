@@ -49,21 +49,24 @@ echo ""
 echo "******************"
 echo "*** Make lint ***"
 echo "******************"
-make lint
+make lint > lint.log
+cat lint.log
 
 # make dev version
 echo ""
 echo "******************"
 echo "*** Make debug ***"
 echo "******************"
-make debug
+make debug > debug.log
+cat debug.log
 
 # make prod version
 echo ""
 echo "********************"
 echo "*** Make release ***"
 echo "********************"
-make release
+make release > release.log
+cat release.log
 
 # create admin
 echo ""
@@ -73,5 +76,7 @@ echo "********************"
 cd ../admin
 npm install
 ng -v || npm install -g @angular/cli
-ng lint
-ng build --prod --base-href .
+ng lint > lint.log
+cat lint.log
+ng build --prod --base-href . > admin.log
+cat admin.log
