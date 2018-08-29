@@ -35,7 +35,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -68,7 +67,6 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.iplug.opensearch.communication.OSCommunication;
-import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -106,22 +104,11 @@ public class WmsResource {
         try {
             String response = null;
             if(login != null) {
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
-                    String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                    if(fileContent != null) {
-                        if(password == null) {
-                            password = Utils.getServiceLogin(fileContent, url, login);
-                        }
-                        if(password != null) {
-                            response = HttpProxy.doRequest( url, login, password);
-                        }
-                    }
+                if(password == null) {
+                    password = Utils.getServiceLogin(url, login);
                 }
-            } else {
-                response = HttpProxy.doRequest( url );
             }
+            response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
                 if(response.indexOf("<?xml") == -1) {
                    response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
@@ -149,7 +136,7 @@ public class WmsResource {
                     return json.toString();
                 }
             }
-            return response;
+            throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
             log.error( "Error sending WMS request: " + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
@@ -320,18 +307,7 @@ public class WmsResource {
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    String password = null;
-                    if(login != null) {
-                        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                        if(config_dir != null){
-                            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                            if(fileContent != null) {
-                                password = Utils.getServiceLogin(fileContent, serviceCapabilitiesURL, login);
-                            }
-                        }
-                    }
-                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login, password);
+                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login);
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     docFactory.setValidating(false);
                     Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));

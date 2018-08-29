@@ -262,16 +262,9 @@ public class FileResource {
                 URL tmpUrl = new URL( url );
                 URLConnection conn = tmpUrl.openConnection();
                 if(login != null) {
-                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                    if(config_dir != null){
-                        String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                        if(fileContent != null) {
-                            String password = Utils.getServiceLogin(fileContent, url, login);
-                            if(password != null) {
-                                Utils.urlConnectionAuth(conn, login, password);
-                            }
-                        }
+                    String password = Utils.getServiceLogin( url, login);
+                    if(password != null) {
+                        Utils.urlConnectionAuth(conn, login, password);
                     }
                 }
                 if (conn != null) {
