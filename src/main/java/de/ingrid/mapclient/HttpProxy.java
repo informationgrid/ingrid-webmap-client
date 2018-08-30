@@ -50,7 +50,15 @@ public class HttpProxy {
      * @throws Exception
      */
     public static String doRequest(String urlStr) throws Exception {
-        return doRequest(urlStr, null, null);
+        return doRequest(urlStr, null);
+    }
+
+    public static String doRequest(String urlStr, String login) throws Exception {
+        String password = null;
+        if(login != null) {
+            password = Utils.getServiceLogin(urlStr, login);
+        }
+        return doRequest(urlStr, login, password);
     }
 
     public static String doRequest(String urlStr, String login, String password) throws Exception {

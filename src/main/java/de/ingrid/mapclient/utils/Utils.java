@@ -437,7 +437,13 @@ public class Utils {
         conn.setRequestProperty("Authorization", "Basic " + encoding);
     }
     
-    public static String setServiceLogin(String fileContent, String url, String login, String password) throws JSONException, URISyntaxException {
+    public static void setServiceLogin(String url, String login, String password) throws JSONException, URISyntaxException {
+        String fileContent = "{}";
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+        }
         URI uri = new URI(url);
         JSONObject serviceAuth = new JSONObject(fileContent);
         JSONObject loginAuth = null;
@@ -453,18 +459,23 @@ public class Utils {
             }
         }
         serviceAuth.put(host, loginAuth);
-        return serviceAuth.toString();
+        Utils.updateFile("config/service.auth.json", serviceAuth);
     }
     
-    public static String getServiceLogin(String fileContent, String url, String login) throws JSONException, URISyntaxException {
-        URI uri = new URI(url);
-        JSONObject serviceAuth = new JSONObject(fileContent);
-        String key = uri.getHost();
-        if(serviceAuth.has(key)){
-            JSONObject auth = serviceAuth.getJSONObject(key);
-            if(auth.has("login") && auth.has("password")) {
-                if(login.equals(auth.getString("login"))) {
-                    return auth.getString("password"); 
+    public static String getServiceLogin(String url, String login) throws JSONException, URISyntaxException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(config_dir != null){
+            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+            URI uri = new URI(url);
+            JSONObject serviceAuth = new JSONObject(fileContent);
+            String key = uri.getHost();
+            if(serviceAuth.has(key)){
+                JSONObject auth = serviceAuth.getJSONObject(key);
+                if(auth.has("login") && auth.has("password")) {
+                    if(login.equals(auth.getString("login"))) {
+                        return auth.getString("password"); 
+                    }
                 }
             }
         }

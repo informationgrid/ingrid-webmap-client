@@ -8,3 +8,4 @@ work
 /mf-geoadmin3
 *.stackdump
 src/main/resources/application.override.properties
+/admin/*.log
