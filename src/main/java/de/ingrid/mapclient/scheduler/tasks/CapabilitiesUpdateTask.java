@@ -140,10 +140,6 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     if(doc == null){
                                         log.debug( "Load capabilities: " + layerWmsUrl);
                                         getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
-                                        // Remove doctype on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!.*?]>", "" );
-                                        // Remove comments on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!--.*?-->", "" );
                                         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                                         docFactory.setValidating(false);
                                         doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
