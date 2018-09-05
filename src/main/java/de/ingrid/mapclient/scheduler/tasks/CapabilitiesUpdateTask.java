@@ -144,13 +144,13 @@ public class CapabilitiesUpdateTask implements Runnable{
                                         docFactory.setValidating(false);
                                         doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
                                         mapCapabilities.put( layerWmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames);
+                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
                                         if(hasChangesLayer){
                                             hasChanges = hasChangesLayer;
                                         }
                                     } else {
                                         log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames);
+                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
                                         if(hasChangesLayer){
                                             hasChanges = hasChangesLayer;
                                         }
@@ -184,13 +184,13 @@ public class CapabilitiesUpdateTask implements Runnable{
                                         docFactory.setValidating(false);
                                         doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
                                         mapCapabilities.put( layerWtmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames);
+                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
                                         if(hasChangesLayer){
                                             hasChanges = hasChangesLayer;
                                         }
                                     } else {
                                         log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
-                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames);
+                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
                                         if(hasChangesLayer){
                                             hasChanges = hasChangesLayer;
                                         }
@@ -311,7 +311,7 @@ public class CapabilitiesUpdateTask implements Runnable{
     }
 
     private boolean updateLayerWTMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
-            String layerWtmsUrl, ArrayList<String> errorLayernames) throws JSONException, XPathExpressionException {
+            String layerWtmsUrl, ArrayList<String> errorLayernames, String id) throws JSONException, XPathExpressionException {
         boolean hasChanges = false;
         String layerWtmsLayers = layerJSON.getString( "serverLayerName" );
         String matrixSet = layerJSON.getString( "matrixSet" );
@@ -391,13 +391,14 @@ public class CapabilitiesUpdateTask implements Runnable{
             } else {
                 hasChanges = true;
                 layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
-                errorLayernames.add("Layer not exists: " + layerWtmsLayers + " on service url: " + layerWtmsUrl);
+                errorLayernames.add("Layer not exists (" + id + "): " + layerWtmsLayers + " on service url: " + layerWtmsUrl);
               }
         }
         return hasChanges;
     }
 
-    private boolean updateLayerWMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON, String layerWmsUrl, ArrayList<String> errorLayernames) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
+    private boolean updateLayerWMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
+            String layerWmsUrl, ArrayList<String> errorLayernames, String id) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
         boolean hasChanges = false;
         String layerWmsLayers = layerJSON.getString( "wmsLayers" );
         if(layerWmsLayers != null){
@@ -545,7 +546,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                     }
                 } else {
                   layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
-                  errorLayernames.add("Layer not exists: " + layerWmsLayers + " on service url: " + layerWmsUrl);
+                  errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
                 }
             } else {
                 String[] layers = layerWmsLayers.split(",");
