@@ -103,6 +103,13 @@ goog.require('ga_urlutils_service');
           if (params.VERSION) {
             options.id += '||' + params.VERSION;
 
+            // INGRID: Add queryable
+            if (options.queryable) {
+              options.id += '||' + options.queryable;
+            } else {
+              options.id += '||false';
+            }
+
             if (options.useReprojection) {
               options.projection = 'EPSG:4326';
               options.id += '||true';
@@ -110,13 +117,6 @@ goog.require('ga_urlutils_service');
           } else {
             // Set the default wms version
             params.VERSION = '1.3.0';
-          }
-
-          // INGRID: Add queryable
-          if (options.queryable) {
-            options.id += '||' + options.queryable;
-          } else {
-            options.id += '||';
           }
 
           // If the url contains a template for subdomains we display the layer
