@@ -76,6 +76,13 @@ goog.require('ga_urlutils_service');
           if (params.VERSION) {
             options.id += '||' + params.VERSION;
 
+            // INGRID: Add queryable
+            if (options.queryable) {
+              options.id += '||' + options.queryable;
+            } else {
+              options.id += '||false';
+            }
+
             if (options.useReprojection) {
               options.projection = 'EPSG:4326';
               options.id += '||true';
@@ -83,13 +90,6 @@ goog.require('ga_urlutils_service');
           } else {
             // INGRID: Add empty version
             params.VERSION = '';
-          }
-
-          // INGRID: Add queryable
-          if (options.queryable) {
-            options.id += '||' + options.queryable;
-          } else {
-            options.id += '||';
           }
 
           var source = new ol.source.ImageWMS({
