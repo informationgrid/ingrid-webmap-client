@@ -254,13 +254,22 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("blankImage") boolean getBlankImage){
         if (url != null && url.length() > 0) {
             URL tmpUrl;
             try {
                 tmpUrl = new URL(url);
                 BufferedImage image = ImageIO.read(tmpUrl);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                if(image == null && getBlankImage) {
+                    String classPath = "";
+                    classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                    String imgPath = classPath + "frontend/src/img";
+                    File blankImage = new File(imgPath + "/blank_image.png");
+                    if(blankImage.exists()){
+                        image = ImageIO.read(blankImage);
+                    }
+                }
                 ImageIO.write(image, "png", baos);
                 byte[] imageData = baos.toByteArray();
                 return Response.ok(new ByteArrayInputStream(imageData)).build();

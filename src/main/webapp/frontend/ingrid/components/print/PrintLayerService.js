@@ -29,8 +29,8 @@ goog.require('ga_urlutils_service');
         gaUrlUtils, gaWms) {
 
       return {
-        // INGRID: Add param 'gaWms'
-        encodeLegend: getEncodeLegend(gaLang, gaWms),
+        // INGRID: Add param 'gaWms', 'gaGlobalOptions'
+        encodeLegend: getEncodeLegend(gaLang, gaWms, gaGlobalOptions),
         encodeMatrixIds: getMatrixIds(gaMapUtils),
         encodeBase: encodeBase,
         encodeGroup: getEncodeGroup(gaLayers, gaPrintStyle,
@@ -640,8 +640,8 @@ goog.require('ga_urlutils_service');
     }
   };
 
-  // INGRID: Add param 'gaWms'
-  function getEncodeLegend(gaLang, gaWms) {
+  // INGRID: Add param 'gaWms', 'gaGlobalOptions'
+  function getEncodeLegend(gaLang, gaWms, gaGlobalOptions) {
     return function(layer, config, options) {
 
       /* INGRID: Not in used
@@ -673,7 +673,9 @@ goog.require('ga_urlutils_service');
               angular.forEach(layerNames, function(layerName) {
                 enc.classes.push({
                   name: '',
-                  icon: gaWms.getLegendURL(layer, layerName)
+                  icon: gaGlobalOptions.imgproxyUrl
+                    + encodeURIComponent(gaWms.getLegendURL(layer, layerName))
+                    + '&blankImage=true'
                 });
               });
             }

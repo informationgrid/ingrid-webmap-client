@@ -354,7 +354,7 @@ goog.require('ga_urlutils_service');
 
           // INGRID: Change check legend
           if ($scope.options.legend &&
-            ((layerConfig.hasLegend && layerConfig.legendUrl) ||
+            ((layerConfig.hasLegend) ||
             (layer && gaMapUtils.isWMSLayer(layer)))) {
             encLegend = gaPrintLayer.encodeLegend(layer, layerConfig,
                 $scope.options);
