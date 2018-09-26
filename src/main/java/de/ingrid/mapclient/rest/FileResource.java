@@ -256,7 +256,7 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("blankImage") boolean getBlankImageOnError){
         if (url != null && url.length() > 0) {
             try {
                 URL tmpUrl = new URL( url );
@@ -270,6 +270,15 @@ public class FileResource {
                 if (conn != null) {
                     BufferedImage image = ImageIO.read(conn.getInputStream());
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    if(image == null && getBlankImageOnError) {
+                        String classPath = "";
+                        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                        String imgPath = classPath + "frontend/src/img";
+                        File blankImage = new File(imgPath + "/blank_image.png");
+                        if(blankImage.exists()){
+                            image = ImageIO.read(blankImage);
+                        }
+                    }
                     ImageIO.write(image, "png", baos);
                     byte[] imageData = baos.toByteArray();
                     return Response.ok(new ByteArrayInputStream(imageData)).build();
