@@ -44,26 +44,34 @@ echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
 
+
+# Pipe make and ng processes into file because build errors in jenkins.
+# Message "Picked up JAVA_TOOL_OPTIONS ..." makes "make release" build process unsuccess.
+# https://wiki.jenkins.io/display/JENKINS/Pipeline+Maven+Plugin#PipelineMavenPlugin-WhydoIseemessages%22[WARNING]PickedupJAVA_TOOL_OPTIONS...%22inthebuildlogs?
+
 # make lint
 echo ""
 echo "******************"
 echo "*** Make lint ***"
 echo "******************"
-make lint
+make lint > lint.log
+cat lint.log
 
 # make dev version
 echo ""
 echo "******************"
 echo "*** Make debug ***"
 echo "******************"
-make debug
+make debug > debug.log
+cat debug.log
 
 # make prod version
 echo ""
 echo "********************"
 echo "*** Make release ***"
 echo "********************"
-make release
+make release > release.log
+cat release.log
 
 # create admin
 echo ""
@@ -73,5 +81,7 @@ echo "********************"
 cd ../admin
 npm install
 ng -v || npm install -g @angular/cli
-ng lint
-ng build --prod --base-href .
+ng lint > lint.log
+cat lint.log
+ng build --prod --base-href . > admin.log
+cat admin.log

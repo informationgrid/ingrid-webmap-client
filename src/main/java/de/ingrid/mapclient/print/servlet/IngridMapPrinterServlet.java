@@ -25,6 +25,7 @@ package de.ingrid.mapclient.print.servlet;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,6 +37,7 @@ import java.util.Properties;
 import javax.servlet.ServletException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.mapfish.print.MapPrinter;
@@ -109,15 +111,15 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
             try {
                 if(configFile.exists()) {
                     File tmpFile = new File(config_dir + "config/print_config.yaml");
-                    if(tmpFile.exists()) {
-                        tmpFile.delete();
+                    if(!tmpFile.exists()) {
+                        FileUtils.copyFile(configFile, tmpFile);
                     }
-                    FileUtils.copyFile(configFile, tmpFile);
                     configFile = tmpFile;
                     JSONObject auths = new JSONObject(content);
                     if(auths.length() > 0) {
-                        app = tmpFile.getAbsolutePath();
-                        if(tmpFile.exists()) {
+                        app = configFile.getAbsolutePath();
+                        String fileContent = IOUtils.toString(new FileReader(configFile));
+                        if(!fileContent.contains("security:")) {
                             try(FileWriter fw = new FileWriter(app, true);
                                 BufferedWriter bw = new BufferedWriter(fw);
                                 PrintWriter out = new PrintWriter(bw))
@@ -133,36 +135,38 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                         while( keys.hasNext() ) {
                             String host = (String)keys.next();
                             if (auths.has(host)) {
-                                JSONObject authLogin = auths.getJSONObject(host);
-                                String login = null;
-                                String password = null;
-                                String port = null;
-                                if(authLogin.has("login")) {
-                                    login = authLogin.getString("login");
-                                }
-                                if(authLogin.has("password")) {
-                                    password = authLogin.getString("password");
-                                }
-                                if(authLogin.has("port")) {
-                                    port = authLogin.getString("port");
-                                } else {
-                                    port = "80";
-                                }
-                                if(login != null && password != null) {
-                                    if(!tmpLogins.contains(host)) {
-                                        tmpLogins.add(host);
-                                        try(FileWriter fw = new FileWriter(app, true);
-                                            BufferedWriter bw = new BufferedWriter(fw);
-                                            PrintWriter out = new PrintWriter(bw))
-                                        {
-                                            out.println("  - !basicAuth");
-                                            out.println("      matcher: !dnsMatch");
-                                            out.println("        host: " + host);
-                                            out.println("        port: " + port);
-                                            out.println("      username: " + login);
-                                            out.println("      password: " + password);
-                                            //more code
-                                        } catch (IOException e) {
+                                if (!fileContent.contains("host: " + host)) {
+                                    JSONObject authLogin = auths.getJSONObject(host);
+                                    String login = null;
+                                    String password = null;
+                                    String port = null;
+                                    if(authLogin.has("login")) {
+                                        login = authLogin.getString("login");
+                                    }
+                                    if(authLogin.has("password")) {
+                                        password = authLogin.getString("password");
+                                    }
+                                    if(authLogin.has("port")) {
+                                        port = authLogin.getString("port");
+                                    } else {
+                                        port = "80";
+                                    }
+                                    if(login != null && password != null) {
+                                        if(!tmpLogins.contains(host)) {
+                                            tmpLogins.add(host);
+                                            try(FileWriter fw = new FileWriter(app, true);
+                                                BufferedWriter bw = new BufferedWriter(fw);
+                                                PrintWriter out = new PrintWriter(bw))
+                                            {
+                                                out.println("  - !basicAuth");
+                                                out.println("      matcher: !dnsMatch");
+                                                out.println("        host: " + host);
+                                                out.println("        port: " + port);
+                                                out.println("      username: " + login);
+                                                out.println("      password: " + password);
+                                                //more code
+                                            } catch (IOException e) {
+                                            }
                                         }
                                     }
                                 }

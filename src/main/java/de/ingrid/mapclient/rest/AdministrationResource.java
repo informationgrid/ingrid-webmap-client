@@ -679,22 +679,10 @@ public class AdministrationResource {
                 }
             }
             if(login != null && password != null) {
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                String fileContent = null;
-                if(config_dir != null){
-                    fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                }
-                if(fileContent == null) {
-                    fileContent = "{}";
-                }
                 try {
-                    String existPassword = Utils.getServiceLogin(fileContent, url, login);
+                    String existPassword = Utils.getServiceLogin(url, login);
                     if(existPassword == null || overrideLogin) {
-                        String serviceAuth = Utils.setServiceLogin(fileContent, url, login, password);
-                        Utils.updateFile("config/service.auth.json", serviceAuth);
-                    } else {
-                        password = existPassword;
+                        Utils.setServiceLogin(url, login, password);
                     }
                 } catch (Exception e) {
                     log.error("Error 'service.auth.json'!");

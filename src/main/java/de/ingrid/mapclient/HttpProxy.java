@@ -50,47 +50,59 @@ public class HttpProxy {
      * @throws Exception
      */
     public static String doRequest(String urlStr) throws Exception {
-        return doRequest(urlStr, null, null);
+        return doRequest(urlStr, null);
+    }
+
+    public static String doRequest(String urlStr, String login) throws Exception {
+        String password = null;
+        if(login != null) {
+            password = Utils.getServiceLogin(urlStr, login);
+        }
+        return doRequest(urlStr, login, password);
     }
 
     public static String doRequest(String urlStr, String login, String password) throws Exception {
         String result = null;
         StringBuffer response = new StringBuffer();
-
-        // add protocol if missing
-        if (!urlStr.startsWith( "https://" )) {
-            if (!urlStr.startsWith( "http://" )) {
-                urlStr = "http://" + urlStr;
-            }
-        }
-
-        // send request
-        InputStream is = null;
-        try {
-            URL url = new URL( urlStr );
-            URLConnection conn = url.openConnection();
-            if(login != null && password  != null) {
-                Utils.urlConnectionAuth(conn, login, password);
-            }
-            is = new BufferedInputStream(conn.getInputStream());
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            String inputLine = "";
-            while ((inputLine = br.readLine()) != null) {
-                response.append(inputLine);
-            }
-            result = response.toString();
-        }
-        catch (Exception e) {
-            result = null;
-        }
-        finally {
-            if (is != null) {
-                try { 
-                    is.close(); 
-                } 
-                catch (IOException e) {
+        if(urlStr != null) {
+            // add protocol if missing
+            if (!urlStr.startsWith( "https://" )) {
+                if (!urlStr.startsWith( "http://" )) {
+                    urlStr = "http://" + urlStr;
                 }
-            }   
+            }
+    
+            // send request
+            InputStream is = null;
+            try {
+                URL url = new URL( urlStr );
+                URLConnection conn = url.openConnection();
+                if(login != null && password  != null) {
+                    Utils.urlConnectionAuth(conn, login, password);
+                }
+                is = new BufferedInputStream(conn.getInputStream());
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String inputLine = "";
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                result = response.toString();
+            }
+            catch (Exception e) {
+                result = null;
+            }
+            finally {
+                if (is != null) {
+                    try { 
+                        is.close(); 
+                    } 
+                    catch (IOException e) {
+                    }
+                }   
+            }
+            if(urlStr.startsWith("http:") && (result == null || result.trim().length() == 0)){
+                result = doRequest(urlStr.replace("http:", "https:"), login, password);
+            }
         }
         return result;
     }

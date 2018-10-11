@@ -35,7 +35,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -68,7 +67,6 @@ import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.json.JsonWriter;
 
 import de.ingrid.iplug.opensearch.communication.OSCommunication;
-import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -102,86 +100,19 @@ public class WmsResource {
     @GET
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login) {
+    public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
         try {
             String response = null;
             if(login != null) {
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
-                    String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                    if(fileContent != null) {
-                        String password = Utils.getServiceLogin(fileContent, url, login);
-                        if(password != null) {
-                            response = HttpProxy.doRequest( url, login, password);
-                        }
-                    }
-                }
-            } else {
-                response = HttpProxy.doRequest( url );
-            }
-            if(response.indexOf("<?xml") == -1) {
-               response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
-            }
-            if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
-                // Remove script tags on getFeatureInfo response.
-                Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
-                        Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-                return p.matcher(response).replaceAll("");
-            } else {
-                // Replace "," to "." on bounding box.
-                response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
-                response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
-                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-            }
-            if(toJson){
-                JSONObject json;
-                try {
-                    json = XML.toJSONObject( response );
-                    json.put( "xmlResponse", response );
-                    return json.toString();
-                } catch (JSONException e) {
-                    log.error("Error create json object" + response);
+                if(password == null) {
+                    password = Utils.getServiceLogin(url, login);
                 }
             }
-            return response;
-        } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
-            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
-        } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
-        }
-        return null;
-    }
-
-    @POST
-    @Path("proxy/auth")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String doCapabilitiesWithLoginRequest(String content) {
-        String login = null; 
-        String password = null;
-        String response = null;
-        String url = null;
-        boolean toJson = false;
-        try {
-            JSONObject obj = new JSONObject(content);
-            if(obj != null) {
-                if(obj.has("url")) {
-                    url = obj.getString("url");
-                }
-                if(obj.has("login")) {
-                    login = obj.getString("login");
-                }
-                if(obj.has("password")) {
-                    password = obj.getString("password");
-                }
-                if(obj.has("toJson")) {
-                    toJson = obj.getBoolean("toJson");
-                }
-            }
-            response = HttpProxy.doRequest( url, login, password );
+            response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
+                if(response.indexOf("<?xml") == -1) {
+                   response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+                }
                 if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                     // Remove script tags on getFeatureInfo response.
                     Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
@@ -204,15 +135,46 @@ public class WmsResource {
                     json.put( "xmlResponse", response );
                     return json.toString();
                 }
-                return response;
             }
+            throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
             log.error( "Error sending WMS request: " + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( "Error sending WMS request: " + url, e );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
-        return null;
+    }
+
+    @POST
+    @Path("proxy/auth")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String doCapabilitiesWithLoginRequest(String content) {
+        String login = null; 
+        String password = null;
+        String url = null;
+        boolean toJson = false;
+        try {
+            JSONObject obj = new JSONObject(content);
+            if(obj != null) {
+                if(obj.has("url")) {
+                    url = obj.getString("url");
+                }
+                if(obj.has("login")) {
+                    login = obj.getString("login");
+                }
+                if(obj.has("password")) {
+                    password = obj.getString("password");
+                }
+                if(obj.has("toJson")) {
+                    toJson = obj.getBoolean("toJson");
+                }
+            }
+            return doWmsRequest(url, toJson, login, password);
+        } catch (Exception e) {
+            log.error( "Error sending WMS request: " + url, e );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
+        }
     }
     @POST
     @Path("proxy")
@@ -345,18 +307,7 @@ public class WmsResource {
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    String password = null;
-                    if(login != null) {
-                        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                        if(config_dir != null){
-                            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                            if(fileContent != null) {
-                                password = Utils.getServiceLogin(fileContent, serviceCapabilitiesURL, login);
-                            }
-                        }
-                    }
-                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login, password);
+                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login);
                     DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
                     docFactory.setValidating(false);
                     Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));

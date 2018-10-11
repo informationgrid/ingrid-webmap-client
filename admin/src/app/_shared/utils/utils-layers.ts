@@ -11,9 +11,6 @@ export class UtilsLayers {
             if (!layerItem.timeBehaviour) {
                 delete layerItem.timeBehaviour;
             }
-            if (!layerItem.timestamps || layerItem.timestamps.length === 0) {
-                delete layerItem.timestamps;
-            }
             if (!layerItem.gutter) {
                 delete layerItem.gutter;
             }

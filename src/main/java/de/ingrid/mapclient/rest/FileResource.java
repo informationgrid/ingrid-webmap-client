@@ -256,27 +256,29 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("blankImage") boolean getBlankImageOnError){
         if (url != null && url.length() > 0) {
             try {
                 URL tmpUrl = new URL( url );
                 URLConnection conn = tmpUrl.openConnection();
                 if(login != null) {
-                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                    if(config_dir != null){
-                        String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-                        if(fileContent != null) {
-                            String password = Utils.getServiceLogin(fileContent, url, login);
-                            if(password != null) {
-                                Utils.urlConnectionAuth(conn, login, password);
-                            }
-                        }
+                    String password = Utils.getServiceLogin( url, login);
+                    if(password != null) {
+                        Utils.urlConnectionAuth(conn, login, password);
                     }
                 }
                 if (conn != null) {
                     BufferedImage image = ImageIO.read(conn.getInputStream());
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    if(image == null && getBlankImageOnError) {
+                        String classPath = "";
+                        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                        String imgPath = classPath + "frontend/src/img";
+                        File blankImage = new File(imgPath + "/blank_image.png");
+                        if(blankImage.exists()){
+                            image = ImageIO.read(blankImage);
+                        }
+                    }
                     ImageIO.write(image, "png", baos);
                     byte[] imageData = baos.toByteArray();
                     return Response.ok(new ByteArrayInputStream(imageData)).build();

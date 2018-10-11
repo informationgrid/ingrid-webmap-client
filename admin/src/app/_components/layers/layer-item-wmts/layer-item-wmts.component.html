@@ -308,13 +308,10 @@
           'has-success': (serverLayerName.valid && (serverLayerName.dirty || serverLayerName.touched))
           }">
           <input type="text" #serverLayerName="ngModel" [(ngModel)]="layer.item.serverLayerName" name="serverLayerName" class="form-control"
-            required pattern="^[a-zA-Z0-9_-]*">
+            required>
           <div class="form-control-feedback" *ngIf="serverLayerName.errors && (serverLayerName.dirty || serverLayerName.touched)">
             <div *ngIf="serverLayerName.errors.required">
               <span translate>field_required</span>
-            </div>
-            <div *ngIf="serverLayerName.errors.pattern">
-              <span translate>field_pattern</span>
             </div>
           </div>
         </div>

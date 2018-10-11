@@ -143,7 +143,7 @@ goog.require('ga_urlutils_service');
 
       // INGRID: Get params from window parent
       var locSearch = loc.search;
-      if (window.parent.iframe) {
+      if (window.document.referrer.indexOf(window.location.host) > -1) {
         if (window.parent.urlParams) {
           if (locSearch.startsWith('?')) {
             locSearch = locSearch.replace('?', '');
