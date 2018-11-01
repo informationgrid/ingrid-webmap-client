@@ -6366,14 +6366,6 @@
         "category": "cat70",
         "staging": "prod",
         "selectedOpen": false,
-        "label": "Nordland",
-        "id": 1035,
-        "children": []
-      },
-      {
-        "category": "cat70",
-        "staging": "prod",
-        "selectedOpen": false,
         "label": "Nordrhein-Westfalen",
         "id": 1036,
         "children": [{
