@@ -602,18 +602,18 @@ goog.require('ga_urlutils_service');
                 */
                 tileGrid: new ol.tilegrid.WMTS({
                   matrixIds: config.matrixIds || $.map(config.scales,
-                    function(r, i) { return i + ''; }),
+                      function(r, i) { return i + ''; }),
                   origin: config.origin,
                   resolutions: $.map(config.scales,
-                    function(r, i) {
-                      return r * 0.28E-3 /
-                        ol.proj.get(gaGlobalOptions.defaultEpsg)
-                        .getMetersPerUnit();
-                  }),
+                      function(r, i) {
+                        return r * 0.28E-3 /
+                        ol.proj.get(gaGlobalOptions.defaultEpsg).
+                            getMetersPerUnit();
+                      }),
                   tileSize: config.tileSize || 256,
                   extent: config.extent ?
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
-                    gaGlobalOptions.defaultEpsg) : extent
+                        gaGlobalOptions.defaultEpsg) : extent
                 }),
                 tileLoadFunction: tileLoadFunction(config),
                 /* INGRID: Replace generate urls
@@ -645,7 +645,7 @@ goog.require('ga_urlutils_service');
               extent: extent,
               */
               extent: config.extent ? ol.proj.transformExtent(config.extent,
-                'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
               preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
               useInterimTilesOnError: gaNetworkStatus.offline
             });
@@ -690,7 +690,7 @@ goog.require('ga_urlutils_service');
                 extent: extent
                 */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
-                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
               });
             } else {
               if (!olSource) {
@@ -731,7 +731,7 @@ goog.require('ga_urlutils_service');
                 extent: extent,
                 */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
-                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
                 useInterimTilesOnError: gaNetworkStatus.offline
               });
