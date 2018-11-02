@@ -140,15 +140,16 @@ goog.require('ga_window_service');
             var coord = map.getCoordinateFromPixel(pixel);
             */
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
-                function() {
-                  return true;
-                },
-                undefined,
-                function(layer) {
-                // INGRID: Add check for crossOrigin
+              function() {
+                return true;
+              },
+              undefined,
+              function(layer) {
+              // INGRID: Add check for crossOrigin
                 return gaLayers.hasTooltipBodLayer(layer) &&
-                  layer.getSource().crossOrigin;
-              });
+                layer.getSource().crossOrigin;
+              }
+            );
           }
           if (!hasQueryableLayer) {
             feature = findVectorFeature(map, pixel);
@@ -479,7 +480,8 @@ goog.require('ga_window_service');
                 // INGRID: Add queryLayers
                 var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
                 if (layerToQuery.queryLayers) {
-                  params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get(),
+                  params = {'INFO_FORMAT': 'text/html',
+                    'LANG': gaLang.get(),
                     'QUERY_LAYERS': layerToQuery.queryLayers};
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
@@ -726,14 +728,14 @@ goog.require('ga_window_service');
                         coordMeasures.push([coordinateEntry[0] + '',
                           coordinateEntry[1] + '', measure + '']);
                         count++;
-                     }
-                     coordMeasures.sort(function(a, b) {
-                       var measureA = a.measure;
-                       var measureB = b.measure;
-                       if (measureA < measureB) return -1;
-                       if (measureA > measureB) return 1;
-                         return 0;
-                       });
+                      }
+                      coordMeasures.sort(function(a, b) {
+                        var measureA = a.measure;
+                        var measureB = b.measure;
+                        if (measureA < measureB) return -1;
+                        if (measureA > measureB) return 1;
+                        return 0;
+                      });
                     }
                   }
                 }
@@ -773,10 +775,10 @@ goog.require('ga_window_service');
                 $(document).on('click', '.activated', function() {
                   if (this.className) {
                     if (this.className.
-                      indexOf('bwastr_download_csv activated') > -1) {
+                        indexOf('bwastr_download_csv activated') > -1) {
                       if (this.bwastrContent) {
                         var blob = new Blob([decodeURI(this.bwastrContent)],
-                          {type: 'text/csv;charset=utf-8;'});
+                            {type: 'text/csv;charset=utf-8;'});
                         navigator.msSaveBlob(blob, csvDownloadName);
                         $(this).removeClass('activated');
                       }
