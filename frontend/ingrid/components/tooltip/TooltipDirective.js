@@ -87,6 +87,9 @@ goog.require('ga_window_service');
             } else if (gaMapUtils.isWMSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
               layersToQuery.wmsLayers.push(l);
+            } else if (gaMapUtils.isWMTSLayer(l) &&
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+              layersToQuery.wmtsLayers.push(l);
             }
           });
           return layersToQuery;
@@ -502,6 +505,44 @@ goog.require('ga_window_service');
                     if(layerToQuery.get("auth")) {
                       proxyUrl += "&login=" + layerToQuery.get("auth"); 
                     }
+                    all.push($http.get(proxyUrl, {
+                      timeout: canceler.promise,
+                      layer: layerToQuery
+                    }).then(function(response) {
+                      var text = response.data;
+                      if (/(Server Error|ServiceException)/.test(text)) {
+                        return 0;
+                      }
+                      var feat = new ol.Feature({
+                        geometry: null,
+                        // INGRID: Remove '<pre>' HTML tag
+                        description: text
+                      });
+                      showVectorFeature(feat, response.config.layer);
+                      return 1;
+                    }));
+                  });
+                }
+              });
+
+              // INGRID: Add WMTS GetFeatureInfo
+              layersToQuery.wmtsLayers.forEach(function(layerToQuery) {
+                var extent = layerToQuery.getExtent();
+                if (extent && !ol.extent.containsCoordinate(extent,
+                    coordinate)) {
+                  return;
+                }
+                // INGRID: Add queryLayers
+                var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
+                if (layerToQuery.queryLayers) {
+                  params = {'INFO_FORMAT': 'text/html',
+                    'LANG': gaLang.get(),
+                    'QUERY_LAYERS': layerToQuery.queryLayers};
+                }
+                var url = gaMapUtils.getWMTSFeatureInfoUrl(layerToQuery.
+                  getSource(), coordinate, mapRes, mapProj, params);
+                if (!is3dActive() && url) {
+                  gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery

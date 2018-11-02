@@ -624,6 +624,14 @@ goog.require('ga_urlutils_service');
                 crossOrigin: crossOrigin,
                 transition: 0
               });
+              // INGRID: Add featureInfoTpl to source
+              if (config.featureInfoTpl) {
+                  olSource.set('featureInfoTpl', config.featureInfoTpl);
+              }
+              // INGRID: Add tilePixelRatio to source
+              if (config.tilePixelRatio) {
+                  olSource.set('tilePixelRatio', config.tilePixelRatio);
+              }
             }
             olLayer = new ol.layer.Tile({
               minResolution: gaNetworkStatus.offline ? null :

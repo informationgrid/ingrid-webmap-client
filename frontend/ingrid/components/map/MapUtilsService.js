@@ -613,6 +613,73 @@ goog.require('ga_urlutils_service');
             }
           }
           return ol.proj.get(gaGlobalOptions.defaultEpsg);
+        },
+
+        getWMTSFeatureInfoUrl: function(source, coordinate, resolution,
+            projection, params) {
+          var tpl = source.get('featureInfoTpl');
+          if (tpl) {
+            var pixelRatio = source.get('tilePixelRatio') || 1;
+            if (isNaN(pixelRatio)) {
+              return undefined;
+            }
+            var tileGrid = source.getTileGrid();
+            var tileCoord = tileGrid.getTileCoordForCoordAndResolution(
+                coordinate, resolution);
+            var tileExtent = tileGrid.getTileCoordExtent(tileCoord)
+            if (tileGrid.getResolutions().length <= tileCoord.z) {
+              return undefined;
+            }
+            // var tileResolution = tileGrid.getResolution(tileCoord.z);
+            // var tileExtent = tileGrid.getTileCoordExtent(
+            //    tileCoord, this.tmpExtent_);
+            var x = Math.floor((coordinate[0] - tileExtent[0]) /
+              (resolution / pixelRatio));
+            var y = Math.floor((tileExtent[3] - coordinate[1]) /
+              (resolution / pixelRatio));
+            var tileRow = -tileCoord[2] - 1;
+            var tileCol = tileCoord[1];
+            var tileMatrix = tileCoord[0];
+
+            if (source.getRequestEncoding() === 'KVP') {
+              var baseParams = {
+                'SERVICE': 'WMTS',
+                'REQUEST': 'GetFeatureInfo',
+                'VERSION': '1.0.0',
+                'LAYER': source.getLayer(),
+                'STYLE': source.getStyle(),
+                'TILEMATRIXSET': source.getMatrixSet(),
+                'TILEROW': tileRow,
+                'TILECOL': tileCol,
+                'TILEMATRIX': tileMatrix,
+                'FORMAT': 'image/png',
+                'INFOFORMAT': params.INFO_FORMAT,
+                'I': x,
+                'J': y
+              };
+              angular.extend(baseParams, params);
+              var keyParams = [];
+              Object.keys(baseParams).forEach(function(k) {
+                if (baseParams[k] !== null && baseParams[k] !== undefined) {
+                  keyParams.push(k + "=" + encodeURIComponent(baseParams[k]));
+                }
+              });
+              var qs = keyParams.join("&");
+              tpl = tpl.replace(/[?&]$/, "");
+              tpl = tpl.indexOf("?") === -1 ? tpl + "?" : tpl + "&";
+              return tpl + qs;
+            } else if (source.getRequestEncoding() === 'REST') {
+              return tpl.
+                  replace('{Layer}', source.getLayer()).
+                  replace('{TileMatrixSet}', source.getMatrixSet()).
+                  replace('{TileRow}', tileRow).
+                  replace('{TileCol}', tileCol).
+                  replace('{TileMatrix}', tileMatrix).
+                  replace('{I}', x).
+                  replace('{J}', y);
+            }
+          }
+          return undefined;
         }
       };
     };
