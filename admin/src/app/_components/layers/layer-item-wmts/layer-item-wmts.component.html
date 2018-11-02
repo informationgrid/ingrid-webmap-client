@@ -633,6 +633,26 @@
           </div>
         </div>
       </div>
+      <!-- featureInfoTpl -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_featureInfoTpl</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_featureInfoTpl_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_featureInfoTpl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_featureInfoTpl_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9 input-group">
+          <input type="text" #featureInfoTpl="ngModel" [(ngModel)]="layer.item.featureInfoTpl" name="featureInfoTpl" class="form-control">
+        </div>
+      </div>
       <!-- tooltip -->
       <div class="form-group row">
         <div class="col-sm-3">

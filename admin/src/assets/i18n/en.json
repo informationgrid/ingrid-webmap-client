@@ -88,6 +88,8 @@
     "layer_attribution_help": "",
     "layer_attributionUrl": "",
     "layer_attributionUrl_help": "",
+    "layer_featureInfoTpl": "",
+    "layer_featureInfoTpl_help": "",
     "layer_format": "",
     "layer_format_help": "",
     "layer_timeBehaviour": "",

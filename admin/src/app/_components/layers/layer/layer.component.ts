@@ -747,18 +747,51 @@ export class LayerComponent implements OnInit {
               // ServiceMetadataUrl
               newLayer.serviceUrl = serviceMetadataUrl;
               // Format
-              if (layer['ResourceURL']) {
-                newLayer.format = layer['ResourceURL']['format'];
-                if (newLayer.format) {
-                  if (newLayer.format.indexOf('image/png') > -1) {
-                    newLayer.format = 'png';
-                  } else if (newLayer.format.indexOf('image/jpeg') > -1) {
-                    newLayer.format = 'jpeg';
-                  } else if (newLayer.format.indexOf('image/gif') > -1) {
-                    newLayer.format = 'gif';
+              const resourceUrl = layer['ResourceURL'];
+              if (resourceUrl) {
+                if (resourceUrl instanceof Array) {
+                  resourceUrl.forEach(resUrl => {
+                    const resourceType = resUrl['resourceType'];
+                    if (resourceType === 'tile') {
+                      newLayer.format = resUrl['format'];
+                      if (newLayer.format) {
+                        if (newLayer.format.indexOf('image/png') > -1) {
+                          newLayer.format = 'png';
+                        } else if (newLayer.format.indexOf('image/jpeg') > -1) {
+                          newLayer.format = 'jpeg';
+                        } else if (newLayer.format.indexOf('image/gif') > -1) {
+                          newLayer.format = 'gif';
+                        }
+                      }
+                      newLayer.template = resUrl['template'];
+                    } else if (resourceType === 'FeatureInfo') {
+                      // FeatureInfoTpl
+                      newLayer.featureInfoTpl = resUrl['template'];
+                      // Tooltip
+                      newLayer.tooltip = true;
+                    }
+                  });
+                } else {
+                  const resourceType = resourceUrl['resourceType'];
+                  if (resourceType === 'tile') {
+                    newLayer.format = resourceUrl['format'];
+                    if (newLayer.format) {
+                      if (newLayer.format.indexOf('image/png') > -1) {
+                        newLayer.format = 'png';
+                      } else if (newLayer.format.indexOf('image/jpeg') > -1) {
+                        newLayer.format = 'jpeg';
+                      } else if (newLayer.format.indexOf('image/gif') > -1) {
+                        newLayer.format = 'gif';
+                      }
+                    }
+                    newLayer.template = resourceUrl['template'];
+                  } else if (resourceType === 'FeatureInfo') {
+                    // FeatureInfoTpl
+                    newLayer.featureInfoTpl = resourceType['template'];
+                    // Tooltip
+                    newLayer.tooltip = true;
                   }
                 }
-                newLayer.template = layer['ResourceURL']['template'];
               }
               // Style
               newLayer.style = layer['Style']['ows:Identifier'];
