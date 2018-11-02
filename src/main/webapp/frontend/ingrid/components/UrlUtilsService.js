@@ -91,6 +91,7 @@ goog.provide('ga_urlutils_service');
         this.proxifyUrl = function(url) {
           var that = this;
           var deferred = $q.defer();
+          /* INGRID: Disable check 
           if (!this.isBlob(url) && this.isHttps(url) &&
               !this.isAdminValid(url) && !/.*kmz$/.test(url)) {
             this.isCorsEnabled(url).then(function(enabled) {
@@ -99,8 +100,11 @@ goog.provide('ga_urlutils_service');
               deferred.resolve(that.buildProxyUrl(url));
             });
           } else {
+          */
             deferred.resolve(this.proxifyUrlInstant(url));
+          /*
           }
+          */
           return deferred.promise;
         };
 
@@ -170,13 +174,13 @@ goog.provide('ga_urlutils_service');
             var partParamString = partsParamString[i];
             if (tmpUrl.indexOf(partParamString.toLowerCase()) < 0) {
               if (url.indexOf('?') < 0) {
-                  url += '?';
+                url += '?';
               }
               if (url.endsWith('?') === false) {
-                  url += '&';
+                url += '&';
               }
               if (url.indexOf(partParamString.split('=')[0]) < 0) {
-                  url += partParamString;
+                url += partParamString;
               }
             }
           }
