@@ -14,6 +14,7 @@ export class LayerItemWmtsComponent {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
+  @Input() altLayers;
   @ViewChild('f') form: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;

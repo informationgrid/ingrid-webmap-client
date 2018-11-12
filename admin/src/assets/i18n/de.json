@@ -313,5 +313,6 @@
     "layer_auth_help": "Haben Sie die Karte über einen passwortgeschützten Dienst geladen, so wird unter Login der Benutzername des Dienstes angezeigt. Anhand dem Login und der Dienst-URL wird das gespeicherte Passwort ermittelt und die Karte wird über den eigenen Server mit Authentifizierung geladen.",
     "layer_edit_auth_account": "Login-Daten ändern",
     "layer_edit_auth_account_text": "Ändern Sie hier die Login-Daten für Ihre Karte.",
-    "layer_edit_auth_account_info": "Bei Änderung des Benutzernamens müssen ggf. auch bei andere eingepflegten Karten aus dem Dienst der neuen Benutzername hinterlegt werden."
+    "layer_edit_auth_account_info": "Bei Änderung des Benutzernamens müssen ggf. auch bei andere eingepflegten Karten aus dem Dienst der neuen Benutzername hinterlegt werden.",
+    "use_alternative_layer": "Ihre angegebene Karte existiert nicht mehr. Wählen Sie bitte eine andere Karte aus der Liste aus."
 }

@@ -248,6 +248,15 @@ export class HttpService {
     }
   }
 
+  loadServiceLayers(serviceUrl: string, login: string) {
+    return this.http.get(httpServiceUrl.replace('/?', '/layers?'), {
+      params: {
+        url: serviceUrl,
+        login: login
+      }
+    });
+  }
+
 // Settings
   getSetting(): Observable<Setting> {
     return this.http.get<Setting>(httpApiHost + '/setting', httpJsonOptions);

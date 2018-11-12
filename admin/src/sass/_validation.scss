@@ -5,7 +5,7 @@
 }
 
 .has-danger {
-    input {
+    input, select {
         border-color: $color-invalid;
     }
     .form-control-feedback {

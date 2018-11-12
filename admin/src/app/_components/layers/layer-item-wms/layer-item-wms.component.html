@@ -251,6 +251,23 @@
           </div>
         </div>
       </div>
+      <!-- altLayer -->
+      <div class="form-group row" *ngIf="layer.item.status">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate></label>
+          </div>
+        </div>
+        <div class="col-sm-9 has-danger">
+          <select class="form-control" #altLayersSelect="ngModel" [(ngModel)]="layer.item.wmsLayers" name="altLayersSelect">
+            <option value=""></option>
+            <option [value]="altLayer" *ngFor="let altLayer of altLayers" title="{{ altLayer }}">{{ altLayer | limitToPipe:50 }}</option>
+          </select>
+          <div class="form-control-feedback">
+            <span translate>use_alternative_layer</span>
+          </div>
+        </div>
+      </div>
       <!-- gutter -->
       <div class="form-group row">
         <div class="col-sm-3">

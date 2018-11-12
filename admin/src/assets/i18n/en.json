@@ -312,5 +312,6 @@
     "layer_auth_help": "",
     "layer_edit_auth_account": "",
     "layer_edit_auth_account_text": "",
-    "layer_edit_auth_account_info": ""
+    "layer_edit_auth_account_info": "",
+    "use_alternative_layer": ""
 }

@@ -121,7 +121,8 @@
         <label class="col-sm-4 col-form-label" for="layerBodIdAdd" translate>category_item_add_layerBodId</label>
         <div class="col-sm-8">
           <div class="input-group">
-            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"  (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
+            <input type="text" #layerBodIdAdd="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodIdAdd" placeholder="{{ ('category_item_add_layerBodId_input') | translate }}"
+              (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
                   <i class="fa fa-caret-up" aria-hidden="true"></i>

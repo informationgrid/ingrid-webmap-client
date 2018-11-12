@@ -16,6 +16,7 @@ export class LayerItemComponent {
   @Output() selectLayer: EventEmitter<any> = new EventEmitter<any>();
 
   isEdit = false;
+  altLayers;
 
   constructor(private httpService: HttpService) { }
 
@@ -55,5 +56,21 @@ export class LayerItemComponent {
 
   checkLayer(event) {
     this.selectLayer.emit(event);
+  }
+
+  loadLayersForService(event, layer) {
+    if (layer.item.status && !this.altLayers) {
+      let serviceUrl = layer.item.wmsUrl || layer.item.serviceUrl;
+      serviceUrl = UtilsLayers.addGetCapabilitiesParams(serviceUrl.trim());
+      this.httpService.loadServiceLayers(serviceUrl, layer.item.auth)
+      .subscribe(
+        data => {
+          this.altLayers = data;
+        },
+        error => {
+          console.error('Error loadServiceLayers!');
+        }
+      );
+    }
   }
 }

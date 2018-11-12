@@ -1,4 +1,5 @@
-<div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers">
+<div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" 
+  [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers" (click)="loadLayersForService($event, layer)">
   <span>
     <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
     {{layer.item.label}}
@@ -10,10 +11,10 @@
 </div>
 <div class="collapse" id="collapse{{ layer.id }}" [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
   <div *ngIf="isWMSLayer(layer.item)">
-    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wms>
+    <app-layer-item-wms [layer]="layer" [layerId]="layer.id" [altLayers]="altLayers" (updateLayer)="updateLayer($event)"></app-layer-item-wms>
   </div>
   <div *ngIf="isWMTSLayer(layer.item)">
-    <app-layer-item-wmts [layer]="layer" [layerId]="layer.id" (updateLayer)="updateLayer($event)"></app-layer-item-wmts>
+    <app-layer-item-wmts [layer]="layer" [layerId]="layer.id" [altLayers]="altLayers" (updateLayer)="updateLayer($event)"></app-layer-item-wmts>
   </div>
 </div>
 <!-- Modal delete -->
