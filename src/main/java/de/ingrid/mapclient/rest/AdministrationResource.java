@@ -246,7 +246,35 @@ public class AdministrationResource {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
-    
+
+    @POST
+    @Path("categories/{copyId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response copyCategory(String content, @PathParam("copyId") String copyId) {
+        if(copyId != null) {
+            JSONObject category;
+            try {
+                category = new JSONObject(content);
+                String categoryId = category.getString("id");
+                String fileContent = null;
+                if(categoryId != null) {
+                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                    if(config_dir != null){
+                        fileContent = Utils.getFileContent(config_dir, "catalog-" + copyId, ".json", "data/");
+                    }
+                    if(fileContent != null) {
+                        Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
+                    }
+                }
+            } catch (JSONException e) {
+                log.error("Error POST '/categories'!");
+            }
+            return this.addCategory(content);
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
     @PUT
     @Path("categories/{id}")
     @Produces(MediaType.APPLICATION_JSON)

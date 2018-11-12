@@ -69,6 +69,10 @@
                     <i class="fa fa-edit" aria-hidden="true"></i>
                     edit
                   </button>
+                  <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalCopy(modalCopy, category)" translate>
+                    <i class="fa fa-copy" aria-hidden="true"></i>
+                    copy
+                  </button>
                   <button class="btn btn-primary mr-sm-2" type="button" (click)="loadCategory(category.id)" translate>
                     <i class="fa fa-refresh" aria-hidden="true"></i>
                     refresh
@@ -341,6 +345,174 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-primary" [disabled]="!formEdit.valid" (click)="formEdit.ngSubmit.emit()" translate>
+      <i class="fa fa-save" aria-hidden="true"></i>
+      save
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal copy -->
+<app-modal #modalCopy [cssClass]="'modal-lg'">
+  <div class="app-modal-header">
+    <h5 class="modal-title"><span translate>category_copy_title</span></h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>category_copy_text</p>
+    <form #formCopy="ngForm" (ngSubmit)="onCopyCategory(modalCopy)">
+      <!-- id -->
+      <div class="form-group row" [style.display]="'none'">
+        <label class="col-sm-4 col-form-label" for="category_copy_id" translate>category_id</label>
+        <div class="col-sm-8">
+          <input type="text" #id="ngModel" [(ngModel)]="model.id" class="form-control" name="id" id="category_copy_id" >
+        </div>
+      </div>
+      <!-- copyId -->
+      <div class="form-group row" [ngClass]="{
+        'has-danger': copyId.invalid && (copyId.dirty || copyId.touched),
+        'has-success': copyId.valid && (copyId.dirty || copyId.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="category_copy_id" translate>category_id</label>
+        <div class="col-sm-8">
+          <input type="text" #copyId="ngModel" ngModel class="form-control" name="copyId" id="category_copy_copyId"
+          required minlength="4" pattern="^[a-zA-Z0-9_-]*" appCategoryListValidator [checkList]="categories">
+          <div class="form-control-feedback" 
+              *ngIf="copyId.errors && (copyId.dirty || copyId.touched)">
+            <div *ngIf="copyId.errors.required"><span translate>field_required</span></div>
+            <div *ngIf="copyId.errors.minlength"><span translate>field_minlength</span> {{ copyId.errors.minlength.requiredLength }}</div>
+            <div *ngIf="copyId.errors.pattern"><span translate>field_pattern</span></div>
+            <div *ngIf="copyId.errors.exist"><span translate>field_category_exists</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- label -->
+      <div class="form-group row" [ngClass]="{
+        'has-danger': copyCatLabel.invalid && (copyCatLabel.dirty || copyCatLabel.touched),
+        'has-success': copyCatLabel.valid && (copyCatLabel.dirty || copyCatLabel.touched)}
+        ">
+        <label class="col-sm-4 col-form-label" for="copyCatLabel" translate>category_label</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #copyCatLabel="ngModel" [(ngModel)]="formCopy.value.copyCatLabel" name="copyCatLabel" id="copyCatLabel" [value]="formCopy.value.copyCatLabel" required>
+          <div class="form-control-feedback" 
+              *ngIf="copyCatLabel.errors && (copyCatLabel.dirty || copyCatLabel.touched)">
+            <div *ngIf="copyCatLabel.errors.required"><span translate>field_required</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- tooltip -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" for="copyCatTooltip" translate>category_tooltip</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" #copyCatTooltip="ngModel" [(ngModel)]="formCopy.value.copyCatTooltip" name="copyCatTooltip" id="copyCatTooltip">
+        </div>
+      </div>
+      <!-- backgroundLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" translate>category_backgroundLayers</label>
+        <div class="col-sm-8">
+          <div class="input-group form-group" *ngFor="let item of model.backgroundLayers; let i=index;">
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.backgroundLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.backgroundLayers.length - 1) && model.backgroundLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.backgroundLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.backgroundLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <select class="form-control" #selectAddBgLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option value="osmLayer" translate>osmLayer</option>
+              <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, model.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- defaultBackground -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" translate>category_defaultBackground</label>
+        <div class="col-sm-8">
+          <select class="form-control" name="defaultBackground" [ngModel]="model.defaultBackground">
+            <option value="" translate>category_select_layer</option>
+            <option [value]="layer" *ngFor="let layer of model.backgroundLayers" title="{{ getLabel(layer) }}" >{{ getLabel(layer) }}</option>
+          </select>
+        </div>
+      </div>
+      <!-- selectedLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" translate>category_selectedLayers</label>
+        <div class="col-sm-8">
+          <div class="input-group form-group" *ngFor="let item of model.selectedLayers; let i=index">
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.selectedLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <select class="form-control" #selectAddSelectLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, model.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- activatedLayers -->
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label" translate>category_activatedLayers</label>
+        <div class="col-sm-8">
+          <div class="input-group form-group" *ngFor="let item of model.activatedLayers; let i=index">
+            <input type="text" class="form-control" value="{{ getLabel(item) }}" disabled/>
+            <div class="input-group-append">
+              <button *ngIf="i !== 0" type="button" class="btn btn-outline-secondary" (click)="onUpItem(item, model.activatedLayers)">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group">
+            <select class="form-control" #selectAddActiveLayer>
+              <option value="" selected translate>category_select_layer</option>
+              <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
+            </select>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, model.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="!formCopy.valid" (click)="formCopy.ngSubmit.emit()" translate>
       <i class="fa fa-save" aria-hidden="true"></i>
       save
     </button>

@@ -19,6 +19,7 @@ export class CategoryComponent implements OnChanges {
   @Input() categories: Category[];
   @ViewChild('formAdd') formAdd: NgForm;
   @ViewChild('formEdit') formEdit: NgForm;
+  @ViewChild('formCopy') formCopy: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -62,6 +63,23 @@ export class CategoryComponent implements OnChanges {
       activatedLayers: this.model.activatedLayers,
       editCatLabel: this.translate.instant(this.model.id),
       editCatTooltip: this.translate.instant('topic_' + this.model.id + '_tooltip')
+    });
+    modal.show();
+  }
+
+  showModalCopy (modal: ModalComponent, category: Category) {
+    this.model = category;
+    this.backgroundLayers = this.layers.filter(
+      layer => layer.item.background
+    );
+    this.formCopy.reset({
+      id: this.model.id,
+      defaultBackground: this.model.defaultBackground,
+      backgroundLayers: this.model.backgroundLayers,
+      selectedLayers: this.model.selectedLayers,
+      activatedLayers: this.model.activatedLayers,
+      copyCatLabel: this.translate.instant(this.model.id),
+      copyCatTooltip: this.translate.instant('topic_' + this.model.id + '_tooltip')
     });
     modal.show();
   }
@@ -156,7 +174,7 @@ export class CategoryComponent implements OnChanges {
             map.set('' + value + '_service_link_href', '');
             map.set('' + value + '_service_link_label', '');
             map.set('topic_' + value + '_tooltip', this.formAdd.value.addCatTooltip ? this.formAdd.value.addCatTooltip : value);
-            this.httpService.addCategoryAndLabel(this.model, map).subscribe(
+            this.httpService.addCategoryAndLabel(this.model, map, null).subscribe(
               data => {
                 this.categories = data[0];
                 this.updateAppCategories.emit(data[0]);
@@ -190,6 +208,39 @@ export class CategoryComponent implements OnChanges {
           map.set('topic_' + this.model.id + '_tooltip', this.formEdit.value.editCatTooltip);
         }
         this.httpService.updateCategoryAndLabel(this.model, map).subscribe(
+          data => {
+            this.categories = data[0];
+            this.modalSaveSuccess.show();
+            modal.hide();
+          },
+          error => {
+            console.error('Error update: ' + this.model.id);
+            this.modalSaveUnsuccess.show();
+          },
+          () => {
+            this.translate.reloadLang(this.translate.getDefaultLang());
+          }
+        );
+      }
+    }
+  }
+
+  // Copy category
+  onCopyCategory(modal: ModalComponent) {
+    if (this.formCopy.valid) {
+      if (this.model) {
+        this.model.defaultBackground = this.formCopy.value.defaultBackground;
+        const map = new Map<String, String>();
+        if (this.formCopy.value.copyCatLabel) {
+          map.set(this.formCopy.value.copyId, this.formCopy.value.copyCatLabel);
+        }
+        if (this.formCopy.value.copyCatTooltip) {
+          map.set('topic_' + this.formCopy.value.copyId + '_tooltip', this.formCopy.value.copyCatTooltip);
+        }
+        if (this.formCopy.value.copyId) {
+          this.model.id = this.formCopy.value.copyId;
+        }
+        this.httpService.addCategoryAndLabel(this.model, map, this.formCopy.value.id).subscribe(
           data => {
             this.categories = data[0];
             this.modalSaveSuccess.show();

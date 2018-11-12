@@ -171,20 +171,24 @@ export class HttpService {
       this.updateLocales(locale)
     );
   }
+
   updateCategory(category: Category): Observable<Category[]> {
     const body = JSON.stringify(category);
     return this.http.put<Category[]>(httpApiHost + '/categories/' + category.id, body, httpJsonOptions);
   }
 
-  addCategoryAndLabel(category: Category, locale: Map<String, String>) {
+  addCategoryAndLabel(category: Category, locale: Map<String, String>, copyId: String) {
     return forkJoin(
-      this.addCategory(category),
+      this.addCategory(category, copyId),
       this.updateLocales(locale)
     );
   }
 
-  addCategory(category: Category): Observable<Category[]> {
+  addCategory(category: Category, copyId: String): Observable<Category[]> {
     const body = JSON.stringify(category);
+    if (copyId) {
+      return this.http.post<Category[]>(httpApiHost + '/categories/' + copyId, body, httpJsonOptions);
+    }
     return this.http.post<Category[]>(httpApiHost + '/categories', body, httpJsonOptions);
   }
 
