@@ -165,6 +165,14 @@ export class HttpService {
     return this.http.get<CategoryItem[]>(url, httpJsonOptions);
   }
 
+  getCategoriesOfLayer(layerId: string, isExpanded) {
+    return this.http.get(httpApiHost + '/categories/layer/' + layerId, {
+      params: {
+        isExpanded: isExpanded
+      }
+    });
+  }
+
   updateCategoryAndLabel(category: Category, locale: Map<String, String>) {
     return forkJoin(
       this.updateCategory(category),

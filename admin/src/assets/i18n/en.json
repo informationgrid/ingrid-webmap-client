@@ -313,5 +313,7 @@
     "layer_edit_auth_account": "",
     "layer_edit_auth_account_text": "",
     "layer_edit_auth_account_info": "",
-    "use_alternative_layer": ""
+    "use_alternative_layer": "",
+    "layer_category_dependency": "",
+    "layer_category_no_dependency": ""
 }

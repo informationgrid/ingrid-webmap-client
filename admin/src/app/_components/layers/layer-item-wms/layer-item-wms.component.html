@@ -5,16 +5,44 @@
         <i class="fa fa-trash" aria-hidden="true"></i>
         delete
       </button>
-      <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
-        <i class="fa fa-check" aria-hidden="true"></i>
-        save
-      </button>
+      <div>
+        <button type="button" class="btn mr-sm-2" [ngClass]="{
+          'btn-warning': layer.item.status,
+          'btn-outline-info': !layer.item.status
+          }" data-toggle="collapse" [attr.data-target]="'#info_layer_' + layer.id"
+          title="{{ ('help') | translate }}" (click)="loadCategories(collapseStatus, layer.id)" translate>
+          <i class="fa fa-info" aria-hidden="true"></i>
+        </button>
+        <button type="submit" class="btn btn-primary mr-sm-2" [disabled]="!f.valid" translate>
+          <i class="fa fa-check" aria-hidden="true"></i>
+          save
+        </button>
+      </div>
     </div>
     <div class="modal-body">
       <!-- status -->
-      <div *ngIf="layer.item.status" class="alert alert-warning">
-        <p translate>{{ layer.item.status }}</p>
-        <p translate>{{ layer.item.status }}_info</p>
+      <div #collapseStatus class="collapse" id="info_layer_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+        <div class="form-group">
+          <div class="card card-body">
+            <div *ngIf="layer.item.status">
+              <p class="alert alert-warning" translate>{{ layer.item.status }}_info</p>
+            </div>
+            <div class="row">
+              <div class="col-sm-3">
+                <b class="card-title" translate>layer_category_dependency</b>
+              </div>
+              <tree-root #categoryTree [nodes]="layerCategoryTrees" [options]="optionsCategoryTree" *ngIf="layerCategoryTrees && layerCategoryTrees.length > 0">
+                <ng-template #treeNodeTemplate let-node let-index="index" translate>
+                  <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                  {{ node.data.label }}
+                </ng-template>
+              </tree-root>
+              <div *ngIf="!layerCategoryTrees || layerCategoryTrees.length === 0">
+                <p translate>layer_category_no_dependency</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- type -->
       <div class="form-group row">

@@ -219,6 +219,7 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
+
     @GET
     @Path("categories/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -228,6 +229,38 @@ public class AdministrationResource {
             return Response.ok( arr ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    @GET
+    @Path("categories/layer/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCategoryByLayerId(@PathParam("id") String id, @QueryParam("isExpanded") boolean isExpanded) {
+        JSONArray categoriesWithLayerId = new JSONArray();
+        JSONArray categories = getCategories();
+        if(categories != null) {
+            for (int i = 0; i < categories.length(); i++) {
+                try {
+                    JSONObject category = categories.getJSONObject(i);
+                    if(category != null && category.has("id")) {
+                        String categoryId = category.getString("id");
+                        JSONArray categoryTree = getCategoryTree(categoryId);
+                        if(categoryTree != null) {
+                            JSONArray filterCategoryTree = new JSONArray();
+                            filteredTreeLeafById(categoryTree, id, filterCategoryTree, isExpanded);
+                            if(filterCategoryTree.length() > 0) {
+                                JSONObject filterCategory = new JSONObject();
+                                filterCategory.put("label", categoryId);
+                                filterCategory.put("children", filterCategoryTree);
+                                categoriesWithLayerId.put(filterCategory);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return Response.ok( categoriesWithLayerId ).build();
     }
 
     @POST
@@ -1394,7 +1427,39 @@ public class AdministrationResource {
         }
         return arr;
     }
-    
+
+    private void filteredTreeLeafById(JSONArray categoryTree, String id, JSONArray filterCategoryTree, boolean isExpanded) {
+        if(categoryTree != null) {
+            try {
+                for (int i = 0; i < categoryTree.length(); i++) {
+                    JSONObject categoryTreeBranch = categoryTree.getJSONObject(i);
+                    if(categoryTreeBranch.has("children")) {
+                        JSONArray categoryTreeBranchChildren = categoryTreeBranch.getJSONArray("children");
+                        JSONArray filterCategoryTreeChildren = new JSONArray();
+                        if(categoryTreeBranchChildren != null) {
+                            filteredTreeLeafById(categoryTreeBranchChildren, id, filterCategoryTreeChildren, isExpanded);
+                            if(filterCategoryTreeChildren.length() > 0) {
+                                categoryTreeBranch.put("children", filterCategoryTreeChildren);
+                                if(isExpanded) {
+                                    categoryTreeBranch.put("isExpanded", isExpanded);
+                                }
+                                filterCategoryTree.put(categoryTreeBranch);
+                            }
+                        }
+                    }
+                    if(categoryTreeBranch.has("layerBodId")) {
+                        String layerBodId = categoryTreeBranch.getString("layerBodId");
+                        if(layerBodId.equals(id)) {
+                            filterCategoryTree.put(categoryTreeBranch);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void updateCategoryLayersId(JSONObject catItem, String id, String newId) throws JSONException {
         String key = "layerBodId";
         if(!catItem.isNull(key)) {

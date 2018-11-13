@@ -300,10 +300,10 @@
     "refresh": "Aktualisieren",
     "reset": "Zurücksetzen",
     "status_layer_error": "Nur fehlerhafte Karten",
-    "status_layer_not_exist": "Karte existiert nicht mehr!",
+    "status_layer_not_exist": "Karte existiert nicht mehr",
     "status_layer_not_exist_info": "Möglicherweise hat sich der Karten-Name im Dienst geändert.",
-    "status_service_not_exist": "Dienst existiert nicht mehr!",
-    "status_service_not_exist_info": "Möglicherweise hat sich die URL des Dienstes, z.B. von http zu https, geändert.",
+    "status_service_not_exist": "Dienst existiert nicht mehr",
+    "status_service_not_exist_info": "Der Dienst ist nicht mehr erreichbar. Bitte prüfen Sie die Dienst-URL (ggf. von http auf https geändert).",
     "service_hasLogin": "Login verwenden",
     "service_overrideLogin": "Login ersetzen",
     "service_login": "Benutzername",
@@ -314,5 +314,7 @@
     "layer_edit_auth_account": "Login-Daten ändern",
     "layer_edit_auth_account_text": "Ändern Sie hier die Login-Daten für Ihre Karte.",
     "layer_edit_auth_account_info": "Bei Änderung des Benutzernamens müssen ggf. auch bei andere eingepflegten Karten aus dem Dienst der neuen Benutzername hinterlegt werden.",
-    "use_alternative_layer": "Ihre angegebene Karte existiert nicht mehr. Wählen Sie bitte eine andere Karte aus der Liste aus."
+    "use_alternative_layer": "Ihre angegebene Karte existiert nicht mehr. Wählen Sie bitte eine andere Karte aus der Liste aus.",
+    "layer_category_dependency": "Diese Karte ist Bestandteil von folgenden Kategorien:",
+    "layer_category_no_dependency": "Diese Karte wurde keiner Kategorie zugeordnet."
 }
