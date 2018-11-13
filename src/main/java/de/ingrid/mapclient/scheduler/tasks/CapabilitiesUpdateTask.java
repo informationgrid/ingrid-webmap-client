@@ -140,13 +140,18 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     if(doc == null){
                                         log.debug( "Load capabilities: " + layerWmsUrl);
                                         getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
-                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                        docFactory.setValidating(false);
-                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                        mapCapabilities.put( layerWmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
+                                        if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                            hasChanges = true;
+                                            layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                        } else {
+                                            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                            docFactory.setValidating(false);
+                                            doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                            mapCapabilities.put( layerWmsUrl, doc );
+                                            boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                            if(hasChangesLayer){
+                                                hasChanges = hasChangesLayer;
+                                            }
                                         }
                                     } else {
                                         log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
@@ -176,17 +181,22 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     if(doc == null){
                                         log.debug( "Load capabilities: " + layerWtmsUrl);
                                         getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
-                                        // Remove doctype on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!.*?]>", "" );
-                                        // Remove comments on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!--.*?-->", "" );
-                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                        docFactory.setValidating(false);
-                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                        mapCapabilities.put( layerWtmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
+                                        if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                            hasChanges = true;
+                                            layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                        } else {
+                                            // Remove doctype on xml
+                                            getCapabilities = getCapabilities.replaceAll( "(?s)<!.*?]>", "" );
+                                            // Remove comments on xml
+                                            getCapabilities = getCapabilities.replaceAll( "(?s)<!--.*?-->", "" );
+                                            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                            docFactory.setValidating(false);
+                                            doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                            mapCapabilities.put( layerWtmsUrl, doc );
+                                            boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                            if(hasChangesLayer){
+                                                hasChanges = hasChangesLayer;
+                                            }
                                         }
                                     } else {
                                         log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
