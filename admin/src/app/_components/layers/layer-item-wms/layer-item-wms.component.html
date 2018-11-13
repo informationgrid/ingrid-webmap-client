@@ -260,7 +260,6 @@
         </div>
         <div class="col-sm-9 has-danger">
           <select class="form-control" #altLayersSelect="ngModel" [(ngModel)]="layer.item.wmsLayers" name="altLayersSelect">
-            <option value=""></option>
             <option [value]="altLayer" *ngFor="let altLayer of altLayers" title="{{ altLayer }}">{{ altLayer | limitToPipe:50 }}</option>
           </select>
           <div class="form-control-feedback">
