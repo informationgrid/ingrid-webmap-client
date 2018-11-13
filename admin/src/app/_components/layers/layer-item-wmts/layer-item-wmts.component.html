@@ -33,9 +33,9 @@
               </div>
               <div class="col-sm-9">
                 <tree-root #categoryTree [nodes]="layerCategoryTrees" [options]="optionsCategoryTree" *ngIf="layerCategoryTrees && layerCategoryTrees.length > 0">
-                  <ng-template #treeNodeTemplate let-node let-index="index" translate>
+                  <ng-template #treeNodeTemplate let-node let-index="index">
                     <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
-                    {{ node.data.label }}
+                    <span translate> {{ node.data.label }} </span>
                   </ng-template>
                 </tree-root>
                 <div *ngIf="!layerCategoryTrees || layerCategoryTrees.length === 0">
