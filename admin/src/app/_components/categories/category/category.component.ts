@@ -164,16 +164,16 @@ export class CategoryComponent implements OnChanges {
   // Add new category
   addCategory(modal: ModalComponent) {
     if (this.formAdd.valid) {
-      const value = this.formAdd.value.addCatId;
-      if (value) {
-        if (!this.checkCategoryExist(value)) {
+      this.model.id = this.formAdd.value.addCatId.toLowerCase();
+      if (this.model.id) {
+        if (!this.checkCategoryExist(this.model.id)) {
           if (this.model) {
-            this.model.id = value;
             const map = new Map<String, String>();
-            map.set(value,  this.formAdd.value.addCatLabel);
-            map.set('' + value + '_service_link_href', '');
-            map.set('' + value + '_service_link_label', '');
-            map.set('topic_' + value + '_tooltip', this.formAdd.value.addCatTooltip ? this.formAdd.value.addCatTooltip : value);
+            map.set(this.model.id,  this.formAdd.value.addCatLabel);
+            map.set('' + this.model.id + '_service_link_href', '');
+            map.set('' + this.model.id + '_service_link_label', '');
+            map.set('topic_' + this.model.id + '_tooltip', this.formAdd.value.addCatTooltip ?
+              this.formAdd.value.addCatTooltip : this.model.id);
             this.httpService.addCategoryAndLabel(this.model, map, null).subscribe(
               data => {
                 this.categories = data[0];
@@ -229,17 +229,13 @@ export class CategoryComponent implements OnChanges {
   onCopyCategory(modal: ModalComponent) {
     if (this.formCopy.valid) {
       if (this.model) {
+        this.model.id = this.formCopy.value.copyId.toLowerCase();
         this.model.defaultBackground = this.formCopy.value.defaultBackground;
         const map = new Map<String, String>();
-        if (this.formCopy.value.copyCatLabel) {
-          map.set(this.formCopy.value.copyId, this.formCopy.value.copyCatLabel);
-        }
-        if (this.formCopy.value.copyCatTooltip) {
-          map.set('topic_' + this.formCopy.value.copyId + '_tooltip', this.formCopy.value.copyCatTooltip);
-        }
-        if (this.formCopy.value.copyId) {
-          this.model.id = this.formCopy.value.copyId;
-        }
+        map.set(this.model.id, this.formCopy.value.copyCatLabel);
+        map.set('' + this.model.id + '_service_link_href', '');
+        map.set('' + this.model.id + '_service_link_label', '');
+        map.set('topic_' + this.model.id + '_tooltip', this.formCopy.value.copyCatTooltip);
         this.httpService.addCategoryAndLabel(this.model, map, this.formCopy.value.id).subscribe(
           data => {
             this.categories = data[0];
