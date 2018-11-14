@@ -44,6 +44,18 @@
           <script.extension>.rebuild.bat</script.extension>
         </properties>
       </profile>
+      <profile>
+        <id>admin</id>
+        <properties>
+          <script.extension>.admin.bat</script.extension>
+        </properties>
+      </profile>
+      <profile>
+        <id>frontend</id>
+        <properties>
+          <script.extension>.frontend.bat</script.extension>
+        </properties>
+      </profile>
     </profiles>
     <build>
         <finalName>${project.artifactId}</finalName>
