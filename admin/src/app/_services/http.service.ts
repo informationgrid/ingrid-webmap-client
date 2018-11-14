@@ -176,7 +176,7 @@ export class HttpService {
   updateCategoryAndLabel(category: Category, locale: Map<String, String>) {
     return forkJoin(
       this.updateCategory(category),
-      this.updateLocales(locale)
+      this.updateLocales(locale, 'de')
     );
   }
 
@@ -188,7 +188,7 @@ export class HttpService {
   addCategoryAndLabel(category: Category, locale: Map<String, String>, copyId: String) {
     return forkJoin(
       this.addCategory(category, copyId),
-      this.updateLocales(locale)
+      this.updateLocales(locale, 'de')
     );
   }
 
@@ -301,7 +301,11 @@ export class HttpService {
   }
 
 // Locales
-  updateLocales(map: Map<String, String>) {
+  getLocalisation(lang: string) {
+    return this.http.get(httpApiHost + '/locales/' + lang, {responseType: 'text'});
+  }
+
+  updateLocales(map: Map<String, String>, lang) {
     let body = '{';
     if (map) {
       map.forEach((value: string, key: string) => {
@@ -310,6 +314,6 @@ export class HttpService {
     }
     body = body.slice(0, -1);
     body += '}';
-    return this.http.put(httpApiHost + '/locales/de', body, httpJsonOptions);
+    return this.http.put(httpApiHost + '/locales/' + lang, body, httpJsonOptions);
   }
 }

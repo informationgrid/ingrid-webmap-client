@@ -22,6 +22,9 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -244,6 +247,18 @@ public class ConfigResource {
                 }
             }
         }
-        return Response.ok( locales ).build();
+        Iterator<String> keysItr = locales.keys();
+        ArrayList<String> sortKey = new ArrayList<String>();
+        JSONObject sortLocales = new JSONObject();
+        while(keysItr.hasNext()) {
+            String key = keysItr.next();
+            sortKey.add(key);
+        }
+        Collections.sort(sortKey);
+        for (Iterator iterator = sortKey.iterator(); iterator.hasNext();) {
+            String key = (String) iterator.next();
+            sortLocales.put(key, locales.getString(key));
+        }
+        return Response.ok( sortLocales ).build();
     }
 }

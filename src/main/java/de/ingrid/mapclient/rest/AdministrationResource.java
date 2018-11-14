@@ -701,6 +701,14 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @GET
+    @Path("locales/{locale}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+        ConfigResource cr = new ConfigResource();
+        return cr.getLocales(locale + ".json");
+    }
+
     @PUT
     @Path("locales/{lang}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -783,7 +791,7 @@ public class AdministrationResource {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+        String fileContent = Utils.getFileContent(config_dir, lang, ".profile.json", "locales/");
         if(fileContent != null) {
             locale = new JSONObject(fileContent);
         }

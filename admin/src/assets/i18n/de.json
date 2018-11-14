@@ -316,5 +316,6 @@
     "layer_edit_auth_account_info": "Bei Änderung des Benutzernamens müssen ggf. auch bei andere eingepflegten Karten aus dem Dienst der neuen Benutzername hinterlegt werden.",
     "use_alternative_layer": "Ihre angegebene Karte existiert nicht mehr. Wählen Sie bitte eine andere Karte aus der Liste aus.",
     "layer_category_dependency": "Diese Karte ist Bestandteil von folgenden Kategorien:",
-    "layer_category_no_dependency": "Diese Karte wurde keiner Kategorie zugeordnet."
+    "layer_category_no_dependency": "Diese Karte wurde keiner Kategorie zugeordnet.",
+    "localisation": "Lokalisierung"
 }
