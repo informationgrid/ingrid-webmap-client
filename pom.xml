@@ -38,6 +38,12 @@
           <script.extension>.sh</script.extension>
         </properties>
       </profile>
+      <profile>
+        <id>rebuild</id>
+        <properties>
+          <script.extension>.rebuild.bat</script.extension>
+        </properties>
+      </profile>
     </profiles>
     <build>
         <finalName>${project.artifactId}</finalName>
