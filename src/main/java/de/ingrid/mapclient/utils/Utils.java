@@ -165,7 +165,7 @@ public class Utils {
         }
         file = new File(config_dir.concat(filename));
         Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
+        log.debug( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -192,7 +192,7 @@ public class Utils {
         }
         file = new File(config_dir.concat(filename));
         Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
+        log.debug( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
