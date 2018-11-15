@@ -256,13 +256,13 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddBgLayer>
+            <select class="form-control" #selectAddBgLayerEdit>
               <option value="" selected translate>category_select_layer</option>
               <option value="osmLayer" translate>osmLayer</option>
               <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, model.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayerEdit.value, model.backgroundLayers)" [disabled]="!selectAddBgLayerEdit.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
@@ -298,12 +298,12 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddSelectLayer>
+            <select class="form-control" #selectAddSelectLayerEdit>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, model.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayerEdit.value, model.selectedLayers)" [disabled]="!selectAddSelectLayerEdit.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
@@ -329,12 +329,12 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddActiveLayer>
+            <select class="form-control" #selectAddActiveLayerEdit>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, model.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayerEdit.value, model.activatedLayers)" [disabled]="!selectAddActiveLayerEdit.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
@@ -424,13 +424,13 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddBgLayer>
+            <select class="form-control" #selectAddBgLayerCopy>
               <option value="" selected translate>category_select_layer</option>
               <option value="osmLayer" translate>osmLayer</option>
               <option [value]="layer.id" *ngFor="let layer of backgroundLayers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayer.value, model.backgroundLayers)" [disabled]="!selectAddBgLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddBgLayerCopy.value, model.backgroundLayers)" [disabled]="!selectAddBgLayerCopy.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
@@ -466,12 +466,12 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddSelectLayer>
+            <select class="form-control" #selectAddSelectLayerCopy>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayer.value, model.selectedLayers)" [disabled]="!selectAddSelectLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddSelectLayerCopy.value, model.selectedLayers)" [disabled]="!selectAddSelectLayerCopy.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
@@ -497,12 +497,12 @@
             </div>
           </div>
           <div class="input-group">
-            <select class="form-control" #selectAddActiveLayer>
+            <select class="form-control" #selectAddActiveLayerCopy>
               <option value="" selected translate>category_select_layer</option>
               <option [value]="layer.id" *ngFor="let layer of layers" title="{{ layer.item.label }}">{{ layer.item.label | limitToPipe:50 }}</option>
             </select>
             <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayer.value, model.activatedLayers)" [disabled]="!selectAddActiveLayer.value">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(selectAddActiveLayerCopy.value, model.activatedLayers)" [disabled]="!selectAddActiveLayerCopy.value">
                 <i class="fa fa-plus" aria-hidden="true"></i>
               </button>
             </div>
