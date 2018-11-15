@@ -78,7 +78,7 @@ export class CategoryComponent implements OnChanges {
       backgroundLayers: this.model.backgroundLayers,
       selectedLayers: this.model.selectedLayers,
       activatedLayers: this.model.activatedLayers,
-      copyCatLabel: this.translate.instant(this.model.id),
+      copyCatLabel: '',
       copyCatTooltip: this.translate.instant('topic_' + this.model.id + '_tooltip')
     });
     modal.show();
