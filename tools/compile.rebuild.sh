@@ -55,19 +55,6 @@ if [ -d "mf-geoadmin3" ] ; then
         echo "********************"
         make release > release.log
         cat release.log
-        
-        # create admin
-        echo ""
-        echo "********************"
-        echo "*** Make admin ***"
-        echo "********************"
-        cd ../admin
-        npm install
-        ng -v || npm install -g @angular/cli
-        ng lint > lint.log
-        cat lint.log
-        ng build --prod --base-href . > admin.log
-        cat admin.log
     fi
     cd ..
 fi
