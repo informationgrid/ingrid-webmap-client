@@ -73,3 +73,9 @@
     /* IE 9*/
   }
 }
+
+@media (max-width: 480px) {
+  #pulldown .panel-body {
+    max-height: 95px;
+  }
+}
