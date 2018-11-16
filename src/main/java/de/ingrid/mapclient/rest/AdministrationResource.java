@@ -842,10 +842,10 @@ public class AdministrationResource {
             String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
             if(classPath != null) {
                 String filePathHelp = classPath + "frontend/";
-                String fileContent = Utils.getFileContent(filePathHelp, "app.override", ".css", "css/");
+                String fileContent = Utils.getFileContent(filePathHelp, "app.profile", ".css", "css/");
                 if(fileContent != null) {
                     if(!fileContent.equals(content)) {
-                        Utils.updateFile("css/app.override.css", content);
+                        Utils.updateFile("css/app.profile.css", content);
                     }
                 }
             }
