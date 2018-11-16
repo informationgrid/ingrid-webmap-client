@@ -9,6 +9,7 @@
     "ol.Feature#*",
     "ol.Geolocation",
     "ol.Geolocation#*",
+    "ol.Image#getImage",
     "ol.ImageTile#getImage",
     "ol.Map",
     "ol.Map#*",
