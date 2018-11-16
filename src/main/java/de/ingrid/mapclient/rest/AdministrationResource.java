@@ -380,44 +380,10 @@ public class AdministrationResource {
     @Path("setting")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSettingRequest() {
-        String filename = "setting";
-        try {
-            JSONObject setting = null;
-            JSONObject profileSetting = null;
-            
-            if(log.isDebugEnabled()){
-                log.debug( "Load file: " + filename );
-            }
-            String classPath = "";
-            classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-            String fileSetting = classPath + "frontend/";
-            String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
-            if(fileContent != null) {
-                setting = new JSONObject(fileContent);
-            }
-            
-            filename = "setting.profile";
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
-            }
-            
-            if(fileContent != null){
-                profileSetting = new JSONObject(fileContent);
-            }
-            if(setting != null && profileSetting != null) {
-                Iterator<?> keys = profileSetting.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (profileSetting.has(key)) {
-                        setting.put(key, profileSetting.get(key));
-                    }
-                }
-            }
-            return Response.ok( setting ).build();
-        } catch (JSONException e) {
-            log.error("Error getSettingRequest: " + e);
+        ConfigResource cr = new ConfigResource();
+        Response localeResponse = cr.getSettingRequest(true);
+        if(localeResponse != null) {
+            return localeResponse;
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -535,7 +501,7 @@ public class AdministrationResource {
             } 
             return getSettingRequest();
         } catch (JSONException e) {
-            log.error("Error POST '/categories/{id}'!");
+            log.error("Error PUT '/setting'!");
         }
         
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -602,6 +568,12 @@ public class AdministrationResource {
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                 if(config_dir != null){
                     fileContent = Utils.getFileContent(config_dir, filename + ".profile", ".json", "help/");
+                    if(fileContent == null) {
+                        fileContent = Utils.getFileContent(filePathHelp, filename + ".profile", ".json", "help/");
+                        if(fileContent != null) {
+                            Utils.updateFile("help/"+ filename + ".profile.json", fileContent);
+                        }
+                    }
                     if(fileContent != null){
                         profileHelp = new JSONObject(fileContent);
                     }
@@ -857,21 +829,11 @@ public class AdministrationResource {
     
     private String updateCss(String content) {
         try {
-            String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-            if(classPath != null) {
-                String filePathHelp = classPath + "frontend/";
-                String fileContent = Utils.getFileContent(filePathHelp, "app.profile", ".css", "css/");
-                if(fileContent != null) {
-                    if(!fileContent.equals(content)) {
-                        Utils.updateFile("css/app.profile.css", content);
-                    }
-                }
-            }
-            return content;
+            Utils.updateFile("css/app.profile.css", content);
         } catch (Exception e) {
             log.error("Error 'updateCss'!");
         }
-        return null;
+        return content;
     }
     
     private String updateHelp(String lang, String content) {

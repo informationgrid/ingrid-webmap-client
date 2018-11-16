@@ -57,7 +57,7 @@ public class ConfigResource {
     @GET
     @Path("setting")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getSettingRequest() {
+    public Response getSettingRequest(@QueryParam("asJson") boolean asJson) {
         String filename = "setting";
         try {
             JSONObject setting = null;
@@ -93,7 +93,11 @@ public class ConfigResource {
                     }
                 }
             }
-            return Response.ok( "var settings = " + setting ).build();
+            if(asJson) {
+                return Response.ok( setting ).build();
+            } else {
+                return Response.ok( "var settings = " + setting ).build();
+            }
         } catch (JSONException e) {
             log.error("Error getSettingRequest: " + e);
         }
@@ -110,20 +114,24 @@ public class ConfigResource {
             String fileContent = Utils.getFileContent(config_dir, "app.profile", ".css", "css/");
             if(fileContent == null) {
                 fileContent = Utils.getFileContent(config_dir, "app.override", ".css", "css/");
-                Utils.updateFile("css/app.profile.css", fileContent);
+                if(fileContent != null) {
+                    Utils.updateFile("css/app.profile.css", fileContent);
+                }
             }
             if(fileContent == null) {
                 String classPath = "";
                 classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
                 String fileSetting = classPath + "frontend/";
                 fileContent = Utils.getFileContent(fileSetting, "app.profile", ".css", "css/");
-                Utils.updateFile("css/app.profile.css", fileContent);
+                if(fileContent != null) {
+                    Utils.updateFile("css/app.profile.css", fileContent);
+                }
             }
             if(fileContent != null) {
                 return Response.ok( fileContent ).build();
             }
         }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+        return Response.ok( "" ).build();
     }
     
     @GET

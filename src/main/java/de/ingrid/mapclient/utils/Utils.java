@@ -164,8 +164,10 @@ public class Utils {
             }
         }
         File file = new File(config_dir.concat(filename));
-        if(!file.renameTo( cpFile )) {
-            log.error("Error rename file: '" + file.getName() + "'" );
+        if(file.exists()) {
+            if(!file.renameTo( cpFile )) {
+                log.error("Error rename file: '" + file.getName() + "'" );
+            }
         }
         file = new File(config_dir.concat(filename));
         cleanFileContent(file);
