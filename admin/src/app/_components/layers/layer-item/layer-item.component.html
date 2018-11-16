@@ -3,6 +3,7 @@
   <span>
     <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
     {{layer.item.label}}
+    <span *ngIf="layer.item.background" class="badge badge-pill" [ngClass]="{'badge-info' : layer.item.background}" translate>layer_background</span>
   </span>
   <div>
     <span *ngIf="layer.item.status" class="badge badge-pill badge-warning mr-sm-2" title="{{ layer.item.status | translate }}"><i class="fa fa-info"></i></span>
