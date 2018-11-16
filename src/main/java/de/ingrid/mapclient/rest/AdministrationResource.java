@@ -526,9 +526,9 @@ public class AdministrationResource {
                             this.updateHelp(lang, this.getHelpRequest("de").getEntity().toString());
                         }
                         ConfigResource cr = new ConfigResource();
-                        Response localeResponse = cr.getLocales(lang+ ".json");
+                        Response localeResponse = cr.getLocales(lang+ ".json", false);
                         if(localeResponse.getEntity().toString().equals("{}")) {
-                            this.updateLocale(lang, cr.getLocales("de.json").getEntity().toString());
+                            this.updateLocale(lang, cr.getLocales("de.json", false).getEntity().toString());
                         }
                     }
                 }
@@ -706,7 +706,7 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLocales(@PathParam("locale") String locale) throws JSONException {
         ConfigResource cr = new ConfigResource();
-        return cr.getLocales(locale + ".json");
+        return cr.getLocales(locale + ".json", false);
     }
 
     @PUT
@@ -765,23 +765,41 @@ public class AdministrationResource {
     }
 
     private void updateLocale(String lang, String content) throws JSONException {
-        JSONObject locale = null;
+        JSONObject localeProfile = null;
+        JSONObject localeDefault = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
         if(fileContent != null) {
-            locale = new JSONObject(fileContent);
+            localeProfile = new JSONObject(fileContent);
         }
+        ConfigResource cr = new ConfigResource();
+        Response localeResponse = cr.getLocales(lang+ ".json", true);
+        if(localeResponse != null) {
+            localeDefault = new JSONObject(localeResponse.getEntity().toString());
+        }
+        
         JSONObject item = new JSONObject(content);
-        if(item != null && locale != null) {
+        if(item != null && localeProfile != null) {
             Iterator<?> keys = item.keys();
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if (item.has(key)) {
-                    locale.put(key, item.get(key));
+                    String value = item.getString(key);
+                    String valueDefault = "";
+                    if(localeDefault != null) {
+                        if(localeDefault.has(key)) {
+                            valueDefault = localeDefault.getString(key);
+                        }
+                    }
+                    if(value.trim().equals(valueDefault.trim())) {
+                        localeProfile.remove(key);
+                    } else {
+                        localeProfile.put(key, item.get(key));
+                    }
                 }
             }
-            Utils.updateFile("locales/" + lang + ".profile.json", locale);
+            Utils.updateFile("locales/" + lang + ".profile.json", localeProfile);
         } else if(item != null) {
             Utils.updateFile("locales/" + lang + ".profile.json", item);
         }

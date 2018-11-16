@@ -24,7 +24,6 @@ package de.ingrid.mapclient.rest;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -163,7 +162,7 @@ public class ConfigResource {
     @GET
     @Path("locales/{locale}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+    public Response getLocales(@PathParam("locale") String locale, @QueryParam("excludeProfile") boolean excludeProfile) throws JSONException {
         String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
         JSONObject locales = new JSONObject();
         String fileLocalePath = null;
@@ -208,7 +207,14 @@ public class ConfigResource {
                 while( keys.hasNext() ) {
                     String key = (String)keys.next();
                     if (frontendLocale.has(key)) {
-                        locales.put(key, frontendLocale.get(key));
+                        String value = frontendLocale.getString(key);
+                        if(value.equals("#ignore#")) {
+                            if(locales.has(key)) {
+                                locales.remove(key);
+                            }
+                        } else {
+                            locales.put(key, value);
+                        }
                     }
                 }
             }
@@ -228,28 +234,30 @@ public class ConfigResource {
                 }
             }
         }
-        // Get profile locale
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        fileLocalePath = config_dir;
-        fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
-        if(fileContent != null){
-            JSONObject profileLocale = new JSONObject(fileContent);
-            if(profileLocale != null) {
-                Iterator<?> keys = profileLocale.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (profileLocale.has(key)) {
-                        locales.put(key, profileLocale.get(key));
+        if(!excludeProfile) {
+            // Get profile locale
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            fileLocalePath = config_dir;
+            fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
+            if(fileContent != null){
+                JSONObject profileLocale = new JSONObject(fileContent);
+                if(profileLocale != null) {
+                    Iterator<?> keys = profileLocale.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        if (profileLocale.has(key)) {
+                            locales.put(key, profileLocale.get(key));
+                        }
                     }
                 }
             }
         }
-        Iterator<String> keysItr = locales.keys();
+        Iterator<?> keysItr = locales.keys();
         ArrayList<String> sortKey = new ArrayList<String>();
         JSONObject sortLocales = new JSONObject();
         while(keysItr.hasNext()) {
-            String key = keysItr.next();
+            String key = (String)keysItr.next();
             sortKey.add(key);
         }
         Collections.sort(sortKey);
