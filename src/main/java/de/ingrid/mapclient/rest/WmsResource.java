@@ -136,6 +136,7 @@ public class WmsResource {
                     json.put( "xmlResponse", response );
                     return json.toString();
                 }
+                return response;
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
