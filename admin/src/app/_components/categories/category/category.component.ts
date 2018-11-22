@@ -92,11 +92,15 @@ export class CategoryComponent implements OnChanges {
 
   loadCategory(id: string, event) {
     if (event.currentTarget.classList.contains('collapsed')) {
-      this.httpService.getCategory(id, null)
+      this.reloadCategory(id);
+    }
+  }
+
+  reloadCategory(id: string) {
+    this.httpService.getCategory(id, null)
       .subscribe( data => {
           this.categoryTree = data;
       });
-    }
   }
 
   updateCategories(event) {
