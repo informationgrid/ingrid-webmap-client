@@ -45,4 +45,8 @@ export class AppComponent implements OnInit {
   updateAppSettings(event) {
     this.settings = event;
   }
+
+  logout() {
+    location.href = location.href.replace('//', '//logout:logout@');
+  }
 }
