@@ -1,5 +1,5 @@
 <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader{{ layer.id }}" data-toggle="collapse" 
-  [attr.data-target]="'#collapse' + layer.id" aria-expanded="true" aria-controls="layers" (click)="loadLayersForService($event, layer)">
+  [attr.data-target]="'#collapse' + layer.id" aria-expanded="false" aria-controls="layers" (click)="loadLayersForService($event, layer)">
   <span>
     <input type="checkbox" (click)="checkLayer($event)" value="{{ layer.id }}">
     {{layer.item.label}}
