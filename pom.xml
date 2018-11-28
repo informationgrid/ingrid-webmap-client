@@ -193,6 +193,10 @@
                                 <copy todir="${project.build.directory}/${project.build.finalName}/frontend/locales">
                                     <fileset dir="${project.basedir}/frontend/locales/" />
                                 </copy>
+                                <echo>Copy override 'login'</echo>
+                                <copy todir="${project.build.directory}/${project.build.finalName}/login">
+                                    <fileset dir="${project.basedir}/login/" />
+                                </copy>
                             </tasks>
                         </configuration>
                         <goals>

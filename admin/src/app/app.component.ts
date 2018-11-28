@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   categories: Category[] = [];
   settings: Setting = new Setting();
   version: string = environment.version;
+  production: boolean = environment.production;
 
   ngOnInit() {
     this.httpService.getData().subscribe(
@@ -47,6 +48,6 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
-    location.href = location.href.replace('//', '//logout:logout@');
+    location.href = '/logout.jsp';
   }
 }

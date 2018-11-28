@@ -1,19 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<ng-progress [showSpinner]="true"></ng-progress>
+<ng-progress [showSpinner]="false"></ng-progress>
 <div id="header" class="navbar navbar-fixed-top">
   <div class="title" translate>app_title</div>
   <div class="form-inline">
     <app-translation></app-translation>
-    <button class="btn btn-outline mr-sm-2" type="button" (click)="logout()">
-      <i class="fa fa-sign-out" aria-hidden="true"></i>
-    </button>
+    <a *ngIf="production" target="_new" href="/ingrid-webmap-client/login/logout.jsp">
+      <button class="btn btn-outline mr-sm-2" type="button">
+        <i class="fa fa-sign-out" aria-hidden="true"></i>
+      </button>
+    </a>
     <a target="_new" href="https://www.ingrid-oss.eu/latest/components/webmap_client_admin.html#admin-gui">
       <button class="btn btn-outline mr-sm-2" type="button">
         <i class="fa fa-question" aria-hidden="true"></i>
       </button>
     </a>
-    <br>
-    <!-- <span>{{ version }}</span> -->
+    <span style="display:none">{{ version }}</span>
   </div>
 </div>
 <div id="accordion">
