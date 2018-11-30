@@ -519,7 +519,10 @@ export class LayerComponent implements OnInit {
               // WMTS
               this.isWMSService = false;
               const service = data['Capabilities'];
-              const serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
+              let serviceMetadataUrl = serviceUrl;
+              if (service['ServiceMetadataURL']) {
+                serviceMetadataUrl = service['ServiceMetadataURL']['xlink:href'];
+              }
               const version = service['version'];
               const layer = service['Contents']['Layer'];
               let wmtsLayers: any = [];

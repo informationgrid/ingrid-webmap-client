@@ -112,7 +112,7 @@ public class WmsResource {
             response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
                 if(response.indexOf("<?xml") == -1) {
-                   response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+                   response = "<?xml version=\"1.0\"?>" + response;
                 }
                 if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                     // Remove script tags on getFeatureInfo response.
