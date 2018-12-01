@@ -515,14 +515,18 @@ export class LayerComponent implements OnInit {
               // Attribution
               let attribution = '';
               let attributionUrl = '';
-              if (service['ContactInformation']) {
-                if (service['ContactInformation']['ContactOrganization']) {
-                  attribution = service['ContactInformation']['ContactOrganization'];
+              if (service['Service']) {
+                if (service['Service']['ContactInformation']) {
+                  if (service['Service']['ContactInformation']['ContactPersonPrimary']) {
+                    if (service['Service']['ContactInformation']['ContactPersonPrimary']['ContactOrganization']) {
+                      attribution = service['Service']['ContactInformation']['ContactPersonPrimary']['ContactOrganization'];
+                    }
+                  }
                 }
-              }
-              if (service['OnlineResource']) {
-                if (service['OnlineResource']['xlink:href']) {
-                  attributionUrl = service['OnlineResource']['xlink:href'];
+                if (service['Service']['OnlineResource']) {
+                  if (service['Service']['OnlineResource']['xlink:href']) {
+                    attributionUrl = service['Service']['OnlineResource']['xlink:href'];
+                  }
                 }
               }
               if (layer) {
@@ -561,8 +565,6 @@ export class LayerComponent implements OnInit {
                 if (service['ows:ServiceProvider']['ows:ProviderName']) {
                   attribution = service['ows:ServiceProvider']['ows:ProviderName'];
                 }
-              }
-              if (service['ows:ServiceProvider']) {
                 if (service['ows:ServiceProvider']['ows:ProviderSite']) {
                   if (service['ows:ServiceProvider']['ows:ProviderSite']['xlink:href']) {
                     attributionUrl = service['ows:ServiceProvider']['ows:ProviderSite']['xlink:href'];

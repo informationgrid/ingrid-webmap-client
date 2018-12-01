@@ -574,7 +574,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         hasChanges = true;
                     }
                     // Attribution
-                    Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactOrganization", doc, XPathConstants.NODE);
+                    Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
                     if(layerAttribution != null) {
                         String attribution = layerAttribution.getTextContent().trim();
                         if(!layerJSON.getString("attribution").equals(attribution)) {
