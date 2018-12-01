@@ -368,6 +368,24 @@ public class CapabilitiesUpdateTask implements Runnable{
                         layerJSON.put("template", template);
                     }
                 }
+                // Attribution
+                Node layerAttribution = (Node) xpath.evaluate(".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
+                if(layerAttribution != null) {
+                    String attribution = layerAttribution.getTextContent().trim();
+                    if(!layerJSON.getString("attribution").equals(attribution)) {
+                        hasChanges = true;
+                        layerJSON.put("attribution", attribution);
+                    }
+                }
+                // AttributionUrl
+                Node layerAttributionUrl = (Node) xpath.evaluate(".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
+                if(layerAttributionUrl != null) {
+                    String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                    if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                        hasChanges = true;
+                        layerJSON.put("attributionUrl", attributionUrl);
+                    }
+                }
                 // Style
                 Node tileMatrixSetNode = (Node) xpath.evaluate("//TileMatrixSet/Identifier[text()=\""+matrixSet+"\"]/..", doc, XPathConstants.NODE);
                 if(tileMatrixSetNode != null) {
@@ -555,6 +573,25 @@ public class CapabilitiesUpdateTask implements Runnable{
                         layerJSON.put( layerKey, fieldNode.getTextContent() );
                         hasChanges = true;
                     }
+                    // Attribution
+                    Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactOrganization", doc, XPathConstants.NODE);
+                    if(layerAttribution != null) {
+                        String attribution = layerAttribution.getTextContent().trim();
+                        if(!layerJSON.getString("attribution").equals(attribution)) {
+                            hasChanges = true;
+                            layerJSON.put("attribution", attribution);
+                        }
+                    }
+                    // AttributionUrl
+                    Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
+                    if(layerAttributionUrl != null) {
+                        String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                        if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                            hasChanges = true;
+                            layerJSON.put("attributionUrl", attributionUrl);
+                        }
+                    }
+                    
                 } else {
                   layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
                   errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);

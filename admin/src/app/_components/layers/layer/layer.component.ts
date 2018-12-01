@@ -512,8 +512,22 @@ export class LayerComponent implements OnInit {
               } else {
                 wmsUrl = dcpType['HTTP']['Get']['OnlineResource']['xlink:href'];
               }
+              // Attribution
+              let attribution = '';
+              let attributionUrl = '';
+              if (service['ContactInformation']) {
+                if (service['ContactInformation']['ContactOrganization']) {
+                  attribution = service['ContactInformation']['ContactOrganization'];
+                }
+              }
+              if (service['OnlineResource']) {
+                if (service['OnlineResource']['xlink:href']) {
+                  attributionUrl = service['OnlineResource']['xlink:href'];
+                }
+              }
               if (layer) {
-                this.createWMSLayers(layer, this.newLayers, wmsUrl, version, format, null, null, null);
+                this.createWMSLayers(layer, this.newLayers, wmsUrl, version, format, null, null, null,
+                  attribution, attributionUrl);
               }
             } else if (data['Capabilities']) {
               // WMTS
@@ -540,7 +554,23 @@ export class LayerComponent implements OnInit {
               } else {
                 tileMatrixSets.push(tileMatrixSet);
               }
-              this.createWMTSLayer(wmtsLayers, this.newLayers, serviceMetadataUrl, version, tileMatrixSets, encoding);
+              // Attribution
+              let attribution = '';
+              let attributionUrl = '';
+              if (service['ows:ServiceProvider']) {
+                if (service['ows:ServiceProvider']['ows:ProviderName']) {
+                  attribution = service['ows:ServiceProvider']['ows:ProviderName'];
+                }
+              }
+              if (service['ows:ServiceProvider']) {
+                if (service['ows:ServiceProvider']['ows:ProviderSite']) {
+                  if (service['ows:ServiceProvider']['ows:ProviderSite']['xlink:href']) {
+                    attributionUrl = service['ows:ServiceProvider']['ows:ProviderSite']['xlink:href'];
+                  }
+                }
+              }
+              this.createWMTSLayer(wmtsLayers, this.newLayers, serviceMetadataUrl, version, tileMatrixSets, encoding,
+                attribution, attributionUrl);
             }
           }
           this.isUrlLoadSuccess = true;
@@ -561,7 +591,7 @@ export class LayerComponent implements OnInit {
     }
   }
 
-  createWMSLayers(layer, layers, wmsUrl, version, formats, bbox, minScale, maxScale) {
+  createWMSLayers(layer, layers, wmsUrl, version, formats, bbox, minScale, maxScale, attribution: string, attributionUrl: string) {
     const newLayer = new Wmslayer();
 
     if (this.hasLogin) {
@@ -575,6 +605,10 @@ export class LayerComponent implements OnInit {
     newLayer.label = layer['Title'];
     // GetMap-URL
     newLayer.wmsUrl = wmsUrl;
+    // Attribution
+    newLayer.attribution = attribution;
+    // AttributionUrl
+    newLayer.attributionUrl = attributionUrl;
     // Name
     if (layer['Name']) {
       newLayer.wmsLayers = layer['Name'];
@@ -704,10 +738,12 @@ export class LayerComponent implements OnInit {
     if (children) {
       if (children instanceof Array) {
         children.forEach(child => {
-          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+          this.createWMSLayers(child, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale,
+            newLayer.attribution, newLayer.attributionUrl);
         });
       } else {
-        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale);
+        this.createWMSLayers(children, newLayerChildren, wmsUrl, version, formats, newLayer.extent, newLayer.minScale, newLayer.maxScale,
+          newLayer.attribution, newLayer.attributionUrl);
       }
     }
     layers.push({
@@ -717,7 +753,8 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  createWMTSLayer (wmtslayers: any[], layers: any[], serviceMetadataUrl: string, version: string, tileMatrixSet: any[], encoding: string) {
+  createWMTSLayer (wmtslayers: any[], layers: any[], serviceMetadataUrl: string, version: string, tileMatrixSet: any[], encoding: string,
+      attribution: string, attributionUrl: string) {
     wmtslayers.forEach(layer => {
       let newLayer;
       let tileMatrixSetLinks: any = [];
@@ -749,6 +786,10 @@ export class LayerComponent implements OnInit {
               newLayer.serverLayerName = layer['ows:Identifier'];
               // ServiceMetadataUrl
               newLayer.serviceUrl = serviceMetadataUrl;
+              // Attribution
+              newLayer.attribution = attribution;
+              // AttributionUrl
+              newLayer.attributionUrl = attributionUrl;
               // Format
               const resourceUrl = layer['ResourceURL'];
               if (resourceUrl) {
