@@ -85,6 +85,7 @@ public class HttpProxy {
                 String inputLine = "";
                 while ((inputLine = br.readLine()) != null) {
                     response.append(inputLine);
+                    response.append("\n");
                 }
                 result = response.toString();
             }
