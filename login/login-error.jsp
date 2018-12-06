@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Login - InGrid Webmap Client Admin-GUI</title>
+  <title>Problem: Anmelden - InGrid Webmap Client Admin-GUI</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="/ingrid-webmap-client/frontend/prd/favicon.ico">
@@ -14,10 +14,10 @@
       <div class="panel-body ng-scope" style="border: 1px solid #eee;">
         <h3 style="text-align:center">InGrid Webmap Client Admin-GUI</h3>
         <hr>
-        <p><b>Login fehlgeschlagen!</b></p>
-        <p>Bitte versuchen Sie sich erneut einzuloggen ...</p>
+        <p><b>Anmelden fehlgeschlagen!</b></p>
+        <p>Bitte versuchen Sie sich erneut anzumelden ...</p>
         <hr>
-        <a class="btn btn-default col-xs-12 ng-scope" href="/ingrid-webmap-client/admin">Einloggen</a>
+        <a class="btn btn-default col-xs-12 ng-scope" href="/ingrid-webmap-client/admin">Erneut anmelden</a>
       </div>
      </div>
   </div>

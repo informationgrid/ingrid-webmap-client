@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Login - InGrid Webmap Client Admin-GUI</title>
+  <title>Problem: Anmelden - InGrid Webmap Client Admin-GUI</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="/ingrid-webmap-client/frontend/prd/favicon.ico">
@@ -14,10 +14,10 @@
       <div class="panel-body ng-scope" style="border: 1px solid #eee;">
         <h3 style="text-align:center">InGrid Webmap Client Admin-GUI</h3>
         <hr>
-        <p><b>Login-Benutzer '<%=request.getRemoteUser()%>' existiert nicht!</b></p>
-        <p>Bitte loggen Sie sich aus ...</p>
+        <p><b>Benutzer '<%=request.getRemoteUser()%>' existiert nicht!</b></p>
+        <p>Bitte melden Sie sich &uuml;ber den Button 'Abmelden' ab ...</p>
         <hr>
-        <a class="btn btn-default col-xs-12 ng-scope" href="/ingrid-webmap-client/login/logout.jsp">Ausloggen</a>
+        <a class="btn btn-default col-xs-12 ng-scope" href="/ingrid-webmap-client/login/logout.jsp">Abmelden</a>
       </div>
      </div>
   </div>
