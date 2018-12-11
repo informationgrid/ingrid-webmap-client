@@ -110,24 +110,24 @@ goog.require('ga_urlutils_service');
             if (parentProjList instanceof Array) {
               if (layer.SRS) {
                 if (layer.SRS instanceof Array) {
-                  layer.SRS = layer.SRS.concat(parentProjList
-                    .filter(function (item) {
-                      return layer.SRS.indexOf(item) < 0;
-                    })
+                  layer.SRS = layer.SRS.concat(parentProjList.
+                      filter(function(item) {
+                        return layer.SRS.indexOf(item) < 0;
+                      })
                   );
                 } else {
-                  if(parentProjList.indexOf(layer.SRS) === -1){
+                  if (parentProjList.indexOf(layer.SRS) === -1) {
                     layer.SRS = parentProjList.concat(layer.SRS);
                   }
                 }
               } else if (layer.CRS) {
-                layer.CRS = parentProjList.concat(layer.CRS
-                  .filter(function (item) {
-                    return parentProjList.indexOf(item) < 0;
-                  })
+                layer.CRS = parentProjList.concat(layer.CRS.
+                    filter(function(item) {
+                      return parentProjList.indexOf(item) < 0;
+                    })
                 );
               } else if (layer.wmsVersion === '1.1.1') {
-                layer.SRS = parentProjList; 
+                layer.SRS = parentProjList;
               } else if (layer.wmsVersion === '1.3.0') {
                 layer.CRS = parentProjList;
               }
@@ -154,7 +154,7 @@ goog.require('ga_urlutils_service');
               layer.extent = parentLayer.extent;
             }
           }
-        
+
           // INGRID: Check parent 'queryable'
           if (!layer.queryable) {
             if (parentLayer.queryable) {
@@ -180,7 +180,7 @@ goog.require('ga_urlutils_service');
 
       // Go through the child to get valid layers
       if (layer.Layer) {
-        if(!layer.Layer.length) {
+        if (!layer.Layer.length) {
           var tmpLayers = [];
           tmpLayers.push(layer.Layer);
           layer.Layer = tmpLayers;
