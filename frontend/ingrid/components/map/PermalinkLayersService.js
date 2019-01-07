@@ -283,7 +283,7 @@ goog.require('ga_wmts_service');
                       };
                     }
                     layer = gaLayers.getOlLayerById(layerSpec, opts);
-  
+
                     // If the layer is already on the map when need to increment
                     // the id.
                     if (isOverlay) {
@@ -314,10 +314,10 @@ goog.require('ga_wmts_service');
                     }
                     map.addLayer(layer);
                   }
-  
+
                 } else if (gaMapUtils.isKmlLayer(layerSpec) ||
                     gaMapUtils.isGpxLayer(layerSpec)) {
-  
+
                   // Vector layer
                   var url = layerSpec.split('||')[1];
                   var delay = params ? parseInt(params.updateDelay) : NaN;
@@ -339,7 +339,7 @@ goog.require('ga_wmts_service');
                   }
 
                 } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
-  
+
                   // External WMS layer
                   infos = layerSpec.split('||');
                   try {
