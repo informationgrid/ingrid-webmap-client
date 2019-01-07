@@ -153,20 +153,26 @@ public class Utils {
             }
         }
     }
-    
     public static void updateFile(String filename, Object item) {
+        updateFile(filename, item, true);
+    }
+
+    public static void updateFile(String filename, Object item, boolean doBackup) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File cpFile = new File(config_dir.concat(filename + "." + getDateFlag()));
-        if(cpFile.exists()){
-            if(!cpFile.delete()) {
-                log.error("Error delete file: '" + cpFile.getName() + "'" );
+        File file;
+        if(doBackup) {
+            File cpFile = new File(config_dir.concat(filename + "." + getDateFlag()));
+            if(cpFile.exists()){
+                if(!cpFile.delete()) {
+                    log.error("Error delete file: '" + cpFile.getName() + "'" );
+                }
             }
-        }
-        File file = new File(config_dir.concat(filename));
-        if(file.exists()) {
-            if(!file.renameTo( cpFile )) {
-                log.error("Error rename file: '" + file.getName() + "'" );
+            file = new File(config_dir.concat(filename));
+            if(file.exists()) {
+                if(!file.renameTo( cpFile )) {
+                    log.error("Error rename file: '" + file.getName() + "'" );
+                }
             }
         }
         file = new File(config_dir.concat(filename));
