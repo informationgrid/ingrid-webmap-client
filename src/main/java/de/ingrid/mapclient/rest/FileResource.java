@@ -562,14 +562,18 @@ public class FileResource {
                     path += "/";
                 }
                 
-                File shortenDir = new File (path + "shorten/" + key + "/");
+                File shortenDir = new File (path + "shorten");
                 if(!shortenDir.exists()) {
                     shortenDir.mkdir();
                 }
                 
+                File shortenDirKey = new File (shortenDir.getAbsolutePath()+ "/" + key);
+                if(!shortenDirKey.exists()) {
+                    shortenDirKey.mkdir();
+                }
                 String valueToMd5 = DigestUtils.md5Hex(value);
                 
-                String shortenDirSubPath = shortenDir.getAbsolutePath();
+                String shortenDirSubPath = shortenDirKey.getAbsolutePath();
                 
                 if(!shortenDirSubPath.endsWith( "/")){
                     shortenDirSubPath += "/";
