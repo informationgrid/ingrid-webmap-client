@@ -500,6 +500,22 @@ public class Utils {
         return formatter.format(ts);
     }
 
+    public static int countDirectoryFiles(File[] files) {
+        return countDirectoryFiles(files, false);
+    }
+
+    public static int countDirectoryFiles(File[] files, boolean includeSubDir) {
+        int count = files.length;
+        if(includeSubDir) {
+            for (int i = 0; i < files.length; i++) {
+                File file = files[i];
+                if(file.isDirectory()) {
+                    count += countDirectoryFiles(file.listFiles(), includeSubDir);
+                }
+            }
+        }
+        return count;
+    } 
 }
 
 class MailAuthenticator extends Authenticator {

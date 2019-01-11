@@ -32,36 +32,37 @@ import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.utils.Utils;
 
 public class CleanupTask implements Runnable{
     
     private static final Logger log = Logger.getLogger(CleanupTask.class);
     
     public void run() {
-        log.info("Cleanup WebMapClient data ...");
+    log.info("Cleanup WebMapClient data ...");
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDirPath = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File configDir = new File(configDirPath);
         File[] configDirFiles = configDir.listFiles();
         for (File file : configDirFiles) {
-            if(file.isDirectory()) {
+            if(file.exists() && file.isDirectory()) {
                 String filename = file.getName();
                 log.info("Cleanup folder: " + filename);
-                if(filename == "kml") {
+                if(filename.equals("kml")) {
                     cleanupDirectory(
-                        configDirFiles,
+                        file.listFiles(),
                         Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000")),
                         Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"))
                     );
-                } if(filename == "shorten") {
+                } if(filename.equals("shorten")) {
                     cleanupDirectory(
-                        configDirFiles,
+                        file.listFiles(),
                         Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DIRECTORY_FILES, "1000")),
                         Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DAYS_FILE_EXIST, "365"))
                     );
                 } else {
                     cleanupDirectoryByRegex(
-                        configDirFiles,
+                        file.listFiles(),
                         Integer.parseInt(p.getProperty( ConfigurationProvider.BACKUP_MAX_DAYS_FILE_EXIST, "7")),
                         "\\.([0-9]*)$"
                     );
@@ -72,7 +73,9 @@ public class CleanupTask implements Runnable{
     }
 
     private void cleanupDirectory(File[] listOfFiles, int maxDirectoryFiles, int maxDaysOfFileExist) {
-        if(listOfFiles.length > maxDirectoryFiles){
+        int fileLength = Utils.countDirectoryFiles(listOfFiles, true);
+        
+        if(fileLength > maxDirectoryFiles){
             for (File file : listOfFiles) {
                 if(file.exists()) {
                     if (file.isFile()) {
