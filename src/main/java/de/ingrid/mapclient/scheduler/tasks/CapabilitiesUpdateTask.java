@@ -274,7 +274,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                 
                 if(!errorLayernames.isEmpty()){
                     mailText += "************************\n";
-                    mailText += "Nicht vorhandene Layern:\n";
+                    mailText += "Nicht vorhandene Karten:\n";
                     mailText += "************************\n";
                     for (String errorLayername : errorLayernames) {
                         mailText += "- " + errorLayername + "\n";
@@ -294,7 +294,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                 
                 if(!mailText.isEmpty()){
                     if(sendMail){
-                        String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
+                        String subject = "Webmap Client: Fehlerhafte Dienste und Karten";
                         Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
                     } else {
                         log.debug( "\n" + mailText );
