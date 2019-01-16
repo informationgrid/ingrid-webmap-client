@@ -55,11 +55,15 @@ public class CleanupTask implements Runnable{
                         Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"))
                     );
                 } if(filename.equals("shorten")) {
-                    cleanupDirectory(
-                        file.listFiles(),
-                        Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DIRECTORY_FILES, "1000")),
-                        Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DAYS_FILE_EXIST, "365"))
-                    );
+                    for (File subDir : file.listFiles()) {
+                        if(subDir.exists() && subDir.isDirectory()) {
+                            cleanupDirectory(
+                                subDir.listFiles(),
+                                Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DIRECTORY_FILES, "1000")),
+                                Integer.parseInt(p.getProperty( ConfigurationProvider.SHORTEN_MAX_DAYS_FILE_EXIST, "365"))
+                            );
+                        }
+                    }
                 } else {
                     cleanupDirectoryByRegex(
                         file.listFiles(),
