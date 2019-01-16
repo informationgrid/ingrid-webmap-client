@@ -38,6 +38,7 @@
     "ol.extent.applyTransform",
     "ol.extent.buffer",
     "ol.extent.containsCoordinate",
+    "ol.extent.containsExtent",
     "ol.extent.containsXY",
     "ol.extent.extend",
     "ol.extent.getCenter",
