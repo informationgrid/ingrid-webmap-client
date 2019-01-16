@@ -543,9 +543,10 @@ goog.require('ga_urlutils_service');
           var extent = config.extent || gaMapUtils.defaultExtent;
           */
           var extent = config.extent || proj.getExtent();
-          
+
           if (!proj.isGlobal() && config.extent) {
-            if (!ol.extent.containsExtent(gaGlobalOptions.defaultEpsgExtent, config.extent)) {
+            if (!ol.extent.containsExtent(gaGlobalOptions.defaultEpsgExtent,
+                config.extent)) {
               config.extent = gaGlobalOptions.defaultEpsgExtent;
             }
           }
