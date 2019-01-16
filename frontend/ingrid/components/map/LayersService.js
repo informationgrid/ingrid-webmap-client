@@ -538,11 +538,17 @@ goog.require('ga_urlutils_service');
           var crossOrigin = 'anonymous';
           */
           var crossOrigin = config.crossOrigin ? 'anonymous' : undefined;
+          var proj = ol.proj.get(gaGlobalOptions.defaultEpsg);
           /* INGRID: Use projection extent if no layer extent exist
           var extent = config.extent || gaMapUtils.defaultExtent;
           */
-          var extent = config.extent ||
-              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
+          var extent = config.extent || proj.getExtent();
+          
+          if (!proj.isGlobal() && config.extent) {
+            if (!ol.extent.containsExtent(gaGlobalOptions.defaultEpsgExtent, config.extent)) {
+              config.extent = gaGlobalOptions.defaultEpsgExtent;
+            }
+          }
 
           // The tileGridMinRes is the resolution at which the client
           // zoom is activated. It's different from the config.minResolution
