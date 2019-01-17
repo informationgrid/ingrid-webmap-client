@@ -51,23 +51,28 @@ public enum ConfigurationProvider {
 
     private static final Logger log = Logger.getLogger( ConfigurationProvider.class );
     
-    private static final String APPLICATION_PROPERTIES = "application.properties";
+    private static final String APPLICATION_PROPERTIES          = "application.properties";
     private static final String APPLICATION_OVERRIDE_PROPERTIES = "application.override.properties";
-    public static final String FEEDBACK_FROM = "feedback.from";
-    public static final String FEEDBACK_TO = "feedback.to";
-    public static final String FEEDBACK_HOST = "feedback.host";
-    public static final String FEEDBACK_PORT = "feedback.port";
-    public static final String FEEDBACK_USER = "feedback.user";
-    public static final String FEEDBACK_PASSWORD = "feedback.password";
-    public static final String FEEDBACK_SSL = "feedback.ssl";
-    public static final String FEEDBACK_PROTOCOL = "feedback.protocol";
-    public static final String KML_DIRECTORY = "kml.directory";
-    public static final String KML_MAX_DAYS_FILE_EXIST = "kml.days_of_exist";
-    public static final String KML_MAX_DIRECTORY_FILES = "kml.max_directory_files";
-    public static final String CONFIG_DIR = "config.dir";
-    public static final String API_URL = "api.url";
-    public static final String SCHEDULER_UPDATE_LAYER = "scheduler.layer.update";
-    public static final String SCHEDULER_UPDATE_LAYER_MAIL = "scheduler.layer.update.mail";
+    public static final String FEEDBACK_FROM                    = "feedback.from";
+    public static final String FEEDBACK_TO                      = "feedback.to";
+    public static final String FEEDBACK_HOST                    = "feedback.host";
+    public static final String FEEDBACK_PORT                    = "feedback.port";
+    public static final String FEEDBACK_USER                    = "feedback.user";
+    public static final String FEEDBACK_PASSWORD                = "feedback.password";
+    public static final String FEEDBACK_SSL                     = "feedback.ssl";
+    public static final String FEEDBACK_PROTOCOL                = "feedback.protocol";
+    public static final String KML_DIRECTORY                    = "kml.directory";
+    public static final String KML_MAX_DAYS_FILE_EXIST          = "kml.days_of_exist";
+    public static final String KML_MAX_DIRECTORY_FILES          = "kml.max_directory_files";
+    public static final String BACKUP_MAX_DAYS_FILE_EXIST       = "backup.days_of_exist";
+    public static final String BACKUP_MAX_DIRECTORY_FILES       = "backup.max_directory_files";
+    public static final String SHORTEN_MAX_DAYS_FILE_EXIST      = "shorten.days_of_exist";
+    public static final String SHORTEN_MAX_DIRECTORY_FILES      = "shorten.max_directory_files";
+    public static final String CONFIG_DIR                       = "config.dir";
+    public static final String API_URL                          = "api.url";
+    public static final String SCHEDULER_UPDATE_LAYER           = "scheduler.layer.update";
+    public static final String SCHEDULER_UPDATE_LAYER_MAIL      = "scheduler.layer.update.mail";
+    public static final String SCHEDULER_CLEANUP_DATA           = "scheduler.cleanup.data";
     
     private Properties properties = null;
     private Properties propertiesOverride = null;

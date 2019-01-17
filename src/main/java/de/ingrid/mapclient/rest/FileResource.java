@@ -48,6 +48,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -55,9 +56,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -535,15 +539,103 @@ public class FileResource {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
+
+    @PUT
+    @Path("short")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getAndPutShortKey(@RequestBody String requestContent) throws IOException, JSONException {
+        JSONObject obj = new JSONObject(requestContent);
+        if(obj != null) {
+            String key = null;
+            String value = null;
+            if(obj.has("key")) {
+                key = obj.getString("key");
+            }
+            if(obj.has("value")) {
+                value = obj.getString("value");
+            }
+            if(key != null && value != null) {
+                Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+                
+                if(!path.endsWith( "/")){
+                    path += "/";
+                }
+                
+                File shortenDir = new File (path + "shorten");
+                if(!shortenDir.exists()) {
+                    shortenDir.mkdir();
+                }
+                
+                File shortenDirKey = new File (shortenDir.getAbsolutePath()+ "/" + key);
+                if(!shortenDirKey.exists()) {
+                    shortenDirKey.mkdir();
+                }
+                String valueToMd5 = DigestUtils.md5Hex(value);
+                
+                String shortenDirSubPath = shortenDirKey.getAbsolutePath();
+                
+                if(!shortenDirSubPath.endsWith( "/")){
+                    shortenDirSubPath += "/";
+                }
+                
+                shortenDirSubPath += valueToMd5.substring(0, 2);
+                
+                File shortenDirSub = new File(shortenDirSubPath);
+                if(!shortenDirSub.exists()) {
+                    shortenDirSub.mkdir();
+                }
+                
+                String shortenFilename = shortenDirSub.getAbsolutePath();
+               
+                if(!shortenFilename.endsWith( "/")){
+                    shortenFilename += "/";
+                }
+                
+                shortenFilename += valueToMd5;
+               
+                File shortenFile = new File(shortenFilename);
+                if(!shortenFile.exists()) {
+                    Utils.updateFile("shorten/" + key + "/" + shortenDirSub.getName() + "/" + valueToMd5, value);
+                }
+                return valueToMd5;
+            }
+            if(value != null) {
+                return value;
+            }
+        }
+        return "";
+    }
+
     
+    @GET
+    @Path("short")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) throws IOException {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
+
+        File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2) +  "/" + valueToMd5);
+        if(shortenFile.exists()) {
+            String content = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
+            if(content != null) {
+                Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, content, false);
+                return content.trim();
+            }
+        }
+        return valueToMd5;
+    }
+
     private String createKMLFile(String content, String mapUserId) throws IOException{
         String filename = "";
         String fileId = "";
         String path = "";
         
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        int maxDaysOfFileExist = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DAYS_FILE_EXIST, "365"));
-        int maxDirectoryFiles = Integer.parseInt(p.getProperty( ConfigurationProvider.KML_MAX_DIRECTORY_FILES, "1000"));
         path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/").trim();
         
         if(!path.endsWith( "/")){
@@ -563,20 +655,6 @@ public class FileResource {
                 userFolder.mkdir();
             }
             filename += mapUserId + "/";
-        }
-        
-        File folder = new File(filename);
-        File[] listOfFiles = folder.listFiles();
-        if(listOfFiles.length > maxDirectoryFiles){
-            for (File file : listOfFiles) {
-                if (file.isFile()) {
-                    Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);;
-                    Date fileDate = new Date(file.lastModified());
-                    if(fileDate.before(limitDate)) {
-                        file.delete();
-                    }
-                }
-            }
         }
         
         if (content != null && content.length() > 0) {

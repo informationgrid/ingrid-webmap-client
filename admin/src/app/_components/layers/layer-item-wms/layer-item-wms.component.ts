@@ -4,6 +4,7 @@ import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
 import { ModalComponent } from '../../modals/modal/modal.component';
 import { UtilsLayers } from '../../../_shared/utils/utils-layers';
+import { ITreeOptions } from 'angular-tree-component';
 
 @Component({
   selector: 'app-layer-item-wms',
@@ -14,12 +15,19 @@ export class LayerItemWmsComponent {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
+  @Input() altLayers;
   @ViewChild('f') form: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
   @Output() updateLayer: EventEmitter<LayerItem> = new EventEmitter<LayerItem>();
 
   tmpLayer: LayerItem;
+  layerCategoryTrees;
+
+  optionsCategoryTree: ITreeOptions = {
+    displayField: 'label',
+    childrenField: 'children'
+  };
 
   constructor(private httpService: HttpService) { }
 
@@ -92,6 +100,19 @@ export class LayerItemWmsComponent {
           this.modalSaveUnsuccess.show();
         }
       }
+    }
+  }
+
+  loadCategories(elem, layerId) {
+    if (layerId && !elem.classList.toString().includes('show')) {
+      this.httpService.getCategoriesOfLayer(layerId, true).subscribe(
+        data => {
+          this.layerCategoryTrees = data;
+        },
+        error => {
+          console.error('Error load categories for id: ' + layerId);
+        }
+      );
     }
   }
 }

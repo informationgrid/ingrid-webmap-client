@@ -84,8 +84,9 @@ export class CategoryTreeComponent implements OnInit {
     this.onLayerListSearch(event, searchText);
   }
 
-  onSelectLayer(event, value: string, ) {
-    this.focusItem.layerBodId = value;
+  onSelectLayer(event, layer ) {
+    this.focusItem.layerBodId = layer.id;
+    this.focusItem.label = layer.item.label;
     this.clearLayerList();
   }
 

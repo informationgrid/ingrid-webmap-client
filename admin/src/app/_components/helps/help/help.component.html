@@ -15,7 +15,7 @@
                         <div id="help_{{lang}}">
                             <div class="list-group" *ngFor="let help of helps.get(lang) | mapToIterable">
                                 <div class="card">
-                                    <div class="card-header" id="help_{{lang}}_{{help.key}}" data-toggle="collapse" [attr.data-target]="'#collapse_' + lang + '_'+ help.key" aria-expanded="true" [attr.aria-controls]="'help_' + lang">
+                                    <div class="card-header" id="help_{{lang}}_{{help.key}}" data-toggle="collapse" [attr.data-target]="'#collapse_' + lang + '_'+ help.key" aria-expanded="false" [attr.aria-controls]="'help_' + lang">
                                         <span>{{help.key}}</span>
                                         <span *ngIf="help.val.title"> - {{help.val.title}}</span>
                                     </div>

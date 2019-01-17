@@ -538,11 +538,18 @@ goog.require('ga_urlutils_service');
           var crossOrigin = 'anonymous';
           */
           var crossOrigin = config.crossOrigin ? 'anonymous' : undefined;
+          var proj = ol.proj.get(gaGlobalOptions.defaultEpsg);
           /* INGRID: Use projection extent if no layer extent exist
           var extent = config.extent || gaMapUtils.defaultExtent;
           */
-          var extent = config.extent ||
-              ol.proj.get(gaGlobalOptions.defaultEpsg).getExtent();
+          var extent = config.extent || proj.getExtent();
+
+          if (!proj.isGlobal() && config.extent) {
+            if (!ol.extent.containsExtent(gaGlobalOptions.defaultEpsgExtent,
+                config.extent)) {
+              config.extent = gaGlobalOptions.defaultEpsgExtent;
+            }
+          }
 
           // The tileGridMinRes is the resolution at which the client
           // zoom is activated. It's different from the config.minResolution
@@ -602,18 +609,18 @@ goog.require('ga_urlutils_service');
                 */
                 tileGrid: new ol.tilegrid.WMTS({
                   matrixIds: config.matrixIds || $.map(config.scales,
-                    function(r, i) { return i + ''; }),
+                      function(r, i) { return i + ''; }),
                   origin: config.origin,
                   resolutions: $.map(config.scales,
-                    function(r, i) {
-                      return r * 0.28E-3 /
-                        ol.proj.get(gaGlobalOptions.defaultEpsg)
-                        .getMetersPerUnit();
-                  }),
+                      function(r, i) {
+                        return r * 0.28E-3 /
+                        ol.proj.get(gaGlobalOptions.defaultEpsg).
+                            getMetersPerUnit();
+                      }),
                   tileSize: config.tileSize || 256,
                   extent: config.extent ?
                     ol.proj.transformExtent(config.extent, 'EPSG:4326',
-                    gaGlobalOptions.defaultEpsg) : extent
+                        gaGlobalOptions.defaultEpsg) : extent
                 }),
                 tileLoadFunction: tileLoadFunction(config),
                 /* INGRID: Replace generate urls
@@ -624,6 +631,14 @@ goog.require('ga_urlutils_service');
                 crossOrigin: crossOrigin,
                 transition: 0
               });
+              // INGRID: Add featureInfoTpl to source
+              if (config.featureInfoTpl) {
+                  olSource.set('featureInfoTpl', config.featureInfoTpl);
+              }
+              // INGRID: Add tilePixelRatio to source
+              if (config.tilePixelRatio) {
+                  olSource.set('tilePixelRatio', config.tilePixelRatio);
+              }
             }
             olLayer = new ol.layer.Tile({
               minResolution: gaNetworkStatus.offline ? null :
@@ -637,7 +652,7 @@ goog.require('ga_urlutils_service');
               extent: extent,
               */
               extent: config.extent ? ol.proj.transformExtent(config.extent,
-                'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
               preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
               useInterimTilesOnError: gaNetworkStatus.offline
             });
@@ -682,7 +697,7 @@ goog.require('ga_urlutils_service');
                 extent: extent
                 */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
-                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent
               });
             } else {
               if (!olSource) {
@@ -723,7 +738,7 @@ goog.require('ga_urlutils_service');
                 extent: extent,
                 */
                 extent: config.extent ? ol.proj.transformExtent(config.extent,
-                  'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
+                    'EPSG:4326', gaGlobalOptions.defaultEpsg) : extent,
                 preload: gaNetworkStatus.offline ? gaMapUtils.preload : 0,
                 useInterimTilesOnError: gaNetworkStatus.offline
               });

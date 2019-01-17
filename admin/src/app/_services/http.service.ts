@@ -165,26 +165,38 @@ export class HttpService {
     return this.http.get<CategoryItem[]>(url, httpJsonOptions);
   }
 
+  getCategoriesOfLayer(layerId: string, isExpanded) {
+    return this.http.get(httpApiHost + '/categories/layer/' + layerId, {
+      params: {
+        isExpanded: isExpanded
+      }
+    });
+  }
+
   updateCategoryAndLabel(category: Category, locale: Map<String, String>) {
     return forkJoin(
       this.updateCategory(category),
-      this.updateLocales(locale)
+      this.updateLocales(locale, 'de')
     );
   }
+
   updateCategory(category: Category): Observable<Category[]> {
     const body = JSON.stringify(category);
     return this.http.put<Category[]>(httpApiHost + '/categories/' + category.id, body, httpJsonOptions);
   }
 
-  addCategoryAndLabel(category: Category, locale: Map<String, String>) {
+  addCategoryAndLabel(category: Category, locale: Map<String, String>, copyId: String) {
     return forkJoin(
-      this.addCategory(category),
-      this.updateLocales(locale)
+      this.addCategory(category, copyId),
+      this.updateLocales(locale, 'de')
     );
   }
 
-  addCategory(category: Category): Observable<Category[]> {
+  addCategory(category: Category, copyId: String): Observable<Category[]> {
     const body = JSON.stringify(category);
+    if (copyId) {
+      return this.http.post<Category[]>(httpApiHost + '/categories/' + copyId, body, httpJsonOptions);
+    }
     return this.http.post<Category[]>(httpApiHost + '/categories', body, httpJsonOptions);
   }
 
@@ -244,6 +256,15 @@ export class HttpService {
     }
   }
 
+  loadServiceLayers(serviceUrl: string, login: string) {
+    return this.http.get(httpServiceUrl.replace('/?', '/layers?'), {
+      params: {
+        url: serviceUrl,
+        login: login
+      }
+    });
+  }
+
 // Settings
   getSetting(): Observable<Setting> {
     return this.http.get<Setting>(httpApiHost + '/setting', httpJsonOptions);
@@ -280,7 +301,11 @@ export class HttpService {
   }
 
 // Locales
-  updateLocales(map: Map<String, String>) {
+  getLocalisation(lang: string) {
+    return this.http.get(httpApiHost + '/locales/' + lang, {responseType: 'text'});
+  }
+
+  updateLocales(map: Map<String, String>, lang) {
     let body = '{';
     if (map) {
       map.forEach((value: string, key: string) => {
@@ -289,6 +314,6 @@ export class HttpService {
     }
     body = body.slice(0, -1);
     body += '}';
-    return this.http.put(httpApiHost + '/locales/de', body, httpJsonOptions);
+    return this.http.put(httpApiHost + '/locales/' + lang, body, httpJsonOptions);
   }
 }

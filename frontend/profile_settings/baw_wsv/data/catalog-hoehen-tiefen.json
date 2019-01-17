@@ -1,0 +1,137 @@
+{
+  "results": {
+    "root": {
+      "category": "root",
+      "staging": "prod",
+      "id": 1,
+      "children": [{
+        "category": "cat70",
+        "staging": "prod",
+        "selectedOpen": false,
+        "label": "WSV",
+        "id": 2,
+        "children": [{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Schummerung BWaStr",
+          "id": 3,
+          "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Schummerung BWaStr",
+              "layerBodId": "bwastr_schummerung",
+              "id": 4
+            }]
+        },
+        {
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "WSV: Höhenmodell BWaStr - INSPIRE Elevation",
+          "id": 5,
+          "children": [{
+              "category": "layer",
+              "staging": "prod",
+              "label": "Übersichtskarte INSPIRE EL",
+              "layerBodId": "inspire_el_Overview",
+              "id": 6
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Höhenlinien INSPIRE EL",
+              "layerBodId": "inspire_el_ContourLine",
+              "id": 7
+            },
+            {
+              "category": "layer",
+              "staging": "prod",
+              "label": "Relief INSPIRE EL",
+              "layerBodId": "inspire_el_Relief",
+              "id": 8
+            }]
+        }]
+      },
+      {
+        "category": "cat70",
+        "staging": "prod",
+        "selectedOpen": false,
+        "label": "National, BKG",
+        "id": 100,
+        "children": [{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "D: Digit. Geländemodell 10m DGM10 (BKG)",
+          "id": 101,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "DGM10 Schummerung",
+            "layerBodId": "wms_dgm10_schummerung",
+            "id": 102
+          },
+          {
+            "category": "layer",
+            "staging": "prod",
+            "label": "DGM10 Relief",
+            "layerBodId": "wms_dgm10_relief",
+            "id": 103
+          },
+          {
+            "category": "layer",
+            "staging": "prod",
+            "label": "DGM10 Colormap",
+            "layerBodId": "wms_dgm10_colormap",
+            "id": 104
+          },
+          {
+            "category": "layer",
+            "staging": "prod",
+            "label": "DGM10 Höheninformation",
+            "layerBodId": "wms_dgm10_hoehe",
+            "id": 105
+          }]
+        }]
+      },
+      {
+        "category": "cat70",
+        "staging": "prod",
+        "selectedOpen": false,
+        "label": "National, weitere",
+        "id": 200,
+        "children": []
+      },
+      {
+        "category": "cat70",
+        "staging": "prod",
+        "selectedOpen": false,
+        "label": "International",
+        "id": 300,
+        "children": [{
+          "category": "cat71",
+          "staging": "prod",
+          "selectedOpen": false,
+          "label": "IT: Autonome Provinz Bozen",
+          "id": 301,
+          "children": [{
+            "category": "layer",
+            "staging": "prod",
+            "label": "DGM 2,5m Schummerung Provinz Bozen",
+            "layerBodId": "it_bz_buergernetz_DTM-2p5m",
+            "id": 302
+          },
+          {
+            "category": "layer",
+            "staging": "prod",
+            "label": "DOM 2,5m Schummerung Provinz Bozen",
+            "layerBodId": "it_bz_buergernetz_DSM-2p5m",
+            "id": 303
+          }]
+        }]
+      }]
+    }
+  },
+  "last_id": 400
+}

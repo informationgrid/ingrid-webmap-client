@@ -219,6 +219,7 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
+
     @GET
     @Path("categories/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -228,6 +229,38 @@ public class AdministrationResource {
             return Response.ok( arr ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    @GET
+    @Path("categories/layer/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getCategoryByLayerId(@PathParam("id") String id, @QueryParam("isExpanded") boolean isExpanded) {
+        JSONArray categoriesWithLayerId = new JSONArray();
+        JSONArray categories = getCategories();
+        if(categories != null) {
+            for (int i = 0; i < categories.length(); i++) {
+                try {
+                    JSONObject category = categories.getJSONObject(i);
+                    if(category != null && category.has("id")) {
+                        String categoryId = category.getString("id");
+                        JSONArray categoryTree = getCategoryTree(categoryId);
+                        if(categoryTree != null) {
+                            JSONArray filterCategoryTree = new JSONArray();
+                            filteredTreeLeafById(categoryTree, id, filterCategoryTree, isExpanded);
+                            if(filterCategoryTree.length() > 0) {
+                                JSONObject filterCategory = new JSONObject();
+                                filterCategory.put("label", categoryId);
+                                filterCategory.put("children", filterCategoryTree);
+                                categoriesWithLayerId.put(filterCategory);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return Response.ok( categoriesWithLayerId ).build();
     }
 
     @POST
@@ -246,7 +279,35 @@ public class AdministrationResource {
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
-    
+
+    @POST
+    @Path("categories/{copyId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response copyCategory(String content, @PathParam("copyId") String copyId) {
+        if(copyId != null) {
+            JSONObject category;
+            try {
+                category = new JSONObject(content);
+                String categoryId = category.getString("id");
+                String fileContent = null;
+                if(categoryId != null) {
+                    Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                    if(config_dir != null){
+                        fileContent = Utils.getFileContent(config_dir, "catalog-" + copyId, ".json", "data/");
+                    }
+                    if(fileContent != null) {
+                        Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
+                    }
+                }
+            } catch (JSONException e) {
+                log.error("Error POST '/categories'!");
+            }
+            return this.addCategory(content);
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
     @PUT
     @Path("categories/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -319,44 +380,10 @@ public class AdministrationResource {
     @Path("setting")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSettingRequest() {
-        String filename = "setting";
-        try {
-            JSONObject setting = null;
-            JSONObject profileSetting = null;
-            
-            if(log.isDebugEnabled()){
-                log.debug( "Load file: " + filename );
-            }
-            String classPath = "";
-            classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-            String fileSetting = classPath + "frontend/";
-            String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
-            if(fileContent != null) {
-                setting = new JSONObject(fileContent);
-            }
-            
-            filename = "setting.profile";
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
-            }
-            
-            if(fileContent != null){
-                profileSetting = new JSONObject(fileContent);
-            }
-            if(setting != null && profileSetting != null) {
-                Iterator<?> keys = profileSetting.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (profileSetting.has(key)) {
-                        setting.put(key, profileSetting.get(key));
-                    }
-                }
-            }
-            return Response.ok( setting ).build();
-        } catch (JSONException e) {
-            log.error("Error getSettingRequest: " + e);
+        ConfigResource cr = new ConfigResource();
+        Response localeResponse = cr.getSettingRequest(true);
+        if(localeResponse != null) {
+            return localeResponse;
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
@@ -465,16 +492,16 @@ public class AdministrationResource {
                             this.updateHelp(lang, this.getHelpRequest("de").getEntity().toString());
                         }
                         ConfigResource cr = new ConfigResource();
-                        Response localeResponse = cr.getLocales(lang+ ".json");
+                        Response localeResponse = cr.getLocales(lang+ ".json", false);
                         if(localeResponse.getEntity().toString().equals("{}")) {
-                            this.updateLocale(lang, cr.getLocales("de.json").getEntity().toString());
+                            this.updateLocale(lang, cr.getLocales("de.json", false).getEntity().toString());
                         }
                     }
                 }
             } 
             return getSettingRequest();
         } catch (JSONException e) {
-            log.error("Error POST '/categories/{id}'!");
+            log.error("Error PUT '/setting'!");
         }
         
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -541,6 +568,12 @@ public class AdministrationResource {
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                 if(config_dir != null){
                     fileContent = Utils.getFileContent(config_dir, filename + ".profile", ".json", "help/");
+                    if(fileContent == null) {
+                        fileContent = Utils.getFileContent(filePathHelp, filename + ".profile", ".json", "help/");
+                        if(fileContent != null) {
+                            Utils.updateFile("help/"+ filename + ".profile.json", fileContent);
+                        }
+                    }
                     if(fileContent != null){
                         profileHelp = new JSONObject(fileContent);
                     }
@@ -640,6 +673,14 @@ public class AdministrationResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @GET
+    @Path("locales/{locale}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+        ConfigResource cr = new ConfigResource();
+        return cr.getLocales(locale + ".json", false);
+    }
+
     @PUT
     @Path("locales/{lang}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -696,23 +737,41 @@ public class AdministrationResource {
     }
 
     private void updateLocale(String lang, String content) throws JSONException {
-        JSONObject locale = null;
+        JSONObject localeProfile = null;
+        JSONObject localeDefault = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
         if(fileContent != null) {
-            locale = new JSONObject(fileContent);
+            localeProfile = new JSONObject(fileContent);
         }
+        ConfigResource cr = new ConfigResource();
+        Response localeResponse = cr.getLocales(lang+ ".json", true);
+        if(localeResponse != null) {
+            localeDefault = new JSONObject(localeResponse.getEntity().toString());
+        }
+        
         JSONObject item = new JSONObject(content);
-        if(item != null && locale != null) {
+        if(item != null && localeProfile != null) {
             Iterator<?> keys = item.keys();
             while( keys.hasNext() ) {
                 String key = (String)keys.next();
                 if (item.has(key)) {
-                    locale.put(key, item.get(key));
+                    String value = item.getString(key);
+                    String valueDefault = "";
+                    if(localeDefault != null) {
+                        if(localeDefault.has(key)) {
+                            valueDefault = localeDefault.getString(key);
+                        }
+                    }
+                    if(value.trim().equals(valueDefault.trim())) {
+                        localeProfile.remove(key);
+                    } else {
+                        localeProfile.put(key, item.get(key));
+                    }
                 }
             }
-            Utils.updateFile("locales/" + lang + ".profile.json", locale);
+            Utils.updateFile("locales/" + lang + ".profile.json", localeProfile);
         } else if(item != null) {
             Utils.updateFile("locales/" + lang + ".profile.json", item);
         }
@@ -722,7 +781,7 @@ public class AdministrationResource {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = Utils.getFileContent(config_dir, lang, ".json", "locales/");
+        String fileContent = Utils.getFileContent(config_dir, lang, ".profile.json", "locales/");
         if(fileContent != null) {
             locale = new JSONObject(fileContent);
         }
@@ -770,21 +829,11 @@ public class AdministrationResource {
     
     private String updateCss(String content) {
         try {
-            String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-            if(classPath != null) {
-                String filePathHelp = classPath + "frontend/";
-                String fileContent = Utils.getFileContent(filePathHelp, "app.override", ".css", "css/");
-                if(fileContent != null) {
-                    if(!fileContent.equals(content)) {
-                        Utils.updateFile("css/app.override.css", content);
-                    }
-                }
-            }
-            return content;
+            Utils.updateFile("css/app.profile.css", content);
         } catch (Exception e) {
             log.error("Error 'updateCss'!");
         }
-        return null;
+        return content;
     }
     
     private String updateHelp(String lang, String content) {
@@ -1366,7 +1415,39 @@ public class AdministrationResource {
         }
         return arr;
     }
-    
+
+    private void filteredTreeLeafById(JSONArray categoryTree, String id, JSONArray filterCategoryTree, boolean isExpanded) {
+        if(categoryTree != null) {
+            try {
+                for (int i = 0; i < categoryTree.length(); i++) {
+                    JSONObject categoryTreeBranch = categoryTree.getJSONObject(i);
+                    if(categoryTreeBranch.has("children")) {
+                        JSONArray categoryTreeBranchChildren = categoryTreeBranch.getJSONArray("children");
+                        JSONArray filterCategoryTreeChildren = new JSONArray();
+                        if(categoryTreeBranchChildren != null) {
+                            filteredTreeLeafById(categoryTreeBranchChildren, id, filterCategoryTreeChildren, isExpanded);
+                            if(filterCategoryTreeChildren.length() > 0) {
+                                categoryTreeBranch.put("children", filterCategoryTreeChildren);
+                                if(isExpanded) {
+                                    categoryTreeBranch.put("isExpanded", isExpanded);
+                                }
+                                filterCategoryTree.put(categoryTreeBranch);
+                            }
+                        }
+                    }
+                    if(categoryTreeBranch.has("layerBodId")) {
+                        String layerBodId = categoryTreeBranch.getString("layerBodId");
+                        if(layerBodId.equals(id)) {
+                            filterCategoryTree.put(categoryTreeBranch);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void updateCategoryLayersId(JSONObject catItem, String id, String newId) throws JSONException {
         String key = "layerBodId";
         if(!catItem.isNull(key)) {

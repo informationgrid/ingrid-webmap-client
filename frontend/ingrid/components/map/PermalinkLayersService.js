@@ -74,9 +74,19 @@ goog.require('ga_wmts_service');
           var layerSpecs = $.map(layers, function(layer) {
             return layer.bodId || layer.id;
           });
+          /* INGRID: Shorten layers value
           gaPermalink.updateParams({
             layers: layerSpecs.join(',')
           });
+          */
+          $http.put(gaGlobalOptions.publicUrl +
+              '/short', '{"key": "layers", "value":"' +
+              layerSpecs.join(',') + '"}').
+              then(function(response) {
+                gaPermalink.updateParams({
+                  layers: response.data
+                });
+              });
         } else {
           gaPermalink.deleteParam('layers');
         }
@@ -231,142 +241,159 @@ goog.require('ga_wmts_service');
 
         var addLayers = function(layerSpecs, opacities, visibilities,
             timestamps, parameters, styleUrls) {
-          var nbLayersToAdd = layerSpecs.length;
-          angular.forEach(layerSpecs, function(layerSpec, index) {
-            var layer, infos, opts;
-            var opacity = (opacities && index < opacities.length) ?
-              opacities[index] : undefined;
-            var visible = !((visibilities === false ||
-                (angular.isArray(visibilities) &&
-                visibilities[index] === 'false')));
-            var timestamp = (timestamps && index < timestamps.length &&
-                timestamps !== '') ? timestamps[index] : '';
-            var params = (parameters && index < parameters.length) ?
-              gaUrlUtils.parseKeyValue(parameters[index]) : undefined;
-            var styleUrl = (styleUrls && index < styleUrls.length &&
-                styleUrls !== '') ? styleUrls[index] : '';
-            var bodLayer = gaLayers.getLayer(layerSpec);
-            if (bodLayer) {
-              // BOD layer.
-              // Do not consider BOD layers that are already in the map,
-              // except for timeEnabled layers
-              var isOverlay = gaMapUtils.getMapOverlayForBodId(map, layerSpec);
-              // We test if timestamps exist to differentiate between topic
-              // selected layers and topic activated layers (no timestamps
-              // parameter defined).
-              if ((bodLayer.timeEnabled && isOverlay && timestamps) ||
-                  !isOverlay) {
-                // Set custom style URL
-                if (styleUrl) {
-                  opts = {
-                    externalStyleUrl: styleUrl
-                  };
-                }
-                layer = gaLayers.getOlLayerById(layerSpec, opts);
-
-                // If the layer is already on the map when need to increment
-                // the id.
-                if (isOverlay) {
-                  layer.id += '_' + dupId++;
-                }
+          // INGRID: Get values from shorten
+          if (layerSpecs && layerSpecs.length > 0) {
+            $http.get(gaGlobalOptions.publicUrl +
+                '/short', {
+              params: {
+                key: 'layers',
+                value: layerSpecs.join(',')
               }
-              if (angular.isDefined(layer)) {
-                layer.visible = visible;
-                // if there is no opacity defined in the permalink, we keep
-                // the default opacity of the layers
-                if (opacity) {
-                  layer.setOpacity(opacity);
-                }
-                if (layer.timeEnabled && timestamp) {
-                  // If a time permalink exist we use it instead of the
-                  // timestamp, only if the layer is visible.
-                  if (gaTime.get() && layer.visible) {
-                    timestamp = gaLayers.getLayerTimestampFromYear(layer.bodId,
-                        gaTime.get());
+            }).then(function(response) {
+              layerSpecs = response.data.split(',')
+              angular.forEach(layerSpecs, function(layerSpec, index) {
+                var layer, infos, opts;
+                var opacity = (opacities && index < opacities.length) ?
+                  opacities[index] : undefined;
+                var visible = !((visibilities === false ||
+                    (angular.isArray(visibilities) &&
+                    visibilities[index] === 'false')));
+                var timestamp = (timestamps && index < timestamps.length &&
+                    timestamps !== '') ? timestamps[index] : '';
+                var params = (parameters && index < parameters.length) ?
+                  gaUrlUtils.parseKeyValue(parameters[index]) : undefined;
+                var styleUrl = (styleUrls && index < styleUrls.length &&
+                    styleUrls !== '') ? styleUrls[index] : '';
+                var bodLayer = gaLayers.getLayer(layerSpec);
+                if (bodLayer) {
+                  // BOD layer.
+                  // Do not consider BOD layers that are already in the map,
+                  // except for timeEnabled layers
+                  var isOverlay = gaMapUtils.getMapOverlayForBodId(map,
+                      layerSpec);
+                  // We test if timestamps exist to differentiate between topic
+                  // selected layers and topic activated layers (no timestamps
+                  // parameter defined).
+                  if ((bodLayer.timeEnabled && isOverlay && timestamps) ||
+                      !isOverlay) {
+                    // Set custom style URL
+                    if (styleUrl) {
+                      opts = {
+                        externalStyleUrl: styleUrl
+                      };
+                    }
+                    layer = gaLayers.getOlLayerById(layerSpec, opts);
+
+                    // If the layer is already on the map when need to increment
+                    // the id.
+                    if (isOverlay) {
+                      layer.id += '_' + dupId++;
+                    }
                   }
-                  layer.time = timestamp;
+                  if (angular.isDefined(layer)) {
+                    layer.visible = visible;
+                    // if there is no opacity defined in the permalink, we keep
+                    // the default opacity of the layers
+                    if (opacity) {
+                      layer.setOpacity(opacity);
+                    }
+                    if (layer.timeEnabled && timestamp) {
+                      // If a time permalink exist we use it instead of the
+                      // timestamp, only if the layer is visible.
+                      if (gaTime.get() && layer.visible) {
+                        timestamp = gaLayers.getLayerTimestampFromYear(
+                            layer.bodId,
+                            gaTime.get()
+                        );
+                      }
+                      layer.time = timestamp;
+                    }
+                    if (params && layer.getSource &&
+                        layer.getSource().updateParams) {
+                      layer.getSource().updateParams(params);
+                    }
+                    map.addLayer(layer);
+                  }
+
+                } else if (gaMapUtils.isKmlLayer(layerSpec) ||
+                    gaMapUtils.isGpxLayer(layerSpec)) {
+
+                  // Vector layer
+                  var url = layerSpec.split('||')[1];
+                  var delay = params ? parseInt(params.updateDelay) : NaN;
+                  if (!isNaN(delay)) {
+                    delay = (delay < 3) ? 3 : delay;
+                  }
+                  try {
+                    gaVector.addToMapForUrl(map, url,
+                        {
+                          opacity: opacity || 1,
+                          visible: visible,
+                          updateDelay: isNaN(delay) ? undefined : delay * 1000
+                        },
+                        index + 1);
+                    mustReorder = true;
+                  } catch (e) {
+                    // Adding vector layer failed, native alert, log message?
+                    $log.error(e.message);
+                  }
+
+                } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
+
+                  // External WMS layer
+                  infos = layerSpec.split('||');
+                  try {
+                    gaWms.addWmsToMap(map,
+                        {
+                          LAYERS: infos[3],
+                          VERSION: infos[4]
+                        },
+                        {
+                          url: infos[2],
+                          /* INGRID: decode label
+                          label: infos[1],
+                          */
+                          label: decodeURIComponent(infos[1]),
+                          opacity: opacity || 1,
+                          visible: visible,
+                          queryable: infos[5],
+                          /* INGRID: Remove extent
+                          extent: gaGlobalOptions.defaultExtent,
+                          */
+                          useReprojection: (infos[6] === 'true')
+                        },
+                        index + 1);
+                  } catch (e) {
+                    // Adding external WMS layer failed, native alert,
+                    // log message?
+                    $log.error(e.message);
+                  }
+                } else if (gaMapUtils.isExternalWmtsLayer(layerSpec)) {
+                  infos = layerSpec.split('||');
+                  gaWmts.addWmtsToMapFromGetCapUrl(map, infos[2], infos[1], {
+                    index: index + 1,
+                    opacity: opacity,
+                    visible: visible,
+                    time: timestamp
+                  });
+                } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
+                  // INGRID: Add external service
+                  infos = layerSpec.split('||');
+                  try {
+                    gaWms.addWmsServiceToMap(map, infos[1], infos[2],
+                        index + 1);
+                    gaPermalink.deleteParam('layers');
+                  } catch (e) {
+                    $log.error(e.message);
+                  }
                 }
-                if (params && layer.getSource &&
-                    layer.getSource().updateParams) {
-                  layer.getSource().updateParams(params);
-                }
-                map.addLayer(layer);
-              }
-
-            } else if (gaMapUtils.isKmlLayer(layerSpec) ||
-                gaMapUtils.isGpxLayer(layerSpec)) {
-
-              // Vector layer
-              var url = layerSpec.split('||')[1];
-              var delay = params ? parseInt(params.updateDelay) : NaN;
-              if (!isNaN(delay)) {
-                delay = (delay < 3) ? 3 : delay;
-              }
-              try {
-                gaVector.addToMapForUrl(map, url,
-                    {
-                      opacity: opacity || 1,
-                      visible: visible,
-                      updateDelay: isNaN(delay) ? undefined : delay * 1000
-                    },
-                    index + 1);
-                mustReorder = true;
-              } catch (e) {
-                // Adding vector layer failed, native alert, log message?
-                $log.error(e.message);
-              }
-
-            } else if (gaMapUtils.isExternalWmsLayer(layerSpec)) {
-
-              // External WMS layer
-              infos = layerSpec.split('||');
-              try {
-                gaWms.addWmsToMap(map,
-                    {
-                      LAYERS: infos[3],
-                      VERSION: infos[4]
-                    },
-                    {
-                      url: infos[2],
-                      /* INGRID: decode label
-                      label: infos[1],
-                      */
-                      label: decodeURIComponent(infos[1]),
-                      opacity: opacity || 1,
-                      visible: visible,
-                      queryable: infos[5],
-                      /* INGRID: Remove extent
-                      extent: gaGlobalOptions.defaultExtent,
-                      */
-                      useReprojection: (infos[6] === 'true')
-                    },
-                    index + 1);
-              } catch (e) {
-                // Adding external WMS layer failed, native alert, log message?
-                $log.error(e.message);
-              }
-            } else if (gaMapUtils.isExternalWmtsLayer(layerSpec)) {
-              infos = layerSpec.split('||');
-              gaWmts.addWmtsToMapFromGetCapUrl(map, infos[2], infos[1], {
-                index: index + 1,
-                opacity: opacity,
-                visible: visible,
-                time: timestamp
               });
-            } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
-              // INGRID: Add external service
-              infos = layerSpec.split('||');
-              try {
-                gaWms.addWmsServiceToMap(map, infos[1], infos[2], index + 1);
-                gaPermalink.deleteParam('layers');
-              } catch (e) {
-                $log.error(e.message);
-              }
-            }
-          });
+            });
+          }
 
           // When an async layer is added we must reorder correctly the layers.
           if (mustReorder) {
+            var nbLayersToAdd = layerSpecs.length;
             var deregister2 = scope.$watchCollection(
                 'layers | filter : layerFilter', function(layers) {
                   if (layers.length === nbLayersToAdd) {

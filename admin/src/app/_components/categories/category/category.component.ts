@@ -19,6 +19,7 @@ export class CategoryComponent implements OnChanges {
   @Input() categories: Category[];
   @ViewChild('formAdd') formAdd: NgForm;
   @ViewChild('formEdit') formEdit: NgForm;
+  @ViewChild('formCopy') formCopy: NgForm;
   @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
   @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
@@ -66,6 +67,23 @@ export class CategoryComponent implements OnChanges {
     modal.show();
   }
 
+  showModalCopy (modal: ModalComponent, category: Category) {
+    this.model = category;
+    this.backgroundLayers = this.layers.filter(
+      layer => layer.item.background
+    );
+    this.formCopy.reset({
+      id: this.model.id,
+      defaultBackground: this.model.defaultBackground,
+      backgroundLayers: this.model.backgroundLayers,
+      selectedLayers: this.model.selectedLayers,
+      activatedLayers: this.model.activatedLayers,
+      copyCatLabel: '',
+      copyCatTooltip: this.translate.instant('topic_' + this.model.id + '_tooltip')
+    });
+    modal.show();
+  }
+
   showModalDelete (modal: ModalComponent, category: Category) {
     this.model = category;
     this.selectedCategories = [category.id];
@@ -74,11 +92,15 @@ export class CategoryComponent implements OnChanges {
 
   loadCategory(id: string, event) {
     if (event.currentTarget.classList.contains('collapsed')) {
-      this.httpService.getCategory(id, null)
+      this.reloadCategory(id);
+    }
+  }
+
+  reloadCategory(id: string) {
+    this.httpService.getCategory(id, null)
       .subscribe( data => {
           this.categoryTree = data;
       });
-    }
   }
 
   updateCategories(event) {
@@ -146,17 +168,17 @@ export class CategoryComponent implements OnChanges {
   // Add new category
   addCategory(modal: ModalComponent) {
     if (this.formAdd.valid) {
-      const value = this.formAdd.value.addCatId;
-      if (value) {
-        if (!this.checkCategoryExist(value)) {
+      this.model.id = this.formAdd.value.addCatId.toLowerCase();
+      if (this.model.id) {
+        if (!this.checkCategoryExist(this.model.id)) {
           if (this.model) {
-            this.model.id = value;
             const map = new Map<String, String>();
-            map.set(value,  this.formAdd.value.addCatLabel);
-            map.set('' + value + '_service_link_href', '');
-            map.set('' + value + '_service_link_label', '');
-            map.set('topic_' + value + '_tooltip', this.formAdd.value.addCatTooltip ? this.formAdd.value.addCatTooltip : value);
-            this.httpService.addCategoryAndLabel(this.model, map).subscribe(
+            map.set(this.model.id,  this.formAdd.value.addCatLabel);
+            map.set('' + this.model.id + '_service_link_href', '');
+            map.set('' + this.model.id + '_service_link_label', '');
+            map.set('topic_' + this.model.id + '_tooltip', this.formAdd.value.addCatTooltip ?
+              this.formAdd.value.addCatTooltip : this.model.id);
+            this.httpService.addCategoryAndLabel(this.model, map, null).subscribe(
               data => {
                 this.categories = data[0];
                 this.updateAppCategories.emit(data[0]);
@@ -190,6 +212,35 @@ export class CategoryComponent implements OnChanges {
           map.set('topic_' + this.model.id + '_tooltip', this.formEdit.value.editCatTooltip);
         }
         this.httpService.updateCategoryAndLabel(this.model, map).subscribe(
+          data => {
+            this.categories = data[0];
+            this.modalSaveSuccess.show();
+            modal.hide();
+          },
+          error => {
+            console.error('Error update: ' + this.model.id);
+            this.modalSaveUnsuccess.show();
+          },
+          () => {
+            this.translate.reloadLang(this.translate.getDefaultLang());
+          }
+        );
+      }
+    }
+  }
+
+  // Copy category
+  onCopyCategory(modal: ModalComponent) {
+    if (this.formCopy.valid) {
+      if (this.model) {
+        this.model.id = this.formCopy.value.copyId.toLowerCase();
+        this.model.defaultBackground = this.formCopy.value.defaultBackground;
+        const map = new Map<String, String>();
+        map.set(this.model.id, this.formCopy.value.copyCatLabel);
+        map.set('' + this.model.id + '_service_link_href', '');
+        map.set('' + this.model.id + '_service_link_label', '');
+        map.set('topic_' + this.model.id + '_tooltip', this.formCopy.value.copyCatTooltip);
+        this.httpService.addCategoryAndLabel(this.model, map, this.formCopy.value.id).subscribe(
           data => {
             this.categories = data[0];
             this.modalSaveSuccess.show();

@@ -73,3 +73,17 @@
     /* IE 9*/
   }
 }
+
+@media (max-width: 480px) {
+  #pulldown .panel-body {
+    max-height: 95px;
+  }
+}
+
+.ga-full-screen.ga-full-screen-no-inputs #search-container,
+.ga-full-screen #logo,
+.ga-full-screen #toptools,
+.ga-full-screen #pulldown,
+.ga-full-screen #footer {
+  display: block;
+}

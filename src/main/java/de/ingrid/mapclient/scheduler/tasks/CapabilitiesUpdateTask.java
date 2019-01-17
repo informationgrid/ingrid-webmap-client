@@ -106,9 +106,12 @@ public class CapabilitiesUpdateTask implements Runnable{
                         layerJSON.put("extent", new JSONArray(defaultExtent));
                     }
                     String layerVersion = null;
-                    String layerType = layerJSON.getString( Constants.TYPE );
+                    String layerType = null;
                     String login = null;
                     
+                    if(layerJSON.has( Constants.TYPE )) {
+                        layerType = layerJSON.getString( Constants.TYPE );
+                    }
                     if(layerJSON.has(Constants.VERSION)) {
                         layerVersion = layerJSON.getString( Constants.VERSION );
                     }
@@ -116,106 +119,117 @@ public class CapabilitiesUpdateTask implements Runnable{
                         login = layerJSON.getString( Constants.AUTH );
                     }
                     if(layerType.equals( de.ingrid.mapclient.Constants.TYPE_WMS )) {
-                        String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
-                        if(layerWmsUrl != null){
-                            try {
-                                if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
-                                    layerWmsUrl += "?";
-                                }
-                                if(layerWmsUrl.toLowerCase().indexOf( "service=" )  == -1){
-                                    layerWmsUrl += "&SERVICE=WMS";
-                                }
-                                if(layerWmsUrl.toLowerCase().indexOf( "request=" )  == -1){
-                                    layerWmsUrl += "&REQUEST=GetCapabilities";
-                                }
-                                if(layerWmsUrl.toLowerCase().indexOf( "version=" )  == -1){
-                                    if(layerVersion == null) {
-                                        layerWmsUrl += "&VERSION=1.3.0";
-                                    } else {
-                                        layerWmsUrl += "&VERSION=" + layerVersion;
+                        if(layerJSON.has( Constants.WMS_URL)) {
+                            String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
+                            if(layerWmsUrl != null){
+                                try {
+                                    if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
+                                        layerWmsUrl += "?";
                                     }
-                                }
-                                if(!errorUrls.contains(layerWmsUrl)) {
-                                    doc = mapCapabilities.get( layerWmsUrl );
-                                    if(doc == null){
-                                        log.debug( "Load capabilities: " + layerWmsUrl);
-                                        getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
-                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                        docFactory.setValidating(false);
-                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                        mapCapabilities.put( layerWmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
-                                        }
-                                    } else {
-                                        log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
+                                    if(layerWmsUrl.toLowerCase().indexOf( "service=" )  == -1){
+                                        layerWmsUrl += "&SERVICE=WMS";
+                                    }
+                                    if(layerWmsUrl.toLowerCase().indexOf( "request=" )  == -1){
+                                        layerWmsUrl += "&REQUEST=GetCapabilities";
+                                    }
+                                    if(layerWmsUrl.toLowerCase().indexOf( "version=" )  == -1){
+                                        if(layerVersion == null) {
+                                            layerWmsUrl += "&VERSION=1.3.0";
+                                        } else {
+                                            layerWmsUrl += "&VERSION=" + layerVersion;
                                         }
                                     }
-                                } else {
+                                    if(!errorUrls.contains(layerWmsUrl)) {
+                                        doc = mapCapabilities.get( layerWmsUrl );
+                                        if(doc == null){
+                                            log.debug( "Load capabilities: " + layerWmsUrl);
+                                            getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
+                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                hasChanges = true;
+                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                            } else {
+                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                                docFactory.setValidating(false);
+                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                                mapCapabilities.put( layerWmsUrl, doc );
+                                                boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                                if(hasChangesLayer){
+                                                    hasChanges = hasChangesLayer;
+                                                }
+                                            }
+                                        } else {
+                                            log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
+                                            boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                            if(hasChangesLayer){
+                                                hasChanges = hasChangesLayer;
+                                            }
+                                        }
+                                    } else {
+                                        hasChanges = true;
+                                        layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                    }
+                                } catch (Exception e) {
                                     hasChanges = true;
                                     layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                }
-                            } catch (Exception e) {
-                                hasChanges = true;
-                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                if(!errorUrls.contains(layerWmsUrl)){
-                                    errorUrls.add(layerWmsUrl);
+                                    if(!errorUrls.contains(layerWmsUrl)){
+                                        errorUrls.add(layerWmsUrl);
+                                    }
                                 }
                             }
-                        } 
+                        }
                     } else if(layerType.equals( Constants.TYPE_WMTS )) {
-                        String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
-                        if(layerWtmsUrl != null){
-                            try {
-                                if(!errorUrls.contains(layerWtmsUrl)) {
-                                    doc = mapCapabilities.get( layerWtmsUrl );
-                                    if(doc == null){
-                                        log.debug( "Load capabilities: " + layerWtmsUrl);
-                                        getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
-                                        // Remove doctype on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!.*?]>", "" );
-                                        // Remove comments on xml
-                                        getCapabilities = getCapabilities.replaceAll( "(?s)<!--.*?-->", "" );
-                                        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                        docFactory.setValidating(false);
-                                        doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                        mapCapabilities.put( layerWtmsUrl, doc );
-                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
+                        if(layerJSON.has( Constants.WMTS_URL)) {
+                            String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
+                            if(layerWtmsUrl != null){
+                                try {
+                                    if(!errorUrls.contains(layerWtmsUrl)) {
+                                        doc = mapCapabilities.get( layerWtmsUrl );
+                                        if(doc == null){
+                                            log.debug( "Load capabilities: " + layerWtmsUrl);
+                                            getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
+                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                hasChanges = true;
+                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                            } else {
+                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                                docFactory.setValidating(false);
+                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                                mapCapabilities.put( layerWtmsUrl, doc );
+                                                boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                                if(hasChangesLayer){
+                                                    hasChanges = hasChangesLayer;
+                                                }
+                                            }
+                                        } else {
+                                            log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
+                                            boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                            if(hasChangesLayer){
+                                                hasChanges = hasChangesLayer;
+                                            }
                                         }
                                     } else {
-                                        log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
-                                        boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                        if(hasChangesLayer){
-                                            hasChanges = hasChangesLayer;
-                                        }
+                                        hasChanges = true;
+                                        layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                     }
-                                } else {
+                                } catch (Exception e) {
                                     hasChanges = true;
                                     layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                }
-                            } catch (Exception e) {
-                                hasChanges = true;
-                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                if(!errorUrls.contains(layerWtmsUrl)){
-                                    errorUrls.add(layerWtmsUrl);
+                                    if(!errorUrls.contains(layerWtmsUrl)){
+                                        errorUrls.add(layerWtmsUrl);
+                                    }
                                 }
                             }
                         }
                     }
                 }
                 if(hasChanges){
-                    File cpFile = new File(config_dir.concat("data/layers.json.old"));
+                    File cpFile = new File(config_dir.concat("data/layers.json.") + Utils.getDateFlag());
                     if(cpFile.exists()){
                         cpFile.delete();
                     }
                     File file = new File(config_dir.concat("data/layers.json"));
                     file.renameTo( cpFile );
+                    Utils.cleanDirectory(file);
                     file = new File(config_dir.concat("data/layers.json"));
                     log.info( "Update file :" + file.getAbsoluteFile() );
                     if(file != null){
@@ -260,7 +274,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                 
                 if(!errorLayernames.isEmpty()){
                     mailText += "************************\n";
-                    mailText += "Nicht vorhandene Layern:\n";
+                    mailText += "Nicht vorhandene Karten:\n";
                     mailText += "************************\n";
                     for (String errorLayername : errorLayernames) {
                         mailText += "- " + errorLayername + "\n";
@@ -280,7 +294,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                 
                 if(!mailText.isEmpty()){
                     if(sendMail){
-                        String subject = "Webmap Client: Fehlerhafte Dienste und Layern";
+                        String subject = "Webmap Client: Fehlerhafte Dienste und Karten";
                         Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
                     } else {
                         log.debug( "\n" + mailText );
@@ -313,86 +327,127 @@ public class CapabilitiesUpdateTask implements Runnable{
     private boolean updateLayerWTMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
             String layerWtmsUrl, ArrayList<String> errorLayernames, String id) throws JSONException, XPathExpressionException {
         boolean hasChanges = false;
-        String layerWtmsLayers = layerJSON.getString( "serverLayerName" );
-        String matrixSet = layerJSON.getString( "matrixSet" );
-        if(layerWtmsLayers != null){
-            Node layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerWtmsLayers+"\"]/..", doc, XPathConstants.NODE);
-            Node layerMatrixSetNode = (Node) xpath.evaluate("./TileMatrixSetLink/TileMatrixSet[text()=\"" +matrixSet + "\"]/..", layerNode, XPathConstants.NODE);
-            if(layerMatrixSetNode != null && layerNode != null) {
-                // Extent
-                Node layerLowerCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/LowerCorner", layerNode, XPathConstants.NODE);
-                Node layerUpperCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/UpperCorner", layerNode, XPathConstants.NODE);
-                if(layerLowerCornerNode != null && layerUpperCornerNode != null) {
-                    JSONArray array = new JSONArray();
-                    String lowerCorner = layerLowerCornerNode.getTextContent().trim();
-                    if(lowerCorner.indexOf(" ") > -1) {
-                        array.put(Double.parseDouble(lowerCorner.split(" ")[0]));
-                        array.put(Double.parseDouble(lowerCorner.split(" ")[1]));
-                    }
-                    String upperCorner = layerUpperCornerNode.getTextContent().trim();
-                    if(upperCorner.indexOf(" ") > -1) {
-                        array.put(Double.parseDouble(upperCorner.split(" ")[0]));
-                        array.put(Double.parseDouble(upperCorner.split(" ")[1]));
-                    }
-                    if(array.length() > 0 ) {
-                        hasChanges = true;
-                        layerJSON.put("extent", array);
-                    }
-                }
-                // Format
-                Node layerFormatNode = (Node) xpath.evaluate("./Format", layerNode, XPathConstants.NODE);
-                if(layerFormatNode != null) {
-                    String format = layerFormatNode.getTextContent().trim().replace("image/", "");
-                    if(!layerJSON.getString("format").equals(format)) {
-                        hasChanges = true;
-                        layerJSON.put("format", format);
-                    }
-                }
-                // Template
-                Node layerTemplateNode = (Node) xpath.evaluate("./ResourceURL/@template", layerNode, XPathConstants.NODE);
-                if(layerTemplateNode != null) {
-                    String template = layerTemplateNode.getTextContent().trim();
-                    if(!layerJSON.getString("template").equals(template)) {
-                        hasChanges = true;
-                        layerJSON.put("template", template);
-                    }
-                }
-                // Style
-                Node tileMatrixSetNode = (Node) xpath.evaluate("//TileMatrixSet/Identifier[text()=\""+matrixSet+"\"]/..", doc, XPathConstants.NODE);
-                if(tileMatrixSetNode != null) {
-                    // Scales
-                    NodeList scalesNodeList = (NodeList) xpath.evaluate("./TileMatrix/ScaleDenominator", tileMatrixSetNode, XPathConstants.NODESET);
-                    if(scalesNodeList != null && scalesNodeList.getLength() > 0) {
+        if(layerJSON.has("serverLayerName") && layerJSON.has("matrixSet")) {
+            String layerWtmsLayers = layerJSON.getString( "serverLayerName" );
+            String matrixSet = layerJSON.getString( "matrixSet" );
+            if(layerWtmsLayers != null){
+                Node layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerWtmsLayers+"\"]/..", doc, XPathConstants.NODE);
+                Node layerMatrixSetNode = (Node) xpath.evaluate("./TileMatrixSetLink/TileMatrixSet[text()=\"" +matrixSet + "\"]/..", layerNode, XPathConstants.NODE);
+                if(layerMatrixSetNode != null && layerNode != null) {
+                    // Extent
+                    Node layerLowerCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/LowerCorner", layerNode, XPathConstants.NODE);
+                    Node layerUpperCornerNode = (Node) xpath.evaluate("./WGS84BoundingBox/UpperCorner", layerNode, XPathConstants.NODE);
+                    if(layerLowerCornerNode != null && layerUpperCornerNode != null) {
                         JSONArray array = new JSONArray();
-                        for (int i = 0; i < scalesNodeList.getLength(); i++) {
-                            Node node = scalesNodeList.item(i);
-                            array.put(Double.parseDouble(node.getTextContent().trim()));
+                        String lowerCorner = layerLowerCornerNode.getTextContent().trim();
+                        if(lowerCorner.indexOf(" ") > -1) {
+                            array.put(Double.parseDouble(lowerCorner.split(" ")[0]));
+                            array.put(Double.parseDouble(lowerCorner.split(" ")[1]));
+                        }
+                        String upperCorner = layerUpperCornerNode.getTextContent().trim();
+                        if(upperCorner.indexOf(" ") > -1) {
+                            array.put(Double.parseDouble(upperCorner.split(" ")[0]));
+                            array.put(Double.parseDouble(upperCorner.split(" ")[1]));
                         }
                         if(array.length() > 0 ) {
                             hasChanges = true;
-                            layerJSON.put("scales", array);
+                            layerJSON.put("extent", array);
                         }
                     }
-                    // Origin
-                    Node originNode = (Node) xpath.evaluate("./TileMatrix/TopLeftCorner", tileMatrixSetNode, XPathConstants.NODE);
-                    if (originNode != null) {
-                        JSONArray array = new JSONArray();
-                        String origin = originNode.getTextContent().trim();
-                        if(origin.indexOf(" ") > -1) {
-                            array.put(Double.parseDouble(origin.split(" ")[0]));
-                            array.put(Double.parseDouble(origin.split(" ")[1]));
-                        }
-                        if(array.length() > 0 ) {
+                    // Format
+                    Node layerFormatNode = (Node) xpath.evaluate("./Format", layerNode, XPathConstants.NODE);
+                    if(layerFormatNode != null) {
+                        String format = layerFormatNode.getTextContent().trim().replace("image/", "");
+                        if(layerJSON.has("format")) {
+                            if(!layerJSON.getString("format").equals(format)) {
+                                hasChanges = true;
+                                layerJSON.put("format", format);
+                            }
+                        } else {
                             hasChanges = true;
-                            layerJSON.put("origin", array);
+                            layerJSON.put("format", format);
                         }
                     }
-                }
-            } else {
-                hasChanges = true;
-                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
-                errorLayernames.add("Layer not exists (" + id + "): " + layerWtmsLayers + " on service url: " + layerWtmsUrl);
-              }
+                    // Template
+                    Node layerTemplateNode = (Node) xpath.evaluate("./ResourceURL/@template", layerNode, XPathConstants.NODE);
+                    if(layerTemplateNode != null) {
+                        String template = layerTemplateNode.getTextContent().trim();
+                        if(layerJSON.has("template")) {
+                            if(!layerJSON.getString("template").equals(template)) {
+                                hasChanges = true;
+                                layerJSON.put("template", template);
+                            }
+                        } else {
+                            hasChanges = true;
+                            layerJSON.put("template", template);
+                        }
+                        
+                    }
+                    // Attribution
+                    Node layerAttribution = (Node) xpath.evaluate(".//ServiceProvider/ProviderName", doc, XPathConstants.NODE);
+                    if(layerAttribution != null) {
+                        String attribution = layerAttribution.getTextContent().trim();
+                        if(layerJSON.has("attribution")) {
+                            if(!layerJSON.getString("attribution").equals(attribution)) {
+                                hasChanges = true;
+                                layerJSON.put("attribution", attribution);
+                            }
+                        } else {
+                            hasChanges = true;
+                            layerJSON.put("attribution", attribution);
+                        }
+                    }
+                    // AttributionUrl
+                    Node layerAttributionUrl = (Node) xpath.evaluate(".//ServiceProvider/ProviderSite/@href", doc, XPathConstants.NODE);
+                    if(layerAttributionUrl != null) {
+                        String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                        if(layerJSON.has("attributionUrl")) {
+                            if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                                hasChanges = true;
+                                layerJSON.put("attributionUrl", attributionUrl);
+                            }
+                        } else {
+                            hasChanges = true;
+                            layerJSON.put("attributionUrl", attributionUrl);
+                        }
+                    }
+                    // Style
+                    Node tileMatrixSetNode = (Node) xpath.evaluate("//TileMatrixSet/Identifier[text()=\""+matrixSet+"\"]/..", doc, XPathConstants.NODE);
+                    if(tileMatrixSetNode != null) {
+                        // Scales
+                        NodeList scalesNodeList = (NodeList) xpath.evaluate("./TileMatrix/ScaleDenominator", tileMatrixSetNode, XPathConstants.NODESET);
+                        if(scalesNodeList != null && scalesNodeList.getLength() > 0) {
+                            JSONArray array = new JSONArray();
+                            for (int i = 0; i < scalesNodeList.getLength(); i++) {
+                                Node node = scalesNodeList.item(i);
+                                array.put(Double.parseDouble(node.getTextContent().trim()));
+                            }
+                            if(array.length() > 0 ) {
+                                hasChanges = true;
+                                layerJSON.put("scales", array);
+                            }
+                        }
+                        // Origin
+                        Node originNode = (Node) xpath.evaluate("./TileMatrix/TopLeftCorner", tileMatrixSetNode, XPathConstants.NODE);
+                        if (originNode != null) {
+                            JSONArray array = new JSONArray();
+                            String origin = originNode.getTextContent().trim();
+                            if(origin.indexOf(" ") > -1) {
+                                array.put(Double.parseDouble(origin.split(" ")[0]));
+                                array.put(Double.parseDouble(origin.split(" ")[1]));
+                            }
+                            if(array.length() > 0 ) {
+                                hasChanges = true;
+                                layerJSON.put("origin", array);
+                            }
+                        }
+                    }
+                } else {
+                    hasChanges = true;
+                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
+                    errorLayernames.add("Layer not exists (" + id + "): " + layerWtmsLayers + " on service url: " + layerWtmsUrl);
+                  }
+            }
         }
         return hasChanges;
     }
@@ -400,65 +455,106 @@ public class CapabilitiesUpdateTask implements Runnable{
     private boolean updateLayerWMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
             String layerWmsUrl, ArrayList<String> errorLayernames, String id) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
         boolean hasChanges = false;
-        String layerWmsLayers = layerJSON.getString( "wmsLayers" );
-        if(layerWmsLayers != null){
-            if(layerWmsLayers.indexOf( "," ) == -1){
-                Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
-                Node parentLayerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/../..", doc, XPathConstants.NODE);
-                if(layerNode != null){
-                    log.debug( "Check for Update layer: " + layerWmsLayers);
-                    Node fieldNode = null;
-                    String layerKey = null;
-                    
-                    // MinScale
-                    layerKey = "minScale";
-                    if(parentLayerNode != null){
-                        // Check inherit parent value
-                        fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
+        if(layerJSON.has("wmsLayers")) {
+            String layerWmsLayers = layerJSON.getString( "wmsLayers" );
+            if(layerWmsLayers != null){
+                if(layerWmsLayers.indexOf( "," ) == -1){
+                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
+                    Node parentLayerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/../..", doc, XPathConstants.NODE);
+                    if(layerNode != null){
+                        log.debug( "Check for Update layer: " + layerWmsLayers);
+                        Node fieldNode = null;
+                        String layerKey = null;
+                        
+                        // MinScale
+                        layerKey = "minScale";
+                        if(parentLayerNode != null){
+                            // Check inherit parent value
+                            fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                            fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
-                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
-                    }
-                    fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
-                    }
-                    fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
-                    }
-                    
-                    // MaxScale
-                    layerKey = "maxScale";
-                    if(parentLayerNode != null){
-                        // Check inherit parent value
-                        fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                        
+                        // MaxScale
+                        layerKey = "maxScale";
+                        if(parentLayerNode != null){
+                            // Check inherit parent value
+                            fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
+                            }
+                            fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                            }
+                        }
+                        
+                        layerKey = "maxScale";
+                        fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
-                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             hasChanges = getScale(layerKey, fieldNode, layerJSON);
                         }
-                    }
-                    
-                    layerKey = "maxScale";
-                    fieldNode = (Node) xpath.evaluate("./MaxScaleDenominator", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
-                    }
-                    fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        hasChanges = getScale(layerKey, fieldNode, layerJSON);
-                    }
-                    // Extent
-                    layerKey = "extent";
-                    if(parentLayerNode != null){
-                        fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
+                        // Extent
+                        layerKey = "extent";
+                        if(parentLayerNode != null){
+                            fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                JSONArray array = new JSONArray();
+                                getExtent(xpath, fieldNode, array, FIELD_BOUND);
+                                layerJSON.put( layerKey, array );
+                                hasChanges = true;
+                            }
+                            
+                            fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                            if(fieldNode != null) {
+                                try {
+                                    JSONArray array = new JSONArray();
+                                    getExtent(xpath, fieldNode, array, FIELD_XY);
+                                    transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                                } catch (Exception e) {
+                                    log.error("Error transform extent!");
+                                }
+                                hasChanges = true;
+                            }
+                            
+                            fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", parentLayerNode, XPathConstants.NODE);
+                            if (fieldNode != null) {
+                                JSONArray array = new JSONArray();
+                                getExtent(xpath, fieldNode, array, FIELD_XY);
+                                layerJSON.put( layerKey, array );
+                                hasChanges = true;
+                            }
+                            
+                            fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                            if(fieldNode != null) {
+                                try {
+                                    JSONArray array = new JSONArray();
+                                    getExtent(xpath, fieldNode, array, FIELD_XY);
+                                    transformExtent(defaultEpsg, layerKey, array, layerJSON);
+                                } catch (Exception e) {
+                                    log.error("Error transform extent!");
+                                }
+                                hasChanges = true;
+                            }
+                        }
+                        fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             JSONArray array = new JSONArray();
                             getExtent(xpath, fieldNode, array, FIELD_BOUND);
@@ -466,7 +562,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                         
-                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
                         if(fieldNode != null) {
                             try {
                                 JSONArray array = new JSONArray();
@@ -478,7 +574,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                         
-                        fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
                             JSONArray array = new JSONArray();
                             getExtent(xpath, fieldNode, array, FIELD_XY);
@@ -486,7 +582,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                             hasChanges = true;
                         }
                         
-                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", parentLayerNode, XPathConstants.NODE);
+                        fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
                         if(fieldNode != null) {
                             try {
                                 JSONArray array = new JSONArray();
@@ -497,63 +593,53 @@ public class CapabilitiesUpdateTask implements Runnable{
                             }
                             hasChanges = true;
                         }
-                    }
-                    fieldNode = (Node) xpath.evaluate("./EX_GeographicBoundingBox", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        JSONArray array = new JSONArray();
-                        getExtent(xpath, fieldNode, array, FIELD_BOUND);
-                        layerJSON.put( layerKey, array );
-                        hasChanges = true;
-                    }
-                    
-                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@CRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
-                    if(fieldNode != null) {
-                        try {
-                            JSONArray array = new JSONArray();
-                            getExtent(xpath, fieldNode, array, FIELD_XY);
-                            transformExtent(defaultEpsg, layerKey, array, layerJSON);
-                        } catch (Exception e) {
-                            log.error("Error transform extent!");
+                        // LegendUrl
+                        layerKey = "legendUrl";
+                        fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResources/@href", layerNode, XPathConstants.NODE);
+                        if (fieldNode != null) {
+                            layerJSON.put( layerKey, fieldNode.getTextContent() );
+                            hasChanges = true;
                         }
-                        hasChanges = true;
-                    }
-                    
-                    fieldNode = (Node) xpath.evaluate("./LatLonBoundingBox", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        JSONArray array = new JSONArray();
-                        getExtent(xpath, fieldNode, array, FIELD_XY);
-                        layerJSON.put( layerKey, array );
-                        hasChanges = true;
-                    }
-                    
-                    fieldNode = (Node) xpath.evaluate("./BoundingBox[@SRS=\""+defaultEpsg+"\"]", layerNode, XPathConstants.NODE);
-                    if(fieldNode != null) {
-                        try {
-                            JSONArray array = new JSONArray();
-                            getExtent(xpath, fieldNode, array, FIELD_XY);
-                            transformExtent(defaultEpsg, layerKey, array, layerJSON);
-                        } catch (Exception e) {
-                            log.error("Error transform extent!");
+                        // Attribution
+                        Node layerAttribution = (Node) xpath.evaluate(".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
+                        if(layerAttribution != null) {
+                            String attribution = layerAttribution.getTextContent().trim();
+                            if (layerJSON.has("attribution")) {
+                                if(!layerJSON.getString("attribution").equals(attribution)) {
+                                    hasChanges = true;
+                                    layerJSON.put("attribution", attribution);
+                                }
+                            } else {
+                                hasChanges = true;
+                                layerJSON.put("attribution", attribution);
+                            }
                         }
-                        hasChanges = true;
-                    }
-                    // LegendUrl
-                    layerKey = "legendUrl";
-                    fieldNode = (Node) xpath.evaluate("./Style/LegendURL/OnlineResources/@href", layerNode, XPathConstants.NODE);
-                    if (fieldNode != null) {
-                        layerJSON.put( layerKey, fieldNode.getTextContent() );
-                        hasChanges = true;
+                        // AttributionUrl
+                        Node layerAttributionUrl = (Node) xpath.evaluate(".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
+                        if(layerAttributionUrl != null) {
+                            String attributionUrl = layerAttributionUrl.getTextContent().trim();
+                            if (layerJSON.has("attributionUrl")) {
+                                if(!layerJSON.getString("attributionUrl").equals(attributionUrl)) {
+                                    hasChanges = true;
+                                    layerJSON.put("attributionUrl", attributionUrl);
+                                }
+                            } else {
+                                hasChanges = true;
+                                layerJSON.put("attributionUrl", attributionUrl);
+                            }
+                        }
+                        
+                    } else {
+                      layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
+                      errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
                     }
                 } else {
-                  layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_LAYER_NOT_EXIST);
-                  errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
+                    String[] layers = layerWmsLayers.split(",");
+                    for (String layer : layers) {
+                        Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
+                    }
+                    
                 }
-            } else {
-                String[] layers = layerWmsLayers.split(",");
-                for (String layer : layers) {
-                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
-                }
-                
             }
         }
         return hasChanges;
@@ -563,10 +649,12 @@ public class CapabilitiesUpdateTask implements Runnable{
         String text = fieldNode.getTextContent();
         String oldText;
         try {
-            oldText = layerJSON.getString(layerKey);
-            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                layerJSON.put( layerKey, fieldNode.getTextContent() );
-                return true;
+            if(layerJSON.has(layerKey)) {
+                oldText = layerJSON.getString(layerKey);
+                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                    layerJSON.put( layerKey, fieldNode.getTextContent() );
+                    return true;
+                }
             }
         } catch (JSONException e) {
             layerJSON.put( layerKey, fieldNode.getTextContent() );
@@ -579,10 +667,12 @@ public class CapabilitiesUpdateTask implements Runnable{
         String text = fieldNode.getTextContent();
         String oldText;
         try {
-            oldText = layerJSON.getString(layerKey);
-            if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
-                layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
-                return true;
+            if(layerJSON.has(layerKey)) {
+                oldText = layerJSON.getString(layerKey);
+                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                    layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
+                    return true;
+                }
             }
         } catch (JSONException e) {
             layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );

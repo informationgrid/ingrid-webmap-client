@@ -12,6 +12,8 @@
     "category_update_unsuccess": "",
     "category_add_text": "",
     "category_add_title": "",
+    "category_copy_text": "",
+    "category_copy_title": "",
     "category_activatedLayers": "",
     "category_backgroundLayers": "",
     "category_defaultBackground": "",
@@ -51,6 +53,7 @@
     "categories_all_del_text": "",
     "category_select_layer": "",
     "cancel": "",
+    "copy": "",
     "close": "",
     "css": "",
     "css_save_success": "",
@@ -88,6 +91,8 @@
     "layer_attribution_help": "",
     "layer_attributionUrl": "",
     "layer_attributionUrl_help": "",
+    "layer_featureInfoTpl": "",
+    "layer_featureInfoTpl_help": "",
     "layer_format": "",
     "layer_format_help": "",
     "layer_timeBehaviour": "",
@@ -307,5 +312,9 @@
     "layer_auth_help": "",
     "layer_edit_auth_account": "",
     "layer_edit_auth_account_text": "",
-    "layer_edit_auth_account_info": ""
+    "layer_edit_auth_account_info": "",
+    "use_alternative_layer": "",
+    "layer_category_dependency": "",
+    "layer_category_no_dependency": "",
+    "localisation": ""
 }

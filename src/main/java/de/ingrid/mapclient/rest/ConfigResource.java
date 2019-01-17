@@ -22,6 +22,8 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -55,7 +57,7 @@ public class ConfigResource {
     @GET
     @Path("setting")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getSettingRequest() {
+    public Response getSettingRequest(@QueryParam("asJson") boolean asJson) {
         String filename = "setting";
         try {
             JSONObject setting = null;
@@ -91,7 +93,11 @@ public class ConfigResource {
                     }
                 }
             }
-            return Response.ok( "var settings = " + setting ).build();
+            if(asJson) {
+                return Response.ok( setting ).build();
+            } else {
+                return Response.ok( "var settings = " + setting ).build();
+            }
         } catch (JSONException e) {
             log.error("Error getSettingRequest: " + e);
         }
@@ -102,28 +108,30 @@ public class ConfigResource {
     @Path("css")
     @Produces("text/css")
     public Response getCssRequest() {
-        String filename = "app.override";
-        if(log.isDebugEnabled()){
-            log.debug( "Load file: " + filename );
-        }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(config_dir != null){
-            String fileContent = Utils.getFileContent(config_dir, filename, ".css", "css/");
+            String fileContent = Utils.getFileContent(config_dir, "app.profile", ".css", "css/");
+            if(fileContent == null) {
+                fileContent = Utils.getFileContent(config_dir, "app.override", ".css", "css/");
+                if(fileContent != null) {
+                    Utils.updateFile("css/app.profile.css", fileContent);
+                }
+            }
+            if(fileContent == null) {
+                String classPath = "";
+                classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
+                String fileSetting = classPath + "frontend/";
+                fileContent = Utils.getFileContent(fileSetting, "app.profile", ".css", "css/");
+                if(fileContent != null) {
+                    Utils.updateFile("css/app.profile.css", fileContent);
+                }
+            }
             if(fileContent != null) {
                 return Response.ok( fileContent ).build();
             }
         }
-        
-        String classPath = "";
-        classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
-        String filePathHelp = classPath + "frontend/";
-        String fileContent = Utils.getFileContent(filePathHelp, filename, ".css", "css/");
-        if(fileContent != null) {
-            return Response.ok( fileContent ).build();
-        }
-
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+        return Response.ok( "" ).build();
     }
     
     @GET
@@ -162,7 +170,7 @@ public class ConfigResource {
     @GET
     @Path("locales/{locale}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLocales(@PathParam("locale") String locale) throws JSONException {
+    public Response getLocales(@PathParam("locale") String locale, @QueryParam("excludeProfile") boolean excludeProfile) throws JSONException {
         String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
         JSONObject locales = new JSONObject();
         String fileLocalePath = null;
@@ -207,7 +215,14 @@ public class ConfigResource {
                 while( keys.hasNext() ) {
                     String key = (String)keys.next();
                     if (frontendLocale.has(key)) {
-                        locales.put(key, frontendLocale.get(key));
+                        String value = frontendLocale.getString(key);
+                        if(value.equals("#ignore#")) {
+                            if(locales.has(key)) {
+                                locales.remove(key);
+                            }
+                        } else {
+                            locales.put(key, value);
+                        }
                     }
                 }
             }
@@ -227,23 +242,37 @@ public class ConfigResource {
                 }
             }
         }
-        // Get profile locale
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        fileLocalePath = config_dir;
-        fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
-        if(fileContent != null){
-            JSONObject profileLocale = new JSONObject(fileContent);
-            if(profileLocale != null) {
-                Iterator<?> keys = profileLocale.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (profileLocale.has(key)) {
-                        locales.put(key, profileLocale.get(key));
+        if(!excludeProfile) {
+            // Get profile locale
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            fileLocalePath = config_dir;
+            fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
+            if(fileContent != null){
+                JSONObject profileLocale = new JSONObject(fileContent);
+                if(profileLocale != null) {
+                    Iterator<?> keys = profileLocale.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        if (profileLocale.has(key)) {
+                            locales.put(key, profileLocale.get(key));
+                        }
                     }
                 }
             }
         }
-        return Response.ok( locales ).build();
+        Iterator<?> keysItr = locales.keys();
+        ArrayList<String> sortKey = new ArrayList<String>();
+        JSONObject sortLocales = new JSONObject();
+        while(keysItr.hasNext()) {
+            String key = (String)keysItr.next();
+            sortKey.add(key);
+        }
+        Collections.sort(sortKey);
+        for (Iterator iterator = sortKey.iterator(); iterator.hasNext();) {
+            String key = (String) iterator.next();
+            sortLocales.put(key, locales.getString(key));
+        }
+        return Response.ok( sortLocales ).build();
     }
 }

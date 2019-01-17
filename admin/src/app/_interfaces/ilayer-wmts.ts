@@ -10,4 +10,5 @@ export interface ILayerWmts extends ILayer {
     scales: number[];
     matrixIds: string[];
     requestEncoding: string;
+    featureInfoTpl: string;
 }

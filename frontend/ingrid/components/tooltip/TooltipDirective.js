@@ -87,6 +87,9 @@ goog.require('ga_window_service');
             } else if (gaMapUtils.isWMSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
               layersToQuery.wmsLayers.push(l);
+            } else if (gaMapUtils.isWMTSLayer(l) &&
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+              layersToQuery.wmtsLayers.push(l);
             }
           });
           return layersToQuery;
@@ -137,26 +140,27 @@ goog.require('ga_window_service');
             var coord = map.getCoordinateFromPixel(pixel);
             */
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
-                function() {
-                  return true;
-                },
-                undefined,
-                function(layer) {
-                  /* INGRID: Add check for crossOrigin
-                  // EDGE: An IndexSizeError is triggered by the
-                  // map.forEachLayerAtPixel when the mouse is outside the
-                  // extent of switzerland (west, north). So we avoid triggering
-                  // this function outside a layer's extent.
-                  var extent = layer.getExtent();
-                  if (extent && !ol.extent.containsXY(extent, coord[0],
-                      coord[1])) {
-                    return false;
-                  }
-                  return gaLayers.hasTooltipBodLayer(layer);
-                  */
-                  return gaLayers.hasTooltipBodLayer(layer) &&
-                    layer.getSource().crossOrigin;
-                });
+              function() {
+                return true;
+              },
+              undefined,
+              function(layer) {
+                /* INGRID: Add check for crossOrigin
+                // EDGE: An IndexSizeError is triggered by the
+                // map.forEachLayerAtPixel when the mouse is outside the
+                // extent of switzerland (west, north). So we avoid triggering
+                // this function outside a layer's extent.
+                var extent = layer.getExtent();
+                if (extent && !ol.extent.containsXY(extent, coord[0],
+                    coord[1])) {
+                  return false;
+                }
+                return gaLayers.hasTooltipBodLayer(layer);
+                */
+                return gaLayers.hasTooltipBodLayer(layer) &&
+                  layer.getSource().crossOrigin;
+              }
+            );
           }
           if (!hasQueryableLayer) {
             feature = findVectorFeature(map, pixel);
@@ -492,7 +496,8 @@ goog.require('ga_window_service');
                 // INGRID: Add queryLayers
                 var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
                 if (layerToQuery.queryLayers) {
-                  params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get(),
+                  params = {'INFO_FORMAT': 'text/html',
+                    'LANG': gaLang.get(),
                     'QUERY_LAYERS': layerToQuery.queryLayers};
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
@@ -502,6 +507,44 @@ goog.require('ga_window_service');
                     if(layerToQuery.get("auth")) {
                       proxyUrl += "&login=" + layerToQuery.get("auth"); 
                     }
+                    all.push($http.get(proxyUrl, {
+                      timeout: canceler.promise,
+                      layer: layerToQuery
+                    }).then(function(response) {
+                      var text = response.data;
+                      if (/(Server Error|ServiceException)/.test(text)) {
+                        return 0;
+                      }
+                      var feat = new ol.Feature({
+                        geometry: null,
+                        // INGRID: Remove '<pre>' HTML tag
+                        description: text
+                      });
+                      showVectorFeature(feat, response.config.layer);
+                      return 1;
+                    }));
+                  });
+                }
+              });
+
+              // INGRID: Add WMTS GetFeatureInfo
+              layersToQuery.wmtsLayers.forEach(function(layerToQuery) {
+                var extent = layerToQuery.getExtent();
+                if (extent && !ol.extent.containsCoordinate(extent,
+                    coordinate)) {
+                  return;
+                }
+                // INGRID: Add queryLayers
+                var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
+                if (layerToQuery.queryLayers) {
+                  params = {'INFO_FORMAT': 'text/html',
+                    'LANG': gaLang.get(),
+                    'QUERY_LAYERS': layerToQuery.queryLayers};
+                }
+                var url = gaMapUtils.getWMTSFeatureInfoUrl(layerToQuery.
+                  getSource(), coordinate, mapRes, mapProj, params);
+                if (!is3dActive() && url) {
+                  gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
                       layer: layerToQuery
@@ -704,14 +747,14 @@ goog.require('ga_window_service');
                         coordMeasures.push([coordinateEntry[0] + '',
                           coordinateEntry[1] + '', measure + '']);
                         count++;
-                     }
-                     coordMeasures.sort(function(a, b) {
-                       var measureA = a.measure;
-                       var measureB = b.measure;
-                       if (measureA < measureB) return -1;
-                       if (measureA > measureB) return 1;
-                         return 0;
-                       });
+                      }
+                      coordMeasures.sort(function(a, b) {
+                        var measureA = a.measure;
+                        var measureB = b.measure;
+                        if (measureA < measureB) return -1;
+                        if (measureA > measureB) return 1;
+                        return 0;
+                      });
                     }
                   }
                 }
@@ -751,10 +794,10 @@ goog.require('ga_window_service');
                 $(document).on('click', '.activated', function() {
                   if (this.className) {
                     if (this.className.
-                      indexOf('bwastr_download_csv activated') > -1) {
+                        indexOf('bwastr_download_csv activated') > -1) {
                       if (this.bwastrContent) {
                         var blob = new Blob([decodeURI(this.bwastrContent)],
-                          {type: 'text/csv;charset=utf-8;'});
+                            {type: 'text/csv;charset=utf-8;'});
                         navigator.msSaveBlob(blob, csvDownloadName);
                         $(this).removeClass('activated');
                       }

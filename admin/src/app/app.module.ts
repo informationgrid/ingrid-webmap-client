@@ -32,6 +32,7 @@ import { ShowCapabilitiesDirective } from './_directives/show-capabilities.direc
 import { ShowLayerOnMapDirective } from './_directives/show-layer-on-map.directive';
 import { ShowURLDirective } from './_directives/show-url.directive';
 import { ShowCategoryOnMapDirective } from './_directives/show-category-on-map.directive';
+import { LocalisationComponent } from './_components/localisations/localisation/localisation.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, environment.translatePath);
@@ -60,6 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ShowLayerOnMapDirective,
     ShowURLDirective,
     ShowCategoryOnMapDirective,
+    LocalisationComponent,
   ],
   imports: [
     BrowserModule,

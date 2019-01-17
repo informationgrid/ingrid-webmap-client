@@ -9,3 +9,7 @@ input[type="number"].extent {
     -moz-appearance: textfield;
     appearance: none;
 }
+
+.login.form-control:disabled, .login.form-control[readonly] {
+  background-color: transparent;
+}

@@ -34,6 +34,9 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -149,23 +152,32 @@ public class Utils {
             }
         }
     }
-    
-    public static void updateFile(String filename, JSONObject item) throws JSONException {
+    public static void updateFile(String filename, Object item) {
+        updateFile(filename, item, true);
+    }
+
+    public static void updateFile(String filename, Object item, boolean doBackup) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File cpFile = new File(config_dir.concat(filename + ".old"));
-        if(cpFile.exists()){
-            if(!cpFile.delete()) {
-                log.error("Error delete file: '" + cpFile.getName() + "'" );
+        File file;
+        if(doBackup) {
+            File cpFile = new File(config_dir.concat(filename + "." + getDateFlag()));
+            if(cpFile.exists()){
+                if(!cpFile.delete()) {
+                    log.error("Error delete file: '" + cpFile.getName() + "'" );
+                }
+            }
+            file = new File(config_dir.concat(filename));
+            if(file.exists()) {
+                if(!file.renameTo( cpFile )) {
+                    log.error("Error rename file: '" + file.getName() + "'" );
+                }
             }
         }
-        File file = new File(config_dir.concat(filename));
-        if(!file.renameTo( cpFile )) {
-            log.error("Error rename file: '" + file.getName() + "'" );
-        }
         file = new File(config_dir.concat(filename));
-        Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
+        cleanFileContent(file);
+        cleanDirectory(file);
+        log.debug( "Update file :" + file.getAbsoluteFile() );
         if(file != null){
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -177,33 +189,27 @@ public class Utils {
         }
     }
     
-    public static void updateFile(String filename, String item) {
-        Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File cpFile = new File(config_dir.concat(filename + ".old"));
-        if(cpFile.exists()){
-            if(!cpFile.delete()) {
-                log.error("Error delete file: '" + cpFile.getName() + "'" );
+    public static void cleanDirectory(File file) {
+        if(file != null) {
+            String flagYear = getDateFlag("yyyy");
+            String flagMonth = getDateFlag("yyyyMM");
+            File parentFolder = file.getParentFile();
+            if(parentFolder.isDirectory()) {
+               for(File tmpFile: parentFolder.listFiles()) {
+                   if(!tmpFile.isDirectory()) {
+                       String tmpFileName = tmpFile.getName();
+                       if(tmpFileName.indexOf("." + flagYear) > -1) {
+                           if(tmpFile.getName().indexOf("." + flagMonth) == -1) {
+                               tmpFile.delete();
+                           }
+                       }
+                   }
+               }
             }
         }
-        File file = new File(config_dir.concat(filename));
-        if(!file.renameTo( cpFile )) {
-            log.error("Error rename file: '" + file.getName() + "'" );
-        }
-        file = new File(config_dir.concat(filename));
-        Utils.cleanFileContent(file);
-        log.info( "Update file :" + file.getAbsoluteFile() );
-        if(file != null){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
-        }
+        
     }
-    
+
     public static void removeFile(String filename) throws JSONException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
@@ -481,6 +487,35 @@ public class Utils {
         }
         return null;
     }
+    
+    public static String getDateFlag() {
+        return getDateFlag("yyyyMMdd");
+    }
+    
+    public static String getDateFlag(String format) {
+        Date date = new Date();  
+        Timestamp ts=new Timestamp(date.getTime());  
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
+        
+        return formatter.format(ts);
+    }
+
+    public static int countDirectoryFiles(File[] files) {
+        return countDirectoryFiles(files, false);
+    }
+
+    public static int countDirectoryFiles(File[] files, boolean includeSubDir) {
+        int count = files.length;
+        if(includeSubDir) {
+            for (int i = 0; i < files.length; i++) {
+                File file = files[i];
+                if(file.isDirectory()) {
+                    count += countDirectoryFiles(file.listFiles(), includeSubDir);
+                }
+            }
+        }
+        return count;
+    } 
 }
 
 class MailAuthenticator extends Authenticator {

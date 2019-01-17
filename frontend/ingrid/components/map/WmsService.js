@@ -164,7 +164,7 @@ goog.require('ga_urlutils_service');
           gaDefinePropertiesForLayer(layer);
           // INGRID: Set visible
           if (options.visible !== undefined) {
-              layer.visible = options.visible;
+            layer.visible = options.visible;
           }
           layer.preview = !!options.preview;
           layer.displayInLayerManager = !layer.preview;
@@ -181,7 +181,7 @@ goog.require('ga_urlutils_service');
           // Go through the child to get valid layers
           if (layer) {
             if (layer.Layer) {
-              if(!layer.Layer.length) {
+              if (!layer.Layer.length) {
                 var tmpLayers = [];
                 tmpLayers.push(layer.Layer);
                 layer.Layer = tmpLayers;
@@ -192,20 +192,20 @@ goog.require('ga_urlutils_service');
                 // INGRID: Check parents 'SRS' or 'CRS'
                 if (tmpLayer['SRS']) {
                   if (tmpLayer['SRS'] instanceof Array) {
-                    tmpLayer['SRS'] = tmpLayer['SRS'].concat(layer['SRS']
-                      .filter(function(item) {
-                      return tmpLayer['SRS'].indexOf(item) < 0;
-                    }));
+                    tmpLayer['SRS'] = tmpLayer['SRS'].concat(layer['SRS'].
+                        filter(function(item) {
+                          return tmpLayer['SRS'].indexOf(item) < 0;
+                        }));
                   } else {
                     if (layer['SRS'].indexOf(tmpLayer['SRS']) === -1) {
                       tmpLayer['SRS'] = layer['SRS'].concat(tmpLayer['SRS']);
                     }
                   }
                 } else if (tmpLayer['CRS']) {
-                  tmpLayer['CRS'] = layer['CRS'].concat(tmpLayer['CRS']
-                    .filter(function(item) {
-                    return layer['CRS'].indexOf(item) < 0;
-                  }));
+                  tmpLayer['CRS'] = layer['CRS'].concat(tmpLayer['CRS'].
+                      filter(function(item) {
+                        return layer['CRS'].indexOf(item) < 0;
+                      }));
                 } else if (wmsVersion === '1.1.1') {
                   tmpLayer['SRS'] = layer['SRS'];
                 } else if (wmsVersion === '1.3.0') {
@@ -304,159 +304,205 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add service and add it to map
         this.addWmsServiceToMap = function(map, service, identifier, index) {
-            var cap = service;
-            var proxyUrl = gaGlobalOptions.proxyUrl +
+          var cap = service;
+          var proxyUrl = gaGlobalOptions.proxyUrl +
               encodeURIComponent(cap) + '&toJson=true';
 
             // INGRID: Split host from params
-            var capSplit = cap.split('?');
-            var capParams = '?';
-            cap = capSplit[0];
-            if (capSplit.length > 0) {
-                var capSplitParams = capSplit[1].split('&');
-                for (var i = 0; i < capSplitParams.length; i++) {
-                    var capSplitParam = capSplitParams[i].toLowerCase();
-                    // INGRID: Check for needed parameters like 'ID'
-                    if (capSplitParam.indexOf('request') === -1 &&
+          var capSplit = cap.split('?');
+          var capParams = '?';
+          cap = capSplit[0];
+          if (capSplit.length > 0) {
+            var capSplitParams = capSplit[1].split('&');
+            for (var i = 0; i < capSplitParams.length; i++) {
+              var capSplitParam = capSplitParams[i].toLowerCase();
+              // INGRID: Check for needed parameters like 'ID'
+              if (capSplitParam.indexOf('request') === -1 &&
                       capSplitParam.indexOf('service') === -1 &&
                       capSplitParam.indexOf('version') === -1) {
-                        capParams = capParams + '&' + capSplitParam;
-                    }
-                }
+                capParams = capParams + '&' + capSplitParam;
+              }
             }
+          }
 
-            // Angularjs doesn't handle onprogress event
-            $http.get(proxyUrl, {identifier: identifier, index: index, cap:
-              cap + '' + capParams})
-            .then(function(response) {
-              try {
-                var config = response.config;
-                var data = response.data;
-                var result = data.WMT_MS_Capabilities ||
+          // Angularjs doesn't handle onprogress event
+          $http.get(proxyUrl, {identifier: identifier,
+            index: index,
+            cap:
+              cap + '' + capParams}).
+              then(function(response) {
+                try {
+                  var config = response.config;
+                  var data = response.data;
+                  var result = data.WMT_MS_Capabilities ||
                   data.WMS_Capabilities;
-                var version = result.version;
-                var val;
-                if (version === '1.3.0') {
-                  val = new ol.format.WMSCapabilities().
-                    read(data.xmlResponse);
-                } else {
-                  val = result;
-                }
-                if (val.Capability) {
-                  if (val.Capability.Layer) {
-                    var layers = [];
-                    var tmpLayer = val.Capability.Layer;
+                  var version = result.version;
+                  var val;
+                  if (version === '1.3.0') {
+                    val = new ol.format.WMSCapabilities().
+                        read(data.xmlResponse);
+                  } else {
+                    val = result;
+                  }
+                  if (val.Capability) {
+                    if (val.Capability.Layer) {
+                      var layers = [];
+                      var tmpLayer = val.Capability.Layer;
 
-                    // INGRID: Add layer
-                    if (tmpLayer.Name) {
-                      layers.splice(0, 0, tmpLayer);
-                    }
+                      // INGRID: Add layer
+                      if (tmpLayer.Name) {
+                        layers.splice(0, 0, tmpLayer);
+                      }
 
-                    // INGRID: Add child layers
-                    if (tmpLayer.Layer) {
-                      getChildLayers(layers, tmpLayer, map, version);
-                    }
+                      // INGRID: Add child layers
+                      if (tmpLayer.Layer) {
+                        getChildLayers(layers, tmpLayer, map, version);
+                      }
 
-                    // INGRID: Check layers params
-                    if (layers) {
-                      var hasAddService = false;
-                      for (var i = 0; i < layers.length; i++) {
-                        var layer = layers[i];
-                        var visible = false;
-                        if (config.identifier) {
-                          if (layer.Identifier) {
-                            var identifier = layer.Identifier.content ||
+                      // INGRID: Check layers params
+                      if (layers) {
+                        var hasAddService = false;
+                        for (var i = 0; i < layers.length; i++) {
+                          var layer = layers[i];
+                          var visible = false;
+                          if (config.identifier) {
+                            if (layer.Identifier) {
+                              var identifier = layer.Identifier.content ||
                               layer.Identifier;
-                            if (identifier === config.identifier) {
-                              visible = true;
+                              if (identifier === config.identifier) {
+                                visible = true;
+                              }
                             }
                           }
-                        }
 
-                        // INGRID: Get 'extent'
-                        var extent = gaGlobalOptions.defaultExtent;
-                        if (layer.EX_GeographicBoundingBox) {
-                          extent = layer.EX_GeographicBoundingBox;
-                        }else if (layer.LatLonBoundingBox) {
-                          var bbox = layer.LatLonBoundingBox;
-                          extent = [parseFloat(bbox.minx),
-                            parseFloat(bbox.miny),
-                            parseFloat(bbox.maxx),
-                            parseFloat(bbox.maxy)];
-                        }
+                          // INGRID: Get 'extent'
+                          var extent;
+                          var wgs84 = 'EPSG:4326';
+                          var projCode = gaGlobalOptions.defaultEpsg;
+                          if (layer.BoundingBox) {
+                            for (var j = 0, jj = layer.BoundingBox.length;
+                                j < jj; j++) {
+                              var bbox = layer.BoundingBox[j];
+                              var code;
+                              // INGRID: Check extent for WMS version 1.1.1
+                              // and 1.3.0
+                              if (bbox.extent && bbox.crs) {
+                                code = bbox.crs;
+                                if (code && code.toUpperCase() === projCode.
+                                    toUpperCase()) {
+                                  extent = bbox.extent;
+                                }
+                              } else {
+                                code = bbox.CRS || bbox.SRS;
+                                if (code && code.toUpperCase() === projCode.
+                                    toUpperCase()) {
+                                  extent = [
+                                    parseFloat(bbox.minx),
+                                    parseFloat(bbox.miny),
+                                    parseFloat(bbox.maxx),
+                                    parseFloat(bbox.maxy)
+                                  ];
+                                }
+                              }
+                              code = bbox.crs || bbox.srs;
+                              if (code && code.toUpperCase() === projCode.
+                                  toUpperCase()) {
+                                extent = bbox.extent;
+                              }
+                            }
+                          }
 
-                        // INGRID: Get 'SRS'
-                        var minScale, maxScale;
-                        if (layer.ScaleHint) {
-                          minScale = layer.ScaleHint.min;
-                          maxScale = layer.ScaleHint.max;
-                        }
-                        if (layer.MinScaleDenominator) {
-                          minScale = layer.MinScaleDenominator;
-                        }
+                          if (!extent) {
+                            var wgs84Extent = layer.EX_GeographicBoundingBox ||
+                                layer.LatLonBoundingBox;
+                            if (wgs84Extent) {
+                              // INGRID: Add 'extent'
+                              extent = layer.EX_GeographicBoundingBox ||
+                                [
+                                  parseFloat(wgs84Extent.minx),
+                                  parseFloat(wgs84Extent.miny),
+                                  parseFloat(wgs84Extent.maxx),
+                                  parseFloat(wgs84Extent.maxy)
+                                ];
+                              // INGRID: Change 'layerWgs84Extent' to 'extent'
+                              if (extent) {
+                                extent = ol.proj.transformExtent(extent,
+                                  wgs84, projCode);
+                              }
+                            }
+                          }
 
-                        if (layer.MaxScaleDenominator) {
-                          maxScale = layer.MaxScaleDenominator;
-                        }
+                          // INGRID: Get 'SRS'
+                          var minScale, maxScale;
+                          if (layer.ScaleHint) {
+                            minScale = layer.ScaleHint.min;
+                            maxScale = layer.ScaleHint.max;
+                          }
+                          if (layer.MinScaleDenominator) {
+                            minScale = layer.MinScaleDenominator;
+                          }
 
-                        var layerParams = {
-                          LAYERS: layer.Name,
-                          VERSION: version
-                        };
+                          if (layer.MaxScaleDenominator) {
+                            maxScale = layer.MaxScaleDenominator;
+                          }
 
-                        // INGRID: Use GetMap instead of GetCapabilities-URL
-                        var getMapUrl; 
-                        var dcpType = val.Capability.Request.GetMap.DCPType;
-                        if (dcpType instanceof Array) {
-                          getMapUrl = dcpType[0].HTTP.Get.OnlineResource;
-                        } else {
-                          getMapUrl = dcpType.HTTP.Get
-                            .OnlineResource['xlink:href'];
-                        }
-                        if(getMapUrl) {
-                          config.cap = getMapUrl;
-                        }
+                          var layerParams = {
+                            LAYERS: layer.Name,
+                            VERSION: version
+                          };
 
-                        var layerOptions = {
-                          url: config.cap,
-                          label: layer.Title,
-                          opacity: 1,
-                          visible: visible,
-                          // INGRID: Add queryable
-                          queryable: !!(layer.queryable === true ||
+                          // INGRID: Use GetMap instead of GetCapabilities-URL
+                          var getMapUrl;
+                          var dcpType = val.Capability.Request.GetMap.DCPType;
+                          if (dcpType instanceof Array) {
+                            getMapUrl = dcpType[0].HTTP.Get.OnlineResource;
+                          } else {
+                            getMapUrl = dcpType.HTTP.Get.
+                                OnlineResource['xlink:href'];
+                          }
+                          if (getMapUrl) {
+                            config.cap = getMapUrl;
+                          }
+
+                          var layerOptions = {
+                            url: config.cap,
+                            label: layer.Title,
+                            opacity: 1,
+                            visible: visible,
+                            // INGRID: Add queryable
+                            queryable: !!(layer.queryable === true ||
                             layer.queryable === 'true' ||
                             layer.queryable === '1'),
-                          extent: ol.proj.transformExtent(extent,
-                            'EPSG:4326', gaGlobalOptions.defaultEpsg),
-                          minScale: minScale,
-                          maxScale: maxScale
-                        };
+                            extent: extent,
+                            minScale: minScale,
+                            maxScale: maxScale
+                          };
 
-                        // INGRID: Create WMS layers
-                        var olLayer = createWmsLayer(layerParams,
-                          layerOptions);
-                        olLayer.visible = visible;
-                        if (config.index) {
-                          map.getLayers().insertAt(config.index + i, olLayer);
-                        } else {
-                          map.addLayer(olLayer);
+                          // INGRID: Create WMS layers
+                          var olLayer = createWmsLayer(layerParams,
+                              layerOptions);
+                          olLayer.visible = visible;
+                          if (config.index) {
+                            map.getLayers().insertAt(config.index + i, olLayer);
+                          } else {
+                            map.addLayer(olLayer);
+                          }
+                          hasAddService = true;
                         }
-                        hasAddService = true;
-                      }
-                      if (hasAddService) {
-                        alert('Dienst ' + config.cap + ' wurde hinzugefügt.');
+                        if (hasAddService) {
+                          alert('Dienst ' + config.cap + ' wurde hinzugefügt.');
+                        }
                       }
                     }
+                  } else {
+                    alert('Fehler beim Laden der URL ' + config.cap + '.');
                   }
-                } else {
+                } catch (e) {
                   alert('Fehler beim Laden der URL ' + config.cap + '.');
                 }
-              } catch (e) {
-                alert('Fehler beim Laden der URL ' + config.cap + '.');
-              }
-            }, function(response) {
+              }, function(response) {
                 alert('Fehler beim Laden der URL ' + response.config.cap + '.');
-            });
+              });
         };
 
         // Make a GetLegendGraphic request

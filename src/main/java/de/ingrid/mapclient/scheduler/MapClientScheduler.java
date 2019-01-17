@@ -29,22 +29,18 @@ import javax.servlet.ServletContextListener;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.scheduler.tasks.CapabilitiesUpdateTask;
+import de.ingrid.mapclient.scheduler.tasks.CleanupTask;
 import it.sauronsoftware.cron4j.Scheduler;
 
 public class MapClientScheduler implements ServletContextListener {
     private Scheduler scheduler = null;
 
     public void contextInitialized(ServletContextEvent event) {
-        String pattern = "*/5 * * * *";
-        
+
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_pattern = p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER);
-        if(config_pattern != null){
-            pattern = config_pattern;
-        }
-        
         scheduler = new Scheduler();
-        scheduler.schedule(pattern, new CapabilitiesUpdateTask());
+        scheduler.schedule(p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER), new CapabilitiesUpdateTask());
+        scheduler.schedule(p.getProperty( ConfigurationProvider.SCHEDULER_CLEANUP_DATA), new CleanupTask());
         scheduler.start();
     }
 

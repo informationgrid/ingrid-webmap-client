@@ -52,6 +52,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
@@ -111,7 +112,7 @@ public class WmsResource {
             response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
                 if(response.indexOf("<?xml") == -1) {
-                   response = "<?xml version=\"1.0\" encoding=\"UTF-8\">" + response;
+                   response = "<?xml version=\"1.0\"?>" + response;
                 }
                 if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
                     // Remove script tags on getFeatureInfo response.
@@ -135,6 +136,7 @@ public class WmsResource {
                     json.put( "xmlResponse", response );
                     return json.toString();
                 }
+                return response;
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
@@ -176,6 +178,39 @@ public class WmsResource {
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
+
+    @GET
+    @Path("proxy/layers")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getServiceLayers(@QueryParam("url") String url, @QueryParam("login") String login) {
+        try {
+            String response = null;
+            if(url != null) {
+                response = HttpProxy.doRequest( url, login);
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                docFactory.setValidating(false);
+                Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
+                XPath xpath = XPathFactory.newInstance().newXPath();
+                NodeList layers = (NodeList) xpath.evaluate( "//Layer/Name", doc, XPathConstants.NODESET );
+                if(layers != null) {
+                    JSONArray json = new JSONArray();
+                    for (int i = 0; i < layers.getLength(); i++) {
+                        Node layer = layers.item(i);
+                        json.put(layer.getTextContent());
+                    }
+                    return json.toString();
+                }
+            }
+            throw new WebApplicationException( Response.Status.NOT_FOUND );
+        } catch (IOException ex) {
+            log.error( "Error sending WMS request: " + url, ex );
+            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+        } catch (Exception e) {
+            log.error( "Error sending WMS request: " + url, e );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
+        }
+    }
+
     @POST
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
