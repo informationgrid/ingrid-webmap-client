@@ -809,12 +809,31 @@ public class AdministrationResource {
             JSONObject results = obj.getJSONObject("results");
             JSONObject root = results.getJSONObject("root");
             root.put("children", item);
+            cleanupCategory(item);
             Utils.updateFile("data/catalog-" + id + ".json", obj);
             return item;
         } catch (Exception e) {
             log.error("Error 'updateCategoryTree'!");
         }
         return arr;
+    }
+
+    private void cleanupCategory(JSONArray items) {
+        for (int i = 0; i < items.length(); i++) {
+            try {
+                JSONObject item = items.getJSONObject(i);
+                if(item.has("children")) {
+                    JSONArray children =  item.getJSONArray("children");
+                    if(children.length() > 0) {
+                        cleanupCategory(children);
+                    } else {
+                        item.remove("children");
+                    }
+                }
+            } catch (JSONException e) {
+                log.error("Error cleanup category items.");
+            }
+        }
     }
 
     private JSONObject updateSetting(JSONObject item) {

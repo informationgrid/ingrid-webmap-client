@@ -98,6 +98,9 @@ export class CategoryTreeComponent implements OnInit {
   onRemoveCategoryItem(node: TreeNode) {
     if (node.parent != null) {
       _.remove(node.parent.data.children, node.data);
+      if (node.parent.data.children && node.parent.data.children.length === 0) {
+        node.parent.setIsExpanded(false);
+      }
       node.treeModel.update();
       this.httpService.updateCategoryTree(this.categoryId, node.treeModel.nodes).subscribe(
         data => {
