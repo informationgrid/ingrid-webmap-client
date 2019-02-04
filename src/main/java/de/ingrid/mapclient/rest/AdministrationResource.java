@@ -70,14 +70,30 @@ public class AdministrationResource {
     @GET
     @Path("layers")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText, @QueryParam("hasStatus") boolean hasStatus) {
-        String[] searchKeys = {"label", "id"};
+    public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText,
+            @QueryParam("hasStatus") boolean hasStatus, @QueryParam("searchCategory") String searchCategory, @QueryParam("searchType") String searchType) {
+        String[] searchTextKeys = {"label", "id", "wmsUrl", "serviceUrl"};
+        String[] searchTypeKeys = {"type"};
+        String[] searchHasStatusKeys = {"status"};
         if(currentPage == null && layersPerPage == null) {
             // Get layer list compress
             JSONArray arr = getLayers(null, true);
             if(arr != null) {
-                if(searchText != null || hasStatus) {
-                    arr = getFilterArray(arr, searchText, searchKeys, hasStatus);
+                // Check search text
+                if(searchText != null && searchText.length() > 0) {
+                    arr = getFilterArrayString(arr, searchText, searchTextKeys);
+                }
+                // Check search type
+                if(searchType != null && searchType.length() > 0) {
+                    arr = getFilterArrayString(arr, searchType, searchTypeKeys);
+                }
+                // Check has state
+                if(hasStatus) {
+                    arr = getFilterArrayBoolean(arr, hasStatus, searchHasStatusKeys);
+                }
+                // Check has category
+                if(searchCategory != null && searchCategory.length() > 0) {
+                    arr = getFilterCategory(arr, searchCategory);
                 }
                 return Response.ok( arr ).build();
             }
@@ -85,8 +101,21 @@ public class AdministrationResource {
             // Get paging layer list compress
             JSONArray arr = getLayers(null);
             if(arr != null) {
-                if(searchText != null || hasStatus) {
-                    arr = getFilterArray(arr, searchText, searchKeys, hasStatus);
+                // Check search text
+                if(searchText != null && searchText.length() > 0) {
+                    arr = getFilterArrayString(arr, searchText, searchTextKeys);
+                }
+                // Check search type
+                if(searchType != null && searchType.length() > 0) {
+                    arr = getFilterArrayString(arr, searchType, searchTypeKeys);
+                }
+                // Check has state
+                if(hasStatus) {
+                    arr = getFilterArrayBoolean(arr, hasStatus, searchHasStatusKeys);
+                }
+                // Check has category
+                if(searchCategory != null && searchCategory.length() > 0) {
+                    arr = getFilterCategory(arr, searchCategory);
                 }
                 int tmpCurrentPage = Integer.parseInt(currentPage);
                 int tmpLayersPerPage = Integer.parseInt(layersPerPage);
@@ -1030,49 +1059,120 @@ public class AdministrationResource {
         return obj;
     }
 
-    private JSONArray getFilterArray(JSONArray arr, String searchText, String[] keys, boolean hasStatus) {
+    private JSONArray getFilterArrayString(JSONArray arr, String searchText, String[] keys) {
         JSONArray arrSearch = new JSONArray();
         for (int i = 0; i < arr.length(); i++) {
-            if(i < arr.length() - 1) {
-                JSONObject obj;
-                try {
-                    obj = arr.getJSONObject(i);
-                    if(obj.has("item")) {
-                        JSONObject item = obj.getJSONObject("item");
-                        for (String key : keys) {
-                            if(item.has(key)){
-                                String value = item.getString(key);
-                                if(searchText != null) {
-                                    if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
-                                       if(hasStatus) {
-                                           if(item.has("status")) {
-                                               arrSearch.put(obj);
-                                           }
-                                       } else {
-                                           arrSearch.put(obj);
-                                       }
-                                       break;
-                                    }
-                                } else {
-                                    if(hasStatus) {
-                                        if(item.has("status")) {
-                                            arrSearch.put(obj);
-                                        }
-                                    } else {
-                                        arrSearch.put(obj);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    log.error("Error on search layers!");
-                }
+            JSONObject obj;
+            try {
+                obj = arr.getJSONObject(i);
+                searchStringValue(obj, searchText, keys, arrSearch);
+            } catch (JSONException e) {
+                log.error("Error on search layers 'getFilterArrayString'!");
             }
         }
         return arrSearch;
     }
 
+    private void searchStringValue(JSONObject item, String searchText, String[] keys, JSONArray arrSearch) throws JSONException {
+        searchStringValue(item, searchText, keys, arrSearch, item);
+    }
+
+    private void searchStringValue(JSONObject obj, String searchText, String[] keys, JSONArray arrSearch, JSONObject parentObj) throws JSONException {
+        for (String key : keys) {
+            if(obj.has(key)){
+                String value = obj.getString(key);
+                if(searchText != null && searchText.length() > 0) {
+                    if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                        arrSearch.put(parentObj);
+                        break;
+                    }
+                }
+            }
+        }
+        if(obj.has("item")) {
+            JSONObject item = obj.getJSONObject("item");
+            searchStringValue(item, searchText, keys, arrSearch, parentObj);
+        }
+    }
+
+    private JSONArray getFilterArrayBoolean(JSONArray arr, boolean searchFlag, String[] keys) {
+        JSONArray arrSearch = new JSONArray();
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject obj;
+            try {
+                obj = arr.getJSONObject(i);
+                searchBooleanValue(obj, searchFlag, keys, arrSearch);
+            } catch (JSONException e) {
+                log.error("Error on search layers 'getFilterArrayBoolean'!");
+            }
+        }
+        return arrSearch;
+    }
+
+    private void searchBooleanValue(JSONObject item, boolean searchFlag, String[] keys, JSONArray arrSearch) throws JSONException {
+        searchBooleanValue(item, searchFlag, keys, arrSearch, item, true);
+    }
+
+    private void searchBooleanValue(JSONObject obj, boolean searchFlag, String[] keys, JSONArray arrSearch, JSONObject parentObj, boolean checkHasContentOnly) throws JSONException {
+        for (String key : keys) {
+            if(obj.has(key)){
+                if(checkHasContentOnly) {
+                    arrSearch.put(parentObj);
+                } else {
+                    String value = obj.getString(key);
+                    if(value == "true") {
+                        arrSearch.put(parentObj);
+                    }
+                }
+            }
+        }
+        if(obj.has("item")) {
+            JSONObject item = obj.getJSONObject("item");
+            searchBooleanValue(item, searchFlag, keys, arrSearch, parentObj, checkHasContentOnly);
+        }
+    }
+
+    private JSONArray getFilterCategory (JSONArray arr, String searchCategory) {
+        JSONArray categoryTree = getCategoryTree(searchCategory);
+        JSONArray arrSearch = new JSONArray();
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject obj;
+            try {
+                obj = arr.getJSONObject(i);
+                if(obj.has("id")){
+                    String id = obj.getString("id");
+                    if(searchCategoryValue(id, categoryTree)) {
+                        arrSearch.put(obj);
+                    }
+                }
+            } catch (JSONException e) {
+                log.error("Error on search layers 'getFilterCategory'!");
+            }
+        }
+        return arrSearch;
+    }
+
+    private boolean searchCategoryValue(String searchId, JSONArray categoryTree) throws JSONException {
+        boolean hasValue = false;
+        for (int i = 0; i < categoryTree.length(); i++) {
+            JSONObject obj = categoryTree.getJSONObject(i);
+            if(obj.has("layerBodId")) {
+                String layerBodId = obj.getString("layerBodId");
+                if(layerBodId.equals(searchId)) {
+                    hasValue = true;
+                    break;
+                }
+            }
+            if(obj.has("children")) {
+                JSONArray children = obj.getJSONArray("children");
+                if(searchCategoryValue(searchId, children)) {
+                    hasValue = true;
+                    break;
+                }
+            }
+        }
+        return hasValue;
+    }
     private JSONObject updateLayer(String id, JSONObject layer) {
         if(id != null && layer != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();

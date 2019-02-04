@@ -39,6 +39,8 @@ export class LayerComponent implements OnInit {
   selectedLayers: any = new Array();
   searchText = '';
   searchHasStatus = false;
+  searchCategory = '';
+  searchType = '';
 
   newLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
@@ -112,7 +114,8 @@ export class LayerComponent implements OnInit {
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
-    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText, this.searchHasStatus).subscribe(
+    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText, this.searchHasStatus,
+        this.searchCategory, this.searchType).subscribe(
       data => {
         this.layersPage = data.items;
         this.layersCurrentPage = data.firstPage;

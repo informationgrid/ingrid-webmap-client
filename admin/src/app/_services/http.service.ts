@@ -39,7 +39,8 @@ export class HttpService {
     );
   }
 
-  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean): Observable<LayerPaging> {
+  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean,
+      searchCategory: string, searchType: string): Observable<LayerPaging> {
     let url = httpApiHost + '/layers?';
     if (currentPage) {
       url += 'currentPage=' + currentPage;
@@ -52,6 +53,12 @@ export class HttpService {
     }
     if (hasStatus) {
       url += '&hasStatus=' + hasStatus;
+    }
+    if (searchCategory) {
+      url += '&searchCategory=' + searchCategory;
+    }
+    if (searchType) {
+      url += '&searchType=' + searchType;
     }
     return this.http.get<LayerPaging>(url, httpJsonOptions).map(
       res => {
