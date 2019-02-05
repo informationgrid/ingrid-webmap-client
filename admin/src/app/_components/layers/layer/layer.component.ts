@@ -236,8 +236,13 @@ export class LayerComponent implements OnInit {
     if (this.categoryId) {
       this.httpService.getCategory(this.categoryId, null).subscribe(
         data => {
-          // const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
-          this.category.set(id, data);
+          const items: CategoryItem[] = [];
+          const item = new CategoryItem();
+          item.id = 1;
+          item.label = 'root';
+          item.children = data;
+          items.push(item);
+          this.category.set(id, items);
         },
         error => {
           console.error('Error get category "' + this.categoryId + '"!');
@@ -408,7 +413,7 @@ export class LayerComponent implements OnInit {
             tmpCategory.forEach(tmpCatItem => {
               this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
             });
-            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory).subscribe(
+            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory[0].children).subscribe(
               data => {
                 this.updateAppCategories.emit(data[1]);
                 this.modalSaveSuccess.show();
