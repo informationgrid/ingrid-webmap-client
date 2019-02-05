@@ -1078,18 +1078,20 @@ public class AdministrationResource {
     }
 
     private void searchStringValue(JSONObject obj, String searchText, String[] keys, JSONArray arrSearch, JSONObject parentObj) throws JSONException {
+        boolean hasAdd = false;
         for (String key : keys) {
             if(obj.has(key)){
                 String value = obj.getString(key);
                 if(searchText != null && searchText.length() > 0) {
                     if(value.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
                         arrSearch.put(parentObj);
+                        hasAdd = true;
                         break;
                     }
                 }
             }
         }
-        if(obj.has("item")) {
+        if(obj.has("item") && hasAdd == false) {
             JSONObject item = obj.getJSONObject("item");
             searchStringValue(item, searchText, keys, arrSearch, parentObj);
         }
