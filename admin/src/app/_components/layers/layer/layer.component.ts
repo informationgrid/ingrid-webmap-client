@@ -403,16 +403,12 @@ export class LayerComponent implements OnInit {
           const tmpC = this.categories[c];
           const tmpCategory = this.category.get(tmpC.id);
           const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
-          let id = 2;
-          categoryLayers.forEach(categoryLayer => {
-            id = categoryLayer.getNextCategoryNodeId(tmpCategory, id);
-            categoryLayer.id = id;
-            id ++;
-          });
           if (tmpCategory && tmpSelectedCategory) {
             tmpCategory.forEach(tmpCatItem => {
               this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
             });
+            const id = 2;
+            this.setCategoriesItemId(tmpCategory, id);
             this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory[0].children).subscribe(
               data => {
                 this.updateAppCategories.emit(data[1]);
@@ -428,6 +424,17 @@ export class LayerComponent implements OnInit {
         }
       }
     }
+  }
+
+  setCategoriesItemId(tmpCategory: CategoryItem[], id: number) {
+    tmpCategory.forEach(tmpCategoryItem => {
+      id = tmpCategoryItem.getNextCategoryNodeId(tmpCategory, id);
+      tmpCategoryItem.id = id;
+      id ++;
+      if (tmpCategoryItem.children ) {
+        this.setCategoriesItemId(tmpCategoryItem.children, id);
+      }
+    });
   }
 
   addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers) {
