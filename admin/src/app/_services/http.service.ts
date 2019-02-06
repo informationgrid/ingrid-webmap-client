@@ -169,7 +169,31 @@ export class HttpService {
     if (nodeId) {
       url += '/' + nodeId;
     }
-    return this.http.get<CategoryItem[]>(url, httpJsonOptions);
+    return this.http.get<CategoryItem[]>(url, httpJsonOptions).map(
+      res => {
+        return res.map(resItem => {
+          return this.mapCategoryItem(resItem);
+        });
+      }
+    );
+  }
+
+  mapCategoryItem (resItem) {
+    const item = new CategoryItem(
+      resItem.id,
+      resItem.label,
+      resItem.staging,
+      resItem.selectedOpen
+    );
+    if (resItem.layerBodId) {
+      item.layerBodId = resItem.layerBodId;
+    }
+    if (resItem.children) {
+      item.children = resItem.children.map(resChildrenItem => {
+        return this.mapCategoryItem(resChildrenItem);
+      });
+    }
+    return item;
   }
 
   getCategoriesOfLayer(layerId: string, isExpanded) {
