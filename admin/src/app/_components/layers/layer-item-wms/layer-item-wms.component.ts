@@ -16,9 +16,9 @@ export class LayerItemWmsComponent {
   @Input() layer: LayerItem;
   @Input() layerId = '';
   @Input() altLayers;
+  @Input() modalSaveSuccess: ModalComponent;
+  @Input() modalSaveUnsuccess: ModalComponent;
   @ViewChild('f') form: NgForm;
-  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
-  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
   @Output() updateLayer: EventEmitter<LayerItem> = new EventEmitter<LayerItem>();
 
   tmpLayer: LayerItem;

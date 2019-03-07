@@ -86,7 +86,8 @@
         </div>
         <div class="list-group" *ngFor="let layer of layersPage">
           <div class="card">
-            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"></app-layer-item>
+            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"
+            [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveSuccess"></app-layer-item>
           </div>
         </div>
       </div>

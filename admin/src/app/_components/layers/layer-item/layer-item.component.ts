@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../../_services/http.service';
 import { LayerItem } from '../../../_models/layer-item';
 import { UtilsLayers } from '../../../_shared/utils/utils-layers';
+import { ModalComponent } from '../../modals/modal/modal.component';
 
 @Component({
   selector: 'app-layer-item',
@@ -12,6 +13,8 @@ export class LayerItemComponent {
 
   @Input() layer: LayerItem;
   @Input() layers: LayerItem[] = [];
+  @Input() modalSaveSuccess: ModalComponent;
+  @Input() modalSaveUnsuccess: ModalComponent;
   @Output() updateLayers: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
   @Output() selectLayer: EventEmitter<any> = new EventEmitter<any>();
 
