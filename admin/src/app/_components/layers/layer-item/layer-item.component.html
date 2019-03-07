@@ -44,39 +44,3 @@
     </div>
   </div>
 </div>
-
-<!-- Modal auth -->
-<app-modal #modalAuth>
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>layer_edit_auth_account</h5>
-  </div>
-  <div class="app-modal-body">
-    <p translate>layer_edit_auth_account_text</p>
-    <form #formAuth="ngForm" (ngSubmit)="editAuth(formAuth, modalAuth)" novalidate>
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <label class="col-form-label" translate>service_login</label>
-        </div>
-        <div class="col-sm-9">
-          <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control login" placeholder="{{ ('service_login') | translate }} ..." readonly onfocus="this.removeAttribute('readonly');" required>
-        </div>
-      </div>
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <label class="col-form-label" translate>service_password</label>
-        </div>
-        <div class="col-sm-9">
-          <input type="password" ngModel name="password" class="form-control login" placeholder="{{ ('service_password') | translate }} ..." readonly onfocus="this.removeAttribute('readonly');" required>
-        </div>
-      </div>
-      <div class="alert alert-info" translate>
-        layer_edit_auth_account_info
-      </div>
-    </form>
-  </div>
-  <div class="app-modal-footer">
-    <button class="btn btn-primary" [disabled]="formAuth.invalid" (click)="formAuth.ngSubmit.emit()" translate>
-      save
-    </button>
-  </div>
-</app-modal>
