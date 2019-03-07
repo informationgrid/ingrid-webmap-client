@@ -18,10 +18,10 @@ export class CategoryTreeComponent implements OnInit {
   @Input() category: Category;
   @Input() layers: LayerItem[] = [];
   @Input() categoryTree: CategoryItem[] = [];
+  @Input() modalSaveSuccess: ModalComponent;
+  @Input() modalSaveUnsuccess: ModalComponent;
   @ViewChild('formNodeAdd') formNodeAdd: NgForm;
   @ViewChild('formNodeEdit') formNodeEdit: NgForm;
-  @ViewChild('modalSaveSuccess') modalSaveSuccess: ModalComponent;
-  @ViewChild('modalSaveUnsuccess') modalSaveUnsuccess: ModalComponent;
 
   focusItem: CategoryItem = new CategoryItem();
   focusNode: TreeNode;

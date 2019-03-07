@@ -49,29 +49,6 @@
 </div>
 
 <!-- Modal delete -->
-<div class="modal fade" id="addCategoryItemLayerModal{{ categoryId }}" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" translate>category_item_del_title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p translate>category_item_del_text</p>
-        <div class="modal-footer">
-          <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveCategoryItem(tree.treeModel.focusedNode)" translate>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            delete
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal delete -->
 <div class="modal fade" id="delCategoryItemModal{{ categoryId }}" >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -226,31 +203,5 @@
       <i class="fa fa-save" aria-hidden="true"></i>
       save
     </button>
-  </div>
-</app-modal>
-
-<!-- Modal save success-->
-<app-modal #modalSaveSuccess [animateClose]="true">
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>category_item_update_success_title</h5>
-  </div>
-  <div class="app-modal-body">
-    <div class="alert alert-success" translate>
-      <i class="fa fa-check" aria-hidden="true"></i>
-      category_item_update_success_text
-    </div>
-  </div>
-</app-modal>
-
-<!-- Modal save unsuccess-->
-<app-modal #modalSaveUnsuccess [animateClose]="true">
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>category_item_update_unsuccess_title</h5>
-  </div>
-  <div class="app-modal-body">
-    <div class="alert alert-danger" translate>
-      <i class="fa fa-exclamation" aria-hidden="true"></i>
-      category_item_update_unsuccess_text
-    </div>
   </div>
 </app-modal>
