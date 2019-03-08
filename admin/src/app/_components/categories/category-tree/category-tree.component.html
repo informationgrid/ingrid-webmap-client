@@ -33,10 +33,10 @@
                   <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node)">
                     <i class="fa fa-edit" aria-hidden="true"></i>
                   </button>
-                  <button *ngIf="node.isFocused" type="button" class="btn btn-danger btn-sm mr-sm-2" data-toggle="modal" [attr.data-target]="'#delCategoryItemModal' + categoryId">
+                  <button *ngIf="node.isFocused" class="btn btn-danger btn-sm mr-sm-2" (click)="showDeleteModal(modalNodeDelete, node)">
                     <i class="fa fa-trash" aria-hidden="true"></i>
                   </button>
-                  <button *ngIf="node.isFocused" type="button" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
+                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
                     <i class="fa fa-globe" aria-hidden="true"></i>
                   </button>
                 </div>
@@ -49,27 +49,20 @@
 </div>
 
 <!-- Modal delete -->
-<div class="modal fade" id="delCategoryItemModal{{ categoryId }}" >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" translate>category_item_del_title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p translate>category_item_del_text</p>
-        <div class="modal-footer">
-          <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveCategoryItem(tree.treeModel.focusedNode)" translate>
-            <i class="fa fa-trash" aria-hidden="true"></i>
-            delete
-          </button>
-        </div>
-      </div>
-    </div>
+<app-modal #modalNodeDelete>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_del_title</h5>
   </div>
-</div>
+  <div class="app-modal-body">
+    <p translate>category_item_del_text</p>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveCategoryItem(tree.treeModel.focusedNode, modalNodeDelete)" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      delete
+    </button>
+  </div>
+</app-modal>
 
 <!-- Modal Add node-->
 <app-modal #modalNodeAdd [cssClass]="'modal-lg'">

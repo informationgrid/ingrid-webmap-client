@@ -95,7 +95,7 @@ export class CategoryTreeComponent implements OnInit {
   }
 
   // Remove node
-  onRemoveCategoryItem(node: TreeNode) {
+  onRemoveCategoryItem(node: TreeNode, modal) {
     if (node.parent != null) {
       _.remove(node.parent.data.children, node.data);
       if (node.parent.data.children && node.parent.data.children.length === 0) {
@@ -105,6 +105,7 @@ export class CategoryTreeComponent implements OnInit {
       this.httpService.updateCategoryTree(this.categoryId, node.treeModel.nodes).subscribe(
         data => {
           this.categoryTree = data;
+          modal.hide();
         },
         error => {
           console.error('Error update tree!');
@@ -119,6 +120,11 @@ export class CategoryTreeComponent implements OnInit {
     this.focusNode = node;
     this.formNodeAdd.reset();
     modal.show();
+  }
+
+  // Delete node
+  showDeleteModal(modal: ModalComponent, node: TreeNode) {
+     modal.show();
   }
 
   onAddCategoryItem (tree: TreeComponent, modal: ModalComponent) {

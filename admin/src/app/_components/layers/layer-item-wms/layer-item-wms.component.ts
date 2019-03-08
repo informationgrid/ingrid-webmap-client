@@ -20,6 +20,7 @@ export class LayerItemWmsComponent {
   @Input() modalSaveUnsuccess: ModalComponent;
   @ViewChild('f') form: NgForm;
   @Output() updateLayer: EventEmitter<LayerItem> = new EventEmitter<LayerItem>();
+  @Output() updateLayersAfterDelete: EventEmitter<LayerItem[]> = new EventEmitter<LayerItem[]>();
 
   tmpLayer: LayerItem;
   layerCategoryTrees;
@@ -72,6 +73,18 @@ export class LayerItemWmsComponent {
 
   showModal(modal) {
     modal.show();
+  }
+
+  onDeleteLayer(id: string, modal) {
+    this.httpService.deleteLayer(id).subscribe(
+      data => {
+        this.updateLayersAfterDelete.emit();
+        modal.hide();
+        },
+      error => {
+        console.error('Error onDeleteLayer!');
+      }
+    );
   }
 
   editAuth(form, modal) {

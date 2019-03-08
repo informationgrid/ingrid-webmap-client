@@ -36,17 +36,6 @@ export class LayerItemComponent {
     return false;
   }
 
-  onDeleteLayer(id: string) {
-    this.httpService.deleteLayer(id).subscribe(
-      data => {
-        this.updateLayers.emit();
-        },
-      error => {
-        console.error('Error onDeleteLayer!');
-      }
-    );
-  }
-
   updateLayer(layer: LayerItem) {
     this.layer = layer;
     this.layers.forEach(l => {
@@ -56,6 +45,11 @@ export class LayerItemComponent {
     });
     this.updateLayers.emit(this.layers);
   }
+
+  updateLayersAfterDelete() {
+    this.updateLayers.emit();
+  }
+
 
   checkLayer(event) {
     this.selectLayer.emit(event);
