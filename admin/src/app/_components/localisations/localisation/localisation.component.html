@@ -1,17 +1,17 @@
 <div class="card">
-  <div class="card-header" id="localisationHeader"  data-toggle="collapse" data-target="#localisation" aria-expanded="false" aria-controls="localisation">
+  <div class="card-header" id="localisationHeader"  data-toggle="collapse" data-target="#localisation">
       <span translate>localisation</span>
   </div>
-  <div id="localisation" class="collapse" aria-labelledby="localisationHeader" data-parent="#accordion">
+  <div id="localisation" class="collapse" data-parent="#accordion">
     <div class="card-body">
       <div class="modal-body">
         <ul *ngIf="languages" class="nav nav-tabs mb-3" role="tablist">
           <li class="nav-item" *ngFor="let lang of languages; let i=index;">
-            <a class="nav-link" [ngClass]="i == 0 ? 'active' : ''" id="pills-localisation-{{lang}}-tab" data-toggle="pill" href="#tabs-localisation-{{lang}}" role="tab" [attr.aria-controls]="'pills-localisation-' + lang" aria-selected="true" translate>{{ lang }}</a>
+            <a class="nav-link" [ngClass]="i == 0 ? 'active' : ''" id="pills-localisation-{{lang}}-tab" data-toggle="pill" href="#tabs-localisation-{{lang}}" role="tab" translate>{{ lang }}</a>
           </li>
         </ul>
         <div *ngIf="languages && localisations" class="tab-content" >
-          <div class="tab-pane fade show" [ngClass]="i == 0 ? 'active' : ''" *ngFor="let lang of languages; let i=index;" id="tabs-localisation-{{lang}}" role="tabpanel" [attr.aria-labelledby]="'pills-localisation-' + lang + '-tab'">
+          <div class="tab-pane fade show" [ngClass]="i == 0 ? 'active' : ''" *ngFor="let lang of languages; let i=index;" id="tabs-localisation-{{lang}}" role="tabpanel">
             <div id="localisation_{{lang}}">
               <div class="list-group" *ngFor="let localisation of localisations.get(lang) | mapToIterable">
                 <div class="form-group row">

@@ -1,14 +1,14 @@
 <!-- Layer -->
 <div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader" data-toggle="collapse" data-target="#layer" aria-expanded="false" aria-controls="layer">
+  <div class="card-header d-flex justify-content-between align-items-center" id="layerHeader" data-toggle="collapse" data-target="#layer">
     <span translate>layers</span>
     <span  class="badge badge-pill badge-primary">{{ layersTotalNum }}</span>
   </div>
-  <div id="layer" class="collapse" aria-labelledby="layerHeader" data-parent="#accordion">
+  <div id="layer" class="collapse" data-parent="#accordion">
     <div class="card-body">
       <div id="layers">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e9e9;">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarLayer" aria-controls="navBarLayer" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarLayer">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navBarLayer">
@@ -49,7 +49,7 @@
             </div>
             <div>
               <form class="form-inline">
-                <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
+                <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" (ngModelChange)="searchLayers()">
                 <button class="btn mr-sm-2" data-toggle="collapse" data-target="#layersExtendedSearch">
                   <i class="fa fa-angle-double-down"></i>
                 </button>
@@ -113,7 +113,7 @@
         </div>
       </div>
       <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" data-toggle='collapse' data-target='#serviceLogin' id="hasLogin" name="hasLogin" [(ngModel)]="hasLogin">
+        <input type="checkbox" class="form-check-input" data-toggle="collapse" data-target="#serviceLogin" id="hasLogin" name="hasLogin" [(ngModel)]="hasLogin">
         <label class="form-check-label" for="hasLogin" translate>service_hasLogin</label>
       </div>
       <div class="collapse" id="serviceLogin">

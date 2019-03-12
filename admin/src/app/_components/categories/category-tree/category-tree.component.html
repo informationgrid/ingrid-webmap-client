@@ -3,7 +3,7 @@
     <!-- Tree -->
     <div class="col-sm">
         <button class="btn btn-primary btn-sm" (click)="showAddModal(modalNodeAdd, null)">
-          <i class="fa fa-plus" aria-hidden="true"></i>
+          <i class="fa fa-plus"></i>
         </button>
         <br>
         <tree-root #tree [nodes]="categoryTree" [options]="options" 
@@ -23,21 +23,21 @@
                 [treeDrag]="node"
                 [treeDragEnabled]="node.allowDrag()">
                 <div>
-                  <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                  <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'"></i>
                   {{ node.data.label }}
                 </div>
                 <div>
                   <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node)">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <i class="fa fa-plus"></i>
                   </button>
                   <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node)">
-                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    <i class="fa fa-edit"></i>
                   </button>
                   <button *ngIf="node.isFocused" class="btn btn-danger btn-sm mr-sm-2" (click)="showDeleteModal(modalNodeDelete, node)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="fa fa-trash"></i>
                   </button>
                   <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
-                    <i class="fa fa-globe" aria-hidden="true"></i>
+                    <i class="fa fa-globe"></i>
                   </button>
                 </div>
               </div>
@@ -58,7 +58,7 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveCategoryItem(tree.treeModel.focusedNode, modalNodeDelete)" translate>
-      <i class="fa fa-trash" aria-hidden="true"></i>
+      <i class="fa fa-trash"></i>
       delete
     </button>
   </div>
@@ -95,7 +95,7 @@
               (click)="onLayerClick($event, focusItem.layerBodId)" (keyup)="onLayerListSearch($event, focusItem.layerBodId)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
-                  <i class="fa fa-caret-up" aria-hidden="true"></i>
+                  <i class="fa fa-caret-up"></i>
               </button>
             </div>
           </div>
@@ -115,7 +115,7 @@
   </div>
   <div class="app-modal-footer">
     <button class="btn btn-primary" [disabled]="formNodeAdd.invalid" (click)="formNodeAdd.ngSubmit.emit()" translate>
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus"></i>
       add
     </button>
   </div>
@@ -173,7 +173,7 @@
             <input type="text" #layerBodId="ngModel" [(ngModel)]="focusItem.layerBodId" class="form-control" name="layerBodId"placeholder="{{ ('category_item_edit_layerBodId_input') | translate }}" (click)="onLayerClick($event, layerBodId.value)" (keyup)="onLayerListSearch($event, layerBodId.value)" appExistOnLayerList [checkList]="searchLayerList" autocomplete="off">
             <div class="input-group-append" *ngIf="searchLayerList">
               <button class="btn btn-primary" (click)="clearLayerList()">
-                  <i class="fa fa-caret-up" aria-hidden="true"></i>
+                  <i class="fa fa-caret-up"></i>
               </button>
             </div>
           </div>
@@ -193,7 +193,7 @@
   </div>
   <div class="app-modal-footer">
     <button class="btn btn-primary" [disabled]="formNodeEdit.invalid" (click)="formNodeEdit.ngSubmit.emit()" translate>
-      <i class="fa fa-save" aria-hidden="true"></i>
+      <i class="fa fa-save"></i>
       save
     </button>
   </div>

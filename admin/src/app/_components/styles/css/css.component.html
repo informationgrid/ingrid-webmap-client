@@ -1,15 +1,15 @@
 <div class="card">
-    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css" aria-expanded="false" aria-controls="css">
+    <div class="card-header" id="cssHeader"  data-toggle="collapse" data-target="#css">
         <span translate>css</span>
     </div>
-    <div id="css" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
+    <div id="css" class="collapse" data-parent="#accordion">
         <div class="card-body">
             <div class="modal-body">
                 <textarea class="form-control" name="css" id="css" rows="20" [value]="css" #textarea ></textarea>
                 <br>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary" (click)="onUpdate(textarea.value)" translate>
-                        <i class="fa fa-save" aria-hidden="true"></i>
+                        <i class="fa fa-save"></i>
                         save
                     </button>
                 </div>
@@ -25,7 +25,7 @@
     </div>
     <div class="app-modal-body">
         <div class="alert alert-success" translate>
-        <i class="fa fa-check" aria-hidden="true"></i>
+        <i class="fa fa-check"></i>
         css_save_success_text
         </div>
     </div>
@@ -38,7 +38,7 @@
     </div>
     <div class="app-modal-body">
         <div class="alert alert-danger" translate>
-        <i class="fa fa-exclamation" aria-hidden="true"></i>
+        <i class="fa fa-exclamation"></i>
         css_save_unsuccess_text
         </div>
     </div>
