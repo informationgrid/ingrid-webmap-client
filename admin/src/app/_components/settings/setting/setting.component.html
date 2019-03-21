@@ -1,17 +1,18 @@
 <div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader" data-toggle="collapse" data-target="#setting">
+    <div class="card-header d-flex justify-content-between align-items-center" id="settingHeader" data-toggle="collapse" data-target="#setting"
+        aria-expanded="false" aria-controls="setting">
         <span translate>settings</span>
     </div>
-    <div id="setting" class="collapse" data-parent="#accordion">
+    <div id="setting" class="collapse" aria-labelledby="settingHeader" data-parent="#accordion">
         <div class="card-body">
             <form #f="ngForm" (ngSubmit)="onUpdate()" novalidate>
                 <div class="modal-header">
                     <button type="button" class="btn btn-secondary" (click)="onReset()" translate>
-                        <i class="fa fa-repeat"></i>
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
                         reset
                     </button>
                     <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
-                        <i class="fa fa-save"></i>
+                        <i class="fa fa-save" aria-hidden="true"></i>
                         save
                     </button>
                 </div>
@@ -26,7 +27,7 @@
                                 <label class="col-form-label" translate>setting_settingDefaultTopicId</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTopicId"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingDefaultTopicId" data-parent="#setting">
@@ -50,7 +51,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingEpsg</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsg" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingEpsg" data-parent="#setting">
@@ -74,7 +75,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingExtent</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingExtent" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingExtent" data-parent="#setting">
@@ -140,7 +141,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingEpsgExtent</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsgExtent" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingEpsgExtent" data-parent="#setting">
@@ -206,7 +207,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingLanguages</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingLanguages" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingLanguages" data-parent="#setting">
@@ -221,13 +222,13 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" 
                                         *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
-                                        <i class="fa fa-sort-down"></i>
+                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(lang, settings.settingLanguages)" *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up"></i>
+                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingLanguages)">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -236,7 +237,7 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(langs.value, settings.settingLanguages);"
                                         [disabled]="!langs.value">
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -249,7 +250,7 @@
                                 <label class="col-form-label" translate>setting_settingShortURLService</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShortURLService"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShortURLService" data-parent="#setting">
@@ -270,7 +271,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchServiceUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchServiceUrl"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchServiceUrl" data-parent="#setting">
@@ -291,7 +292,7 @@
                                 <label class="col-form-label" translate>setting_settingGazetterZoom</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingGazetterZoom"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingGazetterZoom" data-parent="#setting">
@@ -312,7 +313,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchNominatimUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchNominatimUrl"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchNominatimUrl" data-parent="#setting">
@@ -333,7 +334,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchBwaLocatorUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorUrl"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchBwaLocatorUrl" data-parent="#setting">
@@ -354,7 +355,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchBwaLocatorGeoUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorGeoUrl"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchBwaLocatorGeoUrl" data-parent="#setting">
@@ -375,7 +376,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchBwaLocatorStationUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorStationUrl"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchBwaLocatorStationUrl" data-parent="#setting">
@@ -396,7 +397,7 @@
                                 <label class="col-form-label" translate>setting_settingCopyrightURL</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCopyrightURL"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingCopyrightURL" data-parent="#setting">
@@ -415,7 +416,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingDisclaimerURL</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDisclaimerURL" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingDisclaimerURL" data-parent="#setting">
@@ -434,7 +435,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingSitemapURL</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSitemapURL" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSitemapURL" data-parent="#setting">
@@ -454,7 +455,7 @@
                                 <label class="col-form-label" translate>setting_settingUseGeodesic</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" 
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingUseGeodesic" data-parent="#setting">
@@ -477,7 +478,7 @@
                                 <label class="col-form-label" translate>setting_settingDefaultMouseProjections</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultMouseProjections"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingDefaultMouseProjections" data-parent="#setting">
@@ -493,14 +494,14 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(mouseProj, settings.settingDefaultMouseProjections)"
                                         *ngIf="i !== (settings.settingDefaultMouseProjections.length - 1) && settings.settingDefaultMouseProjections.length > 1">
-                                        <i class="fa fa-sort-down"></i>
+                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(mouseProj, settings.settingDefaultMouseProjections)"
                                         *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up"></i>
+                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultMouseProjections)">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -509,7 +510,7 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(mouseProjs.value, settings.settingDefaultMouseProjections);"
                                         [disabled]="!mouseProjs.value">
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -522,7 +523,7 @@
                                 <label class="col-form-label" translate>setting_settingDefaultImportList</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultImportList"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingDefaultImportList" data-parent="#setting">
@@ -537,14 +538,14 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
                                         *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
-                                        <i class="fa fa-sort-down"></i>
+                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(serviceList, settings.settingDefaultImportList)"
                                         *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up"></i>
+                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
                                     </button>
                                     <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultImportList)">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -553,7 +554,7 @@
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
                                         [disabled]="!serviceLists.value">
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
                                     </button>
                                 </div>
                             </div>
@@ -566,7 +567,7 @@
                                 <label class="col-form-label" translate>setting_settingShareFacebook</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareFacebook"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareFacebook" data-parent="#setting">
@@ -588,7 +589,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShareMail</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareMail" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareMail" data-parent="#setting">
@@ -610,7 +611,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShareGoogle</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareGoogle" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareGoogle" data-parent="#setting">
@@ -633,7 +634,7 @@
                                 <label class="col-form-label" translate>setting_settingShareTwitter</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareTwitter"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareTwitter" data-parent="#setting">
@@ -655,7 +656,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShareIFrame</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareIFrame" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareIFrame" data-parent="#setting">
@@ -677,7 +678,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShareLink</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareLink" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareLink" data-parent="#setting">
@@ -699,7 +700,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShareQR</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareQR" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareQR" data-parent="#setting">
@@ -722,7 +723,7 @@
                                 <label class="col-form-label" translate>setting_settingShareWhatsapp</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareWhatsapp"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShareWhatsapp" data-parent="#setting">
@@ -744,7 +745,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingPrintLogo</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintLogo" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingPrintLogo" data-parent="#setting">
@@ -765,7 +766,7 @@
                                 <label class="col-form-label" translate>setting_settingPrintNorthArrow</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintNorthArrow"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingPrintNorthArrow" data-parent="#setting">
@@ -786,7 +787,7 @@
                                 <label class="col-form-label" translate>setting_settingPrintGraticuleLayer</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintGraticuleLayer"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingPrintGraticuleLayer" data-parent="#setting">
@@ -807,7 +808,7 @@
                                 <label class="col-form-label" translate>setting_settingPrintFilename</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintFilename"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingPrintFilename" data-parent="#setting">
@@ -828,7 +829,7 @@
                                 <label class="col-form-label" translate>setting_settingPrintDependOnMouseProj</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintDependOnMouseProj"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingPrintDependOnMouseProj" data-parent="#setting">
@@ -850,7 +851,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingKMLName</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingKMLName" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingKMLName" data-parent="#setting">
@@ -870,7 +871,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingHideCatalog</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingHideCatalog" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingHideCatalog" data-parent="#setting">
@@ -892,7 +893,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingEnableW3W</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnableW3W" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingEnableW3W" data-parent="#setting">
@@ -914,7 +915,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_w3wUrl</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wUrl" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_w3wUrl" data-parent="#setting">
@@ -933,7 +934,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_w3wApiKey</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wApiKey" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_w3wApiKey" data-parent="#setting">
@@ -953,7 +954,7 @@
                                 <label class="col-form-label" translate>setting_settingShowLayerServiceTree</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceTree"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShowLayerServiceTree" data-parent="#setting">
@@ -976,7 +977,7 @@
                                 <label class="col-form-label" translate>setting_settingShowLayerServiceName</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceName"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShowLayerServiceName" data-parent="#setting">
@@ -999,7 +1000,7 @@
                                 <label class="col-form-label" translate>setting_settingCheckLayerInRange</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCheckLayerInRange"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingCheckLayerInRange" data-parent="#setting">
@@ -1021,7 +1022,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingShowISOXML</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowISOXML" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingShowISOXML" data-parent="#setting">
@@ -1044,7 +1045,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchCoordsXY</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsXY"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchCoordsXY" data-parent="#setting">
@@ -1067,7 +1068,7 @@
                                 <label class="col-form-label" translate>setting_settingSearchCoordsZoom</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsZoom"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingSearchCoordsZoom" data-parent="#setting">
@@ -1087,7 +1088,7 @@
                             <div class=" d-flex justify-content-between align-items-center">
                                 <label class="col-form-label" translate>setting_settingEnable3D</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnable3D" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingEnable3D" data-parent="#setting">
@@ -1110,7 +1111,7 @@
                                 <label class="col-form-label" translate>setting_settingDefaultTerrain</label>
                                 <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTerrain"
                                     title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info"></i>
+                                    <i class="fa fa-info" aria-hidden="true"></i>
                                 </button>
                             </div>
                             <div class="collapse" id="info_settingDefaultTerrain" data-parent="#setting">
@@ -1127,11 +1128,11 @@
                 </div>
                 <div class="modal-footer d-flex justify-content-between align-items-center">
                     <button type="button" class="btn btn-secondary" (click)="onReset()" translate>
-                        <i class="fa fa-repeat"></i>
+                        <i class="fa fa-repeat" aria-hidden="true"></i>
                         reset
                     </button>
                     <button type="submit" class="btn btn-primary" [disabled]="!f.valid" translate>
-                        <i class="fa fa-save"></i>
+                        <i class="fa fa-save" aria-hidden="true"></i>
                         save
                     </button>
                 </div>
@@ -1147,7 +1148,7 @@
     </div>
     <div class="app-modal-body">
         <div class="alert alert-success" translate>
-        <i class="fa fa-check"></i>
+        <i class="fa fa-check" aria-hidden="true"></i>
         setting_save_success_text
         </div>
     </div>
@@ -1160,7 +1161,7 @@
     </div>
     <div class="app-modal-body">
         <div class="alert alert-danger" translate>
-        <i class="fa fa-exclamation"></i>
+        <i class="fa fa-exclamation" aria-hidden="true"></i>
         setting_save_unsuccess_text
         </div>
     </div>
