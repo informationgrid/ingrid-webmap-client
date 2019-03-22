@@ -57,6 +57,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
@@ -265,9 +266,9 @@ public class FileResource {
             try {
                 URL tmpUrl = new URL( url );
                 URLConnection conn = tmpUrl.openConnection();
-                if(login != null) {
+                if(StringUtils.isNotEmpty(login)) {
                     String password = Utils.getServiceLogin( url, login);
-                    if(password != null) {
+                    if(StringUtils.isNotEmpty(password)) {
                         Utils.urlConnectionAuth(conn, login, password);
                     }
                 }
@@ -621,10 +622,10 @@ public class FileResource {
 
         File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2) +  "/" + valueToMd5);
         if(shortenFile.exists()) {
-            String content = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
-            if(content != null) {
-                Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, content, false);
-                return content.trim();
+            String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                Utils.updateFile("shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/" + valueToMd5, fileContent, false);
+                return fileContent.trim();
             }
         }
         return valueToMd5;

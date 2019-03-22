@@ -68,6 +68,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -109,7 +110,7 @@ public class Utils {
         if(file.exists()){
             try {
                 String fileContent = FileUtils.readFileToString( file, "UTF-8");
-                if(fileContent != null){
+                if(StringUtils.isNotEmpty(fileContent)){
                     return fileContent;
                 }
             } catch (IOException e) {
@@ -118,7 +119,7 @@ public class Utils {
         }else{
             log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
         }
-        return null;
+        return "";
     }
 
     public static void writeFileContent (File file, String content) throws IOException {
@@ -248,7 +249,7 @@ public class Utils {
             if(file.exists()) {
                 log.debug("Load file: " + path);
                 String fileContent = Utils.getFileContent(path, "", "", "");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     JSONObject setting = new JSONObject(fileContent);
                     Iterator<?> keys = setting.keys();
                     while( keys.hasNext() ) {
@@ -444,48 +445,51 @@ public class Utils {
     }
     
     public static void setServiceLogin(String url, String login, String password) throws JSONException, URISyntaxException {
-        String fileContent = "{}";
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-        }
-        URI uri = new URI(url);
-        JSONObject serviceAuth = new JSONObject(fileContent);
-        JSONObject loginAuth = null;
-        String host = uri.getHost();
-        if(serviceAuth.has(host)) {
-            loginAuth = serviceAuth.getJSONObject(host);
-        } else {
-            loginAuth = new JSONObject();
-            loginAuth.put("login", login);
-            loginAuth.put("password", password);
-            if(uri.getScheme().equals("https")) {
-                loginAuth.put("port", "443");
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                URI uri = new URI(url);
+                JSONObject serviceAuth = new JSONObject(fileContent);
+                JSONObject loginAuth = null;
+                String host = uri.getHost();
+                if(serviceAuth.has(host)) {
+                    loginAuth = serviceAuth.getJSONObject(host);
+                } else {
+                    loginAuth = new JSONObject();
+                    loginAuth.put("login", login);
+                    loginAuth.put("password", password);
+                    if(uri.getScheme().equals("https")) {
+                        loginAuth.put("port", "443");
+                    }
+                }
+                serviceAuth.put(host, loginAuth);
+                Utils.updateFile("config/service.auth.json", serviceAuth);
             }
         }
-        serviceAuth.put(host, loginAuth);
-        Utils.updateFile("config/service.auth.json", serviceAuth);
     }
     
     public static String getServiceLogin(String url, String login) throws JSONException, URISyntaxException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
+        if(StringUtils.isNotEmpty(config_dir)) {
             String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-            URI uri = new URI(url);
-            JSONObject serviceAuth = new JSONObject(fileContent);
-            String key = uri.getHost();
-            if(serviceAuth.has(key)){
-                JSONObject auth = serviceAuth.getJSONObject(key);
-                if(auth.has("login") && auth.has("password")) {
-                    if(login.equals(auth.getString("login"))) {
-                        return auth.getString("password"); 
+            if(StringUtils.isNotEmpty(fileContent)) {
+                URI uri = new URI(url);
+                JSONObject serviceAuth = new JSONObject(fileContent);
+                String key = uri.getHost();
+                if(serviceAuth.has(key)){
+                    JSONObject auth = serviceAuth.getJSONObject(key);
+                    if(auth.has("login") && auth.has("password")) {
+                        if(login.equals(auth.getString("login"))) {
+                            return auth.getString("password"); 
+                        }
                     }
                 }
             }
         }
-        return null;
+        return "";
     }
     
     public static String getDateFlag() {

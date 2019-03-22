@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Specialized input stream that sneaks at the input stream to detect the
  * encoding of the input stream.<br/>
@@ -73,25 +75,25 @@ public class SniffedInputStream extends BufferedInputStream {
          * as UTF-8. _encoding = sniffForEncodingInfo("UTF-8", FileType.XML); }
          */
 
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(_encoding)) {
             // read byte order marks and detect EBCDIC etc
             _encoding = sniffFourBytes();
         }
 
-        if (_encoding != null && _encoding.equals( "IBM037" )) {
+        if (StringUtils.isNotEmpty(_encoding) && _encoding.equals( "IBM037" )) {
             // First four bytes suggest EBCDIC with <?xm at start
             String encoding = sniffForEncodingInfo( _encoding, FileType.XML );
-            if (encoding != null)
+            if (StringUtils.isNotEmpty(_encoding))
                 _encoding = encoding;
         }
 
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(_encoding)) {
             // Haven't yet determined encoding: sniff for <?xml encoding="..."?>
             // assuming we can read it as UTF-8.
             _encoding = sniffForEncodingInfo( "UTF-8", FileType.XML );
         }
 
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(_encoding)) {
             // The XML spec says these two things:
 
             // (1) "In the absence of external character encoding information
@@ -138,7 +140,7 @@ public class SniffedInputStream extends BufferedInputStream {
         try {
             byte[] buf = new byte[4];
             if (readAsMuchAsPossible( buf, 0, 4 ) < 4)
-                return null;
+                return "";
             long result = 0xFF000000 & (buf[0] << 24) | 0x00FF0000 & (buf[1] << 16) | 0x0000FF00 & (buf[2] << 8) | 0x000000FF & buf[3];
 
             if (result == 0x0000FEFF)
@@ -154,7 +156,7 @@ public class SniffedInputStream extends BufferedInputStream {
             else if (result == 0x3C003F00)
                 return "UTF-16LE";
             else if (result == 0x3C3F786D)
-                return null; // looks like US-ASCII with <?xml: sniff
+                return ""; // looks like US-ASCII with <?xml: sniff
             else if (result == 0x4C6FA794)
                 return "IBM037"; // Sniff for ebdic codepage
             else if ((result & 0xFFFF0000) == 0xFEFF0000)
@@ -171,7 +173,7 @@ public class SniffedInputStream extends BufferedInputStream {
              * 0x3C68746D ) //0x53746174) return "ISO-8859-1";
              */
             else
-                return null;
+                return "";
         } finally {
             reset();
         }
@@ -260,12 +262,12 @@ public class SniffedInputStream extends BufferedInputStream {
             while (i < limit) {
                 i = scanAttribute( buf, i, limit, attr );
                 if (i < 0)
-                    return null;
+                    return "";
                 if (attr.name.equals( "encoding" ))
                     return attr.value;
             }
         }
-        return null;
+        return "";
     }
 
     /**
@@ -287,7 +289,7 @@ public class SniffedInputStream extends BufferedInputStream {
             while (i < limit) {
                 i = scanAttribute( buf, i, limit, attr );
                 if (i < 0)
-                    return null;
+                    return "";
                 if (attr.name.equals( "content" ))
                     startIndex = attr.value.indexOf( "charset=" );
                 if (startIndex >= 0) {
@@ -296,7 +298,7 @@ public class SniffedInputStream extends BufferedInputStream {
                 }
             }
         }
-        return null;
+        return "";
     }
 
     private static int firstIndexOf(String s, char[] buf, int startAt, int limit) {

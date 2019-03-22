@@ -39,6 +39,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -71,7 +72,6 @@ public class CapabilitiesUpdateTask implements Runnable{
         log.info("Update WebMapClient capabilitities ...");
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
         boolean hasChanges = false;
         
         try {
@@ -81,229 +81,229 @@ public class CapabilitiesUpdateTask implements Runnable{
             log.info("Use default value :" + defaultEpsg);
         }
         
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-        }
-        if(fileContent != null) {
-            try {
-                JSONObject layersJson = new JSONObject( fileContent );
-                HashMap<String, Document> mapCapabilities = new HashMap<String, Document>();
-                ArrayList<String> errorUrls = new ArrayList<String>();
-                ArrayList<String> errorLayernames = new ArrayList<String>();
-                
-                String getCapabilities = null;
-                Document doc = null;
-                XPath xpath = XPathFactory.newInstance().newXPath();
-                
-                Iterator<?> keys = layersJson.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    JSONObject layerJSON = layersJson.getJSONObject( key );
-                    // Reset values
-                    layerJSON.remove(Constants.LAYER_STATUS);
-                    if(!layerJSON.has("extent")) {
-                        hasChanges = true;
-                        layerJSON.put("extent", new JSONArray(defaultExtent));
-                    }
-                    String layerVersion = null;
-                    String layerType = null;
-                    String login = null;
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject layersJson = new JSONObject( fileContent );
+                    HashMap<String, Document> mapCapabilities = new HashMap<String, Document>();
+                    ArrayList<String> errorUrls = new ArrayList<String>();
+                    ArrayList<String> errorLayernames = new ArrayList<String>();
                     
-                    if(layerJSON.has( Constants.TYPE )) {
-                        layerType = layerJSON.getString( Constants.TYPE );
-                    }
-                    if(layerJSON.has(Constants.VERSION)) {
-                        layerVersion = layerJSON.getString( Constants.VERSION );
-                    }
-                    if(layerJSON.has(Constants.AUTH)) {
-                        login = layerJSON.getString( Constants.AUTH );
-                    }
-                    if(layerType.equals( de.ingrid.mapclient.Constants.TYPE_WMS )) {
-                        if(layerJSON.has( Constants.WMS_URL)) {
-                            String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
-                            if(layerWmsUrl != null){
-                                try {
-                                    if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
-                                        layerWmsUrl += "?";
-                                    }
-                                    if(layerWmsUrl.toLowerCase().indexOf( "service=" )  == -1){
-                                        layerWmsUrl += "&SERVICE=WMS";
-                                    }
-                                    if(layerWmsUrl.toLowerCase().indexOf( "request=" )  == -1){
-                                        layerWmsUrl += "&REQUEST=GetCapabilities";
-                                    }
-                                    if(layerWmsUrl.toLowerCase().indexOf( "version=" )  == -1){
-                                        if(layerVersion == null) {
-                                            layerWmsUrl += "&VERSION=1.3.0";
-                                        } else {
-                                            layerWmsUrl += "&VERSION=" + layerVersion;
+                    String getCapabilities = null;
+                    Document doc = null;
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    
+                    Iterator<?> keys = layersJson.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        JSONObject layerJSON = layersJson.getJSONObject( key );
+                        // Reset values
+                        layerJSON.remove(Constants.LAYER_STATUS);
+                        if(!layerJSON.has("extent")) {
+                            hasChanges = true;
+                            layerJSON.put("extent", new JSONArray(defaultExtent));
+                        }
+                        String layerVersion = null;
+                        String layerType = null;
+                        String login = null;
+                        
+                        if(layerJSON.has( Constants.TYPE )) {
+                            layerType = layerJSON.getString( Constants.TYPE );
+                        }
+                        if(layerJSON.has(Constants.VERSION)) {
+                            layerVersion = layerJSON.getString( Constants.VERSION );
+                        }
+                        if(layerJSON.has(Constants.AUTH)) {
+                            login = layerJSON.getString( Constants.AUTH );
+                        }
+                        if(layerType.equals( de.ingrid.mapclient.Constants.TYPE_WMS )) {
+                            if(layerJSON.has( Constants.WMS_URL)) {
+                                String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
+                                if(layerWmsUrl != null){
+                                    try {
+                                        if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
+                                            layerWmsUrl += "?";
                                         }
-                                    }
-                                    if(!errorUrls.contains(layerWmsUrl)) {
-                                        doc = mapCapabilities.get( layerWmsUrl );
-                                        if(doc == null){
-                                            log.debug( "Load capabilities: " + layerWmsUrl);
-                                            getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
-                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
-                                                hasChanges = true;
-                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                        if(layerWmsUrl.toLowerCase().indexOf( "service=" )  == -1){
+                                            layerWmsUrl += "&SERVICE=WMS";
+                                        }
+                                        if(layerWmsUrl.toLowerCase().indexOf( "request=" )  == -1){
+                                            layerWmsUrl += "&REQUEST=GetCapabilities";
+                                        }
+                                        if(layerWmsUrl.toLowerCase().indexOf( "version=" )  == -1){
+                                            if(layerVersion == null) {
+                                                layerWmsUrl += "&VERSION=1.3.0";
                                             } else {
-                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                                docFactory.setValidating(false);
-                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                                mapCapabilities.put( layerWmsUrl, doc );
+                                                layerWmsUrl += "&VERSION=" + layerVersion;
+                                            }
+                                        }
+                                        if(!errorUrls.contains(layerWmsUrl)) {
+                                            doc = mapCapabilities.get( layerWmsUrl );
+                                            if(doc == null){
+                                                log.debug( "Load capabilities: " + layerWmsUrl);
+                                                getCapabilities = HttpProxy.doRequest( layerWmsUrl, login);
+                                                if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                    hasChanges = true;
+                                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                                } else {
+                                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                                    docFactory.setValidating(false);
+                                                    doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                                    mapCapabilities.put( layerWmsUrl, doc );
+                                                    boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                                    if(hasChangesLayer){
+                                                        hasChanges = hasChangesLayer;
+                                                    }
+                                                }
+                                            } else {
+                                                log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
                                                 boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
                                                 if(hasChangesLayer){
                                                     hasChanges = hasChangesLayer;
                                                 }
                                             }
                                         } else {
-                                            log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                            boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
-                                            if(hasChangesLayer){
-                                                hasChanges = hasChangesLayer;
-                                            }
+                                            hasChanges = true;
+                                            layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                         }
-                                    } else {
+                                    } catch (Exception e) {
                                         hasChanges = true;
                                         layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                    }
-                                } catch (Exception e) {
-                                    hasChanges = true;
-                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                    if(!errorUrls.contains(layerWmsUrl)){
-                                        errorUrls.add(layerWmsUrl);
+                                        if(!errorUrls.contains(layerWmsUrl)){
+                                            errorUrls.add(layerWmsUrl);
+                                        }
                                     }
                                 }
                             }
-                        }
-                    } else if(layerType.equals( Constants.TYPE_WMTS )) {
-                        if(layerJSON.has( Constants.WMTS_URL)) {
-                            String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
-                            if(layerWtmsUrl != null){
-                                try {
-                                    if(!errorUrls.contains(layerWtmsUrl)) {
-                                        doc = mapCapabilities.get( layerWtmsUrl );
-                                        if(doc == null){
-                                            log.debug( "Load capabilities: " + layerWtmsUrl);
-                                            getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
-                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
-                                                hasChanges = true;
-                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                        } else if(layerType.equals( Constants.TYPE_WMTS )) {
+                            if(layerJSON.has( Constants.WMTS_URL)) {
+                                String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
+                                if(layerWtmsUrl != null){
+                                    try {
+                                        if(!errorUrls.contains(layerWtmsUrl)) {
+                                            doc = mapCapabilities.get( layerWtmsUrl );
+                                            if(doc == null){
+                                                log.debug( "Load capabilities: " + layerWtmsUrl);
+                                                getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
+                                                if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                    hasChanges = true;
+                                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                                } else {
+                                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                                    docFactory.setValidating(false);
+                                                    doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                                    mapCapabilities.put( layerWtmsUrl, doc );
+                                                    boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                                    if(hasChangesLayer){
+                                                        hasChanges = hasChangesLayer;
+                                                    }
+                                                }
                                             } else {
-                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                                docFactory.setValidating(false);
-                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                                mapCapabilities.put( layerWtmsUrl, doc );
+                                                log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
                                                 boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
                                                 if(hasChangesLayer){
                                                     hasChanges = hasChangesLayer;
                                                 }
                                             }
                                         } else {
-                                            log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
-                                            boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                            if(hasChangesLayer){
-                                                hasChanges = hasChangesLayer;
-                                            }
+                                            hasChanges = true;
+                                            layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                         }
-                                    } else {
+                                    } catch (Exception e) {
                                         hasChanges = true;
                                         layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                    }
-                                } catch (Exception e) {
-                                    hasChanges = true;
-                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                    if(!errorUrls.contains(layerWtmsUrl)){
-                                        errorUrls.add(layerWtmsUrl);
+                                        if(!errorUrls.contains(layerWtmsUrl)){
+                                            errorUrls.add(layerWtmsUrl);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
-                if(hasChanges){
-                    File cpFile = new File(config_dir.concat("data/layers.json.") + Utils.getDateFlag());
-                    if(cpFile.exists()){
-                        cpFile.delete();
-                    }
-                    File file = new File(config_dir.concat("data/layers.json"));
-                    file.renameTo( cpFile );
-                    Utils.cleanDirectory(file);
-                    file = new File(config_dir.concat("data/layers.json"));
-                    log.info( "Update file :" + file.getAbsoluteFile() );
-                    if(file != null){
-                        try(FileWriter fw = new FileWriter(file, true);
-                            BufferedWriter bw = new BufferedWriter(fw);
-                            PrintWriter out = new PrintWriter(bw))
-                        {
-                            out.println("{");
-                            //more code
-                            Iterator<?> keysUpdate = layersJson.keys();
-                            while( keysUpdate.hasNext() ) {
-                                String key = (String)keysUpdate.next();
-                                JSONObject layerJSON = layersJson.getJSONObject( key );
-                                out.println("\""+ key+ "\":");
-                                
-                                String layerString = layerJSON.toString();
-                                if(keysUpdate.hasNext()){
-                                    layerString += ",";
-                                }
-                                out.println(layerString);
-                            }
-                            out.println("}");
-                            //more code
-                        } catch (IOException e) {
-                            log.error( "Error write new json file!" );
+                    if(hasChanges){
+                        File cpFile = new File(config_dir.concat("data/layers.json.") + Utils.getDateFlag());
+                        if(cpFile.exists()){
+                            cpFile.delete();
                         }
-                    }
-                } else {
-                  log.info( "No layer changes!" );
-                }
-                
-                String mailText = "";
-                
-                if(!errorUrls.isEmpty()){
-                    mailText += "************************\n";
-                    mailText += "Nicht erreichbare Dienste:\n";
-                    mailText += "************************\n";
-                    for (String errorUrl : errorUrls) {
-                        mailText += "- " + errorUrl + "\n";
-                    }
-                }
-                
-                if(!errorLayernames.isEmpty()){
-                    mailText += "************************\n";
-                    mailText += "Nicht vorhandene Karten:\n";
-                    mailText += "************************\n";
-                    for (String errorLayername : errorLayernames) {
-                        mailText += "- " + errorLayername + "\n";
-                    }
-                }
-                
-                String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
-                String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
-                String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
-                String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
-                String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
-                String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
-                boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
-                String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
-                
-                boolean sendMail = new Boolean (p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER_MAIL));
-                
-                if(!mailText.isEmpty()){
-                    if(sendMail){
-                        String subject = "Webmap Client: Fehlerhafte Dienste und Karten";
-                        Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
+                        File file = new File(config_dir.concat("data/layers.json"));
+                        file.renameTo( cpFile );
+                        Utils.cleanDirectory(file);
+                        file = new File(config_dir.concat("data/layers.json"));
+                        log.info( "Update file :" + file.getAbsoluteFile() );
+                        if(file != null){
+                            try(FileWriter fw = new FileWriter(file, true);
+                                BufferedWriter bw = new BufferedWriter(fw);
+                                PrintWriter out = new PrintWriter(bw))
+                            {
+                                out.println("{");
+                                //more code
+                                Iterator<?> keysUpdate = layersJson.keys();
+                                while( keysUpdate.hasNext() ) {
+                                    String key = (String)keysUpdate.next();
+                                    JSONObject layerJSON = layersJson.getJSONObject( key );
+                                    out.println("\""+ key+ "\":");
+                                    
+                                    String layerString = layerJSON.toString();
+                                    if(keysUpdate.hasNext()){
+                                        layerString += ",";
+                                    }
+                                    out.println(layerString);
+                                }
+                                out.println("}");
+                                //more code
+                            } catch (IOException e) {
+                                log.error( "Error write new json file!" );
+                            }
+                        }
                     } else {
-                        log.debug( "\n" + mailText );
+                      log.info( "No layer changes!" );
                     }
+                    
+                    String mailText = "";
+                    
+                    if(!errorUrls.isEmpty()){
+                        mailText += "************************\n";
+                        mailText += "Nicht erreichbare Dienste:\n";
+                        mailText += "************************\n";
+                        for (String errorUrl : errorUrls) {
+                            mailText += "- " + errorUrl + "\n";
+                        }
+                    }
+                    
+                    if(!errorLayernames.isEmpty()){
+                        mailText += "************************\n";
+                        mailText += "Nicht vorhandene Karten:\n";
+                        mailText += "************************\n";
+                        for (String errorLayername : errorLayernames) {
+                            mailText += "- " + errorLayername + "\n";
+                        }
+                    }
+                    
+                    String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
+                    String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
+                    String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
+                    String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
+                    String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
+                    String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
+                    boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
+                    String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
+                    
+                    boolean sendMail = new Boolean (p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER_MAIL));
+                    
+                    if(!mailText.isEmpty()){
+                        if(sendMail){
+                            String subject = "Webmap Client: Fehlerhafte Dienste und Karten";
+                            Utils.sendEmail( from, subject, new String[] { to }, mailText, null, host, port, user, password, ssl, protocol );
+                        } else {
+                            log.debug( "\n" + mailText );
+                        }
+                    }
+                } catch (JSONException e) {
+                    log.error( "Error generate layers JSON array!" );
                 }
-            } catch (JSONException e) {
-                log.error( "Error generate layers JSON array!" );
+               
             }
-           
         }
         log.info("Update WebMapClient capabilitities finished.");
     }

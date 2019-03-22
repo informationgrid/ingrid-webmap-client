@@ -36,6 +36,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -70,26 +71,25 @@ public class ConfigResource {
             classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
             String fileSetting = classPath + "frontend/";
             String fileContent = Utils.getFileContent(fileSetting, filename, ".json", "config/");
-            if(fileContent != null) {
+            if(StringUtils.isNotEmpty(fileContent)) {
                 setting = new JSONObject(fileContent);
             }
             
             filename = "setting.profile";
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
+            if(StringUtils.isNotEmpty(config_dir)) {
                 fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
-            }
-            
-            if(fileContent != null){
-                profileSetting = new JSONObject(fileContent);
-            }
-            if(setting != null && profileSetting != null) {
-                Iterator<?> keys = profileSetting.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (profileSetting.has(key)) {
-                        setting.put(key, profileSetting.get(key));
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    profileSetting = new JSONObject(fileContent);
+                    if(setting != null && profileSetting != null) {
+                        Iterator<?> keys = profileSetting.keys();
+                        while( keys.hasNext() ) {
+                            String key = (String)keys.next();
+                            if (profileSetting.has(key)) {
+                                setting.put(key, profileSetting.get(key));
+                            }
+                        }
                     }
                 }
             }
@@ -110,24 +110,24 @@ public class ConfigResource {
     public Response getCssRequest() {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
+        if(StringUtils.isNotEmpty(config_dir)) {
             String fileContent = Utils.getFileContent(config_dir, "app.profile", ".css", "css/");
-            if(fileContent == null) {
+            if(StringUtils.isEmpty(fileContent)) {
                 fileContent = Utils.getFileContent(config_dir, "app.override", ".css", "css/");
                 if(fileContent != null) {
                     Utils.updateFile("css/app.profile.css", fileContent);
                 }
             }
-            if(fileContent == null) {
+            if(StringUtils.isEmpty(fileContent)) {
                 String classPath = "";
                 classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
                 String fileSetting = classPath + "frontend/";
                 fileContent = Utils.getFileContent(fileSetting, "app.profile", ".css", "css/");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     Utils.updateFile("css/app.profile.css", fileContent);
                 }
             }
-            if(fileContent != null) {
+            if(StringUtils.isNotEmpty(fileContent)) {
                 return Response.ok( fileContent ).build();
             }
         }
@@ -146,13 +146,11 @@ public class ConfigResource {
             
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, filename, ".json", "data/");
-            }
-            
-            if(fileContent != null){
-                return Response.ok( fileContent ).build();
+            if(StringUtils.isNotEmpty(config_dir)) {
+                String fileContent = Utils.getFileContent(config_dir, filename, ".json", "data/");
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    return Response.ok( fileContent ).build();
+                }
             }
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -178,7 +176,7 @@ public class ConfigResource {
         // Get frontend locale
         fileLocalePath = classPath + "frontend/prd/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
-        if(fileContent != null) {
+        if(StringUtils.isNotEmpty(fileContent)) {
             JSONObject frontendLocale = new JSONObject(fileContent);
             if(frontendLocale != null) {
                 Iterator<?> keys = frontendLocale.keys();
@@ -193,7 +191,7 @@ public class ConfigResource {
         // Get admin locale
         fileLocalePath = classPath + "admin/assets/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "i18n/");
-        if(fileContent != null) {
+        if(StringUtils.isNotEmpty(fileContent)) {
             JSONObject frontendLocale = new JSONObject(fileContent);
             if(frontendLocale != null) {
                 Iterator<?> keys = frontendLocale.keys();
@@ -208,7 +206,7 @@ public class ConfigResource {
         // Get frontend override locale
         fileLocalePath = classPath + "frontend/";
         fileContent = Utils.getFileContent(fileLocalePath, locale, "", "locales/");
-        if(fileContent != null) {
+        if(StringUtils.isNotEmpty(fileContent)) {
             JSONObject frontendLocale = new JSONObject(fileContent);
             if(frontendLocale != null) {
                 Iterator<?> keys = frontendLocale.keys();
@@ -230,7 +228,7 @@ public class ConfigResource {
         // Get frontend override portal locale
         fileLocalePath = classPath + "frontend/";
         fileContent = Utils.getFileContent(fileLocalePath, "override." + locale, "", "locales/");
-        if(fileContent != null) {
+        if(StringUtils.isNotEmpty(fileContent)) {
             JSONObject frontendLocale = new JSONObject(fileContent);
             if(frontendLocale != null) {
                 Iterator<?> keys = frontendLocale.keys();
@@ -248,7 +246,7 @@ public class ConfigResource {
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             fileLocalePath = config_dir;
             fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
-            if(fileContent != null){
+            if(StringUtils.isNotEmpty(fileContent)) {
                 JSONObject profileLocale = new JSONObject(fileContent);
                 if(profileLocale != null) {
                     Iterator<?> keys = profileLocale.keys();

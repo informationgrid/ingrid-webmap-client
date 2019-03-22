@@ -51,6 +51,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,8 +105,8 @@ public class WmsResource {
     public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
         try {
             String response = null;
-            if(login != null) {
-                if(password == null) {
+            if(StringUtils.isNotEmpty(login)) {
+                if(StringUtils.isEmpty(password)) {
                     password = Utils.getServiceLogin(url, login);
                 }
             }
@@ -226,7 +227,7 @@ public class WmsResource {
         } catch (Exception e) {
             log.error( "Error transformation service", e );
         }
-        return null;
+        return "";
     }
     
     /**

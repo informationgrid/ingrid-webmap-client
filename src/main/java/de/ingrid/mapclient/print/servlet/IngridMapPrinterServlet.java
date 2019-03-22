@@ -38,6 +38,7 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.mapfish.print.MapPrinter;
@@ -107,7 +108,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         String content = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-        if(content != null) {
+        if(StringUtils.isNotEmpty(content)) {
             try {
                 if(configFile.exists()) {
                     File tmpFile = new File(config_dir + "config/print_config.yaml");

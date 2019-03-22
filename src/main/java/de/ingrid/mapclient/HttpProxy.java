@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+import org.apache.commons.lang.StringUtils;
+
 import de.ingrid.mapclient.utils.Utils;
 
 /**
@@ -77,7 +79,7 @@ public class HttpProxy {
             try {
                 URL url = new URL( urlStr );
                 URLConnection conn = url.openConnection();
-                if(login != null && password  != null) {
+                if(StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
                     Utils.urlConnectionAuth(conn, login, password);
                 }
                 is = new BufferedInputStream(conn.getInputStream());

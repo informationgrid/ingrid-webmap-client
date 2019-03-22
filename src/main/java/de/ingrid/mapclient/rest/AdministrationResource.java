@@ -42,6 +42,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
@@ -318,15 +319,14 @@ public class AdministrationResource {
             try {
                 category = new JSONObject(content);
                 String categoryId = category.getString("id");
-                String fileContent = null;
                 if(categoryId != null) {
                     Properties p = ConfigurationProvider.INSTANCE.getProperties();
                     String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                    if(config_dir != null){
-                        fileContent = Utils.getFileContent(config_dir, "catalog-" + copyId, ".json", "data/");
-                    }
-                    if(fileContent != null) {
-                        Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
+                    if(StringUtils.isNotEmpty(config_dir)) {
+                        String fileContent = Utils.getFileContent(config_dir, "catalog-" + copyId, ".json", "data/");
+                        if(StringUtils.isNotEmpty(fileContent)) {
+                            Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
+                        }
                     }
                 }
             } catch (JSONException e) {
@@ -423,92 +423,88 @@ public class AdministrationResource {
     public Response updateSetting(@RequestBody String content) {
         try {
             JSONObject setting = null;
-            JSONObject settingProfile = null;
+            JSONObject settingProfile = new JSONObject(content);
             String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
             String fileSetting = classPath + "frontend/";
             String fileContent = Utils.getFileContent(fileSetting, "setting", ".json", "config/");
-            if(fileContent != null) {
+            if(StringUtils.isNotEmpty(fileContent)) {
                 setting = new JSONObject(fileContent);
-            }
-            
-            if(setting != null) {
-                settingProfile = new JSONObject(content);
-                Iterator<?> keys = setting.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if (settingProfile.has(key)) {
-                        Object obj = setting.get(key);
-                        Object objProfile = settingProfile.get(key);
-                        if(obj instanceof String && objProfile instanceof String) {
-                            if(setting.getString(key).equals(settingProfile.getString(key))) {
-                                settingProfile.remove(key);
-                            }
-                        } else if(obj instanceof Boolean && objProfile instanceof Boolean) {
-                            if(setting.getBoolean(key) == settingProfile.getBoolean(key)) {
-                                settingProfile.remove(key);
-                            }
-                        } else if(obj instanceof Integer && objProfile instanceof Integer) {
-                            if(setting.getInt(key) == settingProfile.getInt(key)) {
-                                settingProfile.remove(key);
-                            }
-                        } else if(obj instanceof Double && objProfile instanceof Double) {
-                            if(setting.getDouble(key) == settingProfile.getDouble(key)) {
-                                settingProfile.remove(key);
-                            }
-                        } else if(obj instanceof Long && objProfile instanceof Long) {
-                            if(setting.getLong(key) == settingProfile.getLong(key)) {
-                                settingProfile.remove(key);
-                            }
-                        } else if (obj instanceof JSONArray) {
-                            JSONArray settingArr = setting.getJSONArray(key);
-                            JSONArray settingProfileArr = settingProfile.getJSONArray(key);
-                            if(settingArr != null && settingProfileArr != null) {
-                                boolean isSame = false;
-                                if (settingArr.length() == settingProfileArr.length()) {
-                                    isSame = true;
-                                    for (int i = 0; i < settingArr.length(); i++) {
-                                        Object arrayObj = settingArr.get(i);
-                                        Object arrayProfileObj = settingProfileArr.get(i);
-                                        if(arrayObj instanceof String && arrayProfileObj instanceof String) {
-                                            if(!settingArr.getString(i).equals(settingProfileArr.getString(i))) {
+                if(setting != null) {
+                    Iterator<?> keys = setting.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        if (settingProfile.has(key)) {
+                            Object obj = setting.get(key);
+                            Object objProfile = settingProfile.get(key);
+                            if(obj instanceof String && objProfile instanceof String) {
+                                if(setting.getString(key).equals(settingProfile.getString(key))) {
+                                    settingProfile.remove(key);
+                                }
+                            } else if(obj instanceof Boolean && objProfile instanceof Boolean) {
+                                if(setting.getBoolean(key) == settingProfile.getBoolean(key)) {
+                                    settingProfile.remove(key);
+                                }
+                            } else if(obj instanceof Integer && objProfile instanceof Integer) {
+                                if(setting.getInt(key) == settingProfile.getInt(key)) {
+                                    settingProfile.remove(key);
+                                }
+                            } else if(obj instanceof Double && objProfile instanceof Double) {
+                                if(setting.getDouble(key) == settingProfile.getDouble(key)) {
+                                    settingProfile.remove(key);
+                                }
+                            } else if(obj instanceof Long && objProfile instanceof Long) {
+                                if(setting.getLong(key) == settingProfile.getLong(key)) {
+                                    settingProfile.remove(key);
+                                }
+                            } else if (obj instanceof JSONArray) {
+                                JSONArray settingArr = setting.getJSONArray(key);
+                                JSONArray settingProfileArr = settingProfile.getJSONArray(key);
+                                if(settingArr != null && settingProfileArr != null) {
+                                    boolean isSame = false;
+                                    if (settingArr.length() == settingProfileArr.length()) {
+                                        isSame = true;
+                                        for (int i = 0; i < settingArr.length(); i++) {
+                                            Object arrayObj = settingArr.get(i);
+                                            Object arrayProfileObj = settingProfileArr.get(i);
+                                            if(arrayObj instanceof String && arrayProfileObj instanceof String) {
+                                                if(!settingArr.getString(i).equals(settingProfileArr.getString(i))) {
+                                                    isSame = false;
+                                                    break;
+                                                }
+                                            } else if(arrayObj instanceof Boolean && arrayProfileObj instanceof Boolean) {
+                                                if(settingArr.getBoolean(i) != settingProfileArr.getBoolean(i)) {
+                                                    isSame = false;
+                                                    break;
+                                                }
+                                            } else if(arrayObj instanceof Integer && arrayProfileObj instanceof Integer) {
+                                                if(settingArr.getInt(i) != settingProfileArr.getInt(i)) {
+                                                    isSame = false;
+                                                    break;
+                                                }
+                                            } else if(arrayObj instanceof Double && arrayProfileObj instanceof Double) {
+                                                if(settingArr.getDouble(i) != settingProfileArr.getDouble(i)) {
+                                                    isSame = false;
+                                                    break;
+                                                }
+                                            } else if(arrayObj instanceof Long && arrayProfileObj instanceof Long) {
+                                                if(settingArr.getLong(i) != settingProfileArr.getLong(i)) {
+                                                    isSame = false;
+                                                    break;
+                                                }
+                                            } else if(arrayObj.getClass() != arrayProfileObj.getClass()) {
                                                 isSame = false;
                                                 break;
                                             }
-                                        } else if(arrayObj instanceof Boolean && arrayProfileObj instanceof Boolean) {
-                                            if(settingArr.getBoolean(i) != settingProfileArr.getBoolean(i)) {
-                                                isSame = false;
-                                                break;
-                                            }
-                                        } else if(arrayObj instanceof Integer && arrayProfileObj instanceof Integer) {
-                                            if(settingArr.getInt(i) != settingProfileArr.getInt(i)) {
-                                                isSame = false;
-                                                break;
-                                            }
-                                        } else if(arrayObj instanceof Double && arrayProfileObj instanceof Double) {
-                                            if(settingArr.getDouble(i) != settingProfileArr.getDouble(i)) {
-                                                isSame = false;
-                                                break;
-                                            }
-                                        } else if(arrayObj instanceof Long && arrayProfileObj instanceof Long) {
-                                            if(settingArr.getLong(i) != settingProfileArr.getLong(i)) {
-                                                isSame = false;
-                                                break;
-                                            }
-                                        } else if(arrayObj.getClass() != arrayProfileObj.getClass()) {
-                                            isSame = false;
-                                            break;
                                         }
                                     }
-                                }
-                                if(isSame) {
-                                    settingProfile.remove(key);
+                                    if(isSame) {
+                                        settingProfile.remove(key);
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            } else {
-                settingProfile = new JSONObject(content);
             }
             updateSetting(settingProfile);
             if(settingProfile.has("settingLanguages")) {
@@ -589,31 +585,30 @@ public class AdministrationResource {
                 classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
                 String filePathHelp = classPath + "frontend/";
                 String fileContent = Utils.getFileContent(filePathHelp, filename, ".json", "help/");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     help = new JSONObject(fileContent);
                 }
                 
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
+                if(StringUtils.isNotEmpty(config_dir)) {
                     fileContent = Utils.getFileContent(config_dir, filename + ".profile", ".json", "help/");
-                    if(fileContent == null) {
+                    if(StringUtils.isEmpty(fileContent)) {
                         fileContent = Utils.getFileContent(filePathHelp, filename + ".profile", ".json", "help/");
-                        if(fileContent != null) {
+                        if(StringUtils.isNotEmpty(fileContent)) {
                             Utils.updateFile("help/"+ filename + ".profile.json", fileContent);
                         }
                     }
-                    if(fileContent != null){
+                    if(StringUtils.isNotEmpty(fileContent)) {
                         profileHelp = new JSONObject(fileContent);
-                    }
-                }
-                
-                if(help != null && profileHelp != null) {
-                    Iterator<?> keys = profileHelp.keys();
-                    while( keys.hasNext() ) {
-                        String key = (String)keys.next();
-                        if (profileHelp.has(key)) {
-                            help.put(key, profileHelp.get(key));
+                        if(help != null && profileHelp != null) {
+                            Iterator<?> keys = profileHelp.keys();
+                            while( keys.hasNext() ) {
+                                String key = (String)keys.next();
+                                if (profileHelp.has(key)) {
+                                    help.put(key, profileHelp.get(key));
+                                }
+                            }
                         }
                     }
                 }
@@ -637,7 +632,7 @@ public class AdministrationResource {
                 }
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(config_dir != null){
+                if(StringUtils.isNotEmpty(config_dir)) {
                     Response helps = this.getHelpRequest(lang);
                     if(helps != null) {
                         if(helps.getEntity() != null) {
@@ -682,7 +677,7 @@ public class AdministrationResource {
     public Response updateHelpRequest(@RequestBody String content, @PathParam("lang") String lang) {
         if(content != null) {
             String fileContent = updateHelp(lang, content);
-            if(fileContent != null) {
+            if(StringUtils.isNotEmpty(fileContent)) {
                 return Response.status( Response.Status.OK ).build();
             }
         }
@@ -695,7 +690,7 @@ public class AdministrationResource {
     public Response resetHelpRequest(@PathParam("lang") String lang, @PathParam("id") String id) {
         if(lang != null && id != null) {
             String fileContent = resetHelp(lang, id);
-            if(fileContent != null) {
+            if(StringUtils.isNotEmpty(fileContent)) {
                 return this.getHelpRequest(lang);
             }
         }
@@ -748,10 +743,10 @@ public class AdministrationResource {
                     overrideLogin = obj.getBoolean("overrideLogin");
                 }
             }
-            if(login != null && password != null) {
+            if(StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
                 try {
                     String existPassword = Utils.getServiceLogin(url, login);
-                    if(existPassword == null || overrideLogin) {
+                    if(StringUtils.isEmpty(existPassword) || overrideLogin) {
                         Utils.setServiceLogin(url, login, password);
                     }
                 } catch (Exception e) {
@@ -769,40 +764,42 @@ public class AdministrationResource {
         JSONObject localeProfile = null;
         JSONObject localeDefault = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
-        if(fileContent != null) {
-            localeProfile = new JSONObject(fileContent);
-        }
-        ConfigResource cr = new ConfigResource();
-        Response localeResponse = cr.getLocales(lang+ ".json", true);
-        if(localeResponse != null) {
-            localeDefault = new JSONObject(localeResponse.getEntity().toString());
-        }
-        
         JSONObject item = new JSONObject(content);
-        if(item != null && localeProfile != null) {
-            Iterator<?> keys = item.keys();
-            while( keys.hasNext() ) {
-                String key = (String)keys.next();
-                if (item.has(key)) {
-                    String value = item.getString(key);
-                    String valueDefault = "";
-                    if(localeDefault != null) {
-                        if(localeDefault.has(key)) {
-                            valueDefault = localeDefault.getString(key);
+        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                localeProfile = new JSONObject(fileContent);
+                ConfigResource cr = new ConfigResource();
+                Response localeResponse = cr.getLocales(lang+ ".json", true);
+                if(localeResponse != null) {
+                    localeDefault = new JSONObject(localeResponse.getEntity().toString());
+                }
+                
+                if(item != null && localeProfile != null) {
+                    Iterator<?> keys = item.keys();
+                    while( keys.hasNext() ) {
+                        String key = (String)keys.next();
+                        if (item.has(key)) {
+                            String value = item.getString(key);
+                            String valueDefault = "";
+                            if(localeDefault != null) {
+                                if(localeDefault.has(key)) {
+                                    valueDefault = localeDefault.getString(key);
+                                }
+                            }
+                            if(value.trim().equals(valueDefault.trim())) {
+                                localeProfile.remove(key);
+                            } else {
+                                localeProfile.put(key, item.get(key));
+                            }
                         }
                     }
-                    if(value.trim().equals(valueDefault.trim())) {
-                        localeProfile.remove(key);
-                    } else {
-                        localeProfile.put(key, item.get(key));
-                    }
+                    Utils.updateFile("locales/" + lang + ".profile.json", localeProfile);
                 }
+            } else if(item != null) {
+                Utils.updateFile("locales/" + lang + ".profile.json", item);
             }
-            Utils.updateFile("locales/" + lang + ".profile.json", localeProfile);
-        } else if(item != null) {
-            Utils.updateFile("locales/" + lang + ".profile.json", item);
         }
     }
 
@@ -810,39 +807,42 @@ public class AdministrationResource {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = Utils.getFileContent(config_dir, lang, ".profile.json", "locales/");
-        if(fileContent != null) {
-            locale = new JSONObject(fileContent);
-        }
-        if(locale != null) {
-            for (String key : keys) {
-                if(locale.has(key)) {
-                    locale.remove(key);
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, lang, ".profile.json", "locales/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                locale = new JSONObject(fileContent);
+                if(locale != null) {
+                    for (String key : keys) {
+                        if(locale.has(key)) {
+                            locale.remove(key);
+                        }
+                    }
+                    Utils.updateFile("locales/" + lang + ".profile.json", locale);
                 }
             }
-            Utils.updateFile("locales/" + lang + ".profile.json", locale);
         }
     }
 
     private JSONArray updateCategoryTree(String id, JSONArray item) {
+        JSONArray arr = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
-        }
-        JSONArray arr = null;
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            arr = new JSONArray();
-            JSONObject results = obj.getJSONObject("results");
-            JSONObject root = results.getJSONObject("root");
-            root.put("children", item);
-            cleanupCategory(item);
-            Utils.updateFile("data/catalog-" + id + ".json", obj);
-            return item;
-        } catch (Exception e) {
-            log.error("Error 'updateCategoryTree'!");
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    arr = new JSONArray();
+                    JSONObject results = obj.getJSONObject("results");
+                    JSONObject root = results.getJSONObject("root");
+                    root.put("children", item);
+                    cleanupCategory(item);
+                    Utils.updateFile("data/catalog-" + id + ".json", obj);
+                    return item;
+                } catch (Exception e) {
+                    log.error("Error 'updateCategoryTree'!");
+                }
+            }
         }
         return arr;
     }
@@ -872,7 +872,7 @@ public class AdministrationResource {
         } catch (Exception e) {
             log.error("Error 'updateSetting'!");
         }
-        return null;
+        return new JSONObject();
     }
     
     private String updateCss(String content) {
@@ -892,7 +892,7 @@ public class AdministrationResource {
             if(classPath != null) {
                 String filePathHelp = classPath + "frontend/";
                 String fileContent = Utils.getFileContent(filePathHelp, "help-" + lang, ".json", "help/");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     help = new JSONObject(fileContent);
                 }
             }
@@ -920,16 +920,16 @@ public class AdministrationResource {
         } catch (Exception e) {
             log.error("Error write profile help: " + e);
         }
-        return null;
+        return "";
     }
 
     private String resetHelp(String lang, String id) {
         try {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(config_dir != null){
+            if(StringUtils.isNotEmpty(config_dir)) {
                 String fileContent = Utils.getFileContent(config_dir, "help-" + lang + ".profile", ".json", "help/");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     JSONObject profileHelp = new JSONObject(fileContent);
                     if(profileHelp != null) {
                         if(profileHelp.has(id)) {
@@ -944,7 +944,7 @@ public class AdministrationResource {
             log.error("Error reset help: " + e);
         }
         
-        return null;
+        return "";
     }
     
     private JSONArray getLayers(String id) {
@@ -952,48 +952,48 @@ public class AdministrationResource {
     }
     
     private JSONArray getLayers(String id, boolean compress) {
+        JSONArray arr = new JSONArray();
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-        }
-        JSONArray arr = null;
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            arr = new JSONArray();
-            if (id != null) {
-                JSONObject tmpObj = new JSONObject();
-                tmpObj.put("id", id);
-                tmpObj.put("item", obj.get(id));
-                arr.put(tmpObj);
-            } else {
-                Iterator<?> keys = obj.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if ( obj.get(key) instanceof JSONObject ) {
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    if (id != null) {
                         JSONObject tmpObj = new JSONObject();
-                        tmpObj.put("id", key);
-                        if(compress) {
-                            JSONObject item = obj.getJSONObject(key);
-                            JSONObject itemCompress = new JSONObject();
-                            itemCompress.put("id", key);
-                            if(item.has("label")) {
-                                itemCompress.put("label", item.get("label"));
-                            }
-                            if(item.has("background")) {
-                                itemCompress.put("background", item.get("background"));
-                            }
-                            tmpObj.put("item", itemCompress);
-                        } else {
-                            tmpObj.put("item", obj.get(key));
-                        }
+                        tmpObj.put("id", id);
+                        tmpObj.put("item", obj.get(id));
                         arr.put(tmpObj);
+                    } else {
+                        Iterator<?> keys = obj.keys();
+                        while( keys.hasNext() ) {
+                            String key = (String)keys.next();
+                            if ( obj.get(key) instanceof JSONObject ) {
+                                JSONObject tmpObj = new JSONObject();
+                                tmpObj.put("id", key);
+                                if(compress) {
+                                    JSONObject item = obj.getJSONObject(key);
+                                    JSONObject itemCompress = new JSONObject();
+                                    itemCompress.put("id", key);
+                                    if(item.has("label")) {
+                                        itemCompress.put("label", item.get("label"));
+                                    }
+                                    if(item.has("background")) {
+                                        itemCompress.put("background", item.get("background"));
+                                    }
+                                    tmpObj.put("item", itemCompress);
+                                } else {
+                                    tmpObj.put("item", obj.get(key));
+                                }
+                                arr.put(tmpObj);
+                            }
+                        };
                     }
-                };
+                } catch (JSONException e) {
+                    log.error("Error 'getLayers'!");
+                }
             }
-        } catch (JSONException e) {
-            log.error("Error 'getLayers'!");
         }
         return arr;
     }
@@ -1002,32 +1002,33 @@ public class AdministrationResource {
         if(layers != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-            }
-            try {
-                JSONObject newObj = new JSONObject();
-                JSONObject obj = new JSONObject(fileContent);
-                for (int i = 0; i < layers.length(); i++) {
-                    JSONObject tmpObj = layers.getJSONObject(i);
-                    String id = tmpObj.getString("id");
-                    if(obj.has(id)) {
-                        id = generateID(obj, id);
-                    }
-                    JSONObject tmpItem = tmpObj.getJSONObject("item");
-                    if(tmpItem.has("wmsLayers") || tmpItem.has("serverLayerName")) {
-                        newObj.put(id, tmpItem);
+            if(StringUtils.isNotEmpty(config_dir)) {
+                String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    try {
+                        JSONObject newObj = new JSONObject();
+                        JSONObject obj = new JSONObject(fileContent);
+                        for (int i = 0; i < layers.length(); i++) {
+                            JSONObject tmpObj = layers.getJSONObject(i);
+                            String id = tmpObj.getString("id");
+                            if(obj.has(id)) {
+                                id = generateID(obj, id);
+                            }
+                            JSONObject tmpItem = tmpObj.getJSONObject("item");
+                            if(tmpItem.has("wmsLayers") || tmpItem.has("serverLayerName")) {
+                                newObj.put(id, tmpItem);
+                            }
+                        }
+                        Iterator<?> keys = obj.keys();
+                        while( keys.hasNext() ) {
+                            String key = (String)keys.next();
+                            newObj.put(key, obj.getJSONObject(key));
+                        }
+                        Utils.updateFile("data/layers.json", newObj);
+                    } catch (JSONException e) {
+                        log.error("Error 'updateLayer'!");
                     }
                 }
-                Iterator<?> keys = obj.keys();
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    newObj.put(key, obj.getJSONObject(key));
-                }
-                Utils.updateFile("data/layers.json", newObj);
-            } catch (JSONException e) {
-                log.error("Error 'updateLayer'!");
             }
         }
         return getLayers(null);
@@ -1179,92 +1180,93 @@ public class AdministrationResource {
         if(id != null && layer != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
-                JSONObject layerItem = layer.getJSONObject("item");
-                if(layerItem.has(Constants.LAYER_STATUS)) {
-                    String status = layerItem.getString(Constants.LAYER_STATUS);
-                    String version = null;
-                    if(layerItem.has(Constants.LAYER_VERSION)) {
-                        version = layerItem.getString(Constants.LAYER_VERSION);
-                    }
-                    String layername = null;
-                    if(layerItem.has(Constants.WMS_LAYERNAME)) {
-                        layername = layerItem.getString(Constants.WMS_LAYERNAME);
-                    }
-                    if(layerItem.has(Constants.WMTS_LAYERNAME)) {
-                        layername = layerItem.getString(Constants.WMTS_LAYERNAME);
-                    }
-                    String url = null;
-                    if(layerItem.has(Constants.WMS_URL)) {
-                        url = layerItem.getString(Constants.WMS_URL);
-                        if(url.toLowerCase().indexOf( "?" ) == -1){
-                            url += "?";
-                        }
-                        if(url.toLowerCase().indexOf( "service=" )  == -1){
-                            url += "&SERVICE=WMS";
-                        }
-                        if(url.toLowerCase().indexOf( "request=" )  == -1){
-                            url += "&REQUEST=GetCapabilities";
-                        }
-                        if(url.toLowerCase().indexOf( "version=" )  == -1){
-                            if(version == null) {
-                                url += "&VERSION=1.3.0";
-                            } else {
-                                url += "&VERSION=" + version;
+            if(StringUtils.isNotEmpty(config_dir)) {
+                String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    try {
+                        JSONObject obj = new JSONObject(fileContent);
+                        JSONObject layerItem = layer.getJSONObject("item");
+                        if(layerItem.has(Constants.LAYER_STATUS)) {
+                            String status = layerItem.getString(Constants.LAYER_STATUS);
+                            String version = null;
+                            if(layerItem.has(Constants.LAYER_VERSION)) {
+                                version = layerItem.getString(Constants.LAYER_VERSION);
                             }
-                        }
-                    }
-                    if(layerItem.has(Constants.WMTS_URL)) {
-                        url = layerItem.getString(Constants.WMTS_URL);
-                    }
-                    if(status != null && layername != null && url != null) {
-                        try {
-                            String getCapabilities = HttpProxy.doRequest( url );
-                            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                            docFactory.setValidating(false);
-                            Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                            XPath xpath = XPathFactory.newInstance().newXPath();
-                            Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
-                            if(layerNode == null) {
-                                layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                            String layername = null;
+                            if(layerItem.has(Constants.WMS_LAYERNAME)) {
+                                layername = layerItem.getString(Constants.WMS_LAYERNAME);
                             }
-                            switch (status) {
-                            case Constants.STATUS_LAYER_NOT_EXIST:
-                                if(layerNode != null) {
-                                    layerItem.remove(Constants.LAYER_STATUS);
+                            if(layerItem.has(Constants.WMTS_LAYERNAME)) {
+                                layername = layerItem.getString(Constants.WMTS_LAYERNAME);
+                            }
+                            String url = null;
+                            if(layerItem.has(Constants.WMS_URL)) {
+                                url = layerItem.getString(Constants.WMS_URL);
+                                if(url.toLowerCase().indexOf( "?" ) == -1){
+                                    url += "?";
                                 }
-                                break;
-                            case Constants.STATUS_SERVICE_NOT_EXIST:
-                                if(layerNode != null) {
-                                    layerItem.remove(Constants.LAYER_STATUS);
+                                if(url.toLowerCase().indexOf( "service=" )  == -1){
+                                    url += "&SERVICE=WMS";
                                 }
-                                break;
-                            default:
-                                break;
+                                if(url.toLowerCase().indexOf( "request=" )  == -1){
+                                    url += "&REQUEST=GetCapabilities";
+                                }
+                                if(url.toLowerCase().indexOf( "version=" )  == -1){
+                                    if(version == null) {
+                                        url += "&VERSION=1.3.0";
+                                    } else {
+                                        url += "&VERSION=" + version;
+                                    }
+                                }
                             }
-                        } catch (Exception e) {
-                           layerItem.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                            if(layerItem.has(Constants.WMTS_URL)) {
+                                url = layerItem.getString(Constants.WMTS_URL);
+                            }
+                            if(status != null && layername != null && url != null) {
+                                try {
+                                    String getCapabilities = HttpProxy.doRequest( url );
+                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                    docFactory.setValidating(false);
+                                    Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                    XPath xpath = XPathFactory.newInstance().newXPath();
+                                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                                    if(layerNode == null) {
+                                        layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                                    }
+                                    switch (status) {
+                                    case Constants.STATUS_LAYER_NOT_EXIST:
+                                        if(layerNode != null) {
+                                            layerItem.remove(Constants.LAYER_STATUS);
+                                        }
+                                        break;
+                                    case Constants.STATUS_SERVICE_NOT_EXIST:
+                                        if(layerNode != null) {
+                                            layerItem.remove(Constants.LAYER_STATUS);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                } catch (Exception e) {
+                                   layerItem.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                }
+                            }
                         }
+                        String newId = layer.getString("id");
+                        if(newId != null  && id.equals(newId)) {
+                            obj.put(id, layerItem);
+                        } else {
+                            // TODO: Update catalog files.
+                            String newObj = obj.toString();
+                            newObj = newObj.replaceAll(id, newId);
+                            obj = new JSONObject(newObj);
+                            obj.put(newId, layerItem);
+                        }
+                        Utils.updateFile("data/layers.json", obj);
+                    } catch (JSONException e) {
+                        log.error("Error 'updateLayer'!");
                     }
                 }
-                String newId = layer.getString("id");
-                if(newId != null  && id.equals(newId)) {
-                    obj.put(id, layerItem);
-                } else {
-                    // TODO: Update catalog files.
-                    String newObj = obj.toString();
-                    newObj = newObj.replaceAll(id, newId);
-                    obj = new JSONObject(newObj);
-                    obj.put(newId, layerItem);
-                }
-                Utils.updateFile("data/layers.json", obj);
-            } catch (JSONException e) {
-                log.error("Error 'updateLayer'!");
             }
         }
         return layer;
@@ -1277,25 +1279,26 @@ public class AdministrationResource {
     private JSONArray deleteLayers(String[] ids) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
-        }
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            if(ids != null) {
-                for (String id : ids) {
-                    if(id != null && id.length() > 0) {
-                        obj.remove(id);
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    if(ids != null) {
+                        for (String id : ids) {
+                            if(id != null && id.length() > 0) {
+                                obj.remove(id);
+                            }
+                        }
+                    }else {
+                        obj = new JSONObject();
                     }
+                    removeLayersFromCategories(ids);
+                    Utils.updateFile("data/layers.json", obj);
+                } catch (JSONException e) {
+                    log.error("Error 'deleteLayer'!");
                 }
-            }else {
-                obj = new JSONObject();
             }
-            removeLayersFromCategories(ids);
-            Utils.updateFile("data/layers.json", obj);
-        } catch (JSONException e) {
-            log.error("Error 'deleteLayer'!");
         }
         return getLayers(null, true);
     }
@@ -1364,18 +1367,19 @@ public class AdministrationResource {
     }
 
     private JSONArray getCategories() {
+        JSONArray arr = new JSONArray();
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-        }
-        JSONArray arr = new JSONArray();
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            return obj.getJSONArray("topics");
-        } catch (JSONException e) {
-            log.error("Error 'getCategories'!");
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    return obj.getJSONArray("topics");
+                } catch (JSONException e) {
+                    log.error("Error 'getCategories'!");
+                }
+            }
         }
         return arr;
     }
@@ -1383,26 +1387,27 @@ public class AdministrationResource {
     private JSONArray addCategory(JSONObject catelog) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-        }
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            JSONObject rootItem = new JSONObject();
-            rootItem.put("category", "root");
-            rootItem.put("staging", "prod");
-            rootItem.put("id", 1);
-            rootItem.put("children", new JSONArray());
-            JSONObject root = new JSONObject();
-            root.put("root", rootItem);
-            JSONObject results = new JSONObject();
-            results.put("results", root);
-            Utils.createFile("data/catalog-" + catelog.getString("id") + ".json", results);
-            obj.getJSONArray("topics").put(catelog);
-            Utils.updateFile("data/catalogs.json", obj);
-        } catch (JSONException e) {
-            log.error("Error 'addCategory'!");
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    JSONObject rootItem = new JSONObject();
+                    rootItem.put("category", "root");
+                    rootItem.put("staging", "prod");
+                    rootItem.put("id", 1);
+                    rootItem.put("children", new JSONArray());
+                    JSONObject root = new JSONObject();
+                    root.put("root", rootItem);
+                    JSONObject results = new JSONObject();
+                    results.put("results", root);
+                    Utils.createFile("data/catalog-" + catelog.getString("id") + ".json", results);
+                    obj.getJSONArray("topics").put(catelog);
+                    Utils.updateFile("data/catalogs.json", obj);
+                } catch (JSONException e) {
+                    log.error("Error 'addCategory'!");
+                }
+            }
         }
         return getCategories();
     }
@@ -1411,23 +1416,24 @@ public class AdministrationResource {
         if(id != null && item != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
-                JSONArray topics = obj.getJSONArray("topics");
-                for (int i = 0; i < topics.length(); i++) {
-                    JSONObject tmpObj = topics.getJSONObject(i);
-                    if(tmpObj.getString("id").equals(id)) {
-                        topics.put(i, item);
-                        break;
+            if(StringUtils.isNotEmpty(config_dir)) {
+                String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    try {
+                        JSONObject obj = new JSONObject(fileContent);
+                        JSONArray topics = obj.getJSONArray("topics");
+                        for (int i = 0; i < topics.length(); i++) {
+                            JSONObject tmpObj = topics.getJSONObject(i);
+                            if(tmpObj.getString("id").equals(id)) {
+                                topics.put(i, item);
+                                break;
+                            }
+                        }
+                        Utils.updateFile("data/catalogs.json", obj);
+                    } catch (JSONException e) {
+                        log.error("Error 'updateCategory'!");
                     }
                 }
-                Utils.updateFile("data/catalogs.json", obj);
-            } catch (JSONException e) {
-                log.error("Error 'updateCategory'!");
             }
         }
         return getCategories();
@@ -1437,26 +1443,27 @@ public class AdministrationResource {
         if(id != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            String fileContent = null;
-            if(config_dir != null){
-                fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-            }
-            try {
-                JSONObject obj = new JSONObject(fileContent);
-                JSONArray topics = obj.getJSONArray("topics");
-                JSONArray newTopics = new JSONArray();
-                for (int i = 0; i < topics.length(); i++) {
-                    JSONObject tmpObj = topics.getJSONObject(i);
-                    if(!tmpObj.getString("id").equals(id)) {
-                        newTopics.put(tmpObj);
+            if(StringUtils.isNotEmpty(config_dir)) {
+                String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+                if(StringUtils.isNotEmpty(fileContent)) {
+                    try {
+                        JSONObject obj = new JSONObject(fileContent);
+                        JSONArray topics = obj.getJSONArray("topics");
+                        JSONArray newTopics = new JSONArray();
+                        for (int i = 0; i < topics.length(); i++) {
+                            JSONObject tmpObj = topics.getJSONObject(i);
+                            if(!tmpObj.getString("id").equals(id)) {
+                                newTopics.put(tmpObj);
+                            }
+                        }
+                        obj.put("topics", newTopics);
+                        Utils.removeFile("data/catalog-" + id +".json");
+                        Utils.updateFile("data/catalogs.json", obj);
+                        deleteCategoriesLocales(id);
+                    } catch (JSONException e) {
+                        log.error("Error 'deleteCategory'!");
                     }
                 }
-                obj.put("topics", newTopics);
-                Utils.removeFile("data/catalog-" + id +".json");
-                Utils.updateFile("data/catalogs.json", obj);
-                deleteCategoriesLocales(id);
-            } catch (JSONException e) {
-                log.error("Error 'deleteCategory'!");
             }
         }
         return getCategories();
@@ -1478,42 +1485,43 @@ public class AdministrationResource {
     private JSONArray deleteCategories(String[] ids) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
-        }
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            JSONArray topics = obj.getJSONArray("topics");
-            JSONArray newTopics = new JSONArray();
-            for (int i = 0; i < topics.length(); i++) {
-                JSONObject tmpObj = topics.getJSONObject(i);
-                boolean toDelete = false;
-                if(ids != null) {
-                    for (String id : ids) {
-                        if(id != null && id.length() > 0) {
-                            if(tmpObj.getString("id").equals(id)) {
-                                Utils.removeFile("data/catalog-" + id +".json");
-                                deleteCategoriesLocales(id);
-                                toDelete = true;
-                                break;
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    JSONArray topics = obj.getJSONArray("topics");
+                    JSONArray newTopics = new JSONArray();
+                    for (int i = 0; i < topics.length(); i++) {
+                        JSONObject tmpObj = topics.getJSONObject(i);
+                        boolean toDelete = false;
+                        if(ids != null) {
+                            for (String id : ids) {
+                                if(id != null && id.length() > 0) {
+                                    if(tmpObj.getString("id").equals(id)) {
+                                        Utils.removeFile("data/catalog-" + id +".json");
+                                        deleteCategoriesLocales(id);
+                                        toDelete = true;
+                                        break;
+                                    }
+                                }
                             }
+                        } else {
+                            String id = tmpObj.getString("id");
+                            Utils.removeFile("data/catalog-" + id +".json");
+                            deleteCategoriesLocales(id);
+                            toDelete = true;
+                        }
+                        if(!toDelete) {
+                            newTopics.put(tmpObj);
                         }
                     }
-                } else {
-                    String id = tmpObj.getString("id");
-                    Utils.removeFile("data/catalog-" + id +".json");
-                    deleteCategoriesLocales(id);
-                    toDelete = true;
-                }
-                if(!toDelete) {
-                    newTopics.put(tmpObj);
+                    obj.put("topics", newTopics);
+                    Utils.updateFile("data/catalogs.json", obj);
+                } catch (JSONException e) {
+                    log.error("Error 'deleteLayer'!");
                 }
             }
-            obj.put("topics", newTopics);
-            Utils.updateFile("data/catalogs.json", obj);
-        } catch (JSONException e) {
-            log.error("Error 'deleteLayer'!");
         }
         return getCategories();
     }
@@ -1521,20 +1529,20 @@ public class AdministrationResource {
     private JSONArray getCategoryTree(String id) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String fileContent = null;
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
+        if(StringUtils.isNotEmpty(config_dir)) {
+            String fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                try {
+                    JSONObject obj = new JSONObject(fileContent);
+                    JSONObject results = obj.getJSONObject("results");
+                    JSONObject root = results.getJSONObject("root");
+                    return root.getJSONArray("children");
+                } catch (JSONException e) {
+                    log.error("Error 'getCategoryTree'!");
+                }
+            }
         }
-        JSONArray arr = new JSONArray();
-        try {
-            JSONObject obj = new JSONObject(fileContent);
-            JSONObject results = obj.getJSONObject("results");
-            JSONObject root = results.getJSONObject("root");
-            return root.getJSONArray("children");
-        } catch (JSONException e) {
-            log.error("Error 'getCategoryTree'!");
-        }
-        return arr;
+        return new JSONArray();
     }
 
     private void filteredTreeLeafById(JSONArray categoryTree, String id, JSONArray filterCategoryTree, boolean isExpanded) {

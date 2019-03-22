@@ -33,6 +33,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import de.ingrid.mapclient.HttpProxy;
@@ -86,7 +87,7 @@ public class Proj4sResource {
 
         String response = null;
         response = getLocalProjDef( code );
-        if (response != null) {
+        if(StringUtils.isNotEmpty(response)) {
             return response;
         }
         if (log.isDebugEnabled()) {
@@ -117,10 +118,10 @@ public class Proj4sResource {
             try {
                 return Utils.readFileAsString( codeFile );
             } catch (Exception e) {
-                return null;
+                return "";
             }
         } else {
-            return null;
+            return "";
         }
     }
 }
