@@ -107,13 +107,13 @@ public class FileResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateFileRequest(@PathParam("id") String id, String content, @QueryParam("adminId") String mapUserId) throws IOException {
         // New file
-        id = createKMLFile( content, mapUserId);
-        if(StringUtils.isNotEmpty(id)){
+        String fileId = createKMLFile( content, mapUserId);
+        if(StringUtils.isNotEmpty(fileId)){
             String adminId = "";
             if(StringUtils.isNotEmpty(mapUserId)){
                 adminId += mapUserId + "/";
             }
-            adminId += id;
+            adminId += fileId;
            
             String json = "{\"adminId\":\"" + adminId + "\", \"fileId\":\"" + adminId + "\"}";
             return Response.ok( json ).build();
@@ -128,33 +128,33 @@ public class FileResource {
     public Response updateFileRequest(@PathParam("id") String id, @PathParam("user") String user, String content, @QueryParam("adminId") String mapUserId) throws IOException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/" ).trim();
-        
+        String fileId = id;
         if(!path.endsWith( "/")){
             path += "/";
         }
         
         if(mapUserId != null && mapUserId.length() > 0){
             String filepath = path + "" + mapUserId;
-            if (id != null && id.length() > 0) {
+            if (fileId != null && fileId.length() > 0) {
                 if(mapUserId.equals(user)){
                     // Update file
-                    File file = new File( filepath, id );
+                    File file = new File( filepath, fileId );
                     Utils.writeFileContent(file, content);
                 }else{
                     // New file
-                    id = createKMLFile( content, mapUserId);
+                    fileId = createKMLFile( content, mapUserId);
                 }
             }
         }else{
             // New file
-            id = createKMLFile( content, mapUserId);
+            fileId = createKMLFile( content, mapUserId);
         }
-        if(id != null && id.length() > 0){
+        if(fileId != null && fileId.length() > 0){
             String adminId = "";
             if(mapUserId != null){
                 adminId += mapUserId + "/";
             }
-            adminId += id;
+            adminId += fileId;
             
             String json = "{\"adminId\":\"" + adminId + "\", \"fileId\":\"" + adminId + "\"}";
             return Response.ok( json ).build();

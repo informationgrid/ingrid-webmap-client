@@ -914,8 +914,8 @@ public class AdministrationResource {
                         }
                     }
                 }
+                Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
             }
-            Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
             return content;
         } catch (Exception e) {
             log.error("Error write profile help: " + e);
