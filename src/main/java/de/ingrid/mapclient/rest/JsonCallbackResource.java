@@ -77,10 +77,8 @@ public class JsonCallbackResource {
         encoding = encoding == null ? "UTF-8" : encoding;
 
         String json = IOUtils.toString( in, encoding );
-        if (jsonCallback != null) {
-            if (json.indexOf( jsonCallback ) < 0) {
-                json = jsonCallback + "(" + json + ")";
-            }
+        if (jsonCallback != null && json.indexOf( jsonCallback ) == -1) {
+            json = jsonCallback + "(" + json + ")";
         }
         return Response.ok( json ).build();
 
@@ -206,10 +204,8 @@ public class JsonCallbackResource {
             }
         }
         String responseStr = json.toString();
-        if (jsonCallback != null) {
-            if (responseStr.indexOf( jsonCallback ) < 0) {
-                responseStr = jsonCallback + "(" + json + ")";
-            }
+        if (jsonCallback != null && responseStr.indexOf( jsonCallback ) == -1) {
+            responseStr = jsonCallback + "(" + json + ")";
         }
         return Response.ok( responseStr ).build();
     }

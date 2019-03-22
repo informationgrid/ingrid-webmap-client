@@ -65,13 +65,13 @@ public class CapabilitiesUpdateTask implements Runnable{
     private static final String[] FIELD_XY = {"./@minx", "./@miny", "./@maxx", "./@maxy"};
     private static final String[] FIELD_BOUND = {"./westBoundLongitude", "./southBoundLatitude", "./eastBoundLongitude", "./northBoundLatitude"};
     
-    private static String defaultEpsg = "EPSG:3857";
-    private static String defaultExtent = "[0,0,0,0]";
+    private String defaultEpsg = "EPSG:3857";
+    private String defaultExtent = "[0,0,0,0]";
     
     public void run() {
         log.info("Update WebMapClient capabilitities ...");
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         boolean hasChanges = false;
         
         try {
@@ -81,14 +81,14 @@ public class CapabilitiesUpdateTask implements Runnable{
             log.info("Use default value :" + defaultEpsg);
         }
         
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject layersJson = new JSONObject( fileContent );
-                    HashMap<String, Document> mapCapabilities = new HashMap<String, Document>();
-                    ArrayList<String> errorUrls = new ArrayList<String>();
-                    ArrayList<String> errorLayernames = new ArrayList<String>();
+                    HashMap<String, Document> mapCapabilities = new HashMap<>();
+                    ArrayList<String> errorUrls = new ArrayList<>();
+                    ArrayList<String> errorLayernames = new ArrayList<>();
                     
                     String getCapabilities = null;
                     Document doc = null;
@@ -122,7 +122,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                                 String layerWmsUrl = layerJSON.getString( Constants.WMS_URL );
                                 if(layerWmsUrl != null){
                                     try {
-                                        if(layerWmsUrl.toLowerCase().indexOf( "?" ) == -1){
+                                        if(layerWmsUrl.toLowerCase().indexOf( '?' ) == -1){
                                             layerWmsUrl += "?";
                                         }
                                         if(layerWmsUrl.toLowerCase().indexOf( "service=" )  == -1){
@@ -151,14 +151,14 @@ public class CapabilitiesUpdateTask implements Runnable{
                                                     docFactory.setValidating(false);
                                                     doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
                                                     mapCapabilities.put( layerWmsUrl, doc );
-                                                    boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                                    boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerJSON, layerWmsUrl, errorLayernames, key);
                                                     if(hasChangesLayer){
                                                         hasChanges = hasChangesLayer;
                                                     }
                                                 }
                                             } else {
                                                 log.debug( "Load capabilities from existing doc: " + layerWmsUrl);
-                                                boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerType, layerJSON, layerWmsUrl, errorLayernames, key);
+                                                boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerJSON, layerWmsUrl, errorLayernames, key);
                                                 if(hasChangesLayer){
                                                     hasChanges = hasChangesLayer;
                                                 }
@@ -176,60 +176,62 @@ public class CapabilitiesUpdateTask implements Runnable{
                                     }
                                 }
                             }
-                        } else if(layerType.equals( Constants.TYPE_WMTS )) {
-                            if(layerJSON.has( Constants.WMTS_URL)) {
-                                String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
-                                if(layerWtmsUrl != null){
-                                    try {
-                                        if(!errorUrls.contains(layerWtmsUrl)) {
-                                            doc = mapCapabilities.get( layerWtmsUrl );
-                                            if(doc == null){
-                                                log.debug( "Load capabilities: " + layerWtmsUrl);
-                                                getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
-                                                if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
-                                                    hasChanges = true;
-                                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                                } else {
-                                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                                    docFactory.setValidating(false);
-                                                    doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                                    mapCapabilities.put( layerWtmsUrl, doc );
-                                                    boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                                    if(hasChangesLayer){
-                                                        hasChanges = hasChangesLayer;
-                                                    }
-                                                }
+                        } else if(layerType.equals( Constants.TYPE_WMTS ) && layerJSON.has( Constants.WMTS_URL)) {
+                            String layerWtmsUrl = layerJSON.getString( Constants.WMTS_URL );
+                            if(layerWtmsUrl != null){
+                                try {
+                                    if(!errorUrls.contains(layerWtmsUrl)) {
+                                        doc = mapCapabilities.get( layerWtmsUrl );
+                                        if(doc == null){
+                                            log.debug( "Load capabilities: " + layerWtmsUrl);
+                                            getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
+                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                hasChanges = true;
+                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
                                             } else {
-                                                log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
-                                                boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerType, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+                                                docFactory.setValidating(false);
+                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
+                                                mapCapabilities.put( layerWtmsUrl, doc );
+                                                boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerJSON, layerWtmsUrl, errorLayernames, key);
                                                 if(hasChangesLayer){
                                                     hasChanges = hasChangesLayer;
                                                 }
                                             }
                                         } else {
-                                            hasChanges = true;
-                                            layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                            log.debug( "Load capabilities from existing doc: " + layerWtmsUrl);
+                                            boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                            if(hasChangesLayer){
+                                                hasChanges = hasChangesLayer;
+                                            }
                                         }
-                                    } catch (Exception e) {
+                                    } else {
                                         hasChanges = true;
                                         layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                        if(!errorUrls.contains(layerWtmsUrl)){
-                                            errorUrls.add(layerWtmsUrl);
-                                        }
+                                    }
+                                } catch (Exception e) {
+                                    hasChanges = true;
+                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                    if(!errorUrls.contains(layerWtmsUrl)){
+                                        errorUrls.add(layerWtmsUrl);
                                     }
                                 }
                             }
                         }
                     }
                     if(hasChanges){
-                        File cpFile = new File(config_dir.concat("data/layers.json.") + Utils.getDateFlag());
+                        File cpFile = new File(configDir.concat("data/layers.json.") + Utils.getDateFlag());
                         if(cpFile.exists()){
-                            cpFile.delete();
+                            if(cpFile.delete()) {
+                                log.debug("Delete file: " + cpFile.getName());
+                            }
                         }
-                        File file = new File(config_dir.concat("data/layers.json"));
-                        file.renameTo( cpFile );
+                        File file = new File(configDir.concat("data/layers.json"));
+                        if(file.renameTo( cpFile )) {
+                            log.debug("Rename file " + file.getName() + " to " + cpFile.getName());
+                        }
                         Utils.cleanDirectory(file);
-                        file = new File(config_dir.concat("data/layers.json"));
+                        file = new File(configDir.concat("data/layers.json"));
                         log.info( "Update file :" + file.getAbsoluteFile() );
                         if(file != null){
                             try(FileWriter fw = new FileWriter(file, true);
@@ -285,11 +287,11 @@ public class CapabilitiesUpdateTask implements Runnable{
                     String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
                     String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
                     String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
-                    String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
-                    boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
+                    String password = p.getProperty( ConfigurationProvider.FEEDBACK_PW );
+                    boolean ssl = Boolean.parseBoolean(p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
                     String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
                     
-                    boolean sendMail = new Boolean (p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER_MAIL));
+                    boolean sendMail = Boolean.parseBoolean(p.getProperty( ConfigurationProvider.SCHEDULER_UPDATE_LAYER_MAIL));
                     
                     if(!mailText.isEmpty()){
                         if(sendMail){
@@ -324,7 +326,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         return Utils.getPropertyFromJSONFiles(files, key, defaultValue);
     }
 
-    private boolean updateLayerWTMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
+    private boolean updateLayerWTMSInformation(Document doc, XPath xpath, JSONObject layerJSON,
             String layerWtmsUrl, ArrayList<String> errorLayernames, String id) throws JSONException, XPathExpressionException {
         boolean hasChanges = false;
         if(layerJSON.has("serverLayerName") && layerJSON.has("matrixSet")) {
@@ -340,12 +342,12 @@ public class CapabilitiesUpdateTask implements Runnable{
                     if(layerLowerCornerNode != null && layerUpperCornerNode != null) {
                         JSONArray array = new JSONArray();
                         String lowerCorner = layerLowerCornerNode.getTextContent().trim();
-                        if(lowerCorner.indexOf(" ") > -1) {
+                        if(lowerCorner.indexOf(' ') > -1) {
                             array.put(Double.parseDouble(lowerCorner.split(" ")[0]));
                             array.put(Double.parseDouble(lowerCorner.split(" ")[1]));
                         }
                         String upperCorner = layerUpperCornerNode.getTextContent().trim();
-                        if(upperCorner.indexOf(" ") > -1) {
+                        if(upperCorner.indexOf(' ') > -1) {
                             array.put(Double.parseDouble(upperCorner.split(" ")[0]));
                             array.put(Double.parseDouble(upperCorner.split(" ")[1]));
                         }
@@ -432,7 +434,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         if (originNode != null) {
                             JSONArray array = new JSONArray();
                             String origin = originNode.getTextContent().trim();
-                            if(origin.indexOf(" ") > -1) {
+                            if(origin.indexOf(' ') > -1) {
                                 array.put(Double.parseDouble(origin.split(" ")[0]));
                                 array.put(Double.parseDouble(origin.split(" ")[1]));
                             }
@@ -452,7 +454,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         return hasChanges;
     }
 
-    private boolean updateLayerWMSInformation(Document doc, XPath xpath, String layerType, JSONObject layerJSON,
+    private boolean updateLayerWMSInformation(Document doc, XPath xpath, JSONObject layerJSON,
             String layerWmsUrl, ArrayList<String> errorLayernames, String id) throws XPathExpressionException, DOMException, JSONException, NoSuchAuthorityCodeException, FactoryException {
         boolean hasChanges = false;
         if(layerJSON.has("wmsLayers")) {
@@ -634,24 +636,25 @@ public class CapabilitiesUpdateTask implements Runnable{
                       errorLayernames.add("Layer not exists (" + id + "): " + layerWmsLayers + " on service url: " + layerWmsUrl);
                     }
                 } else {
+                    /* TODO: Execute combine layers
                     String[] layers = layerWmsLayers.split(",");
                     for (String layer : layers) {
                         Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layerWmsLayers+"\"]/..", doc, XPathConstants.NODE);
                     }
-                    
+                    */
                 }
             }
         }
         return hasChanges;
     }
     
-    private boolean getScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws NumberFormatException, DOMException, JSONException {
+    private boolean getScale(String layerKey, Node fieldNode, JSONObject layerJSON) throws JSONException {
         String text = fieldNode.getTextContent();
         String oldText;
         try {
             if(layerJSON.has(layerKey)) {
                 oldText = layerJSON.getString(layerKey);
-                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                if(oldText == null || (text != null && !oldText.equals( text ))){
                     layerJSON.put( layerKey, fieldNode.getTextContent() );
                     return true;
                 }
@@ -669,7 +672,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         try {
             if(layerJSON.has(layerKey)) {
                 oldText = layerJSON.getString(layerKey);
-                if(oldText == null || (text != null && oldText != null && !oldText.equals( text ))){
+                if(oldText == null || (text != null && !oldText.equals( text ))){
                     layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
                     return true;
                 }

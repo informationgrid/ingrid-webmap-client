@@ -28,7 +28,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +37,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
@@ -58,7 +56,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -90,13 +87,13 @@ public class FileResource {
     @Path("files")
     @Produces(MediaType.TEXT_PLAIN)
     public Response fileRequest(String content, @QueryParam("adminId") String mapUserId, @QueryParam("maxDaysOfDeleteFile") String maxDaysOfDeleteFile) throws IOException {
-        String fileId = createKMLFile( content, mapUserId);
-        if(fileId != null && fileId.length() > 0){
+        String id = createKMLFile( content, mapUserId);
+        if(id != null && id.length() > 0){
             String adminId = "";
             if(mapUserId != null){
                 adminId += mapUserId + "/";
             }
-            adminId += fileId;
+            adminId += id;
            
             String json = "{\"adminId\":\"" + adminId + "\", \"fileId\":\"" + adminId + "\"}";
             return Response.ok( json ).build();
@@ -109,16 +106,14 @@ public class FileResource {
     @Path("files/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateFileRequest(@PathParam("id") String id, String content, @QueryParam("adminId") String mapUserId) throws IOException {
-        String fileId = id;
         // New file
-        fileId = createKMLFile( content, mapUserId);
-
-        if(fileId != null && fileId.length() > 0){
+        id = createKMLFile( content, mapUserId);
+        if(StringUtils.isNotEmpty(id)){
             String adminId = "";
-            if(mapUserId != null){
+            if(StringUtils.isNotEmpty(mapUserId)){
                 adminId += mapUserId + "/";
             }
-            adminId += fileId;
+            adminId += id;
            
             String json = "{\"adminId\":\"" + adminId + "\", \"fileId\":\"" + adminId + "\"}";
             return Response.ok( json ).build();
@@ -138,29 +133,28 @@ public class FileResource {
             path += "/";
         }
         
-        String fileId = id;
         if(mapUserId != null && mapUserId.length() > 0){
-            String filename = path + "" + mapUserId + "/" + fileId;
-            if (fileId != null && fileId.length() > 0) {
+            String filepath = path + "" + mapUserId;
+            if (id != null && id.length() > 0) {
                 if(mapUserId.equals(user)){
                     // Update file
-                    File file = new File( filename );
+                    File file = new File( filepath, id );
                     Utils.writeFileContent(file, content);
                 }else{
                     // New file
-                    fileId = createKMLFile( content, mapUserId);
+                    id = createKMLFile( content, mapUserId);
                 }
             }
         }else{
             // New file
-            fileId = createKMLFile( content, mapUserId);
+            id = createKMLFile( content, mapUserId);
         }
-        if(fileId != null && fileId.length() > 0){
+        if(id != null && id.length() > 0){
             String adminId = "";
             if(mapUserId != null){
                 adminId += mapUserId + "/";
             }
-            adminId += fileId;
+            adminId += id;
             
             String json = "{\"adminId\":\"" + adminId + "\", \"fileId\":\"" + adminId + "\"}";
             return Response.ok( json ).build();
@@ -187,15 +181,16 @@ public class FileResource {
             path += "/";
         }
         
-        String fileId = id;
         if(mapUserId != null && mapUserId.length() > 0){
-            String filename = path + "" + mapUserId + "/" + fileId;
-            if (fileId != null && fileId.length() > 0) {
+            String filePath = path + "" + mapUserId;
+            if (id != null && id.length() > 0) {
                 if(mapUserId.equals(user)){
                     // Update file
-                    File file = new File( filename );
+                    File file = new File( filePath, id );
                     if(file.exists()){
-                        file.delete();
+                        if(file.delete()) {
+                            log.debug("Delete file: " + file.getName());
+                        }
                         return Response.status(Response.Status.OK ).build();
                     }
                 }else{
@@ -225,7 +220,7 @@ public class FileResource {
                 File file = new File( path );
                 Utils.writeFileContent(file, content);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error getFileRequest: " + e);
             }
         }
         return content;
@@ -251,7 +246,7 @@ public class FileResource {
                     // Try to get kml from portal tmp kml service folder.
                     content = new String( Files.readAllBytes( Paths.get( "./data/" + user + "/" + id ) ) );
                 } catch (IOException e1) {
-                    e.printStackTrace();
+                    log.error("Error getFileRequest: " + e);
                 }
             }
         }
@@ -306,7 +301,7 @@ public class FileResource {
     @Produces("image/png")
     public Response getQRCodeRequest(@QueryParam("url") String url){
         try {
-            Map<EncodeHintType, Object> hintMap = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);
+            Map<EncodeHintType, Object> hintMap = new EnumMap<>(EncodeHintType.class);
             hintMap.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             
             // Now with zxing version 3.2.1 you could change border size (white border size to just 1)
@@ -316,18 +311,18 @@ public class FileResource {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
             BitMatrix byteMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, 250,
                     250, hintMap);
-            int CrunchifyWidth = byteMatrix.getWidth();
-            BufferedImage image = new BufferedImage(CrunchifyWidth, CrunchifyWidth,
+            int crunchifyWidth = byteMatrix.getWidth();
+            BufferedImage image = new BufferedImage(crunchifyWidth, crunchifyWidth,
                     BufferedImage.TYPE_INT_RGB);
             image.createGraphics();
     
             Graphics2D graphics = (Graphics2D) image.getGraphics();
             graphics.setColor(Color.WHITE);
-            graphics.fillRect(0, 0, CrunchifyWidth, CrunchifyWidth);
+            graphics.fillRect(0, 0, crunchifyWidth, crunchifyWidth);
             graphics.setColor(Color.BLACK);
     
-            for (int i = 0; i < CrunchifyWidth; i++) {
-                for (int j = 0; j < CrunchifyWidth; j++) {
+            for (int i = 0; i < crunchifyWidth; i++) {
+                for (int j = 0; j < crunchifyWidth; j++) {
                     if (byteMatrix.get(i, j)) {
                         graphics.fillRect(i, j, 1, 1);
                     }
@@ -337,9 +332,7 @@ public class FileResource {
             ImageIO.write(image, "png", baos);
             byte[] imageData = baos.toByteArray();
             return Response.ok(new ByteArrayInputStream(imageData)).build();
-        } catch(WriterException e){
-            Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
-        } catch (IOException e) {
+        } catch(WriterException | IOException e){
             Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
@@ -353,7 +346,7 @@ public class FileResource {
     public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback, 
             @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement, 
             @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
-            @FormDataParam("subject") String subject) throws FileNotFoundException, IOException{
+            @FormDataParam("subject") String subject) throws IOException{
         
         String text = "";
         if(email != null && email.length() > 0){
@@ -382,28 +375,24 @@ public class FileResource {
         }
         
         File file = null;
-        if(attachement != null){
-            if(attachementContentDisposition != null){
-                if(attachementContentDisposition.getFileName() != null){
-                    file = new File(attachementContentDisposition.getFileName());
-                    OutputStream out = null;
-                    try {
-                        out = new FileOutputStream(file);
-                        byte[] buf = new byte[1024];
-                        int len;
-                        while((len=attachement.read(buf))>0){
-                            out.write(buf,0,len);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        if(out != null) {
-                            out.close();
-                        }
-                        if(attachement != null) {
-                            attachement.close();
-                        }
-                    }
+        if(attachement != null && attachementContentDisposition != null && attachementContentDisposition.getFileName() != null){
+            file = new File(attachementContentDisposition.getFileName());
+            OutputStream out = null;
+            try {
+                out = new FileOutputStream(file);
+                byte[] buf = new byte[1024];
+                int len;
+                while((len=attachement.read(buf))>0){
+                    out.write(buf,0,len);
+                }
+            } catch (Exception e) {
+                log.error("Error getFeedbackRequest: " + e);
+            } finally {
+                if(out != null) {
+                    out.close();
+                }
+                if(attachement != null) {
+                    attachement.close();
                 }
             }
         }
@@ -416,8 +405,8 @@ public class FileResource {
         String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
         String port = p.getProperty( ConfigurationProvider.FEEDBACK_PORT );
         String user = p.getProperty( ConfigurationProvider.FEEDBACK_USER );
-        String password = p.getProperty( ConfigurationProvider.FEEDBACK_PASSWORD );
-        boolean ssl = new Boolean (p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
+        String password = p.getProperty( ConfigurationProvider.FEEDBACK_PW );
+        boolean ssl = Boolean.parseBoolean(p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
         String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
         
         boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
@@ -519,9 +508,9 @@ public class FileResource {
         if(imageFile.exists()){
             return Response.ok(imageFile).build();
         }else{
-            if(categoryDir != null && icon != null){
+            if(icon != null){
                 String url = apiGeo + "/images/" + category + "/" + icon;
-                if (url != null && url.length() > 0) {
+                if (!url.isEmpty()) {
                     URL tmpUrl;
                     try {
                         tmpUrl = new URL(url);
@@ -544,66 +533,64 @@ public class FileResource {
     @PUT
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getAndPutShortKey(@RequestBody String requestContent) throws IOException, JSONException {
+    public String getAndPutShortKey(@RequestBody String requestContent) throws  JSONException {
         JSONObject obj = new JSONObject(requestContent);
-        if(obj != null) {
-            String key = null;
-            String value = null;
-            if(obj.has("key")) {
-                key = obj.getString("key");
+        String key = null;
+        String value = null;
+        if(obj.has("key")) {
+            key = obj.getString("key");
+        }
+        if(obj.has("value")) {
+            value = obj.getString("value");
+        }
+        if(key != null && value != null) {
+            Properties p = ConfigurationProvider.INSTANCE.getProperties();
+            String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+            
+            if(!path.endsWith( "/")){
+                path += "/";
             }
-            if(obj.has("value")) {
-                value = obj.getString("value");
+            
+            File shortenDir = new File (path + "shorten");
+            if(!shortenDir.exists()) {
+                shortenDir.mkdir();
             }
-            if(key != null && value != null) {
-                Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
-                
-                if(!path.endsWith( "/")){
-                    path += "/";
-                }
-                
-                File shortenDir = new File (path + "shorten");
-                if(!shortenDir.exists()) {
-                    shortenDir.mkdir();
-                }
-                
-                File shortenDirKey = new File (shortenDir.getAbsolutePath()+ "/" + key);
-                if(!shortenDirKey.exists()) {
-                    shortenDirKey.mkdir();
-                }
-                String valueToMd5 = DigestUtils.md5Hex(value);
-                
-                String shortenDirSubPath = shortenDirKey.getAbsolutePath();
-                
-                if(!shortenDirSubPath.endsWith( "/")){
-                    shortenDirSubPath += "/";
-                }
-                
-                shortenDirSubPath += valueToMd5.substring(0, 2);
-                
-                File shortenDirSub = new File(shortenDirSubPath);
-                if(!shortenDirSub.exists()) {
-                    shortenDirSub.mkdir();
-                }
-                
-                String shortenFilename = shortenDirSub.getAbsolutePath();
-               
-                if(!shortenFilename.endsWith( "/")){
-                    shortenFilename += "/";
-                }
-                
-                shortenFilename += valueToMd5;
-               
-                File shortenFile = new File(shortenFilename);
-                if(!shortenFile.exists()) {
-                    Utils.updateFile("shorten/" + key + "/" + shortenDirSub.getName() + "/" + valueToMd5, value);
-                }
-                return valueToMd5;
+            
+            File shortenDirKey = new File (shortenDir.getAbsolutePath()+ "/" + key);
+            if(!shortenDirKey.exists()) {
+                shortenDirKey.mkdir();
             }
-            if(value != null) {
-                return value;
+            String valueToMd5 = DigestUtils.md5Hex(value);
+            
+            String shortenDirSubPath = shortenDirKey.getAbsolutePath();
+            
+            if(!shortenDirSubPath.endsWith( "/")){
+                shortenDirSubPath += "/";
             }
+            
+            shortenDirSubPath += valueToMd5.substring(0, 2);
+            
+            File shortenDirSub = new File(shortenDirSubPath);
+            if(!shortenDirSub.exists()) {
+                shortenDirSub.mkdir();
+            }
+            
+            String shortenFilename = shortenDirSub.getAbsolutePath();
+           
+            if(!shortenFilename.endsWith( "/")){
+                shortenFilename += "/";
+            }
+            
+            shortenFilename += valueToMd5;
+           
+            File shortenFile = new File(shortenFilename);
+            if(!shortenFile.exists()) {
+                Utils.updateFile("shorten/" + key + "/" + shortenDirSub.getName() + "/" + valueToMd5, value);
+            }
+            return valueToMd5;
+        }
+        if(value != null) {
+            return value;
         }
         return "";
     }

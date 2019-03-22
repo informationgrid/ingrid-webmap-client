@@ -85,13 +85,14 @@ public class WmsResource {
     /**
      * The service pattern that urls must match
      */
-    private final static Pattern SERVICE_PATTERN = Pattern.compile( "SERVICE=WMS", Pattern.CASE_INSENSITIVE );
+    private static final Pattern SERVICE_PATTERN = Pattern.compile( "SERVICE=WMS", Pattern.CASE_INSENSITIVE );
 
     /**
      * The request pattern that urls must match
      */
-    private final static Pattern REQUEST_PATTERN = Pattern.compile( "REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE );
+    private static final Pattern REQUEST_PATTERN = Pattern.compile( "REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE );
 
+    private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
     /**
      * Get WMS response from the given url
      * 
@@ -105,17 +106,15 @@ public class WmsResource {
     public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
         try {
             String response = null;
-            if(StringUtils.isNotEmpty(login)) {
-                if(StringUtils.isEmpty(password)) {
-                    password = Utils.getServiceLogin(url, login);
-                }
+            if(StringUtils.isNotEmpty(login) && StringUtils.isEmpty(password)) {
+                password = Utils.getServiceLogin(url, login);
             }
             response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
                 if(response.indexOf("<?xml") == -1) {
                    response = "<?xml version=\"1.0\"?>" + response;
                 }
-                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
+                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
                     // Remove script tags on getFeatureInfo response.
                     Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
                             Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
@@ -141,10 +140,10 @@ public class WmsResource {
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
+            log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -159,23 +158,21 @@ public class WmsResource {
         boolean toJson = false;
         try {
             JSONObject obj = new JSONObject(content);
-            if(obj != null) {
-                if(obj.has("url")) {
-                    url = obj.getString("url");
-                }
-                if(obj.has("login")) {
-                    login = obj.getString("login");
-                }
-                if(obj.has("password")) {
-                    password = obj.getString("password");
-                }
-                if(obj.has("toJson")) {
-                    toJson = obj.getBoolean("toJson");
-                }
+            if(obj.has("url")) {
+                url = obj.getString("url");
+            }
+            if(obj.has("login")) {
+                login = obj.getString("login");
+            }
+            if(obj.has("password")) {
+                password = obj.getString("password");
+            }
+            if(obj.has("toJson")) {
+                toJson = obj.getBoolean("toJson");
             }
             return doWmsRequest(url, toJson, login, password);
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -204,10 +201,10 @@ public class WmsResource {
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
+            log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -229,43 +226,7 @@ public class WmsResource {
         }
         return "";
     }
-    
-    /**
-     * Get WMS response from the given url
-     * 
-     * @param url
-     *            The request url
-     * @return String
-     */
-    @GET
-    @Path("proxyAdministrativeInfos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url) {
-        // check if the url string is valid
-        if (!SERVICE_PATTERN.matcher( url ).find() && !REQUEST_PATTERN.matcher( url ).find()) {
-            throw new IllegalArgumentException( "The url is not a valid wms request: " + url );
-        }
 
-        OSCommunication comm = new OSCommunication();
-        InputStream result = null;
-        result = comm.sendRequest( url );
-        Document doc = null;
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        NodeList fields = null;
-
-        comm.releaseConnection();
-        XStream xstream = new XStream( new JsonHierarchicalStreamDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer writer) {
-                return new JsonWriter( writer, JsonWriter.DROP_ROOT_MODE );
-            }
-        } );
-
-        String json = ""; // xstream.toXML(adminInfos);
-        return Response.ok( json ).build();
-    }
-
-    
     @GET
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
@@ -287,12 +248,12 @@ public class WmsResource {
                     // Extern
                     String[] layerSplit = layer.split( "\\|\\|" );
                     serviceType = layerSplit[0].trim();
-                    if(layerSplit != null && layerSplit.length > 0){
-                        if(serviceType.toLowerCase().equals( "wms" )){
+                    if(layerSplit.length > 0){
+                        if(serviceType.equalsIgnoreCase( "wms" )){
                             layerTitle = URLDecoder.decode(layerSplit[1], "UTF-8" );
                             layerName = layerSplit[3];
                             serviceHost = layerSplit[2];
-                            if(serviceHost.indexOf("?") == -1){
+                            if(serviceHost.indexOf('?') == -1){
                                 serviceHost = serviceHost + "?";
                             }
                             String wmsVersion = "1.3.0"; 
@@ -300,7 +261,7 @@ public class WmsResource {
                                 wmsVersion = layerSplit[4];
                             }
                             serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
-                        }else if(serviceType.toLowerCase().equals( "wmts" )){
+                        }else if(serviceType.equalsIgnoreCase( "wmts" )){
                             // WMTS||WmsBWaStr||http:%2F%2Fatlas.wsv.bund.de%2Fbwastr%2Fwmts%2F1.0.0%2FWMTSCapabilities.xml
                             layerTitle = layerSplit[1];
                             layerName = layerSplit[1];
@@ -314,11 +275,11 @@ public class WmsResource {
                         JSONObject jsonLayer = (JSONObject) json.get(layer);
                         if(jsonLayer != null){
                             serviceType = jsonLayer.getString("type").trim();
-                            if(serviceType.toLowerCase().equals( "wms" )){
+                            if(serviceType.equalsIgnoreCase( "wms" )){
                                 layerTitle = jsonLayer.getString("label");
                                 serviceHost = jsonLayer.getString("wmsUrl");
                                 if(serviceHost != null){
-                                    if(serviceHost.indexOf("?") == -1){
+                                    if(serviceHost.indexOf('?') == -1){
                                         serviceHost = serviceHost + "?";
                                     }
                                     serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version"));
@@ -327,7 +288,7 @@ public class WmsResource {
                                     layerLegend = jsonLayer.getString("legendUrl");
                                 }
                                 layerName = jsonLayer.getString("wmsLayers");
-                            }else if(serviceType.toLowerCase().equals( "wmts" )){
+                            }else if(serviceType.equalsIgnoreCase( "wmts" )){
                                 layerTitle = jsonLayer.getString("label");
                                 serviceCapabilitiesURL = jsonLayer.getString("serviceUrl");
                                 if(jsonLayer.has("legendUrl")){
@@ -349,9 +310,9 @@ public class WmsResource {
                     Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     
-                    if(serviceType.toLowerCase().equals( "wms" )){
+                    if(serviceType.equalsIgnoreCase( "wms" )){
                         html = getWmsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
-                    }else if(serviceType.toLowerCase().equals( "wmts" )){
+                    }else if(serviceType.equalsIgnoreCase( "wmts" )){
                         html = getWmtsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
                     }
                 }
@@ -395,60 +356,58 @@ public class WmsResource {
         html += "<div class=\"tab-content\">";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(1)\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
         html += "</div>";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(2)\">";
-        html += getWMSInfoTree(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+        html += getWMSInfoTree(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         html += "</div>";
         html += "</div>";
 
         html += "<div ng-if=\"!showWMSTree\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
         html += "</div>";
         
         return html;
     }
 
-    private String getWMSInfoTree(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
+    private String getWMSInfoTree(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
             String layerLegend) throws XPathExpressionException {
         Node field = null;
         String html = "";
         
         html += "<div class=\"metadata-structure\">";
-        if(response != null){
-            field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
-            String wmsStructure = "";
-            if(field != null){
-                wmsStructure += "<h4>" + field.getTextContent() + "</h4>";
-                wmsStructure += "<br>";
-            }
-
-            NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
-            if(fields != null){
-                String wmsStructureLayers = "";
-                wmsStructureLayers += getSubLayers(fields, xpath, wmsStructureLayers, layerName);
-                wmsStructure += "<ul style=\"padding: 0px;\">";
-                wmsStructure += wmsStructureLayers;
-                wmsStructure += "</ul>";
-            }
-            html += wmsStructure;
+        field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
+        String wmsStructure = "";
+        if(field != null){
+            wmsStructure += "<h4>" + field.getTextContent() + "</h4>";
+            wmsStructure += "<br>";
         }
+
+        NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
+        if(fields != null){
+            String wmsStructureLayers = "";
+            wmsStructureLayers += getSubLayers(fields, xpath, wmsStructureLayers, layerName);
+            wmsStructure += "<ul style=\"padding: 0px;\">";
+            wmsStructure += wmsStructureLayers;
+            wmsStructure += "</ul>";
+        }
+        html += wmsStructure;
         html += "</div>";
         return html;
     }
 
-    private String getWMSInfoData(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
+    private String getWMSInfoData(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
             String layerLegend, String legend) throws XPathExpressionException {
         String html = "";
         html += "<div class=\"legend-container\">";
         html += "<div class=\"legend-footer\">";
         html += "<span translate>metadata_information_layer</span><br>";
         if (layerName != null) {
-            ArrayList<String> layerAbstracts = new ArrayList<String>();
-            ArrayList<String> layerLegends = new ArrayList<String>();
+            ArrayList<String> layerAbstracts = new ArrayList<>();
+            ArrayList<String> layerLegends = new ArrayList<>();
             String[] layers = layerName.split(",");
             for (String layer : layers) {
                 Node field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layer+"\"]", doc, XPathConstants.NODE);
@@ -465,7 +424,7 @@ public class WmsResource {
             }
             if(layerLegend != null && !layerLegend.equals( "undefined" )){
                 String[] tmpLegends = layerLegend.split("\\|");
-                layerLegends = new ArrayList<String>();
+                layerLegends = new ArrayList<>();
                 for (String tmpLegend : tmpLegends) {
                     layerLegends.add(tmpLegend);
                 }
@@ -475,7 +434,7 @@ public class WmsResource {
             html += "<tbody>";
             if(layerTitle != null){
                 html += "<tr ng-if=\"!showWMSName\"";
-                if(layerAbstracts.size() == 0){
+                if(layerAbstracts.isEmpty()){
                     html += " style=\"border-bottom:0;\"";
                 }
                 html += ">";
@@ -488,7 +447,7 @@ public class WmsResource {
                 html += "<td>" + layerTitle + "</td>";
                 html += "</tr>";
             }
-            if(layerAbstracts.size() > 0){
+            if(!layerAbstracts.isEmpty()){
                 for(int i=0; i < layerAbstracts.size(); i++) {
                     if (i == 0 && layers.length <= 1) {
                         html += "<tr ng-if=\"showWMSName\">";
@@ -534,7 +493,7 @@ public class WmsResource {
             html += "<div class=\"legend\">";
             html += "<span translate>metadata_legend</span><br>";
             html += "<div class=\"img-container\">";
-            if(layerLegends.size() > 0) {
+            if(!layerLegends.isEmpty()) {
                 for(int i=0; i < layerLegends.size(); i++) {
                     
                     html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
@@ -923,22 +882,17 @@ public class WmsResource {
           sb.append((char) cp);
         }
         return sb.toString();
-      }
+    }
 
-      private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
-        try {
+        try (
           BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        ){
           String jsonText = readAll(rd);
-          JSONObject json = new JSONObject(jsonText);
-          return json;
+          return new JSONObject(jsonText);
         } finally {
           is.close();
         }
-      }
-      
-      private static String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-      }
+    }
 }

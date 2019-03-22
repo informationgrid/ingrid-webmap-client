@@ -77,9 +77,9 @@ public class ConfigResource {
             
             filename = "setting.profile";
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                fileContent = Utils.getFileContent(config_dir, filename, ".json", "config/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                fileContent = Utils.getFileContent(configDir, filename, ".json", "config/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     profileSetting = new JSONObject(fileContent);
                     if(setting != null && profileSetting != null) {
@@ -109,11 +109,11 @@ public class ConfigResource {
     @Produces("text/css")
     public Response getCssRequest() {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "app.profile", ".css", "css/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
             if(StringUtils.isEmpty(fileContent)) {
-                fileContent = Utils.getFileContent(config_dir, "app.override", ".css", "css/");
+                fileContent = Utils.getFileContent(configDir, "app.override", ".css", "css/");
                 if(fileContent != null) {
                     Utils.updateFile("css/app.profile.css", fileContent);
                 }
@@ -145,9 +145,9 @@ public class ConfigResource {
             }
             
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, filename, ".json", "data/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, filename, ".json", "data/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     return Response.ok( fileContent ).build();
                 }
@@ -243,8 +243,8 @@ public class ConfigResource {
         if(!excludeProfile) {
             // Get profile locale
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            fileLocalePath = config_dir;
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            fileLocalePath = configDir;
             fileContent = Utils.getFileContent(fileLocalePath, locale.replace(".", ".profile."), "", "locales/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 JSONObject profileLocale = new JSONObject(fileContent);
@@ -260,7 +260,7 @@ public class ConfigResource {
             }
         }
         Iterator<?> keysItr = locales.keys();
-        ArrayList<String> sortKey = new ArrayList<String>();
+        ArrayList<String> sortKey = new ArrayList<>();
         JSONObject sortLocales = new JSONObject();
         while(keysItr.hasNext()) {
             String key = (String)keysItr.next();

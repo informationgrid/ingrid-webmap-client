@@ -321,9 +321,9 @@ public class AdministrationResource {
                 String categoryId = category.getString("id");
                 if(categoryId != null) {
                     Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                    String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                    if(StringUtils.isNotEmpty(config_dir)) {
-                        String fileContent = Utils.getFileContent(config_dir, "catalog-" + copyId, ".json", "data/");
+                    String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                    if(StringUtils.isNotEmpty(configDir)) {
+                        String fileContent = Utils.getFileContent(configDir, "catalog-" + copyId, ".json", "data/");
                         if(StringUtils.isNotEmpty(fileContent)) {
                             Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
                         }
@@ -590,9 +590,9 @@ public class AdministrationResource {
                 }
                 
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(StringUtils.isNotEmpty(config_dir)) {
-                    fileContent = Utils.getFileContent(config_dir, filename + ".profile", ".json", "help/");
+                String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                if(StringUtils.isNotEmpty(configDir)) {
+                    fileContent = Utils.getFileContent(configDir, filename + ".profile", ".json", "help/");
                     if(StringUtils.isEmpty(fileContent)) {
                         fileContent = Utils.getFileContent(filePathHelp, filename + ".profile", ".json", "help/");
                         if(StringUtils.isNotEmpty(fileContent)) {
@@ -631,8 +631,8 @@ public class AdministrationResource {
                     log.debug( "Load file: " + filename );
                 }
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
-                String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-                if(StringUtils.isNotEmpty(config_dir)) {
+                String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                if(StringUtils.isNotEmpty(configDir)) {
                     Response helps = this.getHelpRequest(lang);
                     if(helps != null) {
                         if(helps.getEntity() != null) {
@@ -765,9 +765,9 @@ public class AdministrationResource {
         JSONObject localeDefault = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         JSONObject item = new JSONObject(content);
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, lang + ".profile", ".json", "locales/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, lang + ".profile", ".json", "locales/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 localeProfile = new JSONObject(fileContent);
                 ConfigResource cr = new ConfigResource();
@@ -806,9 +806,9 @@ public class AdministrationResource {
     private void deleteLocale(String lang, ArrayList<String> keys) throws JSONException {
         JSONObject locale = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, lang, ".profile.json", "locales/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, lang, ".profile.json", "locales/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 locale = new JSONObject(fileContent);
                 if(locale != null) {
@@ -826,9 +826,9 @@ public class AdministrationResource {
     private JSONArray updateCategoryTree(String id, JSONArray item) {
         JSONArray arr = null;
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "catalog-" + id, ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -926,9 +926,9 @@ public class AdministrationResource {
     private String resetHelp(String lang, String id) {
         try {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, "help-" + lang + ".profile", ".json", "help/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, "help-" + lang + ".profile", ".json", "help/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     JSONObject profileHelp = new JSONObject(fileContent);
                     if(profileHelp != null) {
@@ -954,9 +954,9 @@ public class AdministrationResource {
     private JSONArray getLayers(String id, boolean compress) {
         JSONArray arr = new JSONArray();
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1001,9 +1001,9 @@ public class AdministrationResource {
     private JSONArray addLayer(JSONArray layers) {
         if(layers != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject newObj = new JSONObject();
@@ -1179,9 +1179,9 @@ public class AdministrationResource {
     private JSONObject updateLayer(String id, JSONObject layer) {
         if(id != null && layer != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
@@ -1278,9 +1278,9 @@ public class AdministrationResource {
     
     private JSONArray deleteLayers(String[] ids) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "layers", ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1369,9 +1369,9 @@ public class AdministrationResource {
     private JSONArray getCategories() {
         JSONArray arr = new JSONArray();
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1386,9 +1386,9 @@ public class AdministrationResource {
     
     private JSONArray addCategory(JSONObject catelog) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1415,9 +1415,9 @@ public class AdministrationResource {
     private JSONArray updateCategory(String id, JSONObject item) {
         if(id != null && item != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
@@ -1442,9 +1442,9 @@ public class AdministrationResource {
     private JSONArray deleteCategory(String id) {
         if(id != null) {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-            if(StringUtils.isNotEmpty(config_dir)) {
-                String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+            String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+            if(StringUtils.isNotEmpty(configDir)) {
+                String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
@@ -1470,7 +1470,7 @@ public class AdministrationResource {
     }
 
     private void deleteCategoriesLocales(String id) throws JSONException {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         list.add(id);
         list.add("topic_" + id + "_tooltip");
         list.add(id + "_service_link_href");
@@ -1484,9 +1484,9 @@ public class AdministrationResource {
     
     private JSONArray deleteCategories(String[] ids) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "catalogs", ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1528,9 +1528,9 @@ public class AdministrationResource {
     
     private JSONArray getCategoryTree(String id) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "catalog-" + id, ".json", "data/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "catalog-" + id, ".json", "data/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1572,7 +1572,7 @@ public class AdministrationResource {
                     }
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                log.error("Error on filteredTreeLeafById: " + e);
             }
         }
     }

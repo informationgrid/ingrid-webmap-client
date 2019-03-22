@@ -106,12 +106,12 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         }
 
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String content = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String content = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
         if(StringUtils.isNotEmpty(content)) {
             try {
                 if(configFile.exists()) {
-                    File tmpFile = new File(config_dir + "config/print_config.yaml");
+                    File tmpFile = new File(configDir + "config/print_config.yaml");
                     if(!tmpFile.exists()) {
                         FileUtils.copyFile(configFile, tmpFile);
                     }
@@ -132,7 +132,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                             }
                         }
                         Iterator<?> keys = auths.keys();
-                        ArrayList<String> tmpLogins = new ArrayList<String>();
+                        ArrayList<String> tmpLogins = new ArrayList<>();
                         while( keys.hasNext() ) {
                             String host = (String)keys.next();
                             if (auths.has(host)) {

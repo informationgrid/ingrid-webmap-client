@@ -86,8 +86,9 @@ public class CleanupTask implements Runnable{
                         Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);
                         Date fileDate = new Date(file.lastModified());
                         if(fileDate.before(limitDate)) {
-                            file.delete();
-                            log.debug("Delete file: " + file.getAbsoluteFile());
+                            if(file.delete()) {
+                                log.debug("Delete file: " + file.getAbsoluteFile());
+                            }
                         }
                     } else if(file.isDirectory()) {
                         cleanupDirectory(file.listFiles(), maxDirectoryFiles, maxDaysOfFileExist);
@@ -108,8 +109,9 @@ public class CleanupTask implements Runnable{
                         Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);
                         Date fileDate = new Date(file.lastModified());
                         if(fileDate.before(limitDate)) {
-                            file.delete();
-                            log.debug("Delete file: " + file.getAbsoluteFile());
+                            if(file.delete()) {
+                                log.debug("Delete file: " + file.getAbsoluteFile());
+                            }
                         }
                     }
                 } else if(file.isDirectory()) {

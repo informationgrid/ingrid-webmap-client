@@ -141,8 +141,8 @@ public class Utils {
 
     public static void createFile(String filename, JSONObject item) throws JSONException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(configDir.concat(filename));
         if(!file.exists()){
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -159,23 +159,23 @@ public class Utils {
 
     public static void updateFile(String filename, Object item, boolean doBackup) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file;
         if(doBackup) {
-            File cpFile = new File(config_dir.concat(filename + "." + getDateFlag()));
+            File cpFile = new File(configDir.concat(filename + "." + getDateFlag()));
             if(cpFile.exists()){
                 if(!cpFile.delete()) {
                     log.error("Error delete file: '" + cpFile.getName() + "'" );
                 }
             }
-            file = new File(config_dir.concat(filename));
+            file = new File(configDir.concat(filename));
             if(file.exists()) {
                 if(!file.renameTo( cpFile )) {
                     log.error("Error rename file: '" + file.getName() + "'" );
                 }
             }
         }
-        file = new File(config_dir.concat(filename));
+        file = new File(configDir.concat(filename));
         cleanFileContent(file);
         cleanDirectory(file);
         log.debug( "Update file :" + file.getAbsoluteFile() );
@@ -213,8 +213,8 @@ public class Utils {
 
     public static void removeFile(String filename) throws JSONException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(configDir.concat(filename));
         if(file.exists()) {
             if(!file.delete()) {
                 log.error("Error delete file: '" + file.getName() + "'" );
@@ -446,9 +446,9 @@ public class Utils {
     
     public static void setServiceLogin(String url, String login, String password) throws JSONException, URISyntaxException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 URI uri = new URI(url);
                 JSONObject serviceAuth = new JSONObject(fileContent);
@@ -472,9 +472,9 @@ public class Utils {
     
     public static String getServiceLogin(String url, String login) throws JSONException, URISyntaxException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(StringUtils.isNotEmpty(config_dir)) {
-            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 URI uri = new URI(url);
                 JSONObject serviceAuth = new JSONObject(fileContent);

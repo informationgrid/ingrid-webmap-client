@@ -49,7 +49,7 @@ public class SniffedInputStream extends BufferedInputStream {
     // We don't sniff more than 192 bytes.
     // We do ! Because we also extract encoding from HTML header ! 500 should be
     // enough !
-    public static int MAX_SNIFFED_BYTES = 500;
+    public static final int MAX_SNIFFED_BYTES = 500;
 
     /** Type of requested file */
     private enum FileType {
@@ -57,7 +57,7 @@ public class SniffedInputStream extends BufferedInputStream {
         HTML // GetFeatureInfo
     }
 
-    private String _encoding;
+    private String encoding;
 
     public SniffedInputStream(InputStream stream) throws IOException {
         super( stream );
@@ -65,7 +65,7 @@ public class SniffedInputStream extends BufferedInputStream {
         // First assume HTML (GetFeatureInfo) ! Sniff for encoding in HTML
         // header.
         // assuming we can read it as UTF-8.
-        _encoding = sniffForEncodingInfo( "UTF-8", FileType.HTML );
+        encoding = sniffForEncodingInfo( "UTF-8", FileType.HTML );
 
         /*
          * // determine XML encoding from content first ? // we comment to keep
@@ -75,25 +75,25 @@ public class SniffedInputStream extends BufferedInputStream {
          * as UTF-8. _encoding = sniffForEncodingInfo("UTF-8", FileType.XML); }
          */
 
-        if (StringUtils.isEmpty(_encoding)) {
+        if (StringUtils.isEmpty(encoding)) {
             // read byte order marks and detect EBCDIC etc
-            _encoding = sniffFourBytes();
+            encoding = sniffFourBytes();
         }
 
-        if (StringUtils.isNotEmpty(_encoding) && _encoding.equals( "IBM037" )) {
+        if (StringUtils.isNotEmpty(encoding) && encoding.equals( "IBM037" )) {
             // First four bytes suggest EBCDIC with <?xm at start
-            String encoding = sniffForEncodingInfo( _encoding, FileType.XML );
-            if (StringUtils.isNotEmpty(_encoding))
-                _encoding = encoding;
+            String enc = sniffForEncodingInfo( encoding, FileType.XML );
+            if (StringUtils.isNotEmpty(enc))
+                encoding = enc;
         }
 
-        if (StringUtils.isEmpty(_encoding)) {
+        if (StringUtils.isEmpty(encoding)) {
             // Haven't yet determined encoding: sniff for <?xml encoding="..."?>
             // assuming we can read it as UTF-8.
-            _encoding = sniffForEncodingInfo( "UTF-8", FileType.XML );
+            encoding = sniffForEncodingInfo( "UTF-8", FileType.XML );
         }
 
-        if (StringUtils.isEmpty(_encoding)) {
+        if (StringUtils.isEmpty(encoding)) {
             // The XML spec says these two things:
 
             // (1) "In the absence of external character encoding information
@@ -119,7 +119,7 @@ public class SniffedInputStream extends BufferedInputStream {
 
             // Therefore, we must use UTF-8.
 
-            _encoding = "UTF-8";
+            encoding = "UTF-8";
         }
     }
 
@@ -136,7 +136,6 @@ public class SniffedInputStream extends BufferedInputStream {
 
     private String sniffFourBytes() throws IOException {
         mark( 4 );
-        int skip = 0;
         try {
             byte[] buf = new byte[4];
             if (readAsMuchAsPossible( buf, 0, 4 ) < 4)
@@ -181,14 +180,6 @@ public class SniffedInputStream extends BufferedInputStream {
 
     // BUGBUG in JDK: Charset.forName is not threadsafe, so we'll prime it
     // with the common charsets.
-
-    private static Charset dummy1 = Charset.forName( "UTF-8" );
-    private static Charset dummy2 = Charset.forName( "UTF-16" );
-    private static Charset dummy3 = Charset.forName( "UTF-16BE" );
-    private static Charset dummy4 = Charset.forName( "UTF-16LE" );
-    private static Charset dummy5 = Charset.forName( "ISO-8859-1" );
-    private static Charset dummy6 = Charset.forName( "US-ASCII" );
-    private static Charset dummy7 = Charset.forName( "Cp1252" );
 
     /**
      * Try to read encoding information from content of file, e.g.<br/>
@@ -245,7 +236,7 @@ public class SniffedInputStream extends BufferedInputStream {
      * @return determined encoding of input stream
      */
     public String getEncoding() {
-        return _encoding;
+        return encoding;
     }
 
     /**
@@ -332,7 +323,7 @@ public class SniffedInputStream extends BufferedInputStream {
     }
 
     private static int nextMatchingByte(char[] lookFor, char[] buf, int startAt, int limit) {
-        searching: for (; startAt < limit; startAt++) {
+        for (; startAt < limit; startAt++) {
             int thischar = buf[startAt];
             for (int i = 0; i < lookFor.length; i++)
                 if (thischar == lookFor[i])
@@ -342,7 +333,7 @@ public class SniffedInputStream extends BufferedInputStream {
     }
 
     private static int nextMatchingByte(char lookFor, char[] buf, int startAt, int limit) {
-        searching: for (; startAt < limit; startAt++) {
+        for (; startAt < limit; startAt++) {
             if (buf[startAt] == lookFor)
                 return startAt;
         }
@@ -353,8 +344,8 @@ public class SniffedInputStream extends BufferedInputStream {
     private static char[] NOTNAME = new char[] { '=', ' ', '\r', '\t', '\n', '?', '>', '<', '\'', '\"' };
 
     private static class ScannedAttribute {
-        public String name;
-        public String value;
+        public static String name;
+        public static String value;
     }
 
     private static int scanAttribute(char[] buf, int startAt, int limit, ScannedAttribute attr) {
