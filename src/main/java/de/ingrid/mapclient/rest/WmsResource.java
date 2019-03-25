@@ -28,12 +28,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -63,12 +60,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.itextpdf.text.html.HtmlEncoder;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonWriter;
 
-import de.ingrid.iplug.opensearch.communication.OSCommunication;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -81,16 +73,6 @@ import de.ingrid.mapclient.utils.Utils;
 public class WmsResource {
 
     private static final Logger log = Logger.getLogger( WmsResource.class );
-
-    /**
-     * The service pattern that urls must match
-     */
-    private static final Pattern SERVICE_PATTERN = Pattern.compile( "SERVICE=WMS", Pattern.CASE_INSENSITIVE );
-
-    /**
-     * The request pattern that urls must match
-     */
-    private static final Pattern REQUEST_PATTERN = Pattern.compile( "REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE );
 
     private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
     /**
@@ -311,7 +293,7 @@ public class WmsResource {
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     
                     if(serviceType.equalsIgnoreCase( "wms" )){
-                        html = getWmsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+                        html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
                     }else if(serviceType.equalsIgnoreCase( "wmts" )){
                         html = getWmtsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
                     }
@@ -339,7 +321,7 @@ public class WmsResource {
         return Response.ok(html).build();
     }
 
-    private String getWmsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String legend) throws XPathExpressionException {
+    private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String legend) throws XPathExpressionException {
         String html = "";
         // Create HTML
         html += "<div ng-if=\"showWMSTree\" class=\"tabbable\">";
@@ -356,24 +338,24 @@ public class WmsResource {
         html += "<div class=\"tab-content\">";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(1)\">";
-        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(2)\">";
-        html += getWMSInfoTree(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+        html += getWMSInfoTree(xpath, doc, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         html += "</div>";
         html += "</div>";
 
         html += "<div ng-if=\"!showWMSTree\">";
-        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         return html;
     }
 
-    private String getWMSInfoTree(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
+    private String getWMSInfoTree(XPath xpath, Document doc, String layerName, String layerTitle,
             String layerLegend) throws XPathExpressionException {
         Node field = null;
         String html = "";
@@ -400,7 +382,7 @@ public class WmsResource {
     }
 
     private String getWMSInfoData(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
-            String layerLegend, String legend) throws XPathExpressionException {
+            String layerLegend) throws XPathExpressionException {
         String html = "";
         html += "<div class=\"legend-container\">";
         html += "<div class=\"legend-footer\">";

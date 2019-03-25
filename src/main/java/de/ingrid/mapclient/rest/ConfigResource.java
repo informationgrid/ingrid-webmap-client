@@ -82,7 +82,7 @@ public class ConfigResource {
                 fileContent = Utils.getFileContent(configDir, filename, ".json", "config/");
                 if(StringUtils.isNotEmpty(fileContent)) {
                     profileSetting = new JSONObject(fileContent);
-                    if(setting != null && profileSetting != null) {
+                    if(setting != null) {
                         Iterator<?> keys = profileSetting.keys();
                         while( keys.hasNext() ) {
                             String key = (String)keys.next();

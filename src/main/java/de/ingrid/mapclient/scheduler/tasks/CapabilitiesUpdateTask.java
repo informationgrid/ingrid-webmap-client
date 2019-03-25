@@ -221,10 +221,8 @@ public class CapabilitiesUpdateTask implements Runnable{
                     }
                     if(hasChanges){
                         File cpFile = new File(configDir.concat("data/layers.json.") + Utils.getDateFlag());
-                        if(cpFile.exists()){
-                            if(cpFile.delete()) {
-                                log.debug("Delete file: " + cpFile.getName());
-                            }
+                        if(cpFile.exists() && cpFile.delete()){
+                            log.debug("Delete file: " + cpFile.getName());
                         }
                         File file = new File(configDir.concat("data/layers.json"));
                         if(file.renameTo( cpFile )) {
