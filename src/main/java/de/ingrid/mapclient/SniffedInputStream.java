@@ -201,13 +201,14 @@ public class SniffedInputStream extends BufferedInputStream {
      */
     private String sniffForEncodingInfo(String encoding, FileType fileType) throws IOException {
         mark( MAX_SNIFFED_BYTES );
-        try {
-            byte[] bytebuf = new byte[MAX_SNIFFED_BYTES];
-            int bytelimit = readAsMuchAsPossible( bytebuf, 0, MAX_SNIFFED_BYTES );
+        byte[] bytebuf = new byte[MAX_SNIFFED_BYTES];
+        int bytelimit = readAsMuchAsPossible( bytebuf, 0, MAX_SNIFFED_BYTES );
 
-            // BUGBUG in JDK: Charset.forName is not threadsafe.
-            Charset charset = Charset.forName( encoding );
+        // BUGBUG in JDK: Charset.forName is not threadsafe.
+        Charset charset = Charset.forName( encoding );
+        try (
             Reader reader = new InputStreamReader( new ByteArrayInputStream( bytebuf, 0, bytelimit ), charset );
+        ){
             char[] buf = new char[bytelimit];
             int limit = 0;
             while (limit < bytelimit) {

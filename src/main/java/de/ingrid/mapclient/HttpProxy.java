@@ -75,15 +75,16 @@ public class HttpProxy {
             }
     
             // send request
-            InputStream is = null;
-            try {
-                URL url = new URL( urlStr );
-                URLConnection conn = url.openConnection();
-                if(StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
-                    Utils.urlConnectionAuth(conn, login, password);
-                }
-                is = new BufferedInputStream(conn.getInputStream());
+            URL url = new URL( urlStr );
+            URLConnection conn = url.openConnection();
+            if(StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
+                Utils.urlConnectionAuth(conn, login, password);
+            }
+            try (
+                InputStream is = new BufferedInputStream(conn.getInputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            ){
+                
                 String inputLine = "";
                 while ((inputLine = br.readLine()) != null) {
                     response.append(inputLine);
@@ -93,15 +94,6 @@ public class HttpProxy {
             }
             catch (Exception e) {
                 result = null;
-            }
-            finally {
-                if (is != null) {
-                    try { 
-                        is.close(); 
-                    } 
-                    catch (IOException e) {
-                    }
-                }   
             }
             if(urlStr.startsWith("http:") && (result == null || result.trim().length() == 0)){
                 result = doRequest(urlStr.replace("http:", "https:"), login, password);

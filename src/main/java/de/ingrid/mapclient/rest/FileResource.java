@@ -377,9 +377,9 @@ public class FileResource {
         File file = null;
         if(attachement != null && attachementContentDisposition != null && attachementContentDisposition.getFileName() != null){
             file = new File(attachementContentDisposition.getFileName());
-            OutputStream out = null;
-            try {
-                out = new FileOutputStream(file);
+            try (
+                OutputStream out = new FileOutputStream(file);
+            ){
                 byte[] buf = new byte[1024];
                 int len;
                 while((len=attachement.read(buf))>0){
@@ -388,9 +388,6 @@ public class FileResource {
             } catch (Exception e) {
                 log.error("Error getFeedbackRequest: " + e);
             } finally {
-                if(out != null) {
-                    out.close();
-                }
                 if(attachement != null) {
                     attachement.close();
                 }

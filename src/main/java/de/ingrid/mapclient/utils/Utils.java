@@ -124,22 +124,18 @@ public class Utils {
 
     public static void writeFileContent (File file, String content) throws IOException {
         if(file != null && content != null) {
-            FileWriter fileWriter = null;
-            try {
-                fileWriter = new FileWriter( file );
+            try (
+                FileWriter fileWriter = new FileWriter( file );
+            ){
                 fileWriter.write( content );
                 fileWriter.flush();
             } catch (IOException e) {
                 log.error("Error update file: " + file.getAbsolutePath());
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
             }
         }
     }
 
-    public static void createFile(String filename, JSONObject item) throws JSONException {
+    public static void createFile(String filename, JSONObject item) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(configDir.concat(filename));
@@ -163,30 +159,24 @@ public class Utils {
         File file;
         if(doBackup) {
             File cpFile = new File(configDir.concat(filename + "." + getDateFlag()));
-            if(cpFile.exists()){
-                if(!cpFile.delete()) {
-                    log.error("Error delete file: '" + cpFile.getName() + "'" );
-                }
+            if(cpFile.exists() && !cpFile.delete()) {
+                log.error("Error delete file: '" + cpFile.getName() + "'" );
             }
             file = new File(configDir.concat(filename));
-            if(file.exists()) {
-                if(!file.renameTo( cpFile )) {
-                    log.error("Error rename file: '" + file.getName() + "'" );
-                }
+            if(file.exists() && !file.renameTo( cpFile )) {
+                log.error("Error rename file: '" + file.getName() + "'" );
             }
         }
         file = new File(configDir.concat(filename));
         cleanFileContent(file);
         cleanDirectory(file);
         log.debug( "Update file :" + file.getAbsoluteFile() );
-        if(file != null){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
+        try(FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)){
+            out.println(item.toString());
+        } catch (IOException e) {
+            log.error( "Error write new json file!" );
         }
     }
     
@@ -199,10 +189,8 @@ public class Utils {
                for(File tmpFile: parentFolder.listFiles()) {
                    if(!tmpFile.isDirectory()) {
                        String tmpFileName = tmpFile.getName();
-                       if(tmpFileName.indexOf("." + flagYear) > -1) {
-                           if(tmpFile.getName().indexOf("." + flagMonth) == -1) {
-                               tmpFile.delete();
-                           }
+                       if(tmpFileName.indexOf("." + flagYear) > -1 && tmpFile.getName().indexOf("." + flagMonth) == -1 && tmpFile.delete()) {
+                           log.debug("Delete file: " +  tmpFile.getName());
                        }
                    }
                }
@@ -211,7 +199,7 @@ public class Utils {
         
     }
 
-    public static void removeFile(String filename) throws JSONException {
+    public static void removeFile(String filename) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(configDir.concat(filename));
@@ -228,10 +216,10 @@ public class Utils {
         for (int i = 0; i < partsParamString.length; i++) {
           String partParamString = partsParamString[i];
           if(tmpUrl.indexOf(partParamString.toLowerCase()) < 0){
-            if(url.indexOf("?") < 0){
+            if(url.indexOf('?') < 0){
                 url += "?";
             }
-            if(url.endsWith("?") == false){
+            if(!url.endsWith("?")){
                 url += "&";
             }
             if(url.indexOf(partParamString.split("=")[0]) < 0){
@@ -268,17 +256,12 @@ public class Utils {
 
     public static String readFileAsString(File file) {
         byte[] buffer = new byte[(int) file.length()];
-        BufferedInputStream f = null;
-        try {
-            f = new BufferedInputStream( new FileInputStream( file ) );
+        try (
+            BufferedInputStream f = new BufferedInputStream( new FileInputStream( file ) );
+        ){
             f.read( buffer );
         } catch (Exception e) {
            log.error("Error read file: '" + file.getName() + "'");
-        } finally {
-            if (f != null)
-                try {
-                    f.close();
-                } catch (IOException ignored) {}
         }
         return new String( buffer );
     }
@@ -319,15 +302,12 @@ public class Utils {
             is.setCharacterStream( new StringReader( xmlSource ) );
             Document doc = db.parse( is );
             return doc;
-        } catch (ParserConfigurationException e) {
+        } catch (ParserConfigurationException | IOException e) {
             log.error( "error on parsing xml string: " + e.getMessage() );
             throw new WebApplicationException( e, Response.Status.CONFLICT );
         } catch (SAXException e) {
             log.error( "error on parsing xml string: " + e.getMessage() );
             throw new SAXException( e );
-        } catch (IOException e) {
-            log.error( "error on parsing xml string: " + e.getMessage() );
-            throw new WebApplicationException( e, Response.Status.CONFLICT );
         }
     }
 
@@ -431,7 +411,9 @@ public class Utils {
             log.error( "error sending email.", e );
         } finally {
             if (attachment != null) {
-                attachment.delete();
+                if(attachment.delete()) {
+                    log.debug("Delete attachment: " + attachment.getName());
+                }
             }
         }
 
@@ -481,10 +463,8 @@ public class Utils {
                 String key = uri.getHost();
                 if(serviceAuth.has(key)){
                     JSONObject auth = serviceAuth.getJSONObject(key);
-                    if(auth.has("login") && auth.has("password")) {
-                        if(login.equals(auth.getString("login"))) {
-                            return auth.getString("password"); 
-                        }
+                    if(auth.has("login") && auth.has("password") && login.equals(auth.getString("login"))) {
+                        return auth.getString("password"); 
                     }
                 }
             }
@@ -499,7 +479,7 @@ public class Utils {
     public static String getDateFlag(String format) {
         Date date = new Date();  
         Timestamp ts=new Timestamp(date.getTime());  
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
+        SimpleDateFormat formatter = new SimpleDateFormat(format);  
         
         return formatter.format(ts);
     }
@@ -531,6 +511,7 @@ class MailAuthenticator extends Authenticator {
         this.password = password;
     }
 
+    @Override
     public PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication( this.user, this.password );
     }
