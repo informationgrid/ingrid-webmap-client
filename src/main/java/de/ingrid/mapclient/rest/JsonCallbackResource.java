@@ -200,7 +200,6 @@ public class JsonCallbackResource {
                 }
             } catch (Exception e) {
                 log.info( "Search service unreachable: " + url );
-                continue;
             }
         }
         String responseStr = json.toString();

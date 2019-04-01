@@ -34,11 +34,12 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -109,7 +110,7 @@ public class Utils {
         File file = new File(path.concat(filename).concat(fileTyp));
         if(file.exists()){
             try {
-                String fileContent = FileUtils.readFileToString( file, "UTF-8");
+                String fileContent = FileUtils.readFileToString( file, StandardCharsets.UTF_8.toString());
                 if(StringUtils.isNotEmpty(fileContent)){
                     return fileContent;
                 }
@@ -203,31 +204,29 @@ public class Utils {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file = new File(configDir.concat(filename));
-        if(file.exists()) {
-            if(!file.delete()) {
-                log.error("Error delete file: '" + file.getName() + "'" );
-            }
+        if(file.exists() && !file.delete()) {
+            log.error("Error delete file: '" + file.getName() + "'" );
         }
     }
 
     public static String checkWMSUrl(String url, String paramString){
         String[] partsParamString = paramString.split("&");
-        String tmpUrl = url.toLowerCase();
+        StringBuilder tmpUrl = new StringBuilder(url);
         for (int i = 0; i < partsParamString.length; i++) {
           String partParamString = partsParamString[i];
-          if(tmpUrl.indexOf(partParamString.toLowerCase()) < 0){
-            if(url.indexOf('?') < 0){
-                url += "?";
+          if(tmpUrl.toString().toLowerCase().indexOf(partParamString.toLowerCase()) < 0){
+            if(tmpUrl.toString().indexOf('?') < 0){
+                tmpUrl.append("?");
             }
-            if(!url.endsWith("?")){
-                url += "&";
+            if(!tmpUrl.toString().endsWith("?")){
+                tmpUrl.append("&");
             }
-            if(url.indexOf(partParamString.split("=")[0]) < 0){
-                url += partParamString;
+            if(tmpUrl.toString().indexOf(partParamString.split("=")[0]) < 0){
+                tmpUrl.append(partParamString);
             }
           }
         }
-        return url;
+        return tmpUrl.toString();
     }
     
     public static String getPropertyFromJSONFiles(String[] paths, String key, String defaultValue) throws Exception {
@@ -266,7 +265,7 @@ public class Utils {
         return new String( buffer );
     }
     
-    public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
+    public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
             String protocol) {
         return sendEmail( from, subject, to, text, headers, host, port, user, password, ssl, protocol, null );
     }
@@ -300,8 +299,7 @@ public class Utils {
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             InputSource is = new InputSource();
             is.setCharacterStream( new StringReader( xmlSource ) );
-            Document doc = db.parse( is );
-            return doc;
+            return db.parse( is );
         } catch (ParserConfigurationException | IOException e) {
             log.error( "error on parsing xml string: " + e.getMessage() );
             throw new WebApplicationException( e, Response.Status.CONFLICT );
@@ -321,7 +319,7 @@ public class Utils {
      * @param headers
      * @return true if email was sent, else false
      */
-    public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
+    public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
             String protocol, File attachment) {
 
         boolean debug = log.isDebugEnabled();
@@ -410,13 +408,10 @@ public class Utils {
         } catch (MessagingException e) {
             log.error( "error sending email.", e );
         } finally {
-            if (attachment != null) {
-                if(attachment.delete()) {
-                    log.debug("Delete attachment: " + attachment.getName());
-                }
+            if (attachment != null && attachment.delete()) {
+                log.debug("Delete attachment: " + attachment.getName());
             }
         }
-
         return emailSent;
     }
     

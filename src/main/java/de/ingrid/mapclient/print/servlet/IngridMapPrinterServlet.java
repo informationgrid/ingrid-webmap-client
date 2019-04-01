@@ -61,8 +61,6 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
     private final Map<String, MapPrinter> printers = Maps.newHashMap();
     private final Map<String,Long> lastModifieds = Maps.newHashMap();
 
-    private volatile ApplicationContext context;
-
     /**
      * Builds a MapPrinter instance out of the file pointed by the servlet's
      * configuration. The location can be configured in two locations:
@@ -73,6 +71,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
      * <p/>
      * If the location is a relative path, it's taken from the servlet's root directory.
      */
+    @Override
     protected synchronized MapPrinter getMapPrinter(String app) throws ServletException {
         String configPath = System.getProperty("mapfish-print-config", getInitParameter("config"));
         if (configPath == null) {
@@ -99,7 +98,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 configFile = new File(realPath);
             } else {
                 LOGGER.info("Unable to find config file in web application using getRealPath.  Adding a / because that is often dropped");
-                realPath = getServletContext().getRealPath("/" + app);
+                realPath = getServletContext().getRealPath(app);
                 configFile = new File(realPath);
             }
         }
@@ -164,6 +163,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                                         out.println("      password: " + password);
                                         //more code
                                     } catch (IOException e) {
+                                        LOGGER.error("Error on getMapPrinter.", e);
                                     }
                                 }
                             }
@@ -223,7 +223,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 lastModifieds.put(app,  configFile.lastModified());
             } catch (FileNotFoundException e) {
                 throw new ServletException("Cannot read configuration file: " + configPath, e);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.error("Error occurred while reading configuration file", e);
                 throw new ServletException("Error occurred while reading configuration file '" + configFile + "': " + e );
             }
@@ -235,21 +235,18 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
     }
     
     private ApplicationContext getApplicationContext() {
-        if (this.context == null) {
-            synchronized (this) {
-                if (this.context == null) {
-                    this.context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-                    if (this.context == null || context.getBean(MapPrinter.class) == null) {
-                        String springConfig = System.getProperty("mapfish.print.springConfig");
-                        if(springConfig != null) {
-                            this.context = new FileSystemXmlApplicationContext("classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig);
-                        } else {
-                            this.context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
-                        }
-                    }
+        ApplicationContext context = null;
+        synchronized (this) {
+            context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+            if (context == null || context.getBean(MapPrinter.class) == null) {
+                String springConfig = System.getProperty("mapfish.print.springConfig");
+                if(springConfig != null) {
+                    context = new FileSystemXmlApplicationContext("classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig);
+                } else {
+                    context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
                 }
             }
         }
-        return this.context;
+        return context;
     }
 }

@@ -55,7 +55,7 @@ import org.xml.sax.InputSource;
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
-import de.ingrid.mapclient.utils.Utils;;
+import de.ingrid.mapclient.utils.Utils;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -67,13 +67,39 @@ public class AdministrationResource {
 
     private static final Logger log = Logger.getLogger( AdministrationResource.class );
     
+    private static final String FILEFORMAT_JSON         = ".json";
+    
+    private static final String CONFIG_PATH_HELP        = "help/";
+    private static final String CONFIG_PATH_DATA        = "data/";
+    private static final String CONFIG_PATH_LOCALES     = "locales/";
+    
+    private static final String FILE_PREFIX_CATALOG     = "catalog-";
+    private static final String FILE_PREFIX_HELP        = "help-";
+    private static final String FILE_PREFIX_PROFILE     = ".profile";
+    private static final String FILE_NAME_CATALOGS      = "catalogs";
+    private static final String FILE_NAME_LAYERS        = "layers";
+    
+    private static final String CATEGORY_KEY_TOPICS     = "topics";
+    private static final String CATEGORY_KEY_CHILDREN   = "children";
+    private static final String CATEGORY_KEY_LABEL      = "label";
+    private static final String LAYER_KEY_LAYERBODID    = "layerBodId";
+    private static final String LAYER_KEY_LABEL         = "label";
+    private static final String LAYER_KEY_ID            = "label";
+    private static final String LAYER_KEY_WMSURL        = "wmsUrl";
+    private static final String LAYER_KEY_SERVICEURL    = "serviceUrl";
+    
+    private static final String LAYER_KEY_BACKGROUND    = "background";
+    private static final String HELP_KEY_TITLE          = "title";
+    private static final String HELP_KEY_TEXT           = "text";
+    private static final String HELP_KEY_IMAGE          = "image";
+    
     /* Layers */
     @GET
     @Path("layers")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLayersList(@QueryParam("currentPage") String currentPage, @QueryParam("layersPerPage") String layersPerPage, @QueryParam("searchText") String searchText,
             @QueryParam("hasStatus") boolean hasStatus, @QueryParam("searchCategory") String searchCategory, @QueryParam("searchType") String searchType) {
-        String[] searchTextKeys = {"label", "id", "wmsUrl", "serviceUrl"};
+        String[] searchTextKeys = {LAYER_KEY_LABEL, LAYER_KEY_ID, LAYER_KEY_WMSURL, LAYER_KEY_SERVICEURL};
         String[] searchTypeKeys = {"type"};
         String[] searchHasStatusKeys = {"status"};
         if(currentPage == null && layersPerPage == null) {
@@ -253,8 +279,8 @@ public class AdministrationResource {
                             filteredTreeLeafById(categoryTree, id, filterCategoryTree, isExpanded);
                             if(filterCategoryTree.length() > 0) {
                                 JSONObject filterCategory = new JSONObject();
-                                filterCategory.put("label", categoryId);
-                                filterCategory.put("children", filterCategoryTree);
+                                filterCategory.put(CATEGORY_KEY_LABEL, categoryId);
+                                filterCategory.put(CATEGORY_KEY_CHILDREN, filterCategoryTree);
                                 categoriesWithLayerId.put(filterCategory);
                             }
                         }
@@ -295,9 +321,9 @@ public class AdministrationResource {
                     Properties p = ConfigurationProvider.INSTANCE.getProperties();
                     String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                     if(StringUtils.isNotEmpty(configDir)) {
-                        String fileContent = Utils.getFileContent(configDir, "catalog-" + copyId, ".json", "data/");
+                        String fileContent = Utils.getFileContent(configDir, FILE_PREFIX_CATALOG + copyId, FILEFORMAT_JSON, CONFIG_PATH_DATA);
                         if(StringUtils.isNotEmpty(fileContent)) {
-                            Utils.createFile("data/catalog-" + categoryId + ".json", new JSONObject(fileContent));
+                            Utils.createFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + categoryId + FILEFORMAT_JSON, new JSONObject(fileContent));
                         }
                     }
                 }
@@ -383,7 +409,7 @@ public class AdministrationResource {
             JSONObject settingProfile = new JSONObject(content);
             String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
             String fileSetting = classPath + "frontend/";
-            String fileContent = Utils.getFileContent(fileSetting, "setting", ".json", "config/");
+            String fileContent = Utils.getFileContent(fileSetting, "setting", FILEFORMAT_JSON, "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
                 setting = new JSONObject(fileContent);
                 if(setting != null) {
@@ -474,7 +500,7 @@ public class AdministrationResource {
                             this.updateHelp(lang, this.getHelpRequest("de").getEntity().toString());
                         }
                         ConfigResource cr = new ConfigResource();
-                        Response localeResponse = cr.getLocales(lang+ ".json", false);
+                        Response localeResponse = cr.getLocales(lang+ FILEFORMAT_JSON, false);
                         if(localeResponse.getEntity().toString().equals("{}")) {
                             this.updateLocale(lang, cr.getLocales("de.json", false).getEntity().toString());
                         }
@@ -522,7 +548,7 @@ public class AdministrationResource {
     public Response getHelpRequest(@PathParam("lang") String lang) {
         try {
             if(lang != null) {
-                String filename = "help-" + lang;
+                String filename = FILE_PREFIX_HELP + lang;
                 if(log.isDebugEnabled()){
                     log.debug( "Load file: " + filename );
                 }
@@ -534,7 +560,7 @@ public class AdministrationResource {
                 String classPath = "";
                 classPath += this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
                 String filePathHelp = classPath + "frontend/";
-                String fileContent = Utils.getFileContent(filePathHelp, filename, ".json", "help/");
+                String fileContent = Utils.getFileContent(filePathHelp, filename, FILEFORMAT_JSON, CONFIG_PATH_HELP);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     help = new JSONObject(fileContent);
                 }
@@ -542,11 +568,11 @@ public class AdministrationResource {
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
                 if(StringUtils.isNotEmpty(configDir)) {
-                    fileContent = Utils.getFileContent(configDir, filename + ".profile", ".json", "help/");
+                    fileContent = Utils.getFileContent(configDir, filename + FILE_PREFIX_PROFILE, FILEFORMAT_JSON, CONFIG_PATH_HELP);
                     if(StringUtils.isEmpty(fileContent)) {
-                        fileContent = Utils.getFileContent(filePathHelp, filename + ".profile", ".json", "help/");
+                        fileContent = Utils.getFileContent(filePathHelp, filename + FILE_PREFIX_PROFILE, FILEFORMAT_JSON, CONFIG_PATH_HELP);
                         if(StringUtils.isNotEmpty(fileContent)) {
-                            Utils.updateFile("help/"+ filename + ".profile.json", fileContent);
+                            Utils.updateFile(CONFIG_PATH_HELP+ filename + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, fileContent);
                         }
                     }
                     if(StringUtils.isNotEmpty(fileContent)) {
@@ -573,7 +599,7 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getHelpIdRequest(@PathParam("lang") String lang, @PathParam("id") String id) {
         if(lang != null) {
-            String filename = "help-" + lang;
+            String filename = FILE_PREFIX_HELP + lang;
             if(StringUtils.isNotEmpty(filename)){
                 if(log.isDebugEnabled()){
                     log.debug( "Load file: " + filename );
@@ -590,9 +616,9 @@ public class AdministrationResource {
                                 JSONObject jsonObj = new JSONObject();
                                 JSONObject jsonObjId = obj.getJSONObject(id);
                                 if(jsonObjId != null){
-                                    String title = jsonObjId.getString( "title" );
-                                    String text = jsonObjId.getString( "text" );
-                                    String image = jsonObjId.getString( "image" );
+                                    String title = jsonObjId.getString( HELP_KEY_TITLE );
+                                    String text = jsonObjId.getString( HELP_KEY_TEXT );
+                                    String image = jsonObjId.getString( HELP_KEY_IMAGE );
                                     
                                     JSONArray jsonRowObj = new JSONArray();
                                     jsonRowObj.put(id);
@@ -648,7 +674,7 @@ public class AdministrationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLocales(@PathParam("locale") String locale) throws JSONException {
         ConfigResource cr = new ConfigResource();
-        return cr.getLocales(locale + ".json", false);
+        return cr.getLocales(locale + FILEFORMAT_JSON, false);
     }
 
     @PUT
@@ -711,11 +737,11 @@ public class AdministrationResource {
         JSONObject item = new JSONObject(content);
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, lang + ".profile", ".json", "locales/");
+            String fileContent = Utils.getFileContent(configDir, lang + FILE_PREFIX_PROFILE, FILEFORMAT_JSON, CONFIG_PATH_LOCALES);
             if(StringUtils.isNotEmpty(fileContent)) {
                 localeProfile = new JSONObject(fileContent);
                 ConfigResource cr = new ConfigResource();
-                Response localeResponse = cr.getLocales(lang+ ".json", true);
+                Response localeResponse = cr.getLocales(lang+ FILEFORMAT_JSON, true);
                 if(localeResponse != null) {
                     localeDefault = new JSONObject(localeResponse.getEntity().toString());
                 }
@@ -736,9 +762,9 @@ public class AdministrationResource {
                         }
                     }
                 }
-                Utils.updateFile("locales/" + lang + ".profile.json", localeProfile);
+                Utils.updateFile(CONFIG_PATH_LOCALES + lang + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, localeProfile);
             } else {
-                Utils.updateFile("locales/" + lang + ".profile.json", item);
+                Utils.updateFile(CONFIG_PATH_LOCALES + lang + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, item);
             }
         }
     }
@@ -748,7 +774,7 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, lang, ".profile.json", "locales/");
+            String fileContent = Utils.getFileContent(configDir, lang, FILE_PREFIX_PROFILE + FILEFORMAT_JSON, CONFIG_PATH_LOCALES);
             if(StringUtils.isNotEmpty(fileContent)) {
                 locale = new JSONObject(fileContent);
                 for (String key : keys) {
@@ -756,7 +782,7 @@ public class AdministrationResource {
                         locale.remove(key);
                     }
                 }
-                Utils.updateFile("locales/" + lang + ".profile.json", locale);
+                Utils.updateFile(CONFIG_PATH_LOCALES + lang + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, locale);
             }
         }
     }
@@ -766,16 +792,16 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "catalog-" + id, ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_PREFIX_CATALOG + id, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
                     arr = new JSONArray();
                     JSONObject results = obj.getJSONObject("results");
                     JSONObject root = results.getJSONObject("root");
-                    root.put("children", item);
+                    root.put(CATEGORY_KEY_CHILDREN, item);
                     cleanupCategory(item);
-                    Utils.updateFile("data/catalog-" + id + ".json", obj);
+                    Utils.updateFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + id + FILEFORMAT_JSON, obj);
                     return item;
                 } catch (Exception e) {
                     log.error("Error 'updateCategoryTree'!");
@@ -789,12 +815,12 @@ public class AdministrationResource {
         for (int i = 0; i < items.length(); i++) {
             try {
                 JSONObject item = items.getJSONObject(i);
-                if(item.has("children")) {
-                    JSONArray children =  item.getJSONArray("children");
+                if(item.has(CATEGORY_KEY_CHILDREN)) {
+                    JSONArray children =  item.getJSONArray(CATEGORY_KEY_CHILDREN);
                     if(children.length() > 0) {
                         cleanupCategory(children);
                     } else {
-                        item.remove("children");
+                        item.remove(CATEGORY_KEY_CHILDREN);
                     }
                 }
             } catch (JSONException e) {
@@ -826,7 +852,7 @@ public class AdministrationResource {
             String classPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath().split("WEB-INF")[0];
             if(classPath != null) {
                 String filePathHelp = classPath + "frontend/";
-                String fileContent = Utils.getFileContent(filePathHelp, "help-" + lang, ".json", "help/");
+                String fileContent = Utils.getFileContent(filePathHelp, FILE_PREFIX_HELP + lang, FILEFORMAT_JSON, CONFIG_PATH_HELP);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     help = new JSONObject(fileContent);
                 }
@@ -842,14 +868,14 @@ public class AdministrationResource {
                     if (profileHelp.has(key)) {
                         JSONObject helpItem = help.getJSONObject(key);
                         JSONObject helpProfileItem = profileHelp.getJSONObject(key);
-                        if(helpItem.has("title") && helpProfileItem.has("title") && helpItem.getString("title").equals(helpProfileItem.getString("title")) 
-                            && helpItem.has("text") && helpProfileItem.has("text") && helpItem.getString("text").equals(helpProfileItem.getString("text"))
-                            && helpItem.has("image") && helpProfileItem.has("image") &&  helpItem.getString("image").equals(helpProfileItem.getString("image"))){
+                        if(helpItem.has(HELP_KEY_TITLE) && helpProfileItem.has(HELP_KEY_TITLE) && helpItem.getString(HELP_KEY_TITLE).equals(helpProfileItem.getString(HELP_KEY_TITLE)) 
+                            && helpItem.has(HELP_KEY_TEXT) && helpProfileItem.has(HELP_KEY_TEXT) && helpItem.getString(HELP_KEY_TEXT).equals(helpProfileItem.getString(HELP_KEY_TEXT))
+                            && helpItem.has(HELP_KEY_IMAGE) && helpProfileItem.has(HELP_KEY_IMAGE) &&  helpItem.getString(HELP_KEY_IMAGE).equals(helpProfileItem.getString(HELP_KEY_IMAGE))){
                             profileHelp.remove(key);
                         }
                     }
                 }
-                Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
+                Utils.updateFile(CONFIG_PATH_HELP + FILE_PREFIX_HELP + lang + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, profileHelp.toString());
             }
             return content;
         } catch (Exception e) {
@@ -863,13 +889,13 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(StringUtils.isNotEmpty(configDir)) {
-                String fileContent = Utils.getFileContent(configDir, "help-" + lang + ".profile", ".json", "help/");
+                String fileContent = Utils.getFileContent(configDir, FILE_PREFIX_HELP + lang + FILE_PREFIX_PROFILE, FILEFORMAT_JSON, CONFIG_PATH_HELP);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     JSONObject profileHelp = new JSONObject(fileContent);
                     if(profileHelp.has(id)) {
                         profileHelp.remove(id);
                     }
-                    Utils.updateFile("help/help-" + lang + ".profile.json", profileHelp.toString());
+                    Utils.updateFile(CONFIG_PATH_HELP + FILE_PREFIX_HELP + lang + FILE_PREFIX_PROFILE + FILEFORMAT_JSON, profileHelp.toString());
                     return profileHelp.toString();
                 }
             }
@@ -889,7 +915,7 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_NAME_LAYERS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -909,11 +935,11 @@ public class AdministrationResource {
                                     JSONObject item = obj.getJSONObject(key);
                                     JSONObject itemCompress = new JSONObject();
                                     itemCompress.put("id", key);
-                                    if(item.has("label")) {
-                                        itemCompress.put("label", item.get("label"));
+                                    if(item.has(LAYER_KEY_LABEL)) {
+                                        itemCompress.put(LAYER_KEY_LABEL, item.get(LAYER_KEY_LABEL));
                                     }
-                                    if(item.has("background")) {
-                                        itemCompress.put("background", item.get("background"));
+                                    if(item.has(LAYER_KEY_BACKGROUND)) {
+                                        itemCompress.put(LAYER_KEY_BACKGROUND, item.get(LAYER_KEY_BACKGROUND));
                                     }
                                     tmpObj.put("item", itemCompress);
                                 } else {
@@ -936,7 +962,7 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(StringUtils.isNotEmpty(configDir)) {
-                String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
+                String fileContent = Utils.getFileContent(configDir, FILE_NAME_LAYERS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject newObj = new JSONObject();
@@ -957,7 +983,7 @@ public class AdministrationResource {
                             String key = (String)keys.next();
                             newObj.put(key, obj.getJSONObject(key));
                         }
-                        Utils.updateFile("data/layers.json", newObj);
+                        Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_LAYERS + FILEFORMAT_JSON, newObj);
                     } catch (JSONException e) {
                         log.error("Error 'updateLayer'!");
                     }
@@ -1054,7 +1080,7 @@ public class AdministrationResource {
                     arrSearch.put(parentObj);
                 } else {
                     String value = obj.getString(key);
-                    if(value == "true") {
+                    if(value.equals("true")) {
                         arrSearch.put(parentObj);
                     }
                 }
@@ -1090,15 +1116,15 @@ public class AdministrationResource {
         boolean hasValue = false;
         for (int i = 0; i < categoryTree.length(); i++) {
             JSONObject obj = categoryTree.getJSONObject(i);
-            if(obj.has("layerBodId")) {
-                String layerBodId = obj.getString("layerBodId");
+            if(obj.has(LAYER_KEY_LAYERBODID)) {
+                String layerBodId = obj.getString(LAYER_KEY_LAYERBODID);
                 if(layerBodId.equals(searchId)) {
                     hasValue = true;
                     break;
                 }
             }
-            if(obj.has("children")) {
-                JSONArray children = obj.getJSONArray("children");
+            if(obj.has(CATEGORY_KEY_CHILDREN)) {
+                JSONArray children = obj.getJSONArray(CATEGORY_KEY_CHILDREN);
                 if(searchCategoryValue(searchId, children)) {
                     hasValue = true;
                     break;
@@ -1112,7 +1138,7 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(StringUtils.isNotEmpty(configDir)) {
-                String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
+                String fileContent = Utils.getFileContent(configDir, FILE_NAME_LAYERS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
@@ -1193,7 +1219,7 @@ public class AdministrationResource {
                             obj = new JSONObject(newObj);
                             obj.put(newId, layerItem);
                         }
-                        Utils.updateFile("data/layers.json", obj);
+                        Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_LAYERS + FILEFORMAT_JSON, obj);
                     } catch (JSONException e) {
                         log.error("Error 'updateLayer'!");
                     }
@@ -1211,7 +1237,7 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "layers", ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_NAME_LAYERS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1225,7 +1251,7 @@ public class AdministrationResource {
                         obj = new JSONObject();
                     }
                     removeLayersFromCategories(ids);
-                    Utils.updateFile("data/layers.json", obj);
+                    Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_LAYERS + FILEFORMAT_JSON, obj);
                 } catch (JSONException e) {
                     log.error("Error 'deleteLayer'!");
                 }
@@ -1259,8 +1285,8 @@ public class AdministrationResource {
         JSONObject obj = null;
         try {
             boolean layerExist = false;
-            if(item.has("layerBodId")) {
-                String layerBodId = item.getString("layerBodId");
+            if(item.has(LAYER_KEY_LAYERBODID)) {
+                String layerBodId = item.getString(LAYER_KEY_LAYERBODID);
                 if(layerBodId != null) {
                     if(ids != null) {
                         for (String id : ids) {
@@ -1275,15 +1301,15 @@ public class AdministrationResource {
             }
             if (!layerExist) {
                 obj = item;
-                if(item.has("children")) {
-                    JSONArray children = item.getJSONArray("children");
+                if(item.has(CATEGORY_KEY_CHILDREN)) {
+                    JSONArray children = item.getJSONArray(CATEGORY_KEY_CHILDREN);
                     if(children != null) {
                         JSONArray childList = new JSONArray();
                         for (int j = 0; j < children.length(); j++) {
                             JSONObject catItem = children.getJSONObject(j);
                             removeLayerFromCategory(ids, catItem, childList);
                         }
-                        obj.put("children", childList);
+                        obj.put(CATEGORY_KEY_CHILDREN, childList);
                     }
                 }
             }
@@ -1300,11 +1326,11 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_NAME_CATALOGS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
-                    return obj.getJSONArray("topics");
+                    return obj.getJSONArray(CATEGORY_KEY_TOPICS);
                 } catch (JSONException e) {
                     log.error("Error 'getCategories'!");
                 }
@@ -1317,7 +1343,7 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_NAME_CATALOGS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
@@ -1325,14 +1351,14 @@ public class AdministrationResource {
                     rootItem.put("category", "root");
                     rootItem.put("staging", "prod");
                     rootItem.put("id", 1);
-                    rootItem.put("children", new JSONArray());
+                    rootItem.put(CATEGORY_KEY_CHILDREN, new JSONArray());
                     JSONObject root = new JSONObject();
                     root.put("root", rootItem);
                     JSONObject results = new JSONObject();
                     results.put("results", root);
-                    Utils.createFile("data/catalog-" + catelog.getString("id") + ".json", results);
-                    obj.getJSONArray("topics").put(catelog);
-                    Utils.updateFile("data/catalogs.json", obj);
+                    Utils.createFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + catelog.getString("id") + FILEFORMAT_JSON, results);
+                    obj.getJSONArray(CATEGORY_KEY_TOPICS).put(catelog);
+                    Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_CATALOGS + FILEFORMAT_JSON, obj);
                 } catch (JSONException e) {
                     log.error("Error 'addCategory'!");
                 }
@@ -1346,11 +1372,11 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(StringUtils.isNotEmpty(configDir)) {
-                String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
+                String fileContent = Utils.getFileContent(configDir, FILE_NAME_CATALOGS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
-                        JSONArray topics = obj.getJSONArray("topics");
+                        JSONArray topics = obj.getJSONArray(CATEGORY_KEY_TOPICS);
                         for (int i = 0; i < topics.length(); i++) {
                             JSONObject tmpObj = topics.getJSONObject(i);
                             if(tmpObj.getString("id").equals(id)) {
@@ -1358,7 +1384,7 @@ public class AdministrationResource {
                                 break;
                             }
                         }
-                        Utils.updateFile("data/catalogs.json", obj);
+                        Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_CATALOGS + FILEFORMAT_JSON, obj);
                     } catch (JSONException e) {
                         log.error("Error 'updateCategory'!");
                     }
@@ -1373,11 +1399,11 @@ public class AdministrationResource {
             Properties p = ConfigurationProvider.INSTANCE.getProperties();
             String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
             if(StringUtils.isNotEmpty(configDir)) {
-                String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
+                String fileContent = Utils.getFileContent(configDir, FILE_NAME_CATALOGS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
                 if(StringUtils.isNotEmpty(fileContent)) {
                     try {
                         JSONObject obj = new JSONObject(fileContent);
-                        JSONArray topics = obj.getJSONArray("topics");
+                        JSONArray topics = obj.getJSONArray(CATEGORY_KEY_TOPICS);
                         JSONArray newTopics = new JSONArray();
                         for (int i = 0; i < topics.length(); i++) {
                             JSONObject tmpObj = topics.getJSONObject(i);
@@ -1385,9 +1411,9 @@ public class AdministrationResource {
                                 newTopics.put(tmpObj);
                             }
                         }
-                        obj.put("topics", newTopics);
-                        Utils.removeFile("data/catalog-" + id +".json");
-                        Utils.updateFile("data/catalogs.json", obj);
+                        obj.put(CATEGORY_KEY_TOPICS, newTopics);
+                        Utils.removeFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + id +FILEFORMAT_JSON);
+                        Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_CATALOGS + FILEFORMAT_JSON, obj);
                         deleteCategoriesLocales(id);
                     } catch (JSONException e) {
                         log.error("Error 'deleteCategory'!");
@@ -1415,11 +1441,11 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "catalogs", ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_NAME_CATALOGS, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
-                    JSONArray topics = obj.getJSONArray("topics");
+                    JSONArray topics = obj.getJSONArray(CATEGORY_KEY_TOPICS);
                     JSONArray newTopics = new JSONArray();
                     for (int i = 0; i < topics.length(); i++) {
                         JSONObject tmpObj = topics.getJSONObject(i);
@@ -1427,7 +1453,7 @@ public class AdministrationResource {
                         if(ids != null) {
                             for (String id : ids) {
                                 if(id != null && id.length() > 0 && tmpObj.getString("id").equals(id)) {
-                                    Utils.removeFile("data/catalog-" + id +".json");
+                                    Utils.removeFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + id +FILEFORMAT_JSON);
                                     deleteCategoriesLocales(id);
                                     toDelete = true;
                                     break;
@@ -1435,7 +1461,7 @@ public class AdministrationResource {
                             }
                         } else {
                             String id = tmpObj.getString("id");
-                            Utils.removeFile("data/catalog-" + id +".json");
+                            Utils.removeFile(CONFIG_PATH_DATA + FILE_PREFIX_CATALOG + id +FILEFORMAT_JSON);
                             deleteCategoriesLocales(id);
                             toDelete = true;
                         }
@@ -1443,8 +1469,8 @@ public class AdministrationResource {
                             newTopics.put(tmpObj);
                         }
                     }
-                    obj.put("topics", newTopics);
-                    Utils.updateFile("data/catalogs.json", obj);
+                    obj.put(CATEGORY_KEY_TOPICS, newTopics);
+                    Utils.updateFile(CONFIG_PATH_DATA + FILE_NAME_CATALOGS + FILEFORMAT_JSON, obj);
                 } catch (JSONException e) {
                     log.error("Error 'deleteLayer'!");
                 }
@@ -1457,13 +1483,13 @@ public class AdministrationResource {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
-            String fileContent = Utils.getFileContent(configDir, "catalog-" + id, ".json", "data/");
+            String fileContent = Utils.getFileContent(configDir, FILE_PREFIX_CATALOG + id, FILEFORMAT_JSON, CONFIG_PATH_DATA);
             if(StringUtils.isNotEmpty(fileContent)) {
                 try {
                     JSONObject obj = new JSONObject(fileContent);
                     JSONObject results = obj.getJSONObject("results");
                     JSONObject root = results.getJSONObject("root");
-                    return root.getJSONArray("children");
+                    return root.getJSONArray(CATEGORY_KEY_CHILDREN);
                 } catch (JSONException e) {
                     log.error("Error 'getCategoryTree'!");
                 }
@@ -1477,13 +1503,13 @@ public class AdministrationResource {
             try {
                 for (int i = 0; i < categoryTree.length(); i++) {
                     JSONObject categoryTreeBranch = categoryTree.getJSONObject(i);
-                    if(categoryTreeBranch.has("children")) {
-                        JSONArray categoryTreeBranchChildren = categoryTreeBranch.getJSONArray("children");
+                    if(categoryTreeBranch.has(CATEGORY_KEY_CHILDREN)) {
+                        JSONArray categoryTreeBranchChildren = categoryTreeBranch.getJSONArray(CATEGORY_KEY_CHILDREN);
                         JSONArray filterCategoryTreeChildren = new JSONArray();
                         if(categoryTreeBranchChildren != null) {
                             filteredTreeLeafById(categoryTreeBranchChildren, id, filterCategoryTreeChildren, isExpanded);
                             if(filterCategoryTreeChildren.length() > 0) {
-                                categoryTreeBranch.put("children", filterCategoryTreeChildren);
+                                categoryTreeBranch.put(CATEGORY_KEY_CHILDREN, filterCategoryTreeChildren);
                                 if(isExpanded) {
                                     categoryTreeBranch.put("isExpanded", isExpanded);
                                 }
@@ -1491,8 +1517,8 @@ public class AdministrationResource {
                             }
                         }
                     }
-                    if(categoryTreeBranch.has("layerBodId")) {
-                        String layerBodId = categoryTreeBranch.getString("layerBodId");
+                    if(categoryTreeBranch.has(LAYER_KEY_LAYERBODID)) {
+                        String layerBodId = categoryTreeBranch.getString(LAYER_KEY_LAYERBODID);
                         if(layerBodId.equals(id)) {
                             filterCategoryTree.put(categoryTreeBranch);
                         }
@@ -1505,15 +1531,15 @@ public class AdministrationResource {
     }
 
     private void updateCategoryLayersId(JSONObject catItem, String id, String newId) throws JSONException {
-        String key = "layerBodId";
+        String key = LAYER_KEY_LAYERBODID;
         if(!catItem.isNull(key)) {
             String layerBodId = catItem.getString(key);
             if(layerBodId != null && layerBodId.equals(id)) {
-                catItem.put("layerBodId", newId);
+                catItem.put(LAYER_KEY_LAYERBODID, newId);
             }
         }
         
-        key = "children";
+        key = CATEGORY_KEY_CHILDREN;
         if(!catItem.isNull(key)) {
             JSONArray children = catItem.getJSONArray(key);
             if(children != null) {

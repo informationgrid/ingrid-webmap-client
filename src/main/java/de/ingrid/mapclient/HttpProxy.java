@@ -24,7 +24,6 @@ package de.ingrid.mapclient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -65,13 +64,11 @@ public class HttpProxy {
 
     public static String doRequest(String urlStr, String login, String password) throws Exception {
         String result = null;
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         if(urlStr != null) {
             // add protocol if missing
-            if (!urlStr.startsWith( "https://" )) {
-                if (!urlStr.startsWith( "http://" )) {
-                    urlStr = "http://" + urlStr;
-                }
+            if (!urlStr.startsWith( "https://" ) && !urlStr.startsWith( "http://" )) {
+                urlStr = "http://" + urlStr;
             }
     
             // send request

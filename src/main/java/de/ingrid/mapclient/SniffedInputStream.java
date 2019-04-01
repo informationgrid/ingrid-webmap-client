@@ -67,14 +67,6 @@ public class SniffedInputStream extends BufferedInputStream {
         // assuming we can read it as UTF-8.
         encoding = sniffForEncodingInfo( "UTF-8", FileType.HTML );
 
-        /*
-         * // determine XML encoding from content first ? // we comment to keep
-         * old order, but this may be better with added // additional stuff to
-         * sniffFourBytes() if (_encoding == null) { // Haven't yet determined
-         * encoding: sniff for <?xml encoding="..."?> // assuming we can read it
-         * as UTF-8. _encoding = sniffForEncodingInfo("UTF-8", FileType.XML); }
-         */
-
         if (StringUtils.isEmpty(encoding)) {
             // read byte order marks and detect EBCDIC etc
             encoding = sniffFourBytes();
@@ -164,13 +156,6 @@ public class SniffedInputStream extends BufferedInputStream {
                 return "UTF-16";
             else if ((result & 0xFFFFFF00) == 0xEFBBBF00)
                 return "UTF-8";
-            /*
-             * // was added to determine encoding of HTML (GetFeatureInfo), see
-             * // Email "AW: GetFeatureInfo: Unterstützende Formate ?"
-             * 25.07.2013 10:54 // But now determined via explicit checking of
-             * html header, see sniffForEncodingInfo ... else if (result ==
-             * 0x3C68746D ) //0x53746174) return "ISO-8859-1";
-             */
             else
                 return "";
         } finally {
@@ -269,10 +254,6 @@ public class SniffedInputStream extends BufferedInputStream {
      */
     static String extractHtmlHeaderEncoding(char[] buf, int offset, int size) {
         int limit = offset + size;
-        // int startIndex = firstIndexOf("http-equiv=\"content-type\"", buf,
-        // offset, limit);
-        // we just search for http-equiv cause "content-type" or "Content-Type"
-        // or ...
         int startIndex = firstIndexOf( "http-equiv=", buf, offset, limit );
         if (startIndex >= 0) {
             // use offset 25 cause we assume http-equiv="content-type"
@@ -341,12 +322,12 @@ public class SniffedInputStream extends BufferedInputStream {
         return -1;
     }
 
-    private static char[] WHITESPACE = new char[] { ' ', '\r', '\t', '\n' };
-    private static char[] NOTNAME = new char[] { '=', ' ', '\r', '\t', '\n', '?', '>', '<', '\'', '\"' };
+    private static final char[] WHITESPACE = new char[] { ' ', '\r', '\t', '\n' };
+    private static final char[] NOTNAME = new char[] { '=', ' ', '\r', '\t', '\n', '?', '>', '<', '\'', '\"' };
 
     private static class ScannedAttribute {
-        public static String name;
-        public static String value;
+        private String name;
+        private String value;
     }
 
     private static int scanAttribute(char[] buf, int startAt, int limit, ScannedAttribute attr) {

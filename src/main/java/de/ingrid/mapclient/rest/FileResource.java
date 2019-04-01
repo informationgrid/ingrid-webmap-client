@@ -166,14 +166,14 @@ public class FileResource {
     @DELETE
     @Path("files/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) throws IOException {
+    public Response deleteFileRequest(@PathParam("id") String id, @QueryParam("adminId") String mapUserId) {
         return Response.status(Response.Status.NOT_MODIFIED ).build();
     }
     
     @DELETE
     @Path("files/{user}/{id}")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response deleteFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) throws IOException {
+    public Response deleteFileRequest(@PathParam("id") String id, @PathParam("user") String user, @QueryParam("adminId") String mapUserId) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.KML_DIRECTORY, "./kml/" ).trim();
         
@@ -553,7 +553,7 @@ public class FileResource {
                 shortenDir.mkdir();
             }
             
-            File shortenDirKey = new File (shortenDir.getAbsolutePath()+ "/" + key);
+            File shortenDirKey = new File (shortenDir.getAbsolutePath(), key);
             if(!shortenDirKey.exists()) {
                 shortenDirKey.mkdir();
             }
@@ -596,7 +596,7 @@ public class FileResource {
     @GET
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
-    public String getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) throws IOException {
+    public String getShortKey(@QueryParam("key") String key, @QueryParam("value") String valueToMd5) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
         
@@ -604,7 +604,7 @@ public class FileResource {
             path += "/";
         }
 
-        File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2) +  "/" + valueToMd5);
+        File shortenFile = new File(path + "shorten/" + key + "/" + valueToMd5.substring(0, 2), valueToMd5);
         if(shortenFile.exists()) {
             String fileContent = Utils.getFileContent(path, valueToMd5 , "", "shorten/" + key + "/" + valueToMd5.substring(0, 2) + "/");
             if(StringUtils.isNotEmpty(fileContent)) {

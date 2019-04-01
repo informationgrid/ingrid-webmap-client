@@ -57,17 +57,17 @@ public class Proj4sResource {
     /**
      * The url pattern for retrieving proj4s data
      */
-    private final static String BASE_URL = "http://spatialreference.org/ref/epsg/CODE/proj4js";
+    private static final String BASE_URL = "http://spatialreference.org/ref/epsg/CODE/proj4js";
 
     /**
      * The pattern in BASE_URL that will be replaced by the code
      */
-    private final static Pattern CODE_URL_PATTERN = Pattern.compile( "CODE" );
+    private static final Pattern CODE_URL_PATTERN = Pattern.compile( "CODE" );
 
     /**
      * The pattern that the code parameter must match
      */
-    private final static Pattern CODE_SYNTAX_PATTERN = Pattern.compile( "([0-9]+)", Pattern.CASE_INSENSITIVE );
+    private static final Pattern CODE_SYNTAX_PATTERN = Pattern.compile( "([0-9]+)", Pattern.CASE_INSENSITIVE );
 
     /**
      * Get Proj4s projection definition for the given code
@@ -96,10 +96,8 @@ public class Proj4sResource {
 
         try {
             String url = CODE_URL_PATTERN.matcher( BASE_URL ).replaceAll( code );
-            if (url != null) {
-                if (!url.endsWith( "/" )) {
-                    url = url + "/";
-                }
+            if (url != null && !url.endsWith( "/" )) {
+                url = url + "/";
             }
             response = HttpProxy.doRequest( url );
             return response;
