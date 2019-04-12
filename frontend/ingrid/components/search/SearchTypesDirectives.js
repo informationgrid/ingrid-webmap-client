@@ -242,28 +242,31 @@ goog.require('ga_urlutils_service');
           canceler = $q.defer();
 
           // INGRID: Add search URL
-          var url = gaUrlUtils.append($scope.options.searchUrl,
-              'type=' + $scope.type +
-              '&searchUrl=' + $scope.searchUrl);
-          url = $scope.typeSpecificUrl(url);
-          $http.get(url, {
-            cache: true,
-            timeout: canceler.promise,
-            // INGRID: Add search params
-            params: $scope.searchParams
-          }).then(function(response) {
-            var data = response.data;
-            $scope.results = data.results;
-            if (data.fuzzy) {
-              $scope.fuzzy = '_fuzzy';
-            }
-            $scope.options.announceResults($scope.type, data.results.length);
-          }, function(response) {
-          // If request is canceled, statuscode is 0 and we don't announce it
-            if (response.status !== 0) {
-              $scope.options.announceResults($scope.type, 0);
-            }
-          });
+          var searchApi = $scope.searchUrl.trim();
+          if (searchApi.length > 0) {
+            var url = gaUrlUtils.append($scope.options.searchUrl,
+                'type=' + $scope.type +
+                '&searchUrl=' + searchApi);
+            url = $scope.typeSpecificUrl(url);
+            $http.get(url, {
+              cache: true,
+              timeout: canceler.promise,
+              // INGRID: Add search params
+              params: $scope.searchParams
+            }).then(function(response) {
+              var data = response.data;
+              $scope.results = data.results;
+              if (data.fuzzy) {
+                $scope.fuzzy = '_fuzzy';
+              }
+              $scope.options.announceResults($scope.type, data.results.length);
+            }, function(response) {
+            // If request is canceled, statuscode is 0 and we don't announce it
+              if (response.status !== 0) {
+                $scope.options.announceResults($scope.type, 0);
+              }
+            });
+          }
         }, 133, false, false);
         // 133 filters out 'stuck key' events while staying responsive
 

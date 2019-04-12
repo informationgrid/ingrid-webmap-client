@@ -30,6 +30,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Specialized input stream that sneaks at the input stream to detect the
  * encoding of the input stream.<br/>
@@ -47,7 +49,7 @@ public class SniffedInputStream extends BufferedInputStream {
     // We don't sniff more than 192 bytes.
     // We do ! Because we also extract encoding from HTML header ! 500 should be
     // enough !
-    public static int MAX_SNIFFED_BYTES = 500;
+    public static final int MAX_SNIFFED_BYTES = 500;
 
     /** Type of requested file */
     private enum FileType {
@@ -55,7 +57,7 @@ public class SniffedInputStream extends BufferedInputStream {
         HTML // GetFeatureInfo
     }
 
-    private String _encoding;
+    private String encoding;
 
     public SniffedInputStream(InputStream stream) throws IOException {
         super( stream );
@@ -63,35 +65,27 @@ public class SniffedInputStream extends BufferedInputStream {
         // First assume HTML (GetFeatureInfo) ! Sniff for encoding in HTML
         // header.
         // assuming we can read it as UTF-8.
-        _encoding = sniffForEncodingInfo( "UTF-8", FileType.HTML );
+        encoding = sniffForEncodingInfo( "UTF-8", FileType.HTML );
 
-        /*
-         * // determine XML encoding from content first ? // we comment to keep
-         * old order, but this may be better with added // additional stuff to
-         * sniffFourBytes() if (_encoding == null) { // Haven't yet determined
-         * encoding: sniff for <?xml encoding="..."?> // assuming we can read it
-         * as UTF-8. _encoding = sniffForEncodingInfo("UTF-8", FileType.XML); }
-         */
-
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(encoding)) {
             // read byte order marks and detect EBCDIC etc
-            _encoding = sniffFourBytes();
+            encoding = sniffFourBytes();
         }
 
-        if (_encoding != null && _encoding.equals( "IBM037" )) {
+        if (StringUtils.isNotEmpty(encoding) && encoding.equals( "IBM037" )) {
             // First four bytes suggest EBCDIC with <?xm at start
-            String encoding = sniffForEncodingInfo( _encoding, FileType.XML );
-            if (encoding != null)
-                _encoding = encoding;
+            String enc = sniffForEncodingInfo( encoding, FileType.XML );
+            if (StringUtils.isNotEmpty(enc))
+                encoding = enc;
         }
 
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(encoding)) {
             // Haven't yet determined encoding: sniff for <?xml encoding="..."?>
             // assuming we can read it as UTF-8.
-            _encoding = sniffForEncodingInfo( "UTF-8", FileType.XML );
+            encoding = sniffForEncodingInfo( "UTF-8", FileType.XML );
         }
 
-        if (_encoding == null) {
+        if (StringUtils.isEmpty(encoding)) {
             // The XML spec says these two things:
 
             // (1) "In the absence of external character encoding information
@@ -117,7 +111,7 @@ public class SniffedInputStream extends BufferedInputStream {
 
             // Therefore, we must use UTF-8.
 
-            _encoding = "UTF-8";
+            encoding = "UTF-8";
         }
     }
 
@@ -134,11 +128,10 @@ public class SniffedInputStream extends BufferedInputStream {
 
     private String sniffFourBytes() throws IOException {
         mark( 4 );
-        int skip = 0;
         try {
             byte[] buf = new byte[4];
             if (readAsMuchAsPossible( buf, 0, 4 ) < 4)
-                return null;
+                return "";
             long result = 0xFF000000 & (buf[0] << 24) | 0x00FF0000 & (buf[1] << 16) | 0x0000FF00 & (buf[2] << 8) | 0x000000FF & buf[3];
 
             if (result == 0x0000FEFF)
@@ -154,7 +147,7 @@ public class SniffedInputStream extends BufferedInputStream {
             else if (result == 0x3C003F00)
                 return "UTF-16LE";
             else if (result == 0x3C3F786D)
-                return null; // looks like US-ASCII with <?xml: sniff
+                return ""; // looks like US-ASCII with <?xml: sniff
             else if (result == 0x4C6FA794)
                 return "IBM037"; // Sniff for ebdic codepage
             else if ((result & 0xFFFF0000) == 0xFEFF0000)
@@ -163,15 +156,8 @@ public class SniffedInputStream extends BufferedInputStream {
                 return "UTF-16";
             else if ((result & 0xFFFFFF00) == 0xEFBBBF00)
                 return "UTF-8";
-            /*
-             * // was added to determine encoding of HTML (GetFeatureInfo), see
-             * // Email "AW: GetFeatureInfo: Unterstützende Formate ?"
-             * 25.07.2013 10:54 // But now determined via explicit checking of
-             * html header, see sniffForEncodingInfo ... else if (result ==
-             * 0x3C68746D ) //0x53746174) return "ISO-8859-1";
-             */
             else
-                return null;
+                return "";
         } finally {
             reset();
         }
@@ -179,14 +165,6 @@ public class SniffedInputStream extends BufferedInputStream {
 
     // BUGBUG in JDK: Charset.forName is not threadsafe, so we'll prime it
     // with the common charsets.
-
-    private static Charset dummy1 = Charset.forName( "UTF-8" );
-    private static Charset dummy2 = Charset.forName( "UTF-16" );
-    private static Charset dummy3 = Charset.forName( "UTF-16BE" );
-    private static Charset dummy4 = Charset.forName( "UTF-16LE" );
-    private static Charset dummy5 = Charset.forName( "ISO-8859-1" );
-    private static Charset dummy6 = Charset.forName( "US-ASCII" );
-    private static Charset dummy7 = Charset.forName( "Cp1252" );
 
     /**
      * Try to read encoding information from content of file, e.g.<br/>
@@ -208,13 +186,14 @@ public class SniffedInputStream extends BufferedInputStream {
      */
     private String sniffForEncodingInfo(String encoding, FileType fileType) throws IOException {
         mark( MAX_SNIFFED_BYTES );
-        try {
-            byte[] bytebuf = new byte[MAX_SNIFFED_BYTES];
-            int bytelimit = readAsMuchAsPossible( bytebuf, 0, MAX_SNIFFED_BYTES );
+        byte[] bytebuf = new byte[MAX_SNIFFED_BYTES];
+        int bytelimit = readAsMuchAsPossible( bytebuf, 0, MAX_SNIFFED_BYTES );
 
-            // BUGBUG in JDK: Charset.forName is not threadsafe.
-            Charset charset = Charset.forName( encoding );
+        // BUGBUG in JDK: Charset.forName is not threadsafe.
+        Charset charset = Charset.forName( encoding );
+        try (
             Reader reader = new InputStreamReader( new ByteArrayInputStream( bytebuf, 0, bytelimit ), charset );
+        ){
             char[] buf = new char[bytelimit];
             int limit = 0;
             while (limit < bytelimit) {
@@ -243,7 +222,7 @@ public class SniffedInputStream extends BufferedInputStream {
      * @return determined encoding of input stream
      */
     public String getEncoding() {
-        return _encoding;
+        return encoding;
     }
 
     /**
@@ -260,12 +239,12 @@ public class SniffedInputStream extends BufferedInputStream {
             while (i < limit) {
                 i = scanAttribute( buf, i, limit, attr );
                 if (i < 0)
-                    return null;
+                    return "";
                 if (attr.name.equals( "encoding" ))
                     return attr.value;
             }
         }
-        return null;
+        return "";
     }
 
     /**
@@ -275,10 +254,6 @@ public class SniffedInputStream extends BufferedInputStream {
      */
     static String extractHtmlHeaderEncoding(char[] buf, int offset, int size) {
         int limit = offset + size;
-        // int startIndex = firstIndexOf("http-equiv=\"content-type\"", buf,
-        // offset, limit);
-        // we just search for http-equiv cause "content-type" or "Content-Type"
-        // or ...
         int startIndex = firstIndexOf( "http-equiv=", buf, offset, limit );
         if (startIndex >= 0) {
             // use offset 25 cause we assume http-equiv="content-type"
@@ -287,7 +262,7 @@ public class SniffedInputStream extends BufferedInputStream {
             while (i < limit) {
                 i = scanAttribute( buf, i, limit, attr );
                 if (i < 0)
-                    return null;
+                    return "";
                 if (attr.name.equals( "content" ))
                     startIndex = attr.value.indexOf( "charset=" );
                 if (startIndex >= 0) {
@@ -296,7 +271,7 @@ public class SniffedInputStream extends BufferedInputStream {
                 }
             }
         }
-        return null;
+        return "";
     }
 
     private static int firstIndexOf(String s, char[] buf, int startAt, int limit) {
@@ -330,7 +305,7 @@ public class SniffedInputStream extends BufferedInputStream {
     }
 
     private static int nextMatchingByte(char[] lookFor, char[] buf, int startAt, int limit) {
-        searching: for (; startAt < limit; startAt++) {
+        for (; startAt < limit; startAt++) {
             int thischar = buf[startAt];
             for (int i = 0; i < lookFor.length; i++)
                 if (thischar == lookFor[i])
@@ -340,19 +315,19 @@ public class SniffedInputStream extends BufferedInputStream {
     }
 
     private static int nextMatchingByte(char lookFor, char[] buf, int startAt, int limit) {
-        searching: for (; startAt < limit; startAt++) {
+        for (; startAt < limit; startAt++) {
             if (buf[startAt] == lookFor)
                 return startAt;
         }
         return -1;
     }
 
-    private static char[] WHITESPACE = new char[] { ' ', '\r', '\t', '\n' };
-    private static char[] NOTNAME = new char[] { '=', ' ', '\r', '\t', '\n', '?', '>', '<', '\'', '\"' };
+    private static final char[] WHITESPACE = new char[] { ' ', '\r', '\t', '\n' };
+    private static final char[] NOTNAME = new char[] { '=', ' ', '\r', '\t', '\n', '?', '>', '<', '\'', '\"' };
 
     private static class ScannedAttribute {
-        public String name;
-        public String value;
+        private String name;
+        private String value;
     }
 
     private static int scanAttribute(char[] buf, int startAt, int limit, ScannedAttribute attr) {

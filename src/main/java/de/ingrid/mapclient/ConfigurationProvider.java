@@ -58,7 +58,7 @@ public enum ConfigurationProvider {
     public static final String FEEDBACK_HOST                    = "feedback.host";
     public static final String FEEDBACK_PORT                    = "feedback.port";
     public static final String FEEDBACK_USER                    = "feedback.user";
-    public static final String FEEDBACK_PASSWORD                = "feedback.password";
+    public static final String FEEDBACK_PW                      = "feedback.password";
     public static final String FEEDBACK_SSL                     = "feedback.ssl";
     public static final String FEEDBACK_PROTOCOL                = "feedback.protocol";
     public static final String KML_DIRECTORY                    = "kml.directory";

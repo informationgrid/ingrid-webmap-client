@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2018 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2019 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -85,8 +85,7 @@ public class CleanupTask implements Runnable{
                     if (file.isFile()) {
                         Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);
                         Date fileDate = new Date(file.lastModified());
-                        if(fileDate.before(limitDate)) {
-                            file.delete();
+                        if(fileDate.before(limitDate) && file.delete()) {
                             log.debug("Delete file: " + file.getAbsoluteFile());
                         }
                     } else if(file.isDirectory()) {
@@ -107,8 +106,7 @@ public class CleanupTask implements Runnable{
                     if(matcher.find()) {
                         Date limitDate = DateUtils.addDays(new Date(),-maxDaysOfFileExist);
                         Date fileDate = new Date(file.lastModified());
-                        if(fileDate.before(limitDate)) {
-                            file.delete();
+                        if(fileDate.before(limitDate) && file.delete()) {
                             log.debug("Delete file: " + file.getAbsoluteFile());
                         }
                     }

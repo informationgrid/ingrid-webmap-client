@@ -41,9 +41,9 @@ goog.require('ga_window_service');
 
       // INGRID: Disable defaultProjection extent
       if (!defaultProjection.getExtent()) {
-          defaultProjection.setExtent(ol.proj.
+        defaultProjection.setExtent(ol.proj.
             transformExtent(gaGlobalOptions.defaultEpsgExtent, 'EPSG:4326',
-            gaGlobalOptions.defaultEpsg));
+                gaGlobalOptions.defaultEpsg));
       }
 
       // INGRID: Add zoom to extent button
@@ -72,19 +72,19 @@ goog.require('ga_window_service');
           }
         // INGRID: Configuration of zoom to extent button
         }).extend([
-        new ol.control.ZoomToExtent({
-           target: zoomToExtentButton,
-           extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
-            'EPSG:4326', gaGlobalOptions.defaultEpsg),
-           tipLabel: ' ',
-           label: $('<span>' +
+          new ol.control.ZoomToExtent({
+            target: zoomToExtentButton,
+            extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
+                'EPSG:4326', gaGlobalOptions.defaultEpsg),
+            tipLabel: ' ',
+            label: $('<span>' +
                    '<i class="fa fa-ga-circle-bg"></i>' +
                    '<i class="fa fa-ga-circle"></i>' +
                    '<i class="fa fa-resize-horizontal"></i>' +
                    '<i class="fa fa-resize-vertical"></i>' +
                    '</span>')[0],
-           className: 'ol-zoom-extent'
-         })
+            className: 'ol-zoom-extent'
+          })
         ]),
         interactions: ol.interaction.defaults({
           altShiftDragRotate: true,
@@ -95,11 +95,11 @@ goog.require('ga_window_service');
         view: new ol.View({
           // INGRID: Configuration of map
           projection: defaultProjection,
-        //extent: gaMapUtils.defaultExtent,
+          // extent: gaMapUtils.defaultExtent,
           center: ol.proj.transform(ol.extent.getCenter(gaMapUtils.
               defaultExtent), 'EPSG:4326', gaGlobalOptions.defaultEpsg)
-        //resolution: gaMapUtils.defaultResolution,
-        //resolutions: gaMapUtils.viewResolutions
+        // resolution: gaMapUtils.defaultResolution,
+        // resolutions: gaMapUtils.viewResolutions
         }),
         logo: false
       });
@@ -263,9 +263,9 @@ goog.require('ga_window_service');
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
     // INGRID: Fix switch device mode
     if (location.pathname) {
-        if (!location.pathname.endsWith('mobile.html')) {
-            switchToMobile = 'true';
-        }
+      if (!location.pathname.endsWith('mobile.html')) {
+        switchToMobile = 'true';
+      }
     }
     $scope.host = {url: $window.location.host}; // only use in embed.html
     $scope.toMainHref = gaPermalink.getMainHref();
@@ -441,6 +441,27 @@ goog.require('ga_window_service');
         });
       }
     });
+
+    if (window.parent.onpopstate !== undefined) {
+      window.parent.onpopstate = function (event) {
+        window.parent.isBackHistory = true;
+        if (window.parent.history && 
+            window.parent.history.state && 
+            window.parent.history.state.params) {
+          var params = window.parent.history.state.params;
+          if (params.E && params.N) {
+            var easting = params.E;
+            var northing = params.N;
+            easting = parseFloat(easting.replace(/,/g, '.'));
+            northing = parseFloat(northing.replace(/,/g, '.'));
+            $scope.map.getView().setCenter([easting, northing]);
+          }
+          if (params.zoom) {
+            $scope.map.getView().setZoom(params.zoom);
+          }
+        }
+      };
+    }
 
     // Hide a panel clicking on its heading
     var hidePanel = function(id) {

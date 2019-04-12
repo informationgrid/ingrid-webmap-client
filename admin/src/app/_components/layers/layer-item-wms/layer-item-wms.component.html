@@ -1,7 +1,7 @@
 <div class="card card-body">
   <form #f="ngForm" (ngSubmit)="onUpdateLayer()">
     <div class="modal-header">
-      <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
+      <button type="button" class="btn btn-danger" (click)="showModal(modalLayerDelete)" translate>
         <i class="fa fa-trash" aria-hidden="true"></i>
         delete
       </button>
@@ -796,7 +796,7 @@
       </div>
     </div>
     <div class="modal-footer d-flex justify-content-between align-items-center">
-      <button type="button" class="btn btn-danger" data-toggle="modal" [attr.data-target]="'#delLayerModal'+ layer.id" translate>
+      <button type="button" class="btn btn-danger" (click)="showModal(modalLayerDelete)" translate>
         <i class="fa fa-trash" aria-hidden="true"></i>
         delete
       </button>
@@ -844,28 +844,18 @@
   </div>
 </app-modal>
 
-<!-- Modal save success-->
-<app-modal #modalSaveSuccess [animateClose]="true">
+<!-- Modal delete -->
+<app-modal #modalLayerDelete>
   <div class="app-modal-header">
-    <h5 class="modal-title" translate>layer_edit_success_title</h5>
+    <h5 class="modal-title" translate>layer_item_del_title</h5>
   </div>
   <div class="app-modal-body">
-    <div class="alert alert-success" translate>
-      <i class="fa fa-check" aria-hidden="true"></i>
-      layer_edit_success_text
-    </div>
+    <p translate>layer_item_del_text</p>
   </div>
-</app-modal>
-
-<!-- Modal save unsuccess-->
-<app-modal #modalSaveUnsuccess [animateClose]="true">
-  <div class="app-modal-header">
-    <h5 class="modal-title" translate>layer_edit_unsuccess_title</h5>
-  </div>
-  <div class="app-modal-body">
-    <div class="alert alert-danger" translate>
-      <i class="fa fa-exclamation" aria-hidden="true"></i>
-      layer_edit_unsuccess_text
-    </div>
+  <div class="app-modal-footer">
+    <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onDeleteLayer(layer.id, modalLayerDelete)" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      delete
+    </button>
   </div>
 </app-modal>

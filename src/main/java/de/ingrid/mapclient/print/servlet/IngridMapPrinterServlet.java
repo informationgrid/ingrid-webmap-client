@@ -38,6 +38,7 @@ import javax.servlet.ServletException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.mapfish.print.MapPrinter;
@@ -60,8 +61,6 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
     private final Map<String, MapPrinter> printers = Maps.newHashMap();
     private final Map<String,Long> lastModifieds = Maps.newHashMap();
 
-    private volatile ApplicationContext context;
-
     /**
      * Builds a MapPrinter instance out of the file pointed by the servlet's
      * configuration. The location can be configured in two locations:
@@ -72,12 +71,12 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
      * <p/>
      * If the location is a relative path, it's taken from the servlet's root directory.
      */
+    @Override
     protected synchronized MapPrinter getMapPrinter(String app) throws ServletException {
         String configPath = System.getProperty("mapfish-print-config", getInitParameter("config"));
         if (configPath == null) {
             throw new ServletException("Missing configuration in web.xml 'web-app/servlet/init-param[param-name=config]' or 'web-app/context-param[param-name=config]'");
         }
-        //String debugPath = "";
 
         if (app == null) {
             LOGGER.info("app is null, setting it as default configPath: " + configPath);
@@ -99,18 +98,18 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 configFile = new File(realPath);
             } else {
                 LOGGER.info("Unable to find config file in web application using getRealPath.  Adding a / because that is often dropped");
-                realPath = getServletContext().getRealPath("/" + app);
+                realPath = getServletContext().getRealPath(app);
                 configFile = new File(realPath);
             }
         }
 
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        String content = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-        if(content != null) {
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String content = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
+        if(StringUtils.isNotEmpty(content)) {
             try {
                 if(configFile.exists()) {
-                    File tmpFile = new File(config_dir + "config/print_config.yaml");
+                    File tmpFile = new File(configDir + "config/print_config.yaml");
                     if(!tmpFile.exists()) {
                         FileUtils.copyFile(configFile, tmpFile);
                     }
@@ -131,43 +130,40 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                             }
                         }
                         Iterator<?> keys = auths.keys();
-                        ArrayList<String> tmpLogins = new ArrayList<String>();
+                        ArrayList<String> tmpLogins = new ArrayList<>();
                         while( keys.hasNext() ) {
                             String host = (String)keys.next();
-                            if (auths.has(host)) {
-                                if (!fileContent.contains("host: " + host)) {
-                                    JSONObject authLogin = auths.getJSONObject(host);
-                                    String login = null;
-                                    String password = null;
-                                    String port = null;
-                                    if(authLogin.has("login")) {
-                                        login = authLogin.getString("login");
-                                    }
-                                    if(authLogin.has("password")) {
-                                        password = authLogin.getString("password");
-                                    }
-                                    if(authLogin.has("port")) {
-                                        port = authLogin.getString("port");
-                                    } else {
-                                        port = "80";
-                                    }
-                                    if(login != null && password != null) {
-                                        if(!tmpLogins.contains(host)) {
-                                            tmpLogins.add(host);
-                                            try(FileWriter fw = new FileWriter(app, true);
-                                                BufferedWriter bw = new BufferedWriter(fw);
-                                                PrintWriter out = new PrintWriter(bw))
-                                            {
-                                                out.println("  - !basicAuth");
-                                                out.println("      matcher: !dnsMatch");
-                                                out.println("        host: " + host);
-                                                out.println("        port: " + port);
-                                                out.println("      username: " + login);
-                                                out.println("      password: " + password);
-                                                //more code
-                                            } catch (IOException e) {
-                                            }
-                                        }
+                            if (auths.has(host) && !fileContent.contains("host: " + host)) {
+                                JSONObject authLogin = auths.getJSONObject(host);
+                                String login = null;
+                                String password = null;
+                                String port = null;
+                                if(authLogin.has("login")) {
+                                    login = authLogin.getString("login");
+                                }
+                                if(authLogin.has("password")) {
+                                    password = authLogin.getString("password");
+                                }
+                                if(authLogin.has("port")) {
+                                    port = authLogin.getString("port");
+                                } else {
+                                    port = "80";
+                                }
+                                if(login != null && password != null && !tmpLogins.contains(host)) {
+                                    tmpLogins.add(host);
+                                    try(FileWriter fw = new FileWriter(app, true);
+                                        BufferedWriter bw = new BufferedWriter(fw);
+                                        PrintWriter out = new PrintWriter(bw))
+                                    {
+                                        out.println("  - !basicAuth");
+                                        out.println("      matcher: !dnsMatch");
+                                        out.println("        host: " + host);
+                                        out.println("        port: " + port);
+                                        out.println("      username: " + login);
+                                        out.println("      password: " + password);
+                                        //more code
+                                    } catch (IOException e) {
+                                        LOGGER.error("Error on getMapPrinter.", e);
                                     }
                                 }
                             }
@@ -210,8 +206,6 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
             }
             try {
                 printer.stop();
-
-                //debugPath += "printer stopped, setting NULL\n";
             } catch (NullPointerException npe) {
                 LOGGER.info("BaseMapServlet.java: printer was not stopped. This happens when a switch between applications happens.\n"+ npe);
             }
@@ -222,7 +216,6 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         }
 
         if (printer == null) {
-            //debugPath += "printer == null, lastModified from configFile = "+lastModified+"\n";
             try {
                 LOGGER.info("Loading configuration file: " + configFile.getAbsolutePath());
                 printer = getApplicationContext().getBean(MapPrinter.class).setYamlConfigFile(configFile);
@@ -230,7 +223,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 lastModifieds.put(app,  configFile.lastModified());
             } catch (FileNotFoundException e) {
                 throw new ServletException("Cannot read configuration file: " + configPath, e);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 LOGGER.error("Error occurred while reading configuration file", e);
                 throw new ServletException("Error occurred while reading configuration file '" + configFile + "': " + e );
             }
@@ -242,21 +235,18 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
     }
     
     private ApplicationContext getApplicationContext() {
-        if (this.context == null) {
-            synchronized (this) {
-                if (this.context == null) {
-                    this.context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-                    if (this.context == null || context.getBean(MapPrinter.class) == null) {
-                        String springConfig = System.getProperty("mapfish.print.springConfig");
-                        if(springConfig != null) {
-                            this.context = new FileSystemXmlApplicationContext(new String[]{"classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig});
-                        } else {
-                            this.context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
-                        }
-                    }
+        ApplicationContext context = null;
+        synchronized (this) {
+            context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+            if (context == null || context.getBean(MapPrinter.class) == null) {
+                String springConfig = System.getProperty("mapfish.print.springConfig");
+                if(springConfig != null) {
+                    context = new FileSystemXmlApplicationContext("classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig);
+                } else {
+                    context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
                 }
             }
         }
-        return this.context;
+        return context;
     }
 }

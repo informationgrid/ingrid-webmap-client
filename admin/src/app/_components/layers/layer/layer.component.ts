@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 import { CategoryItem } from '../../../_models/category-item';
 import { ModalComponent } from '../../modals/modal/modal.component';
 import { UtilsLayers } from '../../../_shared/utils/utils-layers';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-layer',
@@ -39,6 +40,8 @@ export class LayerComponent implements OnInit {
   selectedLayers: any = new Array();
   searchText = '';
   searchHasStatus = false;
+  searchCategory = '';
+  searchType = '';
 
   newLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
@@ -70,7 +73,7 @@ export class LayerComponent implements OnInit {
     childrenField: 'children'
   };
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService, private translate: TranslateService) {}
 
   ngOnInit() {
     this.loadLayers(this.layersCurrentPage, this.layersPerPage, this.searchText);
@@ -112,7 +115,8 @@ export class LayerComponent implements OnInit {
   }
 
   loadLayers(layersCurrentPage: number, layersPerPage: number, searchText: string) {
-    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText, this.searchHasStatus).subscribe(
+    this.httpService.getLayersPerPage(layersCurrentPage, layersPerPage, searchText, this.searchHasStatus,
+        this.searchCategory, this.searchType).subscribe(
       data => {
         this.layersPage = data.items;
         this.layersCurrentPage = data.firstPage;
@@ -233,8 +237,13 @@ export class LayerComponent implements OnInit {
     if (this.categoryId) {
       this.httpService.getCategory(this.categoryId, null).subscribe(
         data => {
-          // const item = new CategoryItem(f.value.label, f.value.layerBodId, '', '');
-          this.category.set(id, data);
+          const items: CategoryItem[] = [];
+          const item = new CategoryItem();
+          item.id = 1;
+          item.label = this.translate.instant(this.categoryId);
+          item.children = data;
+          items.push(item);
+          this.category.set(id, items);
         },
         error => {
           console.error('Error get category "' + this.categoryId + '"!');
@@ -298,8 +307,7 @@ export class LayerComponent implements OnInit {
       const layerItem = new LayerItem(l.generateId(this.layers), l);
       layerItems.push(layerItem);
     });
-    this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(layerItems, roots);
+    this.saveAddedLayers(layerItems, roots);
   }
 
   onAddCombineLayers(layersModel: TreeModel) {
@@ -338,11 +346,10 @@ export class LayerComponent implements OnInit {
       const layerItem = new LayerItem(layer.generateId(this.layers), layer);
       layerItems.push(layerItem);
     }
-    this.saveAddedLayers(layerItems);
-    this.saveAddedLayersToCategory(layerItems, roots);
+    this.saveAddedLayers(layerItems, roots);
   }
 
-  saveAddedLayers(layerItems: LayerItem[]) {
+  saveAddedLayers(layerItems: LayerItem[], nodes: Array<TreeNode>) {
     if (this.hasLogin && this.serviceLogin && this.servicePassword) {
       this.httpService.addLayerAndAuth(layerItems, this.newService.nativeElement.value, this.serviceLogin,
          this.servicePassword, this.overrideLogin).subscribe(
@@ -352,6 +359,7 @@ export class LayerComponent implements OnInit {
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();
           this.modalAddService.hide();
+          this.saveAddedLayersToCategory(layerItems, nodes);
         },
         error => {
           console.error('Error add layers!');
@@ -366,6 +374,7 @@ export class LayerComponent implements OnInit {
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();
           this.modalAddService.hide();
+          this.saveAddedLayersToCategory(layerItems, nodes);
         },
         error => {
           console.error('Error add layers!');
@@ -395,21 +404,15 @@ export class LayerComponent implements OnInit {
           const tmpC = this.categories[c];
           const tmpCategory = this.category.get(tmpC.id);
           const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
-          let id = 2;
-          categoryLayers.forEach(categoryLayer => {
-            id = categoryLayer.getNextCategoryNodeId(tmpCategory, id);
-            categoryLayer.id = id;
-            id ++;
-          });
           if (tmpCategory && tmpSelectedCategory) {
             tmpCategory.forEach(tmpCatItem => {
               this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
             });
-            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory).subscribe(
+            const id = 2;
+            this.setCategoriesItemId(tmpCategory, id);
+            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory[0].children).subscribe(
               data => {
                 this.updateAppCategories.emit(data[1]);
-                this.modalSaveSuccess.show();
-                this.modalAddService.hide();
               },
               error => {
                 console.error('Error onAddCategoryItem tree!');
@@ -420,6 +423,17 @@ export class LayerComponent implements OnInit {
         }
       }
     }
+  }
+
+  setCategoriesItemId(tmpCategory: CategoryItem[], id: number) {
+    tmpCategory.forEach(tmpCategoryItem => {
+      id = tmpCategoryItem.getNextCategoryNodeId(tmpCategory, id);
+      tmpCategoryItem.id = id;
+      id ++;
+      if (tmpCategoryItem.children ) {
+        this.setCategoriesItemId(tmpCategoryItem.children, id);
+      }
+    });
   }
 
   addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers) {

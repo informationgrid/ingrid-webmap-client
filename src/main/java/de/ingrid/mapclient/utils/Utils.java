@@ -34,11 +34,12 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -68,6 +69,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -108,8 +110,8 @@ public class Utils {
         File file = new File(path.concat(filename).concat(fileTyp));
         if(file.exists()){
             try {
-                String fileContent = FileUtils.readFileToString( file, "UTF-8");
-                if(fileContent != null){
+                String fileContent = FileUtils.readFileToString( file, StandardCharsets.UTF_8.toString());
+                if(StringUtils.isNotEmpty(fileContent)){
                     return fileContent;
                 }
             } catch (IOException e) {
@@ -118,30 +120,26 @@ public class Utils {
         }else{
             log.debug( "Error get file" + file.getAbsoluteFile() + "'.");
         }
-        return null;
+        return "";
     }
 
     public static void writeFileContent (File file, String content) throws IOException {
         if(file != null && content != null) {
-            FileWriter fileWriter = null;
-            try {
-                fileWriter = new FileWriter( file );
+            try (
+                FileWriter fileWriter = new FileWriter( file );
+            ){
                 fileWriter.write( content );
                 fileWriter.flush();
             } catch (IOException e) {
                 log.error("Error update file: " + file.getAbsolutePath());
-            } finally {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
             }
         }
     }
 
-    public static void createFile(String filename, JSONObject item) throws JSONException {
+    public static void createFile(String filename, JSONObject item) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(configDir.concat(filename));
         if(!file.exists()){
             try(FileWriter fw = new FileWriter(file, true);
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -158,34 +156,28 @@ public class Utils {
 
     public static void updateFile(String filename, Object item, boolean doBackup) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         File file;
         if(doBackup) {
-            File cpFile = new File(config_dir.concat(filename + "." + getDateFlag()));
-            if(cpFile.exists()){
-                if(!cpFile.delete()) {
-                    log.error("Error delete file: '" + cpFile.getName() + "'" );
-                }
+            File cpFile = new File(configDir.concat(filename + "." + getDateFlag()));
+            if(cpFile.exists() && !cpFile.delete()) {
+                log.error("Error delete file: '" + cpFile.getName() + "'" );
             }
-            file = new File(config_dir.concat(filename));
-            if(file.exists()) {
-                if(!file.renameTo( cpFile )) {
-                    log.error("Error rename file: '" + file.getName() + "'" );
-                }
+            file = new File(configDir.concat(filename));
+            if(file.exists() && !file.renameTo( cpFile )) {
+                log.error("Error rename file: '" + file.getName() + "'" );
             }
         }
-        file = new File(config_dir.concat(filename));
+        file = new File(configDir.concat(filename));
         cleanFileContent(file);
         cleanDirectory(file);
         log.debug( "Update file :" + file.getAbsoluteFile() );
-        if(file != null){
-            try(FileWriter fw = new FileWriter(file, true);
-                BufferedWriter bw = new BufferedWriter(fw);
-                PrintWriter out = new PrintWriter(bw)){
-                out.println(item.toString());
-            } catch (IOException e) {
-                log.error( "Error write new json file!" );
-            }
+        try(FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)){
+            out.println(item.toString());
+        } catch (IOException e) {
+            log.error( "Error write new json file!" );
         }
     }
     
@@ -198,10 +190,8 @@ public class Utils {
                for(File tmpFile: parentFolder.listFiles()) {
                    if(!tmpFile.isDirectory()) {
                        String tmpFileName = tmpFile.getName();
-                       if(tmpFileName.indexOf("." + flagYear) > -1) {
-                           if(tmpFile.getName().indexOf("." + flagMonth) == -1) {
-                               tmpFile.delete();
-                           }
+                       if(tmpFileName.indexOf("." + flagYear) > -1 && tmpFile.getName().indexOf("." + flagMonth) == -1 && tmpFile.delete()) {
+                           log.debug("Delete file: " +  tmpFile.getName());
                        }
                    }
                }
@@ -210,35 +200,33 @@ public class Utils {
         
     }
 
-    public static void removeFile(String filename) throws JSONException {
+    public static void removeFile(String filename) {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        File file = new File(config_dir.concat(filename));
-        if(file.exists()) {
-            if(!file.delete()) {
-                log.error("Error delete file: '" + file.getName() + "'" );
-            }
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        File file = new File(configDir.concat(filename));
+        if(file.exists() && !file.delete()) {
+            log.error("Error delete file: '" + file.getName() + "'" );
         }
     }
 
     public static String checkWMSUrl(String url, String paramString){
         String[] partsParamString = paramString.split("&");
-        String tmpUrl = url.toLowerCase();
+        StringBuilder tmpUrl = new StringBuilder(url);
         for (int i = 0; i < partsParamString.length; i++) {
           String partParamString = partsParamString[i];
-          if(tmpUrl.indexOf(partParamString.toLowerCase()) < 0){
-            if(url.indexOf("?") < 0){
-                url += "?";
+          if(tmpUrl.toString().toLowerCase().indexOf(partParamString.toLowerCase()) < 0){
+            if(tmpUrl.toString().indexOf('?') < 0){
+                tmpUrl.append("?");
             }
-            if(url.endsWith("?") == false){
-                url += "&";
+            if(!tmpUrl.toString().endsWith("?")){
+                tmpUrl.append("&");
             }
-            if(url.indexOf(partParamString.split("=")[0]) < 0){
-                url += partParamString;
+            if(tmpUrl.toString().indexOf(partParamString.split("=")[0]) < 0){
+                tmpUrl.append(partParamString);
             }
           }
         }
-        return url;
+        return tmpUrl.toString();
     }
     
     public static String getPropertyFromJSONFiles(String[] paths, String key, String defaultValue) throws Exception {
@@ -248,7 +236,7 @@ public class Utils {
             if(file.exists()) {
                 log.debug("Load file: " + path);
                 String fileContent = Utils.getFileContent(path, "", "", "");
-                if(fileContent != null) {
+                if(StringUtils.isNotEmpty(fileContent)) {
                     JSONObject setting = new JSONObject(fileContent);
                     Iterator<?> keys = setting.keys();
                     while( keys.hasNext() ) {
@@ -267,22 +255,17 @@ public class Utils {
 
     public static String readFileAsString(File file) {
         byte[] buffer = new byte[(int) file.length()];
-        BufferedInputStream f = null;
-        try {
-            f = new BufferedInputStream( new FileInputStream( file ) );
+        try (
+            BufferedInputStream f = new BufferedInputStream( new FileInputStream( file ) );
+        ){
             f.read( buffer );
         } catch (Exception e) {
            log.error("Error read file: '" + file.getName() + "'");
-        } finally {
-            if (f != null)
-                try {
-                    f.close();
-                } catch (IOException ignored) {}
         }
         return new String( buffer );
     }
     
-    public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
+    public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
             String protocol) {
         return sendEmail( from, subject, to, text, headers, host, port, user, password, ssl, protocol, null );
     }
@@ -316,17 +299,13 @@ public class Utils {
             DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             InputSource is = new InputSource();
             is.setCharacterStream( new StringReader( xmlSource ) );
-            Document doc = db.parse( is );
-            return doc;
-        } catch (ParserConfigurationException e) {
+            return db.parse( is );
+        } catch (ParserConfigurationException | IOException e) {
             log.error( "error on parsing xml string: " + e.getMessage() );
             throw new WebApplicationException( e, Response.Status.CONFLICT );
         } catch (SAXException e) {
             log.error( "error on parsing xml string: " + e.getMessage() );
             throw new SAXException( e );
-        } catch (IOException e) {
-            log.error( "error on parsing xml string: " + e.getMessage() );
-            throw new WebApplicationException( e, Response.Status.CONFLICT );
         }
     }
 
@@ -340,7 +319,7 @@ public class Utils {
      * @param headers
      * @return true if email was sent, else false
      */
-    public static boolean sendEmail(String from, String subject, String[] to, String text, HashMap headers, String host, String port, String user, String password, boolean ssl,
+    public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
             String protocol, File attachment) {
 
         boolean debug = log.isDebugEnabled();
@@ -429,11 +408,10 @@ public class Utils {
         } catch (MessagingException e) {
             log.error( "error sending email.", e );
         } finally {
-            if (attachment != null) {
-                attachment.delete();
+            if (attachment != null && attachment.delete()) {
+                log.debug("Delete attachment: " + attachment.getName());
             }
         }
-
         return emailSent;
     }
     
@@ -444,48 +422,49 @@ public class Utils {
     }
     
     public static void setServiceLogin(String url, String login, String password) throws JSONException, URISyntaxException {
-        String fileContent = "{}";
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
-            fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-        }
-        URI uri = new URI(url);
-        JSONObject serviceAuth = new JSONObject(fileContent);
-        JSONObject loginAuth = null;
-        String host = uri.getHost();
-        if(serviceAuth.has(host)) {
-            loginAuth = serviceAuth.getJSONObject(host);
-        } else {
-            loginAuth = new JSONObject();
-            loginAuth.put("login", login);
-            loginAuth.put("password", password);
-            if(uri.getScheme().equals("https")) {
-                loginAuth.put("port", "443");
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                URI uri = new URI(url);
+                JSONObject serviceAuth = new JSONObject(fileContent);
+                JSONObject loginAuth = null;
+                String host = uri.getHost();
+                if(serviceAuth.has(host)) {
+                    loginAuth = serviceAuth.getJSONObject(host);
+                } else {
+                    loginAuth = new JSONObject();
+                    loginAuth.put("login", login);
+                    loginAuth.put("password", password);
+                    if(uri.getScheme().equals("https")) {
+                        loginAuth.put("port", "443");
+                    }
+                }
+                serviceAuth.put(host, loginAuth);
+                Utils.updateFile("config/service.auth.json", serviceAuth);
             }
         }
-        serviceAuth.put(host, loginAuth);
-        Utils.updateFile("config/service.auth.json", serviceAuth);
     }
     
     public static String getServiceLogin(String url, String login) throws JSONException, URISyntaxException {
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
-        String config_dir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
-        if(config_dir != null){
-            String fileContent = Utils.getFileContent(config_dir, "service.auth", ".json", "config/");
-            URI uri = new URI(url);
-            JSONObject serviceAuth = new JSONObject(fileContent);
-            String key = uri.getHost();
-            if(serviceAuth.has(key)){
-                JSONObject auth = serviceAuth.getJSONObject(key);
-                if(auth.has("login") && auth.has("password")) {
-                    if(login.equals(auth.getString("login"))) {
+        String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+        if(StringUtils.isNotEmpty(configDir)) {
+            String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
+            if(StringUtils.isNotEmpty(fileContent)) {
+                URI uri = new URI(url);
+                JSONObject serviceAuth = new JSONObject(fileContent);
+                String key = uri.getHost();
+                if(serviceAuth.has(key)){
+                    JSONObject auth = serviceAuth.getJSONObject(key);
+                    if(auth.has("login") && auth.has("password") && login.equals(auth.getString("login"))) {
                         return auth.getString("password"); 
                     }
                 }
             }
         }
-        return null;
+        return "";
     }
     
     public static String getDateFlag() {
@@ -495,7 +474,7 @@ public class Utils {
     public static String getDateFlag(String format) {
         Date date = new Date();  
         Timestamp ts=new Timestamp(date.getTime());  
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");  
+        SimpleDateFormat formatter = new SimpleDateFormat(format);  
         
         return formatter.format(ts);
     }
@@ -527,6 +506,7 @@ class MailAuthenticator extends Authenticator {
         this.password = password;
     }
 
+    @Override
     public PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication( this.user, this.password );
     }

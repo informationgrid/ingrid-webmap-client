@@ -28,12 +28,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.Writer;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -51,6 +48,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,12 +60,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.itextpdf.text.html.HtmlEncoder;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.json.JsonHierarchicalStreamDriver;
-import com.thoughtworks.xstream.io.json.JsonWriter;
 
-import de.ingrid.iplug.opensearch.communication.OSCommunication;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
@@ -81,16 +74,7 @@ public class WmsResource {
 
     private static final Logger log = Logger.getLogger( WmsResource.class );
 
-    /**
-     * The service pattern that urls must match
-     */
-    private final static Pattern SERVICE_PATTERN = Pattern.compile( "SERVICE=WMS", Pattern.CASE_INSENSITIVE );
-
-    /**
-     * The request pattern that urls must match
-     */
-    private final static Pattern REQUEST_PATTERN = Pattern.compile( "REQUEST=(GetCapabilities|GetFeatureInfo)", Pattern.CASE_INSENSITIVE );
-
+    private static final String ERROR_WMS_MSG = "Error sending WMS request: ";
     /**
      * Get WMS response from the given url
      * 
@@ -104,17 +88,15 @@ public class WmsResource {
     public String doWmsRequest(@QueryParam("url") String url, @QueryParam("toJson") boolean toJson, @QueryParam("login") String login, @QueryParam("password") String password) {
         try {
             String response = null;
-            if(login != null) {
-                if(password == null) {
-                    password = Utils.getServiceLogin(url, login);
-                }
+            if(StringUtils.isNotEmpty(login) && StringUtils.isEmpty(password)) {
+                password = Utils.getServiceLogin(url, login);
             }
             response = HttpProxy.doRequest( url, login, password);
             if(response != null) {
                 if(response.indexOf("<?xml") == -1) {
                    response = "<?xml version=\"1.0\"?>" + response;
                 }
-                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > 0) {
+                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
                     // Remove script tags on getFeatureInfo response.
                     Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
                             Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
@@ -140,10 +122,10 @@ public class WmsResource {
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
+            log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -158,23 +140,21 @@ public class WmsResource {
         boolean toJson = false;
         try {
             JSONObject obj = new JSONObject(content);
-            if(obj != null) {
-                if(obj.has("url")) {
-                    url = obj.getString("url");
-                }
-                if(obj.has("login")) {
-                    login = obj.getString("login");
-                }
-                if(obj.has("password")) {
-                    password = obj.getString("password");
-                }
-                if(obj.has("toJson")) {
-                    toJson = obj.getBoolean("toJson");
-                }
+            if(obj.has("url")) {
+                url = obj.getString("url");
+            }
+            if(obj.has("login")) {
+                login = obj.getString("login");
+            }
+            if(obj.has("password")) {
+                password = obj.getString("password");
+            }
+            if(obj.has("toJson")) {
+                toJson = obj.getBoolean("toJson");
             }
             return doWmsRequest(url, toJson, login, password);
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -203,10 +183,10 @@ public class WmsResource {
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
-            log.error( "Error sending WMS request: " + url, ex );
+            log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
-            log.error( "Error sending WMS request: " + url, e );
+            log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
@@ -226,45 +206,9 @@ public class WmsResource {
         } catch (Exception e) {
             log.error( "Error transformation service", e );
         }
-        return null;
-    }
-    
-    /**
-     * Get WMS response from the given url
-     * 
-     * @param url
-     *            The request url
-     * @return String
-     */
-    @GET
-    @Path("proxyAdministrativeInfos")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response doAdministrativeInfosWmsRequest(@QueryParam("url") String url) {
-        // check if the url string is valid
-        if (!SERVICE_PATTERN.matcher( url ).find() && !REQUEST_PATTERN.matcher( url ).find()) {
-            throw new IllegalArgumentException( "The url is not a valid wms request: " + url );
-        }
-
-        OSCommunication comm = new OSCommunication();
-        InputStream result = null;
-        result = comm.sendRequest( url );
-        Document doc = null;
-        XPath xpath = XPathFactory.newInstance().newXPath();
-        NodeList fields = null;
-
-        comm.releaseConnection();
-        XStream xstream = new XStream( new JsonHierarchicalStreamDriver() {
-            @Override
-            public HierarchicalStreamWriter createWriter(Writer writer) {
-                return new JsonWriter( writer, JsonWriter.DROP_ROOT_MODE );
-            }
-        } );
-
-        String json = ""; // xstream.toXML(adminInfos);
-        return Response.ok( json ).build();
+        return "";
     }
 
-    
     @GET
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
@@ -286,12 +230,12 @@ public class WmsResource {
                     // Extern
                     String[] layerSplit = layer.split( "\\|\\|" );
                     serviceType = layerSplit[0].trim();
-                    if(layerSplit != null && layerSplit.length > 0){
-                        if(serviceType.toLowerCase().equals( "wms" )){
+                    if(layerSplit.length > 0){
+                        if(serviceType.equalsIgnoreCase( "wms" )){
                             layerTitle = URLDecoder.decode(layerSplit[1], "UTF-8" );
                             layerName = layerSplit[3];
                             serviceHost = layerSplit[2];
-                            if(serviceHost.indexOf("?") == -1){
+                            if(serviceHost.indexOf('?') == -1){
                                 serviceHost = serviceHost + "?";
                             }
                             String wmsVersion = "1.3.0"; 
@@ -299,7 +243,7 @@ public class WmsResource {
                                 wmsVersion = layerSplit[4];
                             }
                             serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + wmsVersion);
-                        }else if(serviceType.toLowerCase().equals( "wmts" )){
+                        }else if(serviceType.equalsIgnoreCase( "wmts" )){
                             // WMTS||WmsBWaStr||http:%2F%2Fatlas.wsv.bund.de%2Fbwastr%2Fwmts%2F1.0.0%2FWMTSCapabilities.xml
                             layerTitle = layerSplit[1];
                             layerName = layerSplit[1];
@@ -313,11 +257,11 @@ public class WmsResource {
                         JSONObject jsonLayer = (JSONObject) json.get(layer);
                         if(jsonLayer != null){
                             serviceType = jsonLayer.getString("type").trim();
-                            if(serviceType.toLowerCase().equals( "wms" )){
+                            if(serviceType.equalsIgnoreCase( "wms" )){
                                 layerTitle = jsonLayer.getString("label");
                                 serviceHost = jsonLayer.getString("wmsUrl");
                                 if(serviceHost != null){
-                                    if(serviceHost.indexOf("?") == -1){
+                                    if(serviceHost.indexOf('?') == -1){
                                         serviceHost = serviceHost + "?";
                                     }
                                     serviceCapabilitiesURL = Utils.checkWMSUrl(serviceHost, "SERVICE=WMS&REQUEST=GetCapabilities&VERSION=" + jsonLayer.getString("version"));
@@ -326,7 +270,7 @@ public class WmsResource {
                                     layerLegend = jsonLayer.getString("legendUrl");
                                 }
                                 layerName = jsonLayer.getString("wmsLayers");
-                            }else if(serviceType.toLowerCase().equals( "wmts" )){
+                            }else if(serviceType.equalsIgnoreCase( "wmts" )){
                                 layerTitle = jsonLayer.getString("label");
                                 serviceCapabilitiesURL = jsonLayer.getString("serviceUrl");
                                 if(jsonLayer.has("legendUrl")){
@@ -348,10 +292,10 @@ public class WmsResource {
                     Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     
-                    if(serviceType.toLowerCase().equals( "wms" )){
-                        html = getWmsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
-                    }else if(serviceType.toLowerCase().equals( "wmts" )){
-                        html = getWmtsInfo(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                    if(serviceType.equalsIgnoreCase( "wms" )){
+                        html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                    }else if(serviceType.equalsIgnoreCase( "wmts" )){
+                        html = getWmtsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
                     }
                 }
             } catch (Exception e) {
@@ -377,7 +321,7 @@ public class WmsResource {
         return Response.ok(html).build();
     }
 
-    private String getWmsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend, String legend) throws XPathExpressionException {
+    private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
         String html = "";
         // Create HTML
         html += "<div ng-if=\"showWMSTree\" class=\"tabbable\">";
@@ -394,60 +338,55 @@ public class WmsResource {
         html += "<div class=\"tab-content\">";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(1)\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         html += "<div class=\"tab-pane\" ng-class=\"getTabClass(2)\">";
-        html += getWMSInfoTree(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+        html += getWMSInfoTree(xpath, doc, layerName);
         html += "</div>";
         
         html += "</div>";
         html += "</div>";
 
         html += "<div ng-if=\"!showWMSTree\">";
-        html += getWMSInfoData(response, xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend, legend);
+        html += getWMSInfoData(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
         html += "</div>";
         
         return html;
     }
 
-    private String getWMSInfoTree(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
-            String layerLegend) throws XPathExpressionException {
+    private String getWMSInfoTree(XPath xpath, Document doc, String layerName) throws XPathExpressionException {
         Node field = null;
-        String html = "";
-        
-        html += "<div class=\"metadata-structure\">";
-        if(response != null){
-            field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
-            String wmsStructure = "";
-            if(field != null){
-                wmsStructure += "<h4>" + field.getTextContent() + "</h4>";
-                wmsStructure += "<br>";
-            }
-
-            NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
-            if(fields != null){
-                String wmsStructureLayers = "";
-                wmsStructureLayers += getSubLayers(fields, xpath, wmsStructureLayers, layerName);
-                wmsStructure += "<ul style=\"padding: 0px;\">";
-                wmsStructure += wmsStructureLayers;
-                wmsStructure += "</ul>";
-            }
-            html += wmsStructure;
+        StringBuilder html = new StringBuilder("<div class=\"metadata-structure\">");
+        field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
+        StringBuilder wmsStructure = new StringBuilder("");
+        if(field != null){
+            wmsStructure.append("<h4>" + field.getTextContent() + "</h4>");
+            wmsStructure.append("<br>");
         }
-        html += "</div>";
-        return html;
+
+        NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
+        if(fields != null){
+            StringBuilder wmsStructureLayers = new StringBuilder("");
+            wmsStructureLayers.append(getSubLayers(fields, xpath, wmsStructureLayers, layerName));
+            wmsStructure.append("<ul style=\"padding: 0px;\">");
+            wmsStructure.append(wmsStructureLayers);
+            wmsStructure.append("</ul>");
+        }
+        html.append(wmsStructure);
+        html.append("</div>");
+        return html.toString();
     }
 
-    private String getWMSInfoData(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
-            String layerLegend, String legend) throws XPathExpressionException {
-        String html = "";
-        html += "<div class=\"legend-container\">";
-        html += "<div class=\"legend-footer\">";
-        html += "<span translate>metadata_information_layer</span><br>";
+    private String getWMSInfoData(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle,
+            String layerLegend) throws XPathExpressionException {
+        StringBuilder html = new StringBuilder("");
+        html.append("<div class=\"legend-container\">");
+        html.append("<div class=\"legend-footer\">");
+        html.append("<span translate>metadata_information_layer</span><br>");
         if (layerName != null) {
-            ArrayList<String> layerAbstracts = new ArrayList<String>();
-            ArrayList<String> layerLegends = new ArrayList<String>();
+            ArrayList<String> layerAbstracts = new ArrayList<>();
+            ArrayList<String> layerLegends = new ArrayList<>();
             String[] layers = layerName.split(",");
             for (String layer : layers) {
                 Node field = (Node) xpath.evaluate("//Layer/Name[text()=\""+layer+"\"]", doc, XPathConstants.NODE);
@@ -464,149 +403,149 @@ public class WmsResource {
             }
             if(layerLegend != null && !layerLegend.equals( "undefined" )){
                 String[] tmpLegends = layerLegend.split("\\|");
-                layerLegends = new ArrayList<String>();
+                layerLegends = new ArrayList<>();
                 for (String tmpLegend : tmpLegends) {
                     layerLegends.add(tmpLegend);
                 }
             }
             
-            html += "<table>";
-            html += "<tbody>";
+            html.append("<table>");
+            html.append("<tbody>");
             if(layerTitle != null){
-                html += "<tr ng-if=\"!showWMSName\"";
-                if(layerAbstracts.size() == 0){
-                    html += " style=\"border-bottom:0;\"";
+                html.append("<tr ng-if=\"!showWMSName\"");
+                if(layerAbstracts.isEmpty()){
+                    html.append(" style=\"border-bottom:0;\"");
                 }
-                html += ">";
-                html += "<td translate>metadata_service_title</td>";
-                html += "<td>" + layerTitle + "</td>";
-                html += "</tr>";
-                html += "<tr ng-if=\"showWMSName\"";
-                html += ">";
-                html += "<td translate>metadata_service_title</td>";
-                html += "<td>" + layerTitle + "</td>";
-                html += "</tr>";
+                html.append(">");
+                html.append("<td translate>metadata_service_title</td>");
+                html.append("<td>" + layerTitle + "</td>");
+                html.append("</tr>");
+                html.append("<tr ng-if=\"showWMSName\"");
+                html.append(">");
+                html.append("<td translate>metadata_service_title</td>");
+                html.append("<td>" + layerTitle + "</td>");
+                html.append("</tr>");
             }
-            if(layerAbstracts.size() > 0){
+            if(!layerAbstracts.isEmpty()){
                 for(int i=0; i < layerAbstracts.size(); i++) {
                     if (i == 0 && layers.length <= 1) {
-                        html += "<tr ng-if=\"showWMSName\">";
-                        html += "<td translate>metadata_service_abstract</td>";
-                        html += "<td>" + layerAbstracts.get(i) + "</td>";
-                        html += "</tr>";
-                        html += "<tr ng-if=\"!showWMSName\" style=\"border-bottom:0;\">";
-                        html += "<td translate>metadata_service_abstract</td>";
-                        html += "<td>" + layerAbstracts.get(i) + "</td>";
-                        html += "</tr>";
+                        html.append("<tr ng-if=\"showWMSName\">");
+                        html.append("<td translate>metadata_service_abstract</td>");
+                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                        html.append("</tr>");
+                        html.append("<tr ng-if=\"!showWMSName\" style=\"border-bottom:0;\">");
+                        html.append("<td translate>metadata_service_abstract</td>");
+                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                        html.append("</tr>");
                     } else if (i == 0 && layers.length > 1) {
-                        html += "<tr style=\"border-bottom:0;\">";
-                        html += "<td translate>metadata_service_abstract</td>";
-                        html += "<td>" + layerAbstracts.get(i) + "</td>";
-                        html += "</tr>";
+                        html.append("<tr style=\"border-bottom:0;\">");
+                        html.append("<td translate>metadata_service_abstract</td>");
+                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                        html.append("</tr>");
                     } else if(i == layerAbstracts.size() - 1) {
-                        html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td>" + layerAbstracts.get(i) + "</td>";
-                        html += "</tr>";
+                        html.append("<tr>");
+                        html.append("<td></td>");
+                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                        html.append("</tr>");
                     } else {
-                        html += "<tr style=\"border-bottom:0;\">";
-                        html += "<td></td>";
-                        html += "<td>" + layerAbstracts.get(i) + "</td>";
-                        html += "</tr>";
+                        html.append("<tr style=\"border-bottom:0;\">");
+                        html.append("<td></td>");
+                        html.append("<td>" + layerAbstracts.get(i) + "</td>");
+                        html.append("</tr>");
                     }
                 }
             }
             if(layers.length > 0){
                 for(int i=0; i < layers.length; i++) {
-                    html += "<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">";
+                    html.append("<tr ng-if=\"showWMSName\" style=\"border-bottom:0;\">");
                     if (i == 0) {
-                        html += "<td translate>metadata_service_layer</td>";
+                        html.append("<td translate>metadata_service_layer</td>");
                     } else {
-                        html += "<td></td>";
+                        html.append("<td></td>");
                     }
-                    html += "<td>" + layers[i] + "</td>";
-                    html += "</tr>";
+                    html.append("<td>" + layers[i] + "</td>");
+                    html.append("</tr>");
                 }
             }
-            html += "</tbody>";
-            html += "</table>";
-            html += "<div class=\"legend\">";
-            html += "<span translate>metadata_legend</span><br>";
-            html += "<div class=\"img-container\">";
-            if(layerLegends.size() > 0) {
+            html.append("</tbody>");
+            html.append("</table>");
+            html.append("<div class=\"legend\">");
+            html.append("<span translate>metadata_legend</span><br>");
+            html.append("<div class=\"img-container\">");
+            if(!layerLegends.isEmpty()) {
                 for(int i=0; i < layerLegends.size(); i++) {
                     
-                    html += "<img alt=\"{{'no_legend_available' | translate}}\" src=\"";
-                    html += layerLegends.get(i);
-                    html += "\">";
+                    html.append("<img alt=\"{{'no_legend_available' | translate}}\" src=\"");
+                    html.append(layerLegends.get(i));
+                    html.append("\">");
                     if(i != layerLegends.size() - 1) {
-                        html += "<hr>";
+                        html.append("<hr>");
                     }
                 }
             } else {
-                html += "<img alt=\"{{'no_legend_available' | translate}}\">";
+                html.append("<img alt=\"{{'no_legend_available' | translate}}\">");
             }
         }
-        html += "</div>";
-        html += "</div>";
-        html += "<span translate>metadata_information_service</span><br>";
-        html += "<table>";
-        html += "<tbody>";
+        html.append("</div>");
+        html.append("</div>");
+        html.append("<span translate>metadata_information_service</span><br>");
+        html.append("<table>");
+        html.append("<tbody>");
         Node field = (Node) xpath.evaluate( ".//Service/Title", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_title</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_title</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/Name", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_id</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_id</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/Abstract", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_abstract</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_abstract</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/Fees", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_fees</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_fees</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/AccessConstraints", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_accessconstraints</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_accessconstraints</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactPerson", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_contactperson</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_contactperson</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactPersonPrimary/ContactOrganization", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_organisation</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_organisation</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Address", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_addresse</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_addresse</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         String city = null;
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/City", doc, XPathConstants.NODE);
@@ -619,68 +558,68 @@ public class WmsResource {
             plz = HtmlEncoder.encode(field.getTextContent());
         }
         if(city != null || plz != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_city</td>";
-            html += "<td>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_city</td>");
+            html.append("<td>");
             if(plz != null){
-                html += "" + plz + " ";
+                html.append("" + plz + " ");
             }
             if(city != null){
-                html += "" + city;
+                html.append("" + city);
             }
-            html += "</td>";
-            html += "</tr>";
+            html.append("</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactAddress/Country", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_country</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_country</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactVoiceTelephone", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_phone</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_phone</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactFacsimileTelephone", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_fax</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_fax</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/ContactInformation/ContactElectronicMailAddress", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_mail</td>";
-            html += "<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_mail</td>");
+            html.append("<td>" + HtmlEncoder.encode(field.getTextContent()) + "</td>");
+            html.append("</tr>");
         }
         field = (Node) xpath.evaluate( ".//Service/OnlineResource/@href", doc, XPathConstants.NODE);
         if(field != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_resource</td>";
-            html += "<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_resource</td>");
+            html.append("<td><a target=\"new\" href=\"" + field.getTextContent() + "\">"+ field.getTextContent() + "</a></td>");
+            html.append("</tr>");
         }
         if(serviceCapabilitiesURL != null){
-            html += "<tr>";
-            html += "<td translate>metadata_service_url</td>";
-            html += "<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\" translate>metadata_service_url_link</a></td>";
-            html += "</tr>";
+            html.append("<tr>");
+            html.append("<td translate>metadata_service_url</td>");
+            html.append("<td><a target=\"new\" href=\"" + serviceCapabilitiesURL + "\" translate>metadata_service_url_link</a></td>");
+            html.append("</tr>");
         }
-        html += "</tbody>";
-        html += "</table>";
-        html += "</div>";
+        html.append("</tbody>");
+        html.append("</table>");
+        html.append("</div>");
 
-        html += "</div>";
-        return html;
+        html.append("</div>");
+        return html.toString();
     }
 
-    private String getWmtsInfo(String response, XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
+    private String getWmtsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
         Node field = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layerName+"\"]", doc, XPathConstants.NODE);
         Node layerField = null;
         String html = "";
@@ -867,7 +806,7 @@ public class WmsResource {
         return html;
     }
 
-    private String getSubLayers(NodeList fields, XPath xpath, String html, String layername) throws XPathExpressionException {
+    private String getSubLayers(NodeList fields, XPath xpath, StringBuilder html, String layername) throws XPathExpressionException {
         for (int i = 0; i < fields.getLength(); i++) {
             boolean isLayerName = false;
             Node node = fields.item( i );
@@ -878,41 +817,39 @@ public class WmsResource {
                     String[] splitLayernames = layername.split( "," );
                     for (int j = 0; j < splitLayernames.length; j++) {
                         String splitLayername = splitLayernames[j];
-                        if(nodeName != null && splitLayername != null){
-                            if(nodeName.getTextContent().trim().equals( splitLayername.trim() )){
-                                isLayerName = true;
-                            }
+                        if(nodeName != null && splitLayername != null && nodeName.getTextContent().trim().equals( splitLayername.trim() )){
+                            isLayerName = true;
                         }
                     }
                 }
                 
-                html += "<li";
+                html.append("<li");
                 if(isLayerName){
-                    html += " class=\"active\"";
+                    html.append(" class=\"active\"");
                 }
-                html += ">";
+                html.append(">");
                 if(field != null) {
-                    html += "<div>";
-                    html += "<span title=\"" + field.getTextContent() + "\">";
-                    html += "<label class=\"ga-truncate-text ga-checkbox\">";
-                    html += field.getTextContent();
-                    html += "</label>"; 
-                    html += "</span>";
-                    html += "</div>";
+                    html.append("<div>");
+                    html.append("<span title=\"" + field.getTextContent() + "\">");
+                    html.append("<label class=\"ga-truncate-text ga-checkbox\">");
+                    html.append(field.getTextContent());
+                    html.append("</label>"); 
+                    html.append("</span>");
+                    html.append("</div>");
                 }
-                html += "</li>";
+                html.append("</li>");
                 
                 NodeList subFields = (NodeList) xpath.evaluate( "./Layer", node, XPathConstants.NODESET );
                 if(subFields != null){
-                    String wmsStructerLayers = "";
-                    wmsStructerLayers += getSubLayers( subFields, xpath, wmsStructerLayers, layername );
-                    html += "<ul>";
-                    html += wmsStructerLayers;
-                    html += "</ul>";
+                    StringBuilder wmsStructerLayers = new StringBuilder("");
+                    wmsStructerLayers.append(getSubLayers( subFields, xpath, wmsStructerLayers, layername ));
+                    html.append("<ul>");
+                    html.append(wmsStructerLayers);
+                    html.append("</ul>");
                 }
             }
         }
-        return html;
+        return html.toString();
     }
 
     private static String readAll(Reader rd) throws IOException {
@@ -922,22 +859,17 @@ public class WmsResource {
           sb.append((char) cp);
         }
         return sb.toString();
-      }
+    }
 
-      private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
-        try {
-          BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        try (
+          BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+        ){
           String jsonText = readAll(rd);
-          JSONObject json = new JSONObject(jsonText);
-          return json;
+          return new JSONObject(jsonText);
         } finally {
           is.close();
         }
-      }
-      
-      private static String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, encoding);
-      }
+    }
 }

@@ -39,7 +39,8 @@ export class HttpService {
     );
   }
 
-  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean): Observable<LayerPaging> {
+  getLayersPerPage(currentPage: number, layersPerPage: number, searchText: string, hasStatus: boolean,
+      searchCategory: string, searchType: string): Observable<LayerPaging> {
     let url = httpApiHost + '/layers?';
     if (currentPage) {
       url += 'currentPage=' + currentPage;
@@ -52,6 +53,12 @@ export class HttpService {
     }
     if (hasStatus) {
       url += '&hasStatus=' + hasStatus;
+    }
+    if (searchCategory) {
+      url += '&searchCategory=' + searchCategory;
+    }
+    if (searchType) {
+      url += '&searchType=' + searchType;
     }
     return this.http.get<LayerPaging>(url, httpJsonOptions).map(
       res => {
@@ -162,7 +169,31 @@ export class HttpService {
     if (nodeId) {
       url += '/' + nodeId;
     }
-    return this.http.get<CategoryItem[]>(url, httpJsonOptions);
+    return this.http.get<CategoryItem[]>(url, httpJsonOptions).map(
+      res => {
+        return res.map(resItem => {
+          return this.mapCategoryItem(resItem);
+        });
+      }
+    );
+  }
+
+  mapCategoryItem (resItem) {
+    const item = new CategoryItem(
+      resItem.id,
+      resItem.label,
+      resItem.staging,
+      resItem.selectedOpen
+    );
+    if (resItem.layerBodId) {
+      item.layerBodId = resItem.layerBodId;
+    }
+    if (resItem.children) {
+      item.children = resItem.children.map(resChildrenItem => {
+        return this.mapCategoryItem(resChildrenItem);
+      });
+    }
+    return item;
   }
 
   getCategoriesOfLayer(layerId: string, isExpanded) {

@@ -15,52 +15,79 @@
             <div class="mr-auto">
               <div class="my-2">
                 <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalAdd()" translate>
-                  <i class="fa fa-plus" aria-hidden="true"></i>
+                  <i class="fa fa-plus"></i>
                   service_new
                 </button>
                 <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDelete.show()" translate [disabled]="selectedLayers.length == 0">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  <i class="fa fa-trash"></i>
                   layers_select_delete
                 </button>
                 <button class="btn btn-danger mr-sm-2" type="button" (click)="modalDeleteAll.show()" translate>
-                  <i class="fa fa-trash" aria-hidden="true"></i>
+                  <i class="fa fa-trash"></i>
                   layers_all_delete
                 </button>
               </div>
             </div>
-            <div class="mr-auto my-2">
+            <div class="mr-auto">
               <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === 1" (click)="firstPage()" translate>
-                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                <i class="fa fa-angle-double-left"></i>
                 paging_first
               </button>
               <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === 1" (click)="previousPage()" translate>
-                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                <i class="fa fa-angle-left"></i>
                 paging_previous
               </button>
               <span class="mr-sm-2"> {{ layersCurrentPage }} / {{ layersTotalPage }}</span>
               <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === layersTotalPage" (click)="nextPage()"  translate>
                 paging_next
-                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <i class="fa fa-angle-right"></i>
               </button>
               <button class="btn btn-primary mr-sm-2" [disabled]="layersCurrentPage === layersTotalPage" (click)="lastPage()"  translate>
                 paging_next
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                <i class="fa fa-angle-double-right"></i>
               </button>
             </div>
             <div>
               <form class="form-inline">
                 <input [(ngModel)]="searchText" name="search" class="form-control mr-sm-2" type="text" placeholder="{{ ('search') | translate }}" aria-label="Search" (ngModelChange)="searchLayers()">
+                <button class="btn mr-sm-2" data-toggle="collapse" data-target="#layersExtendedSearch">
+                  <i class="fa fa-angle-double-down"></i>
+                </button>
               </form>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="searchHasStatus" name="searchHasStatus" [(ngModel)]="searchHasStatus" (ngModelChange)="searchLayers()">
-                <label for="searchHasStatus" translate>status_layer_error</label>
-              </div>
             </div>
           </div>
         </nav>
+        <div class="collapse" id="layersExtendedSearch" style="background-color: #e9e9e9;">
+          <div class="card-body border-top border-light">
+            <h5 translate>layers_extended_search</h5>
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <select class="form-control" id="searchCategory" name="searchCategory" (change)="searchLayers()" [(ngModel)]="searchCategory">
+                  <option value="" translate>layers_extended_search_category</option>
+                  <option [value]="category.id" *ngFor="let category of categories;" translate>{{ category.id }}</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <select class="form-control" id="searchType" name="searchType" (change)="searchLayers()" [(ngModel)]="searchType">
+                  <option value="" translate>layers_extended_search_type</option>
+                  <option value="wms" translate>WMS</option>
+                  <option value="wmts" translate>WMTS</option>
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="searchHasStatus" name="searchHasStatus" 
+                    [(ngModel)]="searchHasStatus" (ngModelChange)="searchLayers()">
+                  <label for="searchHasStatus" translate>status_layer_error</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="list-group" *ngFor="let layer of layersPage">
           <div class="card">
-            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"></app-layer-item>
+            <app-layer-item [layer]="layer" [layers]="layersPage" (updateLayers)="updateLayers($event)" (selectLayer)="selectLayer($event)"
+            [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveSuccess"></app-layer-item>
           </div>
         </div>
       </div>
@@ -122,7 +149,7 @@
                   class="mr-sm-2"
                   [indeterminate]="node.data.indeterminate"
                   [checked]="node.data.checked">
-                <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'"></i>
                 {{ node.data.label }}<span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
               </ng-template>
             </tree-root>
@@ -136,7 +163,7 @@
                 </select>
                 <div class="input-group-append">
                   <button [disabled]="!selectCategory.value" class="btn btn-secondary" (click)="modalCategory.show();onCategoryChange(selectCategory.value);" translate>
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <i class="fa fa-plus"></i>
                   </button>
                 </div>
               </div>
@@ -147,7 +174,7 @@
                 <span class="form-control">{{ this.onGetNodeName(node) }}</span>
                 <div class="input-group-append">
                   <button type="button" class="btn btn-outline-danger" (click)="onRemoveCategory(cat.id, node)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i class="fa fa-trash"></i>
                   </button>
                 </div>
               </div>
@@ -160,11 +187,11 @@
   </div>
   <div class="app-modal-footer" *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
     <button [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary mr-sm-2" (click)="onAddLayers(this.newLayersTree.treeModel, this.categoryTree)" translate>
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus"></i>
       service_add_all
     </button>
     <button *ngIf="isWMSService" [disabled]="!hasSelectedItem(this.newLayersTree.treeModel)" class="btn btn-primary" (click)="onAddCombineLayers(this.newLayersTree.treeModel, this.categoryTree)" translate>
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus"></i>
       service_combine_add
     </button>
   </div>
@@ -180,7 +207,7 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-danger" (click)="deleteSelectedLayers(modalDelete)" translate>
-      <i class="fa fa-trash" aria-hidden="true"></i>
+      <i class="fa fa-trash"></i>
       delete
     </button>
   </div>
@@ -196,7 +223,7 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" class="btn btn-danger" (click)="deleteAllLayers(modalDeleteAll)" translate>
-      <i class="fa fa-trash" aria-hidden="true"></i>
+      <i class="fa fa-trash"></i>
       delete
     </button>
   </div>
@@ -209,7 +236,7 @@
   </div>
   <div class="app-modal-body">
     <div class="alert alert-success" translate>
-      <i class="fa fa-check" aria-hidden="true"></i>
+      <i class="fa fa-check"></i>
       layers_save_success_text
     </div>
   </div>
@@ -222,7 +249,7 @@
   </div>
   <div class="app-modal-body">
     <div class="alert alert-danger" translate>
-      <i class="fa fa-exclamation" aria-hidden="true"></i>
+      <i class="fa fa-exclamation"></i>
       layers_save_unsuccess_text
     </div>
   </div>
@@ -236,14 +263,14 @@
   <div class="app-modal-body">
     <tree-root #categoryTree [nodes]="category.get(categoryId)" [options]="optionsCategoryTree">
       <ng-template #treeNodeTemplate let-node let-index="index">
-        <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+        <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'"></i>
         {{ node.data.label }}
       </ng-template>
     </tree-root>
   </div>
   <div class="app-modal-footer">
     <button [disabled]="!categoryTree || !categoryTree.treeModel.getActiveNode()"class="btn btn-primary" (click)="onSetCategory(categoryId, categoryTree.treeModel)" translate>
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i class="fa fa-plus"></i>
       add
     </button>
   </div>
