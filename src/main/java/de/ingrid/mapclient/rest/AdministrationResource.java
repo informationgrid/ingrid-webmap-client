@@ -22,11 +22,18 @@
  */
 package de.ingrid.mapclient.rest;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -56,6 +63,7 @@ import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
+import sun.misc.BASE64Decoder;
 
 /**
  * WmsResource defines the interface for retrieving WMS data
@@ -730,6 +738,110 @@ public class AdministrationResource {
         return Response.status( Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
 
+    @GET
+    @Path("image/{path}/{id}")
+    @Produces("image/png")
+    public Response getImageRequest(@PathParam("path") String path, @PathParam("id") String id) {
+        
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String configPath = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./" ).trim();
+        
+        if(!configPath.endsWith( "/" )){
+            configPath = configPath.concat( "/" ); 
+        }
+        File imageDir = new File(configPath + "img");
+        if(!imageDir.exists()){
+            imageDir.mkdirs();
+        }
+        
+        File imageSubDir = new File(imageDir, path);
+        if(!imageSubDir.exists()){
+            imageSubDir.mkdirs();
+        }
+        File[] files = imageSubDir.listFiles();
+        for(File file:files) {
+            if(file.getName().startsWith(id +".")){
+                return Response.ok(file).build();
+            }
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+
+    @PUT
+    @Path("image")
+    public Response addImageRequest(@RequestBody String content) {
+        try {
+            JSONObject imageJSON = new JSONObject(content);
+            if(imageJSON.has("data") && imageJSON.has("path") && imageJSON.has("name")) {
+                String data = imageJSON.getString("data");
+                String name = imageJSON.getString("name");
+                String path = imageJSON.getString("path");
+                
+                String[] parts = data.split(",");
+                String imageString = parts[1];
+
+                // create a buffered image
+                BufferedImage image = null;
+                byte[] imageByte;
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                imageByte = decoder.decodeBuffer(imageString);
+                ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+                image = ImageIO.read(bis);
+                bis.close();
+
+                // write the image to a file
+                Properties p = ConfigurationProvider.INSTANCE.getProperties();
+                String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./" ).trim();
+                
+                if(!configDir.endsWith( "/" )){
+                    configDir = configDir.concat( "/" ); 
+                }
+                File imageDir = new File(configDir + "img");
+                if(!imageDir.exists()){
+                    imageDir.mkdirs();
+                }
+                
+                File imageSubDir = new File(imageDir, path);
+                if(!imageSubDir.exists()){
+                    imageSubDir.mkdirs();
+                }
+                File[] files = imageSubDir.listFiles();
+                for(File file:files) {
+                    if(file.getName().startsWith(name+".") && file.delete()) {
+                       log.debug("Delete file: " + file.getName());
+                    }
+                }
+                String fileFormat = "png";
+                String fileFormatData = parts[0];
+                if (fileFormatData != null) {
+                    Pattern pattern = Pattern.compile("image\\/(.*);");
+                    Matcher matcher = pattern.matcher(fileFormatData);
+                    if (matcher.find()) {
+                        fileFormat = matcher.group(1);
+                    }
+                }
+                File outputfile = new File(imageSubDir, name + "." + fileFormat);
+                ImageIO.write(image, fileFormat, outputfile);
+                // Update css
+                if(path.equals("category")) {
+                    String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
+                    if(css.indexOf(".ga-topics-sprite-" + name) == -1) {
+                        css = css + "\n[ga-topic] .ga-topics-sprite-" + name + " {\n" + 
+                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/category/" + name + "\");\n" + 
+                                "  width: 140px;\n" + 
+                                "}";
+                        this.updateCss(css);
+                    }
+                }
+            }
+            return Response.status( Response.Status.OK ).build();
+        } catch (JSONException | IOException e) {
+            log.error("Error PUT '/image'!", e);
+        }
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
+    }
+    
     private void updateLocale(String lang, String content) throws JSONException {
         JSONObject localeProfile = null;
         JSONObject localeDefault = null;

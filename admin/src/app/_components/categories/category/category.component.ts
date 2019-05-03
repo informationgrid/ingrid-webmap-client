@@ -37,6 +37,8 @@ export class CategoryComponent implements OnChanges {
 
   backgroundLayers: LayerItem[];
 
+  categoryImagePreview;
+
   constructor(private httpService: HttpService, private translate: TranslateService) {
   }
 
@@ -46,15 +48,18 @@ export class CategoryComponent implements OnChanges {
 
   showModalAdd (modal: ModalComponent) {
     this.model = new Category();
+    this.categoryImagePreview = null;
     this.formAdd.reset();
     modal.show();
   }
 
   showModalEdit (modal: ModalComponent, category: Category) {
     this.model = category;
+    this.categoryImagePreview = null;
     this.backgroundLayers = this.layers.filter(
       layer => layer.item.background
     );
+    this.readUrl(this.model.id);
     this.formEdit.reset({
       id: this.model.id,
       defaultBackground: this.model.defaultBackground,
@@ -178,21 +183,39 @@ export class CategoryComponent implements OnChanges {
             map.set('' + this.model.id + '_service_link_label', '');
             map.set('topic_' + this.model.id + '_tooltip', this.formAdd.value.addCatTooltip ?
               this.formAdd.value.addCatTooltip : this.model.id);
-            this.httpService.addCategoryAndLabel(this.model, map, null).subscribe(
-              data => {
-                this.categories = data[0];
-                this.updateAppCategories.emit(data[0]);
-                this.modalSaveSuccess.show();
-                modal.hide();
-              },
-              error => {
-                console.error('Error add category!');
-                this.modalSaveUnsuccess.show();
-              },
-              () => {
-                this.translate.reloadLang(this.translate.getDefaultLang());
-              }
-            );
+            if (this.categoryImagePreview) {
+              this.httpService.addCategoryLabelAndImage(this.model, map, null, this.categoryImagePreview).subscribe(
+                data => {
+                  this.categories = data[0];
+                  this.updateAppCategories.emit(data[0]);
+                  this.modalSaveSuccess.show();
+                  modal.hide();
+                },
+                error => {
+                  console.error('Error add category!');
+                  this.modalSaveUnsuccess.show();
+                },
+                () => {
+                  this.translate.reloadLang(this.translate.getDefaultLang());
+                }
+              );
+            } else {
+              this.httpService.addCategoryAndLabel(this.model, map, null).subscribe(
+                data => {
+                  this.categories = data[0];
+                  this.updateAppCategories.emit(data[0]);
+                  this.modalSaveSuccess.show();
+                  modal.hide();
+                },
+                error => {
+                  console.error('Error add category!');
+                  this.modalSaveUnsuccess.show();
+                },
+                () => {
+                  this.translate.reloadLang(this.translate.getDefaultLang());
+                }
+              );
+            }
           }
         }
       }
@@ -211,20 +234,37 @@ export class CategoryComponent implements OnChanges {
         if (this.formEdit.value.editCatTooltip) {
           map.set('topic_' + this.model.id + '_tooltip', this.formEdit.value.editCatTooltip);
         }
-        this.httpService.updateCategoryAndLabel(this.model, map).subscribe(
-          data => {
-            this.categories = data[0];
-            this.modalSaveSuccess.show();
-            modal.hide();
-          },
-          error => {
-            console.error('Error update: ' + this.model.id);
-            this.modalSaveUnsuccess.show();
-          },
-          () => {
-            this.translate.reloadLang(this.translate.getDefaultLang());
-          }
-        );
+        if (this.categoryImagePreview) {
+          this.httpService.updateCategoryLabelAndImage(this.model, map, null, this.categoryImagePreview).subscribe(
+            data => {
+              this.categories = data[0];
+              this.modalSaveSuccess.show();
+              modal.hide();
+            },
+            error => {
+              console.error('Error add category!');
+              this.modalSaveUnsuccess.show();
+            },
+            () => {
+              this.translate.reloadLang(this.translate.getDefaultLang());
+            }
+          );
+        } else {
+          this.httpService.updateCategoryAndLabel(this.model, map).subscribe(
+            data => {
+              this.categories = data[0];
+              this.modalSaveSuccess.show();
+              modal.hide();
+            },
+            error => {
+              console.error('Error update: ' + this.model.id);
+              this.modalSaveUnsuccess.show();
+            },
+            () => {
+              this.translate.reloadLang(this.translate.getDefaultLang());
+            }
+          );
+        }
       }
     }
   }
@@ -285,5 +325,20 @@ export class CategoryComponent implements OnChanges {
       });
     }
     return label;
+  }
+
+  readUrl(event: any) {
+    this.categoryImagePreview = null;
+    if (event.target && event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = (evt: ProgressEvent) => {
+        this.categoryImagePreview = (<FileReader>evt.target).result;
+      };
+
+      reader.readAsDataURL(event.target.files[0]);
+    } else {
+      this.categoryImagePreview = this.httpService.getCategoryImage(this.model);
+    }
   }
 }
