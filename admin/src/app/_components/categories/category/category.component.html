@@ -135,8 +135,12 @@
           <input type="text" #addCatTooltip="ngModel" [(ngModel)]="formAdd.value.addCatTooltip" class="form-control" name="addCatTooltip" id="addCatTooltip">
         </div>
       </div>
+      <!-- image -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="addCatImage" translate>category_item_add_image</label>
+        <div class="col-sm-4 col-form-label">
+          <label class="" for="addCatImage" translate>category_item_add_image</label>
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
         <div class="col-sm-8">
           <input type="file" #addCatImage="ngModel" [(ngModel)]="formAdd.value.addCatImage" class="" name="addCatImage" id="addCatImage" (change)="readUrl($event)">
         </div>
@@ -250,8 +254,12 @@
           <input type="text" class="form-control" #editCatTooltip="ngModel" [(ngModel)]="formEdit.value.editCatTooltip" name="editCatTooltip" id="editCatTooltip">
         </div>
       </div>
+      <!-- image -->
       <div class="form-group row">
-        <label class="col-sm-4 col-form-label" for="editCatImage" translate>category_item_add_image</label>
+        <div class="col-sm-4 col-form-label">
+          <label for="editCatImage" translate>category_item_add_image</label>
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
         <div class="col-sm-8">
           <input type="file" #editCatImage="ngModel" [(ngModel)]="formEdit.value.editCatImage" class="" name="editCatImage" id="editCatImage" (change)="readUrl($event)">
         </div>

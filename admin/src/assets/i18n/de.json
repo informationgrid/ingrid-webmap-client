@@ -33,6 +33,7 @@
     "category_item_add_label_input": "Label eintragen ...",
     "category_item_add_layerBodId": "Karte",
     "category_item_add_layerBodId_input": "Karte suchen und auswählen ...",
+    "category_item_image_help": "max. Bildauflösung 140 x 60 Pixel.", 
     "category_add_success": "Die Änderungen wurden gespeichert!",
     "category_add_unsuccess": "Ein Fehler ist beim Speichern aufgetreten!",
     "category_item_edit_title": "Ändern",
