@@ -112,9 +112,7 @@ export class UtilsLayers {
     }
 
     static replaceIdChar(id: string) {
-        id = id.replace(/\./gi, '_');
-        id = id.replace(/\:/gi, '_');
-        id = id.replace(/\,/gi, '_');
+        id = id.replace(/[^A-Z0-9]/gi, '_');
         return id;
     }
 
