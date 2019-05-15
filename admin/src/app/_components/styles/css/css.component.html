@@ -5,9 +5,13 @@
     <div id="css" class="collapse" aria-labelledby="cssHeader" data-parent="#accordion">
         <div class="card-body">
             <div class="modal-body">
-                <textarea class="form-control" name="css" id="css" rows="20" [value]="css" #textarea ></textarea>
+                <textarea class="form-control" name="css" id="css" rows="20"  [(ngModel)]="css" #textarea="ngModel" ></textarea>
                 <br>
                 <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" (click)="onLoad()" translate>
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                        refresh
+                    </button>
                     <button type="submit" class="btn btn-primary" (click)="onUpdate(textarea.value)" translate>
                         <i class="fa fa-save" aria-hidden="true"></i>
                         save

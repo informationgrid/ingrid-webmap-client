@@ -138,17 +138,18 @@
       <!-- image -->
       <div class="form-group row">
         <div class="col-sm-4 col-form-label">
-          <label class="" for="addCatImage" translate>category_item_add_image</label>
-          <small class="form-text text-muted" translate>category_item_image_help</small>
+          <label class="" translate>category_item_add_image</label>
         </div>
         <div class="col-sm-8">
-          <input type="file" #addCatImage="ngModel" [(ngModel)]="formAdd.value.addCatImage" class="" name="addCatImage" id="addCatImage" (change)="readUrl($event)">
+          <input type="file" (change)="readUrl($event)">
         </div>
       </div>
       <div *ngIf="categoryImagePreview" class="form-group row">
-        <label class="col-sm-4 col-form-label" for="addCatImage" translate></label>
+        <div class="col-sm-4 col-form-label">
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
         <div class="col-sm-8">
-          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')','width':'140px','height':'60px', 'border': '1px solid #ced4da'}"></div>
+          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')'}" class="cat_image"></div>
         </div>
       </div>
     </form>
@@ -257,17 +258,18 @@
       <!-- image -->
       <div class="form-group row">
         <div class="col-sm-4 col-form-label">
-          <label for="editCatImage" translate>category_item_add_image</label>
-          <small class="form-text text-muted" translate>category_item_image_help</small>
+          <label translate>category_item_add_image</label>
         </div>
         <div class="col-sm-8">
-          <input type="file" #editCatImage="ngModel" [(ngModel)]="formEdit.value.editCatImage" class="" name="editCatImage" id="editCatImage" (change)="readUrl($event)">
+          <input type="file" (change)="readUrl($event)">
         </div>
       </div>
       <div *ngIf="categoryImagePreview" class="form-group row">
-        <label class="col-sm-4 col-form-label" for="editCatImage" translate></label>
+        <div class="col-sm-4 col-form-label">
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
         <div class="col-sm-8">
-          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')','width':'140px','height':'60px', 'border': '1px solid #ced4da'}"></div>
+          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')'}" class="cat_image"></div>
         </div>
       </div>
       <!-- backgroundLayers -->

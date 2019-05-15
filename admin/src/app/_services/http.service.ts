@@ -97,6 +97,17 @@ export class HttpService {
     return this.http.put<LayerItem>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
+  updateLayerAndImage(layerId: string, layer: LayerItem, image: any) {
+    return forkJoin(
+      this.updateLayer(layerId, layer),
+      this.addImage(image, 'background', layerId)
+    );
+  }
+
+  getLayerBackgroundImage(layer: LayerItem) {
+    return httpApiHost + '/image/background/' + layer.id;
+  }
+
   addLayer(layers: LayerItem[]): Observable<LayerItem[]> {
     const body = JSON.stringify(layers);
     return this.http.post<LayerItem[]>(httpApiHost + '/layers', body, httpJsonOptions).map(

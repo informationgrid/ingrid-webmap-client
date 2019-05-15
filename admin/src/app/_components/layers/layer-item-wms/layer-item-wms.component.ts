@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LayerItem } from '../../../_models/layer-item';
 import { HttpService } from '../../../_services/http.service';
@@ -11,7 +11,7 @@ import { ITreeOptions } from 'angular-tree-component';
   templateUrl: './layer-item-wms.component.html',
   styleUrls: ['./layer-item-wms.component.scss']
 })
-export class LayerItemWmsComponent {
+export class LayerItemWmsComponent implements OnInit {
 
   @Input() layer: LayerItem;
   @Input() layerId = '';
@@ -24,6 +24,7 @@ export class LayerItemWmsComponent {
 
   tmpLayer: LayerItem;
   layerCategoryTrees;
+  backgroundImage = null;
 
   optionsCategoryTree: ITreeOptions = {
     displayField: 'label',
@@ -31,6 +32,12 @@ export class LayerItemWmsComponent {
   };
 
   constructor(private httpService: HttpService) { }
+
+  ngOnInit() {
+    if  (this.layer.item.background) {
+      this.readUrl(this.layer.id);
+    }
+  }
 
   onAddItem(value: any, list: any ) {
     UtilsLayers.onAddItem(value, list);
@@ -53,20 +60,37 @@ export class LayerItemWmsComponent {
       if (this.form.value) {
         this.layer.id = this.form.value.id;
         UtilsLayers.cleanupLayersProps(this.layer);
-        this.httpService.updateLayer(this.layerId, this.layer).subscribe(
-          data => {
-            this.form.form.markAsPristine();
-            this.form.form.markAsUntouched();
-            this.form.form.updateValueAndValidity();
-            this.modalSaveSuccess.show();
-            this.layer = data;
-            this.updateLayer.emit(data);
-          },
-          error => {
-            console.error('Error onUpdateLayer!');
-            this.modalSaveUnsuccess.show();
-          }
-        );
+        if (this.backgroundImage && !this.backgroundImage.startsWith('http')) {
+          this.httpService.updateLayerAndImage(this.layerId, this.layer, this.backgroundImage).subscribe(
+            data => {
+              this.form.form.markAsPristine();
+              this.form.form.markAsUntouched();
+              this.form.form.updateValueAndValidity();
+              this.modalSaveSuccess.show();
+              this.layer = data[0];
+              this.updateLayer.emit(data[0]);
+            },
+            error => {
+              console.error('Error onUpdateLayer!');
+              this.modalSaveUnsuccess.show();
+            }
+          );
+        } else {
+          this.httpService.updateLayer(this.layerId, this.layer).subscribe(
+            data => {
+              this.form.form.markAsPristine();
+              this.form.form.markAsUntouched();
+              this.form.form.updateValueAndValidity();
+              this.modalSaveSuccess.show();
+              this.layer = data;
+              this.updateLayer.emit(data);
+            },
+            error => {
+              console.error('Error onUpdateLayer!');
+              this.modalSaveUnsuccess.show();
+            }
+          );
+        }
       }
     }
   }
@@ -126,6 +150,20 @@ export class LayerItemWmsComponent {
           console.error('Error load categories for id: ' + layerId);
         }
       );
+    }
+  }
+
+  readUrl(event: any) {
+    if (event.target && event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = (evt: ProgressEvent) => {
+        this.backgroundImage = (<FileReader>evt.target).result;
+      };
+
+      reader.readAsDataURL(event.target.files[0]);
+    } else {
+      this.backgroundImage = this.httpService.getLayerBackgroundImage(this.layer);
     }
   }
 }

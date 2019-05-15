@@ -55,7 +55,7 @@ export class LayerItemComponent {
     this.selectLayer.emit(event);
   }
 
-  loadLayersForService(event, layer) {
+  loadLayersForService(event, layer: LayerItem) {
     if (layer.item.status && !this.altLayers) {
       let serviceUrl = layer.item.wmsUrl || layer.item.serviceUrl;
       serviceUrl = UtilsLayers.addGetCapabilitiesParams(serviceUrl.trim());

@@ -828,8 +828,25 @@ public class AdministrationResource {
                     String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
                     if(css.indexOf(".ga-topics-sprite-" + name) == -1) {
                         css = css + "\n[ga-topic] .ga-topics-sprite-" + name + " {\n" + 
-                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/category/" + name + "\");\n" + 
+                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
                                 "  width: 140px;\n" + 
+                                "}";
+                        this.updateCss(css);
+                    }
+                } else if(path.equals("background")) {
+                    String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
+                    if(css.indexOf("[ga-background-selector] .ga-" + name) == -1) {
+                        css = css + "\n@media (max-width: 768px) {\n" + 
+                                "[ga-background-selector] .ga-" + name + " {\n" + 
+                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background-size: 38px 38px;\n" + 
+                                "}\n" +
+                                "}";
+                        css = css + "\n@media (min-width: 769px) {\n" + 
+                                "[ga-background-selector] .ga-" + name + " {\n" + 
+                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background-size: 90px 58px;\n" + 
+                                "}\n" +
                                 "}";
                         this.updateCss(css);
                     }

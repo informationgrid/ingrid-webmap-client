@@ -407,6 +407,34 @@
           </div>
         </div>
       </div>
+      <!-- background image desktop -->
+      <div *ngIf="layer.item.background" class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_background_image</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_background_image_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_background_image_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_background_image_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="file" (change)="readUrl($event, false)">
+          </div>
+        </div>
+      </div>
+      <div *ngIf="backgroundImage" class="form-group row">
+        <label class="col-sm-3 col-form-label" translate></label>
+        <div class="col-sm-9">
+          <div [ngStyle]="{'background-image':'url('+ backgroundImage +')'}" class="bg_image_wmts"></div>
+        </div>
+      </div>
       <!-- format -->
       <div class="form-group row">
         <div class="col-sm-3">
