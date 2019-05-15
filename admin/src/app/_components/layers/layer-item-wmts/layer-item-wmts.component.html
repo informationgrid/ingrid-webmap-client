@@ -432,7 +432,7 @@
       <div *ngIf="backgroundImage" class="form-group row">
         <label class="col-sm-3 col-form-label" translate></label>
         <div class="col-sm-9">
-          <div [ngStyle]="{'background-image':'url('+ backgroundImage +')'}" class="bg_image_wmts"></div>
+          <img [src]="backgroundImage" class="bg_image_wmts">
         </div>
       </div>
       <!-- format -->
