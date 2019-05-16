@@ -30,12 +30,10 @@ goog.require('ga_urlutils_service');
         'osmLayer': osmLayer,
         'webatlasde_light': {
           id: 'webatlasde_light',
-          label: 'bg_bkg',
           disable3d: true
         },
         'webatlasde_grau': {
           id: 'webatlasde_grau',
-          label: 'bg_bkg_grau',
           disable3d: true
         }
       };
