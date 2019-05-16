@@ -27,13 +27,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -49,12 +47,12 @@ import org.opengis.referencing.operation.TransformException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import de.ingrid.geo.utils.transformation.CoordTransformUtil;
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import de.ingrid.mapclient.utils.Utils;
 
 public class CapabilitiesUpdateTask implements Runnable{
@@ -88,7 +86,6 @@ public class CapabilitiesUpdateTask implements Runnable{
                     ArrayList<String> errorUrls = new ArrayList<>();
                     ArrayList<String> errorLayernames = new ArrayList<>();
                     
-                    String getCapabilities = null;
                     Document doc = null;
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     
@@ -137,21 +134,21 @@ public class CapabilitiesUpdateTask implements Runnable{
                                             }
                                         }
                                         if(!errorUrls.contains(layerWmsUrl.toString())) {
-                                            doc = mapCapabilities.get( layerWmsUrl );
+                                            doc = mapCapabilities.get( layerWmsUrl.toString() );
                                             if(doc == null){
                                                 log.debug( "Load capabilities: " + layerWmsUrl);
-                                                getCapabilities = HttpProxy.doRequest( layerWmsUrl.toString(), login);
-                                                if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
-                                                    hasChanges = true;
-                                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                                } else {
-                                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                                    docFactory.setValidating(false);
-                                                    doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                                    mapCapabilities.put( layerWmsUrl.toString(), doc );
-                                                    boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerJSON, layerWmsUrl.toString(), errorLayernames, key);
-                                                    if(hasChangesLayer){
-                                                        hasChanges = hasChangesLayer;
+                                                GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( layerWmsUrl.toString(), login);
+                                                if(getCapabilities != null) {
+                                                    if (getCapabilities.getXml().indexOf( "serviceexception" ) > -1) {
+                                                        hasChanges = true;
+                                                        layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                                    } else {
+                                                        doc =  getCapabilities.getDoc();
+                                                        mapCapabilities.put( layerWmsUrl.toString(), doc );
+                                                        boolean hasChangesLayer = updateLayerWMSInformation(doc, xpath, layerJSON, layerWmsUrl.toString(), errorLayernames, key);
+                                                        if(hasChangesLayer){
+                                                            hasChanges = hasChangesLayer;
+                                                        }
                                                     }
                                                 }
                                             } else {
@@ -182,18 +179,18 @@ public class CapabilitiesUpdateTask implements Runnable{
                                         doc = mapCapabilities.get( layerWtmsUrl );
                                         if(doc == null){
                                             log.debug( "Load capabilities: " + layerWtmsUrl);
-                                            getCapabilities = HttpProxy.doRequest( layerWtmsUrl, login) ;
-                                            if (getCapabilities.toLowerCase().indexOf( "serviceexception" ) > -1) {
-                                                hasChanges = true;
-                                                layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
-                                            } else {
-                                                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                                docFactory.setValidating(false);
-                                                doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                                mapCapabilities.put( layerWtmsUrl, doc );
-                                                boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerJSON, layerWtmsUrl, errorLayernames, key);
-                                                if(hasChangesLayer){
-                                                    hasChanges = hasChangesLayer;
+                                            GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( layerWtmsUrl, login);
+                                            if (getCapabilities != null) {
+                                                if (getCapabilities.getXml().toLowerCase().indexOf( "serviceexception" ) > -1) {
+                                                    hasChanges = true;
+                                                    layerJSON.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
+                                                } else {
+                                                    doc = getCapabilities.getDoc();
+                                                    mapCapabilities.put( layerWtmsUrl, doc );
+                                                    boolean hasChangesLayer = updateLayerWTMSInformation(doc, xpath, layerJSON, layerWtmsUrl, errorLayernames, key);
+                                                    if(hasChangesLayer){
+                                                        hasChanges = hasChangesLayer;
+                                                    }
                                                 }
                                             }
                                         } else {

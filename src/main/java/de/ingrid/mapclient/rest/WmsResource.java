@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -42,7 +41,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -57,11 +55,11 @@ import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import com.itextpdf.text.html.HtmlEncoder;
 
 import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import de.ingrid.mapclient.utils.Utils;
 
 /**
@@ -91,34 +89,37 @@ public class WmsResource {
             if(StringUtils.isNotEmpty(login) && StringUtils.isEmpty(password)) {
                 password = Utils.getServiceLogin(url, login);
             }
-            response = HttpProxy.doRequest( url, login, password);
-            if(response != null) {
-                if(response.indexOf("<?xml") == -1) {
-                   response = "<?xml version=\"1.0\"?>" + response;
-                }
-                if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
-                    // Remove script tags on getFeatureInfo response.
-                    Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
-                            Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-                    return p.matcher(response).replaceAll("");
-                } else {
-                    // Replace "," to "." on bounding box.
-                    response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
-                    response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
-                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                    response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                }
-                if(toJson){
-                    JSONObject json;
-                    try {
-                        json = XML.toJSONObject( response );
-                    } catch (JSONException e) {
-                        json = new JSONObject();
+            GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login, password);
+            if (getCapabilities != null) {
+                response = getCapabilities.getXml();
+                if(response != null) {
+                    if(response.indexOf("<?xml") == -1) {
+                       response = "<?xml version=\"1.0\"?>" + response;
                     }
-                    json.put( "xmlResponse", response );
-                    return json.toString();
+                    if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
+                        // Remove script tags on getFeatureInfo response.
+                        Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
+                                Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+                        return p.matcher(response).replaceAll("");
+                    } else {
+                        // Replace "," to "." on bounding box.
+                        response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
+                        response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
+                        response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                        response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
+                    }
+                    if(toJson){
+                        JSONObject json;
+                        try {
+                            json = XML.toJSONObject( response );
+                        } catch (JSONException e) {
+                            json = new JSONObject();
+                        }
+                        json.put( "xmlResponse", response );
+                        return json.toString();
+                    }
+                    return response;
                 }
-                return response;
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
         } catch (IOException ex) {
@@ -164,21 +165,20 @@ public class WmsResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getServiceLayers(@QueryParam("url") String url, @QueryParam("login") String login) {
         try {
-            String response = null;
             if(url != null) {
-                response = HttpProxy.doRequest( url, login);
-                DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                docFactory.setValidating(false);
-                Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
-                XPath xpath = XPathFactory.newInstance().newXPath();
-                NodeList layers = (NodeList) xpath.evaluate( "//Layer/Name", doc, XPathConstants.NODESET );
-                if(layers != null) {
-                    JSONArray json = new JSONArray();
-                    for (int i = 0; i < layers.getLength(); i++) {
-                        Node layer = layers.item(i);
-                        json.put(layer.getTextContent());
+                GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login);
+                if (getCapabilities != null) {
+                    Document doc = getCapabilities.getDoc();
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    NodeList layers = (NodeList) xpath.evaluate( "//Layer/Name", doc, XPathConstants.NODESET );
+                    if(layers != null) {
+                        JSONArray json = new JSONArray();
+                        for (int i = 0; i < layers.getLength(); i++) {
+                            Node layer = layers.item(i);
+                            json.put(layer.getTextContent());
+                        }
+                        return json.toString();
                     }
-                    return json.toString();
                 }
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
@@ -214,7 +214,6 @@ public class WmsResource {
     @Produces(MediaType.TEXT_HTML)
     public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login) {
         String html = "";
-        String response = null;
         boolean hasError = false;
         String serviceCapabilitiesURL = null;
         
@@ -286,16 +285,15 @@ public class WmsResource {
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    response = HttpProxy.doRequest( serviceCapabilitiesURL, login);
-                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                    docFactory.setValidating(false);
-                    Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(response)));
-                    XPath xpath = XPathFactory.newInstance().newXPath();
-                    
-                    if(serviceType.equalsIgnoreCase( "wms" )){
-                        html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
-                    }else if(serviceType.equalsIgnoreCase( "wmts" )){
-                        html = getWmtsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( serviceCapabilitiesURL, login);
+                    if(getCapabilities != null) {
+                        Document doc = getCapabilities.getDoc();
+                        XPath xpath = XPathFactory.newInstance().newXPath();
+                        if(serviceType.equalsIgnoreCase( "wms" )){
+                            html = getWmsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                        }else if(serviceType.equalsIgnoreCase( "wmts" )){
+                            html = getWmtsInfo(xpath, doc, serviceCapabilitiesURL, layerName, layerTitle, layerLegend);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -310,12 +308,6 @@ public class WmsResource {
             if(serviceCapabilitiesURL != null){
                 html += "<a href=\"" + serviceCapabilitiesURL +" \" target=\"_blank\">" + serviceCapabilitiesURL + "</a>";
             }
-            if(response != null){
-                html += "<br>";
-                html += "<h4>Antwort: </h4>";
-                html += response;
-            }
-            
             html +="</div>";
         }
         return Response.ok(html).build();

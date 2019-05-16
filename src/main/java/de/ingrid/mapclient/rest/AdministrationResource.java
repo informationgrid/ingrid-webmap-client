@@ -26,7 +26,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Properties;
@@ -44,7 +43,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
@@ -57,11 +55,11 @@ import org.codehaus.jettison.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
 import de.ingrid.mapclient.ConfigurationProvider;
 import de.ingrid.mapclient.Constants;
 import de.ingrid.mapclient.HttpProxy;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import de.ingrid.mapclient.utils.Utils;
 import sun.misc.BASE64Decoder;
 
@@ -1310,28 +1308,28 @@ public class AdministrationResource {
                             }
                             if(status != null && layername != null && url != null) {
                                 try {
-                                    String getCapabilities = HttpProxy.doRequest( url );
-                                    DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-                                    docFactory.setValidating(false);
-                                    Document doc =  docFactory.newDocumentBuilder().parse(new InputSource(new StringReader(getCapabilities)));
-                                    XPath xpath = XPathFactory.newInstance().newXPath();
-                                    Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
-                                    if(layerNode == null) {
-                                        layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
-                                    }
-                                    switch (status) {
-                                    case Constants.STATUS_LAYER_NOT_EXIST:
-                                        if(layerNode != null) {
-                                            layerItem.remove(Constants.LAYER_STATUS);
+                                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url );
+                                    if(getCapabilities != null) {
+                                        Document doc =  (Document) getCapabilities.getDoc();
+                                        XPath xpath = XPathFactory.newInstance().newXPath();
+                                        Node layerNode = (Node) xpath.evaluate("//Layer/Name[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
+                                        if(layerNode == null) {
+                                            layerNode = (Node) xpath.evaluate("//Layer/Identifier[text()=\""+layername+"\"]/..", doc, XPathConstants.NODE);
                                         }
-                                        break;
-                                    case Constants.STATUS_SERVICE_NOT_EXIST:
-                                        if(layerNode != null) {
-                                            layerItem.remove(Constants.LAYER_STATUS);
+                                        switch (status) {
+                                        case Constants.STATUS_LAYER_NOT_EXIST:
+                                            if(layerNode != null) {
+                                                layerItem.remove(Constants.LAYER_STATUS);
+                                            }
+                                            break;
+                                        case Constants.STATUS_SERVICE_NOT_EXIST:
+                                            if(layerNode != null) {
+                                                layerItem.remove(Constants.LAYER_STATUS);
+                                            }
+                                            break;
+                                        default:
+                                            break;
                                         }
-                                        break;
-                                    default:
-                                        break;
                                     }
                                 } catch (Exception e) {
                                    layerItem.put(Constants.LAYER_STATUS, Constants.STATUS_SERVICE_NOT_EXIST);
