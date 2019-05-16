@@ -111,8 +111,6 @@
 "wildruhezonen_service_link_label": "#ignore#",
 "Invalid layer: unsupported crs": "Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
 "anbieter": "Anbieter",
-"bg_bkg": "BKG",
-"bg_bkg_grau": "BKG Grau",
 "bg_osm": "OSM",
 "bwalocator_results_header": "BWaStr Locator",
 "bwalocator_from": "Von:",
