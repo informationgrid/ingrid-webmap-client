@@ -112,7 +112,7 @@ public class ConfigResource {
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
             String fileContent = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
-            if(StringUtils.isEmpty(fileContent)) {
+            if(StringUtils.isEmpty(fileContent) && !configDir.equals("./webapps/ingrid-webmap-client/frontend/")) {
                 fileContent = Utils.getFileContent(configDir, "app.override", ".css", "css/");
                 if(fileContent != null) {
                     Utils.updateFile("css/app.profile.css", fileContent);
