@@ -60,7 +60,7 @@ export class LayerItemWmsComponent implements OnInit {
       if (this.form.value) {
         this.layer.id = this.form.value.id;
         UtilsLayers.cleanupLayersProps(this.layer);
-        if (this.backgroundImage && !this.backgroundImage.startsWith('http')) {
+        if (this.backgroundImage && this.backgroundImage.indexOf('/ingrid-webmap-client/rest/admin') === -1) {
           this.httpService.updateLayerAndImage(this.layerId, this.layer, this.backgroundImage).subscribe(
             data => {
               this.form.form.markAsPristine();
