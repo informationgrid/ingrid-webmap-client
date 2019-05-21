@@ -854,7 +854,21 @@ export class LayerComponent implements OnInit {
                 }
               }
               // Style
-              newLayer.style = layer['Style']['ows:Identifier'];
+              const styles = layer['Style'];
+              if (styles instanceof Array) {
+                styles.forEach(style => {
+                  if (style['isDefault'] && style['isDefault'] === 'true') {
+                    newLayer.style = style['ows:Identifier'];
+                  }
+                });
+                if (!newLayer.style) {
+                  newLayer.style = styles[0]['ows:Identifier'];
+                }
+              } else if (layer['Style']['ows:Identifier']) {
+                newLayer.style = layer['Style']['ows:Identifier'];
+              } else {
+                newLayer.style = 'default';
+              }
               // Extent
               if (layer['ows:WGS84BoundingBox']) {
                 const latLonBox = layer['ows:WGS84BoundingBox'];
