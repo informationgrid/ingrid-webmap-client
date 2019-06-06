@@ -26,6 +26,7 @@ export class Wmslayer extends Layer implements ILayerWms {
         this.timestamps = [];
         this.timeEnabled = false;
         this.timeBehaviour = '';
+        this.queryLayers = '';
     }
 
     generateId(layers: LayerItem[]) {

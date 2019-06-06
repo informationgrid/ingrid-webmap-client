@@ -499,8 +499,9 @@ goog.require('ga_window_service');
                   'LANG': gaLang.get(),
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
-                if (layerToQuery.queryLayers) {
-                  angular.extend({'QUERY_LAYERS': layerToQuery.queryLayers},
+                var queryLayers = layerToQuery.queryLayers;
+                if (queryLayers && queryLayers.trim().length > 0 ) {
+                  angular.extend({'QUERY_LAYERS': queryLayers.trim()},
                     params);
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
@@ -543,8 +544,9 @@ goog.require('ga_window_service');
                   'LANG': gaLang.get(),
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
-                if (layerToQuery.queryLayers) {
-                  angular.extend({'QUERY_LAYERS': layerToQuery.queryLayers},
+                var queryLayers = layerToQuery.queryLayers;
+                if (queryLayers && queryLayers.trim().length > 0 ) {
+                  angular.extend({'QUERY_LAYERS': queryLayers.trim()},
                     params);
                 }
                 var url = gaMapUtils.getWMTSFeatureInfoUrl(layerToQuery.
