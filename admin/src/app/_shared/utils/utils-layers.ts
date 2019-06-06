@@ -14,7 +14,19 @@ export class UtilsLayers {
             if (!layerItem.gutter) {
                 delete layerItem.gutter;
             }
+            if (this.isEmptyString(layerItem.queryLayers)) {
+                delete layerItem.queryLayers;
+            }
         }
+    }
+
+    static isEmptyString (value: string) {
+        if (!value) {
+            return true;
+        } else if (value && value.trim().length === 0) {
+            return true;
+        }
+        return false;
     }
 
     static isWMS(type: string) {

@@ -160,6 +160,8 @@
     "layer_add_title": "Karten hinzufügen",
     "layer_tooltip": "Tooltip",
     "layer_tooltip_help": "Aktivieren Sie die GetFeature-Info-Abfrage, falls es die Karte erlaubt.",
+    "layer_queryLayers": "Query-Layers",
+    "layer_queryLayers_help": "Tragen Sie die Layers (kommagetrennt) ein, welches bei einer GetFeatureInfo-Abfrage angefragt werden soll.",
     "load": "Laden",
     "field_required": "Pflichtfeld: Bitte dieses Feld ausfüllen!",
     "field_pattern": "Erlaubt sind Buchstaben (keine Umlaute), Zahlen, Minus ('-'), Unterstrich ('_') und keine Leerzeichen.",
