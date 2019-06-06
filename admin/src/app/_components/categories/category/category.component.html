@@ -327,7 +327,7 @@
               <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.selectedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -358,7 +358,7 @@
               <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.activatedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -495,7 +495,7 @@
               <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.selectedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -526,7 +526,7 @@
               <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.activatedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
