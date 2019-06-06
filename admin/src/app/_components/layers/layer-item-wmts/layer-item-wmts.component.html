@@ -452,11 +452,31 @@
           </div>
         </div>
         <div class="col-sm-9">
-          <input type="text" #queryLayers="ngModel" [(ngModel)]="layer.item.queryLayers" name="queryLayers" class="form-control">
+          <input type="text" #queryLayers="ngModel" [(ngModel)]="layer.item.queryLayers" name="queryLayers" class="form-control" min="1">
+        </div>
+      </div>
+      <!-- featureCount -->
+      <div *ngIf="layer.item.tooltip" class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_featureCount</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_featureCount_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_featureCount_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_featureCount_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <input type="number" #featureCount="ngModel" [(ngModel)]="layer.item.featureCount" name="featureCount" class="form-control">
         </div>
       </div>
       <!-- featureInfoTpl -->
-      <div class="form-group row">
+      <div *ngIf="layer.item.tooltip" class="form-group row">
         <div class="col-sm-3">
           <div class=" d-flex justify-content-between align-items-center">
             <label class="col-form-label" translate>layer_featureInfoTpl</label>

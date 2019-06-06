@@ -27,6 +27,7 @@ export class Wmslayer extends Layer implements ILayerWms {
         this.timeEnabled = false;
         this.timeBehaviour = '';
         this.queryLayers = '';
+        this.featureCount = 10;
     }
 
     generateId(layers: LayerItem[]) {

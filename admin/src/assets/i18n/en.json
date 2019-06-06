@@ -162,6 +162,8 @@
     "layer_tooltip_help": "",
     "layer_queryLayers": "",
     "layer_queryLayers_help": "",
+    "layer_featureCount": "",
+    "layer_featureCount_help": "",
     "load": "",
     "field_required": "",
     "field_pattern": "",

@@ -162,6 +162,8 @@
     "layer_tooltip_help": "Aktivieren Sie die GetFeature-Info-Abfrage, falls es die Karte erlaubt.",
     "layer_queryLayers": "Query-Layers",
     "layer_queryLayers_help": "Tragen Sie die Layers (kommagetrennt) ein, welches bei einer GetFeatureInfo-Abfrage angefragt werden soll.",
+    "layer_featureCount": "Feature-Count ",
+    "layer_featureCount_help": "Tragen Sie die maximale Anzahl an Features bei einer GetFeature-Anfrage auf diese Karte ein. (Default: 10)",
     "load": "Laden",
     "field_required": "Pflichtfeld: Bitte dieses Feld ausfüllen!",
     "field_pattern": "Erlaubt sind Buchstaben (keine Umlaute), Zahlen, Minus ('-'), Unterstrich ('_') und keine Leerzeichen.",

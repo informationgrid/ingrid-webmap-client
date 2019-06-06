@@ -21,4 +21,5 @@ export interface ILayer {
     timeBehaviour: string;
     tooltip: boolean;
     queryLayers: string;
+    featureCount: number;
 }

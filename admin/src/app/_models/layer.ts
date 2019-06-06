@@ -42,6 +42,7 @@ export class Layer implements ILayer, ILayerWms, ILayerWmts {
     status: string;
     auth: string;
     queryLayers: string;
+    featureCount: number;
 
     constructor(type: LayerType) {
         this.type = type;

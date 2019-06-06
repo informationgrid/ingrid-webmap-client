@@ -17,6 +17,9 @@ export class UtilsLayers {
             if (this.isEmptyString(layerItem.queryLayers)) {
                 delete layerItem.queryLayers;
             }
+            if (layerItem.featureCount === 10) {
+                delete layerItem.featureCount;
+            }
         }
     }
 
