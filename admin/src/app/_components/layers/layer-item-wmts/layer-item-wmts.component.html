@@ -102,28 +102,6 @@
           </div>
         </div>
       </div>
-      <!-- version -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_version</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_version_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_version_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_version_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <select class="form-control" #version="ngModel" name="version" [(ngModel)]="layer.item.version" required>
-            <option value="1.0.0" translate>1.0.0</option>
-          </select>
-        </div>
-      </div>
       <!-- label -->
       <div class="form-group row">
         <div class="col-sm-3">
@@ -148,78 +126,6 @@
           <div class="form-control-feedback" *ngIf="label.errors && (label.dirty || label.touched)">
             <div *ngIf="label.errors.required">
               <span translate>field_required</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- extent -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_extent</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_extent_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_extent_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_extent_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="form-group" [ngClass]="{
-                    'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
-                    'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
-                    }">
-            <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
-              <div *ngIf="extent0.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group" [ngClass]="{
-                    'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
-                    'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
-                    }">
-            <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
-              <div *ngIf="extent1.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group" [ngClass]="{
-                    'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
-                    'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
-                    }">
-            <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
-              <div *ngIf="extent2.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group" [ngClass]="{
-                    'has-danger': (label.invalid && (label.dirty || label.touched)) ,
-                    'has-success': (label.valid && (label.dirty || label.touched))
-                    }">
-            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
-              <div *ngIf="extent3.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-            <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
-              <div *ngIf="extent3.errors.required">
-                <span translate>field_required</span>
-              </div>
             </div>
           </div>
         </div>
@@ -253,6 +159,34 @@
           <div class="form-control-feedback" *ngIf="serviceUrl.errors && (serviceUrl.dirty || serviceUrl.touched)">
             <div *ngIf="serviceUrl.errors.required">
               <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- auth -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_auth</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_auth_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_auth_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_auth_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group form-group">
+            <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control login" readonly onfocus="this.removeAttribute('readonly');">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="showModal(modalAuth)">
+                <i *ngIf="layer.item.auth" class="fa fa-pencil" aria-hidden="true"></i>
+                <i *ngIf="!layer.item.auth" class="fa fa-plus" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -385,6 +319,286 @@
           </select>
         </div>
       </div>
+      <!-- version -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_version</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_version_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_version_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_version_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <select class="form-control" #version="ngModel" name="version" [(ngModel)]="layer.item.version" required>
+            <option value="1.0.0" translate>1.0.0</option>
+          </select>
+        </div>
+      </div>
+      <!-- extent -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_extent</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_extent_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_extent_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_extent_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent0.invalid && (extent0.dirty || extent0.touched)) ,
+                    'has-success': (extent0.valid && (extent0.dirty || extent0.touched))
+                    }">
+            <input type="text" #extent0="ngModel" [(ngModel)]="layer.item.extent[0]" name="extent0" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent0.errors && (extent0.dirty || extent0.touched)">
+              <div *ngIf="extent0.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent1.invalid && (extent1.dirty || extent1.touched)) ,
+                    'has-success': (extent1.valid && (extent1.dirty || extent1.touched))
+                    }">
+            <input type="text" #extent1="ngModel" [(ngModel)]="layer.item.extent[1]" name="extent1" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent1.errors && (extent1.dirty || extent1.touched)">
+              <div *ngIf="extent1.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (extent2.invalid && (extent2.dirty || extent2.touched)) ,
+                    'has-success': (extent2.valid && (extent2.dirty || extent2.touched))
+                    }">
+            <input type="text" #extent2="ngModel" [(ngModel)]="layer.item.extent[2]" name="extent2" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent2.errors && (extent2.dirty || extent2.touched)">
+              <div *ngIf="extent2.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+                    'has-danger': (label.invalid && (label.dirty || label.touched)) ,
+                    'has-success': (label.valid && (label.dirty || label.touched))
+                    }">
+            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+              <div *ngIf="extent3.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+            <input type="text" #extent3="ngModel" [(ngModel)]="layer.item.extent[3]" name="extent3" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="extent3.errors && (extent3.dirty || extent3.touched)">
+              <div *ngIf="extent3.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- tooltip -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_tooltip</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tooltip_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_tooltip_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_tooltip_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip">
+          </div>
+        </div>
+      </div>
+      <!-- featureInfoTpl -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_featureInfoTpl</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_featureInfoTpl_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_featureInfoTpl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_featureInfoTpl_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9 input-group">
+          <input type="text" #featureInfoTpl="ngModel" [(ngModel)]="layer.item.featureInfoTpl" name="featureInfoTpl" class="form-control">
+        </div>
+      </div>
+      <!-- opacity -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_opacity</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_opacity_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_opacity_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_opacity_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <select class="form-control" name="opacity" #opacity="ngModel" [(ngModel)]="layer.item.opacity">
+            <option [ngValue]="0.0" translate>0%</option>
+            <option [ngValue]="0.1" translate>10%</option>
+            <option [ngValue]="0.2" translate>20%</option>
+            <option [ngValue]="0.3" translate>30%</option>
+            <option [ngValue]="0.4" translate>40%</option>
+            <option [ngValue]="0.5" translate>50%</option>
+            <option [ngValue]="0.6" translate>60%</option>
+            <option [ngValue]="0.7" translate>70%</option>
+            <option [ngValue]="0.8" translate>80%</option>
+            <option [ngValue]="0.9" translate>90%</option>
+            <option [ngValue]="1.0" translate>100%</option>
+          </select>
+        </div>
+      </div>
+      <!-- style -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_style</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_style_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_style_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_style_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9" [ngClass]="{
+          'has-danger': (style.invalid && (style.dirty || style.touched)) ,
+          'has-success': (style.valid && (style.dirty || style.touched))
+          }">
+          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control" required>
+          <div class="form-control-feedback" *ngIf="style.errors && (style.dirty || style.touched)">
+            <div *ngIf="style.errors.required">
+              <span translate>field_required</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- origin -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" for="layer_input{{ layer.id }}_origin" translate>layer_origin</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_origin_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_origin_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_origin_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="form-group" [ngClass]="{
+                  'has-danger': (origin0.invalid && (origin0.dirty || origin0.touched)) ,
+                  'has-success': (origin0.valid && (origin0.dirty || origin0.touched))
+                  }">
+            <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="origin0.errors && (origin0.dirty || origin0.touched)">
+              <div *ngIf="origin0.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" [ngClass]="{
+                  'has-danger': (origin1.invalid && (origin1.dirty || origin1.touched)) ,
+                  'has-success': (origin1.valid && (origin1.dirty || origin1.touched))
+                  }">
+            <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
+              required>
+            <div class="form-control-feedback" *ngIf="origin1.errors && (origin1.dirty || origin1.touched)">
+              <div *ngIf="origin1.errors.required">
+                <span translate>field_required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- scales -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" for="layer_input{{ layer.id }}_scales" translate>layer_scales</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_scales_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_scales_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_scales_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group form-group" *ngFor="let scale of layer.item.scales; let i=index;">
+            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control extent" disabled>
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(scale, layer.item.scales)" *ngIf="i !== (layer.item.scales.length - 1) && layer.item.scales.length > 1">
+                <i class="fa fa-sort-down" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(scale, layer.item.scales)" *ngIf="i !== 0">
+                <i class="fa fa-sort-up" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, layer.item.scales)">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+          <div class="input-group form-group">
+            <input type="number" #scales name="scales" class="form-control" placeholder="{{ ('add') | translate }}">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItemNumber(scales.value, layer.item.scales); scales.value = '';">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- background -->
       <div class="form-group row">
         <div class="col-sm-3">
@@ -433,6 +647,118 @@
         <label class="col-sm-3 col-form-label" translate></label>
         <div class="col-sm-9">
           <img [src]="backgroundImage" class="bg_image_wmts">
+        </div>
+      </div>
+      <!-- hasLegend -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_hasLegend</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_hasLegend_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_hasLegend_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_hasLegend_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="form-check mb-2 mr-sm-2">
+            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend">
+          </div>
+        </div>
+      </div>
+      <!-- legendUrl -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_legendUrl</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_legendUrl_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_legendUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_legendUrl_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9 input-group">
+          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.legendUrl">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- attribution -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_attribution</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_attribution_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_attribution_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_attribution_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control">
+        </div>
+      </div>
+      <!-- attributionUrl -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_attributionUrl</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_attributionUrl_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_attributionUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_attributionUrl_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9 input-group">
+          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.attributionUrl">
+              <i class="fa fa-external-link" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- tileSize -->
+      <div class="form-group row">
+        <div class="col-sm-3">
+          <div class=" d-flex justify-content-between align-items-center">
+            <label class="col-form-label" translate>layer_tileSize</label>
+            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tileSize_' + layer.id"
+              title="{{ ('help') | translate }}">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="collapse" id="info_layer_tileSize_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
+            <div>
+              <small class="form-text text-muted" translate>layer_tileSize_help</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <input type="number" #tileSize="ngModel" [(ngModel)]="layer.item.tileSize " name="tileSize" class="form-control">
         </div>
       </div>
       <!-- format -->
@@ -613,332 +939,6 @@
             <option value="last" translate>last</option>
             <option [value]="timestamp" *ngFor="let timestamp of layer.item.timestamps" [title]="timestamp" translate>{{ timestamp }}</option>
           </select>
-        </div>
-      </div>
-      <!-- hasLegend -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_hasLegend</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_hasLegend_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_hasLegend_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_hasLegend_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #hasLegend="ngModel" name="hasLegend" [(ngModel)]="layer.item.hasLegend">
-          </div>
-        </div>
-      </div>
-      <!-- legendUrl -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_legendUrl</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_legendUrl_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_legendUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_legendUrl_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9 input-group">
-          <input type="text" #legendUrl="ngModel" [(ngModel)]="layer.item.legendUrl" name="legendUrl" class="form-control">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.legendUrl">
-              <i class="fa fa-external-link" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- attribution -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_attribution</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_attribution_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_attribution_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_attribution_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <input type="text" #attribution="ngModel" [(ngModel)]="layer.item.attribution" name="attribution" class="form-control">
-        </div>
-      </div>
-      <!-- attributionUrl -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_attributionUrl</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_attributionUrl_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_attributionUrl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_attributionUrl_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9 input-group">
-          <input type="text" #attributionUrl="ngModel" [(ngModel)]="layer.item.attributionUrl" name="attributionUrl" class="form-control">
-          <div class="input-group-append">
-            <button type="button" class="btn btn-primary btn-sm" appShowURL [url]="layer.item.attributionUrl">
-              <i class="fa fa-external-link" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- featureInfoTpl -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_featureInfoTpl</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_featureInfoTpl_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_featureInfoTpl_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_featureInfoTpl_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9 input-group">
-          <input type="text" #featureInfoTpl="ngModel" [(ngModel)]="layer.item.featureInfoTpl" name="featureInfoTpl" class="form-control">
-        </div>
-      </div>
-      <!-- tooltip -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_tooltip</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tooltip_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_tooltip_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_tooltip_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="form-check mb-2 mr-sm-2">
-            <input class="form-check-input" type="checkbox" #tooltip="ngModel" name="tooltip" [(ngModel)]="layer.item.tooltip">
-          </div>
-        </div>
-      </div>
-      <!-- opacity -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_opacity</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_opacity_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_opacity_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_opacity_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <select class="form-control" name="opacity" #opacity="ngModel" [(ngModel)]="layer.item.opacity">
-            <option [ngValue]="0.0" translate>0%</option>
-            <option [ngValue]="0.1" translate>10%</option>
-            <option [ngValue]="0.2" translate>20%</option>
-            <option [ngValue]="0.3" translate>30%</option>
-            <option [ngValue]="0.4" translate>40%</option>
-            <option [ngValue]="0.5" translate>50%</option>
-            <option [ngValue]="0.6" translate>60%</option>
-            <option [ngValue]="0.7" translate>70%</option>
-            <option [ngValue]="0.8" translate>80%</option>
-            <option [ngValue]="0.9" translate>90%</option>
-            <option [ngValue]="1.0" translate>100%</option>
-          </select>
-        </div>
-      </div>
-      <!-- style -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_style</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_style_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_style_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_style_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9" [ngClass]="{
-          'has-danger': (style.invalid && (style.dirty || style.touched)) ,
-          'has-success': (style.valid && (style.dirty || style.touched))
-          }">
-          <input type="text" #style="ngModel" [(ngModel)]="layer.item.style" name="style" class="form-control" required>
-          <div class="form-control-feedback" *ngIf="style.errors && (style.dirty || style.touched)">
-            <div *ngIf="style.errors.required">
-              <span translate>field_required</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- origin -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" for="layer_input{{ layer.id }}_origin" translate>layer_origin</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_origin_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_origin_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_origin_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="form-group" [ngClass]="{
-                  'has-danger': (origin0.invalid && (origin0.dirty || origin0.touched)) ,
-                  'has-success': (origin0.valid && (origin0.dirty || origin0.touched))
-                  }">
-            <input type="number" #origin0="ngModel" [(ngModel)]="layer.item.origin[0]" name="origin0" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="origin0.errors && (origin0.dirty || origin0.touched)">
-              <div *ngIf="origin0.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group" [ngClass]="{
-                  'has-danger': (origin1.invalid && (origin1.dirty || origin1.touched)) ,
-                  'has-success': (origin1.valid && (origin1.dirty || origin1.touched))
-                  }">
-            <input type="number" #origin1="ngModel" [(ngModel)]="layer.item.origin[1]" name="origin1" class="form-control form-group extent"
-              required>
-            <div class="form-control-feedback" *ngIf="origin1.errors && (origin1.dirty || origin1.touched)">
-              <div *ngIf="origin1.errors.required">
-                <span translate>field_required</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- tileSize -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_tileSize</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_tileSize_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_tileSize_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_tileSize_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <input type="number" #tileSize="ngModel" [(ngModel)]="layer.item.tileSize " name="tileSize" class="form-control">
-        </div>
-      </div>
-      <!-- scales -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" for="layer_input{{ layer.id }}_scales" translate>layer_scales</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_scales_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_scales_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_scales_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="input-group form-group" *ngFor="let scale of layer.item.scales; let i=index;">
-            <input type="number" [(ngModel)]="layer.item.scales[i]" name="scales{{ i }}" class="form-control extent" disabled>
-            <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(scale, layer.item.scales)" *ngIf="i !== (layer.item.scales.length - 1) && layer.item.scales.length > 1">
-                <i class="fa fa-sort-down" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(scale, layer.item.scales)" *ngIf="i !== 0">
-                <i class="fa fa-sort-up" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, layer.item.scales)">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-          <div class="input-group form-group">
-            <input type="number" #scales name="scales" class="form-control" placeholder="{{ ('add') | translate }}">
-            <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="onAddItemNumber(scales.value, layer.item.scales); scales.value = '';">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- auth -->
-      <div class="form-group row">
-        <div class="col-sm-3">
-          <div class=" d-flex justify-content-between align-items-center">
-            <label class="col-form-label" translate>layer_auth</label>
-            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" [attr.data-target]="'#info_layer_auth_' + layer.id"
-              title="{{ ('help') | translate }}">
-              <i class="fa fa-info" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="collapse" id="info_layer_auth_{{ layer.id }}" [attr.data-parent]="'#collapse' + layer.id">
-            <div>
-              <small class="form-text text-muted" translate>layer_auth_help</small>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-9">
-          <div class="input-group form-group">
-            <input type="text" #auth="ngModel" [(ngModel)]="layer.item.auth" name="auth" class="form-control login" readonly onfocus="this.removeAttribute('readonly');">
-            <div class="input-group-append">
-              <button type="button" class="btn btn-primary btn-sm" (click)="showModal(modalAuth)">
-                <i *ngIf="layer.item.auth" class="fa fa-pencil" aria-hidden="true"></i>
-                <i *ngIf="!layer.item.auth" class="fa fa-plus" aria-hidden="true"></i>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
