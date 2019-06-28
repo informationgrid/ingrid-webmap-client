@@ -37,6 +37,8 @@
 "metadata_service_resource": "Resource",
 "metadata_service_url": "GetCapabilities",
 "metadata_service_url_link": "Link",
+"no_legend_available": "No legende available.",
+"page_title": "InGrid Map Client",
 "print_title": "Titel",
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
