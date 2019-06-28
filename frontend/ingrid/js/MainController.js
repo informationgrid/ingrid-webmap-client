@@ -443,23 +443,21 @@ goog.require('ga_window_service');
     });
 
     if (window.parent.onpopstate !== undefined) {
-      window.parent.onpopstate = function (event) {
+      window.parent.onpopstate = function(event) {
+        var easting, northing, zoom;
         window.parent.isBackHistory = true;
-        if (window.parent.history && 
-            window.parent.history.state && 
-            window.parent.history.state.params) {
-          var params = window.parent.history.state.params;
-          if (params.E && params.N) {
-            var easting = params.E;
-            var northing = params.N;
+          var url = new URL(window.parent.location.href);
+          easting = url.searchParams.get('E');
+          northing = url.searchParams.get('N');
+          zoom = url.searchParams.get('zoom');
+          if (easting && northing) {
             easting = parseFloat(easting.replace(/,/g, '.'));
             northing = parseFloat(northing.replace(/,/g, '.'));
             $scope.map.getView().setCenter([easting, northing]);
           }
-          if (params.zoom) {
-            $scope.map.getView().setZoom(params.zoom);
+          if (zoom) {
+            $scope.map.getView().setZoom(zoom);
           }
-        }
       };
     }
 
