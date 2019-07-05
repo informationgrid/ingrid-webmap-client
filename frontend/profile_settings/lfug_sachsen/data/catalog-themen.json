@@ -1,1 +1,2047 @@
-{"results":{"root":{"category":"root","staging":"prod","id":1,"children":[{"id":276,"label":"Geologie","staging":"prod","selectedOpen":false,"children":[{"id":277,"label":"Oberflächennahe Rohstoffe (KOR 50)","staging":"prod","selectedOpen":false,"children":[{"id":278,"label":"Sonstige Industrieminerale","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0"},{"id":279,"label":"Torf","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1"},{"id":280,"label":"Karbonatgesteine","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2"},{"id":281,"label":"Hartgestein ausser Karbonate","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3"},{"id":282,"label":"Erze","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4"},{"id":283,"label":"Kaolin","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5"},{"id":284,"label":"Bentonit","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6"},{"id":285,"label":"Kiessande und Kiese","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7"},{"id":286,"label":"Sande und Spezialsande","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8"},{"id":287,"label":"Tone und Spezialtone","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9"},{"id":288,"label":"Lehme und Mergel","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_10"},{"id":289,"label":"Steine-Erden-Abbaue","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_11"}]},{"id":290,"label":"Hydrogeologische Übersichtskarte (HÜK 200)","staging":"prod","selectedOpen":false,"children":[{"id":291,"label":"hydrogeologische Gliederung: Teilraum","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_1"},{"id":292,"label":"hydrogeologische Gliederung: Raum","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_1"},{"id":293,"label":"hydrogeologische Gliederung: Grossraum","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_1"},{"id":294,"label":"Lithologie\/Petrografie des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_1"},{"id":295,"label":"Durchlässigkeit des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_1"},{"id":296,"label":"geochemischer Gesteinstyp des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_1"},{"id":297,"label":"Gesteinsart des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_1"},{"id":298,"label":"hydraulisch wirksamer Hohlraum des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_1"},{"id":299,"label":"Art der Verfestigung des GWL","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_1"},{"id":300,"label":"Schutzpotential der Grundwasserüberdeckung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9_1"},{"id":301,"label":"Störungen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_10_1"},{"id":302,"label":"Deckschichten","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_11_1"}]},{"id":303,"label":"Geologische Übersichtskarte 1 : 400 000","staging":"prod","selectedOpen":false,"children":[{"id":304,"label":"Geologie","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_2"},{"id":305,"label":"Stoerungen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_2"}]},{"id":306,"label":"Geologische Karte 1:50 000","staging":"prod","selectedOpen":false,"children":[{"id":307,"label":"Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 130m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_3"},{"id":308,"label":"Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 100m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_3"},{"id":309,"label":"Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 70m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_2"},{"id":310,"label":"Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 40m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_2"},{"id":311,"label":"Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 130m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_2"},{"id":312,"label":"Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 100m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_2"},{"id":313,"label":"Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 70m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_2"},{"id":314,"label":"Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 40m Bohrtiefe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_2"},{"id":315,"label":"Übersicht_GTK50","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_2"}]},{"id":316,"label":"Geothermische Karte der Entzugsleistung","staging":"prod","selectedOpen":false,"children":[{"id":317,"label":"Eiszeitkarte Geologie","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_4"},{"id":318,"label":"Eiszeitkarte Stoerungen\/Eisrandlagen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_4"},{"id":319,"label":"Stratigraphie Periode","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_3"},{"id":320,"label":"Stratigraphie Gruppe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_3"},{"id":321,"label":"Lithologie ","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_3"},{"id":322,"label":"Geologie Praequartaer","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_3"},{"id":323,"label":"Stoerungen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_3"},{"id":324,"label":"Kontaktmetamorphose","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_3"},{"id":325,"label":"Erzgaenge","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_3"},{"id":326,"label":"Tektonik","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9_2"},{"id":327,"label":"Grenzen Praequartaer","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_10_2"},{"id":328,"label":"Geologie Quartaer","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_11_2"},{"id":329,"label":"Grenzen Quartaer","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_12"}]},{"id":330,"label":"Geologische Aufschluesse in Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":331,"label":"Aufschlussdaten","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_5"}]}]},{"id":332,"label":"Natur","staging":"prod","selectedOpen":false,"children":[{"id":333,"label":"NATURA 2000","staging":"prod","selectedOpen":false,"children":[{"id":334,"label":"Europaeische Vogelschutzgebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_6"},{"id":335,"label":"FFH Gebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_5"},{"id":336,"label":"FFH Fledermausquartiere","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_4"}]},{"id":337,"label":"Schutzgebiete in Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":338,"label":"Landschaftsschutzgebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_7"},{"id":339,"label":"Naturschutzgebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_6"},{"id":340,"label":"Nationalpark","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_5"},{"id":341,"label":"Flaechennaturdenkmaeler","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_4"},{"id":342,"label":"Naturpark","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_4"},{"id":343,"label":"Biosphaerenreservat","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_4"}]},{"id":344,"label":"Biotoptypen- und Landnutzungskartierung (BTLNK)","staging":"prod","selectedOpen":false,"children":[{"id":345,"label":"BTLNK Flaechen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_8"},{"id":346,"label":"BTLNK Linie","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_7"},{"id":347,"label":"BTLNK Punkte","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_6"}]},{"id":348,"label":"Potentielle natürliche Vegetation (pnV) in Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":349,"label":"Potentielle natuerliche Vegetation 1:300000","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_9"},{"id":350,"label":"Potentiell natuerliche Vegetation 1:50000","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_8"}]},{"id":351,"label":"FFH-Lebensraumtypen (IS SaND LRT)","staging":"prod","selectedOpen":false,"children":[{"id":352,"label":"LRT-Flaechen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_10"},{"id":353,"label":"LRT-Linien","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_9"},{"id":354,"label":"LRT-Punkte","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_7"}]},{"id":355,"label":"Geschützte Offenland-Biotope (IS SaND Biotope)","staging":"prod","selectedOpen":false,"children":[{"id":356,"label":"Biotope (Flaechen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_11"},{"id":357,"label":"Biotope (Linien)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_10"},{"id":358,"label":"Biotope (Punkte)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_8"}]},{"id":359,"label":"Habitate der Arten (IS SaND Art - Habitate) ","staging":"prod","selectedOpen":false,"children":[{"id":360,"label":"Habitate (Flaechen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_12"},{"id":361,"label":"Habitate (Linien)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_11"},{"id":362,"label":"Habitate (Punkte)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_9"}]}]},{"id":363,"label":"Luft, Klima, Lärm","staging":"prod","selectedOpen":false,"children":[{"id":364,"label":"Laermkartierung","staging":"prod","selectedOpen":false,"children":[{"id":365,"label":"Kartierungsgebiet","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_13"},{"id":366,"label":"Belastete je Gemeinde","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_12"},{"id":367,"label":"Industrie (Ballungsraum Leipzig)","staging":"prod","selectedOpen":false,"children":[{"id":368,"label":"Industrie Schallpegel Ln nachts (22-6 Uhr)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_5"},{"id":369,"label":"Industrie Schallpegel LDEN (24 h)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_5"}]},{"id":370,"label":"Strassenbahn (Ballungsraum)","staging":"prod","selectedOpen":false,"children":[{"id":371,"label":"Strassenbahn Schallpegel Ln nachts (22-6 Uhr)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_4"},{"id":372,"label":"Strassenbahn Schallpegel LDEN (24 h)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_4"}]},{"id":373,"label":"Hauptverkehrsstrassen","staging":"prod","selectedOpen":false,"children":[{"id":374,"label":"Strassen  Schallpegel Ln nachts (22-6 Uhr)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9_3"},{"id":375,"label":"Strassen Schallpegel LDEN (24 h)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_10_3"}]},{"id":376,"label":"Flughafen (Leipzig-Halle)","staging":"prod","selectedOpen":false,"children":[{"id":377,"label":"Flughafen Schallpegel Ln nachts (22-6 Uhr)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_12_1"},{"id":378,"label":"Flughafen Schallpegel LDEN (24 h)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_13"}]}]},{"id":379,"label":"Betriebsbereiche nach Störfallverordnung (12.BlmSchV)","staging":"prod","selectedOpen":false,"children":[{"id":380,"label":"Untere Klasse ohne Biogas","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_14"},{"id":381,"label":"Untere Klasse mit Biogas","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_13"},{"id":382,"label":"Obere Klasse ohne Biogas","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_10"},{"id":383,"label":"Obere Klasse mit Biogas","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_6"}]},{"id":384,"label":"Meteorologische Messstationen Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":385,"label":"Meteorologische Messstationen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_15"}]},{"id":386,"label":"Tierhaltung (gem. 4. BImSchV)","staging":"prod","selectedOpen":false,"children":[{"id":387,"label":"sonstige Tiere (nicht von RL 2010\/75\/EU betroffen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_16"},{"id":388,"label":"Schweine (nicht von Richtlinie 2010\/75\/EU betroffen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_14"},{"id":389,"label":"Schweine nach Richtlinie 2010\/75\/EU","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_11"},{"id":390,"label":"Rinder (nicht von Richtlinie 2010\/75\/EU betroffen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_7"},{"id":391,"label":"Geflügel (nicht von Richtlinie 2010\/75\/EU betroffen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_6"},{"id":392,"label":"Geflügel nach Richtlinie 2010\/75\/EU","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_5"}]},{"id":393,"label":"Nach BImSchG genehmigungsbedürftige Anlagen im Freistaat Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":394,"label":"nach Industrieemissionsrichtlinie (IED) (gemäß Anhang 1 der 4. BImSchV)","staging":"prod","selectedOpen":false,"children":[{"id":395,"label":"Kategorie 10: Sonstiges","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_15"},{"id":396,"label":"Kategorie 8: Verwertung und Beseitigung von Abfällen und sonstigen Stoffen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_12"},{"id":397,"label":"Kategorie 7: Nahrungs-, Genuss- und Futtermittel, landwirtschaftliche Erzeugnisse (ohne Tierhaltung)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_8"},{"id":398,"label":"Kategorie 6: Holz, Zellstoff","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_7"},{"id":399,"label":"Kategorie 5: Oberflächenbehandlung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_6"},{"id":400,"label":"Kategorie 4: Chemische Erzeugnisse","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_5"},{"id":401,"label":"Kategorie 3: Stahl, Eisen und sonstige Metalle einschließlich Verarbeitung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_5"},{"id":402,"label":"Kategorie 2: Steine und Erden, Glas, Keramik, Baustoffe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_4"},{"id":403,"label":"Kategorie 1: Wärmeerzeugung, Bergbau, Energie","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9_4"}]},{"id":404,"label":"gemäß Anhang 1 der 4. BImSchV (Anlagen entsprechen nicht der Industrieemissionsrichtlinie (IED)) ","staging":"prod","selectedOpen":false,"children":[{"id":405,"label":"Kategorie 10: Sonstiges","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_11_3"},{"id":406,"label":"Kategorie 9: Lagerung, Be- und Entladen von Stoffen und Zubereitungen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_12_2"},{"id":407,"label":"Kategorie 8: Verwertung und Beseitigung von Abfällen und sonstigen Stoffen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_13_1"},{"id":408,"label":"Kategorie 7: Nahrungs-, Genuss- und Futtermittel, landwirtschaftliche Erzeugnisse (ohne Tierhaltung)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_14"},{"id":409,"label":"Kategorie 6: Holz, Zellstoff","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_15"},{"id":410,"label":"Kategorie 5: Oberflächenbehandlung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_16"},{"id":411,"label":"Kategorie 4: Chemische Erzeugnisse","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_17"},{"id":412,"label":"Kategorie 3: Stahl, Eisen und sonstige Metalle einschließlich Verarbeitung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_18"},{"id":413,"label":"Kategorie 2: Steine und Erden, Glas, Keramik, Baustoffe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_19"},{"id":414,"label":"Kategorie 1: Wärmeerzeugung, Bergbau, Energie (ohne Windkraftanlagen)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_20"}]}]},{"id":415,"label":"Windkraftanlagen im Freistaat Sachsen ( gemäß 4. BImSchV)","staging":"prod","selectedOpen":false,"children":[{"id":416,"label":"WKA","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_17"}]},{"id":417,"label":"IED-Anlagen im Freistaat Sachsen ","staging":"prod","selectedOpen":false,"children":[{"id":418,"label":"Anlagenbestand nach IE-Richtlinie","staging":"prod","selectedOpen":false,"children":[{"id":419,"label":"Sonstige Tätigkeiten (Nr. 6, außer 6.1.a, 6.1.b, 6.6, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_16"},{"id":420,"label":"Intensivtierhaltung und -aufzucht (Nr. 6.6, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_13"},{"id":421,"label":"Holz- und Papierherstellung (Nr. 6.1.a, 6.1.b, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_9"},{"id":422,"label":"Abfallbehandlung (Nr. 5, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_8"},{"id":423,"label":"Chemische Industrie (Nr. 4, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_7"},{"id":424,"label":"Mineralverarbeitende Industrie (Nr. 3, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_6"},{"id":425,"label":"Herstellung und Verarbeitung von Metallen (Nr. 2, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_6"},{"id":426,"label":"Energiewirtschaft (Nr. 1, IED)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_5"}]}]}]},{"id":427,"label":"Boden","staging":"prod","selectedOpen":false,"children":[{"id":428,"label":"Bodenuebersichtskarte Sachsen 1: 400 000","staging":"prod","selectedOpen":false,"children":[{"id":429,"label":"Bodenuebersichtskarte 1:400.000","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_18"}]},{"id":430,"label":"digBK50 - Digitale Bodenkarte 1:50.000 (Blattschnittfrei)","staging":"prod","selectedOpen":false,"children":[{"id":431,"label":"Digitale Bodenkarte","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_19"}]},{"id":432,"label":"GcBÜK400 - Geochemische Übersichtkarten des Freistaates Sachsen 1:400.000","staging":"prod","selectedOpen":false,"children":[{"id":433,"label":"Zink im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_20"},{"id":434,"label":"Nickel im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_17"},{"id":435,"label":"Kupfer im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_14"},{"id":436,"label":"Chrom im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_10"},{"id":437,"label":"Cadmium im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_9"},{"id":438,"label":"Blei im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_8"},{"id":439,"label":"Arsen im Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_7"}]},{"id":440,"label":"Bodenkundliche Aufschlüsse Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":441,"label":"Aufschluesse_Sonstige","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_21"},{"id":442,"label":"Aufschluesse_BLA","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_18"},{"id":443,"label":"Aufschluesse_BMN_GCH","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_15"},{"id":444,"label":"Aufschluesse_BDF","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_11"}]},{"id":445,"label":"Auswertekarten Bodenschutz 1:50.000","staging":"prod","selectedOpen":false,"children":[{"id":446,"label":"landschaftsgeschichtliche Bedeutung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_22"},{"id":447,"label":"besondere Standorteigenschaft","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_19"},{"id":448,"label":"Erodierbarbarkeit des Bodens (K-Faktor) in Stufen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_16"},{"id":449,"label":"Luftkapazitaet im effektiven Wurzelraum","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_12"},{"id":450,"label":"Kationenaustauschkapazitaet im effektiven Wurzelraum","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_10"},{"id":451,"label":"Filter und Puffer fuer Schadstoffe","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_9"},{"id":452,"label":"Wasserspeichervermoegen des Bodens","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_8"},{"id":453,"label":"Natuerliche Bodenfruchtbarkeit","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_7"}]},{"id":454,"label":"Auswertekarten Bodenschutz - Bodenschätzung","staging":"prod","selectedOpen":false,"children":[{"id":455,"label":"besondere Standorteigenschaft","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_23"},{"id":456,"label":"Filter- und Puffereigenschaften","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_20"},{"id":457,"label":"Wasserspeichervermoegen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_17"},{"id":458,"label":"Natuerliche Bodenfruchtbarkeit (nach Bodenwertzahl)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_13"},{"id":459,"label":"Natuerliche Bodenfruchtbarkeit (nach Acker- bzw. Gruenlandzahl)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_11"},{"id":460,"label":"Uebersicht Datenbestand","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_10"}]},{"id":461,"label":"Erosionsgefährdungskarten Freistaat Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":462,"label":"erosionsgefaehrdete Abflussbahnen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_24"},{"id":463,"label":"erosionsgefaehrdete Steillagen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_21"},{"id":464,"label":"KLSR-Karte","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_18"},{"id":465,"label":"KSR-Karte","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_14"}]},{"id":466,"label":"Verdichtungsempfindlichkeit von Böden","staging":"prod","selectedOpen":false,"children":[{"id":467,"label":"Oberbodenabtrag pruefen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_25"},{"id":468,"label":"Unterboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_22"},{"id":469,"label":"Oberboden","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_19"},{"id":470,"label":"Kritische Monate","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_15"},{"id":471,"label":"Synthese","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_12"}]}]},{"id":472,"label":"Wasser","staging":"prod","selectedOpen":false,"children":[{"id":473,"label":"Siedlungswasserwirtschaft","staging":"prod","selectedOpen":false,"children":[{"id":474,"label":"Wasserschutzgebiete","staging":"prod","selectedOpen":false,"children":[{"id":475,"label":"Heilquellenschutzgebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_26"},{"id":476,"label":"TWSG fuer Talsperren","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_23"},{"id":477,"label":"TWSG fuer Fliessgewaesser","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_20"},{"id":478,"label":"TWSG fuer Grundwasser und Uferfiltrat","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_16"}]},{"id":479,"label":"Aufgabenträger der öffentlichen Wasserversorgung (Sachsen)","staging":"prod","selectedOpen":false,"children":[{"id":480,"label":"Aufgabentraeger der oeffentlichen Wasserversorgung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_27"},{"id":481,"label":"Teilzweckverband","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_24"}]},{"id":482,"label":"Kommunale Kläranlagen (Sachsen)","staging":"prod","selectedOpen":false,"children":[{"id":483,"label":"Kommunale Klaeranlagen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_28"}]},{"id":484,"label":"Aufgabenträger der öffentlichen Abwasserbeseitigung (Sachsen)","staging":"prod","selectedOpen":false,"children":[{"id":485,"label":"Aufgabentraeger der oeffentlichen Abwasserbeseitigung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_29"}]},{"id":486,"label":"Verdichtungsgebiete (Sachsen)","staging":"prod","selectedOpen":false,"children":[{"id":487,"label":"Verdichtungsgebiete","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_30"}]}]},{"id":488,"label":"Oberflächen- und Grundwasser","staging":"prod","selectedOpen":false,"children":[{"id":489,"label":"Grundwasserstände und Quellschüttungen","staging":"prod","selectedOpen":false,"children":[{"id":490,"label":"alle Daten","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_31"},{"id":491,"label":"letzte Quellschuettung (Monatsmittel)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_25"},{"id":492,"label":"letzter Grundwasserstand (Monatsmittel)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_21"},{"id":493,"label":"aktueller Grundwasserstand","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_17"}]},{"id":494,"label":"Fließgewässerstrukturkartierung 2008","staging":"prod","selectedOpen":false,"children":[{"id":495,"label":"Strukturerfassung in 7 Stufen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_32"},{"id":496,"label":"Querbauwerke","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_26"}]},{"id":497,"label":"Mittlerer Grundwasserflurabstand Sachsen ","staging":"prod","selectedOpen":false,"children":[{"id":498,"label":"Grundwasserflurabstand","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_33"},{"id":499,"label":"Grundwassergleichen","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_27"},{"id":500,"label":"GW-Wiederanstiegsgebiete Braunkohle","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_22"}]},{"id":501,"label":"Grundwassermessnetze LfULG","staging":"prod","selectedOpen":false,"children":[{"id":502,"label":"Grundwassermessnetze","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_34"}]}]},{"id":503,"label":"LHWZ, Gewässerkunde","staging":"prod","selectedOpen":false,"children":[{"id":504,"label":"Festgesetzte Überschwemmungsgebiete","staging":"prod","selectedOpen":false,"children":[{"id":505,"label":"Ueberschwemmungsgebiete (UEG)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_35"}]},{"id":506,"label":"Pegelmessnetz Oberflächenwasser - Menge","staging":"prod","selectedOpen":false,"children":[{"id":507,"label":"Pegel","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_36"},{"id":508,"label":"Hochwassermeldepegel","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_28"}]},{"id":509,"label":"Überschwemmte Flächen Hochwasser August 2002","staging":"prod","selectedOpen":false,"children":[{"id":510,"label":"Ueberschwemmte Flaechen 2002","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_37"},{"id":511,"label":"Ueberschwemmte Flaechen 2013 Elbe Mulde","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_29"}]},{"id":512,"label":"Hochwasserrisikogebiete in Sachsen","staging":"prod","selectedOpen":false,"children":[{"id":513,"label":"Gewaesser mit signifikantem HW-Risiko","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_38"}]},{"id":514,"label":"Gefahrenkarten für Ortslagen","staging":"prod","selectedOpen":false,"children":[{"id":515,"label":"Extremhochwasser","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_39"},{"id":516,"label":"Gefaehrdung bei HQ200\/300","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_30"},{"id":517,"label":"Gefaehrdung bei HQ100","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_23"},{"id":518,"label":"Gefaehrdung bei HQ50","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_18"},{"id":519,"label":"Gefaehrdung bei HQ20\/25","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_13"},{"id":520,"label":"Grenze des Bearbeitungsabschnittes","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_11"},{"id":521,"label":"Gewaesserachse","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_9"},{"id":522,"label":"Stationierung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_8"}]},{"id":523,"label":"Hochwassermarken","staging":"prod","selectedOpen":false,"children":[{"id":524,"label":"Hochwassermarken","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_40"}]},{"id":525,"label":"Hochwasserrisikokarte","staging":"prod","selectedOpen":false,"children":[{"id":526,"label":"HQ300 - Art der wirtschaftlichen Nutzung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_41"},{"id":527,"label":"HQ100 - Art der wirtschaftlichen Nutzung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_31"},{"id":528,"label":"HQ20 - Art der wirtschaftlichen Nutzung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_24"},{"id":529,"label":"Grenze der Vogelschutzgebiete (SPA-Gebiete)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_19"},{"id":530,"label":"Grenze der Flora-Fauna-Habitat-Gebiete (FFH-Gebiete)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_4_14"},{"id":531,"label":"HQ300 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_5_12"},{"id":532,"label":"HQ100 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_6_10"},{"id":533,"label":"HQ20 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_7_9"},{"id":534,"label":"HQ300 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_8_6"},{"id":535,"label":"HQ100 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_9_5"},{"id":536,"label":"HQ20 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_10_4"},{"id":537,"label":"Grenze des Bearbeitungsabschnittes (Bundeswasserstrasse und Gewaesser 1. Ordnung)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_11_4"},{"id":538,"label":"Gewaesserachse (Bundeswasserstrasse und Gewaesser 1. Ordnung)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_12_3"},{"id":539,"label":"Stationierung (Bundeswasserstrasse und Gewaesser 1. Ordnung)","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_13_2"}]},{"id":540,"label":"Überschwemmte Flächen bei hundertjährlichem Hochwasser (Intensitätskarte HQ 100) ","staging":"prod","selectedOpen":false,"children":[{"id":541,"label":"Extremhochwasser","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_42"},{"id":542,"label":"Wassertiefe bei HQ100","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_32"},{"id":543,"label":"Gewaesserachse","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_2_25"},{"id":544,"label":"Stationierung","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_3_20"}]}]}]},{"id":545,"label":"Landwirtschaft","staging":"prod","selectedOpen":false,"children":[{"id":546,"label":"Ländliche Neuordnung Bund","staging":"prod","selectedOpen":false,"children":[{"id":547,"label":"sn_flurbv_label","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_43"},{"id":548,"label":"sn_flurbv","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_1_33"}],"layerBodId":null},{"id":549,"label":"Ländliche Neuordnung","staging":"prod","selectedOpen":false,"children":[{"id":550,"label":"LNO-Verfahren","staging":"prod","selectedOpen":false,"layerBodId":"geoportal_umwelt_sachsen_de_0_44"}],"layerBodId":null}]}]}}}
+{
+    "results": {
+        "root": {
+            "category": "root",
+            "staging": "prod",
+            "id": 1,
+            "children": [
+                {
+                    "id": 284,
+                    "label": "Geologie",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 285,
+                            "label": "Oberflächennahe Rohstoffe (KOR 50)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 286,
+                                    "label": "Sonstige Industrieminerale",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0"
+                                },
+                                {
+                                    "id": 287,
+                                    "label": "Torf",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1"
+                                },
+                                {
+                                    "id": 288,
+                                    "label": "Karbonatgesteine",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2"
+                                },
+                                {
+                                    "id": 289,
+                                    "label": "Hartgestein ausser Karbonate",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3"
+                                },
+                                {
+                                    "id": 290,
+                                    "label": "Erze",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4"
+                                },
+                                {
+                                    "id": 291,
+                                    "label": "Kaolin",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5"
+                                },
+                                {
+                                    "id": 292,
+                                    "label": "Bentonit",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6"
+                                },
+                                {
+                                    "id": 293,
+                                    "label": "Kiessande und Kiese",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_7"
+                                },
+                                {
+                                    "id": 294,
+                                    "label": "Sande und Spezialsande",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_8"
+                                },
+                                {
+                                    "id": 295,
+                                    "label": "Tone und Spezialtone",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_9"
+                                },
+                                {
+                                    "id": 296,
+                                    "label": "Lehme und Mergel",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_10"
+                                },
+                                {
+                                    "id": 297,
+                                    "label": "Steine-Erden-Abbaue",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_11"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 298,
+                            "label": "Hydrogeologische Übersichtskarte (HÜK 200)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 299,
+                                    "label": "hydrogeologische Gliederung: Teilraum",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_1"
+                                },
+                                {
+                                    "id": 300,
+                                    "label": "hydrogeologische Gliederung: Raum",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_1"
+                                },
+                                {
+                                    "id": 301,
+                                    "label": "hydrogeologische Gliederung: Grossraum",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_1"
+                                },
+                                {
+                                    "id": 302,
+                                    "label": "Lithologie\/Petrografie des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_1"
+                                },
+                                {
+                                    "id": 303,
+                                    "label": "Durchlässigkeit des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_1"
+                                },
+                                {
+                                    "id": 304,
+                                    "label": "geochemischer Gesteinstyp des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_1"
+                                },
+                                {
+                                    "id": 305,
+                                    "label": "Gesteinsart des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6_1"
+                                },
+                                {
+                                    "id": 306,
+                                    "label": "hydraulisch wirksamer Hohlraum des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_7_1"
+                                },
+                                {
+                                    "id": 307,
+                                    "label": "Art der Verfestigung des GWL",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_8_1"
+                                },
+                                {
+                                    "id": 308,
+                                    "label": "Schutzpotential der Grundwasserüberdeckung",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_9_1"
+                                },
+                                {
+                                    "id": 309,
+                                    "label": "Störungen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_10_1"
+                                },
+                                {
+                                    "id": 310,
+                                    "label": "Deckschichten",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_11_1"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 311,
+                            "label": "Geologische Übersichtskarte 1 : 400 000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 312,
+                                    "label": "Geologie",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_2"
+                                },
+                                {
+                                    "id": 313,
+                                    "label": "Stoerungen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_2"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 314,
+                            "label": "Geologische Karte 1:50 000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 315,
+                                    "label": "Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 130m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_3"
+                                },
+                                {
+                                    "id": 316,
+                                    "label": "Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 100m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_3"
+                                },
+                                {
+                                    "id": 317,
+                                    "label": "Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 70m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_2"
+                                },
+                                {
+                                    "id": 318,
+                                    "label": "Entzugsleistung in Watt pro Meter für 2400 Betriebsstunden - bis 40m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_2"
+                                },
+                                {
+                                    "id": 319,
+                                    "label": "Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 130m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_2"
+                                },
+                                {
+                                    "id": 320,
+                                    "label": "Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 100m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_2"
+                                },
+                                {
+                                    "id": 321,
+                                    "label": "Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 70m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6_2"
+                                },
+                                {
+                                    "id": 322,
+                                    "label": "Entzugsleistung in Watt pro Meter für 1800 Betriebsstunden - bis 40m Bohrtiefe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_7_2"
+                                },
+                                {
+                                    "id": 323,
+                                    "label": "Übersicht_GTK50",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_8_2"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 324,
+                            "label": "Geothermische Karte der Entzugsleistung",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 325,
+                                    "label": "Eiszeitkarte Geologie",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_4"
+                                },
+                                {
+                                    "id": 326,
+                                    "label": "Eiszeitkarte Stoerungen\/Eisrandlagen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_4"
+                                },
+                                {
+                                    "id": 327,
+                                    "label": "Stratigraphie Periode",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_3"
+                                },
+                                {
+                                    "id": 328,
+                                    "label": "Stratigraphie Gruppe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_3"
+                                },
+                                {
+                                    "id": 329,
+                                    "label": "Lithologie ",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_3"
+                                },
+                                {
+                                    "id": 330,
+                                    "label": "Geologie Praequartaer",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_3"
+                                },
+                                {
+                                    "id": 331,
+                                    "label": "Stoerungen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6_3"
+                                },
+                                {
+                                    "id": 332,
+                                    "label": "Kontaktmetamorphose",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_7_3"
+                                },
+                                {
+                                    "id": 333,
+                                    "label": "Erzgaenge",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_8_3"
+                                },
+                                {
+                                    "id": 334,
+                                    "label": "Tektonik",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_9_2"
+                                },
+                                {
+                                    "id": 335,
+                                    "label": "Grenzen Praequartaer",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_10_2"
+                                },
+                                {
+                                    "id": 336,
+                                    "label": "Geologie Quartaer",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_11_2"
+                                },
+                                {
+                                    "id": 337,
+                                    "label": "Grenzen Quartaer",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_12"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 338,
+                            "label": "Geologische Aufschluesse in Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 339,
+                                    "label": "Aufschlussdaten",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_5"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 340,
+                    "label": "Natur",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 341,
+                            "label": "NATURA 2000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 342,
+                                    "label": "Europaeische Vogelschutzgebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_6"
+                                },
+                                {
+                                    "id": 343,
+                                    "label": "FFH Gebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_5"
+                                },
+                                {
+                                    "id": 344,
+                                    "label": "FFH Fledermausquartiere",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_4"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 345,
+                            "label": "Schutzgebiete in Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 346,
+                                    "label": "Landschaftsschutzgebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_7"
+                                },
+                                {
+                                    "id": 347,
+                                    "label": "Naturschutzgebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_6"
+                                },
+                                {
+                                    "id": 348,
+                                    "label": "Nationalpark",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_5"
+                                },
+                                {
+                                    "id": 349,
+                                    "label": "Flaechennaturdenkmaeler",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_4"
+                                },
+                                {
+                                    "id": 350,
+                                    "label": "Naturpark",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_4"
+                                },
+                                {
+                                    "id": 351,
+                                    "label": "Biosphaerenreservat",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_4"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 352,
+                            "label": "Biotoptypen- und Landnutzungskartierung (BTLNK)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 353,
+                                    "label": "BTLNK Flaechen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_8"
+                                },
+                                {
+                                    "id": 354,
+                                    "label": "BTLNK Linie",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_7"
+                                },
+                                {
+                                    "id": 355,
+                                    "label": "BTLNK Punkte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_6"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 356,
+                            "label": "Potentielle natürliche Vegetation (pnV) in Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 357,
+                                    "label": "Potentielle natuerliche Vegetation 1:300000",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_9"
+                                },
+                                {
+                                    "id": 358,
+                                    "label": "Potentiell natuerliche Vegetation 1:50000",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_8"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 359,
+                            "label": "FFH-Lebensraumtypen (IS SaND LRT)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 360,
+                                    "label": "LRT-Flaechen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_10"
+                                },
+                                {
+                                    "id": 361,
+                                    "label": "LRT-Linien",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_9"
+                                },
+                                {
+                                    "id": 362,
+                                    "label": "LRT-Punkte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_7"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 363,
+                            "label": "Geschützte Offenland-Biotope (IS SaND Biotope)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 364,
+                                    "label": "Biotope (Flaechen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_11"
+                                },
+                                {
+                                    "id": 365,
+                                    "label": "Biotope (Linien)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_10"
+                                },
+                                {
+                                    "id": 366,
+                                    "label": "Biotope (Punkte)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_8"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 367,
+                            "label": "Habitate der Arten (IS SaND Art - Habitate) ",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 368,
+                                    "label": "Habitate (Flaechen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_12"
+                                },
+                                {
+                                    "id": 369,
+                                    "label": "Habitate (Linien)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_11"
+                                },
+                                {
+                                    "id": 370,
+                                    "label": "Habitate (Punkte)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_9"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 371,
+                    "label": "Luft, Klima, Lärm",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 372,
+                            "label": "Laermkartierung",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 373,
+                                    "label": "Kartierungsgebiet",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_13"
+                                },
+                                {
+                                    "id": 374,
+                                    "label": "Belastete je Gemeinde",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_12"
+                                },
+                                {
+                                    "id": 375,
+                                    "label": "Industrie (Ballungsraum Leipzig)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 376,
+                                            "label": "Industrie Schallpegel Ln nachts (22-6 Uhr)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_5"
+                                        },
+                                        {
+                                            "id": 377,
+                                            "label": "Industrie Schallpegel LDEN (24 h)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_4_5"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 378,
+                                    "label": "Strassenbahn (Ballungsraum)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 379,
+                                            "label": "Strassenbahn Schallpegel Ln nachts (22-6 Uhr)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_6_4"
+                                        },
+                                        {
+                                            "id": 380,
+                                            "label": "Strassenbahn Schallpegel LDEN (24 h)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_7_4"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 381,
+                                    "label": "Hauptverkehrsstrassen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 382,
+                                            "label": "Strassen  Schallpegel Ln nachts (22-6 Uhr)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_9_3"
+                                        },
+                                        {
+                                            "id": 383,
+                                            "label": "Strassen Schallpegel LDEN (24 h)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_10_3"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 384,
+                                    "label": "Flughafen (Leipzig-Halle)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 385,
+                                            "label": "Flughafen Schallpegel Ln nachts (22-6 Uhr)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_12_1"
+                                        },
+                                        {
+                                            "id": 386,
+                                            "label": "Flughafen Schallpegel LDEN (24 h)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_13"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 387,
+                            "label": "Betriebsbereiche nach Störfallverordnung (12.BlmSchV)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 388,
+                                    "label": "Untere Klasse ohne Biogas",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_14"
+                                },
+                                {
+                                    "id": 389,
+                                    "label": "Untere Klasse mit Biogas",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_13"
+                                },
+                                {
+                                    "id": 390,
+                                    "label": "Obere Klasse ohne Biogas",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_10"
+                                },
+                                {
+                                    "id": 391,
+                                    "label": "Obere Klasse mit Biogas",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_6"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 392,
+                            "label": "Meteorologische Messstationen Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 393,
+                                    "label": "Meteorologische Messstationen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_15"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 394,
+                            "label": "Tierhaltung (gem. 4. BImSchV)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 395,
+                                    "label": "sonstige Tiere (nicht von RL 2010\/75\/EU betroffen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_16"
+                                },
+                                {
+                                    "id": 396,
+                                    "label": "Schweine (nicht von Richtlinie 2010\/75\/EU betroffen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_14"
+                                },
+                                {
+                                    "id": 397,
+                                    "label": "Schweine nach Richtlinie 2010\/75\/EU",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_11"
+                                },
+                                {
+                                    "id": 398,
+                                    "label": "Rinder (nicht von Richtlinie 2010\/75\/EU betroffen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_7"
+                                },
+                                {
+                                    "id": 399,
+                                    "label": "Geflügel (nicht von Richtlinie 2010\/75\/EU betroffen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_6"
+                                },
+                                {
+                                    "id": 400,
+                                    "label": "Geflügel nach Richtlinie 2010\/75\/EU",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_5"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 401,
+                            "label": "Nach BImSchG genehmigungsbedürftige Anlagen im Freistaat Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 402,
+                                    "label": "nach Industrieemissionsrichtlinie (IED) (gemäß Anhang 1 der 4. BImSchV)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 403,
+                                            "label": "Kategorie 10: Sonstiges",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_15"
+                                        },
+                                        {
+                                            "id": 404,
+                                            "label": "Kategorie 8: Verwertung und Beseitigung von Abfällen und sonstigen Stoffen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_12"
+                                        },
+                                        {
+                                            "id": 405,
+                                            "label": "Kategorie 7: Nahrungs-, Genuss- und Futtermittel, landwirtschaftliche Erzeugnisse (ohne Tierhaltung)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_8"
+                                        },
+                                        {
+                                            "id": 406,
+                                            "label": "Kategorie 6: Holz, Zellstoff",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_4_7"
+                                        },
+                                        {
+                                            "id": 407,
+                                            "label": "Kategorie 5: Oberflächenbehandlung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_5_6"
+                                        },
+                                        {
+                                            "id": 408,
+                                            "label": "Kategorie 4: Chemische Erzeugnisse",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_6_5"
+                                        },
+                                        {
+                                            "id": 409,
+                                            "label": "Kategorie 3: Stahl, Eisen und sonstige Metalle einschließlich Verarbeitung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_7_5"
+                                        },
+                                        {
+                                            "id": 410,
+                                            "label": "Kategorie 2: Steine und Erden, Glas, Keramik, Baustoffe",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_8_4"
+                                        },
+                                        {
+                                            "id": 411,
+                                            "label": "Kategorie 1: Wärmeerzeugung, Bergbau, Energie",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_9_4"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 412,
+                                    "label": "gemäß Anhang 1 der 4. BImSchV (Anlagen entsprechen nicht der Industrieemissionsrichtlinie (IED)) ",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 413,
+                                            "label": "Kategorie 10: Sonstiges",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_11_3"
+                                        },
+                                        {
+                                            "id": 414,
+                                            "label": "Kategorie 9: Lagerung, Be- und Entladen von Stoffen und Zubereitungen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_12_2"
+                                        },
+                                        {
+                                            "id": 415,
+                                            "label": "Kategorie 8: Verwertung und Beseitigung von Abfällen und sonstigen Stoffen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_13_1"
+                                        },
+                                        {
+                                            "id": 416,
+                                            "label": "Kategorie 7: Nahrungs-, Genuss- und Futtermittel, landwirtschaftliche Erzeugnisse (ohne Tierhaltung)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_14"
+                                        },
+                                        {
+                                            "id": 417,
+                                            "label": "Kategorie 6: Holz, Zellstoff",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_15"
+                                        },
+                                        {
+                                            "id": 418,
+                                            "label": "Kategorie 5: Oberflächenbehandlung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_16"
+                                        },
+                                        {
+                                            "id": 419,
+                                            "label": "Kategorie 4: Chemische Erzeugnisse",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_17"
+                                        },
+                                        {
+                                            "id": 420,
+                                            "label": "Kategorie 3: Stahl, Eisen und sonstige Metalle einschließlich Verarbeitung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_18"
+                                        },
+                                        {
+                                            "id": 421,
+                                            "label": "Kategorie 2: Steine und Erden, Glas, Keramik, Baustoffe",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_19"
+                                        },
+                                        {
+                                            "id": 422,
+                                            "label": "Kategorie 1: Wärmeerzeugung, Bergbau, Energie (ohne Windkraftanlagen)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 423,
+                            "label": "Windkraftanlagen im Freistaat Sachsen ( gemäß 4. BImSchV)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 424,
+                                    "label": "WKA",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_17"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 425,
+                            "label": "IED-Anlagen im Freistaat Sachsen ",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 426,
+                                    "label": "Anlagenbestand nach IE-Richtlinie",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 427,
+                                            "label": "Sonstige Tätigkeiten (Nr. 6, außer 6.1.a, 6.1.b, 6.6, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_16"
+                                        },
+                                        {
+                                            "id": 428,
+                                            "label": "Intensivtierhaltung und -aufzucht (Nr. 6.6, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_13"
+                                        },
+                                        {
+                                            "id": 429,
+                                            "label": "Holz- und Papierherstellung (Nr. 6.1.a, 6.1.b, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_9"
+                                        },
+                                        {
+                                            "id": 430,
+                                            "label": "Abfallbehandlung (Nr. 5, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_4_8"
+                                        },
+                                        {
+                                            "id": 431,
+                                            "label": "Chemische Industrie (Nr. 4, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_5_7"
+                                        },
+                                        {
+                                            "id": 432,
+                                            "label": "Mineralverarbeitende Industrie (Nr. 3, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_6_6"
+                                        },
+                                        {
+                                            "id": 433,
+                                            "label": "Herstellung und Verarbeitung von Metallen (Nr. 2, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_7_6"
+                                        },
+                                        {
+                                            "id": 434,
+                                            "label": "Energiewirtschaft (Nr. 1, IED)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_8_5"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 435,
+                    "label": "Boden",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 436,
+                            "label": "Bodenuebersichtskarte Sachsen 1: 400 000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 437,
+                                    "label": "Bodenuebersichtskarte 1:400.000",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_18"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 438,
+                            "label": "digBK50 - Digitale Bodenkarte 1:50.000 (Blattschnittfrei)",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 439,
+                                    "label": "Digitale Bodenkarte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_19"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 440,
+                            "label": "GcBÜK400 - Geochemische Übersichtkarten des Freistaates Sachsen 1:400.000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 441,
+                                    "label": "Zink im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_20"
+                                },
+                                {
+                                    "id": 442,
+                                    "label": "Nickel im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_17"
+                                },
+                                {
+                                    "id": 443,
+                                    "label": "Kupfer im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_14"
+                                },
+                                {
+                                    "id": 444,
+                                    "label": "Chrom im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_10"
+                                },
+                                {
+                                    "id": 445,
+                                    "label": "Cadmium im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_9"
+                                },
+                                {
+                                    "id": 446,
+                                    "label": "Blei im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_8"
+                                },
+                                {
+                                    "id": 447,
+                                    "label": "Arsen im Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6_7"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 448,
+                            "label": "Bodenkundliche Aufschlüsse Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 449,
+                                    "label": "Aufschluesse_Sonstige",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_21"
+                                },
+                                {
+                                    "id": 450,
+                                    "label": "Aufschluesse_BLA",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_18"
+                                },
+                                {
+                                    "id": 451,
+                                    "label": "Aufschluesse_BMN_GCH",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_15"
+                                },
+                                {
+                                    "id": 452,
+                                    "label": "Aufschluesse_BDF",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_11"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 453,
+                            "label": "Auswertekarten Bodenschutz 1:50.000",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 454,
+                                    "label": "landschaftsgeschichtliche Bedeutung",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_22"
+                                },
+                                {
+                                    "id": 455,
+                                    "label": "besondere Standorteigenschaft",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_19"
+                                },
+                                {
+                                    "id": 456,
+                                    "label": "Erodierbarbarkeit des Bodens (K-Faktor) in Stufen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_16"
+                                },
+                                {
+                                    "id": 457,
+                                    "label": "Luftkapazitaet im effektiven Wurzelraum",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_12"
+                                },
+                                {
+                                    "id": 458,
+                                    "label": "Kationenaustauschkapazitaet im effektiven Wurzelraum",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_10"
+                                },
+                                {
+                                    "id": 459,
+                                    "label": "Filter und Puffer fuer Schadstoffe",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_9"
+                                },
+                                {
+                                    "id": 460,
+                                    "label": "Wasserspeichervermoegen des Bodens",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_6_8"
+                                },
+                                {
+                                    "id": 461,
+                                    "label": "Natuerliche Bodenfruchtbarkeit",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_7_7"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 462,
+                            "label": "Auswertekarten Bodenschutz - Bodenschätzung",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 463,
+                                    "label": "besondere Standorteigenschaft",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_23"
+                                },
+                                {
+                                    "id": 464,
+                                    "label": "Filter- und Puffereigenschaften",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_20"
+                                },
+                                {
+                                    "id": 465,
+                                    "label": "Wasserspeichervermoegen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_17"
+                                },
+                                {
+                                    "id": 466,
+                                    "label": "Natuerliche Bodenfruchtbarkeit (nach Bodenwertzahl)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_13"
+                                },
+                                {
+                                    "id": 467,
+                                    "label": "Natuerliche Bodenfruchtbarkeit (nach Acker- bzw. Gruenlandzahl)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_11"
+                                },
+                                {
+                                    "id": 468,
+                                    "label": "Uebersicht Datenbestand",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_5_10"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 469,
+                            "label": "Erosionsgefährdungskarten Freistaat Sachsen",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 470,
+                                    "label": "erosionsgefaehrdete Abflussbahnen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_24"
+                                },
+                                {
+                                    "id": 471,
+                                    "label": "erosionsgefaehrdete Steillagen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_21"
+                                },
+                                {
+                                    "id": 472,
+                                    "label": "KLSR-Karte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_18"
+                                },
+                                {
+                                    "id": 473,
+                                    "label": "KSR-Karte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_14"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 474,
+                            "label": "Verdichtungsempfindlichkeit von Böden",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 475,
+                                    "label": "Oberbodenabtrag pruefen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_25"
+                                },
+                                {
+                                    "id": 476,
+                                    "label": "Unterboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_22"
+                                },
+                                {
+                                    "id": 477,
+                                    "label": "Oberboden",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_2_19"
+                                },
+                                {
+                                    "id": 478,
+                                    "label": "Kritische Monate",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_3_15"
+                                },
+                                {
+                                    "id": 479,
+                                    "label": "Synthese",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_4_12"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 480,
+                    "label": "Wasser",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 481,
+                            "label": "Siedlungswasserwirtschaft",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 482,
+                                    "label": "Wasserschutzgebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 483,
+                                            "label": "Heilquellenschutzgebiete",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_26"
+                                        },
+                                        {
+                                            "id": 484,
+                                            "label": "TWSG fuer Talsperren",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_23"
+                                        },
+                                        {
+                                            "id": 485,
+                                            "label": "TWSG fuer Fliessgewaesser",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_20"
+                                        },
+                                        {
+                                            "id": 486,
+                                            "label": "TWSG fuer Grundwasser und Uferfiltrat",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_16"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 487,
+                                    "label": "Aufgabenträger der öffentlichen Wasserversorgung (Sachsen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 488,
+                                            "label": "Aufgabentraeger der oeffentlichen Wasserversorgung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_27"
+                                        },
+                                        {
+                                            "id": 489,
+                                            "label": "Teilzweckverband",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_24"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 490,
+                                    "label": "Kommunale Kläranlagen (Sachsen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 491,
+                                            "label": "Kommunale Klaeranlagen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_28"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 492,
+                                    "label": "Aufgabenträger der öffentlichen Abwasserbeseitigung (Sachsen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 493,
+                                            "label": "Aufgabentraeger der oeffentlichen Abwasserbeseitigung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_29"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 494,
+                                    "label": "Verdichtungsgebiete (Sachsen)",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 495,
+                                            "label": "Verdichtungsgebiete",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_30"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 496,
+                            "label": "Oberflächen- und Grundwasser",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 497,
+                                    "label": "Grundwasserstände und Quellschüttungen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 498,
+                                            "label": "alle Daten",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_31"
+                                        },
+                                        {
+                                            "id": 499,
+                                            "label": "letzte Quellschuettung (Monatsmittel)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_25"
+                                        },
+                                        {
+                                            "id": 500,
+                                            "label": "letzter Grundwasserstand (Monatsmittel)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_21"
+                                        },
+                                        {
+                                            "id": 501,
+                                            "label": "aktueller Grundwasserstand",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_17"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 502,
+                                    "label": "Fließgewässerstrukturkartierung 2008",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 503,
+                                            "label": "Strukturerfassung in 7 Stufen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_32"
+                                        },
+                                        {
+                                            "id": 504,
+                                            "label": "Querbauwerke",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_26"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 505,
+                                    "label": "Mittlerer Grundwasserflurabstand Sachsen ",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 506,
+                                            "label": "Grundwasserflurabstand",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_33"
+                                        },
+                                        {
+                                            "id": 507,
+                                            "label": "Grundwassergleichen",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_27"
+                                        },
+                                        {
+                                            "id": 508,
+                                            "label": "GW-Wiederanstiegsgebiete Braunkohle",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_22"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 509,
+                                    "label": "Grundwassermessnetze LfULG",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 510,
+                                            "label": "Grundwassermessnetze",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_34"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 511,
+                            "label": "LHWZ, Gewässerkunde",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 512,
+                                    "label": "Festgesetzte Überschwemmungsgebiete",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 513,
+                                            "label": "Ueberschwemmungsgebiete (UEG)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_35"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 514,
+                                    "label": "Pegelmessnetz Oberflächenwasser - Menge",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 515,
+                                            "label": "Pegel",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_36"
+                                        },
+                                        {
+                                            "id": 516,
+                                            "label": "Hochwassermeldepegel",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_28"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 517,
+                                    "label": "Überschwemmte Flächen Hochwasser August 2002",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 518,
+                                            "label": "Ueberschwemmte Flaechen 2002",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_37"
+                                        },
+                                        {
+                                            "id": 519,
+                                            "label": "Ueberschwemmte Flaechen 2013 Elbe Mulde",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_29"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 520,
+                                    "label": "Hochwasserrisikogebiete in Sachsen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 521,
+                                            "label": "Gewaesser mit signifikantem HW-Risiko",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_38"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 522,
+                                    "label": "Gefahrenkarten für Ortslagen",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 523,
+                                            "label": "Extremhochwasser",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_39"
+                                        },
+                                        {
+                                            "id": 524,
+                                            "label": "Gefaehrdung bei HQ200\/300",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_30"
+                                        },
+                                        {
+                                            "id": 525,
+                                            "label": "Gefaehrdung bei HQ100",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_23"
+                                        },
+                                        {
+                                            "id": 526,
+                                            "label": "Gefaehrdung bei HQ50",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_18"
+                                        },
+                                        {
+                                            "id": 527,
+                                            "label": "Gefaehrdung bei HQ20\/25",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_4_13"
+                                        },
+                                        {
+                                            "id": 528,
+                                            "label": "Grenze des Bearbeitungsabschnittes",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_5_11"
+                                        },
+                                        {
+                                            "id": 529,
+                                            "label": "Gewaesserachse",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_6_9"
+                                        },
+                                        {
+                                            "id": 530,
+                                            "label": "Stationierung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_7_8"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 531,
+                                    "label": "Hochwassermarken",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 532,
+                                            "label": "Hochwassermarken",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_40"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 533,
+                                    "label": "Hochwasserrisikokarte",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 534,
+                                            "label": "HQ300 - Art der wirtschaftlichen Nutzung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_41"
+                                        },
+                                        {
+                                            "id": 535,
+                                            "label": "HQ100 - Art der wirtschaftlichen Nutzung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_31"
+                                        },
+                                        {
+                                            "id": 536,
+                                            "label": "HQ20 - Art der wirtschaftlichen Nutzung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_24"
+                                        },
+                                        {
+                                            "id": 537,
+                                            "label": "Grenze der Vogelschutzgebiete (SPA-Gebiete)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_19"
+                                        },
+                                        {
+                                            "id": 538,
+                                            "label": "Grenze der Flora-Fauna-Habitat-Gebiete (FFH-Gebiete)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_4_14"
+                                        },
+                                        {
+                                            "id": 539,
+                                            "label": "HQ300 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_5_12"
+                                        },
+                                        {
+                                            "id": 540,
+                                            "label": "HQ100 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_6_10"
+                                        },
+                                        {
+                                            "id": 541,
+                                            "label": "HQ20 - Anlage nach Richtlinie 2010\/75\/EU (IVU-Richtlinie)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_7_9"
+                                        },
+                                        {
+                                            "id": 542,
+                                            "label": "HQ300 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_8_6"
+                                        },
+                                        {
+                                            "id": 543,
+                                            "label": "HQ100 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_9_5"
+                                        },
+                                        {
+                                            "id": 544,
+                                            "label": "HQ20 - Anzahl betroffener Einwohner in der Gemeinde (klassifiziert)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_10_4"
+                                        },
+                                        {
+                                            "id": 545,
+                                            "label": "Grenze des Bearbeitungsabschnittes (Bundeswasserstrasse und Gewaesser 1. Ordnung)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_11_4"
+                                        },
+                                        {
+                                            "id": 546,
+                                            "label": "Gewaesserachse (Bundeswasserstrasse und Gewaesser 1. Ordnung)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_12_3"
+                                        },
+                                        {
+                                            "id": 547,
+                                            "label": "Stationierung (Bundeswasserstrasse und Gewaesser 1. Ordnung)",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_13_2"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 548,
+                                    "label": "Überschwemmte Flächen bei hundertjährlichem Hochwasser (Intensitätskarte HQ 100) ",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "children": [
+                                        {
+                                            "id": 549,
+                                            "label": "Extremhochwasser",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_0_42"
+                                        },
+                                        {
+                                            "id": 550,
+                                            "label": "Wassertiefe bei HQ100",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_1_32"
+                                        },
+                                        {
+                                            "id": 551,
+                                            "label": "Gewaesserachse",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_2_25"
+                                        },
+                                        {
+                                            "id": 552,
+                                            "label": "Stationierung",
+                                            "staging": "prod",
+                                            "selectedOpen": false,
+                                            "layerBodId": "geoportal_umwelt_sachsen_de_3_20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 553,
+                    "label": "Landwirtschaft",
+                    "staging": "prod",
+                    "selectedOpen": false,
+                    "children": [
+                        {
+                            "id": 554,
+                            "label": "Ländliche Neuordnung Bund",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 555,
+                                    "label": "sn_flurbv_label",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_43"
+                                },
+                                {
+                                    "id": 556,
+                                    "label": "sn_flurbv",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_1_33"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 557,
+                            "label": "Ländliche Neuordnung",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 558,
+                                    "label": "LNO-Verfahren",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_44"
+                                }
+                            ]
+                        },
+                        {
+                            "id": 559,
+                            "label": "Vergleichsgebiete",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 560,
+                                    "label": "Vergleichsgebiet",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_45"
+                                }
+                            ],
+                            "layerBodId": null
+                        },
+                        {
+                            "id": 561,
+                            "label": "Agrarstrukturgebiete",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 562,
+                                    "label": "Agrarstrukturgebiet",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_46"
+                                }
+                            ],
+                            "layerBodId": null
+                        },
+                        {
+                            "id": 565,
+                            "label": "Wirtschaftsgebiete",
+                            "staging": "prod",
+                            "selectedOpen": false,
+                            "children": [
+                                {
+                                    "id": 566,
+                                    "label": "Wirtschaftsgebiet",
+                                    "staging": "prod",
+                                    "selectedOpen": false,
+                                    "layerBodId": "geoportal_umwelt_sachsen_de_0_48"
+                                }
+                            ],
+                            "layerBodId": null
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
