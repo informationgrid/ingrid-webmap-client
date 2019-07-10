@@ -693,6 +693,8 @@ goog.require('ga_urlutils_service');
                 maxScale: config.maxScale,
                 // INGRID: Add auth
                 auth: config.auth,
+                // INGRID: Add featureCount
+                featureCount: config.featureCount,
                 /* INGRID: Set extent by defaultProjection
                 extent: extent
                 */
@@ -734,6 +736,8 @@ goog.require('ga_urlutils_service');
                 maxScale: config.maxScale,
                 // INGRID: Add auth
                 auth: config.auth,
+                // INGRID: Add featureCount
+                featureCount: config.featureCount,
                 /* INGRID: Set extent by defaultProjection
                 extent: extent,
                 */

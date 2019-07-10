@@ -1,1 +1,29 @@
-{"settingExtent":[6.5,51.3,11.7,53.9],"settingEpsgExtent":[6.5,51.3,11.7,53.9],"settingShortURLService":"https:\/\/numis.niedersachsen.de\/s\/yourls-api.php?signature=c5972f1b79&action=shorturl&format=json","settingSearchServiceUrl":"https:\/\/numis.niedersachsen.de\/opensearch\/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100","settingSearchBwaLocatorUrl":"","settingSearchBwaLocatorGeoUrl":"","settingSearchBwaLocatorStationUrl":"","settingDefaultImportList":[],"settingPrintGraticuleLayer":{"url":"http:\/\/atlas.wsv.bund.de\/netze\/wms?","layers":["GN","GNB"]},"settingPrintFilename":"Print.NUMIS","settingKMLName":"NUMIS"}
+{
+    "settingExtent": [
+        6.5,
+        51.3,
+        11.7,
+        53.9
+    ],
+    "settingEpsgExtent": [
+        6.5,
+        51.3,
+        11.7,
+        53.9
+    ],
+    "settingShortURLService": "https:\/\/numis.niedersachsen.de\/s\/yourls-api.php?signature=c5972f1b79&action=shorturl&format=json",
+    "settingSearchServiceUrl": "https:\/\/numis.niedersachsen.de\/opensearch\/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100",
+    "settingSearchBwaLocatorUrl": "",
+    "settingSearchBwaLocatorGeoUrl": "",
+    "settingSearchBwaLocatorStationUrl": "",
+    "settingDefaultImportList": [],
+    "settingPrintGraticuleLayer": {
+        "url": "http:\/\/atlas.wsv.bund.de\/netze\/wms?",
+        "layers": [
+            "GN",
+            "GNB"
+        ]
+    },
+    "settingPrintFilename": "Print.NUMIS",
+    "settingKMLName": "NUMIS"
+}

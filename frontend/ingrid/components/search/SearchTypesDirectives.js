@@ -242,8 +242,8 @@ goog.require('ga_urlutils_service');
           canceler = $q.defer();
 
           // INGRID: Add search URL
-          var searchApi = $scope.searchUrl.trim();
-          if (searchApi.length > 0) {
+          var searchApi = $scope.searchUrl;
+          if (searchApi && searchApi.trim().length > 0) {
             var url = gaUrlUtils.append($scope.options.searchUrl,
                 'type=' + $scope.type +
                 '&searchUrl=' + searchApi);
@@ -372,8 +372,8 @@ goog.require('ga_urlutils_service');
               var e = parseExtent(res.attrs.geom_st_box2d, gaGlobalOptions);
               unregisterMove();
               // Gazetteer results that are not points zoom to full bbox extent
-              if (res.attrs.origin === 'gazetteer' && !res.attrs.lat
-                  && !res.attrs.lon) {
+              if (res.attrs.origin === 'gazetteer' && !res.attrs.lat &&
+                  !res.attrs.lon) {
                 isGazetteerPoly = (Math.abs(e[0] - e[2]) > 100 &&
                                    Math.abs(e[1] - e[3]) > 100);
 

@@ -14,7 +14,22 @@ export class UtilsLayers {
             if (!layerItem.gutter) {
                 delete layerItem.gutter;
             }
+            if (this.isEmptyString(layerItem.queryLayers)) {
+                delete layerItem.queryLayers;
+            }
+            if (layerItem.featureCount === 10) {
+                delete layerItem.featureCount;
+            }
         }
+    }
+
+    static isEmptyString (value: string) {
+        if (!value) {
+            return true;
+        } else if (value && value.trim().length === 0) {
+            return true;
+        }
+        return false;
     }
 
     static isWMS(type: string) {
@@ -112,9 +127,7 @@ export class UtilsLayers {
     }
 
     static replaceIdChar(id: string) {
-        id = id.replace(/\./gi, '_');
-        id = id.replace(/\:/gi, '_');
-        id = id.replace(/\,/gi, '_');
+        id = id.replace(/[^A-Z0-9]/gi, '_');
         return id;
     }
 

@@ -135,6 +135,23 @@
           <input type="text" #addCatTooltip="ngModel" [(ngModel)]="formAdd.value.addCatTooltip" class="form-control" name="addCatTooltip" id="addCatTooltip">
         </div>
       </div>
+      <!-- image -->
+      <div class="form-group row">
+        <div class="col-sm-4 col-form-label">
+          <label class="" translate>category_item_add_image</label>
+        </div>
+        <div class="col-sm-8">
+          <input type="file" (change)="readUrl($event)">
+        </div>
+      </div>
+      <div *ngIf="categoryImagePreview" class="form-group row">
+        <div class="col-sm-4 col-form-label">
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
+        <div class="col-sm-8">
+          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')'}" class="cat_image"></div>
+        </div>
+      </div>
     </form>
   </div>
   <div class="app-modal-footer">
@@ -238,6 +255,23 @@
           <input type="text" class="form-control" #editCatTooltip="ngModel" [(ngModel)]="formEdit.value.editCatTooltip" name="editCatTooltip" id="editCatTooltip">
         </div>
       </div>
+      <!-- image -->
+      <div class="form-group row">
+        <div class="col-sm-4 col-form-label">
+          <label translate>category_item_add_image</label>
+        </div>
+        <div class="col-sm-8">
+          <input type="file" (change)="readUrl($event)">
+        </div>
+      </div>
+      <div *ngIf="categoryImagePreview" class="form-group row">
+        <div class="col-sm-4 col-form-label">
+          <small class="form-text text-muted" translate>category_item_image_help</small>
+        </div>
+        <div class="col-sm-8">
+          <div [ngStyle]="{'background-image':'url('+ categoryImagePreview +')'}" class="cat_image"></div>
+        </div>
+      </div>
       <!-- backgroundLayers -->
       <div class="form-group row">
         <label class="col-sm-4 col-form-label" translate>category_backgroundLayers</label>
@@ -293,7 +327,7 @@
               <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.selectedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -324,7 +358,7 @@
               <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.activatedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -461,7 +495,7 @@
               <button *ngIf="i !== (model.selectedLayers.length - 1) && model.selectedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.selectedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.selectedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.selectedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>
@@ -492,7 +526,7 @@
               <button *ngIf="i !== (model.activatedLayers.length - 1) && model.activatedLayers.length > 1" type="button" class="btn btn-outline-secondary" (click)="onDownItem(item, model.activatedLayers)">
                 <i class="fa fa-sort-down" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(item, model.activatedLayers)">
+              <button type="button" class="btn btn-outline-danger" (click)="onRemoveItem(i, model.activatedLayers)">
                 <i class="fa fa-trash" aria-hidden="true"></i>
               </button>
             </div>

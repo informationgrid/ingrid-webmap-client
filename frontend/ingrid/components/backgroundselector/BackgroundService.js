@@ -27,17 +27,7 @@ goog.require('ga_urlutils_service');
       // INGRID: Change default background layer
       var predefinedBgs = {
         'voidLayer': voidLayer,
-        'osmLayer': osmLayer,
-        'webatlasde_light': {
-          id: 'webatlasde_light',
-          label: 'bg_bkg',
-          disable3d: true
-        },
-        'webatlasde_grau': {
-          id: 'webatlasde_grau',
-          label: 'bg_bkg_grau',
-          disable3d: true
-        }
+        'osmLayer': osmLayer
       };
       var getBgById = function(id) {
         for (var i = 0, ii = bgs.length; i < ii; i++) {

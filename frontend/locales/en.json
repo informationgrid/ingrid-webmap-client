@@ -1,8 +1,6 @@
 {
 "Invalid layer: unsupported crs": "Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
 "anbieter": "Anbieter",
-"bg_bkg": "BKG",
-"bg_bkg_grau": "BKG gray",
 "bg_osm": "OSM",
 "bwalocator_results_header": "BWaStr Locator",
 "bwalocator_from": "From:",
@@ -39,6 +37,8 @@
 "metadata_service_resource": "Resource",
 "metadata_service_url": "GetCapabilities",
 "metadata_service_url_link": "Link",
+"no_legend_available": "No legende available.",
+"page_title": "InGrid Map Client",
 "print_title": "Titel",
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",

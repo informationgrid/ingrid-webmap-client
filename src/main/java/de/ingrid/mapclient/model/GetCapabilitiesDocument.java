@@ -1,8 +1,8 @@
-/*
+/*-
  * **************************************************-
- * InGrid Portal Apps
+ * InGrid Map Client
  * ==================================================
- * Copyright (C) 2014 - 2017 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2019 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -20,8 +20,25 @@
  * limitations under the Licence.
  * **************************************************#
  */
-settingExtent = '[11.7947, 50.1605, 15.0423, 51.7046]';
-settingEpsgExtent = '[11.7947, 50.1605, 15.0423, 51.7046]';
-settingSearchServiceUrl = 'https://www.portalu.sachsen.de/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
-settingKMLName = 'SachsenPortalU';
-settingDefaultWMSList = [];
+package de.ingrid.mapclient.model;
+
+import org.w3c.dom.Document;
+
+public class GetCapabilitiesDocument {
+
+    private String xml = null;
+    private Document doc = null;
+
+    public String getXml() {
+        return xml;
+    }
+    public void setXml(String xml) {
+        this.xml = xml;
+    }
+    public Document getDoc() {
+        return doc;
+    }
+    public void setDoc(Document doc) {
+        this.doc = doc;
+    }
+}

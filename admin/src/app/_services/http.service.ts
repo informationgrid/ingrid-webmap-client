@@ -97,6 +97,17 @@ export class HttpService {
     return this.http.put<LayerItem>(httpApiHost + '/layers/' + layerId, body, httpJsonOptions);
   }
 
+  updateLayerAndImage(layerId: string, layer: LayerItem, image: any) {
+    return forkJoin(
+      this.updateLayer(layerId, layer),
+      this.addImage(image, 'background', layerId)
+    );
+  }
+
+  getLayerBackgroundImage(layer: LayerItem) {
+    return httpApiHost + '/image/background/' + layer.id;
+  }
+
   addLayer(layers: LayerItem[]): Observable<LayerItem[]> {
     const body = JSON.stringify(layers);
     return this.http.post<LayerItem[]>(httpApiHost + '/layers', body, httpJsonOptions).map(
@@ -211,15 +222,35 @@ export class HttpService {
     );
   }
 
+  updateCategoryLabelAndImage(category: Category, locale: Map<String, String>, copyId: String, image: any) {
+    return forkJoin(
+      this.updateCategory(category),
+      this.updateLocales(locale, 'de'),
+      this.addImage(image, 'category', category.id)
+    );
+  }
+
   updateCategory(category: Category): Observable<Category[]> {
     const body = JSON.stringify(category);
     return this.http.put<Category[]>(httpApiHost + '/categories/' + category.id, body, httpJsonOptions);
+  }
+
+  getCategoryImage(category: Category) {
+    return httpApiHost + '/image/category/' + category.id;
   }
 
   addCategoryAndLabel(category: Category, locale: Map<String, String>, copyId: String) {
     return forkJoin(
       this.addCategory(category, copyId),
       this.updateLocales(locale, 'de')
+    );
+  }
+
+  addCategoryLabelAndImage(category: Category, locale: Map<String, String>, copyId: String, image: any) {
+    return forkJoin(
+      this.addCategory(category, copyId),
+      this.updateLocales(locale, 'de'),
+      this.addImage(image, 'category', category.id)
     );
   }
 
@@ -346,5 +377,15 @@ export class HttpService {
     body = body.slice(0, -1);
     body += '}';
     return this.http.put(httpApiHost + '/locales/' + lang, body, httpJsonOptions);
+  }
+
+// Image
+  addImage(image: any, path: string, imageName: string) {
+    let body = '{';
+    body += '"data":' + '"' + image + '",';
+    body += '"path":' + '"' + path + '",';
+    body += '"name":' + '"' + imageName + '"';
+    body += '}';
+    return this.http.put(httpApiHost + '/image', body, httpJsonOptions);
   }
 }

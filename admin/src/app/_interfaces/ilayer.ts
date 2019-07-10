@@ -20,4 +20,6 @@ export interface ILayer {
     timeEnabled: boolean;
     timeBehaviour: string;
     tooltip: boolean;
+    queryLayers: string;
+    featureCount: number;
 }

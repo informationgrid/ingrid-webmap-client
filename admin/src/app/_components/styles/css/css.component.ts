@@ -16,7 +16,11 @@ export class CssComponent implements OnInit {
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
-  this.httpService.getCss().subscribe(
+    this.onLoad();
+  }
+
+  onLoad() {
+    this.httpService.getCss().subscribe(
       data => {
         this.css = data;
       },

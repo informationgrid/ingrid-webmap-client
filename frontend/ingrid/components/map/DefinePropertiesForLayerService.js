@@ -158,6 +158,15 @@ goog.provide('ga_definepropertiesforlayer_service');
               this.set('auth', val);
             }
           },
+          // INGRID: Add featureCount functions
+          featureCount: {
+            get: function() {
+              return this.get('featureCount');
+            },
+            set: function(val) {
+              this.set('featureCount', val);
+            }
+          },
           timeEnabled: {
             get: function() {
               return this.get('timeEnabled');

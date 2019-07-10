@@ -28,6 +28,8 @@ export class Wmtslayer extends Layer implements ILayerWmts {
         this.timeEnabled = false;
         this.timeBehaviour = '';
         this.singleTile = false;
+        this.queryLayers = '';
+        this.featureCount = 10;
     }
 
     generateId(layers: LayerItem[]) {

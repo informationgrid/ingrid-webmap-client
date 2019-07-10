@@ -140,11 +140,11 @@ goog.require('ga_window_service');
             var coord = map.getCoordinateFromPixel(pixel);
             */
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
-              function() {
-                return true;
-              },
-              undefined,
-              function(layer) {
+                function() {
+                  return true;
+                },
+                undefined,
+                function(layer) {
                 /* INGRID: Add check for crossOrigin
                 // EDGE: An IndexSizeError is triggered by the
                 // map.forEachLayerAtPixel when the mouse is outside the
@@ -157,9 +157,9 @@ goog.require('ga_window_service');
                 }
                 return gaLayers.hasTooltipBodLayer(layer);
                 */
-                return gaLayers.hasTooltipBodLayer(layer) &&
+                  return gaLayers.hasTooltipBodLayer(layer) &&
                   layer.getSource().crossOrigin;
-              }
+                }
             );
           }
           if (!hasQueryableLayer) {
@@ -494,18 +494,22 @@ goog.require('ga_window_service');
                   return;
                 }
                 // INGRID: Add queryLayers
-                var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
+                var params = {
+                  'INFO_FORMAT': 'text/html',
+                  'LANG': gaLang.get(),
+                  'FEATURE_COUNT': layerToQuery.featureCount || 10
+                };
                 if (layerToQuery.queryLayers) {
-                  params = {'INFO_FORMAT': 'text/html',
-                    'LANG': gaLang.get(),
-                    'QUERY_LAYERS': layerToQuery.queryLayers};
+                  angular.extend({
+                    'QUERY_LAYERS': layerToQuery.queryLayers.trim()
+                  }, params);
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
                     coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
-                    if(layerToQuery.get("auth")) {
-                      proxyUrl += "&login=" + layerToQuery.get("auth"); 
+                    if (layerToQuery.get('auth')) {
+                      proxyUrl += '&login=' + layerToQuery.get('auth');
                     }
                     all.push($http.get(proxyUrl, {
                       timeout: canceler.promise,
@@ -534,15 +538,19 @@ goog.require('ga_window_service');
                     coordinate)) {
                   return;
                 }
-                // INGRID: Add queryLayers
-                var params = {'INFO_FORMAT': 'text/html', 'LANG': gaLang.get()};
+                // INGRID: Add queryLayers, featureCount
+                var params = {
+                  'INFO_FORMAT': 'text/html',
+                  'LANG': gaLang.get(),
+                  'FEATURE_COUNT': layerToQuery.featureCount || 10
+                };
                 if (layerToQuery.queryLayers) {
-                  params = {'INFO_FORMAT': 'text/html',
-                    'LANG': gaLang.get(),
-                    'QUERY_LAYERS': layerToQuery.queryLayers};
+                  angular.extend({
+                    'QUERY_LAYERS': layerToQuery.queryLayers.trim()
+                  }, params);
                 }
                 var url = gaMapUtils.getWMTSFeatureInfoUrl(layerToQuery.
-                  getSource(), coordinate, mapRes, mapProj, params);
+                    getSource(), coordinate, mapRes, mapProj, params);
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     all.push($http.get(proxyUrl, {
