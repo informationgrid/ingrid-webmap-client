@@ -405,11 +405,11 @@ goog.require('ga_urlutils_service');
             maxScale = layer['maxScale'];
           }
 
-          if (layer.type === 'WMS' && layer.version === '1.1.1') {
+          if (layer.type === 'wms' && layer.version === '1.1.1') {
             minScale = this.getScaleForScaleHint(minScale, map);
           }
 
-          if (layer.type === 'WMS' && layer.version === '1.1.1') {
+          if (layer.type === 'wms' && layer.version === '1.1.1') {
             maxScale = this.getScaleForScaleHint(maxScale, map);
           }
 
