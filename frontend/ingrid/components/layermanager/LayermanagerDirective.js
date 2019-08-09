@@ -318,7 +318,7 @@ goog.require('ga_window_service');
           } else {
             if (layer.maxScale) {
               var scale = layer.maxScale;
-              if (typeof(scale) === 'string') {
+              if (layer.type === 'WMS' && layer.version === '1.1.1') {
                 scale = gaMapUtils.getScaleForScaleHint(scale, map);
               }
               gaMapUtils.zoomToExtentScale(map, undefined, layer.extent, scale);
