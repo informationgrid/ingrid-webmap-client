@@ -151,11 +151,14 @@ goog.require('ga_window_service');
               var coord4326String = ol.coordinate.toStringHDMS(coord4326, 3).
                   replace(/ /g, '');
               // INGRID: Add Decimal Minutes Format
-              var coord4326StringDME = parseInt(coord4326[0]) + '°'+ 
-                  ((coord4326[0] - parseInt(coord4326[0])) * 60).toFixed(3) + '\'E';
-              var coord4326StringDMN = parseInt(coord4326[1]) + '°'+ 
-                  ((coord4326[1] - parseInt(coord4326[1])) * 60).toFixed(3) + '\'N';
-              var coord4326StringDM = coord4326StringDMN + ', ' + coord4326StringDME;
+              var coord4326StringDME = parseInt(coord4326[0]) + '°'
+                  + ((coord4326[0] - parseInt(coord4326[0])) * 60).toFixed(3)
+                  + '\'E';
+              var coord4326StringDMN = parseInt(coord4326[1]) + '°'
+                  + ((coord4326[1] - parseInt(coord4326[1])) * 60).toFixed(3)
+                  + '\'N';
+              var coord4326StringDM = coord4326StringDMN + ', '
+                  + coord4326StringDME;
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
               scope.coord2056 = gaMeasure.formatCoordinates(clickCoord, 1);
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
