@@ -50,8 +50,9 @@
           <table>
             <tbody>
               <tr ng-repeat="projection in projections">
+                <!-- INGRID: Change td to ng-bind-html -->
                 <td ng-bind-html="projection.label"></td>
-                <td>{{projection.coordinates}}</td>
+                <td ng-bind-html="projection.coordinates"></td>
               </tr>
               <tr ng-if="enableW3W">
                 <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
