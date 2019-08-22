@@ -221,18 +221,18 @@ goog.require('ga_window_service');
               }, {
                 value: 'EPSG:2166',
                 label: $sce.trustAsHtml($translate.instant('projection_2166')),
-                coordinates: ol.coordinate.format(coord2166,
-                    '{x}, {y}', 2)
+                coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2166,
+                    '{x}, {y}', 2))
               }, {
                 value: 'EPSG:2167',
                 label: $sce.trustAsHtml($translate.instant('projection_2167')),
-                coordinates: ol.coordinate.format(coord2167,
-                    '{x}, {y}', 2)
+                coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2167,
+                    '{x}, {y}', 2))
               }, {
                 value: 'EPSG:2168',
                 label: $sce.trustAsHtml($translate.instant('projection_2168')),
-                coordinates: ol.coordinate.format(coord2168,
-                    '{x}, {y}', 2)
+                coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2168,
+                    '{x}, {y}', 2))
               }];
               var sortProjections = [];
               var gp, p, projection;
