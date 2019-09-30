@@ -35,7 +35,7 @@ goog.require('ga_measure_service');
       value: 'EPSG:4326',
       label: 'WGS 84 (Breite/Länge)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 4);
+        return ol.coordinate.format(coordinates, '{y}, {x}', 6);
       }
     }, {
       value: 'EPSG:31466',
