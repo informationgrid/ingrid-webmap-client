@@ -35,61 +35,61 @@ goog.require('ga_measure_service');
       value: 'EPSG:4326',
       label: 'WGS 84 (Breite/Länge)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{y}, {x}', 5);
+        return ol.coordinate.format(coordinates, '{y}, {x}', 4);
       }
     }, {
       value: 'EPSG:31466',
       label: 'GK2 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:31467',
       label: 'GK3 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:31468',
       label: 'GK4 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:31469',
       label: 'GK5 - DHDN (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:25832',
       label: 'UTM 32N - ETRS89 (East/North)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:25833',
       label: 'UTM 33N - ETRS89 (East/North)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:2166',
       label: 'GK3 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:2167',
       label: 'GK4 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }, {
       value: 'EPSG:2168',
       label: 'GK5 - S42/83 (Rechtswert/Hochwert)',
       format: function(coordinates) {
-        return ol.coordinate.format(coordinates, '{x}, {y}', 2);
+        return ol.coordinate.format(coordinates, '{x}, {y}', 1);
       }
     }];
 

@@ -9,12 +9,12 @@
   <div class="popover-content">
       <table ng-if="showBWaLocator() == false" >
           <tbody>
-          <tr ng-repeat="projection in projections">
+          <tr ng-repeat="projection in projections" class="{{projection.key}}">
               <!-- INGRID: Change td to ng-bind-html -->
               <td ng-bind-html="projection.label"></td>
               <td ng-bind-html="projection.coordinates"></td>
           </tr>
-          <tr ng-if="enableW3W">
+          <tr class="what3words" ng-if="enableW3W">
               <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
               <td>{{w3w}}</td>
           </tr>
@@ -24,9 +24,9 @@
               <td>{{altitude | measure:'distance':[' m']:1}}</td>
           </tr>
           -->
-          <tr>
-              <td></td>
+          <tr class="crosshair">
               <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
+              <td></td>
           </tr>
           <tr ng-if="qrcodeUrl">
             <td align="center" colspan="2">
@@ -49,18 +49,18 @@
         <div class="tab-pane" ng-class="getTabClass(1)">
           <table>
             <tbody>
-              <tr ng-repeat="projection in projections">
+              <tr ng-repeat="projection in projections" class="{{projection.key}}">
                 <!-- INGRID: Change td to ng-bind-html -->
                 <td ng-bind-html="projection.label"></td>
                 <td ng-bind-html="projection.coordinates"></td>
               </tr>
-              <tr ng-if="enableW3W">
+              <tr class="what3words" ng-if="enableW3W">
                 <td><a href="http://what3words.com/" target="_blank">what3words</a></td>
                 <td>{{w3w}}</td>
               </tr>
-              <tr>
-                <td></td>
+              <tr class="crosshair">
                 <td><a href="{{crosshairPermalink}}" target="_blank" translate>link_bowl_crosshair</a></td>
+                <td></td>
               </tr>
               <tr ng-if="qrcodeUrl">
                 <td align="center" colspan="2">

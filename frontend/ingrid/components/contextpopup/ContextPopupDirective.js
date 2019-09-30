@@ -147,18 +147,18 @@ goog.require('ga_window_service');
               var coord2168 = ol.proj.transform(coord4326,
                   'EPSG:4326', 'EPSG:2168');
 
-              scope.coord4326 = ol.coordinate.format(coord4326, '{y}, {x}', 5);
-              var coord4326String = ol.coordinate.toStringHDMS(coord4326, 3).
+              scope.coord4326 = ol.coordinate.format(coord4326, '{y}, {x}', 6);
+              var coord4326String = ol.coordinate.toStringHDMS(coord4326, 2).
                   replace(/ /g, '');
               // INGRID: Add Decimal Minutes Format
-              var coord4326StringDME = parseInt(coord4326[0]) + '°'
-                  + ((coord4326[0] - parseInt(coord4326[0])) * 60).toFixed(3)
-                  + '\'E';
-              var coord4326StringDMN = parseInt(coord4326[1]) + '°'
-                  + ((coord4326[1] - parseInt(coord4326[1])) * 60).toFixed(3)
-                  + '\'N';
-              var coord4326StringDM = coord4326StringDMN + ', '
-                  + coord4326StringDME;
+              var coord4326StringDME = parseInt(coord4326[0]) + '°' +
+                  ((coord4326[0] - parseInt(coord4326[0])) * 60).toFixed(4) +
+                  '\'E';
+              var coord4326StringDMN = parseInt(coord4326[1]) + '°' +
+                  ((coord4326[1] - parseInt(coord4326[1])) * 60).toFixed(4) +
+                  '\'N';
+              var coord4326StringDM = coord4326StringDMN + ', ' +
+                  coord4326StringDME;
               scope.coordiso4326 = coord4326String.replace(/N/g, 'N ');
               scope.coord2056 = gaMeasure.formatCoordinates(clickCoord, 1);
               if (coord4326[0] < 6 && coord4326[0] >= 0) {
@@ -176,63 +176,74 @@ goog.require('ga_window_service');
               // INGRID: Add coordinates
               var projections = [{
                 value: 'EPSG:3857',
+                key: 'mercator',
                 label: $sce.trustAsHtml($translate.instant('projection_3857')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord3857,
                     '{y}, {x}', 2))
               }, {
                 value: 'EPSG:4326',
+                key: 'wgs84',
                 label: $sce.trustAsHtml($translate.instant('projection_4326')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord4326,
-                      '{y}, {x}', 5)
-                    + ' <br> ' +
-                      coord4326StringDM
-                    + ' <br> ' +
+                    '{y}, {x}', 6) +
+                    ' <br> ' +
+                      coord4326StringDM +
+                    ' <br> ' +
                       coord4326String.replace(/N/g, 'N, '))
               }, {
                 value: 'EPSG:31466',
+                key: 'dhdn',
                 label: $sce.trustAsHtml($translate.instant('projection_31466')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord31466,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:31467',
+                key: 'dhdn',
                 label: $sce.trustAsHtml($translate.instant('projection_31467')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord31467,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:31468',
+                key: 'dhdn',
                 label: $sce.trustAsHtml($translate.instant('projection_31468')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord31468,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:31469',
+                key: 'dhdn',
                 label: $sce.trustAsHtml($translate.instant('projection_31469')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord31469,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:25832',
+                key: 'utm',
                 label: $sce.trustAsHtml($translate.instant('projection_25832')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord25832,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:25833',
+                key: 'utm',
                 label: $sce.trustAsHtml($translate.instant('projection_25833')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord25833,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:2166',
+                key: 'gk',
                 label: $sce.trustAsHtml($translate.instant('projection_2166')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2166,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:2167',
+                key: 'gk',
                 label: $sce.trustAsHtml($translate.instant('projection_2167')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2167,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }, {
                 value: 'EPSG:2168',
+                key: 'gk',
                 label: $sce.trustAsHtml($translate.instant('projection_2168')),
                 coordinates: $sce.trustAsHtml(ol.coordinate.format(coord2168,
-                    '{x}, {y}', 2))
+                    '{x}, {y}', 1))
               }];
               var sortProjections = [];
               var gp, p, projection;

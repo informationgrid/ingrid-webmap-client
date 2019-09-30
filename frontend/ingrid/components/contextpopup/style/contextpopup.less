@@ -13,6 +13,23 @@
   
   table {
     width: 100%;
+    
+    :not(.dhdn) + .dhdn, .dhdn:first-child, :not(.utm) + .utm, .utm:first-child, :not(.gk) + .gk, .gk:first-child {
+      border-top: 1px dotted #E9E9E9;
+      border-bottom: 0;
+    }
+    .dhdn + .dhdn, .utm + .utm, .gk + .gk {
+      border: 0;
+    }
+    .dhdn + .dhdn td, .utm + .utm td, .gk + .gk td {
+      padding: 0;
+    }
+    .what3words {
+      border-top: 1px dotted #E9E9E9;
+    }
+    .crosshair {
+      border-bottom: 0 !important;
+    }
   }
 
   .ga-qrcode {
