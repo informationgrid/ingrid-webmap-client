@@ -60,15 +60,12 @@ goog.require('ga_urlutils_service');
           if (gaUrlUtils.isValid(layer.url)) {
             // INGRID: Change attribution for external layers
             var attribution = layer.get('attribution');
+            var attributionUrl = layer.get('attributionUrl');
             if (!attribution) {
               attribution = this.getTextFromLayer(layer);
-              if (gaUrlUtils.isThirdPartyValid(layer.url)) {
-                return '<span class="ga-warning-tooltip">' + attribution +
-                    '</span>';
-              }
-            } else {
-              var attributionUrl = layer.get('attributionUrl');
-              if (attributionUrl){
+            }
+            if (gaUrlUtils.isThirdPartyValid(layer.url)) {
+              if (attributionUrl) {
                 return '<a class="ga-warning-tooltip" target="new" href="' +
                   attributionUrl + '">' + attribution + '</a>';
               } else {
