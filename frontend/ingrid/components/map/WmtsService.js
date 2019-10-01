@@ -219,12 +219,9 @@ goog.require('ga_urlutils_service');
             layerOptions.visible = options.visible || true;
             // INGRID: Add attribution
             if (getCap.ServiceProvider) {
-              if (getCap.ServiceProvider.ProviderName) {
-                layerOptions.attribution = getCap.ServiceProvider.ProviderName;
-              }
-              if (getCap.ServiceProvider.ProviderSite) {
-                layerOptions.attributionUrl = getCap.ServiceProvider.ProviderSite;
-              }
+              var getCapService = getCap.ServiceProvider;
+              layerOptions.attribution = getCapService.ProviderName;
+              layerOptions.attributionUrl = getCapService.ProviderSite;
             }
             return createWmtsLayer(layerOptions);
           }
