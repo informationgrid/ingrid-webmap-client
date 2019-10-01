@@ -113,6 +113,16 @@ goog.require('ga_urlutils_service');
             if (options.useReprojection) {
               options.projection = 'EPSG:4326';
               options.id += '||true';
+            } else {
+              options.id += '||false';
+            }
+
+            if (options.attribution) {
+              options.id += '||' + encodeURIComponent(options.attribution);
+            }
+
+            if (options.attributionUrl) {
+              options.id += '||' + options.attributionUrl;
             }
           } else {
             // Set the default wms version
@@ -149,7 +159,8 @@ goog.require('ga_urlutils_service');
             opacity: options.opacity,
             visible: options.visible,
             attribution: options.attribution,
-            extent: options.extent,
+            // INGRID: Add attributionUrl
+            attributionUrl: options.attributionUrl,
             // INGRID: Add queryable
             queryable: !!(options.queryable === true ||
               options.queryable === 'true' ||
@@ -286,6 +297,9 @@ goog.require('ga_urlutils_service');
             minScale: minScale,
             // INGRID: Add maxScale
             maxScale: maxScale,
+            // INGRID: Add attributions
+            attribution: getCapLayer.attribution,
+            attributionUrl: getCapLayer.attributionUrl,
             useReprojection: getCapLayer.useReprojection
           };
           return createWmsLayer(wmsParams, wmsOptions);
@@ -381,7 +395,7 @@ goog.require('ga_urlutils_service');
                           var projCode = gaGlobalOptions.defaultEpsg;
                           if (layer.BoundingBox) {
                             for (var j = 0, jj = layer.BoundingBox.length;
-                                j < jj; j++) {
+                              j < jj; j++) {
                               var bbox = layer.BoundingBox[j];
                               var code;
                               // INGRID: Check extent for WMS version 1.1.1
@@ -427,7 +441,7 @@ goog.require('ga_urlutils_service');
                               // INGRID: Change 'layerWgs84Extent' to 'extent'
                               if (extent) {
                                 extent = ol.proj.transformExtent(extent,
-                                  wgs84, projCode);
+                                    wgs84, projCode);
                               }
                             }
                           }

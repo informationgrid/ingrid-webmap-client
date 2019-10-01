@@ -56,7 +56,7 @@ goog.provide('ga_wmsgetcapitem_directive');
       var ipm = 39.37;
       if (scale !== 0 && scale !== Infinity) {
         return parseFloat(
-          ((scale / rad2) * ipm *
+            ((scale / rad2) * ipm *
           72).toPrecision(13)
         );
       }
@@ -74,7 +74,7 @@ goog.provide('ga_wmsgetcapitem_directive');
 
       // INGRID: Get scale
       var scale = layer.MaxScaleDenominator;
-      if(layer.ScaleHint){
+      if (layer.ScaleHint) {
         scale = getScaleForScaleHint(view, layer.ScaleHint.max);
       }
       // Test this with this wms:

@@ -360,6 +360,9 @@ goog.require('ga_wmts_service');
                           /* INGRID: Remove extent
                           extent: gaGlobalOptions.defaultExtent,
                           */
+                          // INGRID: Add attributions
+                          attribution: decodeURIComponent(infos[7]),
+                          attributionUrl: infos[8],
                           useReprojection: (infos[6] === 'true')
                         },
                         index + 1);
