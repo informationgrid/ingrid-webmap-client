@@ -377,7 +377,10 @@ goog.require('ga_wmts_service');
                     index: index + 1,
                     opacity: opacity,
                     visible: visible,
-                    time: timestamp
+                    time: timestamp,
+                    // INGRID: Add attributions
+                    attribution: decodeURIComponent(infos[3]),
+                    attributionUrl: infos[4]
                   });
                 } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
                   // INGRID: Add external service

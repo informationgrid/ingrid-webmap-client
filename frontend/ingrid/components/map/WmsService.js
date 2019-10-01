@@ -159,6 +159,7 @@ goog.require('ga_urlutils_service');
             opacity: options.opacity,
             visible: options.visible,
             attribution: options.attribution,
+            extent: options.extent,
             // INGRID: Add attributionUrl
             attributionUrl: options.attributionUrl,
             // INGRID: Add queryable
