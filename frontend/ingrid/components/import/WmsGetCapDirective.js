@@ -111,8 +111,12 @@ goog.require('ga_urlutils_service');
               }
             }
           }
-          if (service.OnlineResource && service.OnlineResource['xlink:href']) {
-            layer.attributionUrl = service.OnlineResource['xlink:href'];
+          if (service.OnlineResource) {
+            if(getCap.version === '1.1.1') {
+              layer.attributionUrl = service.OnlineResource['xlink:href'];
+            } else {
+              layer.attributionUrl = service.OnlineResource;
+            }
           }
         }
 
