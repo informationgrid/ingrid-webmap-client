@@ -119,6 +119,8 @@ goog.require('ga_urlutils_service');
 
             if (options.attribution) {
               options.id += '||' + encodeURIComponent(options.attribution);
+            } else {
+              options.id += '||';
             }
 
             if (options.attributionUrl) {
