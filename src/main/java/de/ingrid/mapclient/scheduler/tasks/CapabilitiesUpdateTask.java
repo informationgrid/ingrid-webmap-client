@@ -471,7 +471,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                             }
                             fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", parentLayerNode, XPathConstants.NODE);
                             if (fieldNode != null) {
-                                hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                             }
                         }
                         fieldNode = (Node) xpath.evaluate("./MinScaleDenominator", layerNode, XPathConstants.NODE);
@@ -480,7 +480,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@min", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         
                         // MaxScale
@@ -493,7 +493,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                             }
                             fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", parentLayerNode, XPathConstants.NODE);
                             if (fieldNode != null) {
-                                hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                                hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                             }
                         }
                         
@@ -504,7 +504,7 @@ public class CapabilitiesUpdateTask implements Runnable{
                         }
                         fieldNode = (Node) xpath.evaluate("./ScaleHint/@max", layerNode, XPathConstants.NODE);
                         if (fieldNode != null) {
-                            hasChanges = getScale(layerKey, fieldNode, layerJSON);
+                            hasChanges = getDoubleScale(layerKey, fieldNode, layerJSON);
                         }
                         // Extent
                         layerKey = "extent";
@@ -661,7 +661,7 @@ public class CapabilitiesUpdateTask implements Runnable{
         try {
             if(layerJSON.has(layerKey)) {
                 oldText = layerJSON.getString(layerKey);
-                if(oldText == null || (text != null && !oldText.equals( text ))){
+                if(oldText == null || (oldText != null && layerJSON.get(layerKey) instanceof String) ||(text != null && !oldText.equals( text ))){
                     layerJSON.put( layerKey, Double.parseDouble(fieldNode.getTextContent() ) );
                     return true;
                 }

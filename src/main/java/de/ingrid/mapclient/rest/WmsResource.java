@@ -359,8 +359,7 @@ public class WmsResource {
 
         NodeList fields = (NodeList) xpath.evaluate( "./*/Capability/Layer", doc, XPathConstants.NODESET );
         if(fields != null){
-            StringBuilder wmsStructureLayers = new StringBuilder("");
-            wmsStructureLayers.append(getSubLayers(fields, xpath, wmsStructureLayers, layerName));
+            StringBuilder wmsStructureLayers = new StringBuilder(getSubLayers(fields, xpath, layerName));
             wmsStructure.append("<ul style=\"padding: 0px;\">");
             wmsStructure.append(wmsStructureLayers);
             wmsStructure.append("</ul>");
@@ -798,7 +797,8 @@ public class WmsResource {
         return html;
     }
 
-    private String getSubLayers(NodeList fields, XPath xpath, StringBuilder html, String layername) throws XPathExpressionException {
+    private String getSubLayers(NodeList fields, XPath xpath, String layername) throws XPathExpressionException {
+        StringBuilder html = new StringBuilder("");
         for (int i = 0; i < fields.getLength(); i++) {
             boolean isLayerName = false;
             Node node = fields.item( i );
@@ -832,9 +832,8 @@ public class WmsResource {
                 html.append("</li>");
                 
                 NodeList subFields = (NodeList) xpath.evaluate( "./Layer", node, XPathConstants.NODESET );
-                if(subFields != null){
-                    StringBuilder wmsStructerLayers = new StringBuilder("");
-                    wmsStructerLayers.append(getSubLayers( subFields, xpath, wmsStructerLayers, layername ));
+                if(subFields != null && subFields.getLength() > 0){
+                    StringBuilder wmsStructerLayers = new StringBuilder(getSubLayers( subFields, xpath, layername ));
                     html.append("<ul>");
                     html.append(wmsStructerLayers);
                     html.append("</ul>");

@@ -109,7 +109,7 @@ goog.require('ga_previewlayers_service');
                     'EPSG:4326', gaGlobalOptions.defaultEpsg);
                   if (layer.maxScale) {
                     var scale = layer.maxScale;
-                    if (typeof (scale) === 'string') {
+                    if (layer.type === 'wms' && layer.version === '1.1.1') {
                       scale = gaMapUtils.getScaleForScaleHint(scale,
                         $scope.map);
                     }

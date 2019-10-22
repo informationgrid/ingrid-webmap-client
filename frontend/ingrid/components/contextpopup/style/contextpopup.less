@@ -1,6 +1,9 @@
-/* INGRID: 400 instead of 350 */
+/* INGRID: 
+* @context-popup-width: 400
+* @qrcode-size: 104px
+*/
 @context-popup-width: 400;
-@qrcode-size: 124px;
+@qrcode-size: 94px;
 
 [ga-context-popup] {
   left: unit(-@context-popup-width/2, px);
@@ -10,6 +13,26 @@
   
   table {
     width: 100%;
+    
+    :not(.dhdn) + .dhdn, :not(.utm) + .utm, :not(.gk) + .gk, :not(.wgs84) + .wgs84, :not(.mercator) + .mercator {
+      border-top: 1px dotted #E9E9E9;
+      border-bottom: 0;
+    }
+    .dhdn + .dhdn, .utm + .utm, .gk + .gk, .dhdn:first-child, .utm:first-child, .gk:first-child {
+      border: 0;
+    }
+    .dhdn + .dhdn td, .utm + .utm td, .gk + .gk td {
+      padding: 0;
+    }
+    .what3words {
+      border-top: 1px dotted #E9E9E9;
+    }
+    .crosshair {
+      border-bottom: 0 !important;
+    }
+    .qrcode {
+      border-bottom: 0 !important;
+    }
   }
 
   .ga-qrcode {

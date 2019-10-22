@@ -64,9 +64,7 @@ goog.require('ga_urlutils_service');
             wgs84Extent);
         */
         // INGRID: Change 'layerWgs84Extent' to 'extent'
-        if (extent) {
-          return ol.proj.transformExtent(extent, wgs84, projCode);
-        }
+        return ol.proj.transformExtent(extent, wgs84, projCode);
       }
     };
 
@@ -101,36 +99,55 @@ goog.require('ga_urlutils_service');
         layer.id = 'WMS||' + layer.wmsUrl + '||' + layer.Name;
         layer.extent = getLayerExtentFromGetCap(layer, proj);
 
+        // INGRID: Add attribution values
+        var service = getCap.Service;
+        if (service) {
+          if (service.ContactInformation) {
+            var servConInfo = service.ContactInformation;
+            if (servConInfo.ContactPersonPrimary) {
+              var servConInfoPerson = servConInfo.ContactPersonPrimary;
+              if (servConInfoPerson.ContactOrganization) {
+                layer.attribution = servConInfoPerson.ContactOrganization;
+              }
+            }
+          }
+          if (service.OnlineResource) {
+            if(getCap.version === '1.1.1') {
+              layer.attributionUrl = service.OnlineResource['xlink:href'];
+            } else {
+              layer.attributionUrl = service.OnlineResource;
+            }
+          }
+        }
+
         // INGRID: inheritance of parent layer params
         if (parentLayer) {
           // INGRID: Check parents 'SRS' or 'CRS'
           var parentProjList = parentLayer.CRS || parentLayer.SRS ||
             parentLayer;
-          if (parentProjList) {
-            if (parentProjList instanceof Array) {
-              if (layer.SRS) {
-                if (layer.SRS instanceof Array) {
-                  layer.SRS = layer.SRS.concat(parentProjList.
-                      filter(function(item) {
-                        return layer.SRS.indexOf(item) < 0;
-                      })
-                  );
-                } else {
-                  if (parentProjList.indexOf(layer.SRS) === -1) {
-                    layer.SRS = parentProjList.concat(layer.SRS);
-                  }
-                }
-              } else if (layer.CRS) {
-                layer.CRS = parentProjList.concat(layer.CRS.
+          if (parentProjList instanceof Array) {
+            if (layer.SRS) {
+              if (layer.SRS instanceof Array) {
+                layer.SRS = layer.SRS.concat(parentProjList.
                     filter(function(item) {
-                      return parentProjList.indexOf(item) < 0;
+                      return layer.SRS.indexOf(item) < 0;
                     })
                 );
-              } else if (layer.wmsVersion === '1.1.1') {
-                layer.SRS = parentProjList;
-              } else if (layer.wmsVersion === '1.3.0') {
-                layer.CRS = parentProjList;
+              } else {
+                if (parentProjList.indexOf(layer.SRS) === -1) {
+                  layer.SRS = parentProjList.concat(layer.SRS);
+                }
               }
+            } else if (layer.CRS) {
+              layer.CRS = parentProjList.concat(layer.CRS.
+                  filter(function(item) {
+                    return parentProjList.indexOf(item) < 0;
+                  })
+              );
+            } else if (layer.wmsVersion === '1.1.1') {
+              layer.SRS = parentProjList;
+            } else if (layer.wmsVersion === '1.3.0') {
+              layer.CRS = parentProjList;
             }
           }
 

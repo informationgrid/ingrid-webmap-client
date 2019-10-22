@@ -360,6 +360,9 @@ goog.require('ga_wmts_service');
                           /* INGRID: Remove extent
                           extent: gaGlobalOptions.defaultExtent,
                           */
+                          // INGRID: Add attributions
+                          attribution: decodeURIComponent(infos[7]),
+                          attributionUrl: infos[8],
                           useReprojection: (infos[6] === 'true')
                         },
                         index + 1);
@@ -374,7 +377,10 @@ goog.require('ga_wmts_service');
                     index: index + 1,
                     opacity: opacity,
                     visible: visible,
-                    time: timestamp
+                    time: timestamp,
+                    // INGRID: Add attributions
+                    attribution: decodeURIComponent(infos[3]),
+                    attributionUrl: infos[4]
                   });
                 } else if (gaMapUtils.isExternalWmsService(layerSpec)) {
                   // INGRID: Add external service
