@@ -23,7 +23,6 @@
 package de.ingrid.mapclient.rest;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -123,9 +122,9 @@ public class WmsResource {
                 }
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
-        } catch (FileNotFoundException ex) {
+        } catch (IOException ex) {
             log.error( ERROR_WMS_MSG + url, ex );
-            return Response.Status.UNAUTHORIZED.toString();
+            throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.NOT_FOUND );
