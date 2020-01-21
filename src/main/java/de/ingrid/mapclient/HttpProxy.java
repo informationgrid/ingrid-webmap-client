@@ -24,6 +24,7 @@ package de.ingrid.mapclient;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -106,8 +107,9 @@ public class HttpProxy {
                     result.setDoc(doc);
                     result.setXml(writer.getBuffer().toString());
                 }
-            }
-            catch (Exception e) {
+            } catch (IOException e) {
+                throw e;
+            } catch (Exception e) {
                 log.error("Error load xml content: " + urlStr, e);
                 result = null;
             }
