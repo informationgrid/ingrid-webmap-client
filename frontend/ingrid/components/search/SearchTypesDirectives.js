@@ -61,6 +61,17 @@ goog.require('ga_urlutils_service');
     }
   };
 
+  // INGRID: Check vector has 'search_coord' feature
+  var hasSearchCoordFeature = function(map) {
+    for (var i = 0, ii = map.getLayers().getLength(); i < ii; i++) {
+      var layer = map.getLayers().item(i);
+      if (layer instanceof ol.layer.Vector && 
+          layer.getSource().getFeatureById('search_coord')){
+        return true
+      }
+    }
+    return false;
+  }
   var removeOverlay = function(gaMarkerOverlay, map) {
     gaMarkerOverlay.remove(map);
   };
@@ -311,11 +322,17 @@ goog.require('ga_urlutils_service');
 
         $scope.preview = function(res) {
           // INGRID: Add parameter 'gaGlobalOptions' to function
-          addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
+          // Add overlay only if no 'search_coord' feature exist
+          if (!hasSearchCoordFeature($scope.map)) {
+            addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
+          }
         };
 
         $scope.removePreview = function() {
-          removeOverlay(gaMarkerOverlay, $scope.map);
+          // INGRID: Remove overlay only if no 'search_coord' feature exist
+          if (!hasSearchCoordFeature($scope.map)) {
+            removeOverlay(gaMarkerOverlay, $scope.map);
+          }
         };
 
         $scope.prepareLabel = function(attrs) {

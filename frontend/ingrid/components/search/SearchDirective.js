@@ -181,7 +181,9 @@ goog.require('ga_what3words_service');
                   // INGRID: Add zoom from settings
                   gaMapUtils.moveTo($scope.map, $scope.ol3d,
                     $scope.options.searchCoordsZoom, position);
-                  gaMarkerOverlay.add($scope.map, position, true);
+                  // INGRID: Add id 'search_coord' for feature
+                  gaMarkerOverlay.add($scope.map, position, true,
+                    null, 'search_coord');
                 }
               }
             });
