@@ -512,10 +512,12 @@ goog.require('ga_urlutils_service');
                       }
                     }
                   } else {
-                    alert(translate.instant('service_load_error_layers') + ': \n' + config.cap);
+                    alert($translate.instant('service_load_error_layers') +
+                      ': \n' + config.cap);
                   }
                 } catch (e) {
-                  alert(translate.instant('service_load_error_capabilities') + ': \n' + config.cap);
+                  alert($translate.instant('service_load_error_capabilities') +
+                    ': \n' + config.cap);
                 }
               }, function(response) {
                 var errorMsg = gaMapUtils.setUrlLoadError(response.status,
