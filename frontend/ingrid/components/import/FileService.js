@@ -90,10 +90,10 @@ goog.provide('ga_file_service');
             var rejectMsg = '';
             switch (reason.status) {
             case 401:
-              rejectMsg += $translate.instant('service_load_error_401');
+              rejectMsg += $translate.instant('upload_failed_401');
               break;
             case 404:
-              rejectMsg += $translate.instant('service_load_error_404');
+              rejectMsg += $translate.instant('upload_failed_404');
               break;
 
             default:
