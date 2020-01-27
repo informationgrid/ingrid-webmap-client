@@ -512,13 +512,15 @@ goog.require('ga_urlutils_service');
                       }
                     }
                   } else {
-                    alert('Fehler beim Laden der URL ' + config.cap + '.');
+                    alert(translate.instant('service_load_error_layers') + ': \n' + config.cap);
                   }
                 } catch (e) {
-                  alert('Fehler beim Laden der URL ' + config.cap + '.');
+                  alert(translate.instant('service_load_error_capabilities') + ': \n' + config.cap);
                 }
               }, function(response) {
-                alert('Fehler beim Laden der URL ' + response.config.cap + '.');
+                var errorMsg = gaMapUtils.setUrlLoadError(response.status,
+                  $translate);
+                alert(errorMsg +': \n' + response.config.cap);
               });
         };
 

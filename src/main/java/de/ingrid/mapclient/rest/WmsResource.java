@@ -23,12 +23,14 @@
 package de.ingrid.mapclient.rest;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -122,12 +124,19 @@ public class WmsResource {
                 }
             }
             throw new WebApplicationException( Response.Status.NOT_FOUND );
-        } catch (IOException ex) {
+        } catch (UnknownHostException | FileNotFoundException ex) {
             log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+        } catch (IOException ioEx) {
+            log.error( ERROR_WMS_MSG + url, ioEx );
+            String exMsg = ioEx.getMessage();
+            if (exMsg.indexOf(": 401") > -1) {
+                throw new WebApplicationException( ioEx, Response.Status.UNAUTHORIZED );
+            }
+            throw new WebApplicationException( ioEx, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( ERROR_WMS_MSG + url, e );
-            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
+            throw new WebApplicationException( e, Response.Status.SERVICE_UNAVAILABLE );
         }
     }
 
