@@ -607,7 +607,7 @@ goog.require('ga_urlutils_service');
           case 401:
             return translate.instant('service_load_error_401');
           case 404:
-            return translate.instant('service_load_error_404')
+            return translate.instant('service_load_error_404');
           default:
             return translate.instant('service_load_error_default');
           }
