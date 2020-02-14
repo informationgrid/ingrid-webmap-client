@@ -68,6 +68,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
             <param-name>config</param-name>
             <param-value>WEB-INF/classes/print_config.yaml</param-value>
         </init-param>
+        <init-param>
+            <param-name>springConfig</param-name>
+            <param-value>WEB-INF/classes/mapfish-spring-application-context.xml</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>mapfish.print</servlet-name>
