@@ -101,7 +101,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 configFile = new File(realPath);
             } else {
                 LOGGER.info("Unable to find config file in web application using getRealPath.  Adding a / because that is often dropped");
-                realPath = getServletContext().getRealPath("/" + app);
+                realPath = getServletContext().getRealPath(app);
                 configFile = new File(realPath);
             }
         }
