@@ -240,32 +240,13 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         return printer;
     }
 
-    private ApplicationContext getApplicationContext() throws ServletException {
+    private ApplicationContext getApplicationContext() {
         if (this.context == null) {
             synchronized (this) {
                 if (this.context == null) {
                     this.context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
                     if (this.context == null || context.getBean(MapPrinter.class) == null) {
                         String springConfig = System.getProperty("mapfish.print.springConfig");
-                        if(springConfig == null) {
-                            springConfig = getInitParameter("springConfig");
-                            File configFile = new File(springConfig);
-                            if (!configFile.isAbsolute() || !configFile.exists()) {
-                                String realPath = getServletContext().getRealPath(springConfig);
-                                if (realPath != null) {
-                                    configFile = new File(realPath);
-                                } else {
-                                    LOGGER.info("Unable to find config file in web application using getRealPath.  Adding a / because that is often dropped");
-                                    realPath = getServletContext().getRealPath("/" + springConfig);
-                                    configFile = new File(realPath);
-                                }
-                                try {
-                                    springConfig = configFile.getCanonicalPath();
-                                } catch (IOException e) {
-                                    throw new ServletException(e);
-                                }
-                            }
-                        }
                         if(springConfig != null) {
                             this.context = new FileSystemXmlApplicationContext(new String[]{"classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig});
                         } else {
