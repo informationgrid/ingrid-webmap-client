@@ -1,12 +1,20 @@
 if [ -d "mf-geoadmin3" ] ; then
-    echo "*** Remove REPO ***"
-    rm -rf ./mf-geoadmin3
-fi
+    echo "*** RESET REPO ***"
+    cd ./mf-geoadmin3
+    
+    # reset mf-geoadmin3 changes
+    git reset --hard
+    git clean -fd
+    git pull origin master
 
-echo "*** CLONE REPO ***"
-# clone repo mf-geoadmin3
-git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
-cd ./mf-geoadmin3
+    # clean mf-geoadmin3 build path
+    make cleanall 
+else
+    echo "*** CLONE REPO ***"
+    # clone repo mf-geoadmin3
+    git clone https://github.com/geoadmin/mf-geoadmin3.git mf-geoadmin3
+    cd ./mf-geoadmin3
+fi
 
 # checkout mf-geoadmin3 state 
 echo "*** Checkout mf-geoadmin3 revision '3aa882828a1659eebbc88572125a38dd3e2154bd' (Date: Mittwoch, 15. August 2018 08:57:10) ***"
