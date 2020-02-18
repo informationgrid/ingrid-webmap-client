@@ -208,7 +208,7 @@ export class LayerComponent implements OnInit {
     if (roots) {
       const checkedLayers = [];
       roots.forEach(root => {
-        this.getCheckedNode(root, checkedLayers);
+        this.getCheckedNode(root, checkedLayers, true);
       });
       if (checkedLayers.length > 0) {
         return true;
