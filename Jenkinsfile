@@ -5,6 +5,11 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20', artifactNumToKeepStr: '5'))
     }
 
+    environment {
+        JAVA_TOOL_OPTIONS   = '-Dfile.encoding=UTF-8'
+        LANG                = 'de_DE.UTF-8'
+    }
+
     tools {
         nodejs "nodejs"
     }
