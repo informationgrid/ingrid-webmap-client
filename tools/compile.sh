@@ -43,7 +43,7 @@ export DEFAULT_EPSG_EXTEND="'[0.42587260523, 46.9672880527, 15.7908768234, 55.17
 echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
-sed -i -e 's/MAKO_CMD=$/MAKO_CMD=PYTHONIOENCODING=UTF-8 $/g' Makefile
+sed -i -e 's/MAKO_CMD=\$/MAKO_CMD=PYTHONIOENCODING=UTF-8 \$/g' Makefile
 
 # Pipe make and ng processes into file because build errors in jenkins.
 # Message "Picked up JAVA_TOOL_OPTIONS ..." makes "make release" build process unsuccess.
