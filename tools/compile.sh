@@ -38,6 +38,7 @@ export DEFAULT_TOPIC_ID=themen
 export DEFAULT_EXTENT="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
 export DEFAULT_EPSG="EPSG:3857"
 export DEFAULT_EPSG_EXTEND="'[0.42587260523, 46.9672880527, 15.7908768234, 55.1764096793]'"
+export PYTHONIOENCODING=UTF-8
 
 # fix Makefile when script is run in a long directory structure
 echo "*** Fix Makefile ***"
