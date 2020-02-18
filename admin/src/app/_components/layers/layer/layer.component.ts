@@ -44,11 +44,13 @@ export class LayerComponent implements OnInit {
   searchType = '';
 
   newLayers: LayerItem[] = [];
+  tmpNewLayers: LayerItem[] = [];
   isUrlLoadSuccess = false;
   isUrlLoadUnsuccess = false;
   isWMSService = false;
   hasLoadLayers = false;
 
+  setGroupLayerAsFolder = false;
   hasLogin = false;
   overrideLogin = false;
   serviceLogin = '';
@@ -300,22 +302,24 @@ export class LayerComponent implements OnInit {
     const roots = layersModel.getVisibleRoots();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
+    const isCombine = false;
     roots.forEach(root => {
-      this.getCheckedNode(root, checkedLayers);
+      this.getCheckedNode(root, checkedLayers, isCombine);
     });
     checkedLayers.forEach(l => {
       const layerItem = new LayerItem(l.generateId(this.layers), l);
       layerItems.push(layerItem);
     });
-    this.saveAddedLayers(layerItems, roots);
+    this.saveAddedLayers(layerItems, roots, isCombine);
   }
 
   onAddCombineLayers(layersModel: TreeModel) {
     const roots = layersModel.getVisibleRoots();
     const checkedLayers = [];
     const layerItems: LayerItem[] = [];
+    const isCombine = true;
     roots.forEach(root => {
-       this.getCheckedNode(root, checkedLayers);
+       this.getCheckedNode(root, checkedLayers, isCombine);
     });
     if (checkedLayers.length > 0) {
       let wmsLayers = '';
@@ -346,20 +350,27 @@ export class LayerComponent implements OnInit {
       const layerItem = new LayerItem(layer.generateId(this.layers), layer);
       layerItems.push(layerItem);
     }
-    this.saveAddedLayers(layerItems, roots);
+    this.saveAddedLayers(layerItems, roots, isCombine);
   }
 
-  saveAddedLayers(layerItems: LayerItem[], nodes: Array<TreeNode>) {
+  saveAddedLayers(layerItems: LayerItem[], nodes: Array<TreeNode>, isCombine: boolean) {
+    const categoryLayers = [];
+    const saveLayers = [];
+    this.getCategoryNodes(nodes, layerItems, saveLayers, categoryLayers, isCombine);
+
     if (this.hasLogin && this.serviceLogin && this.servicePassword) {
-      this.httpService.addLayerAndAuth(layerItems, this.newService.nativeElement.value, this.serviceLogin,
+      this.httpService.addLayerAndAuth(saveLayers, this.newService.nativeElement.value, this.serviceLogin,
          this.servicePassword, this.overrideLogin).subscribe(
         data => {
           this.searchText = '';
+          this.setGroupLayerAsFolder = false;
           this.updateAppLayers.emit(data[1]);
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();
           this.modalAddService.hide();
-          this.saveAddedLayersToCategory(layerItems, nodes);
+          if (this.category.size > 0 && categoryLayers.length > 0) {
+            this.saveAddedLayersToCategory(saveLayers, nodes, categoryLayers);
+          }
         },
         error => {
           console.error('Error add layers!');
@@ -367,14 +378,17 @@ export class LayerComponent implements OnInit {
         }
       );
     } else {
-      this.httpService.addLayer(layerItems).subscribe(
+      this.httpService.addLayer(saveLayers).subscribe(
         data => {
           this.searchText = '';
+          this.setGroupLayerAsFolder = false;
           this.updateAppLayers.emit(data);
           this.loadLayers(1, this.layersPerPage, this.searchText);
           this.modalSaveSuccess.show();
           this.modalAddService.hide();
-          this.saveAddedLayersToCategory(layerItems, nodes);
+          if (this.category.size > 0 && categoryLayers.length > 0) {
+            this.saveAddedLayersToCategory(saveLayers, nodes, categoryLayers);
+          }
         },
         error => {
           console.error('Error add layers!');
@@ -383,42 +397,48 @@ export class LayerComponent implements OnInit {
       );
     }
   }
-  getCheckedNode(node, list) {
-    this.getChildCheckedNode(node, list);
+  getCheckedNode(node, list, isCombine) {
+    this.getChildCheckedNode(node, list, isCombine);
   }
-  getChildCheckedNode(node, list) {
+  getChildCheckedNode(node, list, isCombine) {
     if (node.data.checked) {
-      list.push(node.data.layer);
+      if (this.setGroupLayerAsFolder && isCombine) {
+        if (!node.data.children || node.data.children.length === 0) {
+          list.push(node.data.layer);
+        }
+      } else {
+        list.push(node.data.layer);
+      }
     }
     if (node.children) {
-      node.children.forEach((child) => this.getChildCheckedNode(child, list));
+      node.children.forEach((child) => this.getChildCheckedNode(child, list, isCombine));
     }
   }
 
-  saveAddedLayersToCategory(layers: LayerItem[], nodes: Array<TreeNode>) {
-    const categoryLayers = [];
-    this.getCategoryNodes(nodes, layers, categoryLayers);
-    if (this.categories) {
-      for (const c in this.categories) {
-        if (this.category) {
-          const tmpC = this.categories[c];
-          const tmpCategory = this.category.get(tmpC.id);
-          const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
-          if (tmpCategory && tmpSelectedCategory) {
-            tmpCategory.forEach(tmpCatItem => {
-              this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
-            });
-            const id = 2;
-            this.setCategoriesItemId(tmpCategory, id);
-            this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory[0].children).subscribe(
-              data => {
-                this.updateAppCategories.emit(data[1]);
-              },
-              error => {
-                console.error('Error onAddCategoryItem tree!');
-                this.modalSaveUnsuccess.show();
-              }
-            );
+  saveAddedLayersToCategory(layers: LayerItem[], nodes: Array<TreeNode>, categoryLayers) {
+    if (this.category) {
+      if (this.categories) {
+        for (const c in this.categories) {
+          if (c) {
+            const tmpC = this.categories[c];
+            const tmpCategory = this.category.get(tmpC.id);
+            const tmpSelectedCategory = this.selectedCategories.get(tmpC.id);
+            if (tmpCategory && tmpSelectedCategory) {
+              tmpCategory.forEach(tmpCatItem => {
+                this.addLayersToCategoryItem(tmpCatItem, tmpSelectedCategory, categoryLayers);
+              });
+              const id = 2;
+              this.setCategoriesItemId(tmpCategory, id);
+              this.httpService.updateCategoryTreeAndCategories(tmpC.id, tmpCategory[0].children).subscribe(
+                data => {
+                  this.updateAppCategories.emit(data[1]);
+                },
+                error => {
+                  console.error('Error onAddCategoryItem tree!');
+                  this.modalSaveUnsuccess.show();
+                }
+              );
+            }
           }
         }
       }
@@ -459,17 +479,17 @@ export class LayerComponent implements OnInit {
     });
   }
 
-  getCategoryNodes(nodes: Array<TreeNode>, layers: LayerItem[], children: any[]) {
+  getCategoryNodes(nodes: Array<TreeNode>, layers: LayerItem[], saveLayers: LayerItem[], children: any[], isCombine: boolean) {
     if (layers.length  > 0) {
       if (nodes) {
         nodes.forEach(node => {
-          this.getCategoryNode(node, layers, children);
+          this.getCategoryNode(node, layers, saveLayers, children, isCombine);
         });
       }
     }
   }
 
-  getCategoryNode(node: TreeNode, layers: LayerItem[], children: any[]) {
+  getCategoryNode(node: TreeNode, layers: LayerItem[], saveLayers: LayerItem[], children: any[], isCombine: boolean) {
     if (layers.length  > 0) {
       let item: CategoryItem;
       if (node.data.checked) {
@@ -477,7 +497,15 @@ export class LayerComponent implements OnInit {
         item = new CategoryItem(null, layer.item.label, 'prod', false);
         if (layer.id && layer.item) {
           if  (layer.item.wmsLayers || layer.item.serverLayerName) {
-            item.layerBodId = layer.id;
+            if ( this.setGroupLayerAsFolder && !isCombine) {
+              if (!node.data.children || node.data.children.length === 0) {
+                item.layerBodId = layer.id;
+                saveLayers.push(layer);
+              }
+            } else {
+              item.layerBodId = layer.id;
+              saveLayers.push(layer);
+            }
           }
         }
         children.push(item);
@@ -489,7 +517,7 @@ export class LayerComponent implements OnInit {
           children = item.children;
         }
         node.children.forEach((child) => {
-          this.getCategoryNode(child, layers, children);
+          this.getCategoryNode(child, layers, saveLayers, children, isCombine);
         });
       }
     }

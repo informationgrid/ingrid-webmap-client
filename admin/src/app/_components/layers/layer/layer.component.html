@@ -156,6 +156,18 @@
           </div>
           <div class="col-sm">
             <div *ngIf="!this.newLayersTree.treeModel.isEmptyTree()">
+              <div class="form-group form-check d-flex justify-content-between">
+                <input type="checkbox" class="form-check-input" data-toggle='collapse' id="setGroupLayerAsFolder" name="setGroupLayerAsFolder" [(ngModel)]="setGroupLayerAsFolder">
+                <label class="form-check-label" for="setGroupLayerAsFolder" title="{{ ('service_groupLayers_as_folder_help') | translate }}" translate>service_groupLayers_as_folder</label>
+                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_setGroupLayerAsFolder"
+                  title="{{ ('help') | translate }}">
+                  <i class="fa fa-info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div class="alert alert-info collapse" id="info_setGroupLayerAsFolder">
+                <small class="form-text text-muted" ><b translate>service_groupLayers_as_folder</b>:</small>
+                <small class="form-text text-muted" translate>service_groupLayers_as_folder_help</small>
+              </div>
               <div class="input-group form-group">
                 <select #selectCategory class="form-control " name="categoryId" [ngModel]="categoryId">
                   <option value="" translate>service_add_to_category</option>

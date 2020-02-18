@@ -182,6 +182,8 @@
     "service_combine_add": "Kombiniere und Hinzufügen",
     "service_load_success": "Dienst erfolgreich geladen!",
     "service_load_unsuccess": "Fehler beim Laden des Dientes!",
+    "service_groupLayers_as_folder": "Gruppenlayer als Ordner laden",
+    "service_groupLayers_as_folder_help": "Bei Aktivierung dieser Checkbox werden ausgewählte Gruppenlayer ignoriert und bei der Zuordnung zu einer Kategorie zu Ordner.",
     "settings": "Einstellungen",
     "setting_save_success": "Einstellungen gespeichert.",
     "setting_save_unsuccess": "Fehler beim speichern der Einstellungen",

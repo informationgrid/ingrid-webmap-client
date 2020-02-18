@@ -182,6 +182,8 @@
     "service_combine_add": "",
     "service_load_success": "",
     "service_load_unsuccess": "",
+    "service_groupLayers_as_folder": "",
+    "service_groupLayers_as_folder_help": "",
     "settings": "",
     "setting_save_success": "",
     "setting_save_unsuccess": "",
