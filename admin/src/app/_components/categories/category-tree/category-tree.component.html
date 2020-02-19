@@ -1,48 +1,64 @@
 <div id="category-tree-{{ categoryId }}">
-  <div class="row">
+  <div class="mr-auto">
     <!-- Tree -->
-    <div class="col-sm">
-        <button class="btn btn-primary btn-sm" (click)="showAddModal(modalNodeAdd, null)">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-        </button>
+    <div class="my-2">
+        <div>
+          <button class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, null)" translate>
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            category_button_item_add
+          </button>
+          <button class="btn btn-primary btn-sm mr-sm-2" (click)="modalNodeSelectClearLayer.show()" translate>
+            <i class="fa fa-chain-broken" aria-hidden="true"></i>
+            category_button_layer_delete
+          </button>
+          <button class="btn btn-danger btn-sm mr-sm-2" [disabled]="!hasSelectedItem(this.tree.treeModel)" (click)="modalNodeSelectDelete.show()" translate>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            category_button__select_delete
+          </button>
+        </div>
         <br>
         <tree-root #tree [nodes]="categoryTree" [options]="options" 
         (activate)="onNodeActivate($event)" (deactivate)="onNodeDeactivate($event)" (moveNode)="onNodeMove($event)"
         (focus)="onNodeFocus($event)">
         <ng-template #treeNodeWrapperTemplate let-node let-index="index">
-            <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
-              <tree-node-expander [node]="node"></tree-node-expander>
-              <div class="node-content-wrapper d-flex justify-content-between align-items-center"
-                [class.node-content-wrapper-active]="node.isActive"
-                [class.node-content-wrapper-focused]="node.isFocused"
-                (click)="node.mouseAction('click', $event)"
-                (dblclick)="node.mouseAction('dblClick', $event)"
-                (contextmenu)="node.mouseAction('contextMenu', $event)"
-                (treeDrop)="node.onDrop($event)"
-                [treeAllowDrop]="node.allowDrop"
-                [treeDrag]="node"
-                [treeDragEnabled]="node.allowDrag()">
-                <div>
-                  <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
-                  {{ node.data.label }}
-                </div>
-                <div>
-                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node)">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                  </button>
-                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node)">
-                    <i class="fa fa-edit" aria-hidden="true"></i>
-                  </button>
-                  <button *ngIf="node.isFocused" class="btn btn-danger btn-sm mr-sm-2" (click)="showDeleteModal(modalNodeDelete, node)">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                  </button>
-                  <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
-                    <i class="fa fa-globe" aria-hidden="true"></i>
-                  </button>
-                </div>
+          <div class="node-wrapper" [style.padding-left]="node.getNodePadding()">
+            <tree-node-expander [node]="node"></tree-node-expander>
+            <div class="node-content-wrapper d-flex justify-content-between align-items-center"
+              [class.node-content-wrapper-active]="node.isActive"
+              [class.node-content-wrapper-focused]="node.isFocused"
+              (click)="node.mouseAction('click', $event)"
+              (dblclick)="node.mouseAction('dblClick', $event)"
+              (contextmenu)="node.mouseAction('contextMenu', $event)"
+              (treeDrop)="node.onDrop($event)"
+              [treeAllowDrop]="node.allowDrop"
+              [treeDrag]="node"
+              [treeDragEnabled]="node.allowDrag()">
+              <div>
+                <input
+                type="checkbox"
+                class="mr-sm-2"
+                [indeterminate]="node.data.indeterminate"
+                [checked]="node.data.checked" (change)="check(node, !node.data.checked)">
+                <i class="fa" [ngClass]="node.data.layerBodId ? 'fa-map' : 'fa-folder'" aria-hidden="true"></i>
+                {{ node.data.label }}
+              </div>
+              <div>
+                <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showAddModal(modalNodeAdd, node)">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" (click)="showEditModal(modalNodeEdit, node)">
+                  <i class="fa fa-edit" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="node.isFocused" class="btn btn-danger btn-sm mr-sm-2" (click)="showDeleteModal(modalNodeDelete, node)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+                <button *ngIf="node.isFocused" class="btn btn-primary btn-sm mr-sm-2" appShowCategoryOnMap [node]="node">
+                  <i class="fa fa-globe" aria-hidden="true"></i>
+                </button>
               </div>
             </div>
-          </ng-template>
+          </div>
+        </ng-template>
       </tree-root>
     </div>
   </div>
@@ -58,6 +74,38 @@
   </div>
   <div class="app-modal-footer">
     <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveCategoryItem(tree.treeModel.focusedNode, modalNodeDelete)" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      delete
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal delete select -->
+<app-modal #modalNodeSelectDelete>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_select_del_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>category_item_select_del_text</p>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveSelectItem(tree.treeModel, modalNodeSelectDelete, false)" translate>
+      <i class="fa fa-trash" aria-hidden="true"></i>
+      delete
+    </button>
+  </div>
+</app-modal>
+
+<!-- Modal delete select layer -->
+<app-modal #modalNodeSelectClearLayer>
+  <div class="app-modal-header">
+    <h5 class="modal-title" translate>category_item_del_layer_title</h5>
+  </div>
+  <div class="app-modal-body">
+    <p translate>category_item_del_layer_text</p>
+  </div>
+  <div class="app-modal-footer">
+    <button type="submit" data-dismiss="modal" class="btn btn-danger" (click)="onRemoveSelectItem(tree.treeModel, modalNodeSelectClearLayer, true)" translate>
       <i class="fa fa-trash" aria-hidden="true"></i>
       delete
     </button>
