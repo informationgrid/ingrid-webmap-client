@@ -57,6 +57,8 @@
     "categories_select_delete": "Auswahl löschen",
     "category_item_del_title": "Kategorie löschen",
     "category_item_del_text": "Die Kategorie wird mit dem Lösch-Button entfernt!",
+    "category_item_help_title": "Hilfe",
+    "category_item_help_text": "<p><span class=\"btn-primary btn-sm mr-sm-2\"><i class=\"fa fa-plus\" aria-hidden=\"true\"></i></span>Fügen Sie neue Ordner hinzu.</p><p><span class=\"btn-primary btn-sm mr-sm-2\"><i class=\"fa fa-chain-broken\" aria-hidden=\"true\"></i></span>Wählen Sie über die Checkbox Karten aus und entfernen Sie die Karten-Zuordnungen.</p><p><span class=\"btn-danger btn-sm mr-sm-2\"><i class=\"fa fa-trash\" aria-hidden=\"true\"></i></span>Selektieren Sie Ordner und Karten aus und entfernen Sie diese aus dem Baum.</p><p><span class=\"btn-primary btn-sm mr-sm-2\"><i class=\"fa fa-edit\" aria-hidden=\"true\"></i></span>Bearbeiten Sie Karten oder Ordner.</p><p><span class=\"btn-primary btn-sm mr-sm-2\"><i class=\"fa fa-globe\" aria-hidden=\"true\"></i></span>Öffnen Sie hiermit die Karten im Webmap Client.</p>",
     "categories_all_delete": "Alle löschen",
     "categories_all_del_title": "Alle Kategorien löschen",
     "categories_all_del_text": "Sollen alle Kategorien wirklich gelöscht werden?",

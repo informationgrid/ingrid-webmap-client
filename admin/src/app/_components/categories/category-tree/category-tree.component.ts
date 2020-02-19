@@ -175,6 +175,7 @@ export class CategoryTreeComponent implements OnInit {
           treeNodes.forEach( treeNode => {
             if (doRemoveLayer) {
               treeNode.data.layerBodId = null;
+              treeNode.data.checked = false;
             } else {
               _.remove(treeNode.parent.data.children, treeNode.data);
             }
