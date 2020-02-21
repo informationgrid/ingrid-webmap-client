@@ -229,9 +229,9 @@ goog.require('ga_urlutils_service');
       function($scope, $http, $q, $sce, gaUrlUtils, gaSearchLabels,
           gaMarkerOverlay, gaDebounce, gaGlobalOptions) {
 
-      // This value is used to block blur/mouseleave event, when a value
-      // is selected. See #2284. It's reinitialized when a new search is
-      // triggered.
+        // This value is used to block blur/mouseleave event, when a value
+        // is selected. See #2284. It's reinitialized when a new search is
+        // triggered.
         var blockEvent = false;
         var canceler;
 
@@ -361,7 +361,7 @@ goog.require('ga_urlutils_service');
 
   // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLocations',
-      function($http, $q, $sce, $translate, gaUrlUtils, gaMarkerOverlay,
+      function($sce, $translate, gaMarkerOverlay,
           gaSearchLabels, gaMapUtils, gaDebounce, gaGlobalOptions) {
         return {
           restrict: 'A',

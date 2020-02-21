@@ -16,7 +16,7 @@ goog.require('ga_window_service');
   ]);
 
   // INGRID: Add param 'gaGlobalOptions'
-  module.directive('gaShare', function($http, $rootScope, $timeout, $translate,
+  module.directive('gaShare', function($rootScope, $timeout, $translate,
       $window, gaPermalink, gaUrlUtils, gaWindow, gaBrowserSniffer,
       gaGlobalOptions) {
     return {

@@ -55,8 +55,8 @@ goog.require('ga_window_service');
 
   // INGRID: Add 'gaGlobalOptions'
   module.directive('gaLayermanager', function($compile, $timeout,
-      $rootScope, $translate, $window, gaBrowserSniffer, gaLayerFilters,
-      gaLayerMetadataPopup, gaLayers, gaAttribution, gaUrlUtils,
+      $translate, $window, gaBrowserSniffer, gaLayerFilters,
+      gaLayerMetadataPopup, gaLayers, gaUrlUtils,
       gaMapUtils, gaEvent, gaWindow, gaGlobalOptions) {
 
     // Timestamps list template
@@ -248,7 +248,7 @@ goog.require('ga_window_service');
           // Find the next/previous layer with zIndex=0
           for (var i = index + delta; i < layersCollection.getLength() ||
               i >= 0; i += delta) {
-            if (layersCollection.item(i).getZIndex() === 0) {
+            if (layersCollection.item(i).getZIndex() === undefined) {
               insertIndex = i;
               break;
             }

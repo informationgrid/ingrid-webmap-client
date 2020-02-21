@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html ng-app="geoadmin" ng-controller="GaMainController"
 itemscope itemtype="http://schema.org/WebApplication"
-% if device == 'mobile' and mode=='prod' :
- manifest="geoadmin.${version}.appcache"
+% if device == 'mobile' :
+ manifest="geoadmin.${git_commit_short}.appcache"
 % endif
 >
   <head>
@@ -74,6 +74,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     <!-- INGRID: Change icon --> 
     <meta itemprop="image" content="img/logo.png"/>
 
+    <link rel="manifest" href="manifest.json">
+
     <script>
       (function() {
         var w = window, l = w.location, n = w.navigator, p = '${device}', m = l.search.match(/(?:mobile=(true|false))/);
@@ -117,6 +119,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           'embed': globals.embed,
           'ga-draw-active': globals.isDrawActive,
           'ga-3d-active': globals.is3dActive,
+          'ga-fps-active': globals.isFpsActive,
           'ios': globals.ios
         }">
     <!-- The below conditional is ignored by >= IE10 and all other browsers -->
@@ -158,12 +161,15 @@ itemscope itemtype="http://schema.org/WebApplication"
       -->
       <div id="search-container" ng-controller="GaSearchController">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
-        <span ga-help="24,31,25" ga-help-options="{showOnHover:true}"></span>
+        <span ga-help="31,24,25" ga-help-options="{showOnHover:true}"></span>
         <div class="warning-not-prod" ng-if="!globals.hostIsProd">
           <span translate>test_host_warning</span>
         </div>
       </div>
       <div id="toptools" ng-if="!globals.settingsShown">
+        <!-- INGRID: Remove
+        <a ga-vector-tile-test-link></a>&nbsp;&nbsp;
+        -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
         <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
           <span translate>problem_announcement</span>
@@ -199,9 +205,6 @@ itemscope itemtype="http://schema.org/WebApplication"
 % endif
     <div id="loader"></div>
     <div tabindex="1" ga-map ga-map-map="map" ga-map-ol3d="::ol3d">
-      <div ng-cloak class="corner-ribbon" ng-show="globals.is3dActive">
-        3D - BETA
-      </div>
   % if device == 'embed':
       <a ng-cloak translate-cloak id="bigMapLink" target="_blank" href="{{toMainHref}}">
         <div>
@@ -264,7 +267,7 @@ itemscope itemtype="http://schema.org/WebApplication"
            ga-cesium-3d-tiles-inspector-ol3d="::ol3d"></div>
       <div ga-controls3d
            ga-controls3d-ol3d="::ol3d"
-           ga-controls3d-pegman="globals.pegman"></div>
+           ga-controls3d-fps-active="globals.isFpsActive"></div>
       <div ga-attribution-warning
            ga-attribution-warning-ol3d="::ol3d">
         <span translate>3d_overlay_warning</span>
@@ -723,6 +726,7 @@ itemscope itemtype="http://schema.org/WebApplication"
     </script>
 
     <!-- INGRID: Remove '${s3basepath}' and '${versionslashed}' -->
+    <script src="lib/ol.js"></script>
     <script src="lib/olcesium-debug.js"></script>
     <script src="deps.js"></script>
     <script>
@@ -770,16 +774,30 @@ itemscope itemtype="http://schema.org/WebApplication"
           return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20')) || null;
         }
 
-        var adminUrlRegexp = new RegExp('${admin_url_regexp}');
-        var module = angular.module('geoadmin');
-        var cacheAdd = '${version}' != '' ? '/' + '${version}' : '';
-        var pathname = location.pathname.replace(/(index|mobile|embed)\.html$/g, '');
-        var s3pathname = '${s3basepath}' == '' ? pathname : '${s3basepath}';
-        var prtl = location.protocol;
-        // Because s3 is hosted on infra
-        var supportedEnv = ['dev', 'int', 'prod', 'ci'];
+        var configs = {};
+        // prod env variables
+        <%include file="../config.dev.mako"/>
+        // int env variables
+        <%include file="../config.int.mako"/>
+        // dev env variables
+        <%include file="../config.prod.mako"/>
+
+        var supportedEnv = ['dev', 'int', 'prod'];
+        var requestedStaging = getParam('staging') ;
         var staging = '${staging}';
+        if (requestedStaging) {
+            staging = requestedStaging;
+        }
+        var cfg = configs[staging];
+
+        var adminUrlRegexp = new RegExp(cfg['admin_url_regexp']);
+        var module = angular.module('geoadmin');
+        var cacheAdd = cfg['version'] != '' ? '/' + cfg['version'] : '';
+        var pathname = location.pathname.replace(/(index|mobile|embed)\.html$/g, '');
+        var s3pathname = cfg['s3basepath'] == '' ? pathname : cfg['s3basepath'];
+        var prtl = location.protocol;
         var hostIsProd = true;
+
         if (/.*\.(dev|int|ci|infra|prod)\.bgdi\.ch$/.test(location.hostname)) {
           hostIsProd = false;
         }
@@ -791,28 +809,38 @@ itemscope itemtype="http://schema.org/WebApplication"
         function setBackend(prodUrl, techUrl, overwriteParam) {
           var url = prodUrl;
           if (env && env != 'prod' && supportedEnv.indexOf(env) !== -1) {
-            url = techUrl + env + '${tech_suffix}';
+              url = techUrl + env + cfg['tech_suffix'];
           }
           var overwrite = prtl + getParam(overwriteParam);
           url = adminUrlRegexp.test(overwrite) ? overwrite : url;
           return url;
         }
 
+        // Determines if tooltip should be disabled for this instance of map
+        var disableTooltip = getParam('disableTooltip') === 'true';
+
+        // Determines if we're on a personal build on dev with pathname /ltxxxx/
+        if (!requestedStaging && staging == 'dev' && (/\/lt.*\/$/.test(pathname))) {
+            cfg['config_url'] += pathname.replace(/\/$/, '');
+        }
+
         // Map services urls
-        var wmsUrl = setBackend(prtl + '${wms_url}',  prtl + '${wms_tech_url}', 'wms_url');
-        var wmtsUrl = setBackend(prtl + '${wmts_url}', prtl + '${wmts_tech_url}', 'wmts_url');
-        var terrainUrl = setBackend(prtl + '${terrain_url}', prtl + '${terrain_tech_url}', 'terrain_url');
-        var vectorTilesUrl = setBackend(prtl + '${vectortiles_url}', prtl + '${vectortiles_tech_url}', 'vectortiles_url');
+        var wmsUrl = setBackend(prtl + cfg['wms_url'],  prtl + cfg['wms_tech_url'], 'wms_url');
+        var wmtsUrl = setBackend(prtl + cfg['wmts_url'], prtl + cfg['wmts_tech_url'], 'wmts_url');
+        var terrainUrl = setBackend(prtl + cfg['terrain_url'], prtl + cfg['terrain_tech_url'], 'terrain_url');
+        var vectorTilesUrl = setBackend(prtl + cfg['vectortiles_url'], prtl + cfg['vectortiles_tech_url'], 'vectortiles_url');
 
         // Api services urls
-        var defaultApiUrl = prtl + '${api_url}';
-        var apiUrl = setBackend(defaultApiUrl, prtl + '${api_tech_url}', 'api_url');
-        var altiUrl = setBackend(prtl + '${alti_url}', prtl + '${alti_tech_url}', 'alti_url');
-        var shopUrl = setBackend(prtl + '${shop_url}', prtl + '${shop_tech_url}', 'shop_url');
-        var publicUrl = setBackend(prtl + '${public_url}', prtl + '${public_tech_url}', 'public_url');
-        var printUrl = setBackend(prtl + '${print_url}', prtl + '${print_tech_url}', 'print_url');
-        var proxyUrl = prtl + '${proxy_url}' + '/';
+        var defaultApiUrl = prtl + cfg['api_url'];
+        var apiUrl = setBackend(defaultApiUrl, prtl + cfg['api_tech_url'], 'api_url');
+        var configUrl = setBackend(prtl + cfg['config_url'], prtl + cfg['config_tech_url'], 'config_url');
+        var altiUrl = setBackend(prtl + cfg['alti_url'], prtl + cfg['alti_tech_url'], 'alti_url');
+        var shopUrl = setBackend(prtl + cfg['shop_url'], prtl + cfg['shop_tech_url'], 'shop_url');
+        var publicUrl = setBackend(prtl + cfg['public_url'], prtl + cfg['public_tech_url'], 'public_url');
+        var printUrl = setBackend(prtl + cfg['print_url'], prtl + cfg['print_tech_url'], 'print_url');
+        var proxyUrl = prtl + cfg['proxy_url'] + '/';
         var apiOverwrite = !!(getParam('api_url') || env);
+        var configOverwrite = !!(getParam('config_url') || env);
         var localhostRegexp = new RegExp('https?:\/\/localhost:[0-9]{1,5}');
         if (localhostRegexp.test(wmtsUrl)){
            wmtsUrl = wmtsUrl.replace('https:', 'http:');
@@ -821,9 +849,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           //dev3d to be removed once 3d goes live
           // INGRID: Disabled dev3d
           dev3d: settings.settingEnable3D || false,
-          buildMode: '${mode}',
-          version: '${version}',
-          pegman: !!window.location.search.match(/(pegman=true)/),
+          buildMode: cfg['mode'],
+          version: cfg['version'],
           mapUrl: location.origin + pathname,
 
           // Map services urls
@@ -835,6 +862,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // Api services urls
           // INGRID: Change REST service URL
           apiUrl: location.origin + '/ingrid-webmap-client/rest/data',
+          configUrl: configUrl,
           altiUrl: altiUrl,
           printUrl: printUrl,
           // INGRID: Change 'proxyUrl'
@@ -845,13 +873,13 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Change RegExp
           publicUrlRegexp: new RegExp('ingrid-webmap-client\/rest\/data\/'),
           adminUrlRegexp: adminUrlRegexp,
-          hrefRegexp: new RegExp('${href_regexp}'),
+          hrefRegexp: new RegExp(cfg['href_regexp']),
           cachedApiUrl: apiUrl + cacheAdd,
           cachedAltiUrl: altiUrl + cacheAdd,
-          imageryMetadataUrl: '//3d.geo.admin.ch/imagery/',
+          imageryMetadataUrl: terrainUrl + '/imagery/',
           cachedPrintUrl: printUrl + cacheAdd,
           // INGRID: Remove '${versionslashed}'
-          resourceUrl: location.origin + s3pathname + '',
+          resourceUrl: location.origin + s3pathname + cfg['git_commit_short'] + '/',
           // INGRID: Read setting from settings
           w3wUrl: settings.w3wUrl,
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
@@ -872,6 +900,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           hostIsProd: hostIsProd,
           staging: staging,
           apiOverwrite: apiOverwrite,
+          configOverwrite: configOverwrite,
+          disableTooltip: disableTooltip,
 
           // INGRID settings
           // INGRID: Change REST image URL

@@ -17,8 +17,11 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 revision '3aa882828a1659eebbc88572125a38dd3e2154bd' (Date: Mittwoch, 15. August 2018 08:57:10) ***"
-git checkout 3aa882828a1659eebbc88572125a38dd3e2154bd
+echo "*** Checkout mf-geoadmin3 r_191204 ***"
+echo "* KML feature identify improvement (#5083) *"
+echo "* Mittwoch, 4. Dezember 2019 10:00:14 *"
+
+git checkout b8c60f5466b3e94e2013d119813db7ed36792a3d
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
@@ -45,6 +48,11 @@ echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
 
+
+# fix .submodules
+echo "*** fix .gitmodules ***"
+sed -i -e 's/git@github.com:openlayers/https:\/\/github.com\/openlayers/g' .gitmodules
+sed -i -e 's/git@github.com:camptocamp/https:\/\/github.com\/camptocamp/g' .gitmodules
 
 # Pipe make and ng processes into file because build errors in jenkins.
 # Message "Picked up JAVA_TOOL_OPTIONS ..." makes "make release" build process unsuccess.

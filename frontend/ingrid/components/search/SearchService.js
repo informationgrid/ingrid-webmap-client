@@ -59,6 +59,19 @@ goog.require('ga_reframe_service');
   var sanitizeCoordinate = function(str) {
     return parseFloat(str.replace(/[ \s' ]/g, ''));
   }
+  var isGeographic = function(coord) {
+    var lng = coord[0];
+    var lat = coord[1];
+    if ((lat >= -90) &&
+      (lat <= 90) &&
+      (lng >= -180) &&
+      (lng <= 180)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   // Reorder coordinates.
   // For 3857 and 4326 always northing > easting
@@ -141,10 +154,12 @@ goog.require('ga_reframe_service');
           right = parseDMS(matchDMS[1]);
           if (right && left) {
             coord = sortCoordinates(left, right);
-            position = ol.proj.transform(coord,
-                'EPSG:4326', gaGlobalOptions.defaultEpsg);
-            if (ol.extent.containsCoordinate(extent, position)) {
-              return $q.when(roundCoordinates(position));
+            if (isGeographic(coord)) {
+              position = ol.proj.transform(coord,
+                  'EPSG:4326', gaGlobalOptions.defaultEpsg);
+              if (ol.extent.containsCoordinate(extent, position)) {
+                return $q.when(roundCoordinates(position));
+              }
             }
           }
         }
@@ -230,10 +245,12 @@ goog.require('ga_reframe_service');
           left = parseFloat(matchD[1]);
           right = parseFloat(matchD[2]);
           coord = sortCoordinates(left, right);
-          position = ol.proj.transform(coord, 'EPSG:4326',
-              gaGlobalOptions.defaultEpsg);
-          if (ol.extent.containsCoordinate(extent, position)) {
-            return $q.when(roundCoordinates(position));
+          if (isGeographic(coord)) {
+            position = ol.proj.transform(coord, 'EPSG:4326',
+                gaGlobalOptions.defaultEpsg);
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when(roundCoordinates(position));
+            }
           }
         }
 
@@ -245,10 +262,12 @@ goog.require('ga_reframe_service');
           left = parseInt(matchDM[1]) + parseFloat(matchDM[2]) / 60.0;
           right = parseInt(matchDM[3]) + parseFloat(matchDM[4]) / 60.0;
           coord = sortCoordinates(left, right);
-          position = ol.proj.transform(coord, 'EPSG:4326',
-              gaGlobalOptions.defaultEpsg);
-          if (ol.extent.containsCoordinate(extent, position)) {
-            return $q.when(roundCoordinates(position));
+          if (isGeographic(coord)) {
+            position = ol.proj.transform(coord, 'EPSG:4326',
+                gaGlobalOptions.defaultEpsg);
+            if (ol.extent.containsCoordinate(extent, position)) {
+              return $q.when(roundCoordinates(position));
+            }
           }
         }
 
@@ -301,7 +320,14 @@ goog.require('ga_reframe_service');
           if (ol.extent.containsCoordinate(extent, position)) {
             return $q.when(roundCoordinates(position));
           }
-
+          // We are getting desesperate, try to match Web Mercator
+          var mercPosition = [position[1], position[0]];
+          var mercExtent = ol.proj.transformExtent(extent,
+              gaGlobalOptions.defaultEpsg, 'EPSG:3857');
+          if (ol.extent.containsCoordinate(mercExtent, mercPosition)) {
+            return $q.when(ol.proj.transform(mercPosition,
+                'EPSG:3857', gaGlobalOptions.defaultEpsg));
+          }
           // Match LV03 coordinates
           return gaReframe.get03To95(position).then(function(position) {
             if (ol.extent.containsCoordinate(extent, position)) {

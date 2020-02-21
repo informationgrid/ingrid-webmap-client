@@ -43,9 +43,13 @@ goog.require('ga_wmts_service');
    */
   module.provider('gaPermalinkLayersManager', function() {
 
-    this.$get = function($rootScope, gaLayers, gaPermalink, $translate,
+    // INGRID: Add parameter '$http'
+    this.$get = function($rootScope, gaLayers, gaPermalink,
         gaVector, gaMapUtils, gaWms, gaLayerFilters, gaUrlUtils, gaFileStorage,
-        gaTopic, gaGlobalOptions, $q, gaTime, $log, $http, gaWmts) {
+        gaTopic, gaGlobalOptions, $q, gaTime, $log, gaWmts, $http) {
+
+      // split by commas only not between || (WMS layers) (see #4592)
+      const splitLayerPattern = /,(?![^|]* )/g;
 
       var layersParamValue = gaPermalink.getParams().layers;
       var layersOpacityParamValue = gaPermalink.getParams().layers_opacity;
@@ -57,7 +61,8 @@ goog.require('ga_wmts_service');
       var layersStyleUrlParamValue =
           gaPermalink.getParams().layers_styleurl;
 
-      var layerSpecs = layersParamValue ? layersParamValue.split(',') : [];
+      var layerSpecs = layersParamValue ?
+        layersParamValue.split(splitLayerPattern) : [];
       var layerOpacities = layersOpacityParamValue ?
         layersOpacityParamValue.split(',') : [];
       var layerParams = layersParamsValue ?

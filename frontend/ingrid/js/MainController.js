@@ -62,7 +62,7 @@ goog.require('ga_window_service');
 
       var map = new ol.Map({
         moveTolerance: 5,
-        controls: ol.control.defaults({
+        controls: ol.control.util.defaults({
           attribution: false,
           rotate: false,
           zoomOptions: {
@@ -277,7 +277,6 @@ goog.require('ga_window_service');
 
     $scope.globals = {
       dev3d: gaGlobalOptions.dev3d,
-      pegman: gaGlobalOptions.pegman,
       searchFocused: false,
       homescreen: false,
       webkit: gaBrowserSniffer.webkit,
@@ -299,6 +298,7 @@ goog.require('ga_window_service');
       isPrintActive: false,
       isSwipeActive: false,
       is3dActive: startWith3D,
+      isFpsActive: false,
       // INGRID: Add 'isParentIFrame'
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'

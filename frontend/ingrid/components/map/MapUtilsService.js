@@ -17,7 +17,7 @@ goog.require('ga_urlutils_service');
    */
   module.provider('gaMapUtils', function() {
     this.$get = function($window, gaGlobalOptions, gaUrlUtils, $q,
-        gaDefinePropertiesForLayer, $http, $rootScope, gaHeight) {
+        gaDefinePropertiesForLayer, $rootScope, gaHeight) {
       var resolutions = gaGlobalOptions.resolutions;
       var lodsForRes = gaGlobalOptions.lods;
       var isExtentEmpty = function(extent) {
@@ -241,7 +241,7 @@ goog.require('ga_urlutils_service');
             duration: 0
           }, function(success) {
             defer.resolve();
-            $rootScope.$applyAsync();
+            $rootScope.$apply();
           });
           return defer.promise;
         },

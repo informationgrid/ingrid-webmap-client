@@ -602,7 +602,7 @@ public class AdministrationResource {
 
     @GET
     @Path("help/{lang}/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_HTML)
     public Response getHelpIdRequest(@PathParam("lang") String lang, @PathParam("id") String id) {
         if(lang != null) {
             String filename = FILE_PREFIX_HELP + lang;
@@ -619,25 +619,38 @@ public class AdministrationResource {
                         if(fileContent != null) {
                             try {
                                 JSONObject obj = new JSONObject(fileContent);
-                                JSONObject jsonObj = new JSONObject();
-                                JSONObject jsonObjId = obj.getJSONObject(id);
-                                if(jsonObjId != null){
-                                    String title = jsonObjId.getString( HELP_KEY_TITLE );
-                                    String text = jsonObjId.getString( HELP_KEY_TEXT );
-                                    String image = jsonObjId.getString( HELP_KEY_IMAGE );
-                                    
-                                    JSONArray jsonRowObj = new JSONArray();
-                                    jsonRowObj.put(id);
-                                    jsonRowObj.put(title);
-                                    jsonRowObj.put(text);
-                                    jsonRowObj.put("");
-                                    jsonRowObj.put(image);
-                                    
-                                    JSONArray jsonRow = new JSONArray();
-                                    jsonRow.put( jsonRowObj );
-                                    jsonObj.put( "rows", jsonRow );
+                                String[] ids = id.split(",");
+                                String innerHtml = "";
+                                innerHtml += "<html lang=\"de\">";
+                                innerHtml += "<head>";
+                                innerHtml += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>";
+                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/prd/style/app.css?v=\">";
+                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/css/app.override.css\">";
+                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/css/app.layout.override.css\">";
+                                innerHtml += "<link href=\"/ingrid-webmap-client/rest/config/css\" rel=\"stylesheet\">";
+                                innerHtml += "</head>";
+                                innerHtml += "<body style=\"overflow: auto;\"><div id=\"app\" class=\"view\"><div id=\"content\" class=\"popover-content ga-popup-content\">";
+                                for (String tmpId : ids) {
+                                    JSONObject jsonObjId = obj.getJSONObject(tmpId);
+                                    if(jsonObjId != null){
+                                        String title = jsonObjId.getString( HELP_KEY_TITLE );
+                                        String text = jsonObjId.getString( HELP_KEY_TEXT );
+                                        String image = jsonObjId.getString( HELP_KEY_IMAGE );
+                                        
+                                        if(title != null) {
+                                            innerHtml += "<h2>" + title + "</h2>";
+                                        }
+                                        if(text != null) {
+                                            innerHtml += "<div>" + text + "</div>";
+                                        }
+                                        if(image != null) {
+                                            innerHtml += "<br>";
+                                            innerHtml += "<img src=\"" + image +"\" draggable=\"false\"/>";
+                                        }
+                                    }
                                 }
-                                return Response.ok( jsonObj ).build();
+                                innerHtml += "</div></div></body></html>";
+                                return Response.ok( innerHtml ).build();
                             } catch (JSONException e) {
                                 log.error("Error get help with ID " + id);
                             }
