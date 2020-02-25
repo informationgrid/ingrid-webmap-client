@@ -262,8 +262,8 @@ goog.require('ga_window_service');
     // Create switch device url
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
     // INGRID: Fix switch device mode
-    if (location.pathname) {
-      if (!location.pathname.endsWith('mobile.html')) {
+    if (window.parent.location.pathname) {
+      if (!window.parent.location.pathname.indexOf('mobile.html') > -1) {
         switchToMobile = 'true';
       }
     }
@@ -446,18 +446,18 @@ goog.require('ga_window_service');
       window.parent.onpopstate = function(event) {
         var easting, northing, zoom;
         window.parent.isBackHistory = true;
-          var url = new URL(window.parent.location.href);
-          easting = url.searchParams.get('E');
-          northing = url.searchParams.get('N');
-          zoom = url.searchParams.get('zoom');
-          if (easting && northing) {
-            easting = parseFloat(easting.replace(/,/g, '.'));
-            northing = parseFloat(northing.replace(/,/g, '.'));
-            $scope.map.getView().setCenter([easting, northing]);
-          }
-          if (zoom) {
-            $scope.map.getView().setZoom(zoom);
-          }
+        var url = new URL(window.parent.location.href);
+        easting = url.searchParams.get('E');
+        northing = url.searchParams.get('N');
+        zoom = url.searchParams.get('zoom');
+        if (easting && northing) {
+          easting = parseFloat(easting.replace(/,/g, '.'));
+          northing = parseFloat(northing.replace(/,/g, '.'));
+          $scope.map.getView().setCenter([easting, northing]);
+        }
+        if (zoom) {
+          $scope.map.getView().setZoom(zoom);
+        }
       };
     }
 

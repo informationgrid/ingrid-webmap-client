@@ -25,7 +25,6 @@ git checkout b8c60f5466b3e94e2013d119813db7ed36792a3d
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"
-cp -r ../frontend/ingrid/scripts ./
 cp -r ../frontend/ingrid/lib src/
 cp -r ../frontend/ingrid/components src/
 cp -r ../frontend/ingrid/js src/
