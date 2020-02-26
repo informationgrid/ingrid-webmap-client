@@ -6,7 +6,7 @@ pipeline {
     }
 
     tools {
-        nodejs "nodejs"
+        nodejs "nodejs10.15.3"
     }
 
     stages {
