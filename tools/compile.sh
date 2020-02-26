@@ -45,6 +45,7 @@ export PYTHONIOENCODING=UTF-8
 # fix Makefile when script is run in a long directory structure
 echo "*** Fix Makefile ***"
 sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' Makefile
+sed -i -e 's/${PIP_CMD}/${PYTHON_CMD} ${PIP_CMD}/g' mk/last.mk
 sed -i -e 's/${AUTOPEP8_CMD}/${PYTHON_CMD} ${AUTOPEP8_CMD}/g' Makefile
 
 
