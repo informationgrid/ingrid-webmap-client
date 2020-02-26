@@ -87,6 +87,8 @@ echo "********************"
 echo "*** Make admin ***"
 echo "********************"
 cd ../admin
+rm -rf node-modules
+npm cache clean -f
 npm install
 ng -v || npm install -g @angular/cli
 ng lint > lint.log
