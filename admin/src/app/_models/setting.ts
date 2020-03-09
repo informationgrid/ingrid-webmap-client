@@ -20,7 +20,6 @@ export class Setting {
         public settingDefaultImportList: string[] = [],
         public settingShareFacebook = false,
         public settingShareMail = false,
-        public settingShareGoogle = false,
         public settingShareTwitter = false,
         public settingShareIFrame = false,
         public settingShareLink = false,

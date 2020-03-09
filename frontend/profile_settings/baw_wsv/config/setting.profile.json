@@ -15,7 +15,6 @@
 "settingPrintDependOnMouseProj": false,
 "settingPrintGraticuleLayer": {"url": "http://sg.geodatenzentrum.de/wms_koordinatennetze","layers": ["25832"]},
 "settingShareFacebook": false,
-"settingShareGoogle": false,
 "settingShareTwitter": false,
 "settingShortURLService": "https://shurl-qs.itz.res.bund.de/yourls-api.php?signature=8e43224db5&action=shorturl&format=json"
 }
