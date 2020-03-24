@@ -877,7 +877,8 @@ itemscope itemtype="http://schema.org/WebApplication"
           cachedAltiUrl: altiUrl + cacheAdd,
           imageryMetadataUrl: terrainUrl + '/imagery/',
           cachedPrintUrl: printUrl + cacheAdd,
-          resourceUrl: location.origin + s3pathname + cfg['git_commit_short'] + '/',
+          // INGRID: Remove "cfg['git_commit_short'] + '/'"
+          resourceUrl: location.origin + s3pathname,
           // INGRID: Read setting from settings
           w3wUrl: settings.w3wUrl,
           lv03tolv95Url: 'https://geodesy.geo.admin.ch/reframe/lv03tolv95',
