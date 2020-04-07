@@ -442,10 +442,11 @@ goog.require('ga_window_service');
       }
     });
 
-    if (window.parent.onpopstate !== undefined) {
-      window.parent.onpopstate = function(event) {
-        var easting, northing, zoom;
-        window.parent.isBackHistory = true;
+    if (!$scope.globals.embed) {
+      if (window.parent.onpopstate !== undefined) {
+        window.parent.onpopstate = function(event) {
+          var easting, northing, zoom;
+          window.parent.isBackHistory = true;
           var url = new URL(window.parent.location.href);
           easting = url.searchParams.get('E');
           northing = url.searchParams.get('N');
@@ -458,7 +459,8 @@ goog.require('ga_window_service');
           if (zoom) {
             $scope.map.getView().setZoom(zoom);
           }
-      };
+        };
+      }
     }
 
     // Hide a panel clicking on its heading
