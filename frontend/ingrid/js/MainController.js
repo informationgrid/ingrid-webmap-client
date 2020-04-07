@@ -262,9 +262,11 @@ goog.require('ga_window_service');
     // Create switch device url
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
     // INGRID: Fix switch device mode
-    if (window.parent.location.pathname) {
-      if (!window.parent.location.pathname.indexOf('mobile.html') > -1) {
-        switchToMobile = 'true';
+    if (!gaBrowserSniffer.embed) {
+      if (window.parent.location.pathname) {
+        if (!window.parent.location.pathname.indexOf('mobile.html') > -1) {
+          switchToMobile = 'true';
+        }
       }
     }
     $scope.host = {url: $window.location.host}; // only use in embed.html
