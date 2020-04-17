@@ -61,6 +61,17 @@ goog.require('ga_urlutils_service');
     }
   };
 
+  // INGRID: Check vector has 'search_coord' feature
+  var hasSearchCoordFeature = function(map) {
+    for (var i = 0, ii = map.getLayers().getLength(); i < ii; i++) {
+      var layer = map.getLayers().item(i);
+      if (layer instanceof ol.layer.Vector && 
+          layer.getSource().getFeatureById('search_coord')){
+        return true
+      }
+    }
+    return false;
+  }
   var removeOverlay = function(gaMarkerOverlay, map) {
     gaMarkerOverlay.remove(map);
   };
@@ -218,9 +229,9 @@ goog.require('ga_urlutils_service');
       function($scope, $http, $q, $sce, gaUrlUtils, gaSearchLabels,
           gaMarkerOverlay, gaDebounce, gaGlobalOptions) {
 
-      // This value is used to block blur/mouseleave event, when a value
-      // is selected. See #2284. It's reinitialized when a new search is
-      // triggered.
+        // This value is used to block blur/mouseleave event, when a value
+        // is selected. See #2284. It's reinitialized when a new search is
+        // triggered.
         var blockEvent = false;
         var canceler;
 
@@ -311,11 +322,17 @@ goog.require('ga_urlutils_service');
 
         $scope.preview = function(res) {
           // INGRID: Add parameter 'gaGlobalOptions' to function
-          addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
+          // Add overlay only if no 'search_coord' feature exist
+          if (!hasSearchCoordFeature($scope.map)) {
+            addOverlay(gaMarkerOverlay, $scope.map, res, gaGlobalOptions);
+          }
         };
 
         $scope.removePreview = function() {
-          removeOverlay(gaMarkerOverlay, $scope.map);
+          // INGRID: Remove overlay only if no 'search_coord' feature exist
+          if (!hasSearchCoordFeature($scope.map)) {
+            removeOverlay(gaMarkerOverlay, $scope.map);
+          }
         };
 
         $scope.prepareLabel = function(attrs) {
@@ -344,7 +361,7 @@ goog.require('ga_urlutils_service');
 
   // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaSearchLocations',
-      function($http, $q, $sce, $translate, gaUrlUtils, gaMarkerOverlay,
+      function($sce, $translate, gaMarkerOverlay,
           gaSearchLabels, gaMapUtils, gaDebounce, gaGlobalOptions) {
         return {
           restrict: 'A',

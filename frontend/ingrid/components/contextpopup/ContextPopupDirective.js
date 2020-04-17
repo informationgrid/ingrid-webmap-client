@@ -23,12 +23,12 @@ goog.require('ga_window_service');
     'pascalprecht.translate'
   ]);
 
-  // INGRID: Add 'gaUrlUtils', '$translate', '$sce'
+  // INGRID: Add 'gaGlobalOptions', 'gaUrlUtils', '$translate', '$sce'
   module.directive('gaContextPopup',
       function($http, $q, $timeout, $window, $rootScope, gaBrowserSniffer,
-          gaNetworkStatus, gaPermalink, gaGlobalOptions, gaLang, gaWhat3Words,
-          gaReframe, gaEvent, gaWindow, gaHeight, gaMeasure, gaUrlUtils,
-          $translate, $sce) {
+          gaNetworkStatus, gaPermalink, gaWhat3Words, gaReframe,
+          gaEvent, gaWindow, gaHeight, gaMeasure, gaGlobalOptions,
+          gaUrlUtils ,$translate, $sce) {
         return {
           restrict: 'A',
           replace: true,

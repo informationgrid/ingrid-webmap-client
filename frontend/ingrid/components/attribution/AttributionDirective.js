@@ -49,8 +49,11 @@ goog.require('ga_event_service');
 
         // Display the third party data alert msg
         element.on('click', '.ga-warning-tooltip', function(evt) {
-          $window.alert($translate.instant('external_data_warning').
-              replace('--URL--', $(evt.target).text()));
+          if(!$window.confirm($translate.instant('external_data_warning').
+              replace('--URL--', $(evt.target).text()))) {
+            $window.event.stopPropagation();
+            $window.event.preventDefault();
+          }
           $(evt.target).tooltip('hide');
         });
 
@@ -64,10 +67,10 @@ goog.require('ga_event_service');
 
           // INGRID: Add copyright for OSM layer
           if (gaPermalink.getParams().bgLayer) {
-              if (gaPermalink.getParams().bgLayer === 'osmLayer') {
-                  list.push('<a target="new" href="http://www.openstreet' +
+            if (gaPermalink.getParams().bgLayer === 'osmLayer') {
+              list.push('<a target="new" href="http://www.openstreet' +
                     'map.org/copyright">OpenStreetMap contributors</a>');
-              }
+            }
           }
           // INGRID: Add if
           if (layers) {

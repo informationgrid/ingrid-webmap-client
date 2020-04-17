@@ -62,7 +62,7 @@ goog.require('ga_window_service');
 
       var map = new ol.Map({
         moveTolerance: 5,
-        controls: ol.control.defaults({
+        controls: ol.control.util.defaults({
           attribution: false,
           rotate: false,
           zoomOptions: {
@@ -262,9 +262,11 @@ goog.require('ga_window_service');
     // Create switch device url
     var switchToMobile = '' + !gaBrowserSniffer.mobile;
     // INGRID: Fix switch device mode
-    if (location.pathname) {
-      if (!location.pathname.endsWith('mobile.html')) {
-        switchToMobile = 'true';
+    if (!gaBrowserSniffer.embed) {
+      if (window.parent.location.pathname) {
+        if (!window.parent.location.pathname.indexOf('mobile.html') > -1) {
+          switchToMobile = 'true';
+        }
       }
     }
     $scope.host = {url: $window.location.host}; // only use in embed.html
@@ -277,7 +279,6 @@ goog.require('ga_window_service');
 
     $scope.globals = {
       dev3d: gaGlobalOptions.dev3d,
-      pegman: gaGlobalOptions.pegman,
       searchFocused: false,
       homescreen: false,
       webkit: gaBrowserSniffer.webkit,
@@ -299,6 +300,7 @@ goog.require('ga_window_service');
       isPrintActive: false,
       isSwipeActive: false,
       is3dActive: startWith3D,
+      isFpsActive: false,
       // INGRID: Add 'isParentIFrame'
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
@@ -442,10 +444,11 @@ goog.require('ga_window_service');
       }
     });
 
-    if (window.parent.onpopstate !== undefined) {
-      window.parent.onpopstate = function(event) {
-        var easting, northing, zoom;
-        window.parent.isBackHistory = true;
+    if (!$scope.globals.embed) {
+      if (window.parent.onpopstate !== undefined) {
+        window.parent.onpopstate = function(event) {
+          var easting, northing, zoom;
+          window.parent.isBackHistory = true;
           var url = new URL(window.parent.location.href);
           easting = url.searchParams.get('E');
           northing = url.searchParams.get('N');
@@ -458,7 +461,8 @@ goog.require('ga_window_service');
           if (zoom) {
             $scope.map.getView().setZoom(zoom);
           }
-      };
+        };
+      }
     }
 
     // Hide a panel clicking on its heading

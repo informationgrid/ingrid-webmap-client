@@ -98,10 +98,10 @@ export class HttpService {
   }
 
   updateLayerAndImage(layerId: string, layer: LayerItem, image: any) {
-    return forkJoin(
+    return forkJoin([
       this.updateLayer(layerId, layer),
       this.addImage(image, 'background', layerId)
-    );
+    ]);
   }
 
   getLayerBackgroundImage(layer: LayerItem) {
@@ -123,10 +123,10 @@ export class HttpService {
   }
 
   addLayerAndAuth(layers: LayerItem[], url: string, login: string, password: string, overrideLogin: boolean) {
-    return forkJoin(
+    return forkJoin([
       this.updateAuth(url, login, password, overrideLogin),
       this.addLayer(layers),
-    );
+    ]);
   }
 
   deleteLayer(id: string) {
@@ -216,18 +216,18 @@ export class HttpService {
   }
 
   updateCategoryAndLabel(category: Category, locale: Map<String, String>) {
-    return forkJoin(
+    return forkJoin([
       this.updateCategory(category),
       this.updateLocales(locale, 'de')
-    );
+    ]);
   }
 
   updateCategoryLabelAndImage(category: Category, locale: Map<String, String>, copyId: String, image: any) {
-    return forkJoin(
+    return forkJoin([
       this.updateCategory(category),
       this.updateLocales(locale, 'de'),
       this.addImage(image, 'category', category.id)
-    );
+    ]);
   }
 
   updateCategory(category: Category): Observable<Category[]> {
@@ -240,18 +240,18 @@ export class HttpService {
   }
 
   addCategoryAndLabel(category: Category, locale: Map<String, String>, copyId: String) {
-    return forkJoin(
+    return forkJoin([
       this.addCategory(category, copyId),
       this.updateLocales(locale, 'de')
-    );
+    ]);
   }
 
   addCategoryLabelAndImage(category: Category, locale: Map<String, String>, copyId: String, image: any) {
-    return forkJoin(
+    return forkJoin([
       this.addCategory(category, copyId),
       this.updateLocales(locale, 'de'),
       this.addImage(image, 'category', category.id)
-    );
+    ]);
   }
 
   addCategory(category: Category, copyId: String): Observable<Category[]> {
@@ -284,17 +284,17 @@ export class HttpService {
   }
 
   updateCategoryTreeAndCategories(id: string, item: any) {
-    return forkJoin(
+    return forkJoin([
       this.updateCategoryTree(id, item),
       this.getCategories()
-    );
+    ]);
   }
   getData() {
-      return forkJoin(
+      return forkJoin([
         this.getLayers(),
         this.getCategories(),
         this.getSetting()
-      );
+      ]);
   }
 
 // Service

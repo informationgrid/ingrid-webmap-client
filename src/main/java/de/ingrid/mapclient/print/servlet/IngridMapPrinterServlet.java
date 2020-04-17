@@ -61,6 +61,8 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
     private final Map<String, MapPrinter> printers = Maps.newHashMap();
     private final Map<String,Long> lastModifieds = Maps.newHashMap();
 
+    private volatile ApplicationContext context;
+
     /**
      * Builds a MapPrinter instance out of the file pointed by the servlet's
      * configuration. The location can be configured in two locations:
@@ -77,6 +79,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         if (configPath == null) {
             throw new ServletException("Missing configuration in web.xml 'web-app/servlet/init-param[param-name=config]' or 'web-app/context-param[param-name=config]'");
         }
+        //String debugPath = "";
 
         if (app == null) {
             LOGGER.info("app is null, setting it as default configPath: " + configPath);
@@ -98,7 +101,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 configFile = new File(realPath);
             } else {
                 LOGGER.info("Unable to find config file in web application using getRealPath.  Adding a / because that is often dropped");
-                realPath = getServletContext().getRealPath(app);
+                realPath = getServletContext().getRealPath("/" + app);
                 configFile = new File(realPath);
             }
         }
@@ -206,6 +209,8 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
             }
             try {
                 printer.stop();
+
+                //debugPath += "printer stopped, setting NULL\n";
             } catch (NullPointerException npe) {
                 LOGGER.info("BaseMapServlet.java: printer was not stopped. This happens when a switch between applications happens.\n"+ npe);
             }
@@ -216,6 +221,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         }
 
         if (printer == null) {
+            //debugPath += "printer == null, lastModified from configFile = "+lastModified+"\n";
             try {
                 LOGGER.info("Loading configuration file: " + configFile.getAbsolutePath());
                 printer = getApplicationContext().getBean(MapPrinter.class).setYamlConfigFile(configFile);
@@ -223,7 +229,7 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
                 lastModifieds.put(app,  configFile.lastModified());
             } catch (FileNotFoundException e) {
                 throw new ServletException("Cannot read configuration file: " + configPath, e);
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 LOGGER.error("Error occurred while reading configuration file", e);
                 throw new ServletException("Error occurred while reading configuration file '" + configFile + "': " + e );
             }
@@ -233,20 +239,24 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         }
         return printer;
     }
-    
+
     private ApplicationContext getApplicationContext() {
-        ApplicationContext context = null;
-        synchronized (this) {
-            context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-            if (context == null || context.getBean(MapPrinter.class) == null) {
-                String springConfig = System.getProperty("mapfish.print.springConfig");
-                if(springConfig != null) {
-                    context = new FileSystemXmlApplicationContext("classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig);
-                } else {
-                    context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
+        if (this.context == null) {
+            synchronized (this) {
+                if (this.context == null) {
+                    this.context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+                    if (this.context == null || context.getBean(MapPrinter.class) == null) {
+                        String springConfig = System.getProperty("mapfish.print.springConfig");
+                        if(springConfig != null) {
+                            this.context = new FileSystemXmlApplicationContext(new String[]{"classpath:/"+ShellMapPrinter.DEFAULT_SPRING_CONTEXT, springConfig});
+                        } else {
+                            this.context = new ClassPathXmlApplicationContext(ShellMapPrinter.DEFAULT_SPRING_CONTEXT);
+                        }
+                    }
                 }
             }
         }
-        return context;
+        return this.context;
     }
+
 }

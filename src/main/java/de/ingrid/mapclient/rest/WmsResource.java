@@ -23,12 +23,14 @@
 package de.ingrid.mapclient.rest;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -89,45 +91,57 @@ public class WmsResource {
             if(StringUtils.isNotEmpty(login) && StringUtils.isEmpty(password)) {
                 password = Utils.getServiceLogin(url, login);
             }
-            GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login, password);
-            if (getCapabilities != null) {
-                response = getCapabilities.getXml();
-                if(response != null) {
-                    if(response.indexOf("<?xml") == -1) {
-                       response = "<?xml version=\"1.0\"?>" + response;
-                    }
-                    if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
-                        // Remove script tags on getFeatureInfo response.
-                        Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
-                                Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-                        return p.matcher(response).replaceAll("");
-                    } else {
+            boolean isGetFeatureInfo = false;
+            if (url.toLowerCase().indexOf( "getfeatureinfo" ) > -1) {
+                isGetFeatureInfo = true;
+            }
+            if(isGetFeatureInfo) {
+                response = HttpProxy.doRequest( url, login, password);
+                // Remove script tags on getFeatureInfo response.
+                Pattern p = Pattern.compile("<script[^>]*>(.*?)</script>",
+                        Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+                return p.matcher(response).replaceAll("");
+            } else {
+                GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login, password);
+                if (getCapabilities != null) {
+                    response = getCapabilities.getXml();
+                    if(response != null) {
+                        if(response.indexOf("<?xml") == -1) {
+                           response = "<?xml version=\"1.0\"?>" + response;
+                        }
                         // Replace "," to "." on bounding box.
                         response = response.replaceAll( "x=\"([0-9]+),([0-9]+)\"", "x=\"$1.$2\"" );
                         response = response.replaceAll( "y=\"([0-9]+),([0-9]+)\"", "y=\"$1.$2\"" );
                         response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
                         response = response.replaceAll( "tude>([0-9]+),([0-9]+)", "tude>$1.$2" );
-                    }
-                    if(toJson){
-                        JSONObject json;
-                        try {
-                            json = XML.toJSONObject( response );
-                        } catch (JSONException e) {
-                            json = new JSONObject();
+                        if(toJson){
+                            JSONObject json;
+                            try {
+                                json = XML.toJSONObject( response );
+                            } catch (JSONException e) {
+                                json = new JSONObject();
+                            }
+                            json.put( "xmlResponse", response );
+                            return json.toString();
                         }
-                        json.put( "xmlResponse", response );
-                        return json.toString();
+                        return response;
                     }
-                    return response;
                 }
+                throw new WebApplicationException( Response.Status.NOT_FOUND );
             }
-            throw new WebApplicationException( Response.Status.NOT_FOUND );
-        } catch (IOException ex) {
+        } catch (UnknownHostException | FileNotFoundException ex) {
             log.error( ERROR_WMS_MSG + url, ex );
             throw new WebApplicationException( ex, Response.Status.NOT_FOUND );
+        } catch (IOException ioEx) {
+            log.error( ERROR_WMS_MSG + url, ioEx );
+            String exMsg = ioEx.getMessage();
+            if (exMsg.indexOf(": 401") > -1) {
+                throw new WebApplicationException( ioEx, Response.Status.UNAUTHORIZED );
+            }
+            throw new WebApplicationException( ioEx, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( ERROR_WMS_MSG + url, e );
-            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
+            throw new WebApplicationException( e, Response.Status.SERVICE_UNAVAILABLE );
         }
     }
 

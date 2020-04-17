@@ -13,7 +13,7 @@ goog.require('ga_measure_filter');
   module.provider('gaMeasure', function() {
     // INGRID: Add 'gaGlobalOptions'
     this.$get = function($document, measureFilter, gaMapUtils, gaGeomUtils,
-      gaGlobalOptions) {
+        gaGlobalOptions) {
       var Measure = function() {
 
         // Transform 2111333 in 2'111'333
@@ -43,18 +43,9 @@ goog.require('ga_measure_filter');
           if (lineString) {
             // INGRID: Check 'useGeodesic'
             if (useGeodesic) {
-              var length;
-              var coords = lineString.getCoordinates();
-              var wgs84Sphere = new ol.Sphere(6378137);
-              length = 0;
-              for (var i = 0, ii = coords.length - 1; i < ii; ++i) {
-                var c1 = ol.proj.transform(coords[i],
-                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
-                var c2 = ol.proj.transform(coords[i + 1],
-                  gaGlobalOptions.defaultEpsg, 'EPSG:4326');
-                length += wgs84Sphere.haversineDistance(c1, c2);
-              }
-              return length;
+              return ol.sphere.getLength(geom, {
+                projection: gaGlobalOptions.defaultEpsg
+              });
             }
             return lineString.getLength();
           } else {
@@ -71,18 +62,9 @@ goog.require('ga_measure_filter');
           } else if (geom instanceof ol.geom.LinearRing ||
               geom instanceof ol.geom.Polygon) {
             if (useGeodesic) {
-              var wgs84Sphere = new ol.Sphere(6378137);
-              var coords = geom.getCoordinates();
-              if (coords && coords.length > 0) {
-                var wgs84Coords = [];
-                for (var i = 0, ii = coords[0].length - 1; i < ii; ++i) {
-                  wgs84Coords.push(ol.proj.transform(coords[0][i],
-                    gaGlobalOptions.defaultEpsg, 'EPSG:4326'));
-                }
-                if (wgs84Coords.length > 0) {
-                  return Math.abs(wgs84Sphere.geodesicArea(wgs84Coords));
-                }
-              }
+              return ol.sphere.getArea(geom, {
+                projection: gaGlobalOptions.defaultEpsg
+              });
             }
             return Math.abs(geom.getArea());
           } else if (geom instanceof ol.geom.Circle) {
@@ -118,7 +100,7 @@ goog.require('ga_measure_filter');
         this.getLengthLabel = function(geom) {
           // INGRID: Add check 'useGeodesic'
           return measureFilter(this.getLength(geom,
-            gaGlobalOptions.useGeodesic));
+              gaGlobalOptions.useGeodesic));
         };
 
         this.getAreaLabel = function(geom, calculateLineStringArea) {
@@ -263,7 +245,7 @@ goog.require('ga_measure_filter');
                 if (evt.target.get('overlays')) {
                   this.updateOverlays(layer, evt.target);
                 }
-              }, this);
+              }.bind(this));
             }
             this.updateOverlays(layer, feature);
           }
@@ -314,17 +296,17 @@ goog.require('ga_measure_filter');
             if (evt.element === layer) {
               this.toggleLayerOverlays(map, evt.element, false);
             }
-          }, this);
+          }.bind(this));
           map.getLayers().on('add', function(evt) {
             if (evt.element === layer) {
               this.toggleLayerOverlays(map, evt.element, true);
             }
-          }, this);
+          }.bind(this));
 
           layer.getSource().on('removefeature', function(evt) {
             this.removeOverlays(evt.feature);
             evt.feature.set('overlays', undefined);
-          }, this);
+          }.bind(this));
 
           if (!layer.displayInLayerManager) {
             return;
@@ -332,7 +314,7 @@ goog.require('ga_measure_filter');
 
           layer.on('change:visible', function(evt) {
             this.toggleLayerOverlays(map, evt.target, evt.target.getVisible());
-          }, this);
+          }.bind(this));
 
           layer.on('change:opacity', function(evt) {
             evt.target.getSource().getFeatures().forEach(function(feat) {

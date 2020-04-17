@@ -17,7 +17,7 @@ goog.require('ga_urlutils_service');
    */
   module.provider('gaMapUtils', function() {
     this.$get = function($window, gaGlobalOptions, gaUrlUtils, $q,
-        gaDefinePropertiesForLayer, $http, $rootScope, gaHeight) {
+        gaDefinePropertiesForLayer, $rootScope, gaHeight) {
       var resolutions = gaGlobalOptions.resolutions;
       var lodsForRes = gaGlobalOptions.lods;
       var isExtentEmpty = function(extent) {
@@ -241,7 +241,7 @@ goog.require('ga_urlutils_service');
             duration: 0
           }, function(success) {
             defer.resolve();
-            $rootScope.$applyAsync();
+            $rootScope.$apply();
           });
           return defer.promise;
         },
@@ -601,6 +601,18 @@ goog.require('ga_urlutils_service');
               (olLayer.getSource() instanceof ol.source.WMTS));
         },
 
+        // INGRID: Set load getCapabilities error 
+        setUrlLoadError: function (errorCode, translate) {
+          switch (errorCode) {
+          case 401:
+            return translate.instant('service_load_error_401');
+          case 404:
+            return translate.instant('service_load_error_404');
+          default:
+            return translate.instant('service_load_error_default');
+          }
+        },
+
         // INGRID: Get MousePosition projection
         getMousePositionProjection: function(map) {
           if (map) {
@@ -661,12 +673,12 @@ goog.require('ga_urlutils_service');
               var keyParams = [];
               Object.keys(baseParams).forEach(function(k) {
                 if (baseParams[k] !== null && baseParams[k] !== undefined) {
-                  keyParams.push(k + "=" + encodeURIComponent(baseParams[k]));
+                  keyParams.push(k + '=' + encodeURIComponent(baseParams[k]));
                 }
               });
-              var qs = keyParams.join("&");
-              tpl = tpl.replace(/[?&]$/, "");
-              tpl = tpl.indexOf("?") === -1 ? tpl + "?" : tpl + "&";
+              var qs = keyParams.join('&');
+              tpl = tpl.replace(/[?&]$/, '');
+              tpl = tpl.indexOf('?') === -1 ? tpl + '?' : tpl + '&';
               return tpl + qs;
             } else if (source.getRequestEncoding() === 'REST') {
               return tpl.

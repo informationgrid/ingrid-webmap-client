@@ -62,6 +62,7 @@ goog.require('ga_tooltip_controller');
 goog.require('ga_topic');
 goog.require('ga_translation');
 goog.require('ga_translation_controller');
+goog.require('ga_vector_tile');
 goog.require('ga_waitcursor_service');
 (function() {
 
@@ -128,7 +129,8 @@ goog.require('ga_waitcursor_service');
     'ga_featuretree_controller',
     'ga_draw_controller',
     'ga_drawstyle_controller',
-    'ga_drawstylepopup_controller'
+    'ga_drawstylepopup_controller',
+    'ga_vector_tile'
   ]);
 
   module.config(function($translateProvider, gaGlobalOptions) {
@@ -148,11 +150,13 @@ goog.require('ga_waitcursor_service');
     var dflt = ['0', '1', '2', '3', '4'];
     var hundred = ['100', '101', '102', '103', '104'];
 
+    ol.proj.proj4.register(window.proj4);
+
     // Domains
     gaLayersProvider.wmsSubdomains = dflt;
     gaLayersProvider.wmtsSubdomains = hundred;
     gaLayersProvider.vectorTilesSubdomains =
-        gaGlobalOptions.staging === 'prod' ? dflt : dflt;
+        gaGlobalOptions.staging !== 'dev' ? hundred : dflt;
 
     // Map services urls
     gaLayersProvider.wmsUrl = gaGlobalOptions.wmsUrl;
@@ -161,18 +165,18 @@ goog.require('ga_waitcursor_service');
     gaLayersProvider.wmtsLV03Url = gaGlobalOptions.wmtsUrl +
         '/1.0.0/{Layer}/default/{Time}/{TileMatrixSet}/{z}/{y}/{x}.{Format}';
     gaLayersProvider.terrainUrl = gaGlobalOptions.terrainUrl +
-        '/1.0.0/{Layer}/default/{Time}/4326';
+        '/1.0.0/{Layer}/';
     gaLayersProvider.vectorTilesUrl = gaGlobalOptions.vectorTilesUrl +
         '/{Layer}/{Time}/';
 
     // Api services urls
     /* INGRID: Change layer service URL
-    if (gaGlobalOptions.apiOverwrite) {
-      gaLayersProvider.layersConfigUrl = gaGlobalOptions.apiUrl +
-          '/rest/services/all/MapServer/layersConfig?lang={Lang}';
+    if (gaGlobalOptions.configOverwrite) {
+      gaLayersProvider.layersConfigUrl = gaGlobalOptions.configUrl +
+          '/{Lang}/layersConfig.json';
     } else {
-      gaLayersProvider.layersConfigUrl = gaGlobalOptions.resourceUrl +
-          'layersConfig.{Lang}.json';
+      gaLayersProvider.layersConfigUrl = gaGlobalOptions.configUrl +
+          '/configs/{Lang}/layersConfig.json';
     }
     gaLayersProvider.legendUrl = gaGlobalOptions.apiUrl +
         '/rest/services/all/MapServer/{Layer}/legend?lang={Lang}';
@@ -188,10 +192,11 @@ goog.require('ga_waitcursor_service');
 
   module.config(function(gaTopicProvider, gaGlobalOptions) {
     /* INGRID: Change topic service URL
-    if (gaGlobalOptions.apiOverwrite) {
-      gaTopicProvider.topicsUrl = gaGlobalOptions.apiUrl + '/rest/services';
+    if (gaGlobalOptions.configOverwrite) {
+      gaTopicProvider.topicsUrl = gaGlobalOptions.configUrl + '/services.json';
     } else {
-      gaTopicProvider.topicsUrl = gaGlobalOptions.resourceUrl + 'services';
+      gaTopicProvider.topicsUrl = gaGlobalOptions.configUrl +
+          '/configs/services.json';
     }
     */
     gaTopicProvider.topicsUrl = location.protocol + '//' + location.host +

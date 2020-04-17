@@ -58,12 +58,19 @@
             </span>
           </div>
           <div class="collapse" id="collapse{{ category.id }}"  [attr.aria-labelledby]="'categoriesHeader' + category.id" data-parent="#categories">
-            <div class="card card-body">
-              <div class="modal-header">
-                <button class="btn btn-danger" type="button" (click)="showModalDelete(modalDelete, category);" translate>
-                  <i class="fa fa-trash" aria-hidden="true" ></i>
-                  delete
-                </button>
+            <nav class="navbar navbar-expand-lg navbar-light" style="">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" [attr.data-target]="'#navBarCategoryItemHeader-' + category.id " aria-controls="navBarCategoryItemHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" [id]="'navBarCategoryItemHeader-' + category.id ">
+                <div class="mr-auto">
+                  <div class="my-2">
+                    <button class="btn btn-danger" type="button" (click)="showModalDelete(modalDelete, category);" translate>
+                      <i class="fa fa-trash" aria-hidden="true" ></i>
+                      category_delete_title
+                    </button>
+                  </div>
+                </div>
                 <div>
                   <button class="btn btn-primary mr-sm-2" type="button" (click)="showModalEdit(modalEdit, category);" translate>
                     <i class="fa fa-edit" aria-hidden="true"></i>
@@ -79,10 +86,11 @@
                   </button>
                 </div>
               </div>
-              <div class="modal-body">
-                <app-category-tree [category]="category" [categoryTree]="categoryTree" [layers]="layers"
-                [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveUnsuccess"></app-category-tree>
-              </div>
+            </nav>
+            <hr>
+            <div class="modal-body">
+              <app-category-tree [category]="category" [categoryTree]="categoryTree" [layers]="layers"
+              [modalSaveSuccess]="modalSaveSuccess" [modalSaveUnsuccess]="modalSaveUnsuccess"></app-category-tree>
             </div>
           </div>
         </div>

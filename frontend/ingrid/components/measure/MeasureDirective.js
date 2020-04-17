@@ -8,6 +8,7 @@ goog.require('ga_measure_service');
     'ga_measure_service'
   ]);
 
+  // INGRID: Add parameter 'gaGlobalOptions'
   module.directive('gaMeasure', function(gaMeasure, gaGlobalOptions) {
     return {
       restrict: 'A',

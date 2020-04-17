@@ -38,9 +38,8 @@ goog.require('ga_window_service');
   module.directive('gaTooltip',
       function($timeout, $http, $q, $translate, $sce, $rootScope, gaPopup,
           gaLayers, gaBrowserSniffer, gaMapClick, gaDebounce, gaPreviewFeatures,
-          gaMapUtils, gaTime, gaTopic, gaIdentify, gaGlobalOptions,
-          gaPermalink, gaIFrameCom, gaUrlUtils, gaLang, gaSanitize, gaEvent,
-          gaWindow) {
+          gaMapUtils, gaTopic, gaIdentify, gaPermalink, gaIFrameCom, gaUrlUtils,
+          gaLang, gaSanitize, gaEvent, gaWindow, gaGlobalOptions) {
         var popupContent =
           '<div ng-repeat="html in options.htmls track by $index" ' +
                'ng-mouseenter="options.onMouseEnter($event,' +
@@ -110,20 +109,34 @@ goog.require('ga_window_service');
               feature.get('bwastrid');
         };
 
-        // Find the first feature from a vector layer
-        var findVectorFeature = function(map, pixel, vectorLayer) {
+        // Find the closest feature from pixel in a vector layer
+        var findVectorFeature = function(map, pixel, tolerance, vectorLayer) {
           var featureFound;
-          map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-            // vectorLayer is defined when a feature is clicked.
-            // onclick, geolocation circle is unselectable
-            if (layer && !feature.getProperties().unselectable) {
-              if (!vectorLayer || vectorLayer === layer) {
-                if (!featureFound) {
+          map.forEachFeatureAtPixel(pixel,
+              function(feature, layer) {
+              // checking if feature can be selected by users
+              // we pick the first of the stack, so that features with higher
+              // z-index (in the KML) will be chosen over deeper ones.
+                if (!feature.getProperties().unselectable && !featureFound) {
                   featureFound = feature;
                 }
+              },
+              // options for method forEachFeatureAtPixel
+              {
+              // see TooltipController.js for default tolerance values
+                hitTolerance: tolerance,
+                // filtering layers so that only the current layer is queried
+                layerFilter: function(layerCandidate) {
+                  return layerCandidate && vectorLayer &&
+                  // if both layers have a bodId we filter by bodId
+                  ((layerCandidate.bodId && vectorLayer.bodId &&
+                       layerCandidate.bodId === vectorLayer.bodId) ||
+                      // otherwise we look at OL unique ID for both layers
+                      layerCandidate.ol_uid === vectorLayer.ol_uid)
+                  ;
+                }
               }
-            }
-          });
+          );
           return featureFound;
         };
 
@@ -145,22 +158,21 @@ goog.require('ga_window_service');
                 },
                 undefined,
                 function(layer) {
-                /* INGRID: Add check for crossOrigin
-                // EDGE: An IndexSizeError is triggered by the
-                // map.forEachLayerAtPixel when the mouse is outside the
-                // extent of switzerland (west, north). So we avoid triggering
-                // this function outside a layer's extent.
-                var extent = layer.getExtent();
-                if (extent && !ol.extent.containsXY(extent, coord[0],
-                    coord[1])) {
-                  return false;
-                }
-                return gaLayers.hasTooltipBodLayer(layer);
+                  /* INGRID: Add check for crossOrigin
+                  // EDGE: An IndexSizeError is triggered by the
+                  // map.forEachLayerAtPixel when the mouse is outside the
+                  // extent of switzerland (west, north). So we avoid triggering
+                  // this function outside a layer's extent.
+                  var extent = layer.getExtent();
+                  if (extent && !ol.extent.containsXY(extent, coord[0],
+                      coord[1])) {
+                    return false;
+                  }
+                  return gaLayers.hasTooltipBodLayer(layer);
                 */
                   return gaLayers.hasTooltipBodLayer(layer) &&
                   layer.getSource().crossOrigin;
-                }
-            );
+                });
           }
           if (!hasQueryableLayer) {
             feature = findVectorFeature(map, pixel);
@@ -457,7 +469,11 @@ goog.require('ga_window_service');
                 // Go through queryable vector layers
                 // Launch no requests.
                 layersToQuery.vectorLayers.forEach(function(layerToQuery) {
-                  var feature = findVectorFeature(map, pixel, layerToQuery);
+                  var config = gaLayers.getLayer(layerToQuery.bodId);
+                  var shopLayer = config && config.shop && !config.shopMulti;
+                  var tolerance = shopLayer ? 0 : scope.options.tolerance;
+                  var feature = findVectorFeature(map, pixel, tolerance,
+                      layerToQuery);
                   if (feature) {
                     showVectorFeature(feature, layerToQuery);
                     all.push($q.when(1));
@@ -505,7 +521,9 @@ goog.require('ga_window_service');
                   }, params);
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
-                    coordinate, mapRes, mapProj, params);
+                    coordinate, mapRes, mapProj,
+                    params
+                    );
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     if (layerToQuery.get('auth')) {
@@ -621,6 +639,11 @@ goog.require('ga_window_service');
             // Highlight the features found
             var showFeatures = function(foundFeatures, coordinate,
                 nohighlight) {
+              // if url param disableTooltip is eq to true, no tooltip is to
+              // be shown for this instance of map.
+              if (gaGlobalOptions.disableTooltip) {
+                return;
+              }
               if (foundFeatures && foundFeatures.length > 0) {
                 // Remove the tooltip, if a layer is removed, we don't care
                 // which layer. It worked like that in RE2.
@@ -854,7 +877,9 @@ goog.require('ga_window_service');
             // Show the popup with all features informations
             var showPopup = function(html, value) {
               // Don't show popup when notooltip parameter is active
-              if (gaPermalink.getParams().notooltip === 'true') {
+              // (embedded only)
+              if (gaBrowserSniffer.embed &&
+                  gaPermalink.getParams().notooltip === 'true') {
                 return;
               }
 
@@ -913,15 +938,20 @@ goog.require('ga_window_service');
               }
               // Add result to array. ng-repeat will take
               // care of the rest
-              htmls.push({
+              var params = {
                 map: scope.map,
                 feature: value,
                 showVectorInfos: (value instanceof ol.Feature),
-                clickGeometry: new ol.geom.Point(scope.clickCoordinate),
                 snippet: $sce.trustAsHtml(html),
                 showProfile: !gaBrowserSniffer.embed &&
                     value instanceof ol.Feature && value.getGeometry()
-              });
+              };
+              if (scope.clickCoordinate !== undefined &&
+                      scope.clickCoordinate.length === 2) {
+                params['clickGeometry'] =
+                    new ol.geom.Point(scope.clickCoordinate)
+              }
+              htmls.push(params);
             };
           }
         };

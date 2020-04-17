@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { TreeNode, TreeComponent } from 'angular-tree-component';
+import { TreeNode, TreeComponent, TreeModel, IActionMapping, ITreeOptions } from 'angular-tree-component';
 import * as _ from 'lodash';
 import { Category } from '../../../_models/category';
 import { LayerItem } from '../../../_models/layer-item';
@@ -29,7 +29,14 @@ export class CategoryTreeComponent implements OnInit {
 
   categoryId: string;
   categoryLastId: number;
-  options = {
+
+  actionMapping: IActionMapping = {
+    mouse: {
+      click: (tree, node) => this.check(node, !node.data.checked)
+    }
+  };
+
+  options: ITreeOptions = {
     allowDrag: true,
     allowDrop: true,
     displayField: 'label',
@@ -40,6 +47,48 @@ export class CategoryTreeComponent implements OnInit {
 
   ngOnInit() {
     this.categoryId = this.category.id;
+  }
+
+  // Tree functions
+  onUpdateTree( $event ) {
+    if ($event.treeModel) {
+      $event.treeModel.expandAll();
+    }
+  }
+  check(node, checked) {
+    this.updateChildNodeCheckbox(node, checked);
+  }
+  updateChildNodeCheckbox(node, checked) {
+    node.data.checked = checked;
+    if (node.children) {
+      node.children.forEach((child) => this.updateChildNodeCheckbox(child, checked));
+    }
+  }
+
+  hasSelectedItem(treeModel: TreeModel) {
+    const roots = treeModel.getVisibleRoots();
+    if (roots) {
+      const treeNode: TreeNode[] = [];
+      roots.forEach(root => {
+        this.getCheckedNode(root, treeNode);
+      });
+      if (treeNode.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getCheckedNode(node: TreeNode, list: TreeNode[]) {
+    this.getChildCheckedNode(node, list);
+  }
+  getChildCheckedNode(node: TreeNode, list: TreeNode[]) {
+    if (node.data.checked) {
+      list.push(node);
+    }
+    if (node.children) {
+      node.children.forEach((child) => this.getChildCheckedNode(child, list));
+    }
   }
 
   // Node Events
@@ -103,6 +152,38 @@ export class CategoryTreeComponent implements OnInit {
       }
       node.treeModel.update();
       this.httpService.updateCategoryTree(this.categoryId, node.treeModel.nodes).subscribe(
+        data => {
+          this.categoryTree = data;
+          modal.hide();
+        },
+        error => {
+          console.error('Error update tree!');
+        }
+      );
+    }
+  }
+
+  onRemoveSelectItem(treeModel: TreeModel, modal, doRemoveLayer: boolean) {
+    if (treeModel != null) {
+      const roots: TreeNode[] = treeModel.getVisibleRoots();
+      if (roots) {
+        const treeNodes: TreeNode[] = [];
+        roots.forEach(root => {
+          this.getCheckedNode(root, treeNodes);
+        });
+        if (treeNodes.length > 0) {
+          treeNodes.forEach( treeNode => {
+            if (doRemoveLayer) {
+              treeNode.data.layerBodId = null;
+              treeNode.data.checked = false;
+            } else {
+              _.remove(treeNode.parent.data.children, treeNode.data);
+            }
+          });
+        }
+      }
+      treeModel.update();
+      this.httpService.updateCategoryTree(this.categoryId, treeModel.nodes).subscribe(
         data => {
           this.categoryTree = data;
           modal.hide();
