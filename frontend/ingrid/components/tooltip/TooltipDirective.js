@@ -148,7 +148,9 @@ goog.require('ga_window_service');
           if (!mapDiv) {
             mapDiv = $(map.getTarget());
           }
-          if (!gaBrowserSniffer.msie || gaBrowserSniffer.msie > 10) {
+          // INGRID: Check gaBrowserSniffer.embed
+          if ((!gaBrowserSniffer.msie || gaBrowserSniffer.msie > 10) &&
+              !gaBrowserSniffer.embed) {
             /* INGRID: Not in use
             var coord = map.getCoordinateFromPixel(pixel);
             */
