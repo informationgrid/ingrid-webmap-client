@@ -155,23 +155,23 @@ goog.require('ga_window_service');
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
                 function() {
                   return true;
-                },
-                undefined,
-                function(layer) {
-                  /* INGRID: Add check for crossOrigin
-                  // EDGE: An IndexSizeError is triggered by the
-                  // map.forEachLayerAtPixel when the mouse is outside the
-                  // extent of switzerland (west, north). So we avoid triggering
-                  // this function outside a layer's extent.
-                  var extent = layer.getExtent();
-                  if (extent && !ol.extent.containsXY(extent, coord[0],
-                      coord[1])) {
-                    return false;
+                },{
+                  "layerFilter": function(layer) {
+                    /* INGRID: Add check for crossOrigin
+                    // EDGE: An IndexSizeError is triggered by the
+                    // map.forEachLayerAtPixel when the mouse is outside the
+                    // extent of switzerland (west, north). So we avoid triggering
+                    // this function outside a layer's extent.
+                    var extent = layer.getExtent();
+                    if (extent && !ol.extent.containsXY(extent, coord[0],
+                        coord[1])) {
+                      return false;
+                    }
+                    return gaLayers.hasTooltipBodLayer(layer);
+                  */
+                    return gaLayers.hasTooltipBodLayer(layer) &&
+                    layer.getSource().crossOrigin;
                   }
-                  return gaLayers.hasTooltipBodLayer(layer);
-                */
-                  return gaLayers.hasTooltipBodLayer(layer) &&
-                  layer.getSource().crossOrigin;
                 });
           }
           if (!hasQueryableLayer) {
@@ -523,7 +523,7 @@ goog.require('ga_window_service');
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
                     coordinate, mapRes, mapProj,
                     params
-                    );
+                );
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     if (layerToQuery.get('auth')) {
