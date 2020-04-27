@@ -500,9 +500,9 @@ goog.require('ga_window_service');
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
                 if (layerToQuery.queryLayers) {
-                  angular.extend({
+                  angular.extend(params, {
                     'QUERY_LAYERS': layerToQuery.queryLayers.trim()
-                  }, params);
+                  });
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
                     coordinate, mapRes, mapProj, params);
