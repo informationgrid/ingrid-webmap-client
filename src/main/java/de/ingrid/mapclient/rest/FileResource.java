@@ -395,8 +395,9 @@ public class FileResource {
         }
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
+        String[] replyTo = null;
         if(email != null && email.length() > 0 && !email.equals( "undefined" )){
-            from = email;
+            replyTo = new String[] { email };
         }
         String to = p.getProperty( ConfigurationProvider.FEEDBACK_TO ); 
         String host = p.getProperty( ConfigurationProvider.FEEDBACK_HOST );
@@ -406,7 +407,7 @@ public class FileResource {
         boolean ssl = Boolean.parseBoolean(p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
         String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
         
-        boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file );
+        boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file, replyTo);
         if(sendMail){
             return Response.ok( "{\"success\": true}" ).build();
         }

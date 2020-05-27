@@ -267,7 +267,7 @@ public class Utils {
     
     public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
             String protocol) {
-        return sendEmail( from, subject, to, text, headers, host, port, user, password, ssl, protocol, null );
+        return sendEmail( from, subject, to, text, headers, host, port, user, password, ssl, protocol, null, null);
     }
 
     public static String getNameFromXML(Document doc) {
@@ -320,7 +320,7 @@ public class Utils {
      * @return true if email was sent, else false
      */
     public static boolean sendEmail(String from, String subject, String[] to, String text, Map headers, String host, String port, String user, String password, boolean ssl,
-            String protocol, File attachment) {
+            String protocol, File attachment, String[] replyToList) {
 
         boolean debug = log.isDebugEnabled();
         boolean emailSent = false;
@@ -370,6 +370,14 @@ public class Utils {
                 addressTo[i] = new InternetAddress( to[i] );
             }
             msg.setRecipients( Message.RecipientType.TO, addressTo );
+
+            if(replyToList != null) {
+                InternetAddress[] replyTo = new InternetAddress[replyToList.length];
+                for (int i = 0; i < replyToList.length; i++) {
+                    replyTo[i] = new InternetAddress(replyToList[i]);
+                }
+                msg.setReplyTo(replyTo);
+            }
 
             // set custom headers
             if (headers != null) {
