@@ -612,6 +612,7 @@ public class AdministrationResource {
                 }
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
+                String urlPathPrefix = p.getProperty( ConfigurationProvider.URL_PATH_PREFIX, "").trim();
                 if(StringUtils.isNotEmpty(configDir)) {
                     Response helps = this.getHelpRequest(lang);
                     if(helps != null && helps.getEntity() != null) {
@@ -624,10 +625,10 @@ public class AdministrationResource {
                                 innerHtml += "<html lang=\"de\">";
                                 innerHtml += "<head>";
                                 innerHtml += "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"/>";
-                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/prd/style/app.css?v=\">";
-                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/css/app.override.css\">";
-                                innerHtml += "<link rel=\"stylesheet\" href=\"/ingrid-webmap-client/frontend/css/app.layout.override.css\">";
-                                innerHtml += "<link href=\"/ingrid-webmap-client/rest/config/css\" rel=\"stylesheet\">";
+                                innerHtml += "<link rel=\"stylesheet\" href=\""+ urlPathPrefix + "/ingrid-webmap-client/frontend/prd/style/app.css?v=\">";
+                                innerHtml += "<link rel=\"stylesheet\" href=\""+ urlPathPrefix + "/ingrid-webmap-client/frontend/css/app.override.css\">";
+                                innerHtml += "<link rel=\"stylesheet\" href=\""+ urlPathPrefix + "/ingrid-webmap-client/frontend/css/app.layout.override.css\">";
+                                innerHtml += "<link href=\""+ urlPathPrefix + "/ingrid-webmap-client/rest/config/css\" rel=\"stylesheet\">";
                                 innerHtml += "</head>";
                                 innerHtml += "<body style=\"overflow: auto;\"><div id=\"app\" class=\"view\"><div id=\"content\" class=\"popover-content ga-popup-content\">";
                                 for (String tmpId : ids) {
@@ -804,6 +805,7 @@ public class AdministrationResource {
                 // write the image to a file
                 Properties p = ConfigurationProvider.INSTANCE.getProperties();
                 String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./" ).trim();
+                String urlPathPrefix = p.getProperty( ConfigurationProvider.URL_PATH_PREFIX, "").trim();
                 
                 if(!configDir.endsWith( "/" )){
                     configDir = configDir.concat( "/" ); 
@@ -839,7 +841,7 @@ public class AdministrationResource {
                     String css = Utils.getFileContent(configDir, "app.profile", ".css", "css/");
                     if(css.indexOf(".ga-topics-sprite-" + name) == -1) {
                         css = css + "\n[ga-topic] .ga-topics-sprite-" + name + " {\n" + 
-                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
                                 "  width: 140px;\n" + 
                                 "}";
                         this.updateCss(css);
@@ -849,13 +851,13 @@ public class AdministrationResource {
                     if(css.indexOf("[ga-background-selector] .ga-" + name) == -1) {
                         css = css + "\n@media (max-width: 768px) {\n" + 
                                 "[ga-background-selector] .ga-" + name + " {\n" + 
-                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
                                 "  background-size: 38px 38px;\n" + 
                                 "}\n" +
                                 "}";
                         css = css + "\n@media (min-width: 769px) {\n" + 
                                 "[ga-background-selector] .ga-" + name + " {\n" + 
-                                "  background: url(\"/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
+                                "  background: url(\""+ urlPathPrefix + "/ingrid-webmap-client/rest/admin/image/" + path + "/" + name + "\");\n" + 
                                 "  background-size: 90px 58px;\n" + 
                                 "}\n" +
                                 "}";

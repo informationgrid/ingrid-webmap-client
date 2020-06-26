@@ -69,6 +69,7 @@ public enum ConfigurationProvider {
     public static final String SHORTEN_MAX_DAYS_FILE_EXIST      = "shorten.days_of_exist";
     public static final String SHORTEN_MAX_DIRECTORY_FILES      = "shorten.max_directory_files";
     public static final String CONFIG_DIR                       = "config.dir";
+    public static final String URL_PATH_PREFIX                  = "url.path.prefix";
     public static final String API_URL                          = "api.url";
     public static final String SCHEDULER_UPDATE_LAYER           = "scheduler.layer.update";
     public static final String SCHEDULER_UPDATE_LAYER_MAIL      = "scheduler.layer.update.mail";
