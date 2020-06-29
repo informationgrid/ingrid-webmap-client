@@ -56,7 +56,7 @@ goog.provide('ga_wmtsgetcap_directive');
               var layerTM = tileMatrixSetLink[layerTMIndex];
               for (var tileMatrixSetIndex in tileMatrixSets) {
                 var tileMatrixSet = tileMatrixSets[tileMatrixSetIndex];
-                if(layerTM.TileMatrixSet === tileMatrixSet.Identifier) {
+                if (layerTM.TileMatrixSet === tileMatrixSet.Identifier) {
                   var supportedCRS = tileMatrixSet.SupportedCRS;
                   if (supportedCRS) {
                     if (supportedCRS.indexOf(proj.getCode()) > -1) {
@@ -75,6 +75,14 @@ goog.provide('ga_wmtsgetcap_directive');
           if ('ServiceProvider' in getCap) {
             layer.attribution = getCap.ServiceProvider.ProviderName;
             layer.attributionUrl = getCap.ServiceProvider.ProviderSite;
+          }
+          // INGRID: Check getFeatureInfo
+          if (layer['ResourceURL']) {
+            layer['ResourceURL'].forEach(function(element) {
+              if (element['resourceType'] === 'FeatureInfo') {
+                layer.sourceConfig.set('featureInfoTpl', element['template']);
+              }
+            });
           }
           layer.capabilitiesUrl = getCapUrl;
           layer.extent = getLayerExtentFromGetCap(layer, proj);
