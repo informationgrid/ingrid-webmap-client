@@ -105,6 +105,12 @@ goog.require('ga_urlutils_service');
       var createWmtsLayer = function(options) {
         options.sourceConfig.transition = 0;
         var source = new ol.source.WMTS(options.sourceConfig);
+
+        // INGRID: Set featureInfoTpl
+        if (options.featureInfoTpl) {
+          source.set('featureInfoTpl', options.featureInfoTpl);
+        }
+
         var layer = new ol.layer.Tile({
           id: 'WMTS||' + options.layer + '||' + options.capabilitiesUrl,
           source: source,
@@ -116,6 +122,7 @@ goog.require('ga_urlutils_service');
           // INGRID: Add attributionUrl
           attributionUrl: options.attributionUrl
         });
+        
         gaDefinePropertiesForLayer(layer);
         layer.useThirdPartyData =
             gaUrlUtils.isThirdPartyValid(options.sourceConfig.urls[0]);
@@ -218,10 +225,20 @@ goog.require('ga_urlutils_service');
             layerOptions.opacity = options.opacity || 1;
             layerOptions.visible = options.visible && true;
             // INGRID: Add attribution
-            if (getCap.ServiceProvider) {
-              var getCapService = getCap.ServiceProvider;
-              layerOptions.attribution = getCapService.ProviderName;
-              layerOptions.attributionUrl = getCapService.ProviderSite;
+            if (getCap['ServiceProvider']) {
+              var getCapService = getCap['ServiceProvider'];
+              layerOptions.attribution = getCapService['ProviderName'];
+              layerOptions.attributionUrl = getCapService['ProviderSite'];
+            }
+            // INGRID: Check getFeatureInfo
+            if (getCap['ResourceURL']) {
+              getCap['ResourceURL'].forEach(function(element) {
+                if (element['resourceType'] === 'FeatureInfo') {
+                  layerOptions.featureInfoTpl = element['template'];
+                }
+              });
+            } else {
+              layerOptions.featureInfoTpl = 'http://atlas.wsv.res.bund.de/ienc-qs/wmts/WmsIENC/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}/{I}/{J}.html'
             }
             return createWmtsLayer(layerOptions);
           }

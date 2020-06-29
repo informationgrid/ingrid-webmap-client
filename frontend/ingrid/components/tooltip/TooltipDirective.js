@@ -81,13 +81,15 @@ goog.require('ga_window_service');
                 !gaMapUtils.isWMSLayer(l) &&
                 !gaMapUtils.isWMTSLayer(l)) {
               layersToQuery.bodLayers.push(l);
-            // INGRID: Check tooltip param
-            // INGRID: Add wms layers to 'wmsLayers'
             } else if (gaMapUtils.isWMSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+              // INGRID: Check tooltip param
+              // INGRID: Add wms layers to 'wmsLayers'
               layersToQuery.wmsLayers.push(l);
             } else if (gaMapUtils.isWMTSLayer(l) &&
-                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable') || 
+                (gaMapUtils.isExternalWmtsLayer(l) && l.getSource().get('featureInfoTpl')))) {
+              // INGRID: Add check external wmts with featureInfoTpl
               layersToQuery.wmtsLayers.push(l);
             }
           });
@@ -155,8 +157,8 @@ goog.require('ga_window_service');
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
                 function() {
                   return true;
-                },{
-                  "layerFilter": function(layer) {
+                }, {
+                  'layerFilter': function(layer) {
                     /* INGRID: Add check for crossOrigin
                     // EDGE: An IndexSizeError is triggered by the
                     // map.forEachLayerAtPixel when the mouse is outside the
