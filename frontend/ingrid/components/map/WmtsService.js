@@ -237,8 +237,6 @@ goog.require('ga_urlutils_service');
                   layerOptions.featureInfoTpl = element['template'];
                 }
               });
-            } else {
-              layerOptions.featureInfoTpl = 'http://atlas.wsv.res.bund.de/ienc-qs/wmts/WmsIENC/{TileMatrixSet}/{TileMatrix}/{TileCol}/{TileRow}/{I}/{J}.html'
             }
             return createWmtsLayer(layerOptions);
           }
