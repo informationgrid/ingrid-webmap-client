@@ -80,7 +80,7 @@ goog.provide('ga_wmtsgetcap_directive');
           if (layer['ResourceURL']) {
             layer['ResourceURL'].forEach(function(element) {
               if (element['resourceType'] === 'FeatureInfo') {
-                layer.sourceConfig.set('featureInfoTpl', element['template']);
+                layer.sourceConfig.featureInfoTpl = element['template'];
               }
             });
           }

@@ -107,8 +107,8 @@ goog.require('ga_urlutils_service');
         var source = new ol.source.WMTS(options.sourceConfig);
 
         // INGRID: Set featureInfoTpl
-        if (options.featureInfoTpl) {
-          source.set('featureInfoTpl', options.featureInfoTpl);
+        if (options.sourceConfig.featureInfoTpl) {
+          source.set('featureInfoTpl', options.sourceConfig.featureInfoTpl);
         }
 
         var layer = new ol.layer.Tile({
@@ -184,6 +184,15 @@ goog.require('ga_urlutils_service');
           projection: map.getView().getProjection()
         });
 
+        // INGRID: Check getFeatureInfo
+        if (getCapLayer['ResourceURL']) {
+          getCapLayer['ResourceURL'].forEach(function(element) {
+            if (element['resourceType'] === 'FeatureInfo') {
+              sourceConfig.featureInfoTpl = element['template'];
+            }
+          });
+        }
+
         var options = {
           capabilitiesUrl: getCapUrl,
           label: getCapLayer.Title,
@@ -229,14 +238,6 @@ goog.require('ga_urlutils_service');
               var getCapService = getCap['ServiceProvider'];
               layerOptions.attribution = getCapService['ProviderName'];
               layerOptions.attributionUrl = getCapService['ProviderSite'];
-            }
-            // INGRID: Check getFeatureInfo
-            if (getCap['ResourceURL']) {
-              getCap['ResourceURL'].forEach(function(element) {
-                if (element['resourceType'] === 'FeatureInfo') {
-                  layerOptions.featureInfoTpl = element['template'];
-                }
-              });
             }
             return createWmtsLayer(layerOptions);
           }
