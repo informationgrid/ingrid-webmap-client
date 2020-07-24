@@ -81,13 +81,15 @@ goog.require('ga_window_service');
                 !gaMapUtils.isWMSLayer(l) &&
                 !gaMapUtils.isWMTSLayer(l)) {
               layersToQuery.bodLayers.push(l);
-            // INGRID: Check tooltip param
-            // INGRID: Add wms layers to 'wmsLayers'
             } else if (gaMapUtils.isWMSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+              // INGRID: Check tooltip param
+              // INGRID: Add wms layers to 'wmsLayers'
               layersToQuery.wmsLayers.push(l);
             } else if (gaMapUtils.isWMTSLayer(l) &&
-                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable'))) {
+                (gaLayers.hasTooltipBodLayer(l) || l.get('queryable') || 
+                (gaMapUtils.isExternalWmtsLayer(l) && l.getSource().get('featureInfoTpl')))) {
+              // INGRID: Add check external wmts with featureInfoTpl
               layersToQuery.wmtsLayers.push(l);
             }
           });
@@ -155,23 +157,23 @@ goog.require('ga_window_service');
             hasQueryableLayer = map.forEachLayerAtPixel(pixel,
                 function() {
                   return true;
-                },
-                undefined,
-                function(layer) {
-                  /* INGRID: Add check for crossOrigin
-                  // EDGE: An IndexSizeError is triggered by the
-                  // map.forEachLayerAtPixel when the mouse is outside the
-                  // extent of switzerland (west, north). So we avoid triggering
-                  // this function outside a layer's extent.
-                  var extent = layer.getExtent();
-                  if (extent && !ol.extent.containsXY(extent, coord[0],
-                      coord[1])) {
-                    return false;
+                }, {
+                  'layerFilter': function(layer) {
+                    /* INGRID: Add check for crossOrigin
+                    // EDGE: An IndexSizeError is triggered by the
+                    // map.forEachLayerAtPixel when the mouse is outside the
+                    // extent of switzerland (west, north). So we avoid triggering
+                    // this function outside a layer's extent.
+                    var extent = layer.getExtent();
+                    if (extent && !ol.extent.containsXY(extent, coord[0],
+                        coord[1])) {
+                      return false;
+                    }
+                    return gaLayers.hasTooltipBodLayer(layer);
+                  */
+                    return gaLayers.hasTooltipBodLayer(layer) &&
+                    layer.getSource().crossOrigin;
                   }
-                  return gaLayers.hasTooltipBodLayer(layer);
-                */
-                  return gaLayers.hasTooltipBodLayer(layer) &&
-                  layer.getSource().crossOrigin;
                 });
           }
           if (!hasQueryableLayer) {
@@ -516,14 +518,14 @@ goog.require('ga_window_service');
                   'FEATURE_COUNT': layerToQuery.featureCount || 10
                 };
                 if (layerToQuery.queryLayers) {
-                  angular.extend({
+                  angular.extend(params, {
                     'QUERY_LAYERS': layerToQuery.queryLayers.trim()
-                  }, params);
+                  });
                 }
                 var url = layerToQuery.getSource().getGetFeatureInfoUrl(
                     coordinate, mapRes, mapProj,
                     params
-                    );
+                );
                 if (!is3dActive() && url) {
                   gaUrlUtils.proxifyUrl(url).then(function(proxyUrl) {
                     if (layerToQuery.get('auth')) {

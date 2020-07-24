@@ -160,9 +160,11 @@ goog.require('ga_styles_service');
             gaPermalink.getParams().N === undefined) &&
             (gaPermalink.getParams().X === undefined &&
             gaPermalink.getParams().Y === undefined)) {
-          if (window.parent.resizeIframe !== undefined) {
-            window.parent.resizeIframe();
-            map.updateSize();
+          if(!gaBrowserSniffer.embed) {
+            if (window.parent.resizeIframe !== undefined) {
+              window.parent.resizeIframe();
+              map.updateSize();
+            }
           }
           var extent = ol.proj.transformExtent(gaMapUtils.defaultExtent,
               'EPSG:4326', gaGlobalOptions.defaultEpsg);
