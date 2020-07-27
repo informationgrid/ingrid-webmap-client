@@ -216,8 +216,8 @@
         <label class="col-sm-4 col-form-label" for="selectedOpen" translate>category_item_edit_selectedOpen</label>
         <div class="col-sm-8">
           <select class="form-control" #selectedOpen="ngModel" [(ngModel)]="focusItem.selectedOpen" name="selectedOpen">
-              <option value="false" translate>false</option>
-              <option value="true" translate>true</option>
+              <option [ngValue]="false" translate>false</option>
+              <option [ngValue]="true" translate>true</option>
             </select>
         </div>
       </div>
