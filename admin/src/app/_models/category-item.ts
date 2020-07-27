@@ -3,9 +3,9 @@ export class CategoryItem {
     layerBodId;
     constructor (
         public id: number = null,
-        public label = '',
-        public staging = 'prod',
-        public selectedOpen = false
+        public label: string = '',
+        public staging: string = 'prod',
+        public selectedOpen: boolean = false
     ) {}
 
     getNextCategoryNodeId(nodes: any[] , nodeId) {
