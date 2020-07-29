@@ -64,6 +64,14 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
             <param-name>ExpiresDefault</param-name>
             <param-value>access plus 1 hour</param-value>
         </init-param>
+        <init-param>
+           <param-name>ExpiresByType application/json</param-name>
+           <param-value>access plus 0 minutes</param-value>
+       </init-param>
+        <init-param>
+           <param-name>ExpiresByType text/plain</param-name>
+           <param-value>access plus 0 minutes</param-value>
+       </init-param>
     </filter>
     <filter-mapping>
         <filter-name>ExpiresFilter</filter-name>
