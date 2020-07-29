@@ -78,6 +78,19 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+    <filter>
+        <filter-name>ExpiresFilterRest</filter-name>
+        <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
+        <init-param>
+            <param-name>ExpiresDefault</param-name>
+            <param-value>access plus 0 minutes</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>ExpiresFilterRest</filter-name>
+        <url-pattern>/*/rest/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
     <servlet-mapping>
         <servlet-name>InGrid Map REST Service</servlet-name>
         <url-pattern>/rest/*</url-pattern>
