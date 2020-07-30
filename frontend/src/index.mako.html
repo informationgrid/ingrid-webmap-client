@@ -173,11 +173,11 @@ itemscope itemtype="http://schema.org/WebApplication"
         <a ga-vector-tile-test-link></a>&nbsp;&nbsp;
         -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
-        <!-- INGRID: Use 'globals.serviceAnnoucementUrl' to define href -->
-        <a ng-if="!globals.serviceAnnoucementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+        <!-- INGRID: Use 'globals.serviceAnnouncementUrl' to define href -->
+        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
           <span translate>problem_announcement</span>
         </a>
-        <a ng-if="globals.serviceAnnoucementUrl" href="{{globals.serviceAnnoucementUrl}}" target="_blank">
+        <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
           <span translate>problem_announcement</span>
         </a>&nbsp;&nbsp;
         <!-- INGRID: Edit href URL -->
@@ -976,7 +976,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           // INGRID: Enable share Whatsapp
           enableShareWhatsapp: settings.settingShareWhatsapp,
           // INGRID: Announcement URL
-          serviceAnnoucementUrl: settings.settingServiceAnnoucementUrl,
+          serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
           // INGRID: Help URL
           serviceHelpUrl: settings.settingServiceHelpUrl,
 
