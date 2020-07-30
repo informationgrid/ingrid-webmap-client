@@ -434,7 +434,7 @@ export class LayerComponent implements OnInit {
                   this.updateAppCategories.emit(data[1]);
                 },
                 error => {
-                  console.error('Error onAddCategoryItem tree!');
+                  console.error('Error saveAddedLayersToCategory tree!');
                   this.modalSaveUnsuccess.show();
                 }
               );
