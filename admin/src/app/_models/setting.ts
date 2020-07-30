@@ -42,6 +42,8 @@ export class Setting {
         public settingSearchCoordsXY = false,
         public settingSearchCoordsZoom = 16,
         public settingEnable3D = false,
-        public settingDefaultTerrain = ''
+        public settingDefaultTerrain = '',
+        public settingServiceAnnouncementUrl = '',
+        public settingServiceHelpUrl = '',
     ) {}
 }
