@@ -17,1090 +17,1189 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- settingDefaultTopicId -->
-                    <div class="form-group row" [ngClass]="{
-                        'has-danger': settingDefaultTopicId.invalid && (settingDefaultTopicId.dirty || settingDefaultTopicId.touched),
-                        'has-success': settingDefaultTopicId.valid && (settingDefaultTopicId.dirty || settingDefaultTopicId.touched)}
-                        ">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingDefaultTopicId</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTopicId"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingDefaultTopicId" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingDefaultTopicId_help</small>
+                    <ul class="nav nav-tabs mb-3" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="pills-settings-main-tab" data-toggle="pill" href="#tabs-settings-main" role="tab" aria-controls="pills-settings-main" aria-selected="true" translate>
+                                Karte
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-layerinfo-tab" data-toggle="pill" href="#tabs-settings-layerinfo" role="tab" aria-controls="pills-settings-layerinfo" aria-selected="true" translate>
+                                Layerinfo
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-search-tab" data-toggle="pill" href="#tabs-settings-search" role="tab" aria-controls="pills-settings-search" aria-selected="true" translate>
+                                Suche
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-links-tab" data-toggle="pill" href="#tabs-settings-links" role="tab" aria-controls="pills-settings-links" aria-selected="true" translate>
+                                Verweise
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-print-tab" data-toggle="pill" href="#tabs-settings-print" role="tab" aria-controls="pills-settings-print" aria-selected="true" translate>
+                                Druck / KML
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-share-tab" data-toggle="pill" href="#tabs-settings-share" role="tab" aria-controls="pills-settings-share" aria-selected="true" translate>
+                                Teilen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-settings-others-tab" data-toggle="pill" href="#tabs-settings-others" role="tab" aria-controls="pills-settings-others" aria-selected="true" translate>
+                                Sonstige
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" >
+                        <div class="tab-pane fade show active" id="tabs-settings-main" role="tabpanel" aria-labelledby="pills-settings-main-tab'">
+                            <!-- settingDefaultTopicId -->
+                            <div class="form-group row" [ngClass]="{
+                                'has-danger': settingDefaultTopicId.invalid && (settingDefaultTopicId.dirty || settingDefaultTopicId.touched),
+                                'has-success': settingDefaultTopicId.valid && (settingDefaultTopicId.dirty || settingDefaultTopicId.touched)}
+                                ">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultTopicId</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTopicId"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultTopicId" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultTopicId_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-control" #settingDefaultTopicId="ngModel" name="settingDefaultTopicId" [(ngModel)]="settings.settingDefaultTopicId">
+                                        <option [value]="category.id" *ngFor="let category of categories;" translate>{{ category.id }}</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <select class="form-control" #settingDefaultTopicId="ngModel" name="settingDefaultTopicId" [(ngModel)]="settings.settingDefaultTopicId">
-                                <option [value]="category.id" *ngFor="let category of categories;" translate>{{ category.id }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <!-- settingEpsg -->
-                    <div class="form-group row" [ngClass]="{
-                        'has-danger': settingEpsg.invalid && (settingEpsg.dirty || settingEpsg.touched),
-                        'has-success': settingEpsg.valid && (settingEpsg.dirty || settingEpsg.touched)}
-                        ">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingEpsg</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsg" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingEpsg" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingEpsg_help</small>
+                            <!-- settingHideCatalog -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingHideCatalog</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingHideCatalog" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingHideCatalog" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingHideCatalog_help</small>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingEpsg="ngModel" [(ngModel)]="settings.settingEpsg" name="settingEpsg" class="form-control" required>
-                            <div class="form-control-feedback" *ngIf="settingEpsg.errors && (settingEpsg.dirty || settingEpsg.touched)">
-                                <div *ngIf="settingEpsg.errors.required">
-                                    <span translate>field_required</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingExtent -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingExtent</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingExtent" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingExtent" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingExtent_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingExtent0.invalid && (settingExtent0.dirty || settingExtent0.touched)) ,
-                                'has-success': (settingExtent0.valid && (settingExtent0.dirty || settingExtent0.touched))
-                                }">
-                                <input type="number" #settingExtent0="ngModel" [(ngModel)]="settings.settingExtent[0]" name="settingExtent0" class="form-control extent"
-                                    required>
-                                <div class="form-control-feedback" *ngIf="settingExtent0.errors && (settingExtent0.dirty || settingExtent0.touched)">
-                                    <div *ngIf="settingExtent0.errors.required">
-                                        <span translate>field_required</span>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog" 
+                                            [(ngModel)]="settings.settingHideCatalog">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingExtent1.invalid && (settingExtent1.dirty || settingExtent1.touched)) ,
-                                'has-success': (settingExtent1.valid && (settingExtent1.dirty || settingExtent1.touched))
-                                }">
-                                <input type="number" #settingExtent1="ngModel" [(ngModel)]="settings.settingExtent[1]" name="settingExtent1" class="form-control extent"
-                                    required>
-                                <div class="form-control-feedback" *ngIf="settingExtent1.errors && (settingExtent1.dirty || settingExtent1.touched)">
-                                    <div *ngIf="settingExtent1.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingEpsg -->
+                            <div class="form-group row" [ngClass]="{
+                                'has-danger': settingEpsg.invalid && (settingEpsg.dirty || settingEpsg.touched),
+                                'has-success': settingEpsg.valid && (settingEpsg.dirty || settingEpsg.touched)}
+                                ">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingEpsg</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsg" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingEpsg" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingEpsg_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingEpsg="ngModel" [(ngModel)]="settings.settingEpsg" name="settingEpsg" class="form-control" required>
+                                    <div class="form-control-feedback" *ngIf="settingEpsg.errors && (settingEpsg.dirty || settingEpsg.touched)">
+                                        <div *ngIf="settingEpsg.errors.required">
+                                            <span translate>field_required</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingExtent2.invalid && (settingExtent2.dirty || settingExtent2.touched)) ,
-                                'has-success': (settingExtent2.valid && (settingExtent2.dirty || settingExtent2.touched))
-                                }">
-                                <input type="number" #settingExtent2="ngModel" [(ngModel)]="settings.settingExtent[2]" name="settingExtent2" class="form-control extent"
-                                    required>
-                                <div class="form-control-feedback" *ngIf="settingExtent2.errors && (settingExtent2.dirty || settingExtent2.touched)">
-                                    <div *ngIf="settingExtent2.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingExtent -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingExtent</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingExtent" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingExtent" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingExtent_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingExtent0.invalid && (settingExtent0.dirty || settingExtent0.touched)) ,
+                                        'has-success': (settingExtent0.valid && (settingExtent0.dirty || settingExtent0.touched))
+                                        }">
+                                        <input type="number" #settingExtent0="ngModel" [(ngModel)]="settings.settingExtent[0]" name="settingExtent0" class="form-control extent"
+                                            required>
+                                        <div class="form-control-feedback" *ngIf="settingExtent0.errors && (settingExtent0.dirty || settingExtent0.touched)">
+                                            <div *ngIf="settingExtent0.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingExtent1.invalid && (settingExtent1.dirty || settingExtent1.touched)) ,
+                                        'has-success': (settingExtent1.valid && (settingExtent1.dirty || settingExtent1.touched))
+                                        }">
+                                        <input type="number" #settingExtent1="ngModel" [(ngModel)]="settings.settingExtent[1]" name="settingExtent1" class="form-control extent"
+                                            required>
+                                        <div class="form-control-feedback" *ngIf="settingExtent1.errors && (settingExtent1.dirty || settingExtent1.touched)">
+                                            <div *ngIf="settingExtent1.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingExtent2.invalid && (settingExtent2.dirty || settingExtent2.touched)) ,
+                                        'has-success': (settingExtent2.valid && (settingExtent2.dirty || settingExtent2.touched))
+                                        }">
+                                        <input type="number" #settingExtent2="ngModel" [(ngModel)]="settings.settingExtent[2]" name="settingExtent2" class="form-control extent"
+                                            required>
+                                        <div class="form-control-feedback" *ngIf="settingExtent2.errors && (settingExtent2.dirty || settingExtent2.touched)">
+                                            <div *ngIf="settingExtent2.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingExtent3.invalid && (settingExtent3.dirty || settingExtent3.touched)) ,
+                                        'has-success': (settingExtent3.valid && (settingExtent3.dirty || settingExtent3.touched))
+                                        }">
+                                        <input type="number" #settingExtent3="ngModel" [(ngModel)]="settings.settingExtent[3]" name="settingExtent3" class="form-control extent"
+                                            required>
+                                        <div class="form-control-feedback" *ngIf="settingExtent3.errors && (settingExtent3.dirty || settingExtent3.touched)">
+                                            <div *ngIf="settingExtent3.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingExtent3.invalid && (settingExtent3.dirty || settingExtent3.touched)) ,
-                                'has-success': (settingExtent3.valid && (settingExtent3.dirty || settingExtent3.touched))
-                                }">
-                                <input type="number" #settingExtent3="ngModel" [(ngModel)]="settings.settingExtent[3]" name="settingExtent3" class="form-control extent"
-                                    required>
-                                <div class="form-control-feedback" *ngIf="settingExtent3.errors && (settingExtent3.dirty || settingExtent3.touched)">
-                                    <div *ngIf="settingExtent3.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingEpsgExtent -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingEpsgExtent</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsgExtent" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingEpsgExtent" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingEpsgExtent_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingEpsgExtent0.invalid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)) ,
+                                        'has-success': (settingEpsgExtent0.valid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched))
+                                        }">
+                                        <input type="number" #settingEpsgExtent0="ngModel" [(ngModel)]="settings.settingEpsgExtent[0]" name="settingEpsgExtent0"
+                                        class="form-control extent" required>
+                                        <div class="form-control-feedback" *ngIf="settingEpsgExtent0.errors && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)">
+                                            <div *ngIf="settingEpsgExtent0.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingEpsgExtent1.invalid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)) ,
+                                        'has-success': (settingEpsgExtent1.valid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched))
+                                        }">
+                                        <input type="number" #settingEpsgExtent1="ngModel" [(ngModel)]="settings.settingEpsgExtent[1]" name="settingEpsgExtent1"
+                                            class="form-control extent" required>
+                                        <div class="form-control-feedback" *ngIf="settingEpsgExtent1.errors && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)">
+                                            <div *ngIf="settingEpsgExtent1.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingEpsgExtent2.invalid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)) ,
+                                        'has-success': (settingEpsgExtent2.valid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched))
+                                        }">
+                                        <input type="number" #settingEpsgExtent2="ngModel" [(ngModel)]="settings.settingEpsgExtent[2]" name="settingEpsgExtent2"
+                                            class="form-control extent" required>
+                                        <div class="form-control-feedback" *ngIf="settingEpsgExtent2.errors && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)">
+                                            <div *ngIf="settingEpsgExtent2.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" [ngClass]="{
+                                        'has-danger': (settingEpsgExtent3.invalid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)) ,
+                                        'has-success': (settingEpsgExtent3.valid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched))
+                                        }">
+                                        <input type="number" #settingEpsgExtent3="ngModel" [(ngModel)]="settings.settingEpsgExtent[3]" name="settingEpsgExtent3"
+                                            class="form-control extent" required>
+                                        <div class="form-control-feedback" *ngIf="settingEpsgExtent3.errors && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)">
+                                            <div *ngIf="settingEpsgExtent3.errors.required">
+                                                <span translate>field_required</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingLanguages -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingLanguages</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingLanguages" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingLanguages" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingLanguages_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group" *ngFor="let lang of settings.settingLanguages; let i=index;">
+                                        <input type="text" [(ngModel)]="settings.settingLanguages[i]" name="langs{{ i }}" class="form-control" disabled>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" 
+                                                *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
+                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(lang, settings.settingLanguages)" *ngIf="i !== 0">
+                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingLanguages)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <input type="text" #langs name="langs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(langs.value, settings.settingLanguages);"
+                                                [disabled]="!langs.value">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingDefaultMouseProjections -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultMouseProjections</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultMouseProjections"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultMouseProjections" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultMouseProjections_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group" *ngFor="let mouseProj of settings.settingDefaultMouseProjections; let i=index;">
+                                        <input type="text" [(ngModel)]="settings.settingDefaultMouseProjections[i]" name="mouseProjs{{ i }}" class="form-control"
+                                        disabled>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(mouseProj, settings.settingDefaultMouseProjections)"
+                                                *ngIf="i !== (settings.settingDefaultMouseProjections.length - 1) && settings.settingDefaultMouseProjections.length > 1">
+                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(mouseProj, settings.settingDefaultMouseProjections)"
+                                                *ngIf="i !== 0">
+                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultMouseProjections)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <input type="text" #mouseProjs name="mouseProjs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(mouseProjs.value, settings.settingDefaultMouseProjections);"
+                                                [disabled]="!mouseProjs.value">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- settingEpsgExtent -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingEpsgExtent</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEpsgExtent" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingEpsgExtent" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingEpsgExtent_help</small>
+<!-- Search -->
+                        <div class="tab-pane fade show" id="tabs-settings-search" role="tabpanel" aria-labelledby="pills-settings-search-tab'">
+                            <!-- settingSearchServiceUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchServiceUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchServiceUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchServiceUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchServiceUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchServiceUrl="ngModel" [(ngModel)]="settings.settingSearchServiceUrl" name="settingSearchServiceUrl"
+                                        class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingEpsgExtent0.invalid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)) ,
-                                'has-success': (settingEpsgExtent0.valid && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched))
-                                }">
-                                <input type="number" #settingEpsgExtent0="ngModel" [(ngModel)]="settings.settingEpsgExtent[0]" name="settingEpsgExtent0"
-                                class="form-control extent" required>
-                                <div class="form-control-feedback" *ngIf="settingEpsgExtent0.errors && (settingEpsgExtent0.dirty || settingEpsgExtent0.touched)">
-                                    <div *ngIf="settingEpsgExtent0.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingShowISOXML -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShowISOXML</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowISOXML" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShowISOXML" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShowISOXML_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShowISOXML="ngModel" name="settingShowISOXML" 
+                                            [(ngModel)]="settings.settingShowISOXML">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingEpsgExtent1.invalid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)) ,
-                                'has-success': (settingEpsgExtent1.valid && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched))
-                                }">
-                                <input type="number" #settingEpsgExtent1="ngModel" [(ngModel)]="settings.settingEpsgExtent[1]" name="settingEpsgExtent1"
-                                    class="form-control extent" required>
-                                <div class="form-control-feedback" *ngIf="settingEpsgExtent1.errors && (settingEpsgExtent1.dirty || settingEpsgExtent1.touched)">
-                                    <div *ngIf="settingEpsgExtent1.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingSearchNominatimUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchNominatimUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchNominatimUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchNominatimUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchNominatimUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchNominatimUrl="ngModel" [(ngModel)]="settings.settingSearchNominatimUrl" name="settingSearchNominatimUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingGazetterZoom -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingGazetterZoom</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingGazetterZoom"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingGazetterZoom" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingGazetterZoom_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" #settingGazetterZoom="ngModel" [(ngModel)]="settings.settingGazetterZoom" name="settingGazetterZoom"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- settingSearchCoordsZoom -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchCoordsZoom</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsZoom"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchCoordsZoom" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchCoordsZoom_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="number" #settingSearchCoordsZoom="ngModel" [(ngModel)]="settings.settingSearchCoordsZoom" name="settingSearchCoordsZoom"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- settingSearchCoordsXY -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchCoordsXY</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsXY"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchCoordsXY" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchCoordsXY_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY" 
+                                            [(ngModel)]="settings.settingSearchCoordsXY">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingEpsgExtent2.invalid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)) ,
-                                'has-success': (settingEpsgExtent2.valid && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched))
-                                }">
-                                <input type="number" #settingEpsgExtent2="ngModel" [(ngModel)]="settings.settingEpsgExtent[2]" name="settingEpsgExtent2"
-                                    class="form-control extent" required>
-                                <div class="form-control-feedback" *ngIf="settingEpsgExtent2.errors && (settingEpsgExtent2.dirty || settingEpsgExtent2.touched)">
-                                    <div *ngIf="settingEpsgExtent2.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- settingSearchBwaLocatorUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchBwaLocatorUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchBwaLocatorUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchBwaLocatorUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorUrl" name="settingSearchBwaLocatorUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchBwaLocatorGeoUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchBwaLocatorGeoUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorGeoUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchBwaLocatorGeoUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorGeoUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchBwaLocatorGeoUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorGeoUrl" name="settingSearchBwaLocatorGeoUrl"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingSearchBwaLocatorStationUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSearchBwaLocatorStationUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorStationUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSearchBwaLocatorStationUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorStationUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSearchBwaLocatorStationUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorStationUrl"
+                                        name="settingSearchBwaLocatorStationUrl" class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingEnableW3W -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingEnableW3W</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnableW3W" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingEnableW3W" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingEnableW3W_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingEnableW3W="ngModel" name="settingEnableW3W" 
+                                            [(ngModel)]="settings.settingEnableW3W">
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" [ngClass]="{
-                                'has-danger': (settingEpsgExtent3.invalid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)) ,
-                                'has-success': (settingEpsgExtent3.valid && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched))
-                                }">
-                                <input type="number" #settingEpsgExtent3="ngModel" [(ngModel)]="settings.settingEpsgExtent[3]" name="settingEpsgExtent3"
-                                    class="form-control extent" required>
-                                <div class="form-control-feedback" *ngIf="settingEpsgExtent3.errors && (settingEpsgExtent3.dirty || settingEpsgExtent3.touched)">
-                                    <div *ngIf="settingEpsgExtent3.errors.required">
-                                        <span translate>field_required</span>
+                            <!-- w3wUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_w3wUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wUrl" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_w3wUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_w3wUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #w3wUrl="ngModel" [(ngModel)]="settings.w3wUrl" name="w3wUrl" class="form-control">
+                                </div>
+                            </div>
+                            <!-- w3wApiKey -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_w3wApiKey</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wApiKey" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_w3wApiKey" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_w3wApiKey_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #w3wApiKey="ngModel" [(ngModel)]="settings.w3wApiKey" name="w3wApiKey" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+<!-- Share -->
+                        <div class="tab-pane fade show" id="tabs-settings-share" role="tabpanel" aria-labelledby="pills-settings-share-tab'">
+                            <!-- settingShortURLService -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShortURLService</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShortURLService"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShortURLService" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShortURLService_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingShortURLService="ngModel" [(ngModel)]="settings.settingShortURLService" name="settingShortURLService"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <!-- settingShareFacebook -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareFacebook</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareFacebook"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareFacebook" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareFacebook_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareFacebook="ngModel" name="settingShareFacebook" 
+                                            [(ngModel)]="settings.settingShareFacebook">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareMail -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareMail</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareMail" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareMail" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareMail_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareMail="ngModel" name="settingShareMail" 
+                                            [(ngModel)]="settings.settingShareMail">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareTwitter -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareTwitter</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareTwitter"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareTwitter" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareTwitter_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareTwitter="ngModel" name="settingShareTwitter" 
+                                            [(ngModel)]="settings.settingShareTwitter">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareIFrame -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareIFrame</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareIFrame" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareIFrame" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareIFrame_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareIFrame="ngModel" name="settingShareIFrame" 
+                                            [(ngModel)]="settings.settingShareIFrame">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareLink -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareLink</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareLink" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareLink" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareLink_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareLink="ngModel" name="settingShareLink" 
+                                            [(ngModel)]="settings.settingShareLink">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareQR -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareQR</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareQR" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareQR" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareQR_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareQR="ngModel" name="settingShareQR" 
+                                            [(ngModel)]="settings.settingShareQR">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShareWhatsapp -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShareWhatsapp</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareWhatsapp"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShareWhatsapp" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShareWhatsapp_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp" 
+                                            [(ngModel)]="settings.settingShareWhatsapp">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- settingLanguages -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingLanguages</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingLanguages" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
+<!-- Print -->
+                        <div class="tab-pane fade show" id="tabs-settings-print" role="tabpanel" aria-labelledby="pills-settings-print-tab'">
+                            <!-- settingPrintLogo -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintLogo</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintLogo" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintLogo" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintLogo_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingPrintLogo="ngModel" [(ngModel)]="settings.settingPrintLogo" name="settingPrintLogo" class="form-control"
+                                        required>
+                                </div>
                             </div>
-                            <div class="collapse" id="info_settingLanguages" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingLanguages_help</small>
+                            <!-- settingPrintNorthArrow -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintNorthArrow</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintNorthArrow"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintNorthArrow" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintNorthArrow_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingPrintNorthArrow="ngModel" [(ngModel)]="settings.settingPrintNorthArrow" name="settingPrintNorthArrow"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- settingPrintGraticuleLayer -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintGraticuleLayer</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintGraticuleLayer"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintGraticuleLayer" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintGraticuleLayer_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea class="form-control" name="settingPrintGraticuleLayer" rows="5" value="{{ settings.settingPrintGraticuleLayer | json }}"
+                                        #settingPrintGraticuleLayer (blur)="onTextAreaBlur('settingPrintGraticuleLayer', settingPrintGraticuleLayer.value)"></textarea>
+                                </div>
+                            </div>
+                            <!-- settingPrintFilename -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintFilename</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintFilename"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintFilename" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintFilename_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingPrintFilename="ngModel" [(ngModel)]="settings.settingPrintFilename" name="settingPrintFilename"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                            <!-- settingPrintDependOnMouseProj -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingPrintDependOnMouseProj</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintDependOnMouseProj"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingPrintDependOnMouseProj" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingPrintDependOnMouseProj_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj" 
+                                            [(ngModel)]="settings.settingPrintDependOnMouseProj">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingKMLName -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingKMLName</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingKMLName" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingKMLName" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingKMLName_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingKMLName="ngModel" [(ngModel)]="settings.settingKMLName" name="settingKMLName" class="form-control"
+                                        required>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-9">
-                            <div class="input-group form-group" *ngFor="let lang of settings.settingLanguages; let i=index;">
-                                <input type="text" [(ngModel)]="settings.settingLanguages[i]" name="langs{{ i }}" class="form-control" disabled>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(lang, settings.settingLanguages)" 
-                                        *ngIf="i !== (settings.settingLanguages.length - 1) && settings.settingLanguages.length > 1">
-                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(lang, settings.settingLanguages)" *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingLanguages)">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
+<!-- Verweise -->
+                        <div class="tab-pane fade show" id="tabs-settings-links" role="tabpanel" aria-labelledby="pills-settings-links-tab'">
+                            <!-- settingServiceAnnouncementUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceAnnouncementUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceAnnouncementUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceAnnouncementUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceAnnouncementUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingServiceAnnouncementUrl="ngModel" [(ngModel)]="settings.settingServiceAnnouncementUrl" name="settingServiceAnnouncementUrl" class="form-control">
                                 </div>
                             </div>
-                            <div class="input-group form-group">
-                                <input type="text" #langs name="langs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(langs.value, settings.settingLanguages);"
-                                        [disabled]="!langs.value">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </button>
+                            <!-- settingServiceHelpUrl -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceHelpUrl</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceHelpUrl"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceHelpUrl" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceHelpUrl_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingServiceHelpUrl="ngModel" [(ngModel)]="settings.settingServiceHelpUrl" name="settingServiceHelpUrl" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!-- settingShortURLService -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShortURLService</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShortURLService"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShortURLService" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShortURLService_help</small>
+                            <!-- settingCopyrightURL -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingCopyrightURL</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCopyrightURL"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingCopyrightURL" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingCopyrightURL_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingCopyrightURL="ngModel" [(ngModel)]="settings.settingCopyrightURL" name="settingCopyrightURL" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingShortURLService="ngModel" [(ngModel)]="settings.settingShortURLService" name="settingShortURLService"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingSearchServiceUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchServiceUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchServiceUrl"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchServiceUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchServiceUrl_help</small>
+                            <!-- settingDisclaimerURL -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDisclaimerURL</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDisclaimerURL" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDisclaimerURL" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDisclaimerURL_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingDisclaimerURL="ngModel" [(ngModel)]="settings.settingDisclaimerURL" name="settingDisclaimerURL" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSearchServiceUrl="ngModel" [(ngModel)]="settings.settingSearchServiceUrl" name="settingSearchServiceUrl"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingGazetterZoom -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingGazetterZoom</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingGazetterZoom"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingGazetterZoom" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingGazetterZoom_help</small>
+                            <!-- settingSitemapURL -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingSitemapURL</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSitemapURL" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingSitemapURL" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingSitemapURL_help</small>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="number" #settingGazetterZoom="ngModel" [(ngModel)]="settings.settingGazetterZoom" name="settingGazetterZoom"
-                                class="form-control" required>
-                        </div>
-                    </div>
-                    <!-- settingSearchNominatimUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchNominatimUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchNominatimUrl"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchNominatimUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchNominatimUrl_help</small>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingSitemapURL="ngModel" [(ngModel)]="settings.settingSitemapURL" name="settingSitemapURL" class="form-control">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSearchNominatimUrl="ngModel" [(ngModel)]="settings.settingSearchNominatimUrl" name="settingSearchNominatimUrl"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingSearchBwaLocatorUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchBwaLocatorUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorUrl"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
+<!-- Layerinfo -->
+                        <div class="tab-pane fade show" id="tabs-settings-layerinfo" role="tabpanel" aria-labelledby="pills-settings-layerinfo-tab'">
+                            <!-- settingCheckLayerInRange -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingCheckLayerInRange</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCheckLayerInRange"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingCheckLayerInRange" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingCheckLayerInRange_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange" 
+                                            [(ngModel)]="settings.settingCheckLayerInRange">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="collapse" id="info_settingSearchBwaLocatorUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorUrl_help</small>
+                            <!-- settingShowLayerServiceTree -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShowLayerServiceTree</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceTree"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShowLayerServiceTree" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShowLayerServiceTree_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" 
+                                            [(ngModel)]="settings.settingShowLayerServiceTree">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- settingShowLayerServiceName -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingShowLayerServiceName</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceName"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingShowLayerServiceName" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingShowLayerServiceName_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingShowLayerServiceName="ngModel" name="settingShowLayerServiceName" 
+                                            [(ngModel)]="settings.settingShowLayerServiceName">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSearchBwaLocatorUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorUrl" name="settingSearchBwaLocatorUrl"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingSearchBwaLocatorGeoUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchBwaLocatorGeoUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorGeoUrl"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchBwaLocatorGeoUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorGeoUrl_help</small>
+<!-- Others -->
+                        <div class="tab-pane fade show" id="tabs-settings-others" role="tabpanel" aria-labelledby="pills-settings-others-tab'">
+                            <!-- settingDefaultImportList -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultImportList</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultImportList"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultImportList" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultImportList_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="input-group form-group" *ngFor="let serviceList of settings.settingDefaultImportList; let i=index;">
+                                        <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" disabled>
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
+                                                *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
+                                                <i class="fa fa-sort-down" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(serviceList, settings.settingDefaultImportList)"
+                                                *ngIf="i !== 0">
+                                                <i class="fa fa-sort-up" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultImportList)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="input-group form-group">
+                                        <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
+                                                [disabled]="!serviceLists.value">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSearchBwaLocatorGeoUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorGeoUrl" name="settingSearchBwaLocatorGeoUrl"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingSearchBwaLocatorStationUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchBwaLocatorStationUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchBwaLocatorStationUrl"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchBwaLocatorStationUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchBwaLocatorStationUrl_help</small>
+                            <!-- settingUseGeodesic -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingUseGeodesic</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" 
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingUseGeodesic" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingUseGeodesic_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingUseGeodesic="ngModel" name="settingUseGeodesic" 
+                                            [(ngModel)]="settings.settingUseGeodesic">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSearchBwaLocatorStationUrl="ngModel" [(ngModel)]="settings.settingSearchBwaLocatorStationUrl"
-                                name="settingSearchBwaLocatorStationUrl" class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingCopyrightURL -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingCopyrightURL</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCopyrightURL"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingCopyrightURL" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingCopyrightURL_help</small>
+                            <!-- settingEnable3D -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingEnable3D</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnable3D" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingEnable3D" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingEnable3D_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingEnable3D="ngModel" name="settingEnable3D" 
+                                            [(ngModel)]="settings.settingEnable3D">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingCopyrightURL="ngModel" [(ngModel)]="settings.settingCopyrightURL" name="settingCopyrightURL" class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingDisclaimerURL -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingDisclaimerURL</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDisclaimerURL" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingDisclaimerURL" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingDisclaimerURL_help</small>
+                            <!-- settingDefaultTerrain -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingDefaultTerrain</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTerrain"
+                                            title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingDefaultTerrain" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingDefaultTerrain_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input type="text" #settingDefaultTerrain="ngModel" [(ngModel)]="settings.settingDefaultTerrain" name="settingDefaultTerrain"
+                                        class="form-control">
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingDisclaimerURL="ngModel" [(ngModel)]="settings.settingDisclaimerURL" name="settingDisclaimerURL" class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingSitemapURL -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSitemapURL</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSitemapURL" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSitemapURL" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSitemapURL_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingSitemapURL="ngModel" [(ngModel)]="settings.settingSitemapURL" name="settingSitemapURL" class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingUseGeodesic -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingUseGeodesic</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingUseGeodesic" 
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingUseGeodesic" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingUseGeodesic_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingUseGeodesic="ngModel" name="settingUseGeodesic" 
-                                    [(ngModel)]="settings.settingUseGeodesic">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingDefaultMouseProjections -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingDefaultMouseProjections</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultMouseProjections"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingDefaultMouseProjections" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingDefaultMouseProjections_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="input-group form-group" *ngFor="let mouseProj of settings.settingDefaultMouseProjections; let i=index;">
-                                <input type="text" [(ngModel)]="settings.settingDefaultMouseProjections[i]" name="mouseProjs{{ i }}" class="form-control"
-                                disabled>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(mouseProj, settings.settingDefaultMouseProjections)"
-                                        *ngIf="i !== (settings.settingDefaultMouseProjections.length - 1) && settings.settingDefaultMouseProjections.length > 1">
-                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(mouseProj, settings.settingDefaultMouseProjections)"
-                                        *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultMouseProjections)">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="input-group form-group">
-                                <input type="text" #mouseProjs name="mouseProjs" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(mouseProjs.value, settings.settingDefaultMouseProjections);"
-                                        [disabled]="!mouseProjs.value">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingDefaultImportList -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingDefaultImportList</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultImportList"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingDefaultImportList" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingDefaultImportList_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="input-group form-group" *ngFor="let serviceList of settings.settingDefaultImportList; let i=index;">
-                                <input type="text" [(ngModel)]="settings.settingDefaultImportList[i]" name="serviceLists{{ i }}" class="form-control" disabled>
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onDownItem(serviceList, settings.settingDefaultImportList)"
-                                        *ngIf="i !== (settings.settingDefaultImportList.length - 1) && settings.settingDefaultImportList.length > 1">
-                                        <i class="fa fa-sort-down" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="onUpItem(serviceList, settings.settingDefaultImportList)"
-                                        *ngIf="i !== 0">
-                                        <i class="fa fa-sort-up" aria-hidden="true"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="onRemoveItem(i, settings.settingDefaultImportList)">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="input-group form-group">
-                                <input type="text" #serviceLists name="serviceLists" class="form-control" placeholder="{{ ('add_placeholder') | translate }}">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary btn-sm" (click)="onAddItem(serviceLists.value, settings.settingDefaultImportList);"
-                                        [disabled]="!serviceLists.value">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareFacebook -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareFacebook</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareFacebook"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareFacebook" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareFacebook_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareFacebook="ngModel" name="settingShareFacebook" 
-                                    [(ngModel)]="settings.settingShareFacebook">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareMail -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareMail</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareMail" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareMail" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareMail_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareMail="ngModel" name="settingShareMail" 
-                                    [(ngModel)]="settings.settingShareMail">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareTwitter -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareTwitter</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareTwitter"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareTwitter" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareTwitter_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareTwitter="ngModel" name="settingShareTwitter" 
-                                    [(ngModel)]="settings.settingShareTwitter">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareIFrame -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareIFrame</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareIFrame" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareIFrame" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareIFrame_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareIFrame="ngModel" name="settingShareIFrame" 
-                                    [(ngModel)]="settings.settingShareIFrame">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareLink -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareLink</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareLink" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareLink" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareLink_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareLink="ngModel" name="settingShareLink" 
-                                    [(ngModel)]="settings.settingShareLink">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareQR -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareQR</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareQR" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareQR" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareQR_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareQR="ngModel" name="settingShareQR" 
-                                    [(ngModel)]="settings.settingShareQR">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShareWhatsapp -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShareWhatsapp</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShareWhatsapp"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShareWhatsapp" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShareWhatsapp_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShareWhatsapp="ngModel" name="settingShareWhatsapp" 
-                                    [(ngModel)]="settings.settingShareWhatsapp">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingPrintLogo -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingPrintLogo</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintLogo" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingPrintLogo" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingPrintLogo_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingPrintLogo="ngModel" [(ngModel)]="settings.settingPrintLogo" name="settingPrintLogo" class="form-control"
-                                required>
-                        </div>
-                    </div>
-                    <!-- settingPrintNorthArrow -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingPrintNorthArrow</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintNorthArrow"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingPrintNorthArrow" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingPrintNorthArrow_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingPrintNorthArrow="ngModel" [(ngModel)]="settings.settingPrintNorthArrow" name="settingPrintNorthArrow"
-                                class="form-control" required>
-                        </div>
-                    </div>
-                    <!-- settingPrintGraticuleLayer -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingPrintGraticuleLayer</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintGraticuleLayer"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingPrintGraticuleLayer" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingPrintGraticuleLayer_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" name="settingPrintGraticuleLayer" rows="5" value="{{ settings.settingPrintGraticuleLayer | json }}"
-                                #settingPrintGraticuleLayer (blur)="onTextAreaBlur('settingPrintGraticuleLayer', settingPrintGraticuleLayer.value)"></textarea>
-                        </div>
-                    </div>
-                    <!-- settingPrintFilename -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingPrintFilename</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintFilename"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingPrintFilename" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingPrintFilename_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingPrintFilename="ngModel" [(ngModel)]="settings.settingPrintFilename" name="settingPrintFilename"
-                                class="form-control" required>
-                        </div>
-                    </div>
-                    <!-- settingPrintDependOnMouseProj -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingPrintDependOnMouseProj</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingPrintDependOnMouseProj"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingPrintDependOnMouseProj" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingPrintDependOnMouseProj_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingPrintDependOnMouseProj="ngModel" name="settingPrintDependOnMouseProj" 
-                                    [(ngModel)]="settings.settingPrintDependOnMouseProj">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingKMLName -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingKMLName</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingKMLName" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingKMLName" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingKMLName_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingKMLName="ngModel" [(ngModel)]="settings.settingKMLName" name="settingKMLName" class="form-control"
-                                required>
-                        </div>
-                    </div>
-                    <!-- settingHideCatalog -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingHideCatalog</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingHideCatalog" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingHideCatalog" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingHideCatalog_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingHideCatalog="ngModel" name="settingHideCatalog" 
-                                    [(ngModel)]="settings.settingHideCatalog">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingEnableW3W -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingEnableW3W</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnableW3W" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingEnableW3W" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingEnableW3W_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingEnableW3W="ngModel" name="settingEnableW3W" 
-                                    [(ngModel)]="settings.settingEnableW3W">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- w3wUrl -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_w3wUrl</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wUrl" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_w3wUrl" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_w3wUrl_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #w3wUrl="ngModel" [(ngModel)]="settings.w3wUrl" name="w3wUrl" class="form-control">
-                        </div>
-                    </div>
-                    <!-- w3wApiKey -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_w3wApiKey</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_w3wApiKey" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_w3wApiKey" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_w3wApiKey_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #w3wApiKey="ngModel" [(ngModel)]="settings.w3wApiKey" name="w3wApiKey" class="form-control">
-                        </div>
-                    </div>
-                    <!-- settingShowLayerServiceTree -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShowLayerServiceTree</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceTree"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShowLayerServiceTree" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShowLayerServiceTree_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShowLayerServiceTree="ngModel" name="settingShowLayerServiceTree" 
-                                    [(ngModel)]="settings.settingShowLayerServiceTree">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShowLayerServiceName -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShowLayerServiceName</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowLayerServiceName"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShowLayerServiceName" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShowLayerServiceName_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShowLayerServiceName="ngModel" name="settingShowLayerServiceName" 
-                                    [(ngModel)]="settings.settingShowLayerServiceName">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingCheckLayerInRange -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingCheckLayerInRange</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingCheckLayerInRange"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingCheckLayerInRange" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingCheckLayerInRange_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingCheckLayerInRange="ngModel" name="settingCheckLayerInRange" 
-                                    [(ngModel)]="settings.settingCheckLayerInRange">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingShowISOXML -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingShowISOXML</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingShowISOXML" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingShowISOXML" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingShowISOXML_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingShowISOXML="ngModel" name="settingShowISOXML" 
-                                    [(ngModel)]="settings.settingShowISOXML">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingSearchCoordsXY -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchCoordsXY</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsXY"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchCoordsXY" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchCoordsXY_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingSearchCoordsXY="ngModel" name="settingSearchCoordsXY" 
-                                    [(ngModel)]="settings.settingSearchCoordsXY">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingSearchCoordsZoom -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingSearchCoordsZoom</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingSearchCoordsZoom"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingSearchCoordsZoom" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingSearchCoordsZoom_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="number" #settingSearchCoordsZoom="ngModel" [(ngModel)]="settings.settingSearchCoordsZoom" name="settingSearchCoordsZoom"
-                                class="form-control" required>
-                        </div>
-                    </div>
-                    <!-- settingEnable3D -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingEnable3D</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingEnable3D" title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingEnable3D" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingEnable3D_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="form-check mb-2 mr-sm-2">
-                                <input class="form-check-input" type="checkbox" #settingEnable3D="ngModel" name="settingEnable3D" 
-                                    [(ngModel)]="settings.settingEnable3D">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- settingDefaultTerrain -->
-                    <div class="form-group row">
-                        <div class="col-sm-3">
-                            <div class=" d-flex justify-content-between align-items-center">
-                                <label class="col-form-label" translate>setting_settingDefaultTerrain</label>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingDefaultTerrain"
-                                    title="{{ ('help') | translate }}">
-                                    <i class="fa fa-info" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                            <div class="collapse" id="info_settingDefaultTerrain" data-parent="#setting">
-                                <div>
-                                    <small class="form-text text-muted" translate>setting_settingDefaultTerrain_help</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-9">
-                            <input type="text" #settingDefaultTerrain="ngModel" [(ngModel)]="settings.settingDefaultTerrain" name="settingDefaultTerrain"
-                                class="form-control">
                         </div>
                     </div>
                 </div>

@@ -305,6 +305,10 @@ goog.require('ga_window_service');
       isParentIFrame: gaGlobalOptions.isParentIFrame,
       // INGRID: Add 'isHideCatalog'
       isHideCatalog: gaGlobalOptions.isHideCatalog,
+      // INGRID: Add 'serviceAnnoucementUrl'
+      serviceAnnoucementUrl: gaGlobalOptions.serviceAnnoucementUrl,
+      // INGRID: Add 'serviceHelpUrl'
+      serviceHelpUrl: gaGlobalOptions.serviceHelpUrl,
       hostIsProd: gaGlobalOptions.hostIsProd
     };
 
