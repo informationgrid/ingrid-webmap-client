@@ -171,8 +171,20 @@ goog.require('ga_urlutils_service');
               wgs84Extent);
 
           if (layerWgs84Extent) {
-            return ol.proj.transformExtent(layerWgs84Extent, wgs84, projCode);
+            // INGRID: Add check infinity values
+            var hasInfinityValue = false;
+
+            layerWgs84Extent.forEach(function(coord) {
+              if(!isFinite(coord)){
+                hasInfinityValue = true; 
+              }
+            });
+
+            if(!hasInfinityValue) {
+              return ol.proj.transformExtent(layerWgs84Extent, wgs84, projCode);
+            }
           }
+          return ol.proj.transformExtent(wgs84Extent, wgs84, projCode);
         }
       };
 
