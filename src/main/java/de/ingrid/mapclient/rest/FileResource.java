@@ -487,10 +487,12 @@ public class FileResource {
             }
         }
 
+        /*
         if(kml != null && !kml.isEmpty()){
             text += "KML:\n" + kml;
             text += "\n\n";
         }
+        */
         if(version != null && !version.isEmpty()){
             text += "Version:\n" + version;
             text += "\n\n";
