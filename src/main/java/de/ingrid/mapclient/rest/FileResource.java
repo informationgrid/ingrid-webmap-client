@@ -463,28 +463,27 @@ public class FileResource {
                     }
                     permalink += "layers=" + newLayersValue;
                 }
-                
-                if(shortURLService != null && !shortURLService.isEmpty()) {
-                    if(shortURLService.indexOf('?') == -1) {
-                        shortURLService += "?url=" + URLEncoder.encode(permalink);
-                    } else {
-                        shortURLService += "&url=" + URLEncoder.encode(permalink);
-                    }
-                    try {
-                        String shortenUrlContent = HttpProxy.doRequest(shortURLService);
-                        if(shortenUrlContent != null) {
-                            JSONObject shortenURLJSON = new JSONObject(shortenUrlContent);
-                            if(shortenURLJSON.has("shorturl")) {
-                                permalink = shortenURLJSON.getString("shorturl");
-                            }
-                        }
-                    } catch (Exception e) {
-                        log.error("Error shorten URL: " + e);
-                    }
-                }
-                text += "Permalink:\n" + permalink;
-                text += "\n\n";
             }
+            if(shortURLService != null && !shortURLService.isEmpty()) {
+                if(shortURLService.indexOf('?') == -1) {
+                    shortURLService += "?url=" + URLEncoder.encode(permalink);
+                } else {
+                    shortURLService += "&url=" + URLEncoder.encode(permalink);
+                }
+                try {
+                    String shortenUrlContent = HttpProxy.doRequest(shortURLService);
+                    if(shortenUrlContent != null) {
+                        JSONObject shortenURLJSON = new JSONObject(shortenUrlContent);
+                        if(shortenURLJSON.has("shorturl")) {
+                            permalink = shortenURLJSON.getString("shorturl");
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("Error shorten URL: " + e);
+                }
+            }
+            text += "Permalink:\n" + permalink;
+            text += "\n\n";
         }
 
         /*
