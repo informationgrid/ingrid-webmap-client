@@ -27,8 +27,10 @@ public class Constants {
     public static final String TYPE_WMTS = "wmts";
     public static final String WMS_LAYERNAME = "wmsLayers";
     public static final String WMTS_LAYERNAME = "serverLayerName";
+    public static final String BOD_ID = "bod_id";
     public static final String AUTH = "auth";
     public static final String TYPE = "type";
+    public static final String BACKGROUND = "background";
     public static final String VERSION = "version";
     public static final String WMS_URL = "wmsUrl";
     public static final String WMTS_URL = "serviceUrl";
