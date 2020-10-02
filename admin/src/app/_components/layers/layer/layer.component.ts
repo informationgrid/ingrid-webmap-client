@@ -62,7 +62,11 @@ export class LayerComponent implements OnInit {
 
   actionMapping: IActionMapping = {
     mouse: {
-      click: (tree, node) => this.check(node, !node.data.checked)
+      click: (tree, node) => {
+        if (node.data.layer.exent) {
+          this.check(node, !node.data.checked);
+        }
+      }
     }
   };
   optionsLayersTree: ITreeOptions = {
