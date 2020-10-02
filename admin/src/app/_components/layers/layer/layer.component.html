@@ -144,13 +144,21 @@
           <div class="col-sm">
             <tree-root #newLayersTree [nodes]="newLayers" [options]="optionsLayersTree" (updateData)="onUpdateTree($event)">
               <ng-template #treeNodeTemplate let-node let-index="index">
-                <input
-                  type="checkbox"
-                  class="mr-sm-2"
-                  [indeterminate]="node.data.indeterminate"
-                  [checked]="node.data.checked">
-                <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'"></i>
-                {{ node.data.label }}<span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
+                <div  [ngClass]="!node.data.layer.extent ? 'item_disabled' : ''">
+                  <input
+                    type="checkbox"
+                    class="mr-sm-2"
+                    [indeterminate]="node.data.indeterminate"
+                    [checked]="node.data.checked"
+                    [disabled]="!node.data.layer.extent"
+                  >
+                  <i class="fa" [ngClass]="node.data.layer.wmsLayers || node.data.layer.matrixSet ? 'fa-map' : 'fa-folder'"></i>
+                  {{ node.data.label }}
+                  <span *ngIf="node.data.layer.matrixSet"> ({{ node.data.layer.matrixSet }})</span>
+                  <span *ngIf="!node.data.layer.extent" class="badge badge-pill badge-danger mr-sm-2" title="{{ ('service_error_layer_no_extent') | translate }}">
+                    <i class="fa fa-times"></i>
+                  </span>
+                </div>
               </ng-template>
             </tree-root>
           </div>
