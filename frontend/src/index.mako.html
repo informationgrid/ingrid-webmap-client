@@ -173,11 +173,15 @@ itemscope itemtype="http://schema.org/WebApplication"
         <a ga-vector-tile-test-link></a>&nbsp;&nbsp;
         -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
-        <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+        <!-- INGRID: Use 'globals.serviceAnnouncementUrl' to define href -->
+        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+          <span translate>problem_announcement</span>
+        </a>
+        <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
           <span translate>problem_announcement</span>
         </a>&nbsp;&nbsp;
         <!-- INGRID: Edit href URL -->
-        <a target="_blank" href="/hilfe?hkey=maps-1" translate>help_label</a>&nbsp;&nbsp;
+        <a target="_blank" href="{{globals.serviceHelpUrl}}" translate>help_label</a>&nbsp;&nbsp;
         <!-- INGRID: Remove on iFrame -->
         <a class="ga-redirect" ng-if="!globals.isParentIFrame" href="{{deviceSwitcherHref}}" translate>mobile_redirect</a>&nbsp;&nbsp;
         <!-- INGRID: Remove on iFrame -->
@@ -971,6 +975,10 @@ itemscope itemtype="http://schema.org/WebApplication"
           enableShareQR: settings.settingShareQR,
           // INGRID: Enable share Whatsapp
           enableShareWhatsapp: settings.settingShareWhatsapp,
+          // INGRID: Announcement URL
+          serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
+          // INGRID: Help URL
+          serviceHelpUrl: settings.settingServiceHelpUrl,
 
           // Map state values
           // INGRID: Read setting from settings

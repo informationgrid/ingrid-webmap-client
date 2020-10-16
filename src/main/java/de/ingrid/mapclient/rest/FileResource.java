@@ -35,11 +35,14 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.Consumes;
@@ -71,6 +74,7 @@ import com.sun.jersey.core.header.FormDataContentDisposition;
 import com.sun.jersey.multipart.FormDataParam;
 
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.HttpProxy;
 import de.ingrid.mapclient.utils.Utils;
 
 /**
@@ -346,34 +350,51 @@ public class FileResource {
     public Response getFeedbackRequest(@FormDataParam("email") String email, @FormDataParam("feedback") String feedback, 
             @FormDataParam("ua") String ua, @FormDataParam("permalink") String permalink, @FormDataParam("attachement") InputStream attachement, 
             @FormDataParam("attachement") FormDataContentDisposition attachementContentDisposition, @FormDataParam("kml") String kml, @FormDataParam("version") String version,
-            @FormDataParam("subject") String subject) throws IOException{
+            @FormDataParam("subject") String subject, @FormDataParam("shortURLService") String shortURLService) throws IOException{
         
         String text = "";
-        if(email != null && email.length() > 0){
+        URL permalinkUrl = null;
+        if(email != null && !email.isEmpty()){
             text += "E-Mail:\n" + email;
             text += "\n\n";
         }
-        if(feedback != null && feedback.length() > 0){
+        if(feedback != null && !feedback.isEmpty()){
             text += "Feedback:\n" + feedback;
             text += "\n\n";
         }
-        if(ua != null && ua.length() > 0){
+        if(ua != null && !ua.isEmpty()){
             text += "User-Interface:\n" + ua;
             text += "\n\n";
         }
-        if(permalink != null && permalink.length() > 0){
-            text += "Permalink:\n" + permalink;
-            text += "\n\n";
-        }
-        if(kml != null && kml.length() > 0){
-            text += "KML:\n" + kml;
-            text += "\n\n";
-        }
-        if(version != null && version.length() > 0){
-            text += "Version:\n" + version;
-            text += "\n\n";
-        }
+
+        String layersParam = "";
+        String layersParamValue = "";
+        String layersParamContent = "";
+        boolean hasLayersParam = false;
         
+        // Get existing layers params
+        if(permalink != null && !permalink.isEmpty()){
+            permalinkUrl = new URL(permalink);
+            Pattern pattern = Pattern.compile("layers=([^&]+)");
+            Matcher matcher = pattern.matcher(permalink);
+            if(matcher.find()) {
+                hasLayersParam = true;
+                layersParam = matcher.group();
+                String[] keyValue = layersParam.split("layers=");
+                if(keyValue.length > 1) {
+                    String layersParamUrlContent = getHost(permalinkUrl);
+                    layersParamValue = keyValue[1];
+                    layersParamUrlContent += "/ingrid-webmap-client/rest/data/short?key=layers&value=" + layersParamValue;
+                    try {
+                        layersParamContent = HttpProxy.doRequest(layersParamUrlContent);
+                    } catch (Exception e) {
+                        log.error("Error get layers param content: " + e);
+                    }
+                }
+            }
+        }
+
+        // Get attachment file
         File file = null;
         if(attachement != null && attachementContentDisposition != null && attachementContentDisposition.getFileName() != null){
             file = new File(attachementContentDisposition.getFileName());
@@ -393,6 +414,89 @@ public class FileResource {
                 }
             }
         }
+
+        // Copy KML attachment and set to permalink 
+        if(file != null && file.getName().endsWith(".kml")) {
+            if(permalink != null && !permalink.isEmpty()){
+                String kmlFileContent = Utils.readFileAsString(file);
+                if(kmlFileContent != null) {
+                    String id = createKMLFile( kmlFileContent, null);
+                    if(!layersParamContent.isEmpty()) {
+                        layersParamContent += ",";
+                    } 
+                    layersParamContent += "KML||";
+                    layersParamContent += getHost(permalinkUrl);
+                    layersParamContent += "/ingrid-webmap-client/rest/data/" + id;
+                }
+            }
+        }
+
+        // Create kml draw file
+        if(kml != null && !kml.isEmpty()){
+            if(permalink != null && !permalink.isEmpty()) {
+                String id = createKMLFile( kml, null);
+                if(!layersParamContent.isEmpty()) {
+                    layersParamContent += ",";
+                } 
+                layersParamContent += "KML||";
+                layersParamContent += getHost(permalinkUrl);
+                layersParamContent += "/ingrid-webmap-client/rest/data/" + id;
+            }
+        }
+
+        // Create permalink
+        if(permalink != null && !permalink.isEmpty()){
+            if(!layersParamContent.isEmpty()) {
+                String newLayersValue = createShortFile("layers", layersParamContent.replace("\n", ""));
+                if(hasLayersParam) {
+                    if(!layersParamValue.isEmpty()) {
+                        permalink = permalink.replace(layersParamValue, newLayersValue);
+                        permalink = permalink.replace("&&", "&");
+                    }
+                } else {
+                    if(permalink.indexOf('?') == -1) {
+                        permalink += "?";
+                    } else {
+                        if(!permalink.endsWith("&")) {
+                            permalink += "&";
+                        }
+                    }
+                    permalink += "layers=" + newLayersValue;
+                }
+            }
+            if(shortURLService != null && !shortURLService.isEmpty()) {
+                if(shortURLService.indexOf('?') == -1) {
+                    shortURLService += "?url=" + URLEncoder.encode(permalink);
+                } else {
+                    shortURLService += "&url=" + URLEncoder.encode(permalink);
+                }
+                try {
+                    String shortenUrlContent = HttpProxy.doRequest(shortURLService);
+                    if(shortenUrlContent != null) {
+                        JSONObject shortenURLJSON = new JSONObject(shortenUrlContent);
+                        if(shortenURLJSON.has("shorturl")) {
+                            permalink = shortenURLJSON.getString("shorturl");
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("Error shorten URL: " + e);
+                }
+            }
+            text += "Permalink:\n" + permalink;
+            text += "\n\n";
+        }
+
+        /*
+        if(kml != null && !kml.isEmpty()){
+            text += "KML:\n" + kml;
+            text += "\n\n";
+        }
+        */
+        if(version != null && !version.isEmpty()){
+            text += "Version:\n" + version;
+            text += "\n\n";
+        }
+
         Properties p = ConfigurationProvider.INSTANCE.getProperties();
         String from = p.getProperty( ConfigurationProvider.FEEDBACK_FROM );
         String[] replyTo = null;
@@ -406,7 +510,7 @@ public class FileResource {
         String password = p.getProperty( ConfigurationProvider.FEEDBACK_PW );
         boolean ssl = Boolean.parseBoolean(p.getProperty( ConfigurationProvider.FEEDBACK_SSL ));
         String protocol = p.getProperty( ConfigurationProvider.FEEDBACK_PROTOCOL );
-        
+
         boolean sendMail = Utils.sendEmail( from, subject, new String[] { to }, text, null, host, port, user, password, ssl, protocol, file, replyTo);
         if(sendMail){
             return Response.ok( "{\"success\": true}" ).build();
@@ -414,6 +518,15 @@ public class FileResource {
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR ).build();
     }
     
+    private String getHost(URL permalinkUrl) {
+        String host = permalinkUrl.getProtocol() + "://";
+        host += permalinkUrl.getHost();
+        if(permalinkUrl.getPort() > -1) {
+            host += ":" + permalinkUrl.getPort();
+        }
+        return host;
+    }
+
     @GET
     @Path("color/{color}/{icon}")
     @Produces("image/png")
@@ -542,50 +655,7 @@ public class FileResource {
             value = obj.getString("value");
         }
         if(key != null && value != null) {
-            Properties p = ConfigurationProvider.INSTANCE.getProperties();
-            String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
-            
-            if(!path.endsWith( "/")){
-                path += "/";
-            }
-            
-            File shortenDir = new File (path + "shorten");
-            if(!shortenDir.exists()) {
-                shortenDir.mkdir();
-            }
-            
-            File shortenDirKey = new File (shortenDir.getAbsolutePath(), key);
-            if(!shortenDirKey.exists()) {
-                shortenDirKey.mkdir();
-            }
-            String valueToMd5 = DigestUtils.md5Hex(value);
-            
-            String shortenDirSubPath = shortenDirKey.getAbsolutePath();
-            
-            if(!shortenDirSubPath.endsWith( "/")){
-                shortenDirSubPath += "/";
-            }
-            
-            shortenDirSubPath += valueToMd5.substring(0, 2);
-            
-            File shortenDirSub = new File(shortenDirSubPath);
-            if(!shortenDirSub.exists()) {
-                shortenDirSub.mkdir();
-            }
-            
-            String shortenFilename = shortenDirSub.getAbsolutePath();
-           
-            if(!shortenFilename.endsWith( "/")){
-                shortenFilename += "/";
-            }
-            
-            shortenFilename += valueToMd5;
-           
-            File shortenFile = new File(shortenFilename);
-            if(!shortenFile.exists()) {
-                Utils.updateFile("shorten/" + key + "/" + shortenDirSub.getName() + "/" + valueToMd5, value);
-            }
-            return valueToMd5;
+            return createShortFile(key, value);
         }
         if(value != null) {
             return value;
@@ -594,6 +664,53 @@ public class FileResource {
     }
 
     
+    private String createShortFile(String key, String value) {
+        Properties p = ConfigurationProvider.INSTANCE.getProperties();
+        String path = p.getProperty( ConfigurationProvider.CONFIG_DIR, "./").trim();
+        
+        if(!path.endsWith( "/")){
+            path += "/";
+        }
+        
+        File shortenDir = new File (path + "shorten");
+        if(!shortenDir.exists()) {
+            shortenDir.mkdir();
+        }
+        
+        File shortenDirKey = new File (shortenDir.getAbsolutePath(), key);
+        if(!shortenDirKey.exists()) {
+            shortenDirKey.mkdir();
+        }
+        String valueToMd5 = DigestUtils.md5Hex(value);
+        
+        String shortenDirSubPath = shortenDirKey.getAbsolutePath();
+        
+        if(!shortenDirSubPath.endsWith( "/")){
+            shortenDirSubPath += "/";
+        }
+        
+        shortenDirSubPath += valueToMd5.substring(0, 2);
+        
+        File shortenDirSub = new File(shortenDirSubPath);
+        if(!shortenDirSub.exists()) {
+            shortenDirSub.mkdir();
+        }
+        
+        String shortenFilename = shortenDirSub.getAbsolutePath();
+       
+        if(!shortenFilename.endsWith( "/")){
+            shortenFilename += "/";
+        }
+        
+        shortenFilename += valueToMd5;
+       
+        File shortenFile = new File(shortenFilename);
+        if(!shortenFile.exists()) {
+            Utils.updateFile("shorten/" + key + "/" + shortenDirSub.getName() + "/" + valueToMd5, value);
+        }
+        return valueToMd5;
+    }
+
     @GET
     @Path("short")
     @Produces(MediaType.TEXT_PLAIN)
@@ -644,7 +761,7 @@ public class FileResource {
         }
         
         if (content != null && content.length() > 0) {
-            fileId += content.hashCode();
+            fileId += DigestUtils.md5Hex(content);
             filename += fileId;
             File file = new File( filename);
             Utils.writeFileContent(file, content);

@@ -88,7 +88,8 @@ goog.require('ga_window_service');
               layersToQuery.wmsLayers.push(l);
             } else if (gaMapUtils.isWMTSLayer(l) &&
                 (gaLayers.hasTooltipBodLayer(l) || l.get('queryable') || 
-                (gaMapUtils.isExternalWmtsLayer(l) && l.getSource().get('featureInfoTpl')))) {
+                (gaMapUtils.isExternalWmtsLayer(l) &&
+                    l.getSource().get('featureInfoTpl')))) {
               // INGRID: Add check external wmts with featureInfoTpl
               layersToQuery.wmtsLayers.push(l);
             }
@@ -158,20 +159,20 @@ goog.require('ga_window_service');
                 function() {
                   return true;
                 }, {
-                  'layerFilter': function(layer) {
-                    /* INGRID: Add check for crossOrigin
-                    // EDGE: An IndexSizeError is triggered by the
-                    // map.forEachLayerAtPixel when the mouse is outside the
-                    // extent of switzerland (west, north). So we avoid triggering
-                    // this function outside a layer's extent.
-                    var extent = layer.getExtent();
-                    if (extent && !ol.extent.containsXY(extent, coord[0],
-                        coord[1])) {
-                      return false;
-                    }
-                    return gaLayers.hasTooltipBodLayer(layer);
+                'layerFilter': function(layer) {
+                  /* INGRID: Add check for crossOrigin
+                  // EDGE: An IndexSizeError is triggered by the
+                  // map.forEachLayerAtPixel when the mouse is outside the
+                  // extent of switzerland (west, north). So we avoid triggering
+                  // this function outside a layer's extent.
+                  var extent = layer.getExtent();
+                  if (extent && !ol.extent.containsXY(extent, coord[0],
+                      coord[1])) {
+                    return false;
+                  }
+                  return gaLayers.hasTooltipBodLayer(layer);
                   */
-                    return gaLayers.hasTooltipBodLayer(layer) &&
+                  return gaLayers.hasTooltipBodLayer(layer) &&
                     layer.getSource().crossOrigin;
                   }
                 });

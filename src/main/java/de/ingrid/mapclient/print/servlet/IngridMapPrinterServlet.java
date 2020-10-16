@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -57,6 +59,9 @@ import de.ingrid.mapclient.utils.Utils;
 public class IngridMapPrinterServlet extends MapPrinterServlet{
 
     private static final long serialVersionUID = 525819445237152542L;
+
+    private static final String PRINT_URL = "/print.pdf";
+    private static final String CREATE_URL = "/create.json";
 
     private final Map<String, MapPrinter> printers = Maps.newHashMap();
     private final Map<String,Long> lastModifieds = Maps.newHashMap();
@@ -259,4 +264,23 @@ public class IngridMapPrinterServlet extends MapPrinterServlet{
         return this.context;
     }
 
+    protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        final String additionalPath = httpServletRequest.getPathInfo();
+        if (additionalPath.equals(PRINT_URL)) {
+            createAndGetPDF(httpServletRequest, httpServletResponse);
+        } else if (additionalPath.equals(CREATE_URL)) {
+
+            // Use proxyBaseUrl to create pdf url
+            MapPrinter printer = getMapPrinter(httpServletRequest.getParameter("app"));
+            String urlToUseInSpec = getBaseUrl(httpServletRequest);
+
+            String proxyUrl = printer.getConfig().getProxyBaseUrl();
+            if (proxyUrl != null) {
+                urlToUseInSpec = proxyUrl;
+            }
+            createPDF(httpServletRequest, httpServletResponse, urlToUseInSpec);
+        } else {
+            error(httpServletResponse, "Unknown method: " + additionalPath, 404);
+        }
+    }
 }

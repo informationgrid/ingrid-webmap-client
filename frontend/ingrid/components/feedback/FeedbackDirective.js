@@ -64,28 +64,29 @@ goog.require('ga_window_service');
             formData.append('email', scope.email);
             formData.append('feedback', scope.feedback);
             formData.append('ua', navigator.userAgent);
-            // INGRID: Add scope.shortUrl
-            formData.append('permalink', scope.shortUrl ||
-              scope.permalinkValue);
+            formData.append('permalink', scope.permalinkValue);
             formData.append('attachement', scope.file || '');
             formData.append('kml', kml);
             formData.append('version', gaGlobalOptions.version + '');
             // INGRID: Add entries
             formData.append('subject',
-              $translate.instant('feedback_subject') + '');
+                $translate.instant('feedback_subject') + '');
+            // INGRID: Add shortURLService
+            formData.append('shortURLService', gaGlobalOptions.shortURLService);
             return formData;
           } else {
             formData = {
               email: scope.email,
               feedback: scope.feedback,
               ua: navigator.userAgent,
-              // INGRID: Add scope.shortUrl
-              permalink: scope.shortUrl || scope.permalinkValue,
+              permalink: scope.permalinkValue,
               attachement: '',
               kml: kml,
               // INGRID: Add entries
               subject: $translate.instant('feedback_subject') + '',
-              version: gaGlobalOptions.version + ''
+              version: gaGlobalOptions.version + '',
+              // INGRID: Add shortURLService
+              shortURLService: gaGlobalOptions.shortURLService
             };
             return $.param(formData);
           }
@@ -144,27 +145,27 @@ goog.require('ga_window_service');
 
         // INGRID: Add params
         scope.permalinkValue = gaPermalink.getHref(undefined,
-          gaGlobalOptions.isParentIFrame);
+            gaGlobalOptions.isParentIFrame);
 
         // INGRID: Get short url
         gaUrlUtils.shorten(scope.permalinkValue).
-          then(function(url) {
+            then(function(url) {
             // INGRID: Return href if no shorturl exists
-            scope.shortUrl = url || scope.permalinkValue;
-        });
+              scope.shortUrl = url || scope.permalinkValue;
+            });
 
         // Listen to permalink change events from the scope.
         scope.$on('gaPermalinkChange', function(event) {
           // INGRID: Add params
           scope.permalinkValue = gaPermalink.getHref(undefined,
-            gaGlobalOptions.isParentIFrame);
+              gaGlobalOptions.isParentIFrame);
           // INGRID: Get short url
-          if(scope.active){
+          if (scope.active) {
             gaUrlUtils.shorten(scope.permalinkValue).
-              then(function(url) {
+                then(function(url) {
                 // INGRID: Return href if no shorturl exists
-                scope.shortUrl = url || scope.permalinkValue;
-            });
+                  scope.shortUrl = url || scope.permalinkValue;
+                });
           }
         });
 
