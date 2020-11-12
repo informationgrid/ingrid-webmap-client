@@ -137,9 +137,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
         <listener-class>de.ingrid.mapclient.scheduler.MapClientScheduler</listener-class>
     </listener>
     
+    <!-- Forbidden listing -->
     <error-page>
-        <!-- Forbidden directory listing -->
         <error-code>403</error-code>
         <location>/login/login-error403.jsp</location>
+    </error-page>
+
+    <!-- Too many active sessions listing -->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/login/login-error500.html</location>
     </error-page>
 </web-app>
