@@ -63,7 +63,7 @@ export class LayerComponent implements OnInit {
   actionMapping: IActionMapping = {
     mouse: {
       click: (tree, node) => {
-        if (node.data.layer.exent) {
+        if (node.data.layer.extent) {
           this.check(node, !node.data.checked);
         }
       }
