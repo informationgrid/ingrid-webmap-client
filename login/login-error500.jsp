@@ -20,7 +20,7 @@ request.getSession(false);
             <hr>
             <div>
                 <p>
-                    Ihre Anmeldung kann nicht durchgef&uuml;hrt werden, da eine anderer Benutzer zurzeit angemeldet ist.
+                    Ihre Anmeldung kann nicht durchgef&uuml;hrt werden, da ein anderer Benutzer aktuell angemeldet ist.
                 </p>
                 <p>
                     Probieren Sie es später noch mal.
