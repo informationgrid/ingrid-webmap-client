@@ -16,9 +16,9 @@ const httpJsonOptions = {
   })
 };
 
-const httpApiHost = environment.httpServiceDomain + '/ingrid-webmap-client/rest/admin';
-const httpServiceUrl = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/?';
-const httpServiceUrlAuth = environment.httpServiceDomain + '/ingrid-webmap-client/rest/wms/proxy/auth?';
+const httpApiHost = environment.httpServiceDomain + '/ingrid-webmap-client/admin/rest/admin';
+const httpServiceUrl = environment.httpServiceDomain + '/ingrid-webmap-client/admin/rest/wms/proxy/?';
+const httpServiceUrlAuth = environment.httpServiceDomain + '/ingrid-webmap-client/admin/rest/wms/proxy/auth?';
 
 @Injectable()
 export class HttpService {

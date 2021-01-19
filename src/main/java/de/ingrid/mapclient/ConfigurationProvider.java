@@ -2,7 +2,7 @@
  * **************************************************-
  * InGrid Web Map Client
  * ==================================================
- * Copyright (C) 2014 - 2020 wemove digital solutions GmbH
+ * Copyright (C) 2014 - 2021 wemove digital solutions GmbH
  * ==================================================
  * Licensed under the EUPL, Version 1.1 or – as soon they will be
  * approved by the European Commission - subsequent versions of the
@@ -70,6 +70,8 @@ public enum ConfigurationProvider {
     public static final String SHORTEN_MAX_DIRECTORY_FILES      = "shorten.max_directory_files";
     public static final String CONFIG_DIR                       = "config.dir";
     public static final String URL_PATH_PREFIX                  = "url.path.prefix";
+    public static final String ADMIN_LOCK                       = "admin.lock";
+    public static final String ADMIN_LOCK_FILE                  = "admin.lock.file";
     public static final String API_URL                          = "api.url";
     public static final String SCHEDULER_UPDATE_LAYER           = "scheduler.layer.update";
     public static final String SCHEDULER_UPDATE_LAYER_MAIL      = "scheduler.layer.update.mail";
