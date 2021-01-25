@@ -23,7 +23,7 @@ request.getSession(false);
                     Ihre Anmeldung kann nicht durchgef&uuml;hrt werden, da ein anderer Benutzer aktuell angemeldet ist.
                 </p>
                 <p>
-                    Probieren Sie es später noch mal.
+                    Bitte probieren Sie es später noch mal.
                 </p>
                 <a class="btn btn-default col-xs-12 ng-scope" href="/ingrid-webmap-client/admin">Erneut anmelden</a>
             </div>
