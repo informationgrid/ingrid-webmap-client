@@ -118,8 +118,8 @@ export class LayerItemWmtsComponent implements OnInit {
   editAuth(form, modal) {
     if (form.valid) {
       if (form.value) {
-        if (this.layer.item.wmsUrl) {
-          const url = this.layer.item.wmsUrl.trim();
+        if (this.layer.item.serviceUrl) {
+          const url = this.layer.item.serviceUrl.trim();
           const login = form.value.auth.trim();
           const password = form.value.password.trim();
           this.httpService.updateAuth(url, login, password, true).subscribe(

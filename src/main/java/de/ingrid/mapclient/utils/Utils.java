@@ -434,24 +434,21 @@ public class Utils {
         String configDir = p.getProperty( ConfigurationProvider.CONFIG_DIR);
         if(StringUtils.isNotEmpty(configDir)) {
             String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
-            if(StringUtils.isNotEmpty(fileContent)) {
-                URI uri = new URI(url);
-                JSONObject serviceAuth = new JSONObject(fileContent);
-                JSONObject loginAuth = null;
-                String host = uri.getHost();
-                if(serviceAuth.has(host)) {
-                    loginAuth = serviceAuth.getJSONObject(host);
-                } else {
-                    loginAuth = new JSONObject();
-                    loginAuth.put("login", login);
-                    loginAuth.put("password", password);
-                    if(uri.getScheme().equals("https")) {
-                        loginAuth.put("port", "443");
-                    }
-                }
-                serviceAuth.put(host, loginAuth);
-                Utils.updateFile("config/service.auth.json", serviceAuth);
+            if(fileContent.isEmpty()) {
+                fileContent = "{}";
             }
+            URI uri = new URI(url);
+            JSONObject serviceAuth = new JSONObject(fileContent);
+            JSONObject loginAuth = null;
+            String host = uri.getHost();
+            loginAuth = new JSONObject();
+            loginAuth.put("login", login);
+            loginAuth.put("password", password);
+            if(uri.getScheme().equals("https")) {
+                loginAuth.put("port", "443");
+            }
+            serviceAuth.put(host, loginAuth);
+            Utils.updateFile("config/service.auth.json", serviceAuth);
         }
     }
     
