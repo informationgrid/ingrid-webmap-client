@@ -9,7 +9,10 @@
   </span>
   <div>
     <span *ngIf="layer.item.status" class="badge badge-pill badge-warning mr-sm-2" title="{{ layer.item.status | translate }}"><i class="fa fa-info"></i></span>
-    <span class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">{{ layer.item.type | uppercase }}</span>
+    <span class="badge badge-pill" [ngClass]="{'badge-primary' : layer.item.type === 'wms', 'badge-danger' : layer.item.type === 'wmts'}">
+      <i *ngIf="layer.item.auth" aria-hidden="true" class="fa fa-lock"></i>
+      {{ layer.item.type | uppercase }}
+    </span>
   </div>
 </div>
 <div class="collapse" id="collapse{{ layer.id }}" [attr.aria-labelledby]="'layerHeader' + layer.id" data-parent="#layers">
