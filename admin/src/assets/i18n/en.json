@@ -190,7 +190,7 @@
     "service_add_to_category": "Kategorie auswählen ...",
     "service_combine_add": "Kombiniere und Hinzufügen",
     "service_load_success": "Dienst erfolgreich geladen!",
-    "service_load_unsuccess": "Fehler beim Laden des Dientes!",
+    "service_load_unsuccess": "Fehler beim Laden des Dienstes!",
     "service_groupLayers_as_folder": "Gruppenlayer als Ordner laden",
     "service_groupLayers_as_folder_help": "Bei Aktivierung dieser Checkbox werden ausgewählte Gruppenlayer ignoriert und bei der Zuordnung zu einer Kategorie zu Ordner.",
     "service_error_layer_no_extent": "Diese Karte kann nicht hinzugefügt werden, da für diese Karte kein Extent vorliegt!",
