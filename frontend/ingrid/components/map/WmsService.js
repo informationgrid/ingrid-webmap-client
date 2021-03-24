@@ -549,7 +549,7 @@ goog.require('ga_urlutils_service');
               gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
                 request: 'GetLegendGraphic',
                 layer: params.LAYERS,
-                style: params.STYLES || 'default',
+                style: params.STYLES || '',
                 service: 'WMS',
                 version: params.VERSION || '1.3.0',
                 format: 'image/png',
