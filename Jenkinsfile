@@ -12,8 +12,8 @@ pipeline {
     stages {
         stage('Prepare') {
             steps {
-                sh 'apt update'
-                sh 'apt install -y python-pip'
+                sh 'command -v python2 >&2 || apt update'
+                sh 'command -v python2 >&2 || apt install -y python-pip'
             }
         }
         stage('Build') {
