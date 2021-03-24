@@ -10,6 +10,12 @@ pipeline {
     }
 
     stages {
+        stage('Prepare') {
+            steps {
+                sh 'apt update'
+                sh 'apt install python-pip'
+            }
+        }
         stage('Build') {
             steps {
                 withMaven(
