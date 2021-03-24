@@ -13,7 +13,7 @@ pipeline {
         stage('Prepare') {
             steps {
                 sh 'apt update'
-                sh 'apt install python-pip'
+                sh 'apt install -y python-pip'
             }
         }
         stage('Build') {
