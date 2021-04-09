@@ -33,7 +33,7 @@ REST-Schnittstelle für die Anfrage nach Images. (Wird mitgeliefert!)
 ## searchServiceUrl
 Definition der OpenSearch URL für die InGrid-Suche nach WMS Diensten.
 
-    searchServiceUrl : 'https://dev.informationgrid.eu/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100'
+    searchServiceUrl : 'https://dev.informationgrid.eu/opensearch/query?q={query}+capabilities_url:http*+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100'
 
 ## shortURLService
 
