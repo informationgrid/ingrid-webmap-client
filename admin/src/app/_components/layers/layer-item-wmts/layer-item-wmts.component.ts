@@ -64,7 +64,7 @@ export class LayerItemWmtsComponent implements OnInit {
       if (this.form.value) {
         this.layer.id = this.form.value.id;
         UtilsLayers.cleanupLayersProps(this.layer);
-        if (this.backgroundImage && this.backgroundImage.indexOf('/ingrid-webmap-client/rest/admin') === -1) {
+        if (this.backgroundImage && this.backgroundImage.indexOf('/rest/admin') === -1) {
           this.httpService.updateLayerAndImage(this.layerId, this.layer, this.backgroundImage).subscribe(
             data => {
               this.form.form.markAsPristine();
@@ -118,8 +118,8 @@ export class LayerItemWmtsComponent implements OnInit {
   editAuth(form, modal) {
     if (form.valid) {
       if (form.value) {
-        if (this.layer.item.wmsUrl) {
-          const url = this.layer.item.wmsUrl.trim();
+        if (this.layer.item.serviceUrl) {
+          const url = this.layer.item.serviceUrl.trim();
           const login = form.value.auth.trim();
           const password = form.value.password.trim();
           this.httpService.updateAuth(url, login, password, true).subscribe(

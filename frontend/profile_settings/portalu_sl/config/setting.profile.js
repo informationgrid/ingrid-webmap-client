@@ -22,6 +22,6 @@
  */
 settingExtent = '[11.7947, 50.1605, 15.0423, 51.7046]';
 settingEpsgExtent = '[11.7947, 50.1605, 15.0423, 51.7046]';
-settingSearchServiceUrl = 'http://portalu.saarland.de/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
+settingSearchServiceUrl = 'http://portalu.saarland.de/opensearch/query?q={query}+capabilities_url:http*+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
 settingKMLName = 'PortalU';
 settingDefaultWMSList = [];

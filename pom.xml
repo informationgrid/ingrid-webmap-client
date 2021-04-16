@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ingrid-webmap-client</artifactId>
-    <version>5.7.0</version>
+    <version>5.8.0</version>
     <packaging>war</packaging>
     <name>InGrid Map Client</name>
     <scm>
@@ -253,7 +253,7 @@
         <dependency>
             <groupId>de.ingrid</groupId>
             <artifactId>ingrid-iplug-opensearch</artifactId>
-            <version>4.0.1</version>
+            <version>5.7.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>de.ingrid</groupId>

@@ -22,7 +22,7 @@
  */
 settingExtent = '[6.1, 48.9, 8.7, 50.9]';
 settingEpsgExtent = '[6, 48.7421, 8.755, 51.2351]';
-settingSearchServiceUrl = 'http://www.portalu.rlp.de/opensearch/query?q={query}+t011_obj_serv_op_connpoint.connect_point:http*+t011_obj_serv.type:view+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
+settingSearchServiceUrl = 'http://www.portalu.rlp.de/opensearch/query?q={query}+capabilities_url:http*+cache:off+datatype:metadata+ranking:score%26ingrid=1%26h=100';
 settingKMLName = 'PortalU';
 settingDefaultWMSList = [];
 settingEpsg = 'EPSG:25832';

@@ -183,7 +183,7 @@ export class CategoryComponent implements OnChanges {
             map.set('' + this.model.id + '_service_link_label', '');
             map.set('topic_' + this.model.id + '_tooltip', this.formAdd.value.addCatTooltip ?
               this.formAdd.value.addCatTooltip : this.model.id);
-            if (this.categoryImagePreview && this.categoryImagePreview.indexOf('/ingrid-webmap-client/rest/admin') === -1) {
+            if (this.categoryImagePreview && this.categoryImagePreview.indexOf('/rest/admin') === -1) {
               this.httpService.addCategoryLabelAndImage(this.model, map, null, this.categoryImagePreview).subscribe(
                 data => {
                   this.categories = data[0];
@@ -234,7 +234,7 @@ export class CategoryComponent implements OnChanges {
         if (this.formEdit.value.editCatTooltip) {
           map.set('topic_' + this.model.id + '_tooltip', this.formEdit.value.editCatTooltip);
         }
-        if (this.categoryImagePreview && this.categoryImagePreview.indexOf('/ingrid-webmap-client/rest/admin') === -1) {
+        if (this.categoryImagePreview && this.categoryImagePreview.indexOf('/rest/admin') === -1) {
           this.httpService.updateCategoryLabelAndImage(this.model, map, null, this.categoryImagePreview).subscribe(
             data => {
               this.categories = data[0];

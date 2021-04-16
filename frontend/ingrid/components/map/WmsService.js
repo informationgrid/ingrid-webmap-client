@@ -549,7 +549,7 @@ goog.require('ga_urlutils_service');
               gaUrlUtils.append(layer.url, gaUrlUtils.toKeyValue({
                 request: 'GetLegendGraphic',
                 layer: params.LAYERS,
-                style: params.STYLES || 'default',
+                style: params.STYLES || '',
                 service: 'WMS',
                 version: params.VERSION || '1.3.0',
                 format: 'image/png',
@@ -578,7 +578,7 @@ goog.require('ga_urlutils_service');
           return gaUrlUtils.append(url, gaUrlUtils.toKeyValue({
             request: 'GetLegendGraphic',
             layer: paramLayer || params.LAYERS,
-            style: params.style || 'default',
+            style: params.style || '',
             service: 'WMS',
             // INGRID: Add 'params.VERSION'
             version: params.version || params.VERSION || '1.3.0',
