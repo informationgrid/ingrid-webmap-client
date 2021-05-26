@@ -325,7 +325,7 @@ goog.require('ga_urlutils_service');
           var proxyUrl = gaGlobalOptions.proxyUrl +
               encodeURIComponent(cap) + '&toJson=true';
 
-            // INGRID: Split host from params
+          // INGRID: Split host from params
           var capSplit = cap.split('?');
           var capParams = '?';
           cap = capSplit[0];
@@ -383,10 +383,10 @@ goog.require('ga_urlutils_service');
                           var layer = layers[i];
                           var visible = false;
                           if (config.identifier) {
-                            if (layer.Identifier) {
-                              var identifier = layer.Identifier.content ||
+                            if (layer.Identifier && layer.Identifier.length > 0) {
+                              var tmpIdentifier = layer.Identifier[0] ||
                               layer.Identifier;
-                              if (identifier === config.identifier) {
+                              if (config.identifier.indexOf(tmpIdentifier) > -1) {
                                 visible = true;
                               }
                             }
@@ -521,8 +521,8 @@ goog.require('ga_urlutils_service');
                 }
               }, function(response) {
                 var errorMsg = gaMapUtils.setUrlLoadError(response.status,
-                  $translate);
-                alert(errorMsg +': \n' + response.config.cap);
+                    $translate);
+                alert(errorMsg + ': \n' + response.config.cap);
               });
         };
 
