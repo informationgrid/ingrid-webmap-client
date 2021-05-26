@@ -77,7 +77,8 @@ goog.require('ga_window_service');
             extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
                 'EPSG:4326', gaGlobalOptions.defaultEpsg),
             tipLabel: ' ',
-            label: $('<span translate-attr="{title: \'zoom_to_extent_tiplabel\'}">' +
+            label: $('<span translate-attr="{title: ' +
+                   '\'zoom_to_extent_tiplabel\'}">' +
                    '<i class="fa fa-ga-circle-bg"></i>' +
                    '<i class="fa fa-ga-circle"></i>' +
                    '<i class="fa fa-resize-horizontal"></i>' +

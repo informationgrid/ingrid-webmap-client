@@ -382,11 +382,13 @@ goog.require('ga_urlutils_service');
                         for (var i = 0; i < layers.length; i++) {
                           var layer = layers[i];
                           var visible = false;
-                          if (config.identifier) {
-                            if (layer.Identifier && layer.Identifier.length > 0) {
-                              var tmpIdentifier = layer.Identifier[0] ||
+                          var configIdent = config.identifier;
+                          if (configIdent) {
+                            if (layer.Identifier &&
+                                layer.Identifier.length > 0) {
+                              var layerIdent = layer.Identifier[0] ||
                               layer.Identifier;
-                              if (config.identifier.indexOf(tmpIdentifier) > -1) {
+                              if (configIdent.indexOf(layerIdent) > -1) {
                                 visible = true;
                               }
                             }
