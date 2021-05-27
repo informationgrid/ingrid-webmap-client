@@ -365,8 +365,8 @@ goog.require('ga_urlutils_service');
                     val = result;
                   }
                   var getCapUrl = config.cap +
-                    "SERVICE=WMS" +
-                    "REQUEST=GetCapabilities" +
+                    "SERVICE=WMS&" +
+                    "REQUEST=GetCapabilities&" +
                     "VERSION=" + version;
                   var getCapLink = '<a href="' + getCapUrl + '" title="' +
                     config.cap + '" target="_blank">' +
@@ -539,26 +539,26 @@ goog.require('ga_urlutils_service');
 
                         if (layersByIdent.length > 0) {
                           content += '<br><br>' +
-                          $translate.instant('services_add_external_ident') +
-                          '<br>' +
-                          config.identifier;
+                            $translate.instant('services_add_external_ident') +
+                            '<br>' +
+                            config.identifier;
                         } else if(layersAll.length > 0){
                           content += '<br><br>' +
-                          $translate.instant('services_add_external_all');
+                            $translate.instant('services_add_external_all');
                         }
                       }
                     }
                   } else {
                     content = '' +
-                    $translate.instant('service_load_error_layers') +
-                    '<br>' +
-                    getCapLink;
+                      $translate.instant('service_load_error_layers') +
+                      '<br>' +
+                      getCapLink;
                   }
                 } catch (e) {
                   content = '' +
-                  $translate.instant('service_load_error_capabilities') +
-                  '<br>' +
-                  getCapLink;
+                    $translate.instant('service_load_error_capabilities') +
+                    '<br>' +
+                    getCapLink;
                 }
                 var popup = gaPopup.create({
                   title: $translate.instant('services_add_external'),
@@ -574,14 +574,14 @@ goog.require('ga_urlutils_service');
                 var errorMsg = gaMapUtils.setUrlLoadError(response.status,
                     $translate);
                 var getCapLink = response.config.cap +
-                  "SERVICE=WMS" +
+                  "SERVICE=WMS&" +
                   "REQUEST=GetCapabilities";
                 var content = errorMsg +
-                ': <br>' +
-                '<a href="' + getCapLink + '" title="' +
-                response.config.cap +'" target="_blank">' +
-                response.config.cap +
-                '</a>';
+                  ': <br>' +
+                  '<a href="' + getCapLink + '" title="' +
+                  response.config.cap +'" target="_blank">' +
+                  response.config.cap +
+                  '</a>';
                 var popup = gaPopup.create({
                   title: $translate.instant('services_add_external'),
                   destroyOnClose: true,
