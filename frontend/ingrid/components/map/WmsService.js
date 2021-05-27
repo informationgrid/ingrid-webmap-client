@@ -569,7 +569,7 @@ goog.require('ga_urlutils_service');
                   x: 400,
                   y: 200
                 });
-                popup.open();
+                popup.open(5000);
               }, function(response) {
                 var errorMsg = gaMapUtils.setUrlLoadError(response.status,
                     $translate);
@@ -591,7 +591,7 @@ goog.require('ga_urlutils_service');
                   x: 400,
                   y: 200
                 });
-                popup.open();
+                popup.open(5000);
               });
         };
 
