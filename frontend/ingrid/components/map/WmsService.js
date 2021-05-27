@@ -532,15 +532,15 @@ goog.require('ga_urlutils_service');
                           }
                         }
                         
-                        content = '' + 
+                        content = '' +
                         $translate.instant('services_add_external_succcess') +
-                        ': <br>' +
+                        '<br>' +
                         getCapLink;
 
                         if (layersByIdent.length > 0) {
                           content += '<br><br>' +
-                          $translate.instant('services_add_external_ident') + 
-                          ': <br>' +
+                          $translate.instant('services_add_external_ident') +
+                          '<br>' +
                           config.identifier;
                         } else if(layersAll.length > 0){
                           content += '<br><br>' +
@@ -551,13 +551,13 @@ goog.require('ga_urlutils_service');
                   } else {
                     content = '' +
                     $translate.instant('service_load_error_layers') +
-                    ': <br>' +
+                    '<br>' +
                     getCapLink;
                   }
                 } catch (e) {
                   content = '' +
                   $translate.instant('service_load_error_capabilities') +
-                  ': <br>' +
+                  '<br>' +
                   getCapLink;
                 }
                 var popup = gaPopup.create({
