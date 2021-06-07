@@ -722,7 +722,7 @@ goog.require('ga_window_service');
               }
               htmlpopup = htmlpopup.
                   replace('{{id}}', id).
-                  replace('{{descr}}', descr).
+                  replace('{{descr}}', descr.replaceAll('\n', '<br>')).
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
 
               // INGRID: Add pop up for 'bwalocator'
