@@ -103,8 +103,9 @@ goog.require('ga_window_service');
             return false;
           }
           var geom = feature.getGeometry();
-          // INGRID: Add 'bwastrid'
+          // INGRID: Add 'bwastrid', 'feature.get('desc')'
           return feature.get('name') || feature.get('description') ||
+              feature.get('desc') ||
               !(geom instanceof ol.geom.MultiPoint ||
               geom instanceof ol.geom.MultiLineString ||
               geom instanceof ol.geom.MultiPolygon ||
@@ -714,9 +715,14 @@ goog.require('ga_window_service');
               var featureId = feature.getId();
               var layerId = feature.get('layerId') || layer.id;
               var id = layerId + '#' + featureId;
+              // INGRID: Change description
+              var descr = '';
+              if(feature.get('description') || feature.get('desc')) {
+                descr = feature.get('description') || feature.get('desc');
+              }
               htmlpopup = htmlpopup.
                   replace('{{id}}', id).
-                  replace('{{descr}}', feature.get('description') || '').
+                  replace('{{descr}}', descr).
                   replace('{{name}}', (name) ? '(' + name + ')' : '');
 
               // INGRID: Add pop up for 'bwalocator'
