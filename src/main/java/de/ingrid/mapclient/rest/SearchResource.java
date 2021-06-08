@@ -167,18 +167,19 @@ public class SearchResource {
                 }
                 return Response.ok( responseStr ).build();
             }else if(type.equals("services")){
-                String url = searchUrl.replace( " ", "+" );
+                String osUrl = searchUrl.replace( " ", "+" );
                 JSONArray jsonArray = new JSONArray();
                 
                 searchTerm = searchTerm.replaceAll("\\s", "+");
                 try {
                     searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+                    String url = osUrl.replace("{query}", searchTerm); 
                     URL questUrl = new URL( url );
                     URLConnection con = questUrl.openConnection();
                     InputStream in = con.getInputStream();
                     XPath xpath = XPathFactory.newInstance().newXPath();
                     Document doc = getDocumentFromStream(in);
-
+                    
                     if(doc != null){
                         NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
                         for (int i = 0; i < items.getLength(); i++) {
