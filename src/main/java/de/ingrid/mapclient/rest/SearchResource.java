@@ -52,8 +52,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.ingrid.iplug.opensearch.communication.OSCommunication;
-
 @Path("/search")
 public class SearchResource {
 
