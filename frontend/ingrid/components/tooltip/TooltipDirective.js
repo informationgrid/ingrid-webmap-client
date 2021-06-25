@@ -719,7 +719,7 @@ goog.require('ga_window_service');
               var descr = '';
               if(feature.get('description') || feature.get('desc')) {
                 descr = feature.get('description') || feature.get('desc');
-                if(descr.indexOf("<html>") === -1) {
+                if(descr.indexOf('<html') === -1) {
                   descr = descr.replaceAll('\n', '<br>');
                 }
               }
