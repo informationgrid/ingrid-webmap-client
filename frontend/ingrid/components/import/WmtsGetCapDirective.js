@@ -6,7 +6,8 @@ goog.provide('ga_wmtsgetcap_directive');
     'pascalprecht.translate'
   ]);
 
-  module.directive('gaWmtsGetCap', function($translate) {
+  // INGRID: Add 'gaPopup'
+  module.directive('gaWmtsGetCap', function($translate, gaPopup) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -149,7 +150,17 @@ goog.provide('ga_wmtsgetcap_directive');
               msg = $translate.instant('add_wmts_layer_failed') +
                   e.message;
             }
-            alert(msg);
+            // INGRID: Add popup
+            var popup = gaPopup.create({
+              title: $translate.instant('add_layer'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(5000);
           }
         };
 

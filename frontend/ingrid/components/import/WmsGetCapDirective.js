@@ -9,7 +9,8 @@ goog.require('ga_urlutils_service');
     'ga_urlutils_service'
   ]);
 
-  module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils) {
+  // INGRID: Add 'gaPopup'
+  module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils, gaPopup) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -309,28 +310,46 @@ goog.require('ga_urlutils_service');
               $window.console.error('Add layer failed:' + e);
               msg = $translate.instant('add_wms_layer_failed') + e.message;
             }
-            $window.alert(msg);
+            // INGRID: Add popup
+            var popup = gaPopup.create({
+              title: $translate.instant('add_layer'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(5000);
           }
         };
 
-        // Add the selected layer to the map
+        // INGRID: Add all layers to the map
         scope.addLayersAll = function() {
           var layersAll = scope.layers;
           if (layersAll && layersAll.length > 0 && scope.options.getOlLayerFromGetCapLayer) {
-            var msg = $translate.instant('add_wms_layer_succeeded');
+            var msg = $translate.instant('add_wms_layers_succeeded');
             try {
               scope.addLayerList(layersAll, scope.options.getOlLayerFromGetCapLayer);
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
               msg = $translate.instant('add_wms_layer_failed') + e.message;
             }
-            $window.alert(msg);
+            var popup = gaPopup.create({
+              title: $translate.instant('add_all_layers'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(5000);
           }
         };
 
         scope.addLayerList = function (layers, getOlLayerFromGetCapLayer) {
           layers.slice().reverse().forEach(function(getCapLay) {
-            console.log(getCapLay);
             var olLayer = getOlLayerFromGetCapLayer(getCapLay);
             if (olLayer) {
               scope.map.addLayer(olLayer);

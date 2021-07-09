@@ -75,5 +75,6 @@
 "services_add_external_succcess": "Service has been added",
 "services_add_external_all": "All layers from the service has been added under <strong>Maps displayed</strong>.",
 "services_add_external_ident": "Under <strong>Maps displayed</strong> has been added and activated all layers with identifier:",
-"add_all_layers": "Add all layers"
+"add_all_layers": "Add all layers",
+"add_wms_layers_succeeded": "Add all layers successfully."
 }
