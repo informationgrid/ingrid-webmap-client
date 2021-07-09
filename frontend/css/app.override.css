@@ -87,3 +87,7 @@
 .ga-full-screen #footer {
   display: block;
 }
+
+[ga-wms-get-cap] textarea[readonly], [ga-wmts-get-cap] textarea[readonly] {
+  height: 127px;
+}

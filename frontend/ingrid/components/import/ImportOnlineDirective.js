@@ -120,7 +120,7 @@ goog.require('ga_file_service');
             $timeout.cancel(timeoutP);
 
             // INGRID: Get WMS as JSON
-            url += "&toJson=true";
+            url += '&toJson=true';
 
             // Angularjs doesn't handle onprogress event
             return gaFile.load(url, scope.canceler).then(function(fileContent) {
@@ -139,6 +139,13 @@ goog.require('ga_file_service');
             });
           });
         };
+        // INGRID: Add external service
+        if (options.importExternalService) {
+          scope.fileUrl = options.importExternalService;
+          scope.handleFileUrl();
+          scope.$applyAsync();
+        }
+
       }
     };
   });

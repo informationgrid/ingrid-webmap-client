@@ -78,5 +78,6 @@
 "services_add_external": "Dienst hinzufügen ...",
 "services_add_external_succcess": "Dienst wurde <strong>erfolgreich</strong> hinzugefügt",
 "services_add_external_all": "Alle Karten aus dem Dienst wurden unter <strong>Dargestellte Karten</strong> hinzugefügt.",
-"services_add_external_ident": "Unter <strong>Dargestellte Karten</strong> wurden <strong>alle Karten mit folgendem Identifier</strong> hinzugefügt und aktiviert:"
+"services_add_external_ident": "Unter <strong>Dargestellte Karten</strong> wurden <strong>alle Karten mit folgendem Identifier</strong> hinzugefügt und aktiviert:",
+"add_all_layers": "Alle Layers hinzufügen"
 }

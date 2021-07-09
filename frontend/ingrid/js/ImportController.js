@@ -255,6 +255,10 @@ goog.require('ga_wmts_service');
     $scope.options = {};
     $scope.options.servers = servers;
     $scope.options.isValidUrl = gaUrlUtils.isValid;
+    
+    // INGRID: Add external WMS
+    $scope.options.importExternalService = $scope.globals.importPopupURL;
+    
     $scope.options.getOlLayerFromGetCapLayer = function(layer) {
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
@@ -286,15 +290,15 @@ goog.require('ga_wmts_service');
           'SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0' :
           'SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0');
         */
-        if(!/service=/i.test(url)) {
+        if (!/service=/i.test(url)) {
           url = gaUrlUtils.append(url, /wmts/i.test(url) ?
             'SERVICE=WMTS' :
             'SERVICE=WMS');
         }
-        if(!/request=/i.test(url)) {
+        if (!/request=/i.test(url)) {
           url = gaUrlUtils.append(url, 'REQUEST=GetCapabilities');
         }
-        if(!/version=/i.test(url)) {
+        if (!/version=/i.test(url)) {
           url = gaUrlUtils.append(url, /wmts/i.test(url) ?
             'VERSION=1.0.0' :
             'VERSION=1.3.0');
@@ -344,7 +348,7 @@ goog.require('ga_wmts_service');
         });
 
       // INGRID: Change check GPX oder KML
-      } else if (gaFile.isGpx(data) || gaFile.isKml(data) || 
+      } else if (gaFile.isGpx(data) || gaFile.isKml(data) ||
         gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
         // INGRID: Change data
@@ -384,6 +388,9 @@ goog.require('ga_wmts_service');
           reason: 'format_not_supported'
         });
       }
+
+      // INGRID: Reset '$scope.globals.importPopupURL'
+      $scope.globals.importPopupURL = "";
 
       return defer.promise;
     };

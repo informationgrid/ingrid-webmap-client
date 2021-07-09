@@ -112,7 +112,7 @@ goog.require('ga_urlutils_service');
             }
           }
           if (service.OnlineResource) {
-            if(getCap.version === '1.1.1') {
+            if (getCap.version === '1.1.1') {
               layer.attributionUrl = service.OnlineResource['xlink:href'];
             } else {
               layer.attributionUrl = service.OnlineResource;
@@ -311,6 +311,34 @@ goog.require('ga_urlutils_service');
             }
             $window.alert(msg);
           }
+        };
+
+        // Add the selected layer to the map
+        scope.addLayersAll = function() {
+          var layersAll = scope.layers;
+          if (layersAll && layersAll.length > 0 && scope.options.getOlLayerFromGetCapLayer) {
+            var msg = $translate.instant('add_wms_layer_succeeded');
+            try {
+              scope.addLayerList(layersAll, scope.options.getOlLayerFromGetCapLayer);
+            } catch (e) {
+              $window.console.error('Add layer failed:' + e);
+              msg = $translate.instant('add_wms_layer_failed') + e.message;
+            }
+            $window.alert(msg);
+          }
+        };
+
+        scope.addLayerList = function (layers, getOlLayerFromGetCapLayer) {
+          layers.slice().reverse().forEach(function(getCapLay) {
+            console.log(getCapLay);
+            var olLayer = getOlLayerFromGetCapLayer(getCapLay);
+            if (olLayer) {
+              scope.map.addLayer(olLayer);
+            }
+            if (getCapLay.Layer) {
+              scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
+            }
+          });
         };
 
         // Get the abstract to display in the text area
