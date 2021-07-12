@@ -91,3 +91,7 @@
 [ga-wms-get-cap] textarea[readonly], [ga-wmts-get-cap] textarea[readonly] {
   height: 127px;
 }
+
+[ga-popup].popup-front {
+  z-index: 5600;
+}
