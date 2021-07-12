@@ -10,7 +10,8 @@ goog.require('ga_urlutils_service');
   ]);
 
   // INGRID: Add 'gaPopup'
-  module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils, gaPopup) {
+  module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils,
+      gaPopup) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -327,10 +328,12 @@ goog.require('ga_urlutils_service');
         // INGRID: Add all layers to the map
         scope.addLayersAll = function() {
           var layersAll = scope.layers;
-          if (layersAll && layersAll.length > 0 && scope.options.getOlLayerFromGetCapLayer) {
+          if (layersAll && layersAll.length > 0 &&
+            scope.options.getOlLayerFromGetCapLayer) {
             var msg = $translate.instant('add_wms_layers_succeeded');
             try {
-              scope.addLayerList(layersAll, scope.options.getOlLayerFromGetCapLayer);
+              scope.addLayerList(layersAll,
+                  scope.options.getOlLayerFromGetCapLayer);
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
               msg = $translate.instant('add_wms_layer_failed') + e.message;
@@ -348,7 +351,7 @@ goog.require('ga_urlutils_service');
           }
         };
 
-        scope.addLayerList = function (layers, getOlLayerFromGetCapLayer) {
+        scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
           layers.slice().reverse().forEach(function(getCapLay) {
             var olLayer = getOlLayerFromGetCapLayer(getCapLay);
             if (olLayer) {

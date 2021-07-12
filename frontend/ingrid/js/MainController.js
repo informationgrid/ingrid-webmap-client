@@ -207,17 +207,18 @@ goog.require('ga_window_service');
       if (gaPermalink.getParams().layers !== undefined) {
         $scope.globals.catalogShown = false;
         $scope.globals.selectionShown = true;
-        // INGRID: Show import 
+        // INGRID: Show import
         var externalService = gaPermalink.getParams().layers;
-        if(gaMapUtils.isExternalService(externalService)) {
+        if (gaMapUtils.isExternalService(externalService)) {
           var externalServiceInfos = externalService.split('||');
-          if(externalServiceInfos.length > 1) {
+          if (externalServiceInfos.length > 1) {
             var externalServiceUrl = externalServiceInfos[1];
             var externalServiceResIdent;
-            if(externalServiceInfos.length > 2) {
+            if (externalServiceInfos.length > 2) {
               externalServiceResIdent = externalServiceInfos[2];
             }
-            if(!externalServiceResIdent || externalServiceResIdent.trim().length === 0) {
+            if (!externalServiceResIdent ||
+                externalServiceResIdent.trim().length === 0) {
               $scope.globals.importPopupShown = true;
               $scope.globals.importPopupURL = externalServiceUrl;
             }
