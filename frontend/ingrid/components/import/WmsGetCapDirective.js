@@ -293,6 +293,12 @@ goog.require('ga_urlutils_service');
               if (root) {
                 scope.layers = root.Layer || [root];
               }
+              
+              if(scope.options.importExternalLayerIdent) {
+                var hasAddWMSByIdent= scope.addLayerByIdent(scope.layers,
+                  scope.options.importExternalLayerIdent);
+                scope.options.rejectImport(hasAddWMSByIdent);
+              }
             }
           }
         });
@@ -322,6 +328,65 @@ goog.require('ga_urlutils_service');
               y: 200
             });
             popup.open(5000);
+          }
+        };
+
+        scope.addLayerByIdent = function(layers, ident) {
+          if (layers && scope.options.getOlLayerFromGetCapLayer) {
+            var msg = $translate.instant('add_wms_layer_ident_succeeded');
+            var hasAddLayer = false;
+            if(ident) {
+              try {
+                for (var i = layers.length - 1; i >= 0; i--) {
+                  var getCapLay = layers[i];
+                  if (getCapLay.Identifier &&
+                      getCapLay.Identifier.length > 0) {
+                    var layerIdent = getCapLay.Identifier[0] ||
+                    getCapLay.Identifier;
+                    if (ident.indexOf(layerIdent) > -1) {
+                      var olLayer = scope.options.getOlLayerFromGetCapLayer(layers[i]);
+                      if (olLayer) {
+                        scope.map.addLayer(olLayer);
+                        hasAddLayer = true;
+                        if(layers.length - i < 10 ) {
+                          msg += '<br>' + olLayer.label;
+                        } else if(layers.length - i < 11 ) {
+                          msg += '<br> ...';
+                        }
+                      }
+                    }
+                  }
+                  if (getCapLay.Layer) {
+                    scope.addLayerByIdent(getCapLay.Layer, ident);
+                  }
+                }
+              } catch (e) {
+                $window.console.error('Add layer failed:' + e);
+                msg = $translate.instant('add_wms_layer_failed') + e.message;
+              }
+            }
+            if(!hasAddLayer) {
+              msg = $translate.instant('add_wms_layer_ident_empty');
+            }
+            msg = msg.replaceAll("{SERVICE}", scope.options.importExternalService);
+            if(ident.startsWith('http')) {
+              msg = msg.replace("{IDENTIFIER}", '<a target="_blank" href="' + ident + '">' + ident + '</a>');
+            } else {
+              msg = msg.replace("{IDENTIFIER}", '<b>' + ident + '</b>');
+            }
+            // INGRID: Add popup
+            var popup = gaPopup.create({
+              title: $translate.instant('add_layer'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(10000);
+            
+            return hasAddLayer;
           }
         };
 

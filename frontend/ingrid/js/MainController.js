@@ -217,10 +217,11 @@ goog.require('ga_window_service');
             if (externalServiceInfos.length > 2) {
               externalServiceResIdent = externalServiceInfos[2];
             }
-            if (!externalServiceResIdent ||
-                externalServiceResIdent.trim().length === 0) {
-              $scope.globals.importPopupShown = true;
-              $scope.globals.importPopupURL = externalServiceUrl;
+            $scope.globals.importPopupShown = true;
+            $scope.globals.importPopupURL = externalServiceUrl;
+            if (externalServiceResIdent &&
+                externalServiceResIdent.length > 0) {
+              $scope.globals.importPopupIdentifier = externalServiceResIdent;
             }
           }
         }

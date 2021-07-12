@@ -255,10 +255,11 @@ goog.require('ga_wmts_service');
     $scope.options = {};
     $scope.options.servers = servers;
     $scope.options.isValidUrl = gaUrlUtils.isValid;
-    
+
     // INGRID: Add external WMS
     $scope.options.importExternalService = $scope.globals.importPopupURL;
-    
+    $scope.options.importExternalLayerIdent = $scope.globals.importPopupIdentifier;
+
     $scope.options.getOlLayerFromGetCapLayer = function(layer) {
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
@@ -389,8 +390,17 @@ goog.require('ga_wmts_service');
         });
       }
 
+      $scope.options.rejectImport = function(isReject) {
+        if (isReject) {
+          $scope.globals.importPopupURL = '';
+          $scope.globals.importPopupShown = !isReject;
+        } else if (layer.capabilitiesUrl) {
+          $scope.globals.importPopupShown = isReject;
+        }
+      };
+
       // INGRID: Reset '$scope.globals.importPopupURL'
-      $scope.globals.importPopupURL = "";
+      $scope.globals.importPopupURL = '';
 
       return defer.promise;
     };
