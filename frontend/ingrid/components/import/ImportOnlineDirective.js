@@ -140,8 +140,8 @@ goog.require('ga_file_service');
           });
         };
         // INGRID: Add external service
-        if (options.importExternalService) {
-          scope.fileUrl = options.importExternalService;
+        if (options.importExtService) {
+          scope.fileUrl = options.importExtService;
           scope.handleFileUrl();
           scope.$applyAsync();
         }

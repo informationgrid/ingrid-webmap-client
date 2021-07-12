@@ -199,6 +199,7 @@ goog.require('ga_urlutils_service');
 
       // Go through the child to get valid layers
       if (layer.Layer) {
+        // INGRID: Add parent param
         if (!layer.Layer.length) {
           var tmpLayers = [];
           tmpLayers.push(layer.Layer);
@@ -293,10 +294,10 @@ goog.require('ga_urlutils_service');
               if (root) {
                 scope.layers = root.Layer || [root];
               }
-              
-              if(scope.options.importExternalLayerIdent) {
-                var hasAddWMSByIdent= scope.addLayerByIdent(scope.layers,
-                  scope.options.importExternalLayerIdent);
+              // INGRID: Add 'importExtLayerIdent'
+              if (scope.options.importExtLayerIdent) {
+                var hasAddWMSByIdent = scope.addLayerByIdent(scope.layers,
+                    scope.options.importExtLayerIdent);
                 scope.options.rejectImport(hasAddWMSByIdent);
               }
             }
@@ -331,11 +332,12 @@ goog.require('ga_urlutils_service');
           }
         };
 
+        // INGRID: Add all layers b< ident to the map
         scope.addLayerByIdent = function(layers, ident) {
           if (layers && scope.options.getOlLayerFromGetCapLayer) {
             var msg = $translate.instant('add_wms_layer_ident_succeeded');
             var hasAddLayer = false;
-            if(ident) {
+            if (ident) {
               try {
                 for (var i = layers.length - 1; i >= 0; i--) {
                   var getCapLay = layers[i];
@@ -344,13 +346,14 @@ goog.require('ga_urlutils_service');
                     var layerIdent = getCapLay.Identifier[0] ||
                     getCapLay.Identifier;
                     if (ident.indexOf(layerIdent) > -1) {
-                      var olLayer = scope.options.getOlLayerFromGetCapLayer(layers[i]);
+                      var olLayer = scope.options.
+                          getOlLayerFromGetCapLayer(layers[i]);
                       if (olLayer) {
                         scope.map.addLayer(olLayer);
                         hasAddLayer = true;
-                        if(layers.length - i < 10 ) {
+                        if (layers.length - i < 10) {
                           msg += '<br>' + olLayer.label;
-                        } else if(layers.length - i < 11 ) {
+                        } else if (layers.length - i < 11) {
                           msg += '<br> ...';
                         }
                       }
@@ -365,14 +368,15 @@ goog.require('ga_urlutils_service');
                 msg = $translate.instant('add_wms_layer_failed') + e.message;
               }
             }
-            if(!hasAddLayer) {
+            if (!hasAddLayer) {
               msg = $translate.instant('add_wms_layer_ident_empty');
             }
-            msg = msg.replaceAll("{SERVICE}", scope.options.importExternalService);
-            if(ident.startsWith('http')) {
-              msg = msg.replace("{IDENTIFIER}", '<a target="_blank" href="' + ident + '">' + ident + '</a>');
+            msg = msg.replaceAll('{SERVICE}', scope.options.importExtService);
+            if (ident.startsWith('http')) {
+              msg = msg.replace('{IDENTIFIER}', '<a target="_blank" href="' +
+                ident + '">' + ident + '</a>');
             } else {
-              msg = msg.replace("{IDENTIFIER}", '<b>' + ident + '</b>');
+              msg = msg.replace('{IDENTIFIER}', '<b>' + ident + '</b>');
             }
             // INGRID: Add popup
             var popup = gaPopup.create({
@@ -385,7 +389,7 @@ goog.require('ga_urlutils_service');
               y: 200
             });
             popup.open(10000);
-            
+
             return hasAddLayer;
           }
         };
@@ -416,6 +420,7 @@ goog.require('ga_urlutils_service');
           }
         };
 
+        // INGRID: Add all layers to the map
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
           layers.slice().reverse().forEach(function(getCapLay) {
             var olLayer = getOlLayerFromGetCapLayer(getCapLay);

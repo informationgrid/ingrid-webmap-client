@@ -212,20 +212,19 @@ goog.require('ga_window_service');
         if (gaMapUtils.isExternalService(externalService)) {
           var externalServiceInfos = externalService.split('||');
           if (externalServiceInfos.length > 1) {
-            var externalServiceUrl = externalServiceInfos[1];
-            var externalServiceResIdent;
+            var importExtService = externalServiceInfos[1];
+            var importExtLayerIdent;
             if (externalServiceInfos.length > 2) {
-              externalServiceResIdent = externalServiceInfos[2];
+              importExtLayerIdent = externalServiceInfos[2];
             }
             $scope.globals.importPopupShown = true;
-            $scope.globals.importPopupURL = externalServiceUrl;
-            if (externalServiceResIdent &&
-                externalServiceResIdent.length > 0) {
-              $scope.globals.importPopupIdentifier = externalServiceResIdent;
+            $scope.globals.importExtService = importExtService;
+            if (importExtLayerIdent && importExtLayerIdent.length > 0) {
+              $scope.globals.importExtLayerIdent = importExtLayerIdent;
             }
           }
         }
-      } else {
+       } else {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
       }
@@ -467,6 +466,7 @@ goog.require('ga_window_service');
       }
     });
 
+    // INGRID: Check params
     if (!$scope.globals.embed) {
       if (window.parent.onpopstate !== undefined) {
         window.parent.onpopstate = function(event) {
