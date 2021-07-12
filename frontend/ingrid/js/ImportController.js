@@ -392,11 +392,7 @@ goog.require('ga_wmts_service');
 
       // INGRID: Add 'rejectImport'
       $scope.options.rejectImport = function(isReject) {
-        if (isReject) {
           $scope.globals.importPopupShown = !isReject;
-        } else {
-          $scope.globals.importPopupShown = isReject;
-        }
       };
 
       // INGRID: Reset '$scope.globals.importExtService'
