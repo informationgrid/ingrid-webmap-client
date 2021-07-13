@@ -17,11 +17,11 @@ else
 fi
 
 # checkout mf-geoadmin3 state 
-echo "*** Checkout mf-geoadmin3 r_191204 ***"
-echo "* KML feature identify improvement (#5083) *"
-echo "* Mittwoch, 4. Dezember 2019 10:00:14 *"
+echo "*** Checkout mf-geoadmin3 ***"
+echo "* Merge pull request #5239 from geoadmin/BGDIINF_SB-1828_update_translation *"
+echo "* Dienstag, 29. Juni 2021 12:10:21 *"
 
-git checkout b8c60f5466b3e94e2013d119813db7ed36792a3d
+git checkout 1a5f4d9155c4dd55fda4fa12e4c176f9046c2821
 
 # copy ingrid files to mf-geoadmin3/src
 echo "*** Copy files ***"

@@ -67,7 +67,7 @@ goog.require('ga_help_service');
 
         var generateUrl = function(helpIds) {
           /* INGRID
-          return '//help.geo.admin.ch/#/' +
+          return '//help.geo.admin.ch/' +
             '?ids=' + helpIds +
             '&lang=' + gaLang.getNoRm() +
             '&embedded=true';

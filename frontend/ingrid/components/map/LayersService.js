@@ -274,7 +274,7 @@ goog.require('ga_urlutils_service');
                 */
               ];
               var tilesetTs = [
-                '20190924',
+                '20201020',
                 '20180716',
                 '20190313'
               ];
