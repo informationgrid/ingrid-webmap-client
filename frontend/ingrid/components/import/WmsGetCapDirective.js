@@ -424,11 +424,11 @@ goog.require('ga_urlutils_service');
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
           layers.slice().reverse().forEach(function(getCapLay) {
             var olLayer = getOlLayerFromGetCapLayer(getCapLay);
-            if (olLayer) {
-              scope.map.addLayer(olLayer);
-            }
             if (getCapLay.Layer) {
               scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
+            }
+            if (olLayer) {
+              scope.map.addLayer(olLayer);
             }
           });
         };
