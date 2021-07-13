@@ -371,9 +371,11 @@ goog.require('ga_urlutils_service');
                           }
                         }
                         if (olLayer.maxScale) {
-                          var scale = olLayer.maxScale;
-                          if (olLayer.type === 'wms' && olLayer.version === '1.1.1') {
-                            scale = gaMapUtils.getScaleForScaleHint(scale, map);
+                          scale = olLayer.maxScale;
+                          if (olLayer.type === 'wms' &&
+                              olLayer.version === '1.1.1') {
+                            scale = gaMapUtils.getScaleForScaleHint(scale,
+                              scope.map);
                           }
                         }
                         hasAddLayer = true;
