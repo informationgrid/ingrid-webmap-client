@@ -9,9 +9,9 @@ goog.require('ga_urlutils_service');
     'ga_urlutils_service'
   ]);
 
-  // INGRID: Add 'gaPopup', 'gaMapUtils'
+  // INGRID: Add 'gaPopup', 'gaMapUtils', 'gaGlobalOptions'
   module.directive('gaWmsGetCap', function($window, $translate, gaUrlUtils,
-      gaPopup, gaMapUtils) {
+      gaPopup, gaMapUtils, gaGlobalOptions) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -359,15 +359,27 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add all layers to the map
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
-          layers.slice().reverse().forEach(function(getCapLay) {
-            var olLayer = getOlLayerFromGetCapLayer(getCapLay);
-            if (getCapLay.Layer) {
-              scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
-            }
-            if (olLayer) {
-              scope.map.addLayer(olLayer);
-            }
-          });
+          if(gaGlobalOptions.serviceReverseImport) {
+            layers.slice().reverse().forEach(function(getCapLay) {
+              var olLayer = getOlLayerFromGetCapLayer(getCapLay);
+              if (getCapLay.Layer) {
+                scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
+              }
+              if (olLayer) {
+                scope.map.addLayer(olLayer);
+              }
+            });
+          } else {
+            layers.forEach(function(getCapLay) {
+              var olLayer = getOlLayerFromGetCapLayer(getCapLay);
+              if (olLayer) {
+                scope.map.addLayer(olLayer);
+              }
+              if (getCapLay.Layer) {
+                scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
+              }
+            });
+          }
         };
 
         // INGRID: Add all layers by ident to the map

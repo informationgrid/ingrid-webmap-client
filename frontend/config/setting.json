@@ -44,6 +44,7 @@
     "w3wApiKey": "OM48J50Y",
     "settingShowLayerServiceTree": true,
     "settingShowLayerServiceName": true,
+    "settingServiceReverseImport": false,
     "settingCheckLayerInRange": true,
     "settingShowISOXML": true,
     "settingSearchCoordsXY": false,
