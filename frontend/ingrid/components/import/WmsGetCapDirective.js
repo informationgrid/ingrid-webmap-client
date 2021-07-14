@@ -332,101 +332,6 @@ goog.require('ga_urlutils_service');
           }
         };
 
-        // INGRID: Add all layers b< ident to the map
-        scope.addLayerByIdent = function(layers, ident) {
-          if (layers && scope.options.getOlLayerFromGetCapLayer) {
-            var msg = $translate.instant('add_wms_layer_ident_succeeded');
-            var hasAddLayer = false;
-            var extentX1;
-            var extentY1;
-            var extentX2;
-            var extentY2;
-            var extent = [];
-            var scale;
-            if (ident) {
-              try {
-                for (var i = layers.length - 1; i >= 0; i--) {
-                  var getCapLay = layers[i];
-                  if (getCapLay.Identifier &&
-                      getCapLay.Identifier.length > 0) {
-                    var layerIdent = getCapLay.Identifier[0] ||
-                    getCapLay.Identifier;
-                    if (ident.indexOf(layerIdent) > -1) {
-                      var olLayer = scope.options.
-                          getOlLayerFromGetCapLayer(layers[i]);
-                      if (olLayer) {
-                        scope.map.addLayer(olLayer);
-                        if (olLayer.extent) {
-                          if (!extentX1 || extentX1 > olLayer.extent[0]) {
-                            extentX1 = olLayer.extent[0];
-                          }
-                          if (!extentY1 || extentY1 > olLayer.extent[1]) {
-                            extentY1 = olLayer.extent[1];
-                          }
-                          if (!extentX2 || extentX2 < olLayer.extent[2]) {
-                            extentX2 = olLayer.extent[2];
-                          }
-                          if (!extentY2 || extentY2 < olLayer.extent[3]) {
-                            extentY2 = olLayer.extent[3];
-                          }
-                        }
-                        if (olLayer.maxScale) {
-                          scale = olLayer.maxScale;
-                          if (olLayer.type === 'wms' &&
-                              olLayer.version === '1.1.1') {
-                            scale = gaMapUtils.getScaleForScaleHint(scale,
-                              scope.map);
-                          }
-                        }
-                        hasAddLayer = true;
-                        if (layers.length - i < 10) {
-                          msg += '<br><b>' + olLayer.label + '</b>';
-                        } else if (layers.length - i < 11) {
-                          msg += '<br> ...';
-                        }
-                      }
-                    }
-                  }
-                  if (getCapLay.Layer) {
-                    scope.addLayerByIdent(getCapLay.Layer, ident);
-                  }
-                }
-              } catch (e) {
-                $window.console.error('Add layer failed:' + e);
-                msg = $translate.instant('add_wms_layer_failed') + e.message;
-              }
-            }
-            if (!hasAddLayer) {
-              msg = $translate.instant('add_wms_layer_ident_empty');
-            }
-            msg = msg.replaceAll('{SERVICE}', scope.options.importExtService);
-            if (ident.startsWith('http')) {
-              msg = msg.replace('{IDENTIFIER}', '<a target="_blank" href="' +
-                ident + '">' + ident + '</a>');
-            } else {
-              msg = msg.replace('{IDENTIFIER}', '<b>' + ident + '</b>');
-            }
-            
-            if (extentX1 && extentY1 && extentX2 && extentY2) {
-              extent = [extentX1, extentY1, extentX2, extentY2];
-              gaMapUtils.zoomToExtentScale(scope.map, null, extent, scale);
-            }
-            // INGRID: Add popup
-            var popup = gaPopup.create({
-              title: $translate.instant('add_layer'),
-              destroyOnClose: true,
-              showReduce: false,
-              content: msg,
-              className: 'popup-front',
-              x: 400,
-              y: 200
-            });
-            popup.open(5000);
-
-            return hasAddLayer;
-          }
-        };
-
         // INGRID: Add all layers to the map
         scope.addLayersAll = function() {
           var layersAll = scope.layers;
@@ -465,6 +370,96 @@ goog.require('ga_urlutils_service');
             }
           });
         };
+
+        // INGRID: Add all layers by ident to the map
+        scope.addLayerByIdent = function(layers, ident) {
+          if (layers && scope.options.getOlLayerFromGetCapLayer) {
+            var msg = '';
+            var addLayers = [];
+            
+            if (ident) {
+              try {
+                scope.addLayerIdent(layers, ident, addLayers);
+              } catch (e) {
+                $window.console.error('Add layer failed:' + e);
+                msg = $translate.instant('add_wms_layer_failed') + e.message;
+              }
+            }
+            switch (addLayers.length) {
+              case 0:
+                msg = $translate.instant('add_wms_layer_ident_empty');
+                break;
+              case 1:
+                var olLayer = addLayers[0];
+                var extent = olLayer.extent;
+                var scale = olLayer.maxScale;
+
+                // INGRID: Change scale
+                if (scale) {
+                  if (olLayer.type === 'wms' &&
+                      olLayer.version === '1.1.1') {
+                    scale = gaMapUtils.getScaleForScaleHint(scale,
+                      scope.map);
+                  }
+                }
+
+                // INGRID: Zoom to layer
+                if(extent) {
+                  gaMapUtils.zoomToExtentScale(scope.map, null, extent, scale);
+                }
+                scope.map.addLayer(olLayer);
+
+                msg = $translate.instant('add_wms_layer_ident_succeeded')
+                msg += '<br><b>' + olLayer.label + '</b>';
+                break;
+              default:
+                msg = $translate.instant('add_wms_layer_ident_multi');
+                break;
+            }
+
+            msg = msg.replaceAll('{SERVICE}', scope.options.importExtService);
+            if (ident.startsWith('http')) {
+              msg = msg.replace('{IDENTIFIER}', '<a target="_blank" href="' +
+                ident + '">' + ident + '</a>');
+            } else {
+              msg = msg.replace('{IDENTIFIER}', '<b>' + ident + '</b>');
+            }
+
+            // INGRID: Add popup
+            var popup = gaPopup.create({
+              title: $translate.instant('add_layer'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(5000);
+          }
+        };
+
+        // INGRID: Add all layers by ident
+        scope.addLayerIdent = function(layers, ident, addLayers) {
+          for (var i = layers.length - 1; i >= 0; i--) {
+            var getCapLay = layers[i];
+            if (getCapLay.Identifier &&
+                getCapLay.Identifier.length > 0) {
+              var layerIdent = getCapLay.Identifier[0] ||
+              getCapLay.Identifier;
+              if (ident.indexOf(layerIdent) > -1) {
+                var olLayer = scope.options.
+                    getOlLayerFromGetCapLayer(layers[i]);
+                if (olLayer) {
+                  addLayers.add(olLayer);
+                }
+              }
+            }
+            if (getCapLay.Layer) {
+              scope.addLayerIdent(getCapLay.Layer, ident, addLayers);
+            }
+          }
+        }
 
         // Get the abstract to display in the text area
         scope.getAbstract = function() {

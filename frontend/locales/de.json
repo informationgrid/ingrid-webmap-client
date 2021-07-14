@@ -82,5 +82,6 @@
 "add_all_layers": "Alle Layers hinzufügen",
 "add_wms_layers_succeeded": "Unter Akkordeon <b>Dargestellte Karten</b> wurden alle Layers erfolgreich hinzugefügt.",
 "add_wms_layer_ident_succeeded": "Unter Akkordeon <b>Dargestellte Karten</b> wurden folgende Layer(s) hinzugefügt: <br>",
-"add_wms_layer_ident_empty": "Es existiert kein Layer mit dem Identifier {IDENTIFIER}.<br><br> Sie können die Layers des Dienstes manuell hinzufügen."
+"add_wms_layer_ident_empty": "Es existiert <b>kein Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Sie können die Layers des Dienstes manuell hinzufügen.",
+"add_wms_layer_ident_multi": "Es existieren <b>mehrere Layers</b> mit dem Identifier {IDENTIFIER}.<br><br>Bitte fügen Sie die gewünschten Layers manuell hinzu."
 }
