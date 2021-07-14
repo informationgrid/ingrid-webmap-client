@@ -33,6 +33,7 @@ export class Setting {
         public settingKMLName = '',
         public settingHideCatalog = false,
         public settingServiceReverseImport = false,
+        public settingServiceMultiIdentImport = false,
         public settingEnableW3W = false,
         public w3wUrl = '',
         public w3wApiKey = '',

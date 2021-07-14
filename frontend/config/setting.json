@@ -45,6 +45,7 @@
     "settingShowLayerServiceTree": true,
     "settingShowLayerServiceName": true,
     "settingServiceReverseImport": false,
+    "settingServiceMultiIdentImport": false,
     "settingCheckLayerInRange": true,
     "settingShowISOXML": true,
     "settingSearchCoordsXY": false,

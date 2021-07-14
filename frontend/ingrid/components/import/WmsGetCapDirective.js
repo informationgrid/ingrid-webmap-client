@@ -388,10 +388,13 @@ goog.require('ga_urlutils_service');
             var msg = '';
             var addLayers = [];
             var hasAddLayers = false;
+            var extent;
+            var scale;
 
             if (ident) {
               try {
-                scope.addLayerIdent(layers, ident, addLayers);
+                scope.addLayerIdent(layers, ident, addLayers,
+                  scope.options.getOlLayerFromGetCapLayer);
               } catch (e) {
                 $window.console.error('Add layer failed:' + e);
                 msg = $translate.instant('add_wms_layer_failed') + e.message;
@@ -403,8 +406,8 @@ goog.require('ga_urlutils_service');
                 break;
               case 1:
                 var olLayer = addLayers[0];
-                var extent = olLayer.extent;
-                var scale = olLayer.maxScale;
+                extent = olLayer.extent;
+                scale = olLayer.maxScale;
 
                 // INGRID: Change scale
                 if (scale) {
@@ -427,7 +430,53 @@ goog.require('ga_urlutils_service');
                 hasAddLayers = true;
                 break;
               default:
-                msg = $translate.instant('add_wms_layer_ident_multi');
+                if(gaGlobalOptions.serviceMultiIdentImport) {
+                  extent = []
+                  msg = $translate.instant('add_wms_layer_ident_succeeded')
+                  var extentX1;
+                  var extentY1;
+                  var extentX2;
+                  var extentY2;
+                  addLayers.forEach(function(olLayer) {
+                    scope.map.addLayer(olLayer);
+                    msg += '<br><b>' + olLayer.label + '</b>';
+                    hasAddLayers = true;
+
+                    if (olLayer.extent) {
+                      if (!extentX1 || extentX1 > olLayer.extent[0]) {
+                        extentX1 = olLayer.extent[0];
+                      }
+                      if (!extentY1 || extentY1 > olLayer.extent[1]) {
+                        extentY1 = olLayer.extent[1];
+                      }
+                      if (!extentX2 || extentX2 < olLayer.extent[2]) {
+                        extentX2 = olLayer.extent[2];
+                      }
+                      if (!extentY2 || extentY2 < olLayer.extent[3]) {
+                        extentY2 = olLayer.extent[3];
+                      }
+                    }
+                    if (olLayer.maxScale) {
+                      if (!scale || scale < olLayer.maxScale) {
+                        scale = olLayer.maxScale;
+                      }
+                      if (olLayer.type === 'wms' &&
+                          olLayer.version === '1.1.1') {
+                        scale = gaMapUtils.getScaleForScaleHint(scale,
+                          scope.map);
+                      }
+                    }
+                  });
+
+                  // INGRID: Zoom to layer
+                  if (extentX1 && extentY1 && extentX2 && extentY2) {
+                    extent = [extentX1, extentY1, extentX2, extentY2];
+                    gaMapUtils.zoomToExtentScale(scope.map, null, extent,
+                      scale);
+                  }
+                } else {
+                  msg = $translate.instant('add_wms_layer_ident_multi');
+                }
                 break;
             }
 
@@ -456,26 +505,44 @@ goog.require('ga_urlutils_service');
         };
 
         // INGRID: Add all layers by ident
-        scope.addLayerIdent = function(layers, ident, addLayers) {
-          for (var i = layers.length - 1; i >= 0; i--) {
-            var getCapLay = layers[i];
-            if (getCapLay.Identifier &&
-                getCapLay.Identifier.length > 0) {
-              var layerIdent = getCapLay.Identifier[0] ||
-              getCapLay.Identifier;
-              if (ident.indexOf(layerIdent) > -1) {
-                var olLayer = scope.options.
-                    getOlLayerFromGetCapLayer(layers[i]);
-                if (olLayer) {
-                  addLayers.push(olLayer);
+        scope.addLayerIdent = function(layers, ident, addLayers,
+            getOlLayerFromGetCapLayer) {
+          if(gaGlobalOptions.serviceReverseImport) {
+            layers.slice().reverse().forEach(function(getCapLay) {
+              if (getCapLay.Identifier && getCapLay.Identifier.length > 0) {
+                var layerIdent = getCapLay.Identifier[0] ||
+                  getCapLay.Identifier;
+                if (ident.indexOf(layerIdent) > -1) {
+                  var olLayer = getOlLayerFromGetCapLayer(getCapLay);
+                  if (getCapLay.Layer) {
+                    scope.addLayerIdent(getCapLay.Layer, ident, addLayers,
+                      getOlLayerFromGetCapLayer);
+                  }
+                  if (olLayer) {
+                    addLayers.push(olLayer);
+                  }
                 }
               }
-            }
-            if (getCapLay.Layer) {
-              scope.addLayerIdent(getCapLay.Layer, ident, addLayers);
-            }
+            });
+          } else {
+            layers.forEach(function(getCapLay) {
+              if (getCapLay.Identifier && getCapLay.Identifier.length > 0) {
+                var layerIdent = getCapLay.Identifier[0] ||
+                  getCapLay.Identifier;
+                if (ident.indexOf(layerIdent) > -1) {
+                  var olLayer = getOlLayerFromGetCapLayer(getCapLay);
+                  if (olLayer) {
+                    addLayers.push(olLayer);
+                  }
+                  if (getCapLay.Layer) {
+                    scope.addLayerIdent(getCapLay.Layer, ident, addLayers,
+                      getOlLayerFromGetCapLayer);
+                  }
+                }
+              }
+            });
           }
-        }
+        };
 
         // Get the abstract to display in the text area
         scope.getAbstract = function() {

@@ -381,7 +381,8 @@ goog.require('ga_urlutils_service');
           }
           if (angular.isString(olService)) {
             return /^(WMS|WMTS)\|\|/.test(olService) &&
-              olService.split('||').length === 3;
+              (olService.split('||').length === 2 ||
+              olService.split('||').length === 3);
           }
           return false;
         },
