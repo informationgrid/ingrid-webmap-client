@@ -501,6 +501,7 @@ goog.require('ga_urlutils_service');
             popup.open(5000);
 
             scope.options.rejectImport(hasAddLayers);
+            scope.options.importExtLayerIdent = null;
           }
         };
 

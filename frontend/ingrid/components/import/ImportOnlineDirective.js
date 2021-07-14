@@ -135,6 +135,8 @@ goog.require('ga_file_service');
             }).finally(function() {
               scope.canceler = null;
               scope.loading = false;
+              // INGRID: Reset import attributes
+              options.resetImportAttributes();
               timeoutP = $timeout(initUserMsg, 10000);
             });
           });
