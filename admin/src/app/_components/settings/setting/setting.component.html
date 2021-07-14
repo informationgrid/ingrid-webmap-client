@@ -147,6 +147,28 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- settingServiceAllWithoutIdentImport -->
+                            <div class="form-group row">
+                                <div class="col-sm-3">
+                                    <div class=" d-flex justify-content-between align-items-center">
+                                        <label class="col-form-label" translate>setting_settingServiceAllWithoutIdentImport</label>
+                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="collapse" data-target="#info_settingServiceAllWithoutIdentImport" title="{{ ('help') | translate }}">
+                                            <i class="fa fa-info" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse" id="info_settingServiceAllWithoutIdentImport" data-parent="#setting">
+                                        <div>
+                                            <small class="form-text text-muted" translate>setting_settingServiceAllWithoutIdentImport_help</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="form-check mb-2 mr-sm-2">
+                                        <input class="form-check-input" type="checkbox" #settingServiceAllWithoutIdentImport="ngModel" name="settingServiceAllWithoutIdentImport" 
+                                            [(ngModel)]="settings.settingServiceAllWithoutIdentImport">
+                                    </div>
+                                </div>
+                            </div>
                             <!-- settingEpsg -->
                             <div class="form-group row" [ngClass]="{
                                 'has-danger': settingEpsg.invalid && (settingEpsg.dirty || settingEpsg.touched),

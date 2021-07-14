@@ -77,6 +77,7 @@
 "services_add_external_ident": "Under <strong>Maps displayed</strong> has been added and activated all layers with identifier:",
 "add_all_layers": "Add all layers",
 "add_wms_layers_succeeded": "Add all layers successfully.",
+"add_wms_layers_empty": "<b>No</b> layers exists.<br><br>Please check the service.",
 "add_wms_layer_ident_succeeded": "Layers has been added under <b>Maps displayed</b>: <br>",
 "add_wms_layer_ident_empty": "<b>No layers</b> has been founded with identifier {IDENTIFIER}. <br><br> You can add layers manually.",
 "add_wms_layer_ident_multi": "<b>More than one layer</b> has been founded with identifier {IDENTIFIER}. <br><br>Please add layers by your own."

@@ -32,6 +32,7 @@ export class Setting {
         public settingPrintDependOnMouseProj = false,
         public settingKMLName = '',
         public settingHideCatalog = false,
+        public settingServiceAllWithoutIdentImport = false,
         public settingServiceReverseImport = false,
         public settingServiceMultiIdentImport = false,
         public settingEnableW3W = false,

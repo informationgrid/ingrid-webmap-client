@@ -298,6 +298,8 @@ goog.require('ga_urlutils_service');
               if (scope.options.importExtLayerIdent) {
                 var layerIdent = scope.options.importExtLayerIdent;
                 scope.addLayerByIdent(scope.layers, layerIdent);
+              } else if(gaGlobalOptions.serviceAllWithoutIdentImport) {
+                scope.addLayersAll();
               }
             }
           }
@@ -334,27 +336,31 @@ goog.require('ga_urlutils_service');
         // INGRID: Add all layers to the map
         scope.addLayersAll = function() {
           var layersAll = scope.layers;
+          var msg = $translate.instant('add_wms_layers_empty');
           if (layersAll && layersAll.length > 0 &&
             scope.options.getOlLayerFromGetCapLayer) {
-            var msg = $translate.instant('add_wms_layers_succeeded');
+            msg = $translate.instant('add_wms_layers_succeeded');
             try {
               scope.addLayerList(layersAll,
                   scope.options.getOlLayerFromGetCapLayer);
+              if (gaGlobalOptions.serviceAllWithoutIdentImport) {
+                scope.options.rejectImport(true);
+              }
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
               msg = $translate.instant('add_wms_layer_failed') + e.message;
             }
-            var popup = gaPopup.create({
-              title: $translate.instant('add_all_layers'),
-              destroyOnClose: true,
-              showReduce: false,
-              content: msg,
-              className: 'popup-front',
-              x: 400,
-              y: 200
-            });
-            popup.open(5000);
           }
+          var popup = gaPopup.create({
+            title: $translate.instant('add_all_layers'),
+            destroyOnClose: true,
+            showReduce: false,
+            content: msg,
+            className: 'popup-front',
+            x: 400,
+            y: 200
+          });
+          popup.open(5000);
         };
 
         // INGRID: Add all layers to the map

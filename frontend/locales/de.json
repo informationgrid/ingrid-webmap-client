@@ -81,6 +81,7 @@
 "services_add_external_ident": "Unter <strong>Dargestellte Karten</strong> wurden <strong>alle Karten mit folgendem Identifier</strong> hinzugefügt und aktiviert:",
 "add_all_layers": "Alle Layer hinzufügen",
 "add_wms_layers_succeeded": "Unter Akkordeon <b>Dargestellte Karten</b> wurden alle Layer erfolgreich hinzugefügt.",
+"add_wms_layers_empty": "Es liegen <b>keine</b> Layer vor.<br><br>Bitte prüfen Sie den Dienst.",
 "add_wms_layer_ident_succeeded": "Unter Akkordeon <b>Dargestellte Karten</b> wurden folgende Layer(s) hinzugefügt: <br>",
 "add_wms_layer_ident_empty": "Es existiert <b>kein Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Sie können die Layer des Dienstes manuell hinzufügen.",
 "add_wms_layer_ident_multi": "Es existieren <b>mehrere Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Bitte fügen Sie die gewünschten Layer manuell hinzu."
