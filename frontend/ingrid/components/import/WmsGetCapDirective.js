@@ -296,9 +296,8 @@ goog.require('ga_urlutils_service');
               }
               // INGRID: Add 'importExtLayerIdent'
               if (scope.options.importExtLayerIdent) {
-                var hasAddWMSByIdent = scope.addLayerByIdent(scope.layers,
-                    scope.options.importExtLayerIdent);
-                scope.options.rejectImport(hasAddWMSByIdent);
+                var layerIdent = scope.options.importExtLayerIdent;
+                scope.addLayerByIdent(scope.layers, layerIdent);
               }
             }
           }
@@ -376,7 +375,8 @@ goog.require('ga_urlutils_service');
           if (layers && scope.options.getOlLayerFromGetCapLayer) {
             var msg = '';
             var addLayers = [];
-            
+            var hasAddLayers = false;
+
             if (ident) {
               try {
                 scope.addLayerIdent(layers, ident, addLayers);
@@ -411,6 +411,8 @@ goog.require('ga_urlutils_service');
 
                 msg = $translate.instant('add_wms_layer_ident_succeeded')
                 msg += '<br><b>' + olLayer.label + '</b>';
+                
+                hasAddLayers = true;
                 break;
               default:
                 msg = $translate.instant('add_wms_layer_ident_multi');
@@ -436,6 +438,8 @@ goog.require('ga_urlutils_service');
               y: 200
             });
             popup.open(5000);
+
+            scope.options.rejectImport(hasAddLayers);
           }
         };
 
