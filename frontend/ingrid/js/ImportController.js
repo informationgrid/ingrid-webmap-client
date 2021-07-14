@@ -415,11 +415,13 @@ goog.require('ga_wmts_service');
 
       // INGRID: Add 'rejectImport'
       $scope.options.rejectImport = function(isReject) {
-          $scope.globals.importPopupShown = !isReject;
+        $scope.globals.importPopupShown = !isReject;
+        $scope.globals.importExtLayerIdent = null;
+        $scope.options.importExtLayerIdent = null;
       };
 
       // INGRID: Reset '$scope.globals.importExtService'
-      $scope.globals.importExtService = '';
+      $scope.globals.importExtService = null;
 
       return defer.promise;
     };

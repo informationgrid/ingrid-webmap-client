@@ -451,7 +451,7 @@ goog.require('ga_urlutils_service');
                 var olLayer = scope.options.
                     getOlLayerFromGetCapLayer(layers[i]);
                 if (olLayer) {
-                  addLayers.add(olLayer);
+                  addLayers.push(olLayer);
                 }
               }
             }
