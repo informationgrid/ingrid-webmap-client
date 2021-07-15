@@ -65,8 +65,8 @@ goog.require('ga_urlutils_service');
   var hasSearchCoordFeature = function(map) {
     for (var i = 0, ii = map.getLayers().getLength(); i < ii; i++) {
       var layer = map.getLayers().item(i);
-      if (layer instanceof ol.layer.Vector && 
-          layer.getSource().getFeatureById('search_coord')){
+      if (layer instanceof ol.layer.Vector &&
+          layer.getSource().getFeatureById('search_coord')) {
         return true
       }
     }
@@ -690,8 +690,10 @@ goog.require('ga_urlutils_service');
                   }
                   url = url + 'SERVICE=WMS';
                 }
-                gaWms.addWmsServiceToMap($scope.map, url);
+                $scope.options.searchServiceAdd(url);
               }
+              $scope.options.valueSelected(
+                  gaSearchLabels.cleanLabel(res.attrs.label));
             };
 
             $scope.getServiceInfo = function(evt, attrs) {

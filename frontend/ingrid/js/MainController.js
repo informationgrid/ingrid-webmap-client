@@ -349,7 +349,7 @@ goog.require('ga_window_service');
     $scope.hasAddedLayers = function() {
       var hasAddedLayers = false
       $scope.map.getLayers().getArray().forEach(function(layer) {
-        if (!layer.background && !layer.preview) {
+        if (layer.displayInLayerManager) {
           hasAddedLayers = true;
         }
       });
@@ -374,7 +374,7 @@ goog.require('ga_window_service');
 
     // INGRID: Check has activated layers
     $scope.hasAllActivatedLayers = {
-      active: function( isActive ) {
+      active: function(isActive) {
         var layers = $scope.map.getLayers().getArray();
         if (arguments.length) {
           for (var i = 0; i < layers.length; i++) {
