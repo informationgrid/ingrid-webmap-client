@@ -224,7 +224,7 @@ goog.require('ga_window_service');
             }
           }
         }
-       } else {
+      } else {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
       }
@@ -342,6 +342,33 @@ goog.require('ga_window_service');
     $scope.hidePulldownOnXSmallScreen = function() {
       if (gaWindow.isWidth('xs')) {
         $scope.globals.pulldownShown = false;
+      }
+    };
+
+    // INGRID: Check has layers
+    $scope.hasAddedLayers = function(evt) {
+      var hasAddedLayers = false
+      $scope.map.getLayers().getArray().forEach(function(layer) {
+        if(!layer.background) {
+          hasAddedLayers = true;
+        }
+      });
+      return hasAddedLayers;
+    };
+
+    // INGRID: Add remove all layers
+    $scope.removeLayers = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+      var layers = $scope.map.getLayers().getArray();
+      for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        if(!layer.background) {
+          $scope.map.removeLayer(layer);
+          i--;
+        }
       }
     };
 
