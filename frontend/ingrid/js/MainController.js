@@ -346,10 +346,10 @@ goog.require('ga_window_service');
     };
 
     // INGRID: Check has layers
-    $scope.hasAddedLayers = function(evt) {
+    $scope.hasAddedLayers = function() {
       var hasAddedLayers = false
       $scope.map.getLayers().getArray().forEach(function(layer) {
-        if(!layer.background) {
+        if (!layer.background && !layer.preview) {
           hasAddedLayers = true;
         }
       });
@@ -365,10 +365,33 @@ goog.require('ga_window_service');
       var layers = $scope.map.getLayers().getArray();
       for (var i = 0; i < layers.length; i++) {
         var layer = layers[i];
-        if(!layer.background) {
+        if (!layer.background) {
           $scope.map.removeLayer(layer);
           i--;
         }
+      }
+    };
+
+    // INGRID: Check has activated layers
+    $scope.hasAllActivatedLayers = {
+      active: function( isActive ) {
+        var layers = $scope.map.getLayers().getArray();
+        if (arguments.length) {
+          for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            if (!layer.background) {
+              layer.visible = isActive;
+            }
+          }
+          return isActive;
+        }
+        var hasAllActivatedLayers = true
+        $scope.map.getLayers().getArray().forEach(function(layer) {
+          if (!layer.background && !layer.visible) {
+            hasAllActivatedLayers = false;
+          }
+        });
+        return hasAllActivatedLayers;
       }
     };
 

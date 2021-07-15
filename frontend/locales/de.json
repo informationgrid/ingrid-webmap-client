@@ -87,5 +87,6 @@
 "add_wms_layer_ident_multi": "Es existieren <b>mehrere Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Bitte fügen Sie die gewünschten Layer manuell hinzu.",
 "add_wms_layer_active": "Layer beim Hinzufügen aktivieren",
 "add_wtms_layer_active": "Layer beim Hinzufügen aktivieren",
-"remove_all_layers": "Alle Layer entfernen"
+"remove_all_layers": "Alle Layer entfernen",
+"activate_all_layers": "Alle Layer de-/aktivieren"
 }

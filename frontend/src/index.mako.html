@@ -462,9 +462,10 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Selection -->
         <div class="panel" ng-hide="globals.isDrawActive">
-          <!-- INGRID: Remove all layers -->
+          <!-- INGRID: Remove and de/activate all layers -->
           <div class="theme-toggle" ng-if="hasAddedLayers()">
               <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" title="{{ 'remove_all_layers' | translate }}"></button>
+              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" title="{{ 'activate_all_layers' | translate }}"/>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
