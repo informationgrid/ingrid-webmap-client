@@ -429,7 +429,7 @@ goog.require('ga_urlutils_service');
                 if (extent) {
                   gaMapUtils.zoomToExtentScale(scope.map, null, extent, scale);
                 }
-                scope.addLayer(olLayer);
+                scope.map.addLayer(olLayer);
 
                 msg = $translate.instant('add_wms_layer_ident_succeeded')
                 msg += '<br><b>' + olLayer.label + '</b>';
@@ -445,7 +445,7 @@ goog.require('ga_urlutils_service');
                   var extentX2;
                   var extentY2;
                   addLayers.forEach(function(olLayer) {
-                    scope.addLayer(olLayer);
+                    scope.map.addLayer(olLayer);
                     msg += '<br><b>' + olLayer.label + '</b>';
                     hasAddLayers = true;
 
