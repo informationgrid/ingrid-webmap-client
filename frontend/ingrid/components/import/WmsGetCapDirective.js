@@ -298,7 +298,7 @@ goog.require('ga_urlutils_service');
               if (scope.options.importExtLayerIdent) {
                 var layerIdent = scope.options.importExtLayerIdent;
                 scope.addLayerByIdent(scope.layers, layerIdent);
-              } else if(gaGlobalOptions.serviceAllWithoutIdentImport) {
+              } else if (gaGlobalOptions.serviceAllWithoutIdentImport) {
                 scope.addLayersAll();
               }
             }
@@ -313,7 +313,8 @@ goog.require('ga_urlutils_service');
             try {
               var olLayer = scope.options.getOlLayerFromGetCapLayer(getCapLay);
               if (olLayer) {
-                scope.map.addLayer(olLayer);
+                // INGRID: Change to scope function
+                scope.addLayer(olLayer);
               }
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
@@ -365,21 +366,21 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add all layers to the map
         scope.addLayerList = function(layers, getOlLayerFromGetCapLayer) {
-          if(gaGlobalOptions.serviceReverseImport) {
+          if (gaGlobalOptions.serviceReverseImport) {
             layers.slice().reverse().forEach(function(getCapLay) {
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
               if (getCapLay.Layer) {
                 scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
               }
               if (olLayer) {
-                scope.map.addLayer(olLayer);
+                scope.addLayer(olLayer);
               }
             });
           } else {
             layers.forEach(function(getCapLay) {
               var olLayer = getOlLayerFromGetCapLayer(getCapLay);
               if (olLayer) {
-                scope.map.addLayer(olLayer);
+                scope.addLayer(olLayer);
               }
               if (getCapLay.Layer) {
                 scope.addLayerList(getCapLay.Layer, getOlLayerFromGetCapLayer);
@@ -400,7 +401,7 @@ goog.require('ga_urlutils_service');
             if (ident) {
               try {
                 scope.addLayerIdent(layers, ident, addLayers,
-                  scope.options.getOlLayerFromGetCapLayer);
+                    scope.options.getOlLayerFromGetCapLayer);
               } catch (e) {
                 $window.console.error('Add layer failed:' + e);
                 msg = $translate.instant('add_wms_layer_failed') + e.message;
@@ -420,23 +421,23 @@ goog.require('ga_urlutils_service');
                   if (olLayer.type === 'wms' &&
                       olLayer.version === '1.1.1') {
                     scale = gaMapUtils.getScaleForScaleHint(scale,
-                      scope.map);
+                        scope.map);
                   }
                 }
 
                 // INGRID: Zoom to layer
-                if(extent) {
+                if (extent) {
                   gaMapUtils.zoomToExtentScale(scope.map, null, extent, scale);
                 }
-                scope.map.addLayer(olLayer);
+                scope.addLayer(olLayer);
 
                 msg = $translate.instant('add_wms_layer_ident_succeeded')
                 msg += '<br><b>' + olLayer.label + '</b>';
-                
+
                 hasAddLayers = true;
                 break;
               default:
-                if(gaGlobalOptions.serviceMultiIdentImport) {
+                if (gaGlobalOptions.serviceMultiIdentImport) {
                   extent = []
                   msg = $translate.instant('add_wms_layer_ident_succeeded')
                   var extentX1;
@@ -444,7 +445,7 @@ goog.require('ga_urlutils_service');
                   var extentX2;
                   var extentY2;
                   addLayers.forEach(function(olLayer) {
-                    scope.map.addLayer(olLayer);
+                    scope.addLayer(olLayer);
                     msg += '<br><b>' + olLayer.label + '</b>';
                     hasAddLayers = true;
 
@@ -469,7 +470,7 @@ goog.require('ga_urlutils_service');
                       if (olLayer.type === 'wms' &&
                           olLayer.version === '1.1.1') {
                         scale = gaMapUtils.getScaleForScaleHint(scale,
-                          scope.map);
+                            scope.map);
                       }
                     }
                   });
@@ -478,7 +479,7 @@ goog.require('ga_urlutils_service');
                   if (extentX1 && extentY1 && extentX2 && extentY2) {
                     extent = [extentX1, extentY1, extentX2, extentY2];
                     gaMapUtils.zoomToExtentScale(scope.map, null, extent,
-                      scale);
+                        scale);
                   }
                 } else {
                   msg = $translate.instant('add_wms_layer_ident_multi');
@@ -514,7 +515,7 @@ goog.require('ga_urlutils_service');
         // INGRID: Add all layers by ident
         scope.addLayerIdent = function(layers, ident, addLayers,
             getOlLayerFromGetCapLayer) {
-          if(gaGlobalOptions.serviceReverseImport) {
+          if (gaGlobalOptions.serviceReverseImport) {
             layers.slice().reverse().forEach(function(getCapLay) {
               if (getCapLay.Identifier && getCapLay.Identifier.length > 0) {
                 var layerIdent = getCapLay.Identifier[0] ||
@@ -523,7 +524,7 @@ goog.require('ga_urlutils_service');
                   var olLayer = getOlLayerFromGetCapLayer(getCapLay);
                   if (getCapLay.Layer) {
                     scope.addLayerIdent(getCapLay.Layer, ident, addLayers,
-                      getOlLayerFromGetCapLayer);
+                        getOlLayerFromGetCapLayer);
                   }
                   if (olLayer) {
                     addLayers.push(olLayer);
@@ -543,12 +544,20 @@ goog.require('ga_urlutils_service');
                   }
                   if (getCapLay.Layer) {
                     scope.addLayerIdent(getCapLay.Layer, ident, addLayers,
-                      getOlLayerFromGetCapLayer);
+                        getOlLayerFromGetCapLayer);
                   }
                 }
               }
             });
           }
+        };
+
+        // INGRID: Add function
+        scope.addLayer = function(olLayer) {
+          if(!scope.activateLayers){
+            olLayer.visible = false;
+          }
+          scope.map.addLayer(olLayer);
         };
 
         // Get the abstract to display in the text area

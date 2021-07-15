@@ -143,7 +143,8 @@ goog.provide('ga_wmtsgetcap_directive');
             try {
               var olLayer = scope.options.getOlLayerFromGetCapLayer(getCapLay);
               if (olLayer) {
-                scope.map.addLayer(olLayer);
+                // INGRID: Change to scope function
+                scope.addLayer(olLayer);
               }
             } catch (e) {
               console.error('Add layer failed:', e);
@@ -162,6 +163,14 @@ goog.provide('ga_wmtsgetcap_directive');
             });
             popup.open(5000);
           }
+        };
+
+        // INGRID: Add function
+        scope.addLayer = function(olLayer) {
+          if(!scope.activateLayers){
+            olLayer.visible = false;
+          }
+          scope.map.addLayer(olLayer);
         };
 
         // Get the abstract to display in the text area

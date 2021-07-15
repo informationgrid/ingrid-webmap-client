@@ -85,5 +85,7 @@
 "add_wms_layer_ident_succeeded": "Unter Akkordeon <b>Dargestellte Karten</b> wurden folgende Layer(s) hinzugefügt: <br>",
 "add_wms_layer_ident_empty": "Es existiert <b>kein Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Sie können die Layer des Dienstes manuell hinzufügen.",
 "add_wms_layer_ident_multi": "Es existieren <b>mehrere Layer</b> mit dem Identifier {IDENTIFIER}.<br><br>Bitte fügen Sie die gewünschten Layer manuell hinzu.",
+"add_wms_layer_active": "Layer beim Hinzufügen aktivieren",
+"add_wtms_layer_active": "Layer beim Hinzufügen aktivieren",
 "remove_all_layers": "Alle Layer entfernen"
 }
