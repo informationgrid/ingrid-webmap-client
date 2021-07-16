@@ -52,8 +52,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import de.ingrid.iplug.opensearch.communication.OSCommunication;
-
 @Path("/search")
 public class SearchResource {
 
@@ -167,67 +165,55 @@ public class SearchResource {
                 }
                 return Response.ok( responseStr ).build();
             }else if(type.equals("services")){
-                String osURL = searchUrl.replace( " ", "+" );
+                String osUrl = searchUrl.replace( " ", "+" );
                 JSONArray jsonArray = new JSONArray();
-                InputStream result = null;
                 
                 searchTerm = searchTerm.replaceAll("\\s", "+");
                 try {
                     searchTerm = URLEncoder.encode(searchTerm, "UTF-8");
-                } catch (Exception e) {
-                    log.error("Error url encoding seach term: " + searchTerm, e);
-                }
-                //some logic borrowed from the opensearch iplug
-                //we open a stream though this module 
-                //the rest is basically simple xml parsing of the result 
-                //into a json string which gets to the mapclient through the 
-                //response
-                OSCommunication comm = new OSCommunication();
-                String url = osURL.replace("{query}", searchTerm); 
-                result = comm.sendRequest(url);
-                Document doc = null;
-                XPath xpath = XPathFactory.newInstance().newXPath();
-                if(result != null){
-                    try {
-                        doc = getDocumentFromStream(result);
-                        if(doc != null){
-                            NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
-                            for (int i = 0; i < items.getLength(); i++) {
-                                Node item = items.item( i );
-                                NodeList tmp;
-                                JSONObject newEntry = new JSONObject();
-                                newEntry.put( "id", "" );
-                                newEntry.put( "weight", 143 );
-                                JSONObject newAttrs = new JSONObject();
-                                newAttrs.put( "origin", "service" );
-                                
-                                tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
-                                if(tmp.getLength() > 0){
-                                    newAttrs.put( "service", tmp.item(0).getTextContent() );
-                                }
-                                
-                                newAttrs.put( "label", xpath.evaluate("./title", item ) );
-                                newAttrs.put( "detail", xpath.evaluate("./description", item ) );
-                                newAttrs.put( "link", xpath.evaluate("./link", item ) );
-                                
-                                tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
-                                if(tmp.getLength() > 0){
-                                    newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
-                                }
-                                
-                                newAttrs.put( "lang", "de" );
-                                newAttrs.put( "staging", "prod" );
-                                newEntry.put( "attrs", newAttrs );
-                                jsonArray.put( newEntry );
+                    String url = osUrl.replace("{query}", searchTerm); 
+                    URL questUrl = new URL( url );
+                    URLConnection con = questUrl.openConnection();
+                    InputStream in = con.getInputStream();
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    Document doc = getDocumentFromStream(in);
+                    
+                    if(doc != null){
+                        NodeList items = (NodeList) xpath.evaluate( "/rss/channel/item", doc , XPathConstants.NODESET);
+                        for (int i = 0; i < items.getLength(); i++) {
+                            Node item = items.item( i );
+                            NodeList tmp;
+                            JSONObject newEntry = new JSONObject();
+                            newEntry.put( "id", "" );
+                            newEntry.put( "weight", 143 );
+                            JSONObject newAttrs = new JSONObject();
+                            newAttrs.put( "origin", "service" );
+                            
+                            tmp = ((NodeList) xpath.evaluate("./wms-url", item, XPathConstants.NODESET ));
+                            if(tmp.getLength() > 0){
+                                newAttrs.put( "service", tmp.item(0).getTextContent() );
                             }
+                            
+                            newAttrs.put( "label", xpath.evaluate("./title", item ) );
+                            newAttrs.put( "detail", xpath.evaluate("./description", item ) );
+                            newAttrs.put( "link", xpath.evaluate("./link", item ) );
+                            
+                            tmp = ((NodeList) xpath.evaluate("./iso-xml-url", item, XPathConstants.NODESET ));
+                            if(tmp.getLength() > 0){
+                                newAttrs.put( "isoxml", tmp.item(0).getTextContent() );
+                            }
+                            
+                            newAttrs.put( "lang", "de" );
+                            newAttrs.put( "staging", "prod" );
+                            newEntry.put( "attrs", newAttrs );
+                            jsonArray.put( newEntry );
                         }
-                    } catch (SAXException | ParserConfigurationException e) {
-                        log.error("Error while parsing the InputStream!");
-                    } catch (IOException e) {
-                        log.error("Error while performing xpath.evaluate on a document!");
                     }
+                } catch (SAXException | ParserConfigurationException e) {
+                    log.error("Error while parsing the InputStream!", e);
+                } catch (IOException e) {
+                    log.error("Error while performing xpath.evaluate on a document!", e);
                 }
-                comm.releaseConnection();
                 String responseStr = jsonArray.toString();
                 if (jsonArray != null) {
                     responseStr = "{\"results\":" + jsonArray + "}";

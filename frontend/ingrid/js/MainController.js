@@ -77,7 +77,8 @@ goog.require('ga_window_service');
             extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
                 'EPSG:4326', gaGlobalOptions.defaultEpsg),
             tipLabel: ' ',
-            label: $('<span>' +
+            label: $('<span translate-attr="{title: ' +
+                   '\'zoom_to_extent_tiplabel\'}">' +
                    '<i class="fa fa-ga-circle-bg"></i>' +
                    '<i class="fa fa-ga-circle"></i>' +
                    '<i class="fa fa-resize-horizontal"></i>' +
@@ -206,6 +207,23 @@ goog.require('ga_window_service');
       if (gaPermalink.getParams().layers !== undefined) {
         $scope.globals.catalogShown = false;
         $scope.globals.selectionShown = true;
+        // INGRID: Show import
+        var externalService = gaPermalink.getParams().layers;
+        if (gaMapUtils.isExternalService(externalService)) {
+          var externalServiceInfos = externalService.split('||');
+          if (externalServiceInfos.length > 1) {
+            var importExtService = externalServiceInfos[1];
+            var importExtLayerIdent;
+            if (externalServiceInfos.length > 2) {
+              importExtLayerIdent = externalServiceInfos[2];
+            }
+            $scope.globals.importPopupShown = true;
+            $scope.globals.importExtService = importExtService;
+            if (importExtLayerIdent && importExtLayerIdent.length > 0) {
+              $scope.globals.importExtLayerIdent = importExtLayerIdent;
+            }
+          }
+        }
       } else {
         $scope.globals.catalogShown = true;
         $scope.globals.selectionShown = false;
@@ -324,6 +342,56 @@ goog.require('ga_window_service');
     $scope.hidePulldownOnXSmallScreen = function() {
       if (gaWindow.isWidth('xs')) {
         $scope.globals.pulldownShown = false;
+      }
+    };
+
+    // INGRID: Check has layers
+    $scope.hasAddedLayers = function() {
+      var hasAddedLayers = false
+      $scope.map.getLayers().getArray().forEach(function(layer) {
+        if (layer.displayInLayerManager) {
+          hasAddedLayers = true;
+        }
+      });
+      return hasAddedLayers;
+    };
+
+    // INGRID: Add remove all layers
+    $scope.removeLayers = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+      var layers = $scope.map.getLayers().getArray();
+      for (var i = 0; i < layers.length; i++) {
+        var layer = layers[i];
+        if (!layer.background) {
+          $scope.map.removeLayer(layer);
+          i--;
+        }
+      }
+    };
+
+    // INGRID: Check has activated layers
+    $scope.hasAllActivatedLayers = {
+      active: function(isActive) {
+        var layers = $scope.map.getLayers().getArray();
+        if (arguments.length) {
+          for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            if (!layer.background) {
+              layer.visible = isActive;
+            }
+          }
+          return isActive;
+        }
+        var hasAllActivatedLayers = true
+        $scope.map.getLayers().getArray().forEach(function(layer) {
+          if (!layer.background && !layer.visible) {
+            hasAllActivatedLayers = false;
+          }
+        });
+        return hasAllActivatedLayers;
       }
     };
 
@@ -448,6 +516,7 @@ goog.require('ga_window_service');
       }
     });
 
+    // INGRID: Check params
     if (!$scope.globals.embed) {
       if (window.parent.onpopstate !== undefined) {
         window.parent.onpopstate = function(event) {

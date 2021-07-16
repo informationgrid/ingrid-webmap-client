@@ -31,6 +31,7 @@ goog.require('ga_wmts_service');
     var servers = [
       'https://wms.geo.admin.ch/?lang=',
       'https://wms-inspire.geo.admin.ch/?SERVICE=WMS',
+      'https://apps.ecmwf.int/wms/?token=public',
       'http://owsproxy.lgl-bw.de/owsproxy/ows/WMS_Maps4BW',
       'https://www.ogd.stadt-zuerich.ch/mapproxy/wmts/1.0.0/WMTSCapabilities.xml',
       'https://wms.geo.gl.ch/',
@@ -129,7 +130,7 @@ goog.require('ga_wmts_service');
       'https://wms.geo.gr.ch/wildschutzgebiete',
       'https://wms.geo.gr.ch/richtplan',
       'https://wms.geo.gr.ch/uebersichtsplan',
-      'https://map.geo.sz.ch/main/wsgi/mapserv_proxy',
+      'https://map.geo.sz.ch/mapserv_proxy',
       'http://geoshop.sz.ch/WMSSZ',
       'https://map.geo.tg.ch/proxy/geofy_chsdi3/gefaehrdung_wasser?access_key=YoW2syIQ4xe0ccJA',
       'https://map.geo.tg.ch/proxy/geofy_chsdi3/grundwasserkarte-fassung?access_key=YoW2syIQ4xe0ccJA',
@@ -146,13 +147,22 @@ goog.require('ga_wmts_service');
       'https://map.geo.tg.ch/proxy/geofy_chsdi3/biomasse-oberflaeche?access_key=YoW2syIQ4xe0ccJA',
       'https://map.geo.tg.ch/proxy/geofy_chsdi3/gefahrenhinweiskarte_allgemeine_gefahrengebiete?access_key=YoW2syIQ4xe0ccJA',
       'https://map.geo.tg.ch/proxy/geofy_chsdi3/bodenuebersicht-regionen?access_key=YoW2syIQ4xe0ccJA',
+      'https://wms.geo.ti.ch/service',
       'http://webdienste.zugmap.ch/basisplan_sw/service.svc/get',
       'http://webdienste.zugmap.ch/basisplan_farbig/service.svc/get',
       'http://webdienste.zugmap.ch/Landwirtschaft_Naturschutz/service.svc/get',
+      'https://wms.geo.sh.ch/wms?SERVICE=WMS',
       'http://service.lisag.ch/wms',
       'http://wms.geoportal.ch:8080/geoserver/AVAI/wms',
       'https://geodienste.ch/db/av/deu',
       'https://geodienste.ch/db/av/fra',
+      'https://geodienste.ch/db/av/ita',
+      'https://geodienste.ch/db/av_situationsplan/deu',
+      'https://geodienste.ch/db/av_situationsplan/fra',
+      'https://geodienste.ch/db/av_situationsplan/ita',
+      'https://geodienste.ch/db/fruchtfolgeflaechen/deu',
+      'https://geodienste.ch/db/fruchtfolgeflaechen/fra',
+      'https://geodienste.ch/db/fruchtfolgeflaechen/ita',
       'https://geodienste.ch/db/kantonale_ausnahmetransportrouten/deu',
       'https://geodienste.ch/db/kantonale_ausnahmetransportrouten/fra',
       'https://geodienste.ch/db/kantonale_ausnahmetransportrouten/ita',
@@ -184,17 +194,30 @@ goog.require('ga_wmts_service');
       'https://geodienste.ch/db/npl_nutzungsplanung/deu',
       'https://geodienste.ch/db/npl_nutzungsplanung/fra',
       'https://geodienste.ch/db/npl_nutzungsplanung/ita',
-      'https://geodienste.ch/db/planerischer_gewaesserschutz/deu',
-      'https://geodienste.ch/db/planerischer_gewaesserschutz/fra',
+      'https://geodienste.ch/db/planerischer_gewaesserschutz_v1_1_1/deu',
+      'https://geodienste.ch/db/planerischer_gewaesserschutz_v1_1_1/fra',
+      'https://geodienste.ch/db/planerischer_gewaesserschutz_v1_1_1/ita',
       'https://geodienste.ch/db/npl_waldabstandslinien/deu',
       'https://geodienste.ch/db/npl_waldabstandslinien/fra',
       'https://geodienste.ch/db/npl_waldabstandslinien/ita',
       'https://geodienste.ch/db/npl_waldgrenzen/deu',
       'https://geodienste.ch/db/npl_waldgrenzen/fra',
       'https://geodienste.ch/db/npl_waldgrenzen/ita',
+      'https://geodienste.ch/db/planungszonen_v1_0_0/deu',
+      'https://geodienste.ch/db/planungszonen_v1_0_0/fra',
+      'https://geodienste.ch/db/planungszonen_v1_0_0/ita',
+      'https://geodienste.ch/db/richtplanung_erneuerbare_energien_v1_0_0/deu',
+      'https://geodienste.ch/db/richtplanung_erneuerbare_energien_v1_0_0/fra',
+      'https://geodienste.ch/db/richtplanung_erneuerbare_energien_v1_0_0/ita',
+      'https://geodienste.ch/db/stromversorgungssicherheit_netzgebiete_v1_2_0/deu',
+      'https://geodienste.ch/db/stromversorgungssicherheit_netzgebiete_v1_2_0/fra',
+      'https://geodienste.ch/db/stromversorgungssicherheit_netzgebiete_v1_2_0/ita',
       'https://geodienste.ch/db/waldreservate/deu',
       'https://geodienste.ch/db/waldreservate/fra',
       'https://geodienste.ch/db/waldreservate/ita',
+      'https://geodienste.ch/db/wildruhezonen_v2_1_0/deu',
+      'https://geodienste.ch/db/wildruhezonen_v2_1_0/fra',
+      'https://geodienste.ch/db/wildruhezonen_v2_1_0/ita',
       // non-SwissProjected test urls
       'http://wms.ga.admin.ch/1GE',
       'http://wms.ga.admin.ch/LG_DE_Geologie_und_Tektonik/wms',
@@ -220,7 +243,6 @@ goog.require('ga_wmts_service');
       'http://rips-gdi.lubw.baden-wuerttemberg.de/arcgis/services/wms/UIS_0100000004200001/MapServer/WMSServer',
       // WMTS servers
       'https://tiles.arcgis.com/tiles/oPre3pOfRfefL8y0/arcgis/rest/services/Topographic_Map_Switzerland/MapServer/WMTS/1.0.0/WMTSCapabilities.xml',
-      'https://www.gis.stadt-zuerich.ch/wmts/wmts-zh-stzh-ogd.xml',
       'http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml',
       'https://wmts.geo.bs.ch/1.0.0/WMTSCapabilities.xml',
       'https://osmlab.github.io/wmts-osm/WMTSCapabilities.xml',
@@ -236,7 +258,8 @@ goog.require('ga_wmts_service');
       'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Base/MapServer/WMTS/1.0.0/WMTSCapabilities.xml',
       'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/WMTS/1.0.0/WMTSCapabilities.xml',
       'http://sgx.geodatenzentrum.de/wmts_topplus_open/1.0.0/WMTSCapabilities.xml',
-      'https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml'
+      'https://geo.so.ch/api/wmts/1.0.0/WMTSCapabilities.xml',
+      'https://wmts.geo.ti.ch/wmts/1.0.0/WMTSCapabilities.xml'
     ];
     */
     var servers = gaGlobalOptions.settingDefaultImportList;
@@ -255,6 +278,11 @@ goog.require('ga_wmts_service');
     $scope.options = {};
     $scope.options.servers = servers;
     $scope.options.isValidUrl = gaUrlUtils.isValid;
+
+    // INGRID: Add external WMS
+    $scope.options.importExtService = $scope.globals.importExtService;
+    $scope.options.importExtLayerIdent = $scope.globals.importExtLayerIdent;
+
     $scope.options.getOlLayerFromGetCapLayer = function(layer) {
       if (layer.wmsUrl) {
         return gaWms.getOlLayerFromGetCapLayer(layer);
@@ -286,15 +314,15 @@ goog.require('ga_wmts_service');
           'SERVICE=WMTS&REQUEST=GetCapabilities&VERSION=1.0.0' :
           'SERVICE=WMS&REQUEST=GetCapabilities&VERSION=1.3.0');
         */
-        if(!/service=/i.test(url)) {
+        if (!/service=/i.test(url)) {
           url = gaUrlUtils.append(url, /wmts/i.test(url) ?
             'SERVICE=WMTS' :
             'SERVICE=WMS');
         }
-        if(!/request=/i.test(url)) {
+        if (!/request=/i.test(url)) {
           url = gaUrlUtils.append(url, 'REQUEST=GetCapabilities');
         }
-        if(!/version=/i.test(url)) {
+        if (!/version=/i.test(url)) {
           url = gaUrlUtils.append(url, /wmts/i.test(url) ?
             'VERSION=1.0.0' :
             'VERSION=1.3.0');
@@ -344,7 +372,7 @@ goog.require('ga_wmts_service');
         });
 
       // INGRID: Change check GPX oder KML
-      } else if (gaFile.isGpx(data) || gaFile.isKml(data) || 
+      } else if (gaFile.isGpx(data) || gaFile.isKml(data) ||
         gaFile.isGpx(data.xmlResponse) || gaFile.isKml(data.xmlResponse)) {
 
         // INGRID: Change data
@@ -386,6 +414,18 @@ goog.require('ga_wmts_service');
       }
 
       return defer.promise;
+    };
+
+    // INGRID: Add 'rejectImport'
+    $scope.options.rejectImport = function(isReject) {
+      $scope.globals.importPopupShown = !isReject;
+      $scope.options.resetImportAttributes();
+    };
+
+    // INGRID: Reset import attributes
+    $scope.options.resetImportAttributes = function() {
+      $scope.globals.importExtService = null;
+      $scope.globals.importExtLayerIdent = null;
     };
   });
 })();

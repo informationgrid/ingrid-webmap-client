@@ -375,13 +375,14 @@ goog.require('ga_urlutils_service');
         },
 
         // INGRID: External service
-        isExternalWmsService: function(olService) {
+        isExternalService: function(olService) {
           if (!olService) {
             return false;
           }
           if (angular.isString(olService)) {
-            return /^WMS\|\|/.test(olService) &&
-              olService.split('||').length === 3;
+            return /^(WMS|WMTS)\|\|/.test(olService) &&
+              (olService.split('||').length === 2 ||
+              olService.split('||').length === 3);
           }
           return false;
         },
@@ -601,15 +602,15 @@ goog.require('ga_urlutils_service');
               (olLayer.getSource() instanceof ol.source.WMTS));
         },
 
-        // INGRID: Set load getCapabilities error 
-        setUrlLoadError: function (errorCode, translate) {
+        // INGRID: Set load getCapabilities error
+        setUrlLoadError: function(errorCode, translate) {
           switch (errorCode) {
-          case 401:
-            return translate.instant('service_load_error_401');
-          case 404:
-            return translate.instant('service_load_error_404');
-          default:
-            return translate.instant('service_load_error_default');
+            case 401:
+              return translate.instant('service_load_error_401');
+            case 404:
+              return translate.instant('service_load_error_404');
+            default:
+              return translate.instant('service_load_error_default');
           }
         },
 

@@ -1,0 +1,40 @@
+<div class="ga-message">{{limitations}}</div>
+<div class="ga-container">
+  <!-- INGRID: Remove 'ng-click' -->
+  <div class="ga-header">
+    <label translate>title</label>
+    <!-- INGRID: Remove 'button' -->
+    <!-- <button class="pull-right fa" ng-class="{'fa-sort-by-alphabet': !reverse, 'fa-sort-by-alphabet-alt': reverse}"></button> -->
+  </div>
+  <div class="ga-content">
+    <ul>
+      <!-- INGRID: Remove 'orderby' -->
+      <li ng-repeat="layer in layers">
+        <div ga-wms-get-cap-item></div>
+      </li>
+    </ul>
+  </div>
+  <!-- INGRID: Add checkbox active layers -->
+  <label title="{{'add_wms_layer_active' | translate}}" class="ga-truncate-text ga-checkbox">
+    <input type="checkbox" ng-model="activateLayers"/>
+    <span></span>
+    {{'add_wms_layer_active' | translate}}
+  </label>
+  <div class="modal-backdrop fade in" ng-show="progress > 0 && progress < 100">
+    <div class="progress progress-striped active">
+      <div class="progress-bar" style="width: 100%;"></div>
+    </div>
+  </div>
+</div>
+<div class="ga-descr">
+  <label translate>description</label>
+  <textarea placeholder="{{'description_instructions' | translate}}"
+             class="form-control"
+             readonly>{{getAbstract()}}</textarea>
+  <button type="button" class="btn btn-default btn-sm ga-add"
+          ng-disabled="(!options.layerSelected || options.layerSelected.isInvalid)"
+          ng-click="addLayerSelected()" translate>add_layer</button>
+  <!-- INGRID: Add button 'add all layers' -->
+  <button type="button" class="btn btn-default btn-sm ga-add"
+          ng-click="addLayersAll()" translate>add_all_layers</button>
+</div>

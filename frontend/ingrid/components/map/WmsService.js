@@ -23,9 +23,10 @@ goog.require('ga_urlutils_service');
    * Manage external WMS layers
    */
   module.provider('gaWms', function() {
-    // INGRID: Add parameter '$http', '$translate'
+    // INGRID: Add parameter '$http', '$translate', 'gaPopup'
     this.$get = function(gaDefinePropertiesForLayer, gaMapUtils, gaUrlUtils,
-        gaGlobalOptions, $q, gaLang, gaLayers, gaTileGrid, $http, $translate) {
+        gaGlobalOptions, $q, gaLang, gaLayers, gaTileGrid, $http, $translate,
+        gaPopup) {
 
       // Default subdomains for external WMS
       var DFLT_SUBDOMAINS = ['', '0', '1', '2', '3', '4'];
@@ -325,7 +326,7 @@ goog.require('ga_urlutils_service');
           var proxyUrl = gaGlobalOptions.proxyUrl +
               encodeURIComponent(cap) + '&toJson=true';
 
-            // INGRID: Split host from params
+          // INGRID: Split host from params
           var capSplit = cap.split('?');
           var capParams = '?';
           cap = capSplit[0];
@@ -343,11 +344,13 @@ goog.require('ga_urlutils_service');
           }
 
           // Angularjs doesn't handle onprogress event
-          $http.get(proxyUrl, {identifier: identifier,
+          $http.get(proxyUrl, {
+            identifier: identifier,
             index: index,
             cap:
               cap + '' + capParams}).
               then(function(response) {
+                var content = '';
                 try {
                   var config = response.config;
                   var data = response.data;
@@ -361,6 +364,14 @@ goog.require('ga_urlutils_service');
                   } else {
                     val = result;
                   }
+                  var getCapUrl = config.cap +
+                    'SERVICE=WMS&' +
+                    'REQUEST=GetCapabilities&' +
+                    'VERSION=' + version;
+                  var getCapLink = '<a href="' + getCapUrl + '" title="' +
+                    config.cap + '" target="_blank">' +
+                    config.cap +
+                    '</a>';
                   if (val.Capability) {
                     if (val.Capability.Layer) {
                       var layers = [];
@@ -378,15 +389,18 @@ goog.require('ga_urlutils_service');
 
                       // INGRID: Check layers params
                       if (layers) {
-                        var hasAddService = false;
+                        var layersByIdent = [];
+                        var layersAll = [];
                         for (var i = 0; i < layers.length; i++) {
                           var layer = layers[i];
                           var visible = false;
-                          if (config.identifier) {
-                            if (layer.Identifier) {
-                              var identifier = layer.Identifier.content ||
+                          var configIdent = config.identifier;
+                          if (configIdent) {
+                            if (layer.Identifier &&
+                                layer.Identifier.length > 0) {
+                              var layerIdent = layer.Identifier[0] ||
                               layer.Identifier;
-                              if (identifier === config.identifier) {
+                              if (configIdent.indexOf(layerIdent) > -1) {
                                 visible = true;
                               }
                             }
@@ -499,30 +513,85 @@ goog.require('ga_urlutils_service');
                           var olLayer = createWmsLayer(layerParams,
                               layerOptions);
                           olLayer.visible = visible;
-                          if (config.index) {
-                            map.getLayers().insertAt(config.index + i, olLayer);
+                          if (visible) {
+                            layersByIdent.push(olLayer);
                           } else {
-                            map.addLayer(olLayer);
+                            layersAll.push(olLayer);
                           }
-                          hasAddService = true;
                         }
-                        if (hasAddService) {
-                          alert('Dienst ' + config.cap + ' wurde hinzugefügt.');
+                        var layersToAdd = layersAll;
+                        if (layersByIdent.length > 0) {
+                          layersToAdd = layersByIdent;
+                        }
+                        for (var la = 0; la < layersToAdd.length; la++) {
+                          if (config.index) {
+                            var tmpIndex = config.index + i;
+                            map.getLayers().insertAt(tmpIndex, layersToAdd[la]);
+                          } else {
+                            map.addLayer(layersToAdd[la]);
+                          }
+                        }
+
+                        content = '' +
+                        $translate.instant('services_add_external_succcess') +
+                        '<br>' +
+                        getCapLink;
+
+                        if (layersByIdent.length > 0) {
+                          content += '<br><br>' +
+                            $translate.instant('services_add_external_ident') +
+                            '<br>' +
+                            config.identifier;
+                        } else if (layersAll.length > 0) {
+                          content += '<br><br>' +
+                            $translate.instant('services_add_external_all');
                         }
                       }
                     }
                   } else {
-                    alert($translate.instant('service_load_error_layers') +
-                      ': \n' + config.cap);
+                    content = '' +
+                      $translate.instant('service_load_error_layers') +
+                      '<br>' +
+                      getCapLink;
                   }
                 } catch (e) {
-                  alert($translate.instant('service_load_error_capabilities') +
-                    ': \n' + config.cap);
+                  content = '' +
+                    $translate.instant('service_load_error_capabilities') +
+                    '<br>' +
+                    getCapLink;
                 }
+                var popup = gaPopup.create({
+                  title: $translate.instant('services_add_external'),
+                  destroyOnClose: true,
+                  showReduce: false,
+                  content: content,
+                  className: '',
+                  x: 400,
+                  y: 200
+                });
+                popup.open(5000);
               }, function(response) {
                 var errorMsg = gaMapUtils.setUrlLoadError(response.status,
-                  $translate);
-                alert(errorMsg +': \n' + response.config.cap);
+                    $translate);
+                var getCapLink = response.config.cap +
+                  'SERVICE=WMS&' +
+                  'REQUEST=GetCapabilities';
+                var content = errorMsg +
+                  ': <br>' +
+                  '<a href="' + getCapLink + '" title="' +
+                  response.config.cap + '" target="_blank">' +
+                  response.config.cap +
+                  '</a>';
+                var popup = gaPopup.create({
+                  title: $translate.instant('services_add_external'),
+                  destroyOnClose: true,
+                  showReduce: false,
+                  content: content,
+                  className: '',
+                  x: 400,
+                  y: 200
+                });
+                popup.open(5000);
               });
         };
 

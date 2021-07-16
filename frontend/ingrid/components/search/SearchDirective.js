@@ -99,6 +99,14 @@ goog.require('ga_what3words_service');
         $scope.childoptions.searchBwaLocatorUrl = $scope.options.
             searchBwaLocatorUrl;
 
+        // INGRID: Add search Bwa Locator url
+        $scope.childoptions.searchServiceAdd = $scope.options.
+          searchServiceAdd;
+
+        // INGRID: Add search Bwa Locator url
+        $scope.childoptions.searchServiceReset = $scope.options.
+          searchServiceReset;
+
         // Result set announces a result selection
         $scope.childoptions.valueSelected = function(strValue) {
           $scope.query = strValue;
@@ -180,10 +188,10 @@ goog.require('ga_what3words_service');
                 } else {
                   // INGRID: Add zoom from settings
                   gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                    $scope.options.searchCoordsZoom, position);
+                      $scope.options.searchCoordsZoom, position);
                   // INGRID: Add id 'search_coord' for feature
                   gaMarkerOverlay.add($scope.map, position, true,
-                    null, 'search_coord');
+                      null, 'search_coord');
                 }
               }
             });
@@ -201,7 +209,7 @@ goog.require('ga_what3words_service');
                   $scope.map.getView().getProjection());
                   // INGRID: Add zoom from settings
                   gaMapUtils.moveTo($scope.map, $scope.ol3d,
-                    $scope.options.searchCoordsZoom, newPos);
+                      $scope.options.searchCoordsZoom, newPos);
                   gaMarkerOverlay.add($scope.map, newPos, true);
                 }
               });
@@ -307,6 +315,8 @@ goog.require('ga_what3words_service');
                   firstRes.trigger('focus');
                 }
               }
+              // INGRID: Close import popup
+              $scope.options.searchServiceReset();
             };
 
             // Result set announces their results (put here because we need

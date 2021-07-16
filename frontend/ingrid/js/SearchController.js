@@ -23,6 +23,15 @@ goog.provide('ga_search_controller');
       searchBwaLocatorUrl: gaGlobalOptions.searchBwaLocatorUrl,
       // INGRID: Add zoom for coordinate search
       searchCoordsZoom: gaGlobalOptions.searchCoordsZoom,
+      // INGRID: Add open import popup on service item
+      searchServiceAdd: function(url) {
+        $scope.globals.importPopupShown = true;
+        $scope.globals.importExtService = url;
+      },
+      // INGRID: Close import popup
+      searchServiceReset: function() {
+        $scope.globals.importPopupShown = false;
+      },
       featureUrl: gaGlobalOptions.cachedApiUrl +
           '/rest/services/{Topic}/MapServer/{Layer}/{Feature}' + sr
     };

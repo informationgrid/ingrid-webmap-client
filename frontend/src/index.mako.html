@@ -44,7 +44,7 @@ itemscope itemtype="http://schema.org/WebApplication"
 
     <!-- Description is translated 'by hand' in the MainController -->
     <meta name="description" translate-attr="{content: 'page_description'}" content="geo.admin.ch ist die Geoinformationsplattform der Schweizerischen Eidgenossenschaft. // geo.admin.ch est la plateforme de géoinformation de la Confédération suisse."/>
-    <meta name="keywords" content="maps Switzerland, map viewer, Confederation, geodata, public platform, geographical information, geoportal, orthophotos, geolocation, geoinformation, Geodaten, Geoinformation, Bund, Plattform, Karte, Kartendienst, Kartenviewer"/>
+    <meta name="keywords" content="maps Switzerland, map viewer, Swiss Map,Confederation, geodata, public platform, geographical information, geoportal, orthophotos, geolocation, geoinformation, Geodaten, Geoinformation, Bund, Plattform, Karte, Kartendienst, Kartenviewer"/>
     <meta name="news_keywords" content="Maps of Switzerland"/>
 
     <!-- Open Graph metas SMO -->
@@ -462,6 +462,11 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Selection -->
         <div class="panel" ng-hide="globals.isDrawActive">
+          <!-- INGRID: Remove and de/activate all layers -->
+          <div class="theme-toggle" ng-if="hasAddedLayers()">
+              <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" title="{{ 'remove_all_layers' | translate }}"></button>
+              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" title="{{ 'activate_all_layers' | translate }}"/>
+          </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#selection"
@@ -979,6 +984,12 @@ itemscope itemtype="http://schema.org/WebApplication"
           serviceAnnouncementUrl: settings.settingServiceAnnouncementUrl,
           // INGRID: Help URL
           serviceHelpUrl: settings.settingServiceHelpUrl,
+          // INGRID: Service reverse import all layers
+          serviceReverseImport: settings.settingServiceReverseImport || false,
+          // INGRID: Service import all layers with identifier
+          serviceMultiIdentImport: settings.settingServiceMultiIdentImport || false,
+          // INGRID: Service import all layers by add without identifier
+          serviceAllWithoutIdentImport: settings.settingServiceAllWithoutIdentImport || false,
 
           // Map state values
           // INGRID: Read setting from settings

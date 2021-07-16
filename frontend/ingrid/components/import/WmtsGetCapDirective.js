@@ -6,7 +6,8 @@ goog.provide('ga_wmtsgetcap_directive');
     'pascalprecht.translate'
   ]);
 
-  module.directive('gaWmtsGetCap', function($translate) {
+  // INGRID: Add 'gaPopup'
+  module.directive('gaWmtsGetCap', function($translate, gaPopup) {
 
     // Get the layer extent defines in the GetCapabilities
     var getLayerExtentFromGetCap = function(getCapLayer, proj) {
@@ -142,15 +143,34 @@ goog.provide('ga_wmtsgetcap_directive');
             try {
               var olLayer = scope.options.getOlLayerFromGetCapLayer(getCapLay);
               if (olLayer) {
-                scope.map.addLayer(olLayer);
+                // INGRID: Change to scope function
+                scope.addLayer(olLayer);
               }
             } catch (e) {
               console.error('Add layer failed:', e);
               msg = $translate.instant('add_wmts_layer_failed') +
                   e.message;
             }
-            alert(msg);
+            // INGRID: Add popup
+            var popup = gaPopup.create({
+              title: $translate.instant('add_layer'),
+              destroyOnClose: true,
+              showReduce: false,
+              content: msg,
+              className: 'popup-front',
+              x: 400,
+              y: 200
+            });
+            popup.open(5000);
           }
+        };
+
+        // INGRID: Add function
+        scope.addLayer = function(olLayer) {
+          if(!scope.activateLayers){
+            olLayer.visible = false;
+          }
+          scope.map.addLayer(olLayer);
         };
 
         // Get the abstract to display in the text area
