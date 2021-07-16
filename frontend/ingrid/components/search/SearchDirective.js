@@ -100,10 +100,12 @@ goog.require('ga_what3words_service');
             searchBwaLocatorUrl;
 
         // INGRID: Add search Bwa Locator url
-        $scope.childoptions.searchServiceAdd = $scope.options.searchServiceAdd;
+        $scope.childoptions.searchServiceAdd = $scope.options.
+          searchServiceAdd;
 
         // INGRID: Add search Bwa Locator url
-        $scope.childoptions.searchServiceReset = $scope.options.searchServiceReset;
+        $scope.childoptions.searchServiceReset = $scope.options.
+          searchServiceReset;
 
         // Result set announces a result selection
         $scope.childoptions.valueSelected = function(strValue) {
