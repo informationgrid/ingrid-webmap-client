@@ -427,5 +427,12 @@ goog.require('ga_wmts_service');
       $scope.globals.importExtService = null;
       $scope.globals.importExtLayerIdent = null;
     };
+
+    // INGRID: Add 'updateMenu'
+    $scope.options.updateMenu = function() {
+      $scope.globals.catalogShown = false;
+      $scope.globals.selectionShown = true;
+    };
+
   });
 })();
