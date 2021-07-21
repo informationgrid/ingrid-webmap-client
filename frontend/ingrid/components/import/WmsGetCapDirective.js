@@ -315,6 +315,8 @@ goog.require('ga_urlutils_service');
               if (olLayer) {
                 // INGRID: Change to scope function
                 scope.addLayer(olLayer);
+                // INGRID: Update menu
+                scope.options.updateMenu();
               }
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
@@ -347,6 +349,8 @@ goog.require('ga_urlutils_service');
               if (gaGlobalOptions.serviceAllWithoutIdentImport) {
                 scope.options.rejectImport(true);
               }
+              // INGRID: Update menu
+              scope.options.updateMenu();
             } catch (e) {
               $window.console.error('Add layer failed:' + e);
               msg = $translate.instant('add_wms_layer_failed') + e.message;
@@ -554,7 +558,7 @@ goog.require('ga_urlutils_service');
 
         // INGRID: Add function
         scope.addLayer = function(olLayer) {
-          if(!scope.activateLayers){
+          if (!scope.activateLayers) {
             olLayer.visible = false;
           }
           scope.map.addLayer(olLayer);

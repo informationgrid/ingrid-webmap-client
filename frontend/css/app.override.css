@@ -89,7 +89,7 @@
 }
 
 [ga-wms-get-cap] textarea[readonly], [ga-wmts-get-cap] textarea[readonly] {
-  height: 127px;
+  height: 163px;
 }
 
 [ga-popup].popup-front {
@@ -98,6 +98,28 @@
 
 .theme-toggle input.topic-modal-toggle {
   margin-top: 0;
+}
+
+#import-popup .popover-content {
+  max-height: 500px;
+}
+
+#import-popup button {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+[ga-popup] {
+  max-height: 500px;
+}
+
+[ga-popup] .ga-checkbox {
+  border: 1px solid #dddddd;
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  font-weight: bold !important;
 }
 
 @media (max-width: 768px), (max-height: 600px) {

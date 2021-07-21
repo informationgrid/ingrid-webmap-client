@@ -145,6 +145,8 @@ goog.provide('ga_wmtsgetcap_directive');
               if (olLayer) {
                 // INGRID: Change to scope function
                 scope.addLayer(olLayer);
+                // INGRID: Update menu
+                scope.options.updateMenu();
               }
             } catch (e) {
               console.error('Add layer failed:', e);
@@ -167,7 +169,7 @@ goog.provide('ga_wmtsgetcap_directive');
 
         // INGRID: Add function
         scope.addLayer = function(olLayer) {
-          if(!scope.activateLayers){
+          if (!scope.activateLayers) {
             olLayer.visible = false;
           }
           scope.map.addLayer(olLayer);
