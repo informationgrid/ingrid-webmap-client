@@ -76,14 +76,14 @@ goog.require('ga_window_service');
             target: zoomToExtentButton,
             extent: ol.proj.transformExtent(gaMapUtils.defaultExtent,
                 'EPSG:4326', gaGlobalOptions.defaultEpsg),
-            tipLabel: ' ',
-            label: $('<span translate-attr="{title: ' +
+            tipLabel: 'Zoom to extent',
+            label: $compile('<span translate-attr="{title: ' +
                    '\'zoom_to_extent_tiplabel\'}">' +
                    '<i class="fa fa-ga-circle-bg"></i>' +
                    '<i class="fa fa-ga-circle"></i>' +
                    '<i class="fa fa-resize-horizontal"></i>' +
                    '<i class="fa fa-resize-vertical"></i>' +
-                   '</span>')[0],
+                   '</span>')($scope)[0],
             className: 'ol-zoom-extent'
           })
         ]),
