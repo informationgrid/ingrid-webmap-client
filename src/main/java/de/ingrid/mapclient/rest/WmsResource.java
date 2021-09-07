@@ -334,10 +334,10 @@ public class WmsResource {
         
         html += "<ul class=\"nav nav-tabs\">";
         html += "<li ng-class=\"getTabClass(1)\">";
-        html += "<a ng-click=\"activeTab(1)\" translate>metadata_data</a>";
+        html += "<a ng-click=\"activeTab(1)\" ng-keypress=\"activeTab(1)\" tabindex=\"0\" translate>metadata_data</a>";
         html += "</li>";
         html += "<li ng-class=\"getTabClass(2)\">";
-        html += "<a ng-click=\"activeTab(2)\" translate>metadata_structure</a>";
+        html += "<a ng-click=\"activeTab(2)\" ng-keypress=\"activeTab(2)\" tabindex=\"0\" translate>metadata_structure</a>";
         html += "</li>";
         html += "</ul>";
         
