@@ -137,3 +137,17 @@
   color: #666;
   background: #fff;
 }
+
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected,
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected:hover,
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected button {
+  color: #a00e19;
+}
+
+.ga-draw-measure-static::after {
+  border-top: 6px solid #474949;
+}
+
+.ga-draw-help, .ga-draw-measure, .ga-draw-measure-static {
+  background-color: #474949;
+}
