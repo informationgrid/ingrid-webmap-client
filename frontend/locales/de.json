@@ -47,6 +47,7 @@
 "print_title_placeholder": "Titel",
 "print_comment": "Kommentar",
 "print_comment_placeholder": "Kommentar",
+"search_for": "Suche: ",
 "search_placeholder": "z.B. Hannover, Naturschutz ...",
 "service_load_error_layers": "GetCapabilities verfügt über kein Layer:",
 "service_load_error_capabilities": "GetCapabilities konnte <strong>nicht</strong> geladen werden:",

@@ -1,8 +1,10 @@
 <form class="pull-left">
   <!-- <span translate class="ga-search-title">search_title</span> -->
   <span class="ga-search-input-container">
+<!-- INGRID: Add aria-label -->
     <input class="input-small ga-search-input" type="search"
-    placeholder="{{'search_placeholder' | translate}}" ng-model="query"
+    placeholder="{{'search_for' | translate}}{{'search_placeholder' | translate}}" ng-model="query"
+    aria-label="{{'search_title' | translate}}"
     autocapitalize="none" autocomplete="off" autocorrect="off"
     ng-keydown="keydown($event)"
     ng-blur="lostFocus($event)"
