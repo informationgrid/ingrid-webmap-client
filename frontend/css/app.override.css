@@ -127,3 +127,13 @@
     width: 24px;
   }
 }
+
+#pulldown-content .panel > .accordion-toggle.collapsed {
+  background-color: #474949;
+}
+
+#pulldown-content .panel > .accordion-toggle:hover, #pulldown-content .panel > .accordion-toggle:active {
+  text-decoration: none;
+  color: #666;
+  background: #fff;
+}
