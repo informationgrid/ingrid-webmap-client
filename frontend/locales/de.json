@@ -2,6 +2,7 @@
 "Invalid layer: unsupported crs": "Der Datensatz kann ggf. nicht angezeigt oder gedruckt werden. Karten-Projektion wird nicht unterstützt.",
 "anbieter": "Anbieter",
 "bg_osm": "OSM",
+"copyright_data": "<span>© Daten:</span>",
 "bwalocator_results_header": "BWaStr Locator",
 "bwalocator_from": "Von:",
 "bwalocator_to": "Bis:",
