@@ -26,7 +26,10 @@
                 <div translate>bwalocator_distance</div>&nbsp;
                 <input id="{{bwalocator_distance_id}}" type="text" placeholder="{{bwalocator_distance_placeholder}}" value="" ng-click="stopPreEvent($event)"/>
               </label>
-              <button class="ga-icon fa fa-chevron-sign-right" ng-click="getBwaLocatorParam($event, res)"></button>
+<!-- INGRID: Add aria-label -->
+              <button class="ga-icon fa fa-chevron-sign-right"
+                aria-label="{{ 'fa_icon_bwalocator_load' | translate }}" 
+                ng-click="getBwaLocatorParam($event, res)"></button>
            </div><!--ga-layer-tools-->
          </li>
     </ul>

@@ -9,9 +9,11 @@
       {{item.label}}
     </label>
     <div class="ga-layer-ordering">
-      <!-- INGRID: Add zoom to extent -->
-      <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)"></button>
-      <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
+<!-- INGRID: Add zoom to extent -->
+<!-- INGRID: Add aria-label -->
+      <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)" aria-label="{{ 'fa_icon_layer_zoom' | translate }}"></button>
+<!-- INGRID: Add aria-label -->
+      <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)" aria-label="{{ 'fa_icon_layer_info' | translate }}"></button>
     </div>
   </div>
 
@@ -30,8 +32,10 @@
         {{item.label}}
       </label>
       <div class="ga-layer-ordering">
-        <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)"></button>
-        <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
+<!-- INGRID: Add aria-label -->
+        <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)" aria-label="{{ 'fa_icon_layer_zoom' | translate }}"></button>
+<!-- INGRID: Add aria-label -->
+        <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)" aria-label="{{ 'fa_icon_layer_info' | translate }}"></button>
       </div>
     </a>
     <ul ng-if="item.selectedOpen">

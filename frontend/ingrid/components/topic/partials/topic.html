@@ -1,0 +1,25 @@
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+         <h4 class="modal-title" translate>choose_theme</h4>
+<!-- INGRID: Add aria-label -->
+         <button class="ga-icon ga-btn fa fa-remove" aria-label="{{ 'fa_icon_topic_remove' | translate }}" data-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="input-modal-container">
+<!-- INGRID: Add tabindex -->
+          <div class="ga-topic-item"
+               ng-repeat="topic in topics | orderBy:null:null:localeSensitiveComparator"
+               ng-click="setActiveTopic(topic)"
+               ng-class="{'ga-topic-active': topic == activeTopic}"
+               data-original-title="{{topic.tooltip | translate}}"
+               tabindex="0">
+            <div>{{topic.name}}</div>
+            <div class="ga-topics-sprite ga-topics-sprite-{{topic.id}}"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

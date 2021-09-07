@@ -1,31 +1,41 @@
 <div class="ga-share-icons">
+<!-- INGRID: Add aria-label -->
   <a class="ga-share-icon" target="_blank" ng-if="enableShareMail"
     data-original-title="{{'mail_tooltip' | translate}}"
+    aria-label="{{'mail_tooltip' | translate}}"
     href="mailto:?body={{permalinkValue}}">
     <i class="fa fa-envelope-alt"></i>
   </a>
 
+<!-- INGRID: Add aria-label -->
   <a class="ga-share-icon" target="_blank" ng-if="enableShareQR"
     data-original-title="{{'qrcode_tooltip' | translate}}"
+    aria-label="{{'qrcode_tooltip' | translate}}"
     href="{{qrcodegeneratorPath}}?url={{permalinkValue}}">
     <i class="fa fa-qrcode"></i>
   </a>
 
+<!-- INGRID: Add aria-label -->
   <a class="ga-share-icon" target="_blank" ng-if="enableShareFacebook"
     data-original-title="{{'facebook_tooltip' | translate}}"
+    aria-label="{{'facebook_tooltip' | translate}}"
     href="http://www.facebook.com/sharer.php?u={{encodedPermalinkHref}}&t={{encodedDocumentTitle}}">
     <i class="fa fa-facebook"></i>
   </a>
 
+<!-- INGRID: Add aria-label -->
   <a class="ga-share-icon" target="_blank" ng-if="enableShareTwitter"
     data-original-title="{{'twitter_tooltip' | translate}}"
+    aria-label="{{'twitter_tooltip' | translate}}"
     href="https://twitter.com/intent/tweet?url={{encodedPermalinkHref}}&text={{encodedDocumentTitle}}">
     <i class="fa fa-twitter"></i>
   </a>
 
 <!-- INGRID: Add target and check setting -->
+<!-- INGRID: Add aria-label -->
   <a ng-if="showWhatsapp && enableShareWhatsapp" target="_parent" class="ga-share-icon"
     data-original-title="{{'whatsapp_tooltip' | translate}}"
+    aria-label="{{'whatsapp_tooltip' | translate}}"
     href="whatsapp://send?text={{permalinkValue}}">
     <i class="fa fa-whatsapp"></i>
   </a>

@@ -9,7 +9,9 @@
     ng-focus="onFocus()"
     ng-disabled="!topicLoaded">
     <i class="fa fa-search"></i>
+<!-- INGRID: Add aria-label -->
     <button class="fa fa-remove-sign ga-icon ga-btn" ng-click="clearInput()"
+       aria-label="{{ 'fa_icon_search_clear' | translate }}"
        ng-mousedown="preClear($event)" ng-hide="query==''"></button>
     <span class="ga-search-dropdown"
           ng-show="query && restat.sets()"

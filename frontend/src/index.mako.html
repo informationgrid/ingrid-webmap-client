@@ -464,8 +464,10 @@ itemscope itemtype="http://schema.org/WebApplication"
         <div class="panel" ng-hide="globals.isDrawActive">
           <!-- INGRID: Remove and de/activate all layers -->
           <div class="theme-toggle" ng-if="hasAddedLayers()">
-              <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" title="{{ 'remove_all_layers' | translate }}"></button>
-              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" title="{{ 'activate_all_layers' | translate }}"/>
+              <!-- INGRID: Add aria-label -->
+              <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" aria-label="{{ 'fa_icon_remove_all_layers'}"></button>
+              <!-- INGRID: Add aria-label -->
+              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" aria-label="{{ 'fa_icon_activate_all_layers'}"/>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
@@ -672,7 +674,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div class="arrow"></div>
       <div class="popover-title">
         <span translate>homescreen_title</span>
-        <button type="button" class="ga-icon ga-btn fa fa-remove" ng-click="globals.homescreen=false"></button>
+        <!-- INGRID: Add aria-label -->
+        <button type="button" class="ga-icon ga-btn fa fa-remove" ng-click="globals.homescreen=false" aria-label="{{ 'homescreen_title' | translate }}"></button>
       </div>
       <div class="popover-content">
         <i class="fa fa-share"></i>&nbsp;
