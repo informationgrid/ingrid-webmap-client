@@ -151,3 +151,11 @@
 .ga-draw-help, .ga-draw-measure, .ga-draw-measure-static {
   background-color: #474949;
 }
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color:#474949;
+}
+
+.tooltip-inner {
+  background-color: #474949;
+}
