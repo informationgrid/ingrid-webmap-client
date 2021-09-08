@@ -193,10 +193,10 @@ button.ga-btn:not([disabled]):focus-visible {
   padding: 2px 0;
 }
 
-.ga-bg-layer {
+.ga-bg-layer, #pulldown-content .panel{
   display: none;
 }
 
-.ga-open .ga-bg-layer {
+.ga-open .ga-bg-layer, .ga-pulldown-shown #pulldown-content .panel {
   display: block;
 }
