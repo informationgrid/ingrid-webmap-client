@@ -192,3 +192,11 @@ button.ga-btn:not([disabled]):focus-visible {
 .ga-catalogitem-node {
   padding: 2px 0;
 }
+
+.ga-bg-layer {
+  display: none;
+}
+
+.ga-open .ga-bg-layer {
+  display: block;
+}
