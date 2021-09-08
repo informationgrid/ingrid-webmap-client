@@ -837,7 +837,7 @@ public class WmsResource {
                 if(field != null) {
                     html.append("<div>");
                     html.append("<span title=\"" + field.getTextContent() + "\">");
-                    html.append("<label class=\"ga-truncate-text ga-checkbox\">");
+                    html.append("<label class=\"ga-truncate-text\">");
                     html.append(field.getTextContent());
                     html.append("</label>"); 
                     html.append("</span>");

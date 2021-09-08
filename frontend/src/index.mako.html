@@ -195,7 +195,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
     </div> <!-- #header -->
 
-    <div id="drawModeHeader" class="navbar navbar-fixed-top">
+    <!-- INGRID: Add ng-if="globals.isDrawActive" -->
+    <div id="drawModeHeader" class="navbar navbar-fixed-top" ng-if="globals.isDrawActive">
       <div class="ga-centered ga-title" translate>draw_mode_title</div>
       <button class="btn btn-primary pull-left" ng-click="globals.isDrawActive = false">
         <i class="fa fa-arrow-left"></i>

@@ -171,3 +171,24 @@
 .modal-header button {
   opacity: 0.8 !important;
 }
+
+:focus-visible {
+  outline: 2px solid #a00e19 !important;
+  outline-offset: -2px !important;
+}
+
+body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus + span {
+  box-shadow: none;
+}
+
+body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus-visible + span {
+  outline: 2px solid #a00e19 !important;
+}
+
+button.ga-btn:not([disabled]):focus-visible {
+  outline-offset: -2px !important;
+}
+
+.ga-catalogitem-node {
+  padding: 2px 0;
+}
