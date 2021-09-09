@@ -13,6 +13,7 @@
 "detail_capabilities_url": "Capabilities URL",
 "detail_iso_xml": "ISO-XML Format",
 "disclaimer_label": "Impressum",
+"draw_delete_last_point": "Letzter Punkt löschen: ENTF-Taste ",
 "external_data_tooltip": "Weitere Informationen des Drittanbieters",
 "external_data_warning": "Warnung: Die weiterführenden Informationen kommen von einem Drittanbieter (--URL--). Hiermit werden Sie zu dessen Internetseite weitergeleitet.",
 "feedback_subject": "Feedback: InGrid MapClient",
