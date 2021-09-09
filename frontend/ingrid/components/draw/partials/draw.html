@@ -1,0 +1,46 @@
+<div class="ga-draw-buttons">
+  <!-- INGRID: Add 'ng-attr-aria-pressed="{{ options[tool.activeKey] ? 'true' : 'false' }}"' -->
+  <button ng-repeat="tool in options.tools"
+          ng-click="toggleTool($event, tool)"
+          ng-class="{
+              'btn-default': !options[tool.activeKey],
+              'btn-danger': options[tool.activeKey]
+          }"
+          ng-attr-aria-pressed="{{ options[tool.activeKey] ? 'true' : 'false' }}"
+          class="btn">
+    <i class="{{tool.cssClass}}"></i>
+    <span translate>{{tool.title}}</span>
+  </button>
+</div>
+<div ng-if="!options.useTemporaryLayer" class="ga-draw-info-save">
+  <span class="ga-success" translate="{{statusMsgId}}"></span>
+</div>
+<hr ng-show="::!options.noMoreFunctions">
+<div class="ga-more" ng-show="::!options.noMoreFunctions">
+  <ul class="list-inline row">
+    <li class="col-sm-4 col-xs-4 vr">
+      <!-- INGRID: Add 'role="button"' -->
+      <a href="" class="btn" role="button"
+         ng-disabled="!canExport()"
+         ng-click="deleteAllFeatures($event)"
+         translate>draw_delete</a>
+    </li>
+    <li class="col-sm-4 col-xs-4 vr">
+      <!-- INGRID: Add 'role="button"' -->
+      <a href="" class="btn" role="button"
+         ng-disabled="!canExport()"
+         ng-click="exportKml($event)"
+         translate>export_kml</a>
+    </li>
+    <li class="col-sm-4 col-xs-4">
+      <!-- INGRID: Add 'role="button"' -->
+      <a href="" class="btn" role="button"
+         ng-disabled="!canShare()"
+         ng-click="share($event)"
+         translate>share</a>
+    </li>
+  </ul>
+</div>
+<hr>
+<div class="ga-draw-disclaimer" ng-if="!options.useTemporaryLayer" translate>share_file_disclaimer</div>
+
