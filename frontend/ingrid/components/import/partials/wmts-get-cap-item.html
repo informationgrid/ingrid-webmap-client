@@ -1,9 +1,15 @@
+<!-- INGRID: Add 'ng-attr-aria-pressed="{{ options.layerSelected === layer }}" role="button" tabindex="0" ng-keypress="toggleLayerSelected($event, layer)"' -->
 <div class="ga-header-group"
      ng-class="{'ga-odd': $odd, 'ga-invalid': layer.isInvalid, 'ga-selected': (options.layerSelected === layer)}"
      ng-mouseenter="addPreviewLayer($event, layer)"
      ng-mouseleave="removePreviewLayer($event)"
+     ng-attr-aria-pressed="{{ options.layerSelected === layer }}"
+     role="button"
+     tabindex="0"
+     ng-keypress="toggleLayerSelected($event, layer)"
      ng-click="toggleLayerSelected($event, layer)" >
-  <button class="fa fa-zoom-in ga-btn" ng-disabled="!(layer.extent)"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"' -->
+  <button class="fa fa-zoom-in ga-btn" ng-disabled="!(layer.extent)" ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"></button>
   {{layer.Title}}
   <!-- INGRID: Add warning for unsupported layer -->
   <p ng-hide="!(layer.isUnsupported)" translate>Invalid layer: unsupported crs</p>

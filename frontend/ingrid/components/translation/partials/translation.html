@@ -1,0 +1,11 @@
+<!-- INGRID: Add 'role="button" ng-attr-aria-pressed="{{ lang == l }}" -->
+<a href=""
+   ng-class="{'ga-lang-selected' : lang == l}"
+   ng-click="selectLang(l)"
+   ng-repeat="l in langs"
+   role="button"
+   ng-attr-aria-pressed="{{ lang == l }}"
+   class="hidden-xs">{{l | uppercase}}</a>
+<select ng-model="lang" ng-options="l as (l | uppercase) for l in langs"
+        class="visible-xs-block">
+</select>

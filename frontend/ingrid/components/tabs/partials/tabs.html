@@ -1,8 +1,8 @@
 <div>
   <ul class="nav nav-tabs">
     <li ng-repeat="tab in tabs" ng-class="{active: tab.active}">
-<!-- INGRID: Add 'ng-keypress' and 'tabindex' -->
-      <a ng-click="activeTab(tab)" ng-keypress="activeTab(tab)" tabindex="0" translate>{{::tab.title}}</a>
+<!-- INGRID: Add 'role="tab" ng-attr-aria-selected="{{ tab.active }}" tabindex="0"' -->
+      <a ng-click="activeTab(tab)" ng-keypress="activeTab(tab)" role="tab" ng-attr-aria-selected="{{ tab.active }}" tabindex="0" translate>{{::tab.title}}</a>
     </li>
   </ul>
 </div>

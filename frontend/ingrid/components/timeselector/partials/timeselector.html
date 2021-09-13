@@ -13,7 +13,7 @@
         ng-options="year.value as year.value for year in availableYears">
   <option value="" disabled translate>time_select_year</option>
 </select>
-<!-- INGRID: Add aria-label -->
-<button class="btn btn-default fa fa-play" ng-hide="isPlaying" ng-click="play()" aria-label="{{ 'fa_icon_time_play' | translate }}"></button>
-<!-- INGRID: Add aria-label -->
-<button class="btn btn-danger fa fa-stop" ng-show="isPlaying" ng-click="stop()" aria-label="{{ 'fa_icon_time_stop' | translate }}"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_time_play' | translate }}"' -->
+<button class="btn btn-default fa fa-play" ng-hide="isPlaying" ng-click="play()" ng-attr-aria-label="{{ 'fa_icon_time_play' | translate }}"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_time_stop' | translate }}"' -->
+<button class="btn btn-danger fa fa-stop" ng-show="isPlaying" ng-click="stop()" ng-attr-aria-label="{{ 'fa_icon_time_stop' | translate }}"></button>

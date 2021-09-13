@@ -8,9 +8,9 @@
   </div>
   <div class="ga-profile-tooltip-arrow"></div>
 </div>
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_profile_trash' | translate }}"' -->
 <button class="btn btn-default fa fa-trash"
-        aria-label="{{ 'fa_icon_profile_trash' | translate }}"
+        ng-attr-aria-label="{{ 'fa_icon_profile_trash' | translate }}"
         ng-if="layer"
         ng-click="deleteSelectedFeature(layer, feature)"></button>
 <div class="ga-profile-icons">

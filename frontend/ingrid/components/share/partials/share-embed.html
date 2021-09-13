@@ -3,8 +3,8 @@
     <div class="modal-content">
       <div class="modal-header">
          <h4 class="modal-title" translate>embed_map</h4>
-<!-- INGRID: Add aria-label -->
-         <button class="ga-icon ga-btn fa fa-remove" data-dismiss="modal" aria-label="{{ 'fa_icon_share_close' | translate }}"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_share_close' | translate }}"' -->
+         <button class="ga-icon ga-btn fa fa-remove" data-dismiss="modal" ng-attr-aria-label="{{ 'fa_icon_share_close' | translate }}"></button>
       </div>
       <div class="modal-body" ng-class="{'ga-user-size': !iframeSize}">
         <div class="input-modal-container">

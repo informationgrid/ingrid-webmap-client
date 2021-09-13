@@ -40,6 +40,12 @@ goog.require('ga_background_service');
 
             scope.toggleMenu = function() {
               elt.toggleClass('ga-open');
+              // INGRID: Add check background selector is open
+              if (elt.hasClass('ga-open')) {
+                scope.isBackgroundSelectorClosed = false;
+              } else {
+                scope.isBackgroundSelectorClosed = true;
+              }
             };
 
             scope.getClass = function(layer) {

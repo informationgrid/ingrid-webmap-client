@@ -5,23 +5,24 @@
 <!-- INGRID: Add div -->
 <div class="ga-layer-ordering">
 <!-- INGRID: Add zoom to extent button -->
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"' -->
   <button class="ga-btn ga-icon fa fa-zoom-in"
         ng-if="hasExtent(res.attrs.layer)"
-        aria-label="{{ 'fa_icon_layer_zoom' | translate }}"
+        ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"
         ng-click="zoomToExtent($event, res.attrs.layer)">
   </button>
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}"' -->
   <button class="ga-btn ga-icon fa fa-info-sign"
         ng-if="type === 'layers'"
-        aria-label="{{ 'fa_icon_layer_info' | translate }}"
+        ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}"
         ng-click="getLegend($event, res.attrs.layer)">
   </button>
 <!-- INGRID: Add service info button -->
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_service_info' | translate }}" aria-haspopup="dialog"' -->
   <button class="ga-btn ga-icon fa fa-info-sign"
         ng-if="type === 'services'"
-        aria-label="{{ 'fa_icon_service_info' | translate }}"
+        ng-attr-aria-label="{{ 'fa_icon_service_info' | translate }}"
+        aria-haspopup="dialog"
         ng-click="getServiceInfo($event, res.attrs)">
   </button>
 </div>

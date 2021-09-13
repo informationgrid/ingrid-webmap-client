@@ -6,9 +6,9 @@
       }">
 <!-- INGRID: Check layer extent intersects map extent -->
     <div class="ga-layer-infos ga-grab" ng-class="{'extent-outside': !isInRange(layer)}">
-      <!-- INGRID: Add aria-label -->
+      <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_remove' | translate }}"' -->
       <button class="ga-icon ga-btn fa fa-remove-sign"
-              aria-label="{{ 'fa_icon_layer_remove' | translate }}"
+              ng-attr-aria-label="{{ 'fa_icon_layer_remove' | translate }}"
               ng-click="removeLayer(layer)"></button>
       <label class="ga-checkbox" title="{{layer.label}}">
         <input type="checkbox" ng-model="layer.visible" />
@@ -28,8 +28,8 @@
       </div>
       <button class="ga-icon ga-btn fa fa-user"
               ng-click="showWarning(layer)"></button>
-      <!-- INGRID: Add aria-label -->
-      <button class="ga-icon fa fa-gear" aria-label="{{ 'fa_icon_layer_more' | translate }}"></button>
+      <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_more' | translate }}" aria-pressed="false" aria-expanded="false"' -->
+      <button class="ga-icon fa fa-gear" ng-attr-aria-label="{{ 'fa_icon_layer_more' | translate }}" aria-pressed="false" aria-expanded="false"></button>
     </div><!--ga-layer-infos-->
     <div class="ga-layer-tools">
       <label ng-mouseenter="disableDragAndDrop()" ng-mouseleave="enableDragAndDrop()">
@@ -40,28 +40,29 @@
         </select>
       </label>
       <div class="ga-layer-ordering">
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"' -->
         <button ng-if="layer.timeEnabled" class="ga-icon ga-btn fa fa-copy"
-                aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"
+                ng-attr-aria-label="{{ 'fa_icon_layer_duplicate' | translate }}"
                 ng-click="duplicateLayer($event, layer)"></button>
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_up' | translate }}"' -->
         <button class="ga-icon ga-btn fa fa-arrow-up"
                 ng-disabled="$first"
-                aria-label="{{ 'fa_icon_layer_up' | translate }}"
+                ng-attr-aria-label="{{ 'fa_icon_layer_up' | translate }}"
                 ng-click="moveLayer($event, layer, 1)"></button>
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_down' | translate }}"' -->
         <button class="ga-icon ga-btn fa fa-arrow-down"
                 ng-disabled="$last"
-                aria-label="{{ 'fa_icon_layer_down' | translate }}"
+                ng-attr-aria-label="{{ 'fa_icon_layer_down' | translate }}"
                 ng-click="moveLayer($event, layer, -1)"></button>
 <!-- INGRID: Add button for zoomToExtent -->
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"' -->
         <button ng-if="hasExtent(layer)" class="ga-icon ga-btn fa fa-zoom-in"
-                aria-label="{{ 'fa_icon_layer_zoom' | translate }}"
+                ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"
                 ng-click="zoomToExtent($event, layer)"></button>
-<!-- INGRID: Add aria-label -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"' -->
         <button ng-if="hasMetadata(layer)" class="ga-icon ga-btn fa fa-info-sign"
-                aria-label="{{ 'fa_icon_layer_info' | translate }}"
+                ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}"
+                aria-haspopup="dialog"
                 ng-click="displayLayerMetadata($event, layer)"></button>
       </div>
     </div><!--ga-layer-tools-->

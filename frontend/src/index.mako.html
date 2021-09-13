@@ -174,7 +174,7 @@ itemscope itemtype="http://schema.org/WebApplication"
         -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
         <!-- INGRID: Use 'globals.serviceAnnouncementUrl' to define href -->
-        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button">
           <span translate>problem_announcement</span>
         </a>
         <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
@@ -346,7 +346,7 @@ itemscope itemtype="http://schema.org/WebApplication"
             'selection-and-catalog-shown': (globals.catalogShown && globals.selectionShown),
             'ga-pulldown-shown': globals.pulldownShown
           }">
-      <div class="ga-visible-mobile ga-pulldown-shadow" ng-click="globals.pulldownShown = false"></div>
+      <div class="ga-visible-mobile ga-pulldown-shadow" ng-click="globals.pulldownShown = false" role="button"></div>
       <div id="pulldown-content" class="content">
         <!-- Share -->
         <div class="panel">
@@ -411,14 +411,14 @@ itemscope itemtype="http://schema.org/WebApplication"
             <div class="panel-body panel-body-wide panel-cursor">
               <ul>
                 <li><!-- Import -->
-                  <a href="" accesskey="w"
+                  <a href="" accesskey="w" role="button" aria-haspopup="dialog"
                      ng-click="globals.importPopupShown = !globals.importPopupShown"
                      translate-attr="{title: 'import_tooltip'}">
                     <span ng-class="{'selected': globals.importPopupShown}" translate>import</span>
                   </a>
                 </li>
                 <li ng-show="!globals.is3dActive"><!-- Compare -->
-                  <a href=""  accesskey="c"
+                  <a href=""  accesskey="c" role="button"
                      ng-click="globals.isSwipeActive = !globals.isSwipeActive"
                      translate-attr="{title: 'swipe_tooltip'}">
                     <span ng-class="{'selected': globals.isSwipeActive}" translate>swipe</span>
@@ -426,7 +426,7 @@ itemscope itemtype="http://schema.org/WebApplication"
                 </li>
                 <!-- INGRID: Disable 'object_information' -->
                 <li ng-show="false" ng-if="globals.queryShown"><!-- Feature Tree -->
-                  <a href="" accesskey="s"
+                  <a href="" accesskey="s" role="button" aria-haspopup="dialog"
                      ng-click="globals.isFeatureTreeActive = !globals.isFeatureTreeActive"
                      translate-attr="{title: 'featuretree_tooltip'}">
                     <span  ng-class="{'selected': globals.isFeatureTreeActive}" translate>object_information</span>
@@ -482,7 +482,7 @@ itemscope itemtype="http://schema.org/WebApplication"
             <div class="panel-body panel-body-wide" ga-layermanager ga-layermanager-map="map">
             </div>
             <div class="ga-more-layers" ng-click="hidePulldownOnXSmallScreen()">
-              <a href="" ga-help-highlight=".ga-search-input-container input" translate>
+              <a href="" ga-help-highlight=".ga-search-input-container input" role="button" translate>
                 help_search_data_link
               </a>
             </div>
@@ -497,7 +497,7 @@ itemscope itemtype="http://schema.org/WebApplication"
           <div id="settings" class="collapse">
             <div class="panel-body">
               <p>
-                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button" aria-haspopup="dialog">
                   <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
                 </a>
               </p>
