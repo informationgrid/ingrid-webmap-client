@@ -159,7 +159,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
       </a>
       -->
-      <div id="search-container" ng-controller="GaSearchController">
+      <!-- INGRID: Add 'role="search" ng-attr-aria-label="{{ 'navigation_search' | translate }}"' -->
+      <div id="search-container" ng-controller="GaSearchController" role="search" ng-attr-aria-label="{{ 'navigation_search' | translate }}">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
         <span ga-help="31,24,25" ga-help-options="{showOnHover:true}"></span>
         <!-- INGRID: Remove
@@ -168,7 +169,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
         -->
       </div>
-      <div id="toptools" ng-if="!globals.settingsShown">
+      <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_service_menu' | translate }}"' -->
+      <div id="toptools" ng-if="!globals.settingsShown" role="navigation" ng-attr-aria-label="{{ 'navigation_service_menu' | translate }}">
         <!-- INGRID: Remove
         <a ga-vector-tile-test-link></a>&nbsp;&nbsp;
         -->
@@ -229,7 +231,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div ga-scale-line ga-scale-line-map="map" ng-show="!globals.is3dActive"></div>
   % endif
 
-      <div id='buttonGroup' ng-cloak translate-cloak>
+      <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_map_buttons' | translate }}"' -->
+      <div id='buttonGroup' ng-cloak translate-cloak role="navigation" ng-attr-aria-label="{{ 'navigation_map_buttons' | translate }}">
   % if device != 'embed':
         <div ga-geolocation ga-geolocation-map="::map" ga-geolocation-ol3d="::ol3d"></div>
   % endif
@@ -282,7 +285,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
     <div ng-cloak ga-offline-selector ga-offline-selector-map="::map"></div>
 % if device != 'embed':
-    <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom">
+    <!-- INGRID: Add 'role="footer" ng-attr-aria-label="{{ 'navigation_footer' | translate }}"' -->
+    <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom" role="footer" ng-attr-aria-label="{{ 'navigation_footer' | translate }}">
       <div  class="pull-left" ga-scale-line ga-scale-line-map="::map" ng-show="!globals.is3dActive"></div>
       <div id="mouseposition" class="pull-left" ng-controller="GaMousePositionController">
         <select ng-model="options.projection"
@@ -341,7 +345,9 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
 
 % if device != 'embed':
+    <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_main_menu' | translate }}"' -->
     <div  id="pulldown" ng-cloak translate-cloak
+          role="navigation" ng-attr-aria-label="{{ 'navigation_main_menu' | translate }}"
           ng-class="{
             'selection-and-catalog-shown': (globals.catalogShown && globals.selectionShown),
             'ga-pulldown-shown': globals.pulldownShown
