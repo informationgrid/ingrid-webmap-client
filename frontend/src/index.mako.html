@@ -356,8 +356,10 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div id="pulldown-content" class="content">
         <!-- Share -->
         <div class="panel">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="shareHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#share"
+             role="button"
              ga-collapsible-show="globals.isShareActive">
             <i class="fa fa-caret-down"></i>
             <span translate>share</span>
@@ -371,8 +373,10 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Print -->
         <div class="panel" ng-show="!globals.is3dActive">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="printHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#print"
+             role="button"
              ga-collapsible-show="globals.isPrintActive">
             <i class="fa fa-caret-down"></i>
             <span translate>print</span>
@@ -389,8 +393,10 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Draw -->
         <div class="panel" ng-show="!globals.is3dActive">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="drawHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#draw"
+             role="button"
              ga-collapsible-show="globals.isDrawActive" accesskey="r">
             <i class="fa fa-caret-down"></i>
             <span translate>draw_panel_title</span>
@@ -408,7 +414,9 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Tools -->
         <div class="panel">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="toolsHeading" class="panel-heading accordion-toggle collapsed"
+             role="button"
              data-toggle="collapse" data-parent="#pulldown-content" href="#tools">
             <i class="fa fa-caret-down"></i>
             <span translate>map_tools</span>
@@ -452,8 +460,10 @@ itemscope itemtype="http://schema.org/WebApplication"
             </a>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
+          <!-- INGRID: Add 'role="button"' -->
           <a id="catalogHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#catalog"
+             role="button"
              ga-collapsible-show="globals.catalogShown">
             <i class="fa fa-caret-down"></i>
             <span>{{topicId | translate}}</span>
@@ -477,8 +487,10 @@ itemscope itemtype="http://schema.org/WebApplication"
               <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" aria-label="{{ 'fa_icon_activate_all_layers'}"/>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
+          <!-- INGRID: Add 'role="button"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#selection"
+             role="button"
              ga-collapsible-show="globals.selectionShown">
             <i class="fa fa-caret-down"></i>
             <span translate>layers_displayed</span>
@@ -496,7 +508,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div> <!-- .panel -->
 
         <div class="panel" ng-if="globals.settingsShown">
-          <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings">
+          <!-- INGRID: Add 'role="button"' -->
+          <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings" role="button">
             <i class="fa fa-caret-down"></i>
             <span translate>settings</span>
           </a>
@@ -531,7 +544,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           </div>
         </div> <!-- .panel -->
 
+        <!-- INGRID: Add 'ng-attr-aria-pressed="{{ !globals.pulldownShown }}"' -->
         <button id="menu-button" class="btn btn-default"
+                ng-attr-aria-pressed="{{ !globals.pulldownShown }}"
                 ng-click="globals.pulldownShown=!globals.pulldownShown">
           <span class="ga-hidden-mobile">
             <i class="fa fa-caret-down"></i>
