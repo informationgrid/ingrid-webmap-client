@@ -6,6 +6,7 @@ pipeline {
     }
 
     tools {
+        jdk 'jdk8'
         nodejs "nodejs10.15.3"
     }
 
