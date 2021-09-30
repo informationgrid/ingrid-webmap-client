@@ -173,7 +173,7 @@
 }
 
 :focus-visible {
-  outline: 2px solid #a00e19 !important;
+  outline: 2px solid #0E8637 !important;
   outline-offset: -2px !important;
 }
 
@@ -182,7 +182,7 @@ body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus + span {
 }
 
 body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus-visible + span {
-  outline: 2px solid #a00e19 !important;
+  outline: 2px solid #0E8637 !important;
 }
 
 button.ga-btn:not([disabled]):focus-visible {
