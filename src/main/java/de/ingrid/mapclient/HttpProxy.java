@@ -31,6 +31,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -94,11 +95,15 @@ public class HttpProxy {
                 InputStream is = new BufferedInputStream(conn.getInputStream());
             ){
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 factory.setValidating(false);
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document doc = builder.parse(is);
                 
                 TransformerFactory tf = TransformerFactory.newInstance();
+                tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
                 Transformer transformer = tf.newTransformer();
                 StringWriter writer = new StringWriter();
                 transformer.transform(new DOMSource(doc), new StreamResult(writer));
