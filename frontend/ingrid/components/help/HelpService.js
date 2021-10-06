@@ -25,7 +25,7 @@ goog.require('ga_translation_service');
         var url = 'https://www.googleapis.com/fusiontables/v1/query?' +
                   'callback=JSON_CALLBACK';
         */
-        var url = '/ingrid-webmap-client/rest/admin/help';
+        var url = '/ingrid-webmap-client/rest/config/help';
         /* INGRID: Not in used
         var apiKey = 'AIzaSyDT7wmEx97gAG5OnPwKyz2PnCx3yT4j7C0';
         var sqlTmpl = 'select * from 1Tx2VSM1WHZfDXzf8rweRLG1kd23AA4aw8xnZ_3c' +

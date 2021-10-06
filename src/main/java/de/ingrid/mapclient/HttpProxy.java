@@ -97,11 +97,17 @@ public class HttpProxy {
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 factory.setValidating(false);
+                factory.setNamespaceAware(true);
+                factory.setFeature("http://xml.org/sax/features/namespaces", false);
+                factory.setFeature("http://xml.org/sax/features/validation", false);
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document doc = builder.parse(is);
                 
                 TransformerFactory tf = TransformerFactory.newInstance();
-                tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 Transformer transformer = tf.newTransformer();
                 StringWriter writer = new StringWriter();
                 transformer.transform(new DOMSource(doc), new StreamResult(writer));
