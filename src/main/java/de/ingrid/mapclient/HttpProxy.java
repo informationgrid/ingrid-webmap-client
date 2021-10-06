@@ -125,6 +125,9 @@ public class HttpProxy {
             if(urlStr.startsWith("http:") && result == null){
                 result = doCapabilitiesRequest(urlStr.replace("http:", "https:"), login, password);
             }
+            if(!Utils.evaluate(result)) {
+                result = null;
+            }
         }
         return result;
     }
