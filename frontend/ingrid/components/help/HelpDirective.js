@@ -72,7 +72,7 @@ goog.require('ga_help_service');
             '&lang=' + gaLang.getNoRm() +
             '&embedded=true';
           */
-          return '/ingrid-webmap-client/rest/admin/help' +
+          return '/ingrid-webmap-client/rest/config/help' +
            '/' + gaLang.getNoRm() +
            '/' + helpIds;
         }
