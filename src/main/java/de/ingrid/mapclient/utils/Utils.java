@@ -79,6 +79,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import de.ingrid.mapclient.ConfigurationProvider;
+import de.ingrid.mapclient.model.GetCapabilitiesDocument;
 import sun.misc.BASE64Encoder;
 
 public class Utils {
@@ -282,6 +283,23 @@ public class Utils {
             log.error( "XPathExpressionException on get xm name: ", e );
         }
         return name;
+    }
+
+    public static boolean evaluate(GetCapabilitiesDocument getCapabilities) {
+        boolean isMapContent = false;
+        if(getCapabilities != null) {
+            String content = getCapabilities.getXml();
+            String[] checkList = { "gpx", "kml", "Capabilities", "WMS_Capabilities", "WMT_MS_Capabilities" };
+            if(content != null) {
+                for (String check : checkList) {
+                    if(content.indexOf("<" + check) > -1 && content.indexOf("</" + check + ">") > -1) {
+                        isMapContent = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isMapContent;
     }
 
     /**
