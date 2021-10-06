@@ -105,7 +105,7 @@ public class WmsResource {
                 return p.matcher(response).replaceAll("");
             } else {
                 GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login, password);
-                if (getCapabilities != null && evaluate(getCapabilities)) {
+                if (getCapabilities != null) {
                     response = getCapabilities.getXml();
                     if(response != null) {
                         if(response.indexOf("<?xml") == -1) {
@@ -145,27 +145,6 @@ public class WmsResource {
             log.error( ERROR_WMS_MSG + url, e );
             throw new WebApplicationException( e, Response.Status.SERVICE_UNAVAILABLE );
         }
-    }
-
-    private boolean evaluate(GetCapabilitiesDocument getCapabilities) {
-        boolean isMapContent = false;
-        if(getCapabilities != null) {
-            Document doc = getCapabilities.getDoc();
-            String[] checkList = { "gpx", "kml", "Capabilities", "WMS_Capabilities", "WMT_MS_Capabilities" };
-            if(doc != null) {
-                NodeList childNodes = getCapabilities.getDoc().getChildNodes();
-                for (int i = 0; i < childNodes.getLength(); i++) {
-                    Node childNode = childNodes.item(i);
-                    for (String check : checkList) {
-                        if(childNode.getNodeName().equals(check)) {
-                            isMapContent = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return isMapContent;
     }
 
     @POST

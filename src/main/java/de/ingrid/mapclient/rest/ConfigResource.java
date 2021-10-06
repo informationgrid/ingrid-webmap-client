@@ -273,4 +273,20 @@ public class ConfigResource {
         }
         return Response.ok( sortLocales ).build();
     }
+
+    @GET
+    @Path("help/{lang}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getHelpRequest(@PathParam("lang") String lang) {
+        AdministrationResource adminRes = new AdministrationResource();
+        return adminRes.getHelpRequest(lang);
+    }
+    @GET
+    @Path("help/{lang}/{id}")
+    @Produces(MediaType.TEXT_HTML)
+    public Response getHelpIdRequest(@PathParam("lang") String lang, @PathParam("id") String id) {
+        AdministrationResource adminRes = new AdministrationResource();
+        return adminRes.getHelpIdRequest(lang, id);
+    }
+
 }
