@@ -105,7 +105,7 @@ public class WmsResource {
                 return p.matcher(response).replaceAll("");
             } else {
                 GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( url, login, password);
-                if (getCapabilities != null) {
+                if (getCapabilities != null && evaluate(getCapabilities)) {
                     response = getCapabilities.getXml();
                     if(response != null) {
                         if(response.indexOf("<?xml") == -1) {
@@ -143,8 +143,25 @@ public class WmsResource {
             throw new WebApplicationException( ioEx, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( ERROR_WMS_MSG + url, e );
-            throw new WebApplicationException( e, Response.Status.SERVICE_UNAVAILABLE );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
+    }
+
+    private boolean evaluate(GetCapabilitiesDocument getCapabilities) {
+        boolean isMapContent = false;
+        if(getCapabilities != null) {
+            String content = getCapabilities.getXml();
+            String[] checkList = { "gpx", "kml", "Capabilities", "WMS_Capabilities", "WMT_MS_Capabilities" };
+            if(content != null) {
+                for (String check : checkList) {
+                    if(content.indexOf("<" + check + "/>") > -1 && content.indexOf("</" + check + "/>") > -1) {
+                        isMapContent = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isMapContent;
     }
 
     @POST
