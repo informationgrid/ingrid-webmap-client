@@ -154,7 +154,7 @@ public class WmsResource {
             String[] checkList = { "gpx", "kml", "Capabilities", "WMS_Capabilities", "WMT_MS_Capabilities" };
             if(content != null) {
                 for (String check : checkList) {
-                    if(content.indexOf("<" + check + "/>") > -1 && content.indexOf("</" + check + "/>") > -1) {
+                    if(content.indexOf("<" + check) > -1 && content.indexOf("</" + check + ">") > -1) {
                         isMapContent = true;
                         break;
                     }
