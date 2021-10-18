@@ -353,6 +353,27 @@ goog.require('ga_urlutils_service');
             layersYears.push(layer.time);
           }
 
+          // INGRID: Add login from session
+          var session = $window.sessionStorage;
+          if (session) {
+          var sessionAuthWMS = JSON.parse(session.getItem(enc.layer.baseURL));
+            if (sessionAuthWMS) {
+              if (enc.layer) {
+                angular.extend(enc.layer, {
+                  login: sessionAuthWMS.login,
+                  password: sessionAuthWMS.password
+                });
+              }
+            }
+          }
+          if(layer.auth) {
+            if (enc.layer) {
+              angular.extend(enc.layer, {
+                login: layer.auth
+              });
+            }
+          }
+
           // INGRID: Change check legend
           if ($scope.options.legend &&
             ((layerConfig.hasLegend) ||

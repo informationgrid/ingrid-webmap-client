@@ -455,17 +455,12 @@ public class Utils {
             if(fileContent.isEmpty()) {
                 fileContent = "{}";
             }
-            URI uri = new URI(url);
             JSONObject serviceAuth = new JSONObject(fileContent);
             JSONObject loginAuth = null;
-            String host = uri.getHost();
             loginAuth = new JSONObject();
             loginAuth.put("login", login);
             loginAuth.put("password", password);
-            if(uri.getScheme().equals("https")) {
-                loginAuth.put("port", "443");
-            }
-            serviceAuth.put(host, loginAuth);
+            serviceAuth.put(url.split("\\?")[0], loginAuth);
             Utils.updateFile("config/service.auth.json", serviceAuth);
         }
     }
@@ -476,11 +471,10 @@ public class Utils {
         if(StringUtils.isNotEmpty(configDir)) {
             String fileContent = Utils.getFileContent(configDir, "service.auth", ".json", "config/");
             if(StringUtils.isNotEmpty(fileContent)) {
-                URI uri = new URI(url);
                 JSONObject serviceAuth = new JSONObject(fileContent);
-                String key = uri.getHost();
-                if(serviceAuth.has(key)){
-                    JSONObject auth = serviceAuth.getJSONObject(key);
+                String tmpUrl = url.split("\\?")[0];
+                if(serviceAuth.has(tmpUrl)){
+                    JSONObject auth = serviceAuth.getJSONObject(tmpUrl);
                     if(auth.has("login") && auth.has("password") && login.equals(auth.getString("login"))) {
                         return auth.getString("password"); 
                     }

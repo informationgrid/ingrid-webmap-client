@@ -260,13 +260,15 @@ public class FileResource {
     @GET
     @Path("images")
     @Produces("image/png")
-    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("blankImage") boolean getBlankImageOnError){
+    public Response getFileImageRequest(@QueryParam("url") String url, @QueryParam("login") String login, @QueryParam("password") String password, @QueryParam("blankImage") boolean getBlankImageOnError){
         if (url != null && url.length() > 0) {
             try {
                 URL tmpUrl = new URL( url );
                 URLConnection conn = tmpUrl.openConnection();
                 if(StringUtils.isNotEmpty(login)) {
-                    String password = Utils.getServiceLogin( url, login);
+                    if(password == null) {
+                        password = Utils.getServiceLogin( url, login);
+                    }
                     if(StringUtils.isNotEmpty(password)) {
                         Utils.urlConnectionAuth(conn, login, password);
                     }

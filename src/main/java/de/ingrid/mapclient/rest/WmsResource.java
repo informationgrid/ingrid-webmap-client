@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -226,7 +227,7 @@ public class WmsResource {
     @GET
     @Path("metadata")
     @Produces(MediaType.TEXT_HTML)
-    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login) {
+    public Response metadataRequest(@QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend, @QueryParam("login") String login, @QueryParam("password") String password) {
         String html = "";
         boolean hasError = false;
         String serviceCapabilitiesURL = null;
@@ -295,11 +296,15 @@ public class WmsResource {
                     }
                 }
                 if(layerLegend == null){
-                    layerLegend = legend;
+                    if(login != null && password != null) {
+                        layerLegend = "/ingrid-webmap-client/rest/data/images/?url=" + URLEncoder.encode(legend, "UTF-8") + "&login=" + login + "&password=" + password; 
+                    } else {
+                        layerLegend = legend;
+                    }
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
-                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( serviceCapabilitiesURL, login);
+                    GetCapabilitiesDocument getCapabilities = HttpProxy.doCapabilitiesRequest( serviceCapabilitiesURL, login, password);
                     if(getCapabilities != null) {
                         Document doc = getCapabilities.getDoc();
                         XPath xpath = XPathFactory.newInstance().newXPath();
@@ -406,14 +411,6 @@ public class WmsResource {
                     }
                 }
             }
-            if(layerLegend != null && !layerLegend.equals( "undefined" )){
-                String[] tmpLegends = layerLegend.split("\\|");
-                layerLegends = new ArrayList<>();
-                for (String tmpLegend : tmpLegends) {
-                    layerLegends.add(tmpLegend);
-                }
-            }
-            
             html.append("<table>");
             html.append("<tbody>");
             if(layerTitle != null){
@@ -487,6 +484,10 @@ public class WmsResource {
                         html.append("<hr>");
                     }
                 }
+            } else if(layerLegend != null && !layerLegend.equals( "undefined" )){
+                html.append("<img alt=\"{{'no_legend_available' | translate}}\" src=\"");
+                html.append(layerLegend);
+                html.append("\">");
             } else {
                 html.append("<img alt=\"{{'no_legend_available' | translate}}\">");
             }

@@ -80,8 +80,9 @@ goog.require('ga_urlutils_service');
     // Go through all layers, assign needed properties,
     // and remove useless layers (no name or bad crs without children
     // or no intersection between map extent and layer extent)
-    // INGRID: Add parentLayer param
-    var getChildLayers = function(getCap, layer, proj, parentLayer) {
+    // INGRID: Add login, password, parentLayer param
+    var getChildLayers = function(getCap, layer, proj, login,
+      password, parentLayer) {
 
       // If the WMS layer has no name, it can't be displayed
       if (!layer.Name) {
@@ -206,9 +207,10 @@ goog.require('ga_urlutils_service');
           layer.Layer = tmpLayers;
         }
         for (var i = 0; i < layer.Layer.length; i++) {
-          // INGRID: Add parent param
+          // INGRID: Add login, password, parent param
           var parent = layer || parentLayer;
-          var l = getChildLayers(getCap, layer.Layer[i], proj, parent);
+          var l = getChildLayers(getCap, layer.Layer[i], proj,
+            login, password, parent);
           if (!l) {
             layer.Layer.splice(i, 1);
             i--;
@@ -289,8 +291,25 @@ goog.require('ga_urlutils_service');
             }
 
             if (val.Capability.Layer) {
+              // INGRID: Save auth to session
+              if (scope.options.login && scope.options.password) {
+                var dcpType = val.Capability.Request.GetMap.DCPType;
+                var url;
+                if (dcpType instanceof Array) {
+                  url = dcpType[0].HTTP.Get.OnlineResource;
+                } else {
+                  url = dcpType.HTTP.Get.OnlineResource['xlink:href'];
+                }
+                if (url) {
+                  var auth = '{"login":"' + scope.options.login +
+                    '","password":"' + scope.options.password + '"}';
+                  $window.sessionStorage.setItem(url, auth);
+                }
+              }
+              // INGRID: Add login, password
               var root = getChildLayers(val, val.Capability.Layer,
-                  scope.map.getView().getProjection());
+                  scope.map.getView().getProjection(),
+                  scope.options.login, scope.options.password);
               if (root) {
                 scope.layers = root.Layer || [root];
               }

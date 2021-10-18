@@ -88,7 +88,10 @@ public class HttpProxy {
             // send request
             URL url = new URL( urlStr );
             URLConnection conn = url.openConnection();
-            if(StringUtils.isNotEmpty(login) && StringUtils.isNotEmpty(password)) {
+            if(StringUtils.isNotEmpty(login)) {
+                if(StringUtils.isEmpty(password)) {
+                    password = Utils.getServiceLogin(urlStr, login);
+                }
                 Utils.urlConnectionAuth(conn, login, password);
             }
             try (
