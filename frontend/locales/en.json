@@ -124,6 +124,9 @@
 "navigation_service_menu": "Service menu",
 "navigation_map_buttons": "Map interaction buttons",
 "navigation_footer": "Footer",
-"navigation_main_menu": "Main menu"
+"navigation_main_menu": "Main menu",
+"service_auth_data":"Authentification",
+"service_auth_data_username":"Username",
+"service_auth_data_password":"Password"
 
 }

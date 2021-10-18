@@ -636,11 +636,11 @@ goog.require('ga_urlutils_service');
               });
               // INGRID: Add featureInfoTpl to source
               if (config.featureInfoTpl) {
-                  olSource.set('featureInfoTpl', config.featureInfoTpl);
+                olSource.set('featureInfoTpl', config.featureInfoTpl);
               }
               // INGRID: Add tilePixelRatio to source
               if (config.tilePixelRatio) {
-                  olSource.set('tilePixelRatio', config.tilePixelRatio);
+                olSource.set('tilePixelRatio', config.tilePixelRatio);
               }
             }
             olLayer = new ol.layer.Tile({
@@ -900,6 +900,20 @@ goog.require('ga_urlutils_service');
           if (layer) {
             if (layer.auth) {
               url += '&login=' + layer.auth;
+            }
+          } else {
+            // INGRID: Add login und password from session
+            var bodIds = bodId.split('%7C%7C');
+            if (bodIds.length > 2) {
+              var baseUrl = decodeURIComponent(bodIds[2]);
+              if ($window.sessionStorage.getItem(baseUrl)) {
+                var sessionAuthWMS = JSON.parse($window.sessionStorage.
+                  getItem(baseUrl));
+                if (sessionAuthWMS) {
+                  url += '&login=' + sessionAuthWMS.login +
+                    '&password=' + sessionAuthWMS.password;
+                }
+              }
             }
           }
           return $http.get(url);

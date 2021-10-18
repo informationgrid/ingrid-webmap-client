@@ -350,6 +350,12 @@ goog.require('ga_wmts_service');
       $scope.wmtsGetCap = null;
       file = file || {};
 
+      // INGRID: Add login, password
+      if (file.login && file.password) {
+        $scope.options.login = file.login;
+        $scope.options.password = file.password;
+      }
+
       // INGRID: Add check wms objects
       if (gaFile.isWmsGetCap(data) || data.WMT_MS_Capabilities ||
         data.WMS_Capabilities) {

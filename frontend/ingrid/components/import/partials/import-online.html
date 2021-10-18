@@ -1,0 +1,39 @@
+<form class="form-group form-group-sm">
+  <input type="url" name="url" autocomplete="off"
+    placeholder="{{'import_online_placeholder' | translate}}"
+    ng-model="fileUrl" required class="form-control"/>
+  <div class="ga-import-open fa fa-collapse"></div>
+  <!-- INGRID: Add authentification -->
+  <label title="{{'service_auth_data' | translate}}">
+    <input type="checkbox" ng-model="needAuth">
+    <span>
+    {{'service_auth_data' | translate}}
+    </span>
+  </label>
+  <div ng-if="needAuth" class="ga-truncate-text ga-checkbox">
+    <div class="form-group">
+      <label class="col-xs-6 control-label">{{'service_auth_data_username' | translate}}</label>
+      <div class="col-xs-6">
+        <input type="login" name="login" autocomplete="off"
+          placeholder="{{'service_auth_data_username' | translate}}"
+          ng-model="auth.fileLogin" class="form-control"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-6 control-label">{{'service_auth_data_password' | translate}}</label>
+      <div class="col-xs-6">
+        <input type="password" name="password" autocomplete="off"
+          placeholder="{{'service_auth_data_password' | translate}}"
+          ng-model="auth.filePassword" class="form-control"/>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="tabbable-footer" >
+  <button type="button" class="btn btn-default btn-sm"
+          ng-class="{'btn-danger': canceler}"
+          ng-disabled="!fileUrl || !isValid(fileUrl) || (loading && !canceler)"
+          ng-click="loading ? cancel() : handleFileUrl()">
+    <span>{{userMessage | translate}}</span>
+  </button>
+</div>
