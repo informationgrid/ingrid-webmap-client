@@ -356,12 +356,12 @@ goog.require('ga_urlutils_service');
           // INGRID: Add login from session
           var session = $window.sessionStorage;
           if (session) {
-          var sessionAuthWMS = JSON.parse(session.getItem(enc.layer.baseURL));
-            if (sessionAuthWMS) {
+          var sessionAuthService = JSON.parse(session.getItem(enc.layer.baseURL));
+            if (sessionAuthService) {
               if (enc.layer) {
                 angular.extend(enc.layer, {
-                  login: sessionAuthWMS.login,
-                  password: sessionAuthWMS.password
+                  login: sessionAuthService.login,
+                  password: sessionAuthService.password
                 });
               }
             }

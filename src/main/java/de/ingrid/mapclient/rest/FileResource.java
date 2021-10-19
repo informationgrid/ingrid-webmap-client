@@ -257,6 +257,30 @@ public class FileResource {
         return content;
     }
 
+    @POST
+    @Path("images")
+    @Produces("image/png")
+    public Response getFileImageRequestPost(String data, String content, @QueryParam("url") String url){
+        String login = null;
+        String password = null;
+        if(url != null) {
+            JSONObject json;
+            try {
+                json = new JSONObject(data);
+                if(json.has("login")) {
+                    login = json.getString("login");
+                }
+                if(json.has("password")) {
+                    password = json.getString("password");
+                }
+            } catch (JSONException e) {
+                log.error("No data defined.", e);
+            }
+            
+        }
+        return getFileImageRequest(url, login, password, true);
+    }
+
     @GET
     @Path("images")
     @Produces("image/png")

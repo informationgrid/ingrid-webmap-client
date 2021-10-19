@@ -28,8 +28,8 @@ goog.require('ga_file_service');
         // INGRID: Add auth
         scope.needAuth = false;
         scope.auth = {
-            fileLogin: '',
-            filePassword: ''
+          fileLogin: '',
+          filePassword: ''
         };
         if (!options || typeof options.handleFileContent !== 'function') {
           elt.remove();
@@ -128,15 +128,16 @@ goog.require('ga_file_service');
             // INGRID: Get WMS as JSON
             url += '&toJson=true';
 
+            var params = {};
             // INGRID: Use auth
             if (scope.auth.fileLogin) {
-              url += '&login=' + scope.auth.fileLogin;
+              params['login'] = scope.auth.fileLogin;
             }
             if (scope.auth.filePassword) {
-              url += '&password=' + scope.auth.filePassword;
+              params['password'] = scope.auth.filePassword;
             }
             // Angularjs doesn't handle onprogress event
-            return gaFile.load(url, scope.canceler).then(function(fileContent) {
+            return gaFile.loadPost(url, params, scope.canceler).then(function(fileContent) {
               scope.canceler = null;
               // INGRID: Use auth
               return scope.handleFileContent(fileContent, {
@@ -149,8 +150,8 @@ goog.require('ga_file_service');
               // INGRID: Reset auth
               scope.needAuth = false;
               scope.auth = {
-                  fileLogin: '',
-                  filePassword: ''
+                fileLogin: '',
+                filePassword: ''
               };
             }, function(err) {
               scope.userMessage = err.message;

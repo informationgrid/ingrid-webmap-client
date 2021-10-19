@@ -209,7 +209,24 @@ public class WmsResource {
     @POST
     @Path("proxy")
     @Produces(MediaType.TEXT_PLAIN)
-    public String doServiceTransformationRequest(String data, String content, @QueryParam("toJson") boolean toJson) {
+    public String doServiceTransformationRequest(String data, String content, @QueryParam("url") String url, @QueryParam("toJson") boolean toJson) {
+        if(url != null) {
+            JSONObject json;
+            try {
+                json = new JSONObject(data);
+                String login = null;
+                String password = null;
+                if(json.has("login")) {
+                    login = json.getString("login");
+                }
+                if(json.has("password")) {
+                    password = json.getString("password");
+                }
+                return doWmsRequest(url, toJson, login, password);
+            } catch (JSONException e) {
+                log.error("No data defined.", e);
+            }
+        }
         try {
             String response = data;
             if(toJson){
@@ -296,11 +313,7 @@ public class WmsResource {
                     }
                 }
                 if(layerLegend == null){
-                    if(login != null && password != null) {
-                        layerLegend = "/ingrid-webmap-client/rest/data/images/?url=" + URLEncoder.encode(legend, "UTF-8") + "&login=" + login + "&password=" + password; 
-                    } else {
-                        layerLegend = legend;
-                    }
+                    layerLegend = legend;
                 }
                 
                 if(serviceCapabilitiesURL != null && layerName != null){
@@ -330,6 +343,28 @@ public class WmsResource {
             html +="</div>";
         }
         return Response.ok(html).build();
+    }
+
+    
+    @POST
+    @Path("metadata")
+    @Produces(MediaType.TEXT_HTML)
+    public Response metadataPostRequest(String data, String content, @QueryParam("layer") String layer, @QueryParam("url") String url, @QueryParam("lang") String lang, @QueryParam("legend") String legend) {
+        JSONObject json;
+        String login = null;
+        String password = null;
+        try {
+            json = new JSONObject(data);
+            if(json.has("login")) {
+                login = json.getString("login");
+            }
+            if(json.has("password")) {
+                password = json.getString("password");
+            }
+        } catch (JSONException e) {
+            log.error("No data defined.", e);
+        }
+        return metadataRequest(layer, url, lang, legend, login, password);
     }
 
     private String getWmsInfo(XPath xpath, Document doc, String serviceCapabilitiesURL, String layerName, String layerTitle, String layerLegend) throws XPathExpressionException {
