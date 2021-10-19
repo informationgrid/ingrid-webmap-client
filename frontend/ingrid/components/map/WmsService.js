@@ -146,61 +146,65 @@ goog.require('ga_urlutils_service');
             tileGrid = gaTileGrid.get(tileGridMinRes, 'wms');
           }
 
-          // Function to remove the blob url from memory.
-          var revokeBlob = function() {
-            $window.URL.revokeObjectURL(this.src);
-            this.removeEventListener('load', revokeBlob);
-          };
-
-          // INGRID: Add tileLoadFunction
-          var tileLoadFunction = function(baseUrl) {
-            return function(imageTile, src) {
-              var onSuccess = function(content, url) {
-                if (content && $window.URL && $window.atob) {
-                  try {
-                    var blob = gaMapUtils.dataURIToBlob(content);
-                    imageTile.getImage().addEventListener('load', revokeBlob);
-                    imageTile.getImage().src = $window.URL.
-                      createObjectURL(blob);
-                  } catch (e) {
-                    // INVALID_CHAR_ERROR on ie and ios(only jpeg), it's an
-                    // encoding problem.
-                    // TODO: fix it
-                    imageTile.getImage().src = content;
-                  }
-                } else {
-                  if($window.sessionStorage.getItem(baseUrl)) {
-                    var sessionAuthWMS = JSON.parse($window.sessionStorage.
-                      getItem(baseUrl));
-                    if(sessionAuthWMS) {
-                      src = gaGlobalOptions.imgproxyUrl +
-                        '' + encodeURIComponent(src) + '&login=' +
-                        sessionAuthWMS.login + '&password=' +
-                        sessionAuthWMS.password;
-                    }
-                  }
-                  imageTile.getImage().src = (content) || src;
-                }
-              };
-              onSuccess(null, baseUrl);
-            };
-          };
-
           // INGRID: Add imageLoadFunction
           var imageLoadFunction = function(baseUrl) {
             return function(image, src) {
               var onSuccess = function(content, url) {
-                if($window.sessionStorage.getItem(baseUrl)) {
-                  var sessionAuthWMS = JSON.parse($window.sessionStorage.
-                    getItem(baseUrl));
-                  if(sessionAuthWMS) {
-                    src = gaGlobalOptions.imgproxyUrl +
-                    '' + encodeURIComponent(src) + '&login=' +
-                    sessionAuthWMS.login + '&password=' +
-                    sessionAuthWMS.password;
+                if ($window.sessionStorage.getItem(baseUrl)) {
+                  var sessionAuthService = JSON.parse($window.sessionStorage.
+                      getItem(baseUrl));
+                  var xhr = new XMLHttpRequest();
+                  xhr.responseType = 'blob';
+                  xhr.open('GET', src);
+                  xhr.setRequestHeader("Authorization", "Basic " + window.btoa(sessionAuthService.login + ":" + sessionAuthService.password));
+                  xhr.onload = function() {
+                      if (this.response) {
+                          var objectUrl = URL.createObjectURL(xhr.response);
+                          image.getImage().onload = function() {
+                              URL.revokeObjectURL(objectUrl);
+                          };
+                          image.getImage().src = objectUrl;
+                      } else {
+                        image.setState(3);
+                      }
+                  };
+                  xhr.onerror = function() {
+                    image.setState(3);
+                  };
+                  xhr.send();
+                  /* INGRID: REST call
+                  var sessionAuthService = JSON.parse($window.sessionStorage.
+                      getItem(baseUrl));
+                  var params = '{';
+                  if (sessionAuthService) {
+                    params += 'login: \'' + sessionAuthService.login + '\',';
+                    params += 'password: \''+ sessionAuthService.password + '\'';
                   }
+                  params += '}';
+                  src = gaGlobalOptions.imgproxyUrl +
+                  '' + encodeURIComponent(src);
+                  var xhr = new XMLHttpRequest();
+                  xhr.responseType = 'blob';
+                  xhr.open('POST', src);
+                  xhr.onload = function() {
+                      if (this.response) {
+                          var objectUrl = URL.createObjectURL(xhr.response);
+                          image.getImage().onload = function() {
+                              URL.revokeObjectURL(objectUrl);
+                          };
+                          image.getImage().src = objectUrl;
+                      } else {
+                        image.setState(3);
+                      }
+                  };
+                  xhr.onerror = function() {
+                    image.setState(3);
+                  };
+                  xhr.send(params);
+                  */
+                } else {
+                  image.getImage().src = src;
                 }
-                image.getImage().src = src;
               };
               onSuccess(null, baseUrl);
             };
@@ -215,7 +219,8 @@ goog.require('ga_urlutils_service');
             projection: options.projection,
             tileGrid: tileGrid,
             // INGRID: Use imageLoadFunction to read images per rest
-            imageLoadFunction: imageLoadFunction(options.url)
+            imageLoadFunction: imageLoadFunction(options.url),
+            tileLoadFunction: imageLoadFunction(options.url)
           });
 
           var layer = new LayerClass({

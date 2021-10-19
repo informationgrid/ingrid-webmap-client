@@ -104,7 +104,73 @@ goog.require('ga_urlutils_service');
       // Create an WMTS layer
       var createWmtsLayer = function(options) {
         options.sourceConfig.transition = 0;
+        
+        var tileLoadFunction = function(baseUrl) {
+          return function(imageTile, src) {
+            var onSuccess = function(content, url) {
+              if ($window.sessionStorage.getItem(baseUrl)) {
+                var sessionAuthService = JSON.parse($window.sessionStorage.
+                    getItem(baseUrl));
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.open('GET', src);
+                xhr.setRequestHeader("Authorization", "Basic " + window.btoa(sessionAuthService.login + ":" + sessionAuthService.password));
+                xhr.onload = function() {
+                    if (this.response) {
+                        var objectUrl = URL.createObjectURL(xhr.response);
+                        imageTile.getImage().onload = function() {
+                            URL.revokeObjectURL(objectUrl);
+                        };
+                        imageTile.getImage().src = objectUrl;
+                    } else {
+                      imageTile.setState(3);
+                    }
+                };
+                xhr.onerror = function() {
+                  imageTile.setState(3);
+                };
+                xhr.send();
+                /* INGRID: REST CALL
+                var sessionAuthService = JSON.parse($window.sessionStorage.
+                    getItem(baseUrl));
+                var params = '{';
+                if (sessionAuthService) {
+                  params += 'login: \'' + sessionAuthService.login + '\',';
+                  params += 'password: \''+ sessionAuthService.password + '\'';
+                }
+                params += '}';
+                src = gaGlobalOptions.imgproxyUrl +
+                '' + encodeURIComponent(src);
+                var xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.open('POST', src);
+                xhr.onload = function() {
+                    if (this.response) {
+                        var objectUrl = URL.createObjectURL(xhr.response);
+                        imageTile.getImage().onload = function() {
+                            URL.revokeObjectURL(objectUrl);
+                        };
+                        imageTile.getImage().src = objectUrl;
+                    } else {
+                      imageTile.setState(3);
+                    }
+                };
+                xhr.onerror = function() {
+                    imageTile.setState(3);
+                };
+                xhr.send(params);
+                */
+              } else {
+                imageTile.getImage().src = (content) || src;
+              }
+            };
+            onSuccess(null, baseUrl);
+          };
+        };
+        
+        
         var source = new ol.source.WMTS(options.sourceConfig);
+        source.tileLoadFunction = tileLoadFunction(options.capabilitiesUrl);
 
         // INGRID: Set featureInfoTpl
         if (options.sourceConfig.featureInfoTpl) {
@@ -122,7 +188,7 @@ goog.require('ga_urlutils_service');
           // INGRID: Add attributionUrl
           attributionUrl: options.attributionUrl
         });
-        
+
         gaDefinePropertiesForLayer(layer);
         layer.useThirdPartyData =
             gaUrlUtils.isThirdPartyValid(options.sourceConfig.urls[0]);
@@ -175,12 +241,12 @@ goog.require('ga_urlutils_service');
             var hasInfinityValue = false;
 
             layerWgs84Extent.forEach(function(coord) {
-              if(!isFinite(coord)){
-                hasInfinityValue = true; 
+              if (!isFinite(coord)) {
+                hasInfinityValue = true;
               }
             });
 
-            if(!hasInfinityValue) {
+            if (!hasInfinityValue) {
               return ol.proj.transformExtent(layerWgs84Extent, wgs84, projCode);
             }
           }
@@ -277,7 +343,16 @@ goog.require('ga_urlutils_service');
             layerIdentifier, layerOptions) {
           var that = this;
           var url = gaUrlUtils.buildProxyUrl(getCapUrl);
-          return $http.get(url, {
+          if ($window.sessionStorage.getItem(getCapUrl)) {
+            var sessionAuthService = JSON.parse($window.sessionStorage.
+              getItem(getCapUrl));
+            var params = {};
+            if (sessionAuthService) {
+              params['login'] = sessionAuthService.login;
+              params['password'] = sessionAuthService.password;
+            }
+          }
+          return $http.post(url, params, {
             cache: true
           }).then(function(response) {
             var data = response.data;

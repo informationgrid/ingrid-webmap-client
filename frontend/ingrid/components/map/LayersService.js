@@ -172,7 +172,8 @@ goog.require('ga_urlutils_service');
               } else {
                 if (layer.auth) {
                   imageTile.getImage().src = gaGlobalOptions.imgproxyUrl +
-                    '' + encodeURIComponent(src) + '&login=' + layer.auth;
+                    '' + encodeURIComponent(src) + '&login=' +
+                    encodeURIComponent(layer.auth);
                 } else {
                   imageTile.getImage().src = (content) || src;
                 }
@@ -191,7 +192,8 @@ goog.require('ga_urlutils_service');
             var onSuccess = function(content, layer) {
               if (layer.auth) {
                 image.getImage().src = gaGlobalOptions.imgproxyUrl +
-                 '' + encodeURIComponent(src) + '&login=' + layer.auth;
+                 '' + encodeURIComponent(src) + '&login=' +
+                 encodeURIComponent(layer.auth);
               } else {
                 image.getImage().src = src;
               }
@@ -897,9 +899,10 @@ goog.require('ga_urlutils_service');
         this.getMetaDataOfLayerWithLegend = function(bodId, legendUrl) {
           var url = getMetaDataUrlWithLegend(bodId, gaLang.get(), legendUrl);
           var layer = this.getLayer(bodId);
+          var params = {};
           if (layer) {
             if (layer.auth) {
-              url += '&login=' + layer.auth;
+              params['login'] = layer.auth;
             }
           } else {
             // INGRID: Add login und password from session
@@ -907,16 +910,16 @@ goog.require('ga_urlutils_service');
             if (bodIds.length > 2) {
               var baseUrl = decodeURIComponent(bodIds[2]);
               if ($window.sessionStorage.getItem(baseUrl)) {
-                var sessionAuthWMS = JSON.parse($window.sessionStorage.
-                  getItem(baseUrl));
-                if (sessionAuthWMS) {
-                  url += '&login=' + sessionAuthWMS.login +
-                    '&password=' + sessionAuthWMS.password;
+                var sessionAuthService = JSON.parse($window.sessionStorage.
+                    getItem(baseUrl));
+                if (sessionAuthService) {
+                  params['login'] = sessionAuthService.login;
+                  params['password'] = sessionAuthService.password;
                 }
               }
             }
           }
-          return $http.get(url);
+          return $http.post(url, params);
         };
 
         /**
