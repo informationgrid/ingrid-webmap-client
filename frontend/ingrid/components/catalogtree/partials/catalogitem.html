@@ -9,29 +9,35 @@
       {{item.label}}
     </label>
     <div class="ga-layer-ordering">
-      <!-- INGRID: Add zoom to extent -->
-      <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)"></button>
-      <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
+<!-- INGRID: Add zoom to extent -->
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}' -->
+      <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)" ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"'-->
+      <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)" ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"></button>
     </div>
   </div>
 
   <div ng-switch-default="" class="ga-catalogitem-node">
-    <!-- INGRID: Check if item is not a parent layer -->
-    <a ng-if="!isParentLayer(item)" href="#" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}">
+    <!-- INGRID: Check if item is not a parent layer, role="button" ng-attr-aria-expanded="{{ item.selectedOpen }} -->
+    <a ng-if="!isParentLayer(item)" href="#" ng-click="toggle($event)" class="ga-catalogitem-entry ga-truncate-text" title="{{item.label}}" role="button" ng-attr-aria-expanded="{{ item.selectedOpen }}">
       <i ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
       {{item.label}}
     </a>
     <!-- INGRID: Check if item is a parent layer and check layer extent intersects map extent -->
-    <a ng-if="isParentLayer(item)" href="#" class="ga-catalogitem-entry ga-catalogitem-leaf ga-truncate-text" title="{{item.label}}" ng-class="{'extent-outside': !isInRange(item.layerBodId)}">
+    <!-- INGRID: Add 'tabindex="-1"' -->
+    <a ng-if="isParentLayer(item)" href="#" class="ga-catalogitem-entry ga-catalogitem-leaf ga-truncate-text" title="{{item.label}}" ng-class="{'extent-outside': !isInRange(item.layerBodId)}" tabindex="-1">
       <label title="{{item.label}}" class="ga-truncate-text ga-checkbox">
-        <i ng-click="toggle($event)" ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}"></i>
+        <!-- INGRID: Add 'ng-keypress="toggle($event)" role="button" tabindex="0" aria-expanded="{{ item.selectedOpen }}"' -->
+        <i ng-click="toggle($event)" ng-class="{'fa fa-minus': item.selectedOpen, 'fa fa-plus': !item.selectedOpen}" ng-keypress="toggle($event)" role="button" tabindex="0" aria-expanded="{{ item.selectedOpen }}"></i>
         <input type="checkbox" ng-model="item.active" ng-model-options="{getterSetter: true}">
         <span></span>
         {{item.label}}
       </label>
       <div class="ga-layer-ordering">
-        <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)"></button>
-        <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"' -->
+        <button ng-if="hasExtent(item.layerBodId)" class="ga-icon ga-btn fa fa-zoom-in" ng-click="zoomToExtent($event, item.layerBodId)" ng-attr-aria-label="{{ 'fa_icon_layer_zoom' | translate }}"></button>
+<!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"' -->
+        <button class="ga-icon ga-btn fa fa-info-sign" ng-click="getLegend($event, item.layerBodId)" ng-attr-aria-label="{{ 'fa_icon_layer_info' | translate }}" aria-haspopup="dialog"></button>
       </div>
     </a>
     <ul ng-if="item.selectedOpen">

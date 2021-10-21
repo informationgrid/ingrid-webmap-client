@@ -1,0 +1,11 @@
+<!-- INGRID: Add 'ng-attr-aria-pressed="{{ isActive }}"' -->
+<button class="ga-btn"
+        ng-click="toggle($event)"
+        ng-class="{
+          'ga-btn-active': isActive
+        }"
+        ng-attr-aria-pressed="{{ isActive }}"
+        translate-attr="{title: 'time_' + (isActive ? 'hide' : 'show')}">
+  <i class="fa fa-ga-circle-bg"></i>
+  <i class="fa fa-ga-time-selector"></i>
+</button>

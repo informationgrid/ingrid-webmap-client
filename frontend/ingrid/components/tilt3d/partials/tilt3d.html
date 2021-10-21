@@ -1,0 +1,10 @@
+<!-- INGRID: Add 'ng-attr-aria-pressed="{{ globals.is3dActive }}"' -->
+<button type="button" class="ga-btn"
+        ng-click="tilt()"
+        ng-class="{'ga-btn-disabled': disabled || !supported}"
+        ng-attr-aria-pressed="{{ globals.is3dActive }}"
+        translate-attr="{title: getBtTitle()}">
+  <i class="fa fa-ga-circle-bg"></i>
+  <i class="fa fa-ga-circle-3d"></i>
+  <i class="fa fa-ga-3d-text"></i>
+</button>

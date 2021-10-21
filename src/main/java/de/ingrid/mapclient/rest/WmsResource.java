@@ -141,7 +141,7 @@ public class WmsResource {
             throw new WebApplicationException( ioEx, Response.Status.NOT_FOUND );
         } catch (Exception e) {
             log.error( ERROR_WMS_MSG + url, e );
-            throw new WebApplicationException( e, Response.Status.SERVICE_UNAVAILABLE );
+            throw new WebApplicationException( e, Response.Status.NOT_FOUND );
         }
     }
 
@@ -334,10 +334,10 @@ public class WmsResource {
         
         html += "<ul class=\"nav nav-tabs\">";
         html += "<li ng-class=\"getTabClass(1)\">";
-        html += "<a ng-click=\"activeTab(1)\" translate>metadata_data</a>";
+        html += "<a ng-click=\"activeTab(1)\" ng-keypress=\"activeTab(1)\" tabindex=\"0\" translate>metadata_data</a>";
         html += "</li>";
         html += "<li ng-class=\"getTabClass(2)\">";
-        html += "<a ng-click=\"activeTab(2)\" translate>metadata_structure</a>";
+        html += "<a ng-click=\"activeTab(2)\" ng-keypress=\"activeTab(2)\" tabindex=\"0\" translate>metadata_structure</a>";
         html += "</li>";
         html += "</ul>";
         
@@ -837,7 +837,7 @@ public class WmsResource {
                 if(field != null) {
                     html.append("<div>");
                     html.append("<span title=\"" + field.getTextContent() + "\">");
-                    html.append("<label class=\"ga-truncate-text ga-checkbox\">");
+                    html.append("<label class=\"ga-truncate-text\">");
                     html.append(field.getTextContent());
                     html.append("</label>"); 
                     html.append("</span>");

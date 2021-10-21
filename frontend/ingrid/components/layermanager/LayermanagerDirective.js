@@ -60,13 +60,16 @@ goog.require('ga_window_service');
       gaMapUtils, gaEvent, gaWindow, gaGlobalOptions) {
 
     // Timestamps list template
+    // INGRID: Add 'role="button"'
     var tpl =
       '<div class="ga-layer-timestamps">' +
         '<div tabindex="1" ng-if="tmpLayer.timeBehaviour == \'all\'" ' +
+             'role="button"' +
              'ng-class="{badge: !tmpLayer.time}" ' +
              'ng-click="setLayerTime(tmpLayer)" ' +
              'translate>time_all</div> ' +
         '<div tabindex="1" ng-repeat="i in tmpLayer.timestamps" ' +
+             'role="button"' +
              'ng-class="{badge: (tmpLayer.time == i)}" ' +
              'ng-click="setLayerTime(tmpLayer, i)">' +
           '{{i | gaTimeLabel:tmpLayer}}' +
@@ -278,7 +281,7 @@ goog.require('ga_window_service');
           if (layer.type === 'VECTOR') {
             return true;
           }
-          return layer.extent ? true : false;
+          return !!layer.extent;
         };
 
         // INGRID: Check layer extent intersects map extent
@@ -306,7 +309,7 @@ goog.require('ga_window_service');
           evt.preventDefault();
         };
 
-// INGRID: Add function for zoomToExtent
+        // INGRID: Add function for zoomToExtent
         scope.zoomToExtent = function(evt, layer) {
           if (layer.type === 'VECTOR') {
             if (layer.getSource()) {
@@ -357,9 +360,15 @@ goog.require('ga_window_service');
         element.on('click', '.fa-gear', function() {
           var li = $(this).closest('li');
           li.toggleClass('ga-layer-folded');
+          // INGRID: Add aria
+          $(this).attr('aria-pressed', !li.hasClass('ga-layer-folded'));
+          $(this).attr('aria-expanded', !li.hasClass('ga-layer-folded'));
           $(this).closest('ul').find('li').each(function(i, el) {
             if (el !== li[0]) {
               $(el).addClass('ga-layer-folded');
+              // INGRID: Add aria
+              $(el).find('.fa-gear').attr('aria-pressed', false);
+              $(el).find('.fa-gear').attr('aria-expanded', false);
             }
           });
         });

@@ -1,7 +1,8 @@
 <div class="ga-container">
   <div class="ga-header" ng-click="reverse = !reverse">
     <label translate>title</label>
-    <button class="pull-right fa" ng-class="{'fa-sort-by-alphabet': !reverse, 'fa-sort-by-alphabet-alt': reverse}"></button>
+    <!-- INGRID: Add 'ng-attr-aria-label="{{ 'fa_icon_layer_reverse' | translate }"' -->
+    <button class="pull-right fa" ng-class="{'fa-sort-by-alphabet': !reverse, 'fa-sort-by-alphabet-alt': reverse}" ng-attr-aria-label="{{ 'fa_icon_layer_reverse' | translate }"></button>
   </div>
   <div class="ga-content">
     <ul>

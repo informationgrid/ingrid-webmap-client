@@ -31,6 +31,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -94,7 +95,15 @@ public class HttpProxy {
                 InputStream is = new BufferedInputStream(conn.getInputStream());
             ){
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
                 factory.setValidating(false);
+                factory.setNamespaceAware(true);
+                factory.setFeature("http://xml.org/sax/features/namespaces", false);
+                factory.setFeature("http://xml.org/sax/features/validation", false);
+                factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+                factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document doc = builder.parse(is);
                 
@@ -115,6 +124,9 @@ public class HttpProxy {
             }
             if(urlStr.startsWith("http:") && result == null){
                 result = doCapabilitiesRequest(urlStr.replace("http:", "https:"), login, password);
+            }
+            if(!Utils.evaluate(result)) {
+                result = null;
             }
         }
         return result;

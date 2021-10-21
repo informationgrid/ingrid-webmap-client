@@ -127,3 +127,76 @@
     width: 24px;
   }
 }
+
+#pulldown-content .panel > .accordion-toggle.collapsed {
+  background-color: #474949;
+}
+
+#pulldown-content .panel > .accordion-toggle:hover, #pulldown-content .panel > .accordion-toggle:active {
+  text-decoration: none;
+  color: #666;
+  background: #fff;
+}
+
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected,
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected:hover,
+[ga-catalogtree] .ga-catalogitem-template .ga-catalogitem-selected button {
+  color: #a00e19;
+}
+
+.ga-draw-measure-static::after {
+  border-top: 6px solid #474949;
+}
+
+.ga-draw-help, .ga-draw-measure, .ga-draw-measure-static {
+  background-color: #474949;
+}
+
+.tooltip.bottom .tooltip-arrow {
+  border-bottom-color:#474949;
+}
+
+.tooltip-inner {
+  background-color: #474949;
+}
+
+[ga-help] {
+  opacity: 0.8;
+}
+
+[ga-popup] .ga-buttons button {
+  opacity: 0.8 !important;
+}
+
+.modal-header button {
+  opacity: 0.8 !important;
+}
+
+:focus-visible {
+  outline: 2px solid #a00e19 !important;
+  outline-offset: -2px !important;
+}
+
+body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus + span {
+  box-shadow: none;
+}
+
+body:not(.webkit) .ga-checkbox input[type="checkbox"]:focus-visible + span {
+  outline: 2px solid #a00e19 !important;
+}
+
+button.ga-btn:not([disabled]):focus-visible {
+  outline-offset: -2px !important;
+}
+
+.ga-catalogitem-node {
+  padding: 2px 0;
+}
+
+.ga-bg-layer, #pulldown-content .panel{
+  display: none;
+}
+
+.ga-open .ga-bg-layer, .ga-pulldown-shown #pulldown-content .panel {
+  display: block;
+}

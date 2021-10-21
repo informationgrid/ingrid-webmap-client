@@ -159,7 +159,8 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
       </a>
       -->
-      <div id="search-container" ng-controller="GaSearchController">
+      <!-- INGRID: Add 'role="search" ng-attr-aria-label="{{ 'navigation_search' | translate }}"' -->
+      <div id="search-container" ng-controller="GaSearchController" role="search" ng-attr-aria-label="{{ 'navigation_search' | translate }}">
         <div ga-search ga-search-map="map" ga-search-options="options" ga-search-focused="globals.searchFocused" ga-search-ol3d="::ol3d"></div>
         <span ga-help="31,24,25" ga-help-options="{showOnHover:true}"></span>
         <!-- INGRID: Remove
@@ -168,13 +169,14 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div>
         -->
       </div>
-      <div id="toptools" ng-if="!globals.settingsShown">
+      <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_service_menu' | translate }}"' -->
+      <div id="toptools" ng-if="!globals.settingsShown" role="navigation" ng-attr-aria-label="{{ 'navigation_service_menu' | translate }}">
         <!-- INGRID: Remove
         <a ga-vector-tile-test-link></a>&nbsp;&nbsp;
         -->
         <div ga-fullscreen ga-fullscreen-map="map"></div>&nbsp;&nbsp;
         <!-- INGRID: Use 'globals.serviceAnnouncementUrl' to define href -->
-        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+        <a ng-if="!globals.serviceAnnouncementUrl" href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button">
           <span translate>problem_announcement</span>
         </a>
         <a ng-if="globals.serviceAnnouncementUrl" href="{{globals.serviceAnnouncementUrl}}" target="_blank">
@@ -195,7 +197,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div class="ga-offline-msg alert-danger" translate>offline_sorry</div>
     </div> <!-- #header -->
 
-    <div id="drawModeHeader" class="navbar navbar-fixed-top">
+    <!-- INGRID: Add ng-if="globals.isDrawActive" -->
+    <div id="drawModeHeader" class="navbar navbar-fixed-top" ng-if="globals.isDrawActive">
       <div class="ga-centered ga-title" translate>draw_mode_title</div>
       <button class="btn btn-primary pull-left" ng-click="globals.isDrawActive = false">
         <i class="fa fa-arrow-left"></i>
@@ -228,7 +231,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div ga-scale-line ga-scale-line-map="map" ng-show="!globals.is3dActive"></div>
   % endif
 
-      <div id='buttonGroup' ng-cloak translate-cloak>
+      <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_map_buttons' | translate }}"' -->
+      <div id='buttonGroup' ng-cloak translate-cloak role="navigation" ng-attr-aria-label="{{ 'navigation_map_buttons' | translate }}">
   % if device != 'embed':
         <div ga-geolocation ga-geolocation-map="::map" ga-geolocation-ol3d="::ol3d"></div>
   % endif
@@ -281,7 +285,8 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
     <div ng-cloak ga-offline-selector ga-offline-selector-map="::map"></div>
 % if device != 'embed':
-    <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom">
+    <!-- INGRID: Add 'role="footer" ng-attr-aria-label="{{ 'navigation_footer' | translate }}"' -->
+    <div ng-cloak translate-cloak id="footer" class="navbar navbar-fixed-bottom" role="footer" ng-attr-aria-label="{{ 'navigation_footer' | translate }}">
       <div  class="pull-left" ga-scale-line ga-scale-line-map="::map" ng-show="!globals.is3dActive"></div>
       <div id="mouseposition" class="pull-left" ng-controller="GaMousePositionController">
         <select ng-model="options.projection"
@@ -340,17 +345,21 @@ itemscope itemtype="http://schema.org/WebApplication"
     </div>
 
 % if device != 'embed':
+    <!-- INGRID: Add 'role="navigation" ng-attr-aria-label="{{ 'navigation_main_menu' | translate }}"' -->
     <div  id="pulldown" ng-cloak translate-cloak
+          role="navigation" ng-attr-aria-label="{{ 'navigation_main_menu' | translate }}"
           ng-class="{
             'selection-and-catalog-shown': (globals.catalogShown && globals.selectionShown),
             'ga-pulldown-shown': globals.pulldownShown
           }">
-      <div class="ga-visible-mobile ga-pulldown-shadow" ng-click="globals.pulldownShown = false"></div>
+      <div class="ga-visible-mobile ga-pulldown-shadow" ng-click="globals.pulldownShown = false" role="button"></div>
       <div id="pulldown-content" class="content">
         <!-- Share -->
         <div class="panel">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="shareHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#share"
+             role="button"
              ga-collapsible-show="globals.isShareActive">
             <i class="fa fa-caret-down"></i>
             <span translate>share</span>
@@ -364,8 +373,10 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Print -->
         <div class="panel" ng-show="!globals.is3dActive">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="printHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#print"
+             role="button"
              ga-collapsible-show="globals.isPrintActive">
             <i class="fa fa-caret-down"></i>
             <span translate>print</span>
@@ -382,8 +393,10 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Draw -->
         <div class="panel" ng-show="!globals.is3dActive">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="drawHeading" class="panel-heading accordion-toggle collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#draw"
+             role="button"
              ga-collapsible-show="globals.isDrawActive" accesskey="r">
             <i class="fa fa-caret-down"></i>
             <span translate>draw_panel_title</span>
@@ -401,7 +414,9 @@ itemscope itemtype="http://schema.org/WebApplication"
 
         <!-- Tools -->
         <div class="panel">
+          <!-- INGRID: Add 'role="button"' -->
           <a id="toolsHeading" class="panel-heading accordion-toggle collapsed"
+             role="button"
              data-toggle="collapse" data-parent="#pulldown-content" href="#tools">
             <i class="fa fa-caret-down"></i>
             <span translate>map_tools</span>
@@ -410,14 +425,14 @@ itemscope itemtype="http://schema.org/WebApplication"
             <div class="panel-body panel-body-wide panel-cursor">
               <ul>
                 <li><!-- Import -->
-                  <a href="" accesskey="w"
+                  <a href="" accesskey="w" role="button" aria-haspopup="dialog"
                      ng-click="globals.importPopupShown = !globals.importPopupShown"
                      translate-attr="{title: 'import_tooltip'}">
                     <span ng-class="{'selected': globals.importPopupShown}" translate>import</span>
                   </a>
                 </li>
                 <li ng-show="!globals.is3dActive"><!-- Compare -->
-                  <a href=""  accesskey="c"
+                  <a href=""  accesskey="c" role="button"
                      ng-click="globals.isSwipeActive = !globals.isSwipeActive"
                      translate-attr="{title: 'swipe_tooltip'}">
                     <span ng-class="{'selected': globals.isSwipeActive}" translate>swipe</span>
@@ -425,7 +440,7 @@ itemscope itemtype="http://schema.org/WebApplication"
                 </li>
                 <!-- INGRID: Disable 'object_information' -->
                 <li ng-show="false" ng-if="globals.queryShown"><!-- Feature Tree -->
-                  <a href="" accesskey="s"
+                  <a href="" accesskey="s" role="button" aria-haspopup="dialog"
                      ng-click="globals.isFeatureTreeActive = !globals.isFeatureTreeActive"
                      translate-attr="{title: 'featuretree_tooltip'}">
                     <span  ng-class="{'selected': globals.isFeatureTreeActive}" translate>object_information</span>
@@ -445,8 +460,10 @@ itemscope itemtype="http://schema.org/WebApplication"
             </a>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
+          <!-- INGRID: Add 'role="button"' -->
           <a id="catalogHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#catalog"
+             role="button"
              ga-collapsible-show="globals.catalogShown">
             <i class="fa fa-caret-down"></i>
             <span>{{topicId | translate}}</span>
@@ -464,12 +481,16 @@ itemscope itemtype="http://schema.org/WebApplication"
         <div class="panel" ng-hide="globals.isDrawActive">
           <!-- INGRID: Remove and de/activate all layers -->
           <div class="theme-toggle" ng-if="hasAddedLayers()">
-              <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" title="{{ 'remove_all_layers' | translate }}"></button>
-              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" title="{{ 'activate_all_layers' | translate }}"/>
+              <!-- INGRID: Add aria-label -->
+              <button class="topic-modal-toggle ga-btn ga-icon fa fa fa-remove-sign" ng-click="removeLayers($event)" aria-label="{{ 'fa_icon_remove_all_layers'}"></button>
+              <!-- INGRID: Add aria-label -->
+              <input class="topic-modal-toggle" type="checkbox" ng-model="hasAllActivatedLayers.active" ng-model-options="{ getterSetter: true }" aria-label="{{ 'fa_icon_activate_all_layers'}"/>
           </div>
           <!-- INGRID: Add 'data-parent="#pulldown-content"' -->
+          <!-- INGRID: Add 'role="button"' -->
           <a id="selectionHeading" class="panel-heading accordion-toggle light collapsed"
              data-toggle="collapse" data-parent="#pulldown-content" href="#selection"
+             role="button"
              ga-collapsible-show="globals.selectionShown">
             <i class="fa fa-caret-down"></i>
             <span translate>layers_displayed</span>
@@ -479,7 +500,7 @@ itemscope itemtype="http://schema.org/WebApplication"
             <div class="panel-body panel-body-wide" ga-layermanager ga-layermanager-map="map">
             </div>
             <div class="ga-more-layers" ng-click="hidePulldownOnXSmallScreen()">
-              <a href="" ga-help-highlight=".ga-search-input-container input" translate>
+              <a href="" ga-help-highlight=".ga-search-input-container input" role="button" translate>
                 help_search_data_link
               </a>
             </div>
@@ -487,14 +508,15 @@ itemscope itemtype="http://schema.org/WebApplication"
         </div> <!-- .panel -->
 
         <div class="panel" ng-if="globals.settingsShown">
-          <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings">
+          <!-- INGRID: Add 'role="button"' -->
+          <a class="panel-heading accordion-toggle collapsed" data-toggle="collapse" data-parent="#pulldown-content" href="#settings" role="button">
             <i class="fa fa-caret-down"></i>
             <span translate>settings</span>
           </a>
           <div id="settings" class="collapse">
             <div class="panel-body">
               <p>
-                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown">
+                <a href="" ng-click="globals.feedbackPopupShown = !globals.feedbackPopupShown" role="button" aria-haspopup="dialog">
                   <span ng-class="{'selected': globals.feedbackPopupShown}" translate>problem_announcement</span>
                 </a>
               </p>
@@ -522,7 +544,9 @@ itemscope itemtype="http://schema.org/WebApplication"
           </div>
         </div> <!-- .panel -->
 
+        <!-- INGRID: Add 'ng-attr-aria-pressed="{{ !globals.pulldownShown }}"' -->
         <button id="menu-button" class="btn btn-default"
+                ng-attr-aria-pressed="{{ !globals.pulldownShown }}"
                 ng-click="globals.pulldownShown=!globals.pulldownShown">
           <span class="ga-hidden-mobile">
             <i class="fa fa-caret-down"></i>
@@ -672,7 +696,8 @@ itemscope itemtype="http://schema.org/WebApplication"
       <div class="arrow"></div>
       <div class="popover-title">
         <span translate>homescreen_title</span>
-        <button type="button" class="ga-icon ga-btn fa fa-remove" ng-click="globals.homescreen=false"></button>
+        <!-- INGRID: Add aria-label -->
+        <button type="button" class="ga-icon ga-btn fa fa-remove" ng-click="globals.homescreen=false" aria-label="{{ 'homescreen_title' | translate }}"></button>
       </div>
       <div class="popover-content">
         <i class="fa fa-share"></i>&nbsp;

@@ -37,12 +37,15 @@
       </table>
     <!-- INGRID: New layout for context popup -->
     <div ng-if="showBWaLocator()"  class="tabbable">
-      <ul class="nav nav-tabs">
+      <!-- INGRID: Add 'role="tablist"' -->
+      <ul class="nav nav-tabs" role="tablist">
         <li ng-class="getTabClass(1)">
-          <a ng-click="activeTab(1)" translate>context_title_coords</a>
+        <!-- INGRID: Add ' ng-keypress="activeTab(1)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 1 === currentTab }}"' -->
+          <a ng-click="activeTab(1)" ng-keypress="activeTab(1)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 1 === currentTab }}" translate>context_title_coords</a>
         </li>
         <li ng-class="getTabClass(2)">
-          <a ng-click="activeTab(2)" translate>context_title_bwalocator</a>
+        <!-- INGRID: Add 'ng-keypress="activeTab(2)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 2 === currentTab }}"' -->
+          <a ng-click="activeTab(2)" ng-keypress="activeTab(2)" tabindex="0" role="tab" ng-attr-aria-selected="{{ 2 === currentTab }}" translate>context_title_bwalocator</a>
         </li>
       </ul>
       <div class="tab-content">

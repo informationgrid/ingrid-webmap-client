@@ -1067,6 +1067,13 @@ goog.require('ga_urlutils_service');
               $(this).closest('ul').find('li').each(function(i, el) {
                 if (el !== li[0]) {
                   $(el).addClass('ga-layer-folded');
+                  $(el).attr('aria-expanded', false);
+                } else {
+                  if($(el).hasClass('ga-layer-folded')) {
+                    $(el).attr('aria-expanded', false);
+                  } else {
+                    $(el).attr('aria-expanded', true);
+                  }
                 }
               });
             });
